@@ -122,12 +122,12 @@ test('Sprachumschalter führt zur passenden Seite in der anderen Sprache', async
   await page.goto('/termine/');
   await dismissConsent(page);
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
-  await page.getByRole('link', { name: 'English' }).click();
+  await page.getByRole('link', { name: 'English', exact: true }).click();
   await expect(page).toHaveURL(/\/en\/events\/$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   await expect(page.getByRole('heading', { level: 1 })).toContainText("What's on");
   if (isMobile) await page.getByRole('button', { name: 'Menu' }).click();
-  await page.getByRole('link', { name: 'Deutsch' }).click();
+  await page.getByRole('link', { name: 'Deutsch', exact: true }).click();
   await expect(page).toHaveURL(/\/termine\/$/);
 });
 
@@ -142,6 +142,14 @@ test('Förderhinweis steht auf jeder Seite', async ({ page }) => {
     await page.goto(path);
     await expect(page.locator('#funding-h')).toHaveText(/Gefördert durch|Funded by/);
   }
+  // alle fünf Förderer mit Logo, Alternativtext und Link
+  await page.goto('/');
+  const logos = page.locator('.funding__list img');
+  await expect(logos).toHaveCount(5);
+  for (const alt of ['Landeshauptstadt Dresden', 'Kulturstiftung des Freistaates Sachsen', 'Kultur und Medien', 'NEUSTART KULTUR', 'Dachverband Tanz']) {
+    await expect(page.locator(`.funding__list a:has(img[alt*="${alt}"])`)).toHaveAttribute('href', /^https:\/\//);
+  }
+  await expect(page.locator('.funding__notices')).toContainText('Sächsischen Landtag');
 });
 
 test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {

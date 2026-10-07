@@ -56,12 +56,10 @@
     "statutesPdf": ""
   },
   "partners": [
-    "Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz",
     "Villa Wigman für Tanz",
     "TENZA",
     "Zentralwerk",
     "Nationales Performance Netz",
-    "Dachverband Tanz Deutschland",
     "Palucca Hochschule für Tanz"
   ],
   "newsletter": {
@@ -81,12 +79,43 @@
     {
       "name": "Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz",
       "name_en": "City of Dresden, Office for Culture and Monument Protection",
-      "url": "https://www.dresden.de/kultur",
-      "logo": "",
-      "note": "Logo als SVG/PNG in src/assets/foerderer/ ablegen und Dateinamen hier eintragen. Wortlaut laut Zuwendungsbescheid prüfen."
+      "url": "https://www.dresden.de/de/kultur/foerderung.php",
+      "logo": "landeshauptstadt-dresden.png",
+      "height": 58
+    },
+    {
+      "name": "Kulturstiftung des Freistaates Sachsen",
+      "name_en": "Cultural Foundation of the Free State of Saxony",
+      "url": "https://www.kdfs.de/",
+      "logo": "kulturstiftung-sachsen.png",
+      "height": 64,
+      "notice": "Gefördert durch die Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.",
+      "notice_en": "Funded by the Cultural Foundation of the Free State of Saxony. This measure is co-financed by tax revenue on the basis of the budget adopted by the Saxon State Parliament."
+    },
+    {
+      "name": "Die Beauftragte der Bundesregierung für Kultur und Medien",
+      "name_en": "Federal Government Commissioner for Culture and the Media",
+      "url": "https://kulturstaatsminister.de/",
+      "logo": "bkm.png",
+      "height": 62,
+      "note": "Logo zeigt noch „Die Beauftragte“; seit Mai 2025 ist es „Der Beauftragte“ (Wolfram Weimer). Fassung laut Zuwendungsbescheid verwenden."
+    },
+    {
+      "name": "NEUSTART KULTUR",
+      "url": "https://www.bundesregierung.de/breg-de/service/archiv/neustart-kultur-evaluation-zeigt-wirksamkeit-des-programms-2324916",
+      "logo": "neustart-kultur.png",
+      "height": 60
+    },
+    {
+      "name": "Dachverband Tanz Deutschland",
+      "name_en": "Dachverband Tanz Deutschland (German Dance Association)",
+      "url": "https://www.dachverband-tanz.de/",
+      "logo": "dachverband-tanz.png",
+      "height": 50,
+      "note": "Ggf. Förderhinweis-Text des Programms (z. B. NEUSTART KULTUR über den Dachverband Tanz) unter notice ergänzen – Wortlaut laut Zuwendungsbescheid."
     }
   ],
-  "fundingText": "Gefördert durch die Landeshauptstadt Dresden.",
+  "fundingText": "",
   "analytics": {
     "provider": "",
     "url": "",
@@ -110,7 +139,7 @@
         "label": "working groups"
       }
     ],
-    "fundingText": "Funded by the City of Dresden.",
+    "fundingText": "",
     "training": {
       "rhythmNote": "per week, plus workshops",
       "feeNote": "regular / members · cash on site"
@@ -127,12 +156,10 @@
       "role": "Public relations"
     },
     "partners": [
-      "City of Dresden, Office for Culture and Monument Protection",
       "Villa Wigman für Tanz",
       "TENZA",
       "Zentralwerk",
       "Nationales Performance Netz",
-      "Dachverband Tanz Deutschland",
       "Palucca University of Dance"
     ],
     "donation": {
@@ -178,5 +205,6 @@
       }
     ],
     "note": "IBAN leer = Bankverbindung wird noch nicht angezeigt. onlineUrl: Spendenformular z. B. bei betterplace.org (nur als Link, kein eingebettetes Formular)."
-  }
+  },
+  "funders_note": "Logos aus der Förderer-Grafik des Vereins ausgeschnitten (src/assets/foerderer/). Beste Qualität: offizielle Logodateien der Förderer (SVG/PDF) dort ablegen und Dateinamen hier tauschen."
 }

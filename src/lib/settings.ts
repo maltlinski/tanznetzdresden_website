@@ -37,8 +37,21 @@ const schema = z.object({
   press: z.object({ contact: z.string(), role: z.string() }),
   partners: z.array(z.string()),
   funders: z.array(
-    z.object({ name: z.string(), name_en: z.string().optional(), url: z.string(), logo: z.string(), note: z.string().optional() }),
+    z.object({
+      name: z.string(),
+      name_en: z.string().optional(),
+      url: z.url(),
+      /** Dateiname in src/assets/foerderer/ (leer = Name als Text) */
+      logo: z.string(),
+      /** Anzeigehöhe des Logos in px (Logos haben sehr unterschiedliche Formate) */
+      height: z.number().min(24).max(120).default(48),
+      /** Pflicht-Förderhinweis als Text (wird unter den Logos ausgegeben) */
+      notice: z.string().optional(),
+      notice_en: z.string().optional(),
+      note: z.string().optional(),
+    }),
   ),
+  funders_note: z.string().optional(),
   fundingText: z.string(),
   analytics: z.object({ provider: z.enum(['', 'matomo', 'plausible']), url: z.string(), siteId: z.string(), note: z.string().optional() }),
   newsletter: z.object({ action: z.string(), note: z.string().optional() }),
@@ -97,7 +110,7 @@ export function getVerein(lang: Lang): Verein {
     membership: { ...verein.membership, ...en.membership },
     register: { ...verein.register, ...en.register },
     press: { ...verein.press, ...en.press },
-    funders: verein.funders.map((f) => ({ ...f, name: f.name_en || f.name })),
+    funders: verein.funders.map((f) => ({ ...f, name: f.name_en || f.name, notice: f.notice_en || f.notice })),
     donation: {
       ...verein.donation,
       ...en.donation,

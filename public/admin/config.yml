@@ -214,8 +214,11 @@ collections:
               - { name: name_en, label: Name Englisch, widget: string, required: false }
               - { name: url, label: Website, widget: string }
               - { name: logo, label: 'Logo-Datei (in src/assets/foerderer/)', widget: string, required: false }
+              - { name: height, label: 'Anzeigehöhe in px (24–120)', widget: number, value_type: int, default: 48 }
+              - { name: notice, label: 'Pflicht-Förderhinweis als Text (optional)', widget: text, required: false }
+              - { name: notice_en, label: 'Förderhinweis Englisch (optional)', widget: text, required: false }
               - { name: note, label: Notiz, widget: string, required: false }
-          - { name: fundingText, label: 'Förderhinweis (Text)', widget: string }
+          - { name: fundingText, label: 'Allgemeiner Förderhinweis (optional)', widget: string, required: false }
           - name: analytics
             label: 'Statistik (optional, nur mit Einwilligung)'
             widget: object

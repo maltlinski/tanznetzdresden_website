@@ -28,6 +28,7 @@ const t = tr(lang, {
 });
 ---
 <footer class="site-footer">
+  <Funding />
   <div class="site-footer__inner">
     <div class="site-footer__cols">
       <div class="site-footer__brand">
@@ -60,7 +61,6 @@ const t = tr(lang, {
         <a href={href('termine.ics')}>{t.ics}</a>
       </div>
     </div>
-    <Funding />
     <div class="site-footer__partners">
       <span class="site-footer__partners-h">{t.partners}</span>
       <p>{v.partners.join(' · ')}</p>

@@ -10,9 +10,13 @@ Alle Stellen mit `[BITTE …]` suchen: `grep -rn "BITTE" src`
       Newsletter-Dienst. Der Text ist ein Muster. Bitte prüfen lassen, z. B. über den Dachverband oder eine
       Datenschutzberatung für Vereine.
 - [ ] Auftragsverarbeitungsverträge mit Hoster, Newsletter-Dienst und Supabase abschließen.
-- [ ] **Förderhinweis**: Logo der Landeshauptstadt Dresden (nach deren Gestaltungshandbuch) in
-      `src/assets/foerderer/` ablegen, Dateinamen in `verein.json` → `funders[].logo` eintragen. Wortlaut von
-      `fundingText` mit dem Zuwendungsbescheid abgleichen. Weitere Förderer ergänzen.
+- [ ] **Förderhinweis**: Die fünf Logos (Stadt Dresden, Kulturstiftung Sachsen, BKM, NEUSTART KULTUR,
+      Dachverband Tanz) sind aus der Förderer-Grafik des Vereins ausgeschnitten. Besser: die offiziellen
+      Logodateien der Förderer (SVG/PDF, z. B. das Förderlogo der Stadt auf dresden.de) in
+      `src/assets/foerderer/` ablegen und in `verein.json` → `funders[].logo` eintragen.
+      BKM-Logo zeigt noch „Die Beauftragte“ – seit Mai 2025 „Der Beauftragte“; Fassung laut Bescheid prüfen.
+      Prüfen, ob alle Förderungen noch laufen (NEUSTART KULTUR endete 2023) und ob weitere Pflichttexte
+      nötig sind (`funders[].notice`).
 - [ ] **Spenden** (`verein.json` → `donation`, `taxExemption`): IBAN/BIC eintragen (erst dann erscheinen
       Bankverbindung und GiroCode), Wirkungs-Beispiele mit echten Kosten abgleichen, Freistellungsbescheid
       (Finanzamt, Steuernummer, Datum, Zeitraum) eintragen – ohne ihn ist der vereinfachte Spendennachweis
