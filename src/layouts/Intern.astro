@@ -1,0 +1,114 @@
+---
+/**
+ * Rahmen für den internen Bereich. Inhalte im Slot erscheinen erst nach dem
+ * Login (Zustand „ready“). Die Daten selbst schützt die Datenbank (RLS) –
+ * diese Seite ist nur die Oberfläche.
+ */
+import Page from './Page.astro';
+import Tag from '../components/ui/Tag.astro';
+import { href } from '../lib/url';
+
+interface Props {
+  title: string;
+  /** aktiver Menüpunkt */
+  current?: 'start' | 'profil' | 'mitglieder' | 'dokumente';
+  /** Index-Seite zeigt selbst das Login-Formular */
+  loginPage?: boolean;
+}
+const { title, current = 'start', loginPage = false } = Astro.props;
+const items = [
+  { id: 'start', label: 'Übersicht', path: 'intern/' },
+  { id: 'profil', label: 'Mein Profil', path: 'intern/profil/' },
+  { id: 'mitglieder', label: 'Mitglieder', path: 'intern/mitglieder/' },
+  { id: 'dokumente', label: 'Dokumente', path: 'intern/dokumente/' },
+];
+---
+<Page title={`${title} · Intern`} noindex>
+  <div class="intern surface-tint" data-intern data-state="loading">
+    <div class="intern__bar">
+      <div class="wrap intern__bar-inner">
+        <Tag color="cyan">Interner Bereich</Tag>
+        <nav class="intern__nav" aria-label="Interner Bereich" data-when="ready">
+          {items.map((i) => (
+            <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined}>{i.label}</a>
+          ))}
+        </nav>
+        <div class="intern__user" data-when="ready">
+          <span data-intern-name></span>
+          <button type="button" data-logout>Abmelden</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap intern__body">
+      <p class="intern__status" data-when="loading" role="status">Einen Moment …</p>
+
+      <div class="intern__panel" data-when="setup">
+        <h1 class="intern__h">Noch nicht eingerichtet</h1>
+        <p>Der interne Bereich braucht ein Supabase-Projekt. Die Anleitung steht in <code>docs/intern.md</code> im Repository.</p>
+      </div>
+
+      {loginPage ? <slot /> : <div data-when="ready"><slot /></div>}
+    </div>
+  </div>
+</Page>
+
+<style>
+  .intern { min-height: 70vh; background: var(--tint); }
+  /* :global, weil die Zustände auch im Seiten-Inhalt (Slot) vorkommen */
+  :global(.intern [data-when]) { display: none !important; }
+  :global(.intern[data-state='loading'] [data-when='loading']),
+  :global(.intern[data-state='setup'] [data-when='setup']),
+  :global(.intern[data-state='login'] [data-when='login']),
+  :global(.intern[data-state='ready'] [data-when='ready']) { display: block !important; }
+  :global(.intern[data-state='login'] .login[data-when='login']) { display: grid !important; }
+  .intern[data-state='ready'] .intern__nav[data-when],
+  .intern[data-state='ready'] .intern__user[data-when] { display: flex !important; }
+
+  .intern__bar { background: var(--purple-2); color: #fff; }
+  .intern__bar-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 36px; padding-block: 14px; }
+  .intern__nav { flex-wrap: wrap; gap: 4px 24px; }
+  .intern__nav a {
+    color: rgba(255, 255, 255, 0.8); font-family: var(--font-mono); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 0; border-bottom: 1.5px solid transparent;
+  }
+  .intern__nav a:hover { color: var(--cyan); }
+  .intern__nav a[aria-current] { color: #fff; border-bottom-color: var(--magenta); }
+  .intern__user { margin-left: auto; align-items: center; gap: 16px; font-size: 14px; color: rgba(255, 255, 255, 0.86); }
+  .intern__user button {
+    background: none; border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff; padding: 7px 12px; cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .intern__user button:hover { border-color: var(--magenta); color: var(--cyan); }
+  .intern__body { padding-block: clamp(40px, 6vw, 80px); }
+  .intern__status { color: var(--ink-soft); }
+  .intern__panel { max-width: 640px; background: var(--paper); padding: 32px; border-top: 3px solid var(--magenta); }
+  .intern__h { font-family: var(--font-display); font-weight: 800; font-size: 32px; letter-spacing: -0.025em; color: var(--purple); margin: 0 0 12px; }
+
+  /* Gemeinsame Bausteine für interne Formulare */
+  .intern :global(.i-card) { background: var(--paper); padding: clamp(22px, 3vw, 36px); border-top: 3px solid var(--magenta); }
+  .intern :global(.i-h1) { font-family: var(--font-display); font-weight: 800; font-size: clamp(32px, 4vw, 52px); line-height: 1; letter-spacing: -0.03em; color: var(--purple); margin: 0 0 12px; }
+  .intern :global(.i-lead) { margin: 0 0 28px; max-width: 60ch; color: var(--ink-soft); line-height: 1.6; }
+  .intern :global(.i-form) { display: grid; gap: 18px; max-width: 560px; }
+  .intern :global(.i-field) { display: flex; flex-direction: column; gap: 7px; }
+  .intern :global(.i-field > label), .intern :global(.i-legend) {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2);
+  }
+  .intern :global(.i-field input), .intern :global(.i-field textarea), .intern :global(.i-field select) {
+    font-family: var(--font-body); font-size: 15px; color: var(--ink); background: var(--paper);
+    border: 1.5px solid var(--rule); border-radius: 0; padding: 11px 13px; outline: none; width: 100%;
+  }
+  .intern :global(.i-field textarea) { min-height: 140px; resize: vertical; line-height: 1.55; }
+  .intern :global(.i-field input:focus), .intern :global(.i-field textarea:focus) { border-color: var(--magenta); box-shadow: inset 0 -2px 0 var(--magenta); }
+  .intern :global(.i-hint) { font-size: 12.5px; color: var(--ink-muted); }
+  .intern :global(.i-check) { display: flex; gap: 10px; align-items: flex-start; font-size: 14.5px; line-height: 1.5; cursor: pointer; }
+  .intern :global(.i-check input) { width: 18px; height: 18px; accent-color: var(--magenta); margin: 2px 0 0; flex: none; }
+  .intern :global(.i-msg) { margin: 0; padding: 12px 16px; font-size: 14.5px; border-left: 4px solid var(--magenta); background: var(--magenta-tint); color: var(--purple); }
+  .intern :global(.i-msg[data-kind='ok']) { border-left-color: var(--cyan-2); background: var(--cyan-tint); }
+  .intern :global(.i-linkbtn) {
+    background: none; border: 0; padding: 0; color: var(--purple); cursor: pointer; font: inherit; font-size: 14px;
+    text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px;
+  }
+  .intern :global(.i-linkbtn:hover) { color: var(--magenta); }
+</style>
+<!-- Jede interne Seite ruft in ihrem eigenen Skript initIntern() auf (scripts/intern/session.ts). -->

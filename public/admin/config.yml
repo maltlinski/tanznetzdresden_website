@@ -1,0 +1,182 @@
+# Sveltia CMS – Konfiguration (kompatibel mit Decap CMS).
+# Doku: https://github.com/sveltia/sveltia-cms
+backend:
+  name: github
+  repo: maltlinski/tanznetzdresden_website
+  branch: main
+  # Für den Login ohne Netlify: Sveltia CMS Authenticator (Cloudflare Worker), siehe docs/inhalte.md
+  # base_url: https://sveltia-cms-auth.<dein-account>.workers.dev
+  commit_messages:
+    create: 'Inhalt: {{collection}} „{{slug}}“ angelegt'
+    update: 'Inhalt: {{collection}} „{{slug}}“ geändert'
+    delete: 'Inhalt: {{collection}} „{{slug}}“ gelöscht'
+
+locale: de
+media_folder: src/assets/photos
+public_folder: ../../assets/photos
+
+collections:
+  - name: termine
+    label: Termine
+    label_singular: Termin
+    folder: src/content/termine
+    create: true
+    slug: '{{fields.start | date("YYYY-MM-DD")}}-{{title}}'
+    summary: '{{start}} · {{title}}'
+    sortable_fields: [start, title]
+    fields:
+      - { name: title, label: Titel, widget: string }
+      - { name: start, label: 'Beginn (JJJJ-MM-TT HH:MM)', widget: string, pattern: ['^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$', 'Format: 2026-10-15 19:30'] }
+      - { name: end, label: 'Ende (optional)', widget: string, required: false, pattern: ['^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$', 'Format: 2026-10-15 21:30'] }
+      - { name: venue, label: Ort, widget: string }
+      - { name: timeLabel, label: 'Uhrzeit-Anzeige (optional, z. B. 11:00–15:00 Uhr)', widget: string, required: false }
+      - { name: category, label: Kategorie, widget: select, options: ['Bühne', 'Training', 'Diskurs'] }
+      - { name: teaser, label: Kurzbeschreibung, widget: string }
+      - { name: link, label: 'Link (Tickets, Anmeldung)', widget: string, required: false }
+      - { name: draft, label: Entwurf (nicht anzeigen), widget: boolean, default: false, required: false }
+
+  - name: formate
+    label: Formate
+    label_singular: Format
+    folder: src/content/formate
+    create: true
+    slug: '{{title}}'
+    summary: '{{order}} · {{title}}'
+    sortable_fields: [order, title]
+    fields:
+      - { name: title, label: Titel, widget: string }
+      - { name: order, label: Reihenfolge, widget: number, value_type: int }
+      - { name: since, label: 'Seit (z. B. „seit 2021“)', widget: string }
+      - { name: summary, label: Kurztext, widget: text }
+      - { name: image, label: Foto, widget: image }
+      - { name: alt, label: 'Bildbeschreibung (für Screenreader)', widget: string }
+      - { name: body, label: Ausführlicher Text, widget: markdown, required: false }
+
+  - name: personen
+    label: Personen
+    files:
+      - name: personen
+        label: Personen im Netzwerk
+        file: src/content/personen.yaml
+        fields:
+          - name: personen
+            label: Personen
+            widget: list
+            root: true
+            summary: '{{name}}'
+            fields:
+              - { name: id, label: 'Kürzel (klein, ohne Leerzeichen)', widget: string }
+              - { name: name, label: Name, widget: string }
+              - { name: roles, label: Rollen, widget: select, multiple: true, options: [{ label: Mitglied, value: mitglied }, { label: Trainer:in, value: trainer }] }
+              - { name: vorstand, label: 'Funktion im Vorstand (optional)', widget: string, required: false }
+              - { name: website, label: Website, widget: string, required: false }
+              - { name: instagram, label: Instagram, widget: string, required: false }
+              - { name: featured, label: Auf der Startseite zeigen, widget: boolean, default: true, required: false }
+
+  - name: seiten
+    label: Rechtliche Seiten
+    files:
+      - name: impressum
+        label: Impressum (Zusatztext)
+        file: src/content/seiten/impressum.md
+        fields:
+          - { name: title, label: Titel, widget: string }
+          - { name: description, label: Beschreibung, widget: string, required: false }
+          - { name: updated, label: 'Stand (JJJJ-MM-TT)', widget: string, required: false }
+          - { name: body, label: Text, widget: markdown }
+      - name: datenschutz
+        label: Datenschutzerklärung
+        file: src/content/seiten/datenschutz.md
+        fields:
+          - { name: title, label: Titel, widget: string }
+          - { name: description, label: Beschreibung, widget: string, required: false }
+          - { name: updated, label: 'Stand (JJJJ-MM-TT)', widget: string, required: false }
+          - { name: body, label: Text, widget: markdown }
+
+  - name: einstellungen
+    label: Einstellungen
+    files:
+      - name: verein
+        label: Vereinsdaten (Kontakt, Impressum, Training …)
+        file: src/settings/verein.json
+        fields:
+          - { name: name, label: Kurzname, widget: string }
+          - { name: legalName, label: Vereinsname, widget: string }
+          - { name: claim, label: Claim, widget: string }
+          - { name: description, label: Beschreibung (Suchmaschinen), widget: text }
+          - { name: founded, label: Gründungsjahr, widget: number, value_type: int }
+          - name: address
+            label: Anschrift
+            widget: object
+            fields:
+              - { name: street, label: Straße, widget: string }
+              - { name: zip, label: PLZ, widget: string }
+              - { name: city, label: Ort, widget: string }
+          - { name: phone, label: Telefon, widget: string }
+          - name: emails
+            label: E-Mail-Adressen (werden auf der Website verschlüsselt)
+            widget: object
+            fields:
+              - { name: kontakt, label: Allgemein, widget: string }
+              - { name: vorstand, label: Vorstand, widget: string }
+              - { name: datenschutz, label: Datenschutz, widget: string }
+          - name: register
+            label: Impressum / Vereinsregister
+            widget: object
+            fields:
+              - { name: court, label: Registergericht, widget: string }
+              - { name: number, label: Registernummer, widget: string }
+              - { name: representatives, label: Vertretungsberechtigter Vorstand, widget: string }
+              - { name: representationNote, label: Hinweis zur Vertretung, widget: string }
+              - { name: contentResponsible, label: 'Verantwortlich nach § 18 MStV', widget: string }
+              - { name: taxNote, label: Gemeinnützigkeit, widget: string }
+          - name: social
+            label: Social Media
+            widget: object
+            fields:
+              - { name: instagram, label: Instagram-URL, widget: string }
+              - { name: telegram, label: 'Telegram-Gruppe (URL, leer = ausblenden)', widget: string, required: false }
+          - name: stats
+            label: Zahlen im Hero
+            widget: list
+            fields:
+              - { name: value, label: Zahl, widget: string }
+              - { name: label, label: Beschriftung, widget: string }
+          - name: training
+            label: Training
+            widget: object
+            fields:
+              - { name: rhythm, label: Rhythmus, widget: string }
+              - { name: rhythmNote, label: Rhythmus-Hinweis, widget: string }
+              - { name: fee, label: 'Beitrag (regulär / Mitglieder)', widget: string }
+              - { name: feeNote, label: Beitrag-Hinweis, widget: string }
+              - { name: place, label: Ort, widget: string }
+              - { name: placeAddress, label: Adresse, widget: string }
+          - name: membership
+            label: Mitgliedschaft
+            widget: object
+            fields:
+              - { name: fee, label: Mitgliedsbeitrag, widget: string }
+              - { name: feeNote, label: Hinweis, widget: string }
+              - { name: applicationPdf, label: 'Mitgliedsantrag (PDF in public/downloads/)', widget: file, required: false, media_folder: /public/downloads, public_folder: downloads }
+              - { name: statutesPdf, label: 'Satzung (PDF in public/downloads/)', widget: file, required: false, media_folder: /public/downloads, public_folder: downloads }
+          - name: map
+            label: Karte (Kontaktseite)
+            widget: object
+            fields:
+              - { name: lat, label: Breitengrad, widget: number, value_type: float }
+              - { name: lon, label: Längengrad, widget: number, value_type: float }
+              - { name: note, label: Notiz, widget: string, required: false }
+          - name: press
+            label: Presse
+            widget: object
+            fields:
+              - { name: contact, label: Ansprechperson, widget: string }
+              - { name: role, label: Funktion, widget: string }
+          - { name: partners, label: Partner & Förderung, widget: list }
+          - name: newsletter
+            label: Newsletter
+            widget: object
+            fields:
+              - { name: action, label: 'Formular-Ziel des Newsletter-Dienstes (leer = per E-Mail)', widget: string, required: false }
+              - { name: note, label: Notiz, widget: string, required: false }

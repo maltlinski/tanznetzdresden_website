@@ -1,0 +1,80 @@
+---
+import Tag from '../ui/Tag.astro';
+import Button from '../ui/Button.astro';
+import { verein } from '../../lib/settings';
+import { href } from '../../lib/url';
+
+const t = verein.training;
+const [feeA, feeB] = t.fee.split('/').map((s) => s.trim());
+---
+<section id="training" class="section training" aria-labelledby="training-h">
+  <div class="wrap training__grid">
+    <div data-reveal>
+      <Tag color="cyan">Profitraining · KEEP UP</Tag>
+      <h2 id="training-h" class="training__title">Jede Woche<br /><em>im Studio.</em></h2>
+      <p class="training__lead">
+        Mit regelmäßig wechselnden Kursen von lokalen und internationalen Dozent:innen und dem offenen Training im
+        Open Studio schaffen wir Raum für künstlerische Entwicklung und Austausch.
+      </p>
+      <div class="training__actions">
+        <Button href={href('termine/#kategorie-training')} variant="secondary" marker>Trainingsplan ansehen</Button>
+        {verein.social.telegram && (
+          <a href={verein.social.telegram} class="mono-link underline-link" rel="noopener">Telegram-Gruppe →</a>
+        )}
+      </div>
+    </div>
+    <dl class="facts">
+      <div class="fact">
+        <dt>Rhythmus</dt>
+        <dd><span class="fact__big">{t.rhythm}</span><span class="fact__note">{t.rhythmNote}</span></dd>
+      </div>
+      <div class="fact">
+        <dt>Beitrag</dt>
+        <dd>
+          <span class="fact__big">{feeB ? <>{feeA} <em>/</em> {feeB}</> : feeA}</span>
+          <span class="fact__note">{t.feeNote}</span>
+        </dd>
+      </div>
+      <div class="fact fact--wide">
+        <dt>Ort</dt>
+        <dd><span class="fact__place">{t.place}</span><span class="fact__note">{t.placeAddress}</span></dd>
+      </div>
+    </dl>
+  </div>
+  <div class="training__corner" aria-hidden="true"></div>
+</section>
+
+<style>
+  .training { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  .training__grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 48px clamp(32px, 6vw, 96px); align-items: start;
+  }
+  .training :global(.tag) { margin-bottom: 18px; }
+  .training__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(40px, 5.4vw, 72px);
+    line-height: 0.95; letter-spacing: -0.03em; margin: 0 0 26px; color: #fff;
+  }
+  .training__title em { font-style: normal; color: var(--cyan); }
+  .training__lead { max-width: 500px; margin: 0 0 30px; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, 0.86); text-wrap: pretty; }
+  .training__actions { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; }
+  .facts {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    border-top: 1px solid rgba(255, 255, 255, 0.2); margin: 0;
+  }
+  .fact { padding: 26px 24px 26px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+  .fact--wide { grid-column: 1 / -1; }
+  .fact dt {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--cyan); margin-bottom: 12px;
+  }
+  .fact dd { margin: 0; }
+  .fact__big { display: block; font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 0.95; letter-spacing: -0.03em; }
+  .fact__big em { font-style: normal; color: var(--magenta); }
+  .fact__place { display: block; font-family: var(--font-display); font-weight: 700; font-size: 26px; letter-spacing: -0.015em; }
+  .fact__note { display: block; font-size: 14px; color: var(--on-dark-soft); margin-top: 6px; }
+  .training__corner {
+    position: absolute; right: 0; bottom: 0; width: 96px; height: 96px; background: var(--magenta);
+    clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  }
+</style>

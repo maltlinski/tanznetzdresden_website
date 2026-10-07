@@ -1,0 +1,114 @@
+---
+import Logo from '../ui/Logo.astro';
+import Button from '../ui/Button.astro';
+import { nav, href } from '../../lib/url';
+---
+<header class="site-header" data-header>
+  <div class="site-header__inner">
+    <a href={href()} class="site-header__logo" aria-label="TanzNetzDresden – zur Startseite">
+      <Logo part="word" />
+    </a>
+    <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
+      <span>Menü</span>
+      <span class="menu-toggle__icon" aria-hidden="true"><span></span><span></span></span>
+    </button>
+    <div class="site-header__right" id="site-menu" data-menu>
+      <nav class="site-nav" aria-label="Hauptnavigation">
+        {nav.map((item) => <a class="mono-link" href={href(item.path)} data-nav-link>{item.label}</a>)}
+      </nav>
+      <a class="mono-link site-header__login" href={href('intern/')} data-nav-link>
+        <span class="site-header__login-dot" aria-hidden="true"></span>Intern
+      </a>
+      <Button href={href('mitglied-werden/')} variant="secondary" size="sm" marker>Mitglied werden</Button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  const toggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const setOpen = (open: boolean) => {
+    toggle?.setAttribute('aria-expanded', String(open));
+    header?.classList.toggle('is-open', open);
+  };
+  toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
+  header?.querySelectorAll('[data-menu] a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && header?.classList.contains('is-open')) {
+      setOpen(false);
+      toggle?.focus();
+    }
+  });
+
+  // Aktiven Menüpunkt markieren: Unterseiten per Pfad, Startseite per sichtbarem Abschnitt.
+  const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
+  links.forEach((a) => {
+    if (!a.hash && location.pathname.startsWith(a.pathname)) a.setAttribute('aria-current', 'page');
+  });
+  const targets = links
+    .filter((a) => a.hash && a.pathname === location.pathname)
+    .map((a) => document.querySelector<HTMLElement>(a.hash))
+    .filter((el): el is HTMLElement => !!el);
+  if ('IntersectionObserver' in window && targets.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          links.forEach((a) => a.hash && a.toggleAttribute('aria-current', a.hash === `#${e.target.id}`));
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px' },
+    );
+    targets.forEach((t) => io.observe(t));
+  }
+</script>
+
+<style>
+  .site-header {
+    position: sticky; top: 0; z-index: 30; background: var(--purple);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .site-header__inner {
+    max-width: var(--wrap); margin: 0 auto; padding: 18px var(--gutter);
+    display: flex; align-items: center; flex-wrap: wrap; gap: 16px 40px;
+  }
+  .site-header__logo { display: flex; align-items: center; color: #fff; width: 196px; }
+  .site-header__logo:hover { color: #fff; }
+  .site-header__right {
+    margin-left: auto; display: flex; flex-wrap: wrap; align-items: center; justify-content: flex-end;
+    gap: 12px clamp(16px, 2.4vw, 36px);
+  }
+  .site-nav { display: flex; flex-wrap: wrap; gap: 6px clamp(14px, 2vw, 28px); }
+  .site-nav a, .site-header__login {
+    color: #fff; padding: 6px 0; border-bottom: 1.5px solid transparent;
+    transition: color var(--dur-base), border-color var(--dur-base);
+  }
+  .site-nav a:hover, .site-header__login:hover { color: var(--cyan); }
+  .site-nav a[aria-current], .site-header__login[aria-current] { border-bottom-color: var(--magenta); }
+  .site-header__login { display: inline-flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.78); }
+  .site-header__login-dot { width: 7px; height: 7px; border: 1.5px solid currentColor; }
+
+  .menu-toggle {
+    display: none; margin-left: auto; align-items: center; gap: 12px; background: transparent; border: 0;
+    color: #fff; cursor: pointer; padding: 8px 0; font-family: var(--font-mono); font-size: 12px;
+    font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .menu-toggle__icon { display: grid; gap: 5px; width: 22px; }
+  .menu-toggle__icon span { height: 2px; background: currentColor; transition: transform var(--dur-slow) var(--ease-out), width var(--dur-slow); }
+  .menu-toggle__icon span:last-child { width: 14px; background: var(--magenta); }
+
+  @media (max-width: 860px) {
+    .site-header__inner { padding-block: 14px; }
+    .site-header__logo { width: 168px; }
+    .menu-toggle { display: inline-flex; }
+    .site-header__right {
+      display: none; width: 100%; margin: 0; flex-direction: column; align-items: flex-start; gap: 18px;
+      padding: 8px 0 18px; border-top: 1px solid rgba(255, 255, 255, 0.12);
+    }
+    .site-nav { flex-direction: column; gap: 2px; padding-top: 10px; }
+    .site-nav a { font-family: var(--font-display); font-size: 30px; font-weight: 800; letter-spacing: -0.02em; text-transform: none; }
+    .site-header.is-open .site-header__right { display: flex; }
+    .site-header.is-open .menu-toggle__icon span:first-child { transform: translateY(3.5px) rotate(45deg); }
+    .site-header.is-open .menu-toggle__icon span:last-child { width: 22px; transform: translateY(-3.5px) rotate(-45deg); }
+  }
+</style>

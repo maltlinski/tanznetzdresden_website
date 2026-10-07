@@ -1,0 +1,76 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Tag from '../../components/ui/Tag.astro';
+import ProtectedEmail from '../../components/ProtectedEmail.astro';
+import { verein } from '../../lib/settings';
+import { href } from '../../lib/url';
+
+const m = verein.membership;
+const benefits = [
+  ['Günstiger trainieren', `KEEP UP Profitraining zum Mitgliedertarif (${verein.training.fee.split('/').pop()?.trim()} statt ${verein.training.fee.split('/')[0].trim()}).`],
+  ['Formate mitgestalten', 'Steig in eine der Arbeitsgruppen ein und entwickle POP UP, Studio Round und Co. mit.'],
+  ['Sichtbar werden', 'Erscheine mit deinem Profil im Netzwerk auf der Website und im Newsletter.'],
+  ['Stimme haben', 'Mitbestimmen in der Mitgliederversammlung und kulturpolitisch mit einer Stimme sprechen.'],
+];
+const steps = [
+  ['Antrag ausfüllen', m.applicationPdf ? 'Lade den Mitgliedsantrag herunter und fülle ihn aus.' : 'Schreib uns kurz, wer du bist und woran du arbeitest. Wir schicken dir den Antrag.'],
+  ['An den Vorstand senden', 'Per E-Mail oder per Post an die Vereinsadresse.'],
+  ['Kennenlernen', 'Wir laden dich zum nächsten Sharing ein, dem offenen Netzwerktreffen.'],
+  ['Zugang erhalten', 'Du bekommst eine Einladung in den internen Bereich und pflegst dort dein Profil.'],
+];
+---
+<Page title="Mitglied werden" description="Werde Mitglied bei TanzNetzDresden e.V.: günstiger trainieren, Formate mitgestalten, die freie Tanzszene stärken.">
+  <PageIntro kicker="Mitglied werden" title="Werde Teil" accent="des Netzes." lead="Für professionell arbeitende Tanzschaffende in Dresden und Umgebung: Tänzer:innen, Choreograf:innen, Dozent:innen und alle, die den zeitgenössischen Tanz hier mittragen." />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><div data-reveal><Tag>Was du davon hast</Tag><h2 class="h2">Vorteile</h2></div></div>
+      <ul class="benefits">
+        {benefits.map(([t, d]) => <li><h3>{t}</h3><p>{d}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section steps-wrap surface-tint">
+    <div class="wrap steps-grid">
+      <div>
+        <div data-reveal><Tag>So geht’s</Tag><h2 class="h2">In vier Schritten</h2></div>
+        <ol class="steps">
+          {steps.map(([t, d], i) => <li><span class="steps__n">{i + 1}</span><div><h3>{t}</h3><p>{d}</p></div></li>)}
+        </ol>
+      </div>
+      <aside class="card">
+        <span class="card__label">Mitgliedsbeitrag</span>
+        <span class="card__big">{m.fee}</span>
+        <span class="card__note">{m.feeNote}</span>
+        <div class="card__actions">
+          {m.applicationPdf && <a class="btn btn--primary btn--marker" href={href(m.applicationPdf)} download>Mitgliedsantrag (PDF)</a>}
+          {m.statutesPdf && <a class="mono-link card__link" href={href(m.statutesPdf)}>Satzung lesen →</a>}
+          <span class="card__label">Fragen? Antrag?</span>
+          <ProtectedEmail email={verein.emails.vorstand} label="E-Mail an den Vorstand" subject="Mitgliedschaft" />
+        </div>
+      </aside>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .benefits { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px; }
+  .benefits li { padding: 24px 22px 28px; border: 1px solid var(--rule); border-top: 3px solid var(--magenta); }
+  .benefits h3 { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; color: var(--purple); margin: 0 0 8px; }
+  .benefits p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .steps-wrap { background: var(--tint); }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px clamp(32px, 6vw, 96px); align-items: start; }
+  .steps { list-style: none; margin: 36px 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  .steps li { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+  .steps__n { font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 0.9; color: var(--magenta); }
+  .steps h3 { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--purple); margin: 0 0 4px; }
+  .steps p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .card { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 8px; padding: 30px 28px; background: var(--purple); color: #fff; clip-path: var(--keil-corner); }
+  .card__label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+  .card__big { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: -0.03em; }
+  .card__note { font-size: 14px; color: var(--on-dark-soft); }
+  .card__actions { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--on-dark-rule); }
+  .card__link { color: #fff; }
+</style>

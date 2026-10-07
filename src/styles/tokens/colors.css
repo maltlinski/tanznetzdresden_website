@@ -1,0 +1,53 @@
+/* ============================================================
+   TanzNetzDresden e.V. — Color tokens
+   Three brand colors, each with a darker step + a pale tint,
+   plus a purple-based neutral ramp. Rule of the house:
+   max. 2 brand colors dominant per surface; Magenta is an
+   ACCENT — never a large-area background.
+============================================================ */
+:root {
+  /* --- Brand: base / dark / tint --- */
+  --cyan:          #48C6D7;  /* Auftakt · upbeat · banners, fields */
+  --cyan-2:        #2BA8B8;
+  --cyan-tint:     #DEF4F8;
+
+  --magenta:       #DA1A6A;  /* Akzent · the "voice" · markers     */
+  --magenta-2:     #B0144F;
+  --magenta-tint:  #FCE4ED;
+
+  --purple:        #2E1A4D;  /* Anker · anchor · headlines, CTAs   */
+  --purple-2:      #4A3A6B;
+  --purple-tint:   #EDE9F2;
+
+  /* --- Neutrals (purple-tinted ink ramp) --- */
+  --ink:           #2E1A4D;
+  --ink-soft:      #5A4F70;
+  --ink-muted:     #8B85A0;
+  --rule:          #E5E2EC;
+  --rule-soft:     #EFEDF3;
+  --paper:         #FFFFFF;
+  --tint:          #F4F2F7;
+  --tint-2:        #F9F8FB;
+
+  /* --- Semantic aliases --- */
+  --accent:            var(--magenta);
+  --color-bg:          var(--paper);
+  --color-bg-sunken:   var(--tint);
+  --surface-card:      var(--paper);
+  --surface-band:      var(--purple);   /* dark header/footer bands */
+  --surface-upbeat:    var(--cyan);     /* cover / hero fields      */
+
+  --text-heading:      var(--purple);
+  --text-body:         var(--ink);
+  --text-soft:         var(--ink-soft);
+  --text-muted:        var(--ink-muted);
+  --text-on-dark:      var(--paper);
+  --text-on-cyan:      var(--purple);
+  --text-accent:       var(--magenta);
+
+  --border-rule:       var(--rule);
+  --border-strong:     var(--purple);
+  --marker:            var(--magenta);  /* the square "voice" marker */
+
+  --focus-ring:        var(--magenta);
+}

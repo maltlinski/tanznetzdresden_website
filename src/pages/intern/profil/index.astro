@@ -1,0 +1,111 @@
+---
+import Intern from '../../../layouts/Intern.astro';
+import { arbeitsgruppen } from '../../../settings/arbeitsgruppen';
+---
+<Intern title="Mein Profil" current="profil">
+  <h1 class="i-h1">Mein Profil</h1>
+  <p class="i-lead">Was du hier einträgst, sehen alle angemeldeten Mitglieder:innen. E-Mail und Telefon nur, wenn du sie freigibst.</p>
+  <div class="i-card">
+    <form class="i-form profile" data-profile-form>
+      <div class="i-field">
+        <label for="p-name">Name</label>
+        <input id="p-name" name="display_name" required maxlength="80" autocomplete="name" />
+      </div>
+      <div class="i-field">
+        <label for="p-pronouns">Pronomen <span class="opt">optional</span></label>
+        <input id="p-pronouns" name="pronouns" maxlength="40" placeholder="z. B. sie/ihr" />
+      </div>
+      <div class="i-field">
+        <label for="p-bio">Kurzbio</label>
+        <textarea id="p-bio" name="bio" maxlength="1200" aria-describedby="p-bio-hint"></textarea>
+        <span class="i-hint" id="p-bio-hint">Höchstens 1.200 Zeichen. Woran arbeitest du, was bietest du an?</span>
+      </div>
+      <div class="i-field">
+        <label for="p-website">Website</label>
+        <input id="p-website" name="website" type="url" placeholder="https://" autocomplete="url" />
+      </div>
+      <div class="i-field">
+        <label for="p-instagram">Instagram</label>
+        <input id="p-instagram" name="instagram" placeholder="@name" />
+      </div>
+      <div class="i-field">
+        <label for="p-phone">Telefon</label>
+        <input id="p-phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+      <fieldset class="i-fieldset">
+        <legend class="i-legend">Arbeitsgruppen</legend>
+        <div class="ags">
+          {arbeitsgruppen.map((ag) => (
+            <label class="i-check"><input type="checkbox" name="ags" value={ag.name} />{ag.name}</label>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset class="i-fieldset">
+        <legend class="i-legend">Sichtbarkeit</legend>
+        <label class="i-check"><input type="checkbox" name="is_trainer" />Ich gebe Training (KEEP UP, Workshops)</label>
+        <label class="i-check"><input type="checkbox" name="show_email" />Meine E-Mail-Adresse für Mitglieder:innen anzeigen</label>
+        <label class="i-check"><input type="checkbox" name="show_phone" />Meine Telefonnummer für Mitglieder:innen anzeigen</label>
+        <label class="i-check"><input type="checkbox" name="public_listing" />Mich mit Name, Website und Instagram auf der öffentlichen Website zeigen</label>
+      </fieldset>
+      <p class="i-msg" role="status" data-profile-msg hidden></p>
+      <div class="profile__actions">
+        <button type="submit" class="btn btn--primary btn--marker">Speichern</button>
+        <a class="i-linkbtn" href="../passwort/">Passwort ändern</a>
+      </div>
+    </form>
+  </div>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage } from '../../../scripts/intern/session';
+
+  const ctx = await initIntern(true);
+  const form = document.querySelector<HTMLFormElement>('[data-profile-form]');
+  const msg = document.querySelector<HTMLElement>('[data-profile-msg]');
+  const textFields = ['display_name', 'pronouns', 'bio', 'website', 'instagram', 'phone'] as const;
+  const flags = ['is_trainer', 'show_email', 'show_phone', 'public_listing'] as const;
+
+  if (ctx && form) {
+    const p = ctx.profile;
+    if (p) {
+      for (const f of textFields) {
+        const el = form.elements.namedItem(f) as HTMLInputElement | HTMLTextAreaElement | null;
+        if (el) el.value = p[f] ?? '';
+      }
+      for (const f of flags) {
+        const el = form.elements.namedItem(f) as HTMLInputElement | null;
+        if (el) el.checked = !!p[f];
+      }
+      form.querySelectorAll<HTMLInputElement>('input[name="ags"]').forEach((c) => (c.checked = p.ags?.includes(c.value) ?? false));
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const fd = new FormData(form);
+      const clean = (v: FormDataEntryValue | null) => String(v ?? '').trim() || null;
+      const update = {
+        display_name: String(fd.get('display_name') ?? '').trim(),
+        pronouns: clean(fd.get('pronouns')),
+        bio: clean(fd.get('bio')),
+        website: clean(fd.get('website')),
+        instagram: clean(fd.get('instagram'))?.replace(/^@/, '') ?? null,
+        phone: clean(fd.get('phone')),
+        ags: fd.getAll('ags').map(String),
+        ...Object.fromEntries(flags.map((f) => [f, fd.has(f)])),
+      };
+      const { error } = await ctx.sb.from('profiles').update(update).eq('id', ctx.user.id);
+      if (error) return showMessage(msg, errorText(error));
+      document.querySelectorAll<HTMLElement>('[data-intern-name]').forEach((el) => (el.textContent = update.display_name));
+      showMessage(msg, 'Gespeichert.', 'ok');
+    });
+  }
+</script>
+
+<style>
+  .opt { color: var(--ink-muted); font-weight: 500; letter-spacing: 0.1em; margin-left: 6px; }
+  :global(.i-fieldset) { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; }
+  :global(.i-fieldset legend) { margin-bottom: 10px; }
+  .ags { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 20px; }
+  .profile__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+</style>

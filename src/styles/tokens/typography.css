@@ -1,0 +1,59 @@
+/* ============================================================
+   TanzNetzDresden e.V. — Typography tokens
+   Three families: Work Sans (display), Open Sans (body),
+   JetBrains Mono (tags/captions). Headlines are tight &
+   heavy (-0.02–-0.03em, 800). Mono tags are UPPERCASE with
+   wide tracking (0.18–0.22em). No rounded, no italics for UI.
+============================================================ */
+:root {
+  /* --- Families --- */
+  --font-display: 'Work Sans Variable', 'Work Sans', 'Calibri', system-ui, sans-serif;
+  --font-body:    'Open Sans', 'Calibri', system-ui, sans-serif;
+  --font-mono:    'JetBrains Mono', 'Consolas', ui-monospace, monospace;
+
+  /* --- Weights --- */
+  --fw-light:    300; /* @kind font */
+  --fw-regular:  400; /* @kind font */
+  --fw-medium:   500; /* @kind font */
+  --fw-semibold: 600; /* @kind font */
+  --fw-bold:     700; /* @kind font */
+  --fw-black:    800; /* @kind font */
+
+  /* --- Display scale (Work Sans, screen px) --- */
+  --t-display-xl: 72px;   /* hero / web H1            */
+  --t-display-l:  56px;   /* cover / social headline  */
+  --t-display-m:  40px;   /* newsletter lead          */
+  --t-display-s:  28px;   /* card / section title     */
+
+  /* --- Text scale --- */
+  --t-h1:    34px;
+  --t-h2:    24px;
+  --t-h3:    18px;
+  --t-lead:  18px;        /* lede paragraph           */
+  --t-body:  15px;        /* default body             */
+  --t-small: 13px;
+  --t-tag:   12px;        /* mono uppercase tags      */
+  --t-micro: 11px;
+
+  /* --- Line heights --- */
+  --lh-tight:   0.98;     /* @kind font */
+  --lh-snug:    1.15;     /* @kind font */
+  --lh-body:    1.6;      /* @kind font */
+  --lh-relaxed: 1.7;      /* @kind font */
+
+  /* --- Letter-spacing --- */
+  --ls-display: -0.025em; /* @kind font */
+  --ls-tight:   -0.01em;  /* @kind font */
+  --ls-normal:  0;        /* @kind font */
+  --ls-tag:     0.2em;    /* @kind font */
+  --ls-tag-wide:0.22em;   /* @kind font */
+
+  /* --- Print scale (pt) — A4 documents --- */
+  --pt-body:  11pt;   /* @kind font */
+  --pt-small: 8.5pt;  /* @kind font */
+
+  /* --- Semantic aliases --- */
+  --text-heading-font: var(--font-display);
+  --text-body-font:    var(--font-body);
+  --text-tag-font:     var(--font-mono);
+}

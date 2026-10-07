@@ -1,0 +1,20 @@
+/* ============================================================
+   TanzNetzDresden e.V. — Base layer
+   ------------------------------------------------------------
+   Element defaults mirroring the original ci.css `body` rule
+   (TNDD Design System v1.1). Without this, pages that rely on
+   inheritance fall back to the browser serif default.
+   Deliberately minimal: families + ink color only — no resets,
+   no margins, no backgrounds (each page chooses its surface).
+============================================================ */
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+}
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-display);
+}
+code, kbd, samp, pre {
+  font-family: var(--font-mono);
+}

@@ -1,0 +1,72 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Tag from '../../components/ui/Tag.astro';
+import ProtectedEmail from '../../components/ProtectedEmail.astro';
+import ConsentEmbed from '../../components/ConsentEmbed.astro';
+import { verein } from '../../lib/settings';
+
+const { lat, lon } = verein.map;
+const d = 0.006;
+const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${lon - d * 1.6}%2C${lat - d}%2C${lon + d * 1.6}%2C${lat + d}&layer=mapnik&marker=${lat}%2C${lon}`;
+const a = verein.address;
+---
+<Page title="Kontakt" description="So erreichst du TanzNetzDresden e.V.: Kontakt, Vorstand, Presse und Termine einreichen.">
+  <PageIntro kicker="Kontakt" title="Schreib uns." accent="Wir antworten." />
+
+  <section class="section">
+    <div class="wrap contact-grid">
+      <div class="contact" data-reveal>
+        <Tag>Allgemein</Tag>
+        <h2>Fragen, Ideen, Kooperationen</h2>
+        <p>Für alles rund um Verein, Formate und Training.</p>
+        <ProtectedEmail email={verein.emails.kontakt} label="E-Mail schreiben" />
+        <a class="contact__tel" href={`tel:${verein.phone.replace(/\s/g, '')}`}>{verein.phone}</a>
+      </div>
+      <div class="contact" id="vorstand">
+        <Tag>Vorstand</Tag>
+        <h2>Vereinsangelegenheiten</h2>
+        <p>Mitgliedschaft, Finanzen, Kooperationsverträge und alles, was der Vorstand entscheiden muss.</p>
+        <ProtectedEmail email={verein.emails.vorstand} label="E-Mail an den Vorstand" subject="Anfrage an den Vorstand" />
+      </div>
+      <div class="contact" id="presse">
+        <Tag>Presse</Tag>
+        <h2>Presse &amp; Öffentlichkeit</h2>
+        <p>Ansprechperson: {verein.press.contact} ({verein.press.role}). Pressefotos und Infos auf Anfrage.</p>
+        <ProtectedEmail email={verein.emails.kontakt} label="Presseanfrage senden" subject="Presseanfrage" />
+      </div>
+      <div class="contact" id="termin-einreichen">
+        <Tag>Tanzkalender</Tag>
+        <h2>Termin einreichen</h2>
+        <p>Du zeigst etwas in Dresden? Schick uns Titel, Datum und Uhrzeit, Ort, einen Satz zum Inhalt und einen Link. Wir nehmen Termine aus dem Netzwerk in den Kalender auf.</p>
+        <ProtectedEmail email={verein.emails.kontakt} label="Termin per E-Mail schicken" subject="Termin für den Tanzkalender" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section map-section surface-tint" aria-labelledby="anfahrt-h">
+    <div class="wrap map-grid">
+      <div>
+        <Tag>Anfahrt</Tag>
+        <h2 id="anfahrt-h" class="h2">{verein.training.place}</h2>
+        <address class="map-addr">{a.street}<br />{a.zip} {a.city}</address>
+        <a class="mono-link" href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon}`} rel="noopener" target="_blank">In OpenStreetMap öffnen →</a>
+      </div>
+      <ConsentEmbed src={mapSrc} title="Karte: Lage der TENZA Schmiede" provider="OpenStreetMap" privacyUrl="https://osmfoundation.org/wiki/Privacy_Policy" ratio="4 / 3" />
+    </div>
+  </section>
+</Page>
+
+<style>
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 0 clamp(32px, 6vw, 96px); }
+  .contact { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 32px 0 40px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 24px); }
+  .contact :global(.tag) { margin-bottom: 6px; }
+  .contact h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 2.6vw, 34px); letter-spacing: -0.025em; line-height: 1.05; color: var(--purple); margin: 0; }
+  .contact p { margin: 0 0 6px; max-width: 46ch; font-size: 15.5px; line-height: 1.6; color: var(--ink-soft); }
+  .contact :global(.protected-email) { font-size: 17px; color: var(--purple); }
+  .contact__tel { color: var(--purple); font-size: 15px; }
+  .map-section { background: var(--tint); }
+  .map-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 40px clamp(32px, 6vw, 96px); align-items: start; }
+  .map-grid :global(.tag) { margin-bottom: 16px; }
+  .map-addr { font-style: normal; margin: 20px 0 18px; font-size: 17px; line-height: 1.6; color: var(--purple); }
+</style>

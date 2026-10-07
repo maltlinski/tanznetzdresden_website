@@ -1,0 +1,45 @@
+---
+import Tag from '../ui/Tag.astro';
+import Button from '../ui/Button.astro';
+import KeilBar from '../ui/KeilBar.astro';
+import NewsletterForm from '../NewsletterForm.astro';
+import { href } from '../../lib/url';
+---
+<section id="mitglied" class="join" aria-labelledby="join-h">
+  <KeilBar color="var(--purple)" height={14} flip class="join__keil" />
+  <div class="join__grid">
+    <div data-reveal>
+      <Tag color="purple">Mitglied werden</Tag>
+      <h2 id="join-h" class="join__title">Werde Teil<br />des Netzes.</h2>
+      <p class="join__lead">
+        Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des
+        Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.
+      </p>
+      <Button href={href('mitglied-werden/')} size="lg" marker>Mitgliedsantrag</Button>
+    </div>
+    <div class="newsletter" id="newsletter">
+      <h3 class="newsletter__title">Newsletter</h3>
+      <p class="newsletter__lead">Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.</p>
+      <NewsletterForm />
+    </div>
+  </div>
+</section>
+
+<style>
+  .join { background: var(--cyan); color: var(--purple); position: relative; }
+  .join :global(.join__keil) { position: absolute; right: 0; top: 0; width: 42%; }
+  .join__grid {
+    max-width: var(--wrap); margin: 0 auto; padding: clamp(64px, 8vw, 104px) var(--gutter);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: 56px clamp(32px, 6vw, 96px);
+  }
+  .join :global(.tag) { margin-bottom: 18px; }
+  .join__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 4.6vw, 60px);
+    line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 22px; color: var(--purple);
+  }
+  .join__lead { max-width: 480px; margin: 0 0 28px; font-size: 16px; line-height: 1.6; }
+  .newsletter { align-self: end; border-top: 2px solid var(--purple); padding-top: 26px; }
+  .newsletter__title { font-family: var(--font-display); font-weight: 800; font-size: 28px; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--purple); }
+  .newsletter__lead { margin: 0 0 22px; font-size: 15px; line-height: 1.6; }
+</style>

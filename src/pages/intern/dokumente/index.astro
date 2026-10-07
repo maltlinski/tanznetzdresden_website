@@ -1,0 +1,139 @@
+---
+import Intern from '../../../layouts/Intern.astro';
+---
+<Intern title="Dokumente" current="dokumente">
+  <h1 class="i-h1">Dokumente</h1>
+  <p class="i-lead">Protokolle, Satzung, Vorlagen und Logos. Downloads sind nur für Mitglieder:innen zugänglich; die Links gelten jeweils 60 Sekunden.</p>
+
+  <form class="upload i-card" data-upload hidden data-vorstand-only>
+    <div class="i-field">
+      <label for="up-folder">Ordner</label>
+      <input id="up-folder" name="folder" placeholder="z. B. protokolle" pattern="[a-z0-9\-]*" />
+      <span class="i-hint">Kleinbuchstaben, Ziffern und Bindestriche. Leer = Hauptordner.</span>
+    </div>
+    <div class="i-field">
+      <label for="up-file">Datei hochladen (nur Vorstand)</label>
+      <input id="up-file" name="file" type="file" required />
+    </div>
+    <div><button class="btn btn--primary btn--sm" type="submit">Hochladen</button></div>
+  </form>
+
+  <p class="i-msg" role="status" data-doc-msg hidden></p>
+  <div class="docs" data-docs aria-live="polite"></div>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage } from '../../../scripts/intern/session';
+
+  const BUCKET = 'intern';
+  const ctx = await initIntern(true);
+  const wrap = document.querySelector<HTMLElement>('[data-docs]');
+  const msg = document.querySelector<HTMLElement>('[data-doc-msg]');
+  const upload = document.querySelector<HTMLFormElement>('[data-upload]');
+
+  const size = (b?: number) => (b == null ? '' : b > 1e6 ? `${(b / 1e6).toFixed(1)} MB` : `${Math.max(1, Math.round(b / 1e3))} kB`);
+  const date = (s?: string) => (s ? new Date(s).toLocaleDateString('de-DE') : '');
+
+  interface DocFile { path: string; name: string; meta: { size?: number }; updated?: string }
+  async function listFolder(prefix: string): Promise<DocFile[]> {
+    if (!ctx) return [];
+    const { data, error } = await ctx.sb.storage.from(BUCKET).list(prefix, { limit: 500, sortBy: { column: 'name', order: 'asc' } });
+    if (error) throw error;
+    const out: DocFile[] = [];
+    for (const item of data ?? []) {
+      const path = prefix ? `${prefix}/${item.name}` : item.name;
+      if (item.id === null) out.push(...(await listFolder(path))); // Unterordner
+      else if (item.name !== '.emptyFolderPlaceholder') out.push({ path, name: item.name, meta: (item.metadata ?? {}) as { size?: number }, updated: item.updated_at ?? undefined });
+    }
+    return out;
+  }
+
+  async function render() {
+    if (!ctx || !wrap) return;
+    try {
+      const files = await listFolder('');
+      if (!files.length) {
+        wrap.innerHTML = '<p class="docs__empty">Noch keine Dokumente.</p>';
+        return;
+      }
+      const groups = new Map<string, typeof files>();
+      files.forEach((f) => {
+        const folder = f.path.includes('/') ? f.path.split('/').slice(0, -1).join(' / ') : 'Allgemein';
+        groups.set(folder, [...(groups.get(folder) ?? []), f]);
+      });
+      wrap.replaceChildren(
+        ...[...groups].map(([folder, list]) => {
+          const sec = document.createElement('section');
+          const h = document.createElement('h2');
+          h.textContent = folder;
+          const ul = document.createElement('ul');
+          for (const f of list) {
+            const li = document.createElement('li');
+            const btn = document.createElement('button');
+            btn.type = 'button';
+            btn.className = 'docs__file';
+            btn.textContent = f.name;
+            btn.addEventListener('click', async () => {
+              const { data, error } = await ctx.sb.storage.from(BUCKET).createSignedUrl(f.path, 60, { download: f.name });
+              if (error || !data) return showMessage(msg, errorText(error));
+              location.href = data.signedUrl;
+            });
+            const meta = document.createElement('span');
+            meta.className = 'docs__meta';
+            meta.textContent = [size(f.meta.size), date(f.updated)].filter(Boolean).join(' · ');
+            li.append(btn, meta);
+            if (ctx.isVorstand) {
+              const del = document.createElement('button');
+              del.type = 'button';
+              del.className = 'docs__del';
+              del.textContent = 'Löschen';
+              del.addEventListener('click', async () => {
+                if (!confirm(`„${f.name}“ wirklich löschen?`)) return;
+                const { error } = await ctx.sb.storage.from(BUCKET).remove([f.path]);
+                if (error) return showMessage(msg, errorText(error));
+                void render();
+              });
+              li.append(del);
+            }
+            ul.append(li);
+          }
+          sec.append(h, ul);
+          return sec;
+        }),
+      );
+    } catch (err) {
+      showMessage(msg, errorText(err));
+    }
+  }
+
+  upload?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!ctx) return;
+    const fd = new FormData(upload);
+    const file = fd.get('file') as File | null;
+    if (!file?.name) return;
+    const folder = String(fd.get('folder') ?? '').trim().toLowerCase().replace(/[^a-z0-9-]/g, '');
+    const safeName = file.name.normalize('NFD').replace(/[̀-ͯ]/g, '').replace(/[^\w.\-]+/g, '_');
+    const { error } = await ctx.sb.storage.from(BUCKET).upload(folder ? `${folder}/${safeName}` : safeName, file, { upsert: false });
+    if (error) return showMessage(msg, /exists/i.test(error.message) ? 'Eine Datei mit diesem Namen gibt es schon.' : errorText(error));
+    showMessage(msg, 'Hochgeladen.', 'ok');
+    upload.reset();
+    void render();
+  });
+
+  void render();
+</script>
+
+<style>
+  .upload { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px 24px; align-items: end; margin-bottom: 28px; }
+  .docs { display: grid; gap: 32px; }
+  .docs :global(h2) { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta); margin: 0 0 10px; }
+  .docs :global(ul) { list-style: none; margin: 0; padding: 0; background: var(--paper); }
+  .docs :global(li) { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; padding: 14px 18px; border-bottom: 1px solid var(--rule); }
+  .docs :global(.docs__file) { background: none; border: 0; padding: 0; cursor: pointer; font: inherit; font-family: var(--font-display); font-weight: 700; font-size: 17px; color: var(--purple); text-align: left; }
+  .docs :global(.docs__file:hover) { color: var(--magenta); }
+  .docs :global(.docs__meta) { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--ink-muted); }
+  .docs :global(.docs__del) { margin-left: auto; background: none; border: 0; color: var(--ink-muted); cursor: pointer; font-size: 13px; text-decoration: underline; }
+  .docs :global(.docs__del:hover) { color: var(--magenta); }
+  .docs :global(.docs__empty) { color: var(--ink-soft); }
+</style>

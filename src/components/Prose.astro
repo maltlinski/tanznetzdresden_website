@@ -1,0 +1,26 @@
+---
+/** Typografie für Fließtext aus Markdown (Impressum, Datenschutz …). */
+---
+<div class="prose"><slot /></div>
+
+<style>
+  .prose { max-width: 760px; font-size: 16px; line-height: 1.7; color: var(--ink); }
+  .prose :global(h2) {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 3vw, 34px); line-height: 1.1;
+    letter-spacing: -0.025em; color: var(--purple); margin: 2.2em 0 0.6em; scroll-margin-top: calc(var(--header-h) + 16px);
+  }
+  .prose :global(h2::before) { content: ''; display: block; width: 10px; height: 10px; background: var(--magenta); margin-bottom: 14px; }
+  .prose :global(h3) { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--purple); margin: 1.8em 0 0.4em; }
+  .prose :global(p), .prose :global(ul), .prose :global(ol) { margin: 0 0 1em; }
+  .prose :global(li) { margin-bottom: 0.35em; }
+  .prose :global(ul) { padding-left: 1.2em; }
+  .prose :global(ul li::marker) { color: var(--magenta); }
+  .prose :global(strong) { color: var(--magenta); font-weight: 700; }
+  .prose :global(a) { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+  .prose :global(a:hover) { color: var(--magenta); }
+  .prose :global(blockquote) { margin: 1.4em 0; padding: 4px 0 4px 20px; border-left: 3px solid var(--magenta); color: var(--ink-soft); }
+  .prose :global(hr) { border: 0; border-top: 1px solid var(--rule); margin: 2.4em 0; }
+  .prose :global(table) { border-collapse: collapse; width: 100%; font-size: 14.5px; margin: 0 0 1.2em; }
+  .prose :global(th), .prose :global(td) { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--rule); vertical-align: top; }
+  .prose :global(th) { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+</style>

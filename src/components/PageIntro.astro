@@ -1,0 +1,36 @@
+---
+/** Kopfbereich für Unterseiten: lila Band, Kicker, große Headline, Keil. */
+import Tag from './ui/Tag.astro';
+import KeilBar from './ui/KeilBar.astro';
+
+interface Props {
+  kicker: string;
+  title: string;
+  /** zweite, magentafarbene Zeile */
+  accent?: string;
+  lead?: string;
+}
+const { kicker, title, accent, lead } = Astro.props;
+---
+<section class="intro">
+  <div class="wrap intro__inner">
+    <Tag color="cyan">{kicker}</Tag>
+    <h1 class="intro__title">{title}{accent && <><br /><em>{accent}</em></>}</h1>
+    {lead && <p class="intro__lead">{lead}</p>}
+    <slot />
+  </div>
+  <KeilBar class="intro__keil" />
+</section>
+
+<style>
+  .intro { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  .intro__inner { padding-block: clamp(56px, 8vw, 112px) clamp(48px, 6vw, 80px); }
+  .intro :global(.tag) { margin-bottom: 24px; }
+  .intro__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6.4vw, 96px);
+    line-height: 0.92; letter-spacing: -0.035em; margin: 0; max-width: 14ch; text-wrap: balance;
+  }
+  .intro__title em { font-style: normal; color: var(--magenta); }
+  .intro__lead { max-width: 560px; margin: 26px 0 0; font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
+  .intro :global(.intro__keil) { position: absolute; left: 0; bottom: 0; width: 34%; }
+</style>

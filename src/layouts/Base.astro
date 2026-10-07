@@ -1,0 +1,81 @@
+---
+import '@fontsource-variable/work-sans/wght.css';
+import '@fontsource/jetbrains-mono/latin-400.css';
+import '@fontsource/jetbrains-mono/latin-500.css';
+import '@fontsource/jetbrains-mono/latin-600.css';
+import '../styles/global.css';
+import { getImage } from 'astro:assets';
+import { verein as site } from '../lib/settings';
+import { CONSENT_VERSION } from '../settings/consent';
+import ConsentBanner from '../components/ConsentBanner.astro';
+import ogSource from '../assets/photos/duo-rot.jpg';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Seite nicht in Suchmaschinen aufnehmen (z. B. interner Bereich) */
+  noindex?: boolean;
+}
+
+const { title: pageTitle, description = site.description, noindex = false } = Astro.props;
+const title = pageTitle ? `${pageTitle} · ${site.name}` : `${site.name} · Freie Tanzszene Dresden`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const og = await getImage({ src: ogSource, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const ogUrl = new URL(og.src, Astro.site);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: site.legalName,
+  url: Astro.site?.toString(),
+  telephone: site.phone,
+  sameAs: [site.social.instagram],
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: site.address.street,
+    postalCode: site.address.zip,
+    addressLocality: site.address.city,
+    addressCountry: 'DE',
+  },
+};
+---
+<!doctype html>
+<html lang="de" data-consent-version={CONSENT_VERSION}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="alternate" type="text/calendar" title="Tanzkalender" href={`${base}termine.ics`} />
+    <meta name="theme-color" content="#2E1A4D" />
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="sitemap" href={`${base}sitemap-index.xml`} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="de_DE" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <script is:inline>document.documentElement.classList.add('js');</script>
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <slot name="head" />
+  </head>
+  <body>
+    <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+    <slot />
+    <ConsentBanner />
+    <script>
+      import { initReveal } from '../scripts/reveal';
+      initReveal();
+    </script>
+  </body>
+</html>

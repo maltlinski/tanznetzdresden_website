@@ -1,0 +1,80 @@
+{
+  "name": "TanzNetzDresden",
+  "legalName": "TanzNetzDresden e.V.",
+  "claim": "Eine Stadt. Ein Netz.",
+  "description": "TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene in Dresden: Training, Bühnenformate, Diskurs und Residenzen.",
+  "founded": 2010,
+  "address": {
+    "street": "Pfotenhauer Straße 59 HH",
+    "zip": "01307",
+    "city": "Dresden"
+  },
+  "phone": "+49 1577 1520 512",
+  "emails": {
+    "kontakt": "kontakt@tanznetzdresden.de",
+    "vorstand": "vorstand@tanznetzdresden.de",
+    "datenschutz": "kontakt@tanznetzdresden.de"
+  },
+  "register": {
+    "court": "Amtsgericht Dresden",
+    "number": "VR [BITTE ERGÄNZEN]",
+    "representatives": "Alina Lucifero, Rika Yotsumoto, Justine Rouquart, Malte Leonard Herz",
+    "representationNote": "Der Verein wird gemäß Satzung durch den Vorstand vertreten. [BITTE PRÜFEN: Einzel- oder gemeinsame Vertretung]",
+    "contentResponsible": "Alina Lucifero, Anschrift wie oben",
+    "taxNote": "Der Verein ist als gemeinnützig anerkannt. [BITTE PRÜFEN]"
+  },
+  "social": {
+    "instagram": "https://www.instagram.com/tanznetzdresden/",
+    "telegram": ""
+  },
+  "stats": [
+    {
+      "value": "70+",
+      "label": "Tanzschaffende"
+    },
+    {
+      "value": "16",
+      "label": "Jahre freie Szene"
+    },
+    {
+      "value": "9",
+      "label": "Arbeitsgruppen"
+    }
+  ],
+  "training": {
+    "rhythm": "3–5×",
+    "rhythmNote": "pro Woche, plus Workshops",
+    "fee": "9 € / 6 €",
+    "feeNote": "regulär / Mitglieder · bar vor Ort",
+    "place": "TENZA Schmiede",
+    "placeAddress": "Pfotenhauerstraße 59 · 01307 Dresden"
+  },
+  "membership": {
+    "fee": "[BITTE ERGÄNZEN, z. B. 36 € / Jahr]",
+    "feeNote": "ermäßigt auf Anfrage",
+    "applicationPdf": "",
+    "statutesPdf": ""
+  },
+  "partners": [
+    "Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz",
+    "Villa Wigman für Tanz",
+    "TENZA",
+    "Zentralwerk",
+    "Nationales Performance Netz",
+    "Dachverband Tanz Deutschland",
+    "Palucca Hochschule für Tanz"
+  ],
+  "newsletter": {
+    "action": "",
+    "note": "Formular-Ziel deines Newsletter-Dienstes (z. B. Brevo, CleverReach). Leer = Anmeldung per E-Mail."
+  },
+  "map": {
+    "lat": 51.0546,
+    "lon": 13.7699,
+    "note": "Koordinaten der TENZA Schmiede – bitte prüfen"
+  },
+  "press": {
+    "contact": "Thomas Natzschka",
+    "role": "Öffentlichkeitsarbeit"
+  }
+}

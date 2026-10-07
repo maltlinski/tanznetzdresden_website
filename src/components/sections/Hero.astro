@@ -1,0 +1,107 @@
+---
+import { getImage } from 'astro:assets';
+import Tag from '../ui/Tag.astro';
+import Button from '../ui/Button.astro';
+import KeilBar from '../ui/KeilBar.astro';
+import soloBlau from '../../assets/photos/solo-blau.jpg';
+import duoRot from '../../assets/photos/duo-rot.jpg';
+import { verein } from '../../lib/settings';
+import { href } from '../../lib/url';
+
+// Keep the original pixel dimensions: the hero script crops by source coordinates.
+const [blau, rot] = await Promise.all([
+  getImage({ src: soloBlau, format: 'webp', quality: 82 }),
+  getImage({ src: duoRot, format: 'webp', quality: 82 }),
+]);
+
+const stats = verein.stats.map((s) => ({ n: s.value, l: s.label }));
+---
+<section id="top" class="hero" aria-labelledby="hero-title">
+  <canvas class="hero__canvas" data-hero-canvas data-blau={blau.src} data-rot={rot.src} aria-hidden="true"></canvas>
+  <div class="hero__content wrap">
+    <div class="hero__text">
+      <Tag color="cyan" class="hero__tag">Freie Tanzszene · Dresden · seit {verein.founded}</Tag>
+      <h1 id="hero-title" class="hero__title" data-hero-title>Eine Stadt.<br /><em>Ein Netz.</em></h1>
+      <p class="hero__lead">
+        TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene. Wir organisieren Training,
+        Bühnenformate, Diskurs und Residenzen und machen den zeitgenössischen Tanz in Dresden sichtbar.
+      </p>
+      <div class="hero__actions">
+        <Button href={href('#termine')} variant="secondary" size="lg" marker>Nächste Termine</Button>
+        <a href={href('#netzwerk')} class="mono-link underline-link">Wer im Netz tanzt →</a>
+      </div>
+    </div>
+  </div>
+  <div class="hero__floor" data-hero-floor>
+    <div class="hero__floor-inner">
+      {stats.map((s) => (
+        <div class="stat"><span class="stat__n">{s.n}</span><span class="stat__l">{s.l}</span></div>
+      ))}
+      <button type="button" class="replay" data-hero-replay>Netz neu knüpfen</button>
+    </div>
+  </div>
+  <KeilBar class="hero__keil" />
+</section>
+
+<script>
+  import { HeroNet } from '../../scripts/hero-net';
+
+  const canvas = document.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
+  if (canvas) {
+    const hero = new HeroNet({
+      canvas,
+      floor: document.querySelector<HTMLElement>('[data-hero-floor]'),
+      title: document.querySelector<HTMLElement>('[data-hero-title]'),
+      photos: { blau: canvas.dataset.blau ?? '', rot: canvas.dataset.rot ?? '' },
+      nodeCount: 110,
+      interactive: true,
+    });
+    const run = () => hero.start();
+    // Wait for the display font so the headline width (photo anchor) is final.
+    document.fonts?.ready.then(run, run) ?? run();
+    document.querySelector('[data-hero-replay]')?.addEventListener('click', () => hero.replay());
+  }
+</script>
+
+<style>
+  .hero {
+    position: relative; background: var(--purple); color: #fff;
+    min-height: clamp(620px, 88vh, 940px); min-height: clamp(620px, 88svh, 940px);
+    display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+  }
+  .hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  .hero__content { position: relative; z-index: 1; width: 100%; pointer-events: none; padding-top: clamp(40px, 8vh, 96px); }
+  .hero__text { max-width: min(640px, 100%); padding-bottom: clamp(36px, 6vh, 72px); }
+  .hero__text :global(.hero__tag) { margin-bottom: 26px; }
+  .hero__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, 7.8vw, 124px);
+    line-height: 0.9; letter-spacing: -0.035em; margin: 0 0 30px; color: #fff; text-wrap: balance;
+  }
+  .hero__title em { font-style: normal; color: var(--magenta); }
+  .hero__lead {
+    font-size: clamp(16px, 1.5vw, 20px); line-height: 1.55; color: rgba(255, 255, 255, 0.88);
+    max-width: 460px; margin: 0 0 34px; text-wrap: pretty;
+  }
+  .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; pointer-events: auto; }
+  .hero__floor { position: relative; z-index: 1; border-top: 1px solid var(--on-dark-rule); }
+  .hero__floor-inner {
+    max-width: var(--wrap); margin: 0 auto; padding: 18px var(--gutter) 26px;
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 44px;
+  }
+  .stat { display: flex; align-items: baseline; gap: 10px; }
+  .stat__n { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: var(--cyan); letter-spacing: -0.02em; }
+  .stat__l {
+    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--on-dark-soft);
+  }
+  .replay {
+    margin-left: auto; display: flex; align-items: center; gap: 10px; background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff; padding: 9px 14px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; cursor: pointer; border-radius: 0;
+    transition: border-color var(--dur-base), color var(--dur-base);
+  }
+  .replay::before { content: ''; width: 8px; height: 8px; background: var(--magenta); }
+  .replay:hover { border-color: var(--magenta); color: var(--cyan); }
+  .hero :global(.hero__keil) { position: absolute; left: 0; bottom: 0; width: 34%; z-index: 2; }
+</style>

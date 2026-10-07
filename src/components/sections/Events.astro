@@ -1,0 +1,36 @@
+---
+import Tag from '../ui/Tag.astro';
+import EventList from '../EventList.astro';
+import EventFilter from '../EventFilter.astro';
+import { getUpcoming } from '../../lib/content';
+import { href } from '../../lib/url';
+
+const events = await getUpcoming(6);
+---
+<section id="termine" class="section" aria-labelledby="termine-h">
+  <div class="wrap">
+    <div class="section-head">
+      <div data-reveal>
+        <Tag>Tanzkalender</Tag>
+        <h2 id="termine-h" class="h2">Nächste Termine</h2>
+      </div>
+      <EventFilter events={events} target="home-events" />
+    </div>
+
+    <EventList events={events} id="home-events" />
+
+    <div class="events-links">
+      <a class="mono-link" href={href('termine/')}>Ganzer Kalender →</a>
+      <a class="mono-link" href={href('termine.ics')}>Kalender abonnieren (.ics)</a>
+      <a class="mono-link" href={href('kontakt/#termin-einreichen')}>Termin einreichen</a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .events-links { display: flex; flex-wrap: wrap; gap: 12px 32px; margin-top: 28px; }
+  .events-links a { letter-spacing: 0.14em; color: var(--ink-soft); }
+  .events-links a:hover { color: var(--magenta); }
+  .events-links a:first-child { color: var(--magenta); }
+  .events-links a:first-child:hover { color: var(--purple); }
+</style>

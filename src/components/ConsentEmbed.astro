@@ -1,0 +1,68 @@
+---
+/**
+ * Externer Inhalt mit Zwei-Klick-Lösung: Erst nach Zustimmung wird das iframe
+ * geladen und Daten gehen an den Anbieter. Beispiel:
+ *   <ConsentEmbed src="https://www.youtube-nocookie.com/embed/ID" title="Trailer" provider="YouTube"
+ *                 privacyUrl="https://policies.google.com/privacy" ratio="16 / 9" />
+ */
+interface Props {
+  src: string;
+  title: string;
+  provider: string;
+  privacyUrl: string;
+  category?: string;
+  ratio?: string;
+}
+const { src, title, provider, privacyUrl, category = 'medien', ratio = '16 / 9' } = Astro.props;
+---
+<div class="embed" data-consent-embed data-category={category} data-src={src} data-title={title} style={`aspect-ratio:${ratio}`}>
+  <div class="embed__ph">
+    <span class="embed__kicker">Externer Inhalt · {provider}</span>
+    <p>Hier steht ein Inhalt von {provider}. Wenn du ihn lädst, wird deine IP-Adresse an {provider} übertragen. <a href={privacyUrl} rel="noopener" target="_blank">Datenschutz bei {provider}</a></p>
+    <div class="embed__actions">
+      <button type="button" class="btn btn--secondary btn--sm" data-embed-once>Einmal laden</button>
+      <button type="button" class="embed__always" data-embed-always>Immer erlauben</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  import { hasConsent, onConsent, readConsent, saveConsent } from '../scripts/consent';
+
+  const load = (el: HTMLElement) => {
+    if (el.querySelector('iframe')) return;
+    const f = document.createElement('iframe');
+    f.src = el.dataset.src ?? '';
+    f.title = el.dataset.title ?? '';
+    f.loading = 'lazy';
+    f.allowFullscreen = true;
+    f.referrerPolicy = 'strict-origin-when-cross-origin';
+    el.replaceChildren(f);
+  };
+  const embeds = [...document.querySelectorAll<HTMLElement>('[data-consent-embed]')];
+  const refresh = () => embeds.forEach((el) => hasConsent(el.dataset.category ?? 'medien') && load(el));
+  refresh();
+  onConsent(refresh);
+  embeds.forEach((el) => {
+    el.querySelector('[data-embed-once]')?.addEventListener('click', () => load(el));
+    el.querySelector('[data-embed-always]')?.addEventListener('click', () => {
+      const v = Number(document.documentElement.dataset.consentVersion ?? 1);
+      const cats = { ...(readConsent(v)?.categories ?? {}), [el.dataset.category ?? 'medien']: true };
+      saveConsent(v, cats);
+    });
+  });
+</script>
+
+<style>
+  .embed { position: relative; width: 100%; background: var(--purple); color: #fff; }
+  .embed :global(iframe) { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+  .embed__ph { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; gap: 12px; padding: clamp(18px, 4vw, 40px); }
+  .embed__kicker { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+  .embed__ph p { margin: 0; max-width: 520px; font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
+  .embed__ph a { color: #fff; text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  .embed__actions { display: flex; flex-wrap: wrap; gap: 12px 20px; align-items: center; }
+  .embed__always {
+    background: none; border: 0; color: #fff; cursor: pointer; padding: 4px 0; border-bottom: 1.5px solid var(--magenta);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+</style>

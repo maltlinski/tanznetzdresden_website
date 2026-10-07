@@ -1,0 +1,57 @@
+---
+/** Filter-Chips für eine EventList (Kategorie). */
+import { eventCategories, type Termin } from '../lib/content';
+
+interface Props {
+  events: Termin[];
+  /** id der EventList */
+  target: string;
+}
+const { events, target } = Astro.props;
+const filters = [
+  { value: 'Alle', count: events.length },
+  ...eventCategories.map((c) => ({ value: c, count: events.filter((e) => e.data.category === c).length })),
+];
+---
+<div class="chips" role="group" aria-label="Termine nach Kategorie filtern" aria-controls={target} data-event-filter={target}>
+  {filters.map((f, i) => (
+    <button type="button" class="chip" data-value={f.value} aria-pressed={i === 0 ? 'true' : 'false'}>
+      {f.value}<span class="chip__count"><span class="visually-hidden">(</span>{f.count}<span class="visually-hidden"> Termine)</span></span>
+    </button>
+  ))}
+</div>
+<p class="visually-hidden" role="status" data-event-status={target}></p>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-event-filter]').forEach((group) => {
+    const id = group.dataset.eventFilter ?? '';
+    const list = document.getElementById(id);
+    const status = document.querySelector<HTMLElement>(`[data-event-status="${id}"]`);
+    if (!list) return;
+    group.addEventListener('click', (ev) => {
+      const btn = (ev.target as HTMLElement).closest<HTMLButtonElement>('button[data-value]');
+      if (!btn) return;
+      const value = btn.dataset.value;
+      group.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      let shown = 0;
+      list.querySelectorAll<HTMLElement>('.event').forEach((li) => {
+        const show = value === 'Alle' || li.dataset.cat === value;
+        li.hidden = !show;
+        if (show) shown++;
+      });
+      // Monatsüberschriften ohne sichtbare Termine ausblenden
+      list.querySelectorAll<HTMLElement>('[data-month]').forEach((h) => {
+        let n = h.nextElementSibling as HTMLElement | null;
+        let any = false;
+        while (n && !n.hasAttribute('data-month') && n.classList.contains('event')) {
+          if (!n.hidden) any = true;
+          n = n.nextElementSibling as HTMLElement | null;
+        }
+        h.hidden = !any;
+      });
+      const empty = list.querySelector<HTMLElement>('[data-empty]');
+      if (empty) empty.hidden = shown > 0;
+      if (status) status.textContent = `${shown} Termine angezeigt`;
+    });
+  });
+</script>

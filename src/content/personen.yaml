@@ -1,0 +1,78 @@
+# Personen im Netzwerk. Reihenfolge = Anzeige-Reihenfolge.
+# roles: mitglied | trainer · vorstand: Funktion im Koordinationsteam (optional)
+- id: alba-t-alvarez
+  name: "Alba T Álvarez"
+  roles: [mitglied]
+- id: alexandre-may
+  name: "Alexandre May"
+  roles: [trainer]
+- id: alina-lucifero
+  name: "Alina Lucifero"
+  roles: [mitglied]
+  vorstand: "Regionale Kooperationen, Öffentlichkeitsarbeit, Projektleitung Studio Round"
+- id: amit-abend
+  name: "Amit Abend"
+  roles: [mitglied, trainer]
+- id: amy-schonheit
+  name: "Amy Schönheit"
+  roles: [mitglied]
+- id: anna-till
+  name: "Anna Till"
+  roles: [mitglied]
+- id: annette-lopez-leal
+  name: "Annette Lopez Leal"
+  roles: [mitglied]
+- id: antje-kaufmann
+  name: "Antje Kaufmann"
+  roles: [mitglied]
+- id: aurelie-lafaye
+  name: "Aurélie Lafaye"
+  roles: [mitglied, trainer]
+- id: aurora-fradella
+  name: "Aurora Fradella"
+  roles: [trainer]
+- id: barbara-lubich
+  name: "Barbara Lubich"
+  roles: [mitglied]
+- id: beatrice-panero
+  name: "Beatrice Panero"
+  roles: [trainer]
+- id: bettina-paletta-und-emre-kesim
+  name: "Bettina Paletta & Emre Kesim"
+  roles: [trainer]
+- id: caroline-beach
+  name: "Caroline Beach"
+  roles: [mitglied]
+- id: charles-washington
+  name: "Charles Washington"
+  roles: [mitglied, trainer]
+- id: chiara-detscher
+  name: "Chiara Detscher"
+  roles: [mitglied]
+- id: justine-rouquart
+  name: "Justine Rouquart"
+  roles: [mitglied]
+  vorstand: "Mitgliederverwaltung, Projektleitung POP UP, Bodies & Textiles"
+- id: laura-gary
+  name: "Laura Gary"
+  roles: [trainer]
+- id: leon-borgens
+  name: "Leon Börgens"
+  roles: [trainer]
+- id: malte-leonard-herz
+  name: "Malte Leonard Herz"
+  roles: [mitglied]
+  vorstand: "Überregionale Kooperationen, Projektleitung Dresdance Gala, vision:danceable"
+- id: michael-tucker
+  name: "Michael Tucker"
+  roles: [mitglied]
+- id: natalie-wagner
+  name: "Natalie Wagner"
+  roles: [mitglied]
+- id: rika-yotsumoto
+  name: "Rika Yotsumoto"
+  roles: [mitglied]
+  vorstand: "Finanzen, AG-Koordination, Projektleitung KEEP UP"
+- id: yamile-anaid-navarro-luna
+  name: "Yamile Anaid Navarro Luna"
+  roles: [mitglied]

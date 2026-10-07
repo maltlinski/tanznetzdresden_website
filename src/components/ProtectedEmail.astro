@@ -1,0 +1,54 @@
+---
+/**
+ * E-Mail-Adresse mit Bot-Schutz. Beispiel:
+ *   <ProtectedEmail email={verein.emails.vorstand} label="E-Mail an den Vorstand" />
+ */
+import { protectEmail } from '../lib/protect-email';
+
+interface Props {
+  email: string;
+  /** Text auf dem Button, bevor die Adresse sichtbar ist */
+  label?: string;
+  subject?: string;
+  class?: string;
+}
+const { email, label = 'E-Mail-Adresse anzeigen', subject, class: className } = Astro.props;
+const p = await protectEmail(email);
+// Nur der Teil vor dem @ wird als Hinweis gezeigt – ohne Domain ist er für Bots wertlos.
+const hint = email.split('@')[0];
+---
+<span
+  class:list={['protected-email', className]}
+  data-protected-email
+  data-salt={p.salt}
+  data-challenge={p.challenge}
+  data-max={p.max}
+  data-iv={p.iv}
+  data-data={p.data}
+  data-subject={subject}
+>
+  <button type="button" class="protected-email__btn">
+    <span class="protected-email__icon" aria-hidden="true"></span>{label}<span class="visually-hidden"> ({hint} …, Klick zeigt die Adresse)</span>
+  </button>
+  <span class="visually-hidden" role="status"></span>
+</span>
+
+<script>
+  import { initProtectedEmails } from '../scripts/protected-email';
+  initProtectedEmails();
+</script>
+
+<style>
+  .protected-email { display: inline-flex; }
+  .protected-email__btn {
+    display: inline-flex; align-items: center; gap: 10px; padding: 0; background: none; border: 0;
+    border-bottom: 1.5px solid var(--magenta); padding-bottom: 3px; color: inherit; cursor: pointer;
+    font: inherit; text-align: left;
+  }
+  .protected-email__btn:hover { color: var(--magenta); }
+  .protected-email__btn[aria-busy='true'] { cursor: progress; opacity: 0.7; }
+  .protected-email__btn[aria-busy='true'] .protected-email__icon { animation: tndd-pulse 0.6s steps(2) infinite; }
+  .protected-email__icon { width: 8px; height: 8px; background: var(--magenta); flex: none; }
+  :global(.protected-email__link) { color: inherit; border-bottom: 1.5px solid var(--magenta); padding-bottom: 3px; word-break: break-all; }
+  @keyframes tndd-pulse { to { opacity: 0.2; } }
+</style>

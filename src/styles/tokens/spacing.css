@@ -1,0 +1,60 @@
+/* ============================================================
+   TanzNetzDresden e.V. — Spacing, borders, shape, motion
+   The CI is built from SHARP RECTANGLES: corner radius is 0
+   everywhere. Depth comes from flat color blocks and the
+   "Keil" (wedge) clip — not from shadows. The two shadows
+   below are reserved for the on-screen "sheet of paper"
+   workspace metaphor only.
+============================================================ */
+:root {
+  /* --- Spacing scale (4px base) --- */
+  --space-0:  0;
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+
+  /* --- Radius: the house rule is ZERO. --- */
+  --radius-none: 0;
+  --radius:      0;        /* alias — everything is sharp */
+
+  /* --- Borders --- */
+  --border-hair:   1px solid var(--rule);
+  --border-strong-w: 2px;
+  --bw-1: 1px;
+  --bw-2: 2px;
+  --bw-3: 3px;             /* magenta accent rules / card tops */
+
+  /* --- The square "voice" marker --- */
+  --marker-size: 10px;
+
+  /* --- Keil (wedge) — the signature clip shapes --- */
+  --keil-bar:    polygon(0 0, 72% 0, 100% 100%, 0 100%);              /* @kind other */
+  --keil-corner: polygon(0 0, 100% 0, 100% 88%, 88% 100%, 0 100%);    /* @kind other */
+
+  /* --- Shadows (workspace "paper" metaphor only) --- */
+  --shadow-sheet: 0 14px 50px rgba(0,0,0,0.45), 0 3px 8px rgba(0,0,0,0.35);
+  --shadow-card:  0 2px 0 var(--rule);   /* flat, hairline only */
+
+  /* --- Motion — quick, decisive; no bounce, no springs --- */
+  --ease-out:    cubic-bezier(0.16, 1, 0.3, 1);    /* @kind other */
+  --ease-in:     cubic-bezier(0.4, 0, 1, 1);       /* @kind other */
+  --dur-fast:    0.12s;  /* @kind other */
+  --dur-base:    0.18s;  /* @kind other */
+  --dur-slow:    0.35s;  /* @kind other */
+
+  /* --- A4 page geometry (print docs) --- */
+  --page-w:  210mm;   /* @kind spacing */
+  --page-h:  297mm;   /* @kind spacing */
+  --m-top:    28mm;   /* @kind spacing */
+  --m-bottom: 24mm;   /* @kind spacing */
+  --m-outer:  22mm;   /* @kind spacing */
+  --m-inner:  22mm;   /* @kind spacing */
+}

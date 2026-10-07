@@ -1,0 +1,10 @@
+---
+interface Props {
+  color?: string;
+  height?: number;
+  flip?: boolean;
+  class?: string;
+}
+const { color = 'var(--magenta)', height = 12, flip = false, class: className } = Astro.props;
+---
+<div class:list={['keil', flip && 'keil--flip', className]} style={`background:${color};height:${height}px`} aria-hidden="true"></div>

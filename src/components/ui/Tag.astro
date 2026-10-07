@@ -1,0 +1,8 @@
+---
+interface Props {
+  color?: 'magenta' | 'cyan' | 'purple';
+  class?: string;
+}
+const { color = 'magenta', class: className } = Astro.props;
+---
+<span class:list={['tag', className]} style={color === 'magenta' ? undefined : `--tag-color: var(--${color})`}><slot /></span>

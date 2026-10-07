@@ -1,0 +1,122 @@
+---
+/**
+ * Newsletter-Anmeldung.
+ * Ist in src/settings/verein.json unter newsletter.action ein Formular-Ziel
+ * (z. B. Brevo/CleverReach, mit Double-Opt-in!) eingetragen, wird dorthin gesendet.
+ * Sonst öffnet sich eine vorbereitete E-Mail an die Kontaktadresse.
+ */
+import { verein } from '../lib/settings';
+import { href } from '../lib/url';
+import { protectEmail } from '../lib/protect-email';
+
+const action = verein.newsletter.action;
+const fallback = action ? null : await protectEmail(verein.emails.kontakt);
+---
+<form
+  class="nl"
+  method="post"
+  action={action || undefined}
+  novalidate
+  data-newsletter
+  {...(fallback ? { 'data-salt': fallback.salt, 'data-challenge': fallback.challenge, 'data-max': fallback.max, 'data-iv': fallback.iv, 'data-data': fallback.data } : {})}
+>
+  <div class="nl__row">
+    <div class="field">
+      <label for="nl-email">E-Mail</label>
+      <input id="nl-email" name="email" type="email" placeholder="name@beispiel.de" autocomplete="email" required aria-describedby="nl-error" />
+    </div>
+    <button type="submit" class="btn btn--primary">Anmelden</button>
+  </div>
+  <!-- Honeypot: für Menschen unsichtbar, Bots füllen es aus -->
+  <div class="nl__hp" aria-hidden="true">
+    <label for="nl-website">Website</label>
+    <input id="nl-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <label class="check">
+    <input type="checkbox" name="consent" required aria-describedby="nl-error" />
+    <span class="check__box" aria-hidden="true"></span>
+    <span>Ich möchte den Newsletter erhalten und habe die <a href={href('datenschutz/#newsletter')}>Datenschutzerklärung</a> gelesen. Abmeldung jederzeit möglich.</span>
+  </label>
+  <p class="nl__error" id="nl-error" role="alert" hidden></p>
+</form>
+<p class="nl__done" data-newsletter-done role="status" hidden></p>
+
+<script>
+  import { reveal } from '../scripts/protected-email';
+
+  const form = document.querySelector<HTMLFormElement>('[data-newsletter]');
+  const done = document.querySelector<HTMLElement>('[data-newsletter-done]');
+  const error = form?.querySelector<HTMLElement>('#nl-error');
+  const started = Date.now();
+
+  form?.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const fd = new FormData(form);
+    const email = String(fd.get('email') ?? '').trim();
+    const input = form.querySelector<HTMLInputElement>('#nl-email');
+    const fail = (msg: string) => {
+      if (error) { error.textContent = msg; error.hidden = false; }
+    };
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      input?.setAttribute('aria-invalid', 'true');
+      input?.focus();
+      return fail('Bitte gib eine gültige E-Mail-Adresse ein.');
+    }
+    input?.removeAttribute('aria-invalid');
+    if (!fd.get('consent')) return fail('Bitte bestätige die Einwilligung.');
+    // Bots: Honeypot ausgefüllt oder Formular in unter 2 Sekunden abgeschickt
+    if (fd.get('website') || Date.now() - started < 2000) return;
+    if (error) error.hidden = true;
+
+    if (form.action && form.getAttribute('action')) {
+      try {
+        await fetch(form.action, { method: 'POST', body: fd, mode: 'no-cors' });
+      } catch {
+        return fail('Die Anmeldung hat nicht geklappt. Bitte versuche es später noch einmal.');
+      }
+      form.hidden = true;
+      if (done) { done.textContent = 'Danke. Bitte bestätige deine Anmeldung über den Link in deinem Postfach.'; done.hidden = false; }
+      return;
+    }
+    // Ohne Newsletter-Dienst: vorbereitete E-Mail öffnen
+    const to = await reveal(form);
+    if (!to) return fail('Die Anmeldung hat nicht geklappt. Bitte versuche es später noch einmal.');
+    location.href = `mailto:${to}?subject=${encodeURIComponent('Newsletter-Anmeldung')}&body=${encodeURIComponent(`Bitte nehmt ${email} in den Newsletter auf.`)}`;
+    form.hidden = true;
+    if (done) { done.textContent = 'Fast geschafft: Bitte sende die vorbereitete E-Mail ab.'; done.hidden = false; }
+  });
+</script>
+
+<style>
+  .nl { display: grid; gap: 16px; }
+  .nl__row { display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end; }
+  .field { flex: 1 1 240px; display: flex; flex-direction: column; gap: 7px; }
+  .field label {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--purple);
+  }
+  .field input {
+    font-family: var(--font-body); font-size: 15px; color: var(--ink); background: var(--paper);
+    border: 1.5px solid var(--rule); border-radius: 0; padding: 11px 13px; outline: none;
+    transition: border-color var(--dur-base) var(--ease-out);
+  }
+  .field input:focus { border-color: var(--magenta); box-shadow: inset 0 -2px 0 var(--magenta); }
+  .field input[aria-invalid='true'] { border-color: var(--magenta); }
+  .nl__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .check { display: flex; gap: 11px; align-items: flex-start; font-size: 13.5px; line-height: 1.5; cursor: pointer; position: relative; }
+  .check input { position: absolute; opacity: 0; width: 20px; height: 20px; margin: 0; cursor: pointer; }
+  .check__box { position: relative; flex: none; width: 20px; height: 20px; background: var(--paper); border: 1.5px solid var(--purple); }
+  .check input:checked + .check__box { background: var(--magenta); border-color: var(--magenta); }
+  .check input:checked + .check__box::after {
+    content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px;
+    border: solid #fff; border-width: 0 2.2px 2.2px 0; transform: rotate(45deg);
+  }
+  .check input:focus-visible + .check__box { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .check a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  .nl__error { margin: 0; padding: 10px 14px; background: var(--purple); color: #fff; font-size: 14px; border-left: 4px solid var(--magenta); }
+  .nl__done {
+    display: flex; align-items: center; gap: 14px; background: var(--purple); color: #fff; padding: 16px 18px; font-size: 15px; margin: 0;
+  }
+  .nl__done::before { content: ''; width: 10px; height: 10px; background: var(--magenta); flex: none; }
+  .nl__done[hidden] { display: none; }
+</style>

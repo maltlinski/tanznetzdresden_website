@@ -1,0 +1,91 @@
+---
+import Intern from '../../../layouts/Intern.astro';
+---
+<Intern title="Mitglieder" current="mitglieder">
+  <div class="dir-head">
+    <div>
+      <h1 class="i-h1">Mitglieder</h1>
+      <p class="i-lead">Alle mit Zugang zum internen Bereich. Bitte nutze die Kontaktdaten nur für die Arbeit im Netzwerk.</p>
+    </div>
+    <div class="i-field dir-search">
+      <label for="dir-q">Suchen</label>
+      <input id="dir-q" type="search" placeholder="Name oder AG" data-dir-search />
+    </div>
+  </div>
+  <p class="i-msg" role="alert" data-dir-msg hidden></p>
+  <ul class="dir" data-dir aria-live="polite"></ul>
+  <template data-dir-item>
+    <li class="dir__card">
+      <div class="dir__top"><strong class="dir__name"></strong><span class="dir__badge" hidden></span></div>
+      <span class="dir__pronouns"></span>
+      <p class="dir__bio"></p>
+      <span class="dir__ags"></span>
+      <div class="dir__links"></div>
+    </li>
+  </template>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage } from '../../../scripts/intern/session';
+  import type { DirectoryEntry } from '../../../lib/supabase';
+
+  const ctx = await initIntern(true);
+  const list = document.querySelector<HTMLUListElement>('[data-dir]');
+  const tpl = document.querySelector<HTMLTemplateElement>('[data-dir-item]');
+  const msg = document.querySelector<HTMLElement>('[data-dir-msg]');
+  const search = document.querySelector<HTMLInputElement>('[data-dir-search]');
+
+  const link = (href: string, text: string) => {
+    const a = document.createElement('a');
+    a.href = href;
+    a.textContent = text;
+    if (href.startsWith('http')) { a.rel = 'noopener'; a.target = '_blank'; }
+    return a;
+  };
+  const safeUrl = (u: string) => (/^https?:\/\//i.test(u) ? u : `https://${u}`);
+
+  if (ctx && list && tpl) {
+    const { data, error } = await ctx.sb.rpc('member_directory');
+    if (error) showMessage(msg, errorText(error));
+    const entries = (data ?? []) as DirectoryEntry[];
+    const cards = entries.map((m) => {
+      const li = tpl.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
+      li.querySelector('.dir__name')!.textContent = m.display_name || 'Ohne Namen';
+      const badge = li.querySelector<HTMLElement>('.dir__badge')!;
+      const roles = [m.role !== 'mitglied' ? (m.role === 'admin' ? 'Admin' : 'Vorstand') : '', m.is_trainer ? 'Training' : ''].filter(Boolean);
+      badge.textContent = roles.join(' · ');
+      badge.hidden = !roles.length;
+      li.querySelector('.dir__pronouns')!.textContent = m.pronouns ?? '';
+      li.querySelector('.dir__bio')!.textContent = m.bio ?? '';
+      li.querySelector('.dir__ags')!.textContent = m.ags?.length ? `AG ${m.ags.join(' · ')}` : '';
+      const links = li.querySelector('.dir__links')!;
+      if (m.email) links.append(link(`mailto:${m.email}`, m.email));
+      if (m.phone) links.append(link(`tel:${m.phone.replace(/\s/g, '')}`, m.phone));
+      if (m.website) links.append(link(safeUrl(m.website), m.website.replace(/^https?:\/\//, '')));
+      if (m.instagram) links.append(link(`https://www.instagram.com/${encodeURIComponent(m.instagram)}/`, `@${m.instagram}`));
+      li.dataset.search = `${m.display_name} ${m.ags?.join(' ')}`.toLowerCase();
+      return li;
+    });
+    list.replaceChildren(...cards);
+    search?.addEventListener('input', () => {
+      const q = search.value.trim().toLowerCase();
+      cards.forEach((c) => (c.hidden = !!q && !(c.dataset.search ?? '').includes(q)));
+    });
+  }
+</script>
+
+<style>
+  .dir-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px 40px; margin-bottom: 28px; }
+  .dir-head .i-lead { margin-bottom: 0; }
+  .dir-search { min-width: min(100%, 300px); }
+  .dir { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 20px; }
+  :global(.dir__card) { display: flex; flex-direction: column; gap: 8px; padding: 22px; background: var(--paper); border-top: 3px solid var(--magenta); }
+  :global(.dir__top) { display: flex; justify-content: space-between; align-items: baseline; gap: 10px; }
+  :global(.dir__name) { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--purple); }
+  :global(.dir__badge) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; background: var(--cyan); color: var(--purple); padding: 3px 7px; white-space: nowrap; }
+  :global(.dir__pronouns), :global(.dir__ags) { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  :global(.dir__bio) { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+  :global(.dir__bio:empty), :global(.dir__pronouns:empty), :global(.dir__ags:empty) { display: none; }
+  :global(.dir__links) { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+  :global(.dir__links a) { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; word-break: break-all; }
+</style>

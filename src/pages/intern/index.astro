@@ -1,0 +1,123 @@
+---
+import Intern from '../../layouts/Intern.astro';
+import { href } from '../../lib/url';
+---
+<Intern title="Anmelden" current="start" loginPage>
+  <!-- Anmelden -->
+  <div class="login" data-when="login">
+    <div class="i-card">
+      <h1 class="i-h1">Anmelden</h1>
+      <p class="i-lead">Für Mitglieder:innen von TanzNetzDresden. Zugänge vergibt der Vorstand per Einladung.</p>
+
+      <form class="i-form" data-login-form>
+        <div class="i-field">
+          <label for="login-email">E-Mail</label>
+          <input id="login-email" name="email" type="email" autocomplete="username" required />
+        </div>
+        <div class="i-field" data-password-field>
+          <label for="login-password">Passwort</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required />
+        </div>
+        <p class="i-msg" role="alert" data-login-msg hidden></p>
+        <div class="login__actions">
+          <button type="submit" class="btn btn--primary btn--marker" data-login-submit>Anmelden</button>
+          <button type="button" class="i-linkbtn" data-mode-toggle>Stattdessen Login-Link per E-Mail</button>
+          <button type="button" class="i-linkbtn" data-reset>Passwort vergessen?</button>
+        </div>
+      </form>
+    </div>
+    <aside class="login__aside">
+      <h2>Noch kein Zugang?</h2>
+      <p>Mitglieder:innen bekommen eine Einladung per E-Mail. Du bist Mitglied, hast aber keine bekommen? Melde dich beim Vorstand.</p>
+      <a class="mono-link" href={href('kontakt/#vorstand')}>Vorstand kontaktieren →</a>
+    </aside>
+  </div>
+
+  <!-- Übersicht -->
+  <div data-when="ready">
+    <h1 class="i-h1">Hallo, <span data-intern-name></span>.</h1>
+    <p class="i-lead">Willkommen im internen Bereich. Hier pflegst du dein Profil und findest Kontakte und Dokumente aus dem Netzwerk.</p>
+    <ul class="tiles">
+      <li><a href={href('intern/profil/')}><span class="tiles__n">01</span><strong>Mein Profil</strong><span>Name, Kurzbio, Links und was andere sehen dürfen.</span></a></li>
+      <li><a href={href('intern/mitglieder/')}><span class="tiles__n">02</span><strong>Mitglieder</strong><span>Wer ist im Netz? Kontakte und Arbeitsgruppen.</span></a></li>
+      <li><a href={href('intern/dokumente/')}><span class="tiles__n">03</span><strong>Dokumente</strong><span>Protokolle, Satzung, Vorlagen und Logos.</span></a></li>
+      <li data-vorstand-only hidden><a href="https://supabase.com/dashboard" rel="noopener" target="_blank"><span class="tiles__n">04</span><strong>Verwaltung</strong><span>Mitglieder einladen und Rollen vergeben (Supabase-Dashboard).</span></a></li>
+    </ul>
+  </div>
+</Intern>
+
+<script>
+  import { getSupabase } from '../../lib/supabase';
+  import { initIntern, errorText, showMessage, internUrl } from '../../scripts/intern/session';
+
+  const ctx = await initIntern(false);
+  const next = new URLSearchParams(location.search).get('weiter');
+  if (ctx && next?.startsWith('/')) location.replace(next);
+
+  const sb = getSupabase();
+  const form = document.querySelector<HTMLFormElement>('[data-login-form]');
+  const msg = document.querySelector<HTMLElement>('[data-login-msg]');
+  const pwField = document.querySelector<HTMLElement>('[data-password-field]');
+  const pwInput = pwField?.querySelector('input');
+  const submit = document.querySelector<HTMLButtonElement>('[data-login-submit]');
+  const toggle = document.querySelector<HTMLButtonElement>('[data-mode-toggle]');
+  let magic = false;
+
+  toggle?.addEventListener('click', () => {
+    magic = !magic;
+    if (pwField) pwField.hidden = magic;
+    if (pwInput) pwInput.required = !magic;
+    if (submit) submit.textContent = magic ? 'Login-Link senden' : 'Anmelden';
+    toggle.textContent = magic ? 'Mit Passwort anmelden' : 'Stattdessen Login-Link per E-Mail';
+    showMessage(msg, '');
+  });
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!sb || !submit) return;
+    const fd = new FormData(form);
+    const email = String(fd.get('email') ?? '').trim();
+    submit.disabled = true;
+    try {
+      if (magic) {
+        const { error } = await sb.auth.signInWithOtp({ email, options: { shouldCreateUser: false, emailRedirectTo: location.origin + internUrl() } });
+        if (error) throw error;
+        showMessage(msg, 'Wir haben dir einen Login-Link geschickt. Schau in dein Postfach.', 'ok');
+      } else {
+        const { error } = await sb.auth.signInWithPassword({ email, password: String(fd.get('password') ?? '') });
+        if (error) throw error;
+        location.replace(next?.startsWith('/') ? next : internUrl());
+      }
+    } catch (err) {
+      showMessage(msg, errorText(err));
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  document.querySelector('[data-reset]')?.addEventListener('click', async () => {
+    const email = (form?.querySelector<HTMLInputElement>('#login-email')?.value ?? '').trim();
+    if (!email) {
+      showMessage(msg, 'Trag oben deine E-Mail-Adresse ein, dann schicken wir dir einen Link zum Zurücksetzen.');
+      return;
+    }
+    const { error } = (await sb?.auth.resetPasswordForEmail(email, { redirectTo: location.origin + internUrl('passwort/') })) ?? {};
+    // Aus Datenschutzgründen nicht verraten, ob die Adresse existiert
+    showMessage(msg, error && /rate/i.test(error.message) ? errorText(error) : 'Falls es ein Konto gibt, ist ein Link zum Zurücksetzen unterwegs.', 'ok');
+  });
+</script>
+
+<style>
+  .login { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 40px clamp(32px, 5vw, 72px); align-items: start; }
+  .login__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; }
+  .login__aside { padding-top: 12px; }
+  .login__aside h2 { font-family: var(--font-display); font-weight: 800; font-size: 24px; color: var(--purple); margin: 0 0 8px; }
+  .login__aside p { margin: 0 0 16px; color: var(--ink-soft); line-height: 1.6; font-size: 15px; }
+  .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px; }
+  .tiles a { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 24px 22px 28px; background: var(--paper); border-top: 3px solid var(--magenta); color: var(--purple); transition: background var(--dur-base); }
+  .tiles a:hover { background: var(--purple); color: #fff; }
+  .tiles__n { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: var(--magenta); }
+  .tiles strong { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -0.02em; }
+  .tiles span:last-child { font-size: 14.5px; line-height: 1.5; opacity: 0.8; }
+  @media (max-width: 760px) { .login { grid-template-columns: 1fr; } }
+</style>

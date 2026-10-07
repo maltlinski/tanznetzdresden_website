@@ -1,0 +1,126 @@
+---
+/**
+ * Einwilligungs-Dialog. Erscheint nur, wenn es neben „Notwendig“ aktive
+ * Kategorien gibt und noch keine (aktuelle) Auswahl gespeichert ist.
+ * Über jeden Button mit [data-consent-open] (z. B. im Footer) wieder aufrufbar.
+ */
+import { consentCategories, CONSENT_VERSION } from '../settings/consent';
+import { href } from '../lib/url';
+
+const categories = consentCategories.filter((c) => c.enabled);
+const optional = categories.filter((c) => !c.required);
+---
+{optional.length > 0 && (
+  <section class="consent" role="dialog" aria-modal="false" aria-labelledby="consent-h" data-consent-banner data-version={CONSENT_VERSION} hidden>
+    <h2 id="consent-h" class="consent__h">Deine Privatsphäre</h2>
+    <p class="consent__text">
+      Wir verwenden keine Tracking-Cookies. Für Karten, Videos und Social-Media-Beiträge brauchen wir aber deine
+      Zustimmung, weil dabei Daten an andere Anbieter gehen. Du kannst sie jederzeit im Footer unter
+      „Cookie-Einstellungen“ ändern. Mehr dazu in der <a href={href('datenschutz/')}>Datenschutzerklärung</a>.
+    </p>
+    <form class="consent__details" data-consent-form hidden>
+      {categories.map((c) => (
+        <label class="consent__cat">
+          <input type="checkbox" name={c.id} checked={c.required} disabled={c.required} />
+          <span class="consent__box" aria-hidden="true"></span>
+          <span>
+            <strong>{c.label}</strong>{c.required && ' (immer aktiv)'}
+            <span class="consent__desc">{c.description}</span>
+            {c.services.length > 0 && <span class="consent__svc">{c.services.join(' · ')}</span>}
+          </span>
+        </label>
+      ))}
+    </form>
+    <div class="consent__actions">
+      <button type="button" class="btn btn--sm consent__btn" data-consent-all>Alle akzeptieren</button>
+      <button type="button" class="btn btn--sm consent__btn" data-consent-necessary>Nur notwendige</button>
+      <button type="button" class="consent__more" data-consent-toggle aria-expanded="false">Einstellungen</button>
+      <button type="button" class="btn btn--sm consent__btn" data-consent-save hidden>Auswahl speichern</button>
+    </div>
+  </section>
+)}
+
+<script>
+  import { readConsent, saveConsent, activateScripts } from '../scripts/consent';
+
+  const banner = document.querySelector<HTMLElement>('[data-consent-banner]');
+  if (banner) {
+    const version = Number(banner.dataset.version ?? 1);
+    document.documentElement.dataset.consentVersion = String(version);
+    const form = banner.querySelector<HTMLFormElement>('[data-consent-form]')!;
+    const toggle = banner.querySelector<HTMLButtonElement>('[data-consent-toggle]')!;
+    const save = banner.querySelector<HTMLButtonElement>('[data-consent-save]')!;
+    const boxes = [...form.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')];
+    const current = readConsent(version);
+    activateScripts(current);
+
+    const sync = () => {
+      const c = readConsent(version);
+      boxes.forEach((b) => { if (!b.disabled) b.checked = !!c?.categories[b.name]; });
+    };
+    const showDetails = (show: boolean) => {
+      form.hidden = !show;
+      save.hidden = !show;
+      toggle.setAttribute('aria-expanded', String(show));
+    };
+    const open = (details = false, focus = true) => {
+      sync();
+      showDetails(details);
+      banner.hidden = false;
+      if (focus) banner.querySelector<HTMLElement>('button')?.focus({ preventScroll: true });
+    };
+    const close = () => { banner.hidden = true; };
+    const commit = (all: boolean | null) => {
+      const cats: Record<string, boolean> = {};
+      boxes.forEach((b) => { cats[b.name] = all === null ? b.checked : all || b.disabled; });
+      saveConsent(version, cats);
+      close();
+    };
+
+    if (!current) open(false, false);
+    banner.querySelector('[data-consent-all]')?.addEventListener('click', () => commit(true));
+    banner.querySelector('[data-consent-necessary]')?.addEventListener('click', () => commit(false));
+    save.addEventListener('click', () => commit(null));
+    toggle.addEventListener('click', () => showDetails(toggle.getAttribute('aria-expanded') !== 'true'));
+    window.addEventListener('tndd:consent-open', () => open(true));
+    document.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('[data-consent-open]')) open(true);
+    });
+  }
+</script>
+
+<style>
+  .consent {
+    position: fixed; z-index: 50; left: clamp(12px, 3vw, 32px); bottom: clamp(12px, 3vw, 32px);
+    width: min(560px, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow: auto;
+    background: var(--purple); color: #fff; padding: 26px 26px 22px; border-top: 4px solid var(--magenta);
+  }
+  .consent[hidden] { display: none; }
+  .consent__h { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; margin: 0 0 10px; }
+  .consent__text { margin: 0 0 18px; font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
+  .consent__text a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+  .consent__details { display: grid; gap: 14px; margin: 0 0 20px; padding: 16px 0; border-block: 1px solid var(--on-dark-rule); }
+  .consent__details[hidden] { display: none; }
+  .consent__cat { position: relative; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.5; cursor: pointer; }
+  .consent__cat input { position: absolute; opacity: 0; width: 20px; height: 20px; margin: 0; }
+  .consent__box { position: relative; flex: none; width: 20px; height: 20px; border: 1.5px solid rgba(255, 255, 255, 0.6); margin-top: 1px; }
+  .consent__cat input:checked + .consent__box { background: var(--magenta); border-color: var(--magenta); }
+  .consent__cat input:checked + .consent__box::after {
+    content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px;
+    border: solid #fff; border-width: 0 2.2px 2.2px 0; transform: rotate(45deg);
+  }
+  .consent__cat input:disabled + .consent__box { opacity: 0.6; }
+  .consent__cat input:focus-visible + .consent__box { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  .consent__desc { display: block; color: var(--on-dark-soft); font-size: 13px; margin-top: 2px; }
+  .consent__svc { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-top: 6px; }
+  .consent__actions { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; }
+  /* Beide Hauptoptionen gleich gewichtet (rechtlich gefordert) */
+  .consent__btn { background: var(--cyan); color: var(--purple); }
+  .consent__btn:hover { background: #fff; color: var(--purple); }
+  .consent__more {
+    background: none; border: 0; padding: 6px 0; color: #fff; cursor: pointer; font-family: var(--font-mono);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    border-bottom: 1.5px solid var(--magenta);
+  }
+  .consent__more:hover { color: var(--cyan); }
+</style>

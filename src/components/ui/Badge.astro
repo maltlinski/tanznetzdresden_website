@@ -1,0 +1,7 @@
+---
+interface Props {
+  variant?: 'magenta' | 'cyan' | 'purple';
+}
+const { variant = 'magenta' } = Astro.props;
+---
+<span class:list={['badge', variant !== 'magenta' && `badge--${variant}`]}><slot /></span>

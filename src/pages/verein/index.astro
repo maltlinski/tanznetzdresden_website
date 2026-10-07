@@ -1,0 +1,107 @@
+---
+import Page from '../../layouts/Page.astro';
+import PageIntro from '../../components/PageIntro.astro';
+import Tag from '../../components/ui/Tag.astro';
+import ProtectedEmail from '../../components/ProtectedEmail.astro';
+import { getPersonen } from '../../lib/content';
+import { verein } from '../../lib/settings';
+import { href } from '../../lib/url';
+import { arbeitsgruppen } from '../../settings/arbeitsgruppen';
+
+const personen = await getPersonen();
+const vorstand = personen.filter((p) => p.data.vorstand);
+---
+<Page title="Über uns" description="TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.">
+  <PageIntro
+    kicker={`Über uns · seit ${verein.founded}`}
+    title="Dezentrale Kulturinstitution."
+    accent="Und Bildungsort."
+    lead={`Seit ${verein.founded} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.`}
+  />
+
+  <section class="section" id="vorstand" aria-labelledby="vorstand-h">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <Tag>Koordinationsteam · gewählt 2026</Tag>
+          <h2 id="vorstand-h" class="h2">Vorstand &amp; Team</h2>
+        </div>
+        <div class="vorstand-mail">
+          <span class="vorstand-mail__label">Den Vorstand erreichen</span>
+          <ProtectedEmail email={verein.emails.vorstand} label="E-Mail an den Vorstand" subject="Anfrage an den Vorstand" />
+        </div>
+      </div>
+      <ul class="board">
+        {vorstand.map(({ data }) => (
+          <li class="board__card">
+            <span class="board__name">{data.name}</span>
+            <span class="board__role">{data.vorstand}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section ags surface-tint" id="arbeitsgruppen" aria-labelledby="ags-h">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <Tag>{arbeitsgruppen.length} Arbeitsgruppen</Tag>
+          <h2 id="ags-h" class="h2">Wer die Arbeit trägt</h2>
+        </div>
+        <p class="ags__intro">Jedes Format hat eine eigene AG. Mitglieder:innen können jederzeit einsteigen.</p>
+      </div>
+      <ol class="ags__list">
+        {arbeitsgruppen.map((ag, i) => (
+          <li>
+            <span class="ags__n">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{ag.name}</h3>
+            <p>{ag.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="netzwerk" aria-labelledby="netz-h">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <Tag>Mitglieder:innen &amp; Trainer:innen</Tag>
+          <h2 id="netz-h" class="h2">Das Netz</h2>
+        </div>
+      </div>
+      <ul class="people">
+        {personen.map(({ data }) => (
+          <li>
+            <span class="people__name">{data.name}</span>
+            <span class="people__roles">{data.roles.map((r) => (r === 'mitglied' ? 'Mitglied' : 'Training')).join(' · ')}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="people__note">Du bist Mitglied und möchtest hier mit Link zu deiner Arbeit erscheinen? Pflege dein Profil im <a href={href('intern/')}>internen Bereich</a>.</p>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .vorstand-mail { display: flex; flex-direction: column; gap: 10px; font-size: 16px; color: var(--purple); }
+  .vorstand-mail__label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .board { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px; }
+  .board__card { display: flex; flex-direction: column; gap: 10px; padding: 24px 22px 28px; background: var(--paper); border: 1px solid var(--rule); border-top: 3px solid var(--magenta); }
+  .board__name { font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.05; letter-spacing: -0.025em; color: var(--purple); }
+  .board__role { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+  .ags { background: var(--tint); }
+  .ags__intro { max-width: 400px; margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .ags__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); border-top: 1px solid var(--rule); }
+  .ags__list li { padding: 24px 24px 28px 0; border-bottom: 1px solid var(--rule); }
+  .ags__n { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: var(--magenta-2); }
+  .ags__list h3 { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -0.025em; color: var(--purple); margin: 8px 0 6px; }
+  .ags__list p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 36ch; }
+  .people { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); border-top: 1px solid var(--rule); }
+  .people li { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); }
+  .people__name { font-family: var(--font-display); font-weight: 700; font-size: 19px; color: var(--purple); }
+  .people__roles { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); white-space: nowrap; }
+  .people__note { margin: 28px 0 0; font-size: 15px; color: var(--ink-soft); }
+  .people__note a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+</style>

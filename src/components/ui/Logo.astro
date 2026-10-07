@@ -1,0 +1,16 @@
+---
+import Full from '../../assets/logo/tndd-logo.svg';
+import Word from '../../assets/logo/tndd-word.svg';
+
+interface Props {
+  part?: 'full' | 'word';
+  class?: string;
+}
+const { part = 'full', class: className } = Astro.props;
+const Svg = part === 'word' ? Word : Full;
+---
+<Svg class:list={['logo', className]} role="img" aria-label="TanzNetzDresden" />
+
+<style>
+  .logo { display: block; width: 100%; height: auto; overflow: visible; fill: currentColor; }
+</style>

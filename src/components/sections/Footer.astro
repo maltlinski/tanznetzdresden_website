@@ -1,0 +1,95 @@
+---
+import Logo from '../ui/Logo.astro';
+import ProtectedEmail from '../ProtectedEmail.astro';
+import { verein } from '../../lib/settings';
+import { href } from '../../lib/url';
+
+const year = new Date().getFullYear();
+const a = verein.address;
+---
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <div class="site-footer__cols">
+      <div class="site-footer__brand">
+        <a href={href()} class="site-footer__logo" aria-label="TanzNetzDresden – zur Startseite"><Logo /></a>
+        <p>Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit {verein.founded}, seit 2020 als gemeinnütziger Verein.</p>
+      </div>
+      <div class="site-footer__col">
+        <h2 class="site-footer__h">Kontakt</h2>
+        <address>{a.street}<br />{a.zip} {a.city}</address>
+        <ProtectedEmail email={verein.emails.kontakt} label="E-Mail schreiben" />
+        <a href={`tel:${verein.phone.replace(/\s/g, '')}`}>{verein.phone}</a>
+      </div>
+      <nav class="site-footer__col" aria-label="Verein">
+        <h2 class="site-footer__h">Verein</h2>
+        <a href={href('verein/')}>Über uns</a>
+        <a href={href('verein/#vorstand')}>Vorstand &amp; Team</a>
+        <a href={href('verein/#arbeitsgruppen')}>Arbeitsgruppen</a>
+        <a href={href('mitglied-werden/')}>Mitglied werden</a>
+        <a href={href('kontakt/')}>Kontakt &amp; Presse</a>
+        <a href={href('intern/')}>Interner Bereich</a>
+      </nav>
+      <div class="site-footer__col">
+        <h2 class="site-footer__h">Folgen</h2>
+        <a href={verein.social.instagram} rel="noopener" target="_blank">Instagram · @tanznetzdresden</a>
+        {verein.social.telegram && <a href={verein.social.telegram} rel="noopener" target="_blank">Telegram · KEEP UP</a>}
+        <a href={href('#newsletter')}>Newsletter</a>
+        <a href={href('termine.ics')}>Kalender abonnieren (.ics)</a>
+      </div>
+    </div>
+    <div class="site-footer__partners">
+      <span class="site-footer__partners-h">Partner &amp; Förderung</span>
+      <p>{verein.partners.join(' · ')}</p>
+    </div>
+    <div class="site-footer__legal">
+      <span>© {year} {verein.legalName}</span>
+      <a href={href('impressum/')} class="site-footer__legal-first">Impressum</a>
+      <a href={href('datenschutz/')}>Datenschutz</a>
+      <button type="button" data-consent-open>Cookie-Einstellungen</button>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer { background: var(--purple); color: #fff; }
+  .site-footer__inner { max-width: var(--wrap); margin: 0 auto; padding: clamp(56px, 7vw, 88px) var(--gutter) 28px; }
+  .site-footer__cols {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px 48px;
+    padding-bottom: 48px; border-bottom: 1px solid var(--on-dark-rule);
+  }
+  .site-footer__brand { grid-column: span 2; min-width: 0; max-width: 100%; }
+  .site-footer__logo { display: block; width: 240px; max-width: 100%; color: #fff; }
+  .site-footer__logo:hover { color: #fff; }
+  .site-footer__brand p { margin: 22px 0 0; max-width: 340px; font-size: 14px; line-height: 1.6; color: var(--on-dark-soft); }
+  .site-footer__col { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; font-size: 14px; line-height: 1.6; }
+  .site-footer__h {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--cyan); margin: 0 0 6px;
+  }
+  .site-footer__col address { font-style: normal; color: rgba(255, 255, 255, 0.86); }
+  .site-footer__col a, .site-footer__col :global(.protected-email) { color: #fff; }
+  .site-footer__col a:hover { color: var(--cyan); }
+  .site-footer__partners {
+    display: flex; flex-wrap: wrap; gap: 14px 40px; padding: 28px 0;
+    border-bottom: 1px solid var(--on-dark-rule); align-items: baseline;
+  }
+  .site-footer__partners-h {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(255, 255, 255, 0.7);
+  }
+  .site-footer__partners p { margin: 0; font-size: 13.5px; line-height: 1.7; color: rgba(255, 255, 255, 0.86); flex: 1 1 480px; }
+  .site-footer__legal {
+    display: flex; flex-wrap: wrap; gap: 12px 28px; padding-top: 22px; font-family: var(--font-mono);
+    font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7);
+  }
+  .site-footer__legal a, .site-footer__legal button {
+    color: rgba(255, 255, 255, 0.7); background: none; border: 0; padding: 0; cursor: pointer;
+    font: inherit; letter-spacing: inherit; text-transform: inherit;
+  }
+  .site-footer__legal a:hover, .site-footer__legal button:hover { color: var(--cyan); }
+  .site-footer__legal-first { margin-left: auto; }
+  @media (max-width: 520px) {
+    .site-footer__brand { grid-column: auto; }
+    .site-footer__legal-first { margin-left: 0; }
+  }
+</style>
