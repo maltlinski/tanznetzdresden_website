@@ -7,7 +7,7 @@
 ============================================================ */
 :root {
   /* --- Families --- */
-  --font-display: 'Work Sans Variable', 'Work Sans', 'Calibri', system-ui, sans-serif;
+  --font-display: 'Work Sans', 'Calibri', system-ui, sans-serif;
   --font-body:    'Open Sans', 'Calibri', system-ui, sans-serif;
   --font-mono:    'JetBrains Mono', 'Consolas', ui-monospace, monospace;
 

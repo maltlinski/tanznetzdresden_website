@@ -16,8 +16,9 @@
 
 ## Designsystem
 
-Die Tokens in `src/styles/tokens/` stammen aus dem TNDD-Designsystem und sollten dort gepflegt und hierher kopiert
-werden. Die Hausregeln in Kurzform:
+Die Tokens kommen direkt aus `design/system/` (siehe [design/README.md](../design/README.md)). Neue Styles immer mit
+Tokens (`var(--purple)`, `var(--space-4)` …) statt fester Werte schreiben, dann wirken Änderungen am Designsystem
+überall. `npm run design:check` findet Tokens, die es nicht gibt. Die Hausregeln in Kurzform:
 
 - Ecken immer eckig (Radius 0), keine Schatten, keine Verläufe.
 - Magenta ist Akzent (Marker-Quadrate, Linien, zweite Headline-Zeile), nie Fläche.
@@ -29,8 +30,8 @@ werden. Die Hausregeln in Kurzform:
 Bausteine: `Tag`, `Button`, `Badge`, `KeilBar`, `Logo` in `src/components/ui/`, `PageIntro` und `Prose` für
 Unterseiten.
 
-Einzige bewusste Abweichung: `--ink-muted` ist dunkler als im Designsystem (#6B6484 statt #8B85A0), damit kleiner
-Text den WCAG-Kontrast erreicht.
+Bewusste Abweichungen stehen gesammelt in `src/styles/overrides.css` (derzeit nur `--ink-muted`, dunkler für
+WCAG-Kontrast).
 
 ## Neue Seite anlegen
 

@@ -1,0 +1,38 @@
+/* ============================================================
+   Schriften – selbst gehostet (DSGVO: keine Anfragen an Google).
+   ------------------------------------------------------------
+   Das Designsystem lädt Work Sans und JetBrains Mono von Google Fonts.
+   Die Website ersetzt das: Work Sans und JetBrains Mono kommen über
+   @fontsource (siehe src/layouts/Base.astro), Open Sans direkt aus
+   design/system/assets/fonts. Die Familiennamen bleiben identisch mit
+   den Tokens in design/system/tokens/typography.css.
+   Neue Schrift im Designsystem? → hier ergänzen (design:check meldet es).
+============================================================ */
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../../design/system/assets/fonts/OpenSans-regular.ttf') format('truetype');
+  font-weight: 300 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../../design/system/assets/fonts/OpenSans-bold.ttf') format('truetype');
+  font-weight: 600 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../../design/system/assets/fonts/OpenSans-italic.ttf') format('truetype');
+  font-weight: 300 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../../design/system/assets/fonts/OpenSans-boldItalic.ttf') format('truetype');
+  font-weight: 600 800;
+  font-style: italic;
+  font-display: swap;
+}

@@ -1,0 +1,40 @@
+/* ============================================================
+   TanzNetzDresden e.V. — Fonts
+   ------------------------------------------------------------
+   Open Sans (Body) is SELF-HOSTED — the binaries were extracted
+   from the official Förderantrag 2027 .docx and live in
+   assets/fonts/. Work Sans (Display) and JetBrains Mono (Tags)
+   load from Google Fonts (both are open-source families — these
+   ARE the brand fonts, not substitutes); swap in local
+   @font-face rules here if you need a fully offline build.
+============================================================ */
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap');
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../assets/fonts/OpenSans-regular.ttf') format('truetype');
+  font-weight: 300 500;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../assets/fonts/OpenSans-bold.ttf') format('truetype');
+  font-weight: 600 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../assets/fonts/OpenSans-italic.ttf') format('truetype');
+  font-weight: 300 500;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Open Sans';
+  src: url('../assets/fonts/OpenSans-boldItalic.ttf') format('truetype');
+  font-weight: 600 800;
+  font-style: italic;
+  font-display: swap;
+}

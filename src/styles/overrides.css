@@ -1,0 +1,13 @@
+/* ============================================================
+   Bewusste Abweichungen der Website vom Designsystem.
+   ------------------------------------------------------------
+   Alles hier überschreibt Tokens aus design/system/tokens/.
+   So wenig wie möglich! Besser: im Designsystem (Claude Design)
+   ändern und neu importieren. `npm run design:check` listet
+   diese Abweichungen bei jedem Build auf.
+============================================================ */
+:root {
+  /* Barrierefreiheit: #8B85A0 erreicht auf Weiß nur 3,6:1. Für kleinen Text
+     braucht WCAG AA 4,5:1. Empfehlung: im Designsystem übernehmen. */
+  --ink-muted: #6B6484;
+}

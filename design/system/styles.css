@@ -1,0 +1,12 @@
+/* ============================================================
+   TanzNetzDresden e.V. — Design System
+   styles.css · single entry point for all consumers.
+   Link THIS one file: <link rel="stylesheet" href="styles.css">
+   ------------------------------------------------------------
+   Imports only — every rule lives in a token file below.
+============================================================ */
+@import url('tokens/fonts.css');
+@import url('tokens/colors.css');
+@import url('tokens/typography.css');
+@import url('tokens/spacing.css');
+@import url('tokens/base.css');

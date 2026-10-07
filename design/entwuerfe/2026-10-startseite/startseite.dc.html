@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>TanzNetzDresden · Startseite</title>
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/base.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/styles.css">
+  <script src="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/_ds_bundle.js"></script>
+  <style>
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);hyphens:auto}
+    a{color:var(--magenta);text-decoration:none}
+    a:hover{color:var(--purple)}
+    *{box-sizing:border-box}
+    ::selection{background:var(--magenta);color:#fff}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:#fff">
+
+  <!-- HEADER -->
+  <header style="position:sticky;top:0;z-index:30;background:var(--purple);border-bottom:1px solid rgba(255,255,255,0.12)">
+    <div style="max-width:1320px;margin:0 auto;padding:18px clamp(20px,4vw,48px);display:flex;align-items:center;flex-wrap:wrap;gap:16px 40px">
+      <a href="#top" style="display:flex;align-items:center;color:#fff">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="word" color="#ffffff" width="196px" hint-size="196px,22px"></x-import>
+      </a>
+      <div style="margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:12px clamp(16px,2.4vw,36px)">
+      <nav style="display:flex;flex-wrap:wrap;gap:6px clamp(14px,2vw,28px)">
+        <a href="#termine" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Kalender</a>
+        <a href="#formate" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Formate</a>
+        <a href="#training" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Training</a>
+        <a href="#netzwerk" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Netzwerk</a>
+        <a href="#verein" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Über uns</a>
+      </nav>
+      <a href="#mitglied" style="display:flex">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="sm" marker="{{ true }}" hint-size="160px,32px">Mitglied werden</x-import>
+      </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO · das Netz -->
+  <section id="top" onMouseMove="{{ onHeroMove }}" onMouseLeave="{{ onHeroLeave }}" style="position:relative;background:var(--purple);color:#fff;min-height:clamp(620px,88vh,940px);display:flex;flex-direction:column;justify-content:flex-end;overflow:hidden">
+    <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+    <div style="position:relative;z-index:1;max-width:1320px;width:100%;margin:0 auto;padding:0 clamp(20px,4vw,48px) 0;pointer-events:none">
+      <div style="max-width:min(640px,100%);padding-bottom:clamp(36px,6vh,72px)">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" style="margin-bottom:26px" hint-size="320px,16px">Freie Tanzszene · Dresden · seit 2010</x-import>
+        <h1 ref="{{ h1Ref }}" style="font-family:var(--font-display);font-weight:800;font-size:clamp(56px,7.8vw,124px);line-height:0.9;letter-spacing:-0.035em;margin:0 0 30px;color:#fff;text-wrap:balance">Eine Stadt.<br><span style="color:var(--magenta)">Ein Netz.</span></h1>
+        <p style="font-size:clamp(16px,1.5vw,20px);line-height:1.55;color:rgba(255,255,255,0.88);max-width:460px;margin:0 0 34px;text-wrap:pretty">TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene. Wir organisieren Training, Bühnenformate, Diskurs und Residenzen und machen den zeitgenössischen Tanz in Dresden sichtbar.</p>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;pointer-events:auto">
+          <a href="#termine" style="display:flex">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="lg" marker="{{ true }}" hint-size="200px,46px">Nächste Termine</x-import>
+          </a>
+          <a href="#netzwerk" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;border-bottom:1.5px solid var(--magenta);padding-bottom:4px" style-hover="color:var(--cyan)">Wer im Netz tanzt →</a>
+        </div>
+      </div>
+    </div>
+    <div ref="{{ floorRef }}" style="position:relative;z-index:1;border-top:1px solid rgba(255,255,255,0.16)">
+      <div style="max-width:1320px;margin:0 auto;padding:18px clamp(20px,4vw,48px) 26px;display:flex;flex-wrap:wrap;align-items:center;gap:14px 44px">
+        <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:var(--font-display);font-weight:800;font-size:26px;color:var(--cyan);letter-spacing:-0.02em">70+</span><span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.78)">Tanzschaffende</span></div>
+        <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:var(--font-display);font-weight:800;font-size:26px;color:var(--cyan);letter-spacing:-0.02em">16</span><span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.78)">Jahre freie Szene</span></div>
+        <div style="display:flex;align-items:baseline;gap:10px"><span style="font-family:var(--font-display);font-weight:800;font-size:26px;color:var(--cyan);letter-spacing:-0.02em">9</span><span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.78)">Arbeitsgruppen</span></div>
+        <button onClick="{{ replay }}" style="margin-left:auto;display:flex;align-items:center;gap:10px;background:transparent;border:1.5px solid rgba(255,255,255,0.4);color:#fff;padding:9px 14px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta);color:var(--cyan)"><span style="width:8px;height:8px;background:var(--magenta)"></span>Netz neu knüpfen</button>
+      </div>
+    </div>
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 12 }}" style="position:absolute;left:0;bottom:0;width:34%;z-index:2" hint-size="34%,12px"></x-import>
+  </section>
+
+  <!-- TERMINE -->
+  <section id="termine" style="scroll-margin-top:70px;padding:clamp(64px,9vw,120px) 0 clamp(56px,7vw,96px)">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 40px;margin-bottom:36px">
+        <div>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" style="margin-bottom:16px" hint-size="160px,16px">Tanzkalender</x-import>
+          <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,5vw,64px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">Nächste Termine</h2>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+            <button onClick="{{ c.pick }}" style="padding:10px 16px;border:1.5px solid var(--purple);background:{{ c.bg }};color:{{ c.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;border-radius:0;display:flex;gap:8px;align-items:center" style-hover="border-color:var(--magenta)">{{ c.label }}<span style="opacity:0.6">{{ c.count }}</span></button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="border-bottom:1px solid var(--rule)">
+        <sc-for list="{{ events }}" as="ev" hint-placeholder-count="5">
+          <a href="#termine" style="display:grid;grid-template-columns:minmax(84px,120px) minmax(0,1fr) auto;gap:clamp(16px,3vw,40px);align-items:center;padding:24px 12px;border-top:1px solid var(--rule);color:var(--purple);transition:background 200ms" style-hover="background:var(--tint)">
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ ev.dow }}</span>
+              <div style="display:flex;align-items:baseline;gap:8px"><span style="font-family:var(--font-display);font-weight:800;font-size:clamp(34px,3.6vw,46px);line-height:0.9;letter-spacing:-0.03em;color:var(--magenta)">{{ ev.day }}</span><span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">{{ ev.mo }}</span></div>
+            </div>
+            <div style="min-width:0">
+              <div style="font-family:var(--font-display);font-weight:700;font-size:clamp(20px,2vw,26px);letter-spacing:-0.015em;line-height:1.15;color:var(--purple);margin-bottom:6px">{{ ev.title }}</div>
+              <div style="font-size:14.5px;line-height:1.5;color:var(--ink-soft)">{{ ev.meta }}</div>
+            </div>
+            <div style="display:flex;align-items:center;gap:20px">
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ ev.badge }}" size="sm" hint-size="70px,22px">{{ ev.cat }}</x-import>
+              <span style="font-family:var(--font-display);font-size:22px;color:var(--purple)">→</span>
+            </div>
+          </a>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-wrap:wrap;gap:12px 32px;margin-top:28px">
+        <a href="#termine" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)" style-hover="color:var(--purple)">Ganzer Kalender →</a>
+        <a href="#termine" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)" style-hover="color:var(--magenta)">Kalender abonnieren (.ics)</a>
+        <a href="#termine" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)" style-hover="color:var(--magenta)">Termin einreichen</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FORMATE -->
+  <section id="formate" style="scroll-margin-top:70px;background:var(--tint);padding:clamp(64px,9vw,120px) 0">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px;margin-bottom:40px">
+        <div>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" style="margin-bottom:16px" hint-size="160px,16px">Was wir machen</x-import>
+          <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,5vw,64px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">Formate &amp; Reihen</h2>
+        </div>
+        <p style="max-width:420px;margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">Getragen von Arbeitsgruppen aus dem Netzwerk. Jedes Format hat eine eigene AG, die es plant und weiterentwickelt.</p>
+      </div>
+
+      <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:40px clamp(32px,5vw,72px);align-items:start">
+          <div style="border-bottom:1px solid var(--rule)">
+            <sc-for list="{{ formats }}" as="f" hint-placeholder-count="6">
+              <div onMouseEnter="{{ f.pick }}" onClick="{{ f.pick }}" style="display:grid;grid-template-columns:44px minmax(0,1fr) auto;gap:16px;align-items:baseline;padding:22px 0;border-top:1px solid var(--rule);cursor:pointer">
+                <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;color:var(--ink-muted)">{{ f.n }}</span>
+                <div style="min-width:0">
+                  <div style="display:flex;align-items:center;gap:14px">
+                    <span style="flex:none;width:{{ f.mk }};height:14px;background:var(--magenta);transition:width 420ms cubic-bezier(0.16,1,0.3,1)"></span>
+                    <h3 style="font-family:var(--font-display);font-weight:800;font-size:clamp(28px,3.4vw,46px);line-height:1;letter-spacing:-0.03em;margin:0;color:{{ f.color }};transition:color 200ms">{{ f.t }}</h3>
+                  </div>
+                  <sc-if value="{{ f.open }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin:14px 0 4px;max-width:480px;font-size:15px;line-height:1.6;color:var(--ink-soft);text-wrap:pretty">{{ f.d }}</p>
+                  </sc-if>
+                </div>
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-soft);white-space:nowrap">{{ f.since }}</span>
+              </div>
+            </sc-for>
+          </div>
+          <div style="position:sticky;top:96px">
+            <div style="position:relative;aspect-ratio:4/5;max-height:72vh;width:100%;background:var(--purple);overflow:hidden;clip-path:polygon(0 0,100% 0,100% 88%,88% 100%,0 100%)">
+              <img src="{{ active.img }}" alt="{{ active.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+              <div style="position:absolute;top:0;left:0;width:38px;height:38px;background:var(--magenta)"></div>
+              <div style="position:absolute;left:0;bottom:0;right:12%;background:rgba(46,26,77,0.9);padding:18px 22px;display:flex;flex-direction:column;gap:6px">
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan)">{{ active.n }} · {{ active.since }}</span>
+                <span style="font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-0.02em;color:#fff">{{ active.t }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ isGrid }}" hint-placeholder-val="{{ false }}">
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr));gap:20px">
+          <sc-for list="{{ formats }}" as="f" hint-placeholder-count="6">
+            <a href="#formate" style="display:flex;flex-direction:column;background:#fff;border-top:3px solid var(--magenta);color:var(--purple)" style-hover="background:var(--paper)">
+              <div style="position:relative;aspect-ratio:3/2;background:var(--purple);overflow:hidden;clip-path:polygon(0 0,100% 0,100% 84%,90% 100%,0 100%)">
+                <img src="{{ f.img }}" alt="{{ f.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+              </div>
+              <div style="padding:22px 22px 26px;display:flex;flex-direction:column;gap:10px">
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted)">{{ f.n }} · {{ f.since }}</span>
+                <h3 style="font-family:var(--font-display);font-weight:800;font-size:28px;line-height:1.05;letter-spacing:-0.025em;margin:0;color:var(--purple)">{{ f.t }}</h3>
+                <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink-soft)">{{ f.d }}</p>
+              </div>
+            </a>
+          </sc-for>
+        </div>
+      </sc-if>
+    </div>
+  </section>
+
+  <!-- TRAINING -->
+  <section id="training" style="scroll-margin-top:70px;position:relative;background:var(--purple);color:#fff;padding:clamp(64px,9vw,120px) 0;overflow:hidden">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:48px clamp(32px,6vw,96px);align-items:start">
+      <div>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" style="margin-bottom:18px" hint-size="200px,16px">Profitraining · KEEP UP</x-import>
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(40px,5.4vw,72px);line-height:0.95;letter-spacing:-0.03em;margin:0 0 26px;color:#fff">Jede Woche<br><span style="color:var(--cyan)">im Studio.</span></h2>
+        <p style="max-width:500px;margin:0 0 30px;font-size:17px;line-height:1.6;color:rgba(255,255,255,0.86);text-wrap:pretty">Mit regelmäßig wechselnden Kursen von lokalen und internationalen Dozent:innen und dem offenen Training im Open Studio schaffen wir Raum für künstlerische Entwicklung und Austausch.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px 28px;align-items:center">
+          <a href="#training" style="display:flex">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" marker="{{ true }}" hint-size="200px,40px">Trainingsplan ansehen</x-import>
+          </a>
+          <a href="#training" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;border-bottom:1.5px solid var(--magenta);padding-bottom:4px" style-hover="color:var(--cyan)">Telegram-Gruppe →</a>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid rgba(255,255,255,0.2)">
+        <div style="padding:26px 24px 26px 0;border-bottom:1px solid rgba(255,255,255,0.2)">
+          <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px">Rhythmus</div>
+          <div style="font-family:var(--font-display);font-weight:800;font-size:44px;line-height:0.95;letter-spacing:-0.03em">3–5×</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.78);margin-top:6px">pro Woche, plus Workshops</div>
+        </div>
+        <div style="padding:26px 24px 26px 0;border-bottom:1px solid rgba(255,255,255,0.2)">
+          <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px">Beitrag</div>
+          <div style="font-family:var(--font-display);font-weight:800;font-size:44px;line-height:0.95;letter-spacing:-0.03em">9 € <span style="color:var(--magenta)">/</span> 6 €</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.78);margin-top:6px">regulär / Mitglieder · bar vor Ort</div>
+        </div>
+        <div style="padding:26px 24px 26px 0;border-bottom:1px solid rgba(255,255,255,0.2);grid-column:1/-1">
+          <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:12px">Ort</div>
+          <div style="font-family:var(--font-display);font-weight:700;font-size:26px;letter-spacing:-0.015em">TENZA Schmiede</div>
+          <div style="font-size:14px;color:rgba(255,255,255,0.78);margin-top:6px">Pfotenhauerstraße 59 · 01307 Dresden</div>
+        </div>
+      </div>
+    </div>
+    <div style="position:absolute;right:0;bottom:0;width:96px;height:96px;background:var(--magenta);clip-path:polygon(100% 0,100% 100%,0 100%)"></div>
+  </section>
+
+  <!-- NETZWERK -->
+  <section id="netzwerk" style="scroll-margin-top:70px;padding:clamp(64px,9vw,120px) 0">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 40px;margin-bottom:44px">
+        <div>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" style="margin-bottom:16px" hint-size="200px,16px">Mitglieder:innen</x-import>
+          <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,5vw,64px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">Wer im Netz tanzt</h2>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ roles }}" as="r" hint-placeholder-count="3">
+            <button onClick="{{ r.pick }}" style="padding:10px 16px;border:1.5px solid var(--purple);background:{{ r.bg }};color:{{ r.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta)">{{ r.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;max-width:1200px">
+        <sc-for list="{{ members }}" as="m" hint-placeholder-count="20">
+          <a href="#netzwerk" style="display:flex;align-items:center;gap:22px;font-family:var(--font-display);font-weight:700;font-size:clamp(24px,3vw,40px);line-height:1.15;letter-spacing:-0.025em;color:var(--purple);opacity:{{ m.op }};transition:opacity 300ms, color 150ms" style-hover="color:var(--magenta)">{{ m.name }}<span style="width:9px;height:9px;background:var(--magenta);flex:none"></span></a>
+        </sc-for>
+        <a href="#netzwerk" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);padding:8px 0" style-hover="color:var(--purple)">und über 40 weitere →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- MITGLIED / NEWSLETTER -->
+  <section id="mitglied" style="scroll-margin-top:70px;background:var(--cyan);color:var(--purple);position:relative">
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--purple)" height="{{ 14 }}" flip="{{ true }}" style="position:absolute;right:0;top:0;width:42%" hint-size="42%,14px"></x-import>
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(64px,8vw,104px) clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:56px clamp(32px,6vw,96px)">
+      <div id="verein">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--purple)" style="margin-bottom:18px" hint-size="200px,16px">Mitglied werden</x-import>
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,4.6vw,60px);line-height:0.98;letter-spacing:-0.03em;margin:0 0 22px">Werde Teil<br>des Netzes.</h2>
+        <p style="max-width:480px;margin:0 0 28px;font-size:16px;line-height:1.6;color:var(--purple)">Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.</p>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" size="lg" marker="{{ true }}" hint-size="220px,46px">Mitgliedsantrag</x-import>
+      </div>
+      <div style="align-self:end;border-top:2px solid var(--purple);padding-top:26px">
+        <div style="font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:-0.02em;margin-bottom:8px">Newsletter</div>
+        <p style="margin:0 0 22px;font-size:15px;line-height:1.6">Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.</p>
+        <sc-if value="{{ notSubscribed }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+            <div style="flex:1 1 240px">
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="E-Mail" placeholder="name@beispiel.de" type="email" value="{{ email }}" onChange="{{ onEmail }}" hint-size="100%,64px"></x-import>
+            </div>
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" onClick="{{ subscribe }}" hint-size="140px,40px">Anmelden</x-import>
+          </div>
+        </sc-if>
+        <sc-if value="{{ subscribed }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:14px;background:var(--purple);color:#fff;padding:16px 18px">
+            <span style="width:10px;height:10px;background:var(--magenta);flex:none"></span>
+            <span style="font-size:15px">Danke. Bitte bestätige deine Anmeldung über den Link in deinem Postfach.</span>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer style="background:var(--purple);color:#fff">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,88px) clamp(20px,4vw,48px) 28px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px 48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.16)">
+        <div style="grid-column:span 2;min-width:0;max-width:100%">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="full" color="#ffffff" width="240px" hint-size="240px,80px"></x-import>
+          <p style="margin:22px 0 0;max-width:340px;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.78)">Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit 2010, seit 2020 als gemeinnütziger Verein.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Kontakt</span>
+          <span style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.86)">Pfotenhauer Straße 59 HH<br>01307 Dresden</span>
+          <a href="mailto:kontakt@tanznetzdresden.de" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">kontakt@tanznetzdresden.de</a>
+          <a href="#top" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">+49 1577 1520 512</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Verein</span>
+          <a href="#verein" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Über uns</a>
+          <a href="#verein" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Vorstand &amp; Team</a>
+          <a href="#verein" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Arbeitsgruppen</a>
+          <a href="#verein" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Residenzen</a>
+          <a href="#verein" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Presse</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Folgen</span>
+          <a href="#top" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Instagram · @tanznetzdresden</a>
+          <a href="#top" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Telegram · KEEP UP</a>
+          <a href="#mitglied" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Newsletter</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:14px 40px;padding:28px 0;border-bottom:1px solid rgba(255,255,255,0.16);align-items:baseline">
+        <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.7)">Partner &amp; Förderung</span>
+        <span style="font-size:13.5px;line-height:1.7;color:rgba(255,255,255,0.86);flex:1 1 480px">Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz · Villa Wigman für Tanz · TENZA · Zentralwerk · Nationales Performance Netz · Dachverband Tanz Deutschland · Palucca Hochschule für Tanz</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px 28px;padding-top:22px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7)">
+        <span>© 2026 TanzNetzDresden e.V.</span>
+        <a href="#top" style="color:rgba(255,255,255,0.7);margin-left:auto" style-hover="color:var(--cyan)">Impressum</a>
+        <a href="#top" style="color:rgba(255,255,255,0.7)" style-hover="color:var(--cyan)">Datenschutz</a>
+        <a href="#top" style="color:rgba(255,255,255,0.7)" style-hover="color:var(--cyan)">English</a>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;nodeCount&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:110,&quot;min&quot;:40,&quot;max&quot;:200,&quot;step&quot;:10,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Netz-Animation&quot;,&quot;label&quot;:&quot;Knotendichte&quot;},&quot;interactive&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Netz-Animation&quot;,&quot;label&quot;:&quot;Cursor verknüpft sich&quot;},&quot;formatsLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;liste&quot;,&quot;raster&quot;],&quot;default&quot;:&quot;liste&quot;,&quot;tsType&quot;:&quot;'liste' | 'raster'&quot;,&quot;section&quot;:&quot;Layout&quot;,&quot;label&quot;:&quot;Formate-Darstellung&quot;}}">
+const EVENTS = [
+  { dow: 'Do', day: '15', mo: 'Okt', title: 'Studio Round #9', meta: 'Villa Wigman für Tanz · 19:30 Uhr · Showing und moderiertes Gespräch, mit Gästen aus Freiburg und Frankfurt', cat: 'Diskurs' },
+  { dow: 'Mo', day: '19', mo: 'Okt', title: 'KEEP UP · Profitraining', meta: 'TENZA Schmiede · 10:00 Uhr · Contemporary, wöchentlich mit wechselnden Dozent:innen', cat: 'Training' },
+  { dow: 'Sa', day: '31', mo: 'Okt', title: 'POP UP', meta: 'Zentralwerk · 20:00 Uhr · Neue Kurzstücke aus dem Netzwerk', cat: 'Bühne' },
+  { dow: 'Sa', day: '14', mo: 'Nov', title: 'KEEP UP · Workshop', meta: 'TENZA Schmiede · 11:00–15:00 Uhr · Anmeldung über die Telegram-Gruppe', cat: 'Training' },
+  { dow: 'Do', day: '26', mo: 'Nov', title: 'vision:danceable #6', meta: 'Societaetstheater · 20:00 Uhr · Kurzstückreihe mit 4 rooms company und about blank collective', cat: 'Bühne' },
+  { dow: 'So', day: '06', mo: 'Dez', title: 'Sharing · Offenes Netzwerktreffen', meta: 'TENZA Schmiede · 17:00 Uhr · Für Mitglieder:innen und alle, die es werden wollen', cat: 'Diskurs' },
+];
+const BADGE = { 'Bühne': 'magenta', 'Training': 'cyan', 'Diskurs': 'purple' };
+const P = 'assets/photos/';
+const FORMATS = [
+  { n: '01', t: 'Studio Round', since: 'seit 2021', img: P + 'duo-silhouette-stage.jpg', alt: 'Duo als Silhouette auf der Bühne', d: 'Offenes Showing mit moderiertem Gespräch. Seit 2024 überregional mit dem Tanznetz Freiburg und dem ID Frankfurt.' },
+  { n: '02', t: 'POP UP', since: 'seit 2019', img: P + 'ensemble-curtain-call.jpg', alt: 'Ensemble beim Schlussapplaus', d: 'Niedrigschwelliges Aufführungsformat für neue Arbeiten aus dem Netzwerk. Seit 2022 auch als POP UP exchange.' },
+  { n: '03', t: 'KEEP UP', since: 'seit 2022', img: P + 'headstand-solo.jpg', alt: 'Solo-Tänzerin im Kopfstand', d: 'Profitraining 3–5× pro Woche in der TENZA, mit wechselnden lokalen und internationalen Dozent:innen. Dazu Workshops.' },
+  { n: '04', t: 'vision:danceable', since: 'seit 2024', img: P + 'duo-orange-blue.jpg', alt: 'Zwei Tanzende in orangem und blauem Licht', d: 'Kurzstückreihe am Societaetstheater, gemeinsam mit der 4 rooms company und dem about blank collective.' },
+  { n: '05', t: 'Welttanztag', since: 'jährlich · 29. April', img: P + 'ensemble-curtain-call.jpg', alt: 'Ensemble auf der Bühne', d: 'Tanz im öffentlichen Raum. Wir bringen den Tanz direkt ins Stadtbild: spontan, einladend und für alle zugänglich.' },
+  { n: '06', t: 'Bodies & Textiles', since: 'ab 2027', img: P + 'duo-silhouette-stage.jpg', alt: 'Duo auf der Bühne', d: 'Neues Format mit Wir Gestalten Dresden und dem Slow Fashion Festival.' },
+];
+const MEMBERS = [
+  ['Alba T Álvarez','m'],['Alexandre May','t'],['Alina Lucifero','m'],['Amit Abend','mt'],['Amy Schönheit','m'],['Anna Till','m'],
+  ['Annette Lopez Leal','m'],['Antje Kaufmann','m'],['Aurélie Lafaye','mt'],['Aurora Fradella','t'],['Barbara Lubich','m'],['Beatrice Panero','t'],
+  ['Bettina Paletta & Emre Kesim','t'],['Caroline Beach','m'],['Charles Washington','mt'],['Chiara Detscher','m'],['Justine Rouquart','m'],['Laura Gary','t'],
+  ['Leon Börgens','t'],['Malte Leonard Herz','m'],['Michael Tucker','m'],['Natalie Wagner','m'],['Rika Yotsumoto','m'],['Yamile Anaid Navarro Luna','m'],
+];
+const LABELS = [
+  [0.60, 0.18, 'Villa Wigman'], [0.86, 0.14, 'TENZA'], [0.94, 0.40, 'Zentralwerk'],
+  [0.80, 0.60, 'Societaetstheater'], [0.62, 0.74, 'Studio Round'], [0.90, 0.80, 'KEEP UP'], [0.50, 0.38, 'POP UP'],
+];
+
+class Component extends DCLogic {
+  state = { cat: 'Alle', role: 'alle', fmt: 0, email: '', subscribed: false };
+  canvasRef = React.createRef();
+  floorRef = React.createRef();
+  h1Ref = React.createRef();
+  mouse = null;
+
+  componentDidMount() {
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.build(this.reduced);
+    this.onResize = () => { clearTimeout(this._rt); this._rt = setTimeout(() => this.build(true), 160); };
+    window.addEventListener('resize', this.onResize);
+    const loop = (now) => { this.frame(now); this.raf = requestAnimationFrame(loop); };
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() {
+    cancelAnimationFrame(this.raf);
+    window.removeEventListener('resize', this.onResize);
+  }
+  componentDidUpdate(prev) {
+    if (prev.nodeCount !== this.props.nodeCount) this.build(false);
+  }
+
+  loadPhotos() {
+    if (this._photoP) return this._photoP;
+    const load = (src) => new Promise((res) => { const im = new Image(); im.onload = () => res(im); im.onerror = () => res(null); im.src = src; });
+    this._photoP = Promise.all([load('assets/photos/solo-blau.jpg'), load('assets/photos/duo-rot.jpg')]).then(([blau, rot]) => (this.photos = { blau, rot }));
+    return this._photoP;
+  }
+
+  build(settled) {
+    this.loadPhotos().then(() => this.buildNow(settled));
+  }
+
+  buildNow(settled) {
+    const c = this.canvasRef.current;
+    if (!c) return;
+    const r = c.getBoundingClientRect();
+    if (!r.width) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    const W = r.width, H = r.height;
+    c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+    const ctx = c.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const net = document.createElement('canvas'); net.width = c.width; net.height = c.height;
+    const nctx = net.getContext('2d'); nctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    Object.assign(this, { ctx, net, nctx, W, H, dpr });
+    // photos laid out on a 1280×800 stage, scaled to hero height and anchored right
+    const fl = this.floorRef.current, h1 = this.h1Ref.current;
+    const floor = fl ? fl.getBoundingClientRect().top - r.top : H;
+    let textRight = W * 0.45;
+    if (h1) { const rg = document.createRange(); rg.selectNodeContents(h1); textRight = rg.getBoundingClientRect().right - r.left; }
+    const k = Math.max(0.5, floor / 800), ox = Math.max(W - 1280 * k, textRight + 16 - 545 * k);
+    const X = (x) => ox + x * k, Y = (y) => y * k;
+    const defs = [
+      { key: 'blau', s: [620, 300, 1000, 1000], d: [349, 76, 780, 780], box: [540, 130, 860, 800], c: [700, 450], at: 2.4, floorY: 684 },
+      { key: 'rot', s: [0, 0, 1333, 2000], d: [760, -20, 560, 840], box: [780, 40, 1270, 800], c: [1030, 400], at: 3.0 },
+    ];
+    const PW = c.width, PH = c.height;
+    this.layers = defs.filter((p) => this.photos && this.photos[p.key]).map((p) => {
+      const cv = document.createElement('canvas'); cv.width = PW; cv.height = PH;
+      const x = cv.getContext('2d'); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+      x.fillStyle = '#000'; x.fillRect(0, 0, W, H);
+      x.drawImage(this.photos[p.key], ...p.s, X(p.d[0]), Y(p.d[1]), p.d[2] * k, p.d[3] * k);
+      const mask = document.createElement('canvas'); mask.width = PW; mask.height = PH;
+      let data = null;
+      try {
+        const id = x.getImageData(0, 0, PW, PH); data = id.data;
+        const mid = mask.getContext('2d').createImageData(PW, PH), md = mid.data;
+        const floor = p.floorY ? Y(p.floorY) * dpr : Infinity;
+        for (let i = 0; i < data.length; i += 4) {
+          const yy = ((i / 4) / PW) | 0;
+          const mx = Math.max(data[i], data[i + 1], data[i + 2]);
+          const lo = yy > floor ? 150 : 56, span = yy > floor ? 50 : 54;
+          const fa = mx < lo ? 0 : mx < lo + span ? (mx - lo) / span : 1;
+          if (fa < 1) { data[i] *= fa; data[i + 1] *= fa; data[i + 2] *= fa; }
+          if (fa > 0.06) md[i + 3] = 255;
+        }
+        x.setTransform(1, 0, 0, 1, 0, 0); x.putImageData(id, 0, 0);
+        mask.getContext('2d').putImageData(mid, 0, 0);
+      } catch (e) {}
+      return { cv, mask, at: p.at, box: [X(p.box[0]), Y(p.box[1]), X(p.box[2]), Y(p.box[3])] };
+    });
+    const base = this.props.nodeCount ?? 110;
+    const N = Math.max(30, Math.round(base * Math.min(1.4, Math.max(0.45, (W * H) / (1440 * 820)))));
+    const pts = [];
+    for (let i = 0; i < N; i++) {
+      let best = null, bd = -1;
+      for (let q = 0; q < 16; q++) {
+        const x = 16 + Math.random() * (W - 32), y = 16 + Math.random() * (H - 32);
+        let d = Infinity; for (const p of pts) { const dd = (p.tx - x) ** 2 + (p.ty - y) ** 2; if (dd < d) d = dd; }
+        if (d > bd) { bd = d; best = [x, y]; }
+      }
+      pts.push({ tx: best[0], ty: best[1], sx: Math.random() * W, sy: Math.random() * H, d: Math.random() * 0.6, ph: Math.random() * 6.283 });
+    }
+    const sx = X(930), sy = Y(420), maxD = Math.hypot(Math.max(sx, W - sx), Math.max(sy, H - sy));
+    const keys = new Set(); this.edges = [];
+    pts.forEach((p, i) => {
+      pts.map((q, j) => [j, Math.hypot(q.tx - p.tx, q.ty - p.ty)]).filter(([j]) => j !== i).sort((a, b) => a[1] - b[1]).slice(0, 3).forEach(([j]) => {
+        const key = i < j ? i + '-' + j : j + '-' + i; if (keys.has(key)) return; keys.add(key);
+        const mx = (p.tx + pts[j].tx) / 2, my = (p.ty + pts[j].ty) / 2;
+        const inText = mx < W * 0.46 && my > H * 0.32;
+        this.edges.push({ a: i, b: j, at: 0.6 + Math.hypot(mx - sx, my - sy) / maxD * 1.6, base: inText ? 0.12 : 0.3 });
+      });
+    });
+    this.nodes = pts;
+    this.accents = [];
+    for (let i = 0; i < 300 && this.accents.length < 3; i++) {
+      const p = pts[(Math.random() * pts.length) | 0];
+      const inBody = this.layers.some((l) => p.tx > l.box[0] && p.tx < l.box[2] && p.ty > l.box[1]);
+      if (!inBody && !(p.tx < W * 0.5 && p.ty > H * 0.3) && !this.accents.includes(p)) this.accents.push(p);
+    }
+    this.t0 = performance.now() - (settled ? 20000 : 0);
+  }
+
+  frame(now) {
+    const { ctx, nctx, net, W, H, dpr } = this; if (!ctx || !this.nodes) return;
+    const c = this.canvasRef.current; if (!c) return;
+    if (c.getBoundingClientRect().bottom < 0) return;
+    const t = (now - this.t0) / 1000;
+    const cl = (v) => v < 0 ? 0 : v > 1 ? 1 : v;
+    const ease = (v) => v >= 1 ? 1 : 1 - Math.pow(2, -10 * v);
+    const m = this.props.interactive === false ? null : this.mouse;
+    const R = 170;
+    // photos
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+    ctx.fillStyle = '#2E1A4D'; ctx.fillRect(0, 0, W, H);
+    ctx.globalCompositeOperation = 'screen';
+    const wipes = this.layers.map((l) => {
+      const q = ease(cl((t - l.at) / 1.3));
+      const x0 = l.box[0] - 40, w = (l.box[2] - l.box[0] + 80) * q;
+      if (q > 0) { ctx.save(); ctx.beginPath(); ctx.rect(x0, 0, w, H); ctx.clip(); ctx.globalAlpha = Math.min(1, q * 1.4); ctx.drawImage(l.cv, 0, 0, W, H); ctx.restore(); }
+      return [q, x0, w];
+    });
+    ctx.globalCompositeOperation = 'source-over'; ctx.globalAlpha = 1;
+    // net on its own layer
+    nctx.globalCompositeOperation = 'source-over'; nctx.globalAlpha = 1;
+    nctx.clearRect(0, 0, W, H);
+    for (const n of this.nodes) {
+      const p = ease(cl((t - n.d) / 2.1));
+      let x = n.sx + (n.tx - n.sx) * p + Math.sin(t * 0.5 + n.ph) * 2 * p;
+      let y = n.sy + (n.ty - n.sy) * p + Math.cos(t * 0.42 + n.ph) * 2 * p;
+      n.md = Infinity;
+      if (m) { const d = Math.hypot(m.x - x, m.y - y); n.md = d; if (d < R) { const f = (1 - d / R) * 0.14; x += (m.x - x) * f; y += (m.y - y) * f; } }
+      n.x = x; n.y = y;
+    }
+    nctx.lineWidth = 1;
+    for (const e of this.edges) {
+      const q = ease(cl((t - e.at) / 0.6)); if (q <= 0) continue;
+      const a = this.nodes[e.a], b = this.nodes[e.b];
+      const near = m ? Math.max(0, 1 - Math.min(a.md, b.md) / R) : 0;
+      nctx.strokeStyle = 'rgba(72,198,215,' + (e.base + near * 0.45).toFixed(3) + ')';
+      nctx.beginPath(); nctx.moveTo(a.x, a.y); nctx.lineTo(a.x + (b.x - a.x) * q, a.y + (b.y - a.y) * q); nctx.stroke();
+    }
+    if (m) {
+      nctx.lineWidth = 1.25;
+      for (const n of this.nodes) if (n.md < R) { nctx.strokeStyle = 'rgba(218,26,106,' + ((1 - n.md / R) * 0.85).toFixed(3) + ')'; nctx.beginPath(); nctx.moveTo(m.x, m.y); nctx.lineTo(n.x, n.y); nctx.stroke(); }
+    }
+    for (const n of this.nodes) { const hot = n.md < R; nctx.fillStyle = hot ? '#fff' : 'rgba(255,255,255,0.8)'; const s = hot ? 4 : 3; nctx.fillRect(n.x - s / 2, n.y - s / 2, s, s); }
+    const aq = ease(cl((t - 1.6) / 0.7));
+    if (aq > 0) { nctx.fillStyle = '#DA1A6A'; for (const p of this.accents) { const s = 10 * aq; nctx.fillRect(p.x - s / 2, p.y - s / 2, s, s); } }
+    // erase the net wherever a body has been revealed
+    nctx.globalCompositeOperation = 'destination-out';
+    this.layers.forEach((l, i) => {
+      const [q, x0, w] = wipes[i]; if (q <= 0) return;
+      nctx.save(); nctx.beginPath(); nctx.rect(x0, 0, w, H); nctx.clip(); nctx.globalAlpha = Math.min(1, q * 1.4);
+      nctx.drawImage(l.mask, 0, 0, W, H); nctx.restore();
+    });
+    nctx.globalCompositeOperation = 'source-over';
+    ctx.drawImage(net, 0, 0, W, H);
+    if (m) { ctx.fillStyle = '#DA1A6A'; ctx.fillRect(m.x - 5, m.y - 5, 10, 10); }
+  }
+
+  renderVals() {
+    const { cat, role, fmt } = this.state;
+    const cats = ['Alle', 'Bühne', 'Training', 'Diskurs'].map((l) => ({
+      label: l, count: l === 'Alle' ? EVENTS.length : EVENTS.filter((e) => e.cat === l).length,
+      bg: cat === l ? 'var(--purple)' : 'transparent', fg: cat === l ? '#fff' : 'var(--purple)',
+      pick: () => this.setState({ cat: l }),
+    }));
+    const events = EVENTS.filter((e) => cat === 'Alle' || e.cat === cat).map((e) => ({ ...e, badge: BADGE[e.cat] }));
+    const formats = FORMATS.map((f, i) => ({
+      ...f, open: i === fmt, mk: i === fmt ? '14px' : '0px',
+      color: i === fmt ? 'var(--magenta)' : 'var(--purple)',
+      pick: () => { if (this.state.fmt !== i) this.setState({ fmt: i }); },
+    }));
+    const roleDefs = [['alle', 'Alle'], ['m', 'Mitglieder:innen'], ['t', 'Trainer:innen']];
+    const roles = roleDefs.map(([k, l]) => ({
+      label: l, bg: role === k ? 'var(--purple)' : 'transparent', fg: role === k ? '#fff' : 'var(--purple)',
+      pick: () => this.setState({ role: k }),
+    }));
+    const members = MEMBERS.map(([name, r]) => ({ name, op: role === 'alle' || r.includes(role) ? 1 : 0.16 }));
+    const layout = this.props.formatsLayout ?? 'liste';
+    return {
+      canvasRef: this.canvasRef, floorRef: this.floorRef, h1Ref: this.h1Ref,
+      onHeroMove: (e) => { const c = this.canvasRef.current; if (!c) return; const r = c.getBoundingClientRect(); this.mouse = { x: e.clientX - r.left, y: e.clientY - r.top }; },
+      onHeroLeave: () => { this.mouse = null; },
+      replay: () => this.build(false),
+      cats, events, formats, active: FORMATS[fmt],
+      isList: layout === 'liste', isGrid: layout === 'raster',
+      roles, members,
+      email: this.state.email,
+      onEmail: (e) => this.setState({ email: e.target.value }),
+      subscribe: () => { if (/\S+@\S+\.\S+/.test(this.state.email)) this.setState({ subscribed: true }); },
+      subscribed: this.state.subscribed, notSubscribed: !this.state.subscribed,
+    };
+  }
+}
+</script>
+</body>
+</html>

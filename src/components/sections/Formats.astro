@@ -134,7 +134,7 @@ const items = (await getFormate()).map((f, i) => ({ ...f.data, id: f.id, n: Stri
   .format-photo__frame :global(.format-photo__img.is-active) { clip-path: inset(0 0 0 0); z-index: 1; }
   .format-photo__sq { position: absolute; z-index: 2; top: 0; left: 0; width: 38px; height: 38px; background: var(--magenta); }
   .format-photo__cap {
-    position: absolute; z-index: 2; left: 0; bottom: 0; right: 12%; background: rgba(46, 26, 77, 0.9);
+    position: absolute; z-index: 2; left: 0; bottom: 0; right: 12%; background: color-mix(in srgb, var(--purple) 90%, transparent);
     padding: 18px 22px; display: flex; flex-direction: column; gap: 6px;
   }
   .format-photo__meta {

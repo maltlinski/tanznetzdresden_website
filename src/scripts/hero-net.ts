@@ -47,9 +47,19 @@ const PHOTO_DEFS: PhotoDef[] = [
   { key: 'rot', s: [0, 0, 1333, 2000], d: [760, -20, 560, 840], box: [780, 40, 1270, 800], at: 3.0 },
 ];
 
-const PURPLE = '#2E1A4D';
-const MAGENTA = '#DA1A6A';
 const R = 170; // pointer radius
+
+/** Farben aus den Design-Tokens (design/system) lesen – als [r, g, b]. */
+function tokenRgb(name: string, fallback: [number, number, number]): [number, number, number] {
+  const probe = document.createElement('span');
+  probe.style.color = `var(${name})`;
+  probe.style.display = 'none';
+  document.body.append(probe);
+  const m = getComputedStyle(probe).color.match(/[\d.]+/g);
+  probe.remove();
+  return m && m.length >= 3 ? [Number(m[0]), Number(m[1]), Number(m[2])] : fallback;
+}
+const rgba = ([r, g, b]: [number, number, number], a = 1) => `rgba(${r},${g},${b},${a.toFixed(3)})`;
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
 const easeOutExpo = (v: number) => (v >= 1 ? 1 : 1 - Math.pow(2, -10 * v));
@@ -85,6 +95,7 @@ export class HeroNet {
   private resizeTimer = 0;
   private lastWidth = 0;
   private cleanup: (() => void)[] = [];
+  private colors = { purple: [46, 26, 77], magenta: [218, 26, 106], cyan: [72, 198, 215] } as Record<'purple' | 'magenta' | 'cyan', [number, number, number]>;
 
   constructor(options: HeroNetOptions) {
     this.opts = { nodeCount: 110, interactive: true, ...options };
@@ -93,6 +104,11 @@ export class HeroNet {
 
   start(): void {
     const { canvas } = this.opts;
+    this.colors = {
+      purple: tokenRgb('--purple', this.colors.purple),
+      magenta: tokenRgb('--magenta', this.colors.magenta),
+      cyan: tokenRgb('--cyan', this.colors.cyan),
+    };
     this.build(this.reduced);
 
     const onResize = () => {
@@ -325,7 +341,7 @@ export class HeroNet {
     // 1 · ground + photos (screen blend, clip-wiped left → right)
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
-    ctx.fillStyle = PURPLE;
+    ctx.fillStyle = rgba(this.colors.purple);
     ctx.fillRect(0, 0, W, H);
     ctx.globalCompositeOperation = 'screen';
     const wipes = this.layers.map((l) => {
@@ -374,7 +390,7 @@ export class HeroNet {
       const a = this.nodes[e.a];
       const b = this.nodes[e.b];
       const near = m ? Math.max(0, 1 - Math.min(a.md, b.md) / R) : 0;
-      nctx.strokeStyle = `rgba(72,198,215,${(e.base + near * 0.45).toFixed(3)})`;
+      nctx.strokeStyle = rgba(this.colors.cyan, e.base + near * 0.45);
       nctx.beginPath();
       nctx.moveTo(a.x, a.y);
       nctx.lineTo(a.x + (b.x - a.x) * q, a.y + (b.y - a.y) * q);
@@ -384,7 +400,7 @@ export class HeroNet {
       nctx.lineWidth = 1.25;
       for (const n of this.nodes) {
         if (n.md >= R) continue;
-        nctx.strokeStyle = `rgba(218,26,106,${((1 - n.md / R) * 0.85).toFixed(3)})`;
+        nctx.strokeStyle = rgba(this.colors.magenta, (1 - n.md / R) * 0.85);
         nctx.beginPath();
         nctx.moveTo(m.x, m.y);
         nctx.lineTo(n.x, n.y);
@@ -399,7 +415,7 @@ export class HeroNet {
     }
     const aq = easeOutExpo(clamp01((t - 1.6) / 0.7));
     if (aq > 0) {
-      nctx.fillStyle = MAGENTA;
+      nctx.fillStyle = rgba(this.colors.magenta);
       for (const p of this.accents) {
         const s = 10 * aq;
         nctx.fillRect(p.x - s / 2, p.y - s / 2, s, s);
@@ -423,7 +439,7 @@ export class HeroNet {
     ctx.drawImage(net, 0, 0, W, H);
 
     if (m) {
-      ctx.fillStyle = MAGENTA;
+      ctx.fillStyle = rgba(this.colors.magenta);
       ctx.fillRect(m.x - 5, m.y - 5, 10, 10);
     }
   }

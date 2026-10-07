@@ -41,6 +41,7 @@ Optional `.env` aus `.env.example` anlegen (für den internen Bereich).
 ## Projektstruktur
 
 ```
+design/               Designsystem aus Claude Design – die Website liest Farben, Schriften, Logo direkt von hier
 src/
   content/            Inhalte: Termine, Formate, Personen, Rechtstexte (Markdown/YAML)
   content.config.ts   Schemas der Inhalte (Pflichtfelder werden beim Build geprüft)
@@ -51,8 +52,8 @@ src/
   layouts/            Seitenrahmen (Base, Page, Intern)
   pages/              Jede Datei = eine URL
   scripts/            Browser-Code: Netz-Animation, Consent, E-Mail-Schutz, interner Bereich
-  styles/             Design-Tokens (aus dem Designsystem) + globale Styles
-  assets/             Fotos, Schriften, Logo (werden beim Build optimiert)
+  styles/             globale Styles, Schriften, bewusste Abweichungen vom Designsystem
+  assets/             Fotos (werden beim Build optimiert)
 public/admin/         CMS
 supabase/migrations/  Datenbank für den internen Bereich
 tests/                Playwright-Tests
@@ -61,6 +62,7 @@ docs/                 Anleitungen
 
 ## Anleitungen
 
+- [Design ändern](design/README.md): Designsystem aus Claude Design übernehmen
 - [Inhalte bearbeiten](docs/inhalte.md): Termine, Formate, Personen, Texte, CMS
 - [Interner Bereich einrichten](docs/intern.md): Supabase, Einladungen, Rollen
 - [Veröffentlichen](docs/deployment.md): GitHub Pages, eigene Domain, Hosting in der EU

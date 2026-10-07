@@ -1,14 +1,16 @@
 /* ============================================================
    TanzNetzDresden — Website · global layer
-   Design-system tokens + the shared primitives (Tag, Button,
-   Badge, KeilBar, Chip). Section styles live in their components.
-   House rules: radius 0, flat color fields, Magenta = accent only.
+   Tokens kommen direkt aus design/system/ (Quelle: Claude Design).
+   Danach: selbst gehostete Schriften, bewusste Abweichungen,
+   gemeinsame Bausteine (Tag, Button, Badge, KeilBar, Chip).
+   Hausregeln: Radius 0, flache Farbflächen, Magenta nur Akzent.
 ============================================================ */
-@import './tokens/fonts.css';
-@import './tokens/colors.css';
-@import './tokens/typography.css';
-@import './tokens/spacing.css';
-@import './tokens/base.css';
+@import '../../design/system/tokens/colors.css';
+@import '../../design/system/tokens/typography.css';
+@import '../../design/system/tokens/spacing.css';
+@import '../../design/system/tokens/base.css';
+@import './fonts.css';
+@import './overrides.css';
 
 :root {
   --wrap: 1320px;
@@ -18,9 +20,6 @@
   --on-dark-soft: rgba(255, 255, 255, 0.78);
   --on-dark-rule: rgba(255, 255, 255, 0.16);
   color-scheme: light;
-  /* Barrierefreiheit: das DS-Grau #8B85A0 erreicht auf Weiß nur 3,6:1. Für Text
-     dunkler, damit WCAG AA (4,5:1) erfüllt ist. */
-  --ink-muted: #6B6484;
 }
 
 /* Flächen in Tint: Magenta für kleine Schrift eine Stufe dunkler (Kontrast). */
