@@ -13,6 +13,10 @@ Alle Stellen mit `[BITTE …]` suchen: `grep -rn "BITTE" src`
 - [ ] **Förderhinweis**: Logo der Landeshauptstadt Dresden (nach deren Gestaltungshandbuch) in
       `src/assets/foerderer/` ablegen, Dateinamen in `verein.json` → `funders[].logo` eintragen. Wortlaut von
       `fundingText` mit dem Zuwendungsbescheid abgleichen. Weitere Förderer ergänzen.
+- [ ] **Spenden** (`verein.json` → `donation`, `taxExemption`): IBAN/BIC eintragen (erst dann erscheinen
+      Bankverbindung und GiroCode), Wirkungs-Beispiele mit echten Kosten abgleichen, Freistellungsbescheid
+      (Finanzamt, Steuernummer, Datum, Zeitraum) eintragen – ohne ihn ist der vereinfachte Spendennachweis
+      ungültig. Klären, ob die Satzung Fördermitglieder vorsieht. Online-Spende optional (z. B. betterplace).
 - [ ] **Transparenz-Seite** (`src/content/seiten/transparenz.md` + `en/`): Freistellungsbescheid, Tätigkeitsbericht,
       Mittelherkunft und -verwendung jährlich eintragen.
 - [ ] **Leichte Sprache**: Text von Prüfer:innen aus der Zielgruppe gegenlesen lassen.

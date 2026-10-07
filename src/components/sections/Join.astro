@@ -10,12 +10,12 @@ const t = tr(lang, {
   de: {
     kicker: 'Mitglied werden', l1: 'Werde Teil', l2: 'des Netzes.',
     lead: 'Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.',
-    cta: 'Mitgliedsantrag', nlLead: 'Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.',
+    cta: 'Mitgliedsantrag', donate: 'Oder mit einer Spende helfen →', nlLead: 'Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.',
   },
   en: {
     kicker: 'Become a member', l1: 'Become part', l2: 'of the network.',
     lead: 'As a member you train at a reduced rate, join working groups and shape the formats of the association. For professional dance artists in and around Dresden.',
-    cta: 'How to join', nlLead: 'Once a month: events, open calls and news from the independent scene (in German).',
+    cta: 'How to join', donate: 'Or help with a donation →', nlLead: 'Once a month: events, open calls and news from the independent scene (in German).',
   },
 });
 ---
@@ -26,7 +26,10 @@ const t = tr(lang, {
       <Tag color="purple">{t.kicker}</Tag>
       <h2 id="join-h" class="join__title">{t.l1}<br />{t.l2}</h2>
       <p class="join__lead">{t.lead}</p>
-      <Button href={url(lang, 'mitglied')} size="lg" marker>{t.cta}</Button>
+      <div class="join__actions">
+        <Button href={url(lang, 'mitglied')} size="lg" marker>{t.cta}</Button>
+        <a class="mono-link join__donate" href={url(lang, 'spenden')}>{t.donate}</a>
+      </div>
     </div>
     <div class="newsletter" id="newsletter">
       <h3 class="newsletter__title">Newsletter</h3>
@@ -49,6 +52,9 @@ const t = tr(lang, {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 4.6vw, 60px);
     line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 22px; color: var(--purple);
   }
+  .join__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
+  .join__donate { color: var(--purple); border-bottom: 1.5px solid var(--purple); padding-bottom: 4px; }
+  .join__donate:hover { color: var(--magenta-2); border-color: var(--magenta-2); }
   .join__lead { max-width: 480px; margin: 0 0 28px; font-size: 16px; line-height: 1.6; }
   .newsletter { align-self: end; border-top: 2px solid var(--purple); padding-top: 26px; }
   .newsletter__title { font-family: var(--font-display); font-weight: 800; font-size: 28px; letter-spacing: -0.02em; margin: 0 0 8px; color: var(--purple); }

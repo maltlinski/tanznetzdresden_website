@@ -63,6 +63,12 @@ Portraits from the members area are stored with Supabase (Frankfurt am Main) and
 
 Whether we count visits is up to you: statistics only run if they are set up and you consent to the “Statistics” category (§ 25(1) TDDDG, Art. 6(1)(a) GDPR). We use [PLEASE ADD if activated: cookie-free Matomo on our own server / Plausible Analytics, EU]. The IP address is truncated and no profiles are created across websites. We need the figures for reports to our funders.
 
+## Donations
+
+If you donate by bank transfer, our bank sends us your name, IBAN, the amount and the reference. We process this data to record the donation and, on request, to issue a donation receipt (Art. 6(1)(b) and (c) GDPR). We keep it for as long as required by tax retention periods (usually ten years).
+
+The EPC QR code on the donation page is generated on our server. Scanning it does not send any data to us. If you donate online via a donation service provider, their privacy policy also applies.
+
 ## Membership administration
 
 We process members’ data (name, address, contact details, fee data) to administer the membership (Art. 6(1)(b) GDPR) and keep it after leaving for as long as required by tax and association law.

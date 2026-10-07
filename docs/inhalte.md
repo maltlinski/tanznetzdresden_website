@@ -24,6 +24,7 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 | Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge |
 | Personen | `src/content/personen.yaml` | Reihenfolge = Anzeige |
 | Vereinsdaten, Impressum-Angaben, Training, Newsletter | `src/settings/verein.json` | |
+| Spenden: Bankverbindung, Beträge, Wirkung, Steuerbescheid | `src/settings/verein.json` → `donation`, `taxExemption` | GiroCode entsteht automatisch |
 | Arbeitsgruppen | `src/settings/arbeitsgruppen.ts` | |
 | Impressum-Zusatztext, Datenschutz | `src/content/seiten/*.md` | |
 | Fotos | `src/assets/photos/` | werden automatisch verkleinert |

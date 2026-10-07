@@ -32,6 +32,9 @@ export const routes = {
   mitglied: { de: 'mitglied-werden/', en: 'membership/' },
   kontakt: { de: 'kontakt/', en: 'contact/' },
   transparenz: { de: 'transparenz/', en: 'transparency/' },
+  spenden: { de: 'spenden/', en: 'donate/' },
+  // Steuerbeleg nach § 50 Abs. 4 EStDV – nur deutsch
+  spendenNachweis: { de: 'spenden/nachweis/', en: null },
   barrierefreiheit: { de: 'barrierefreiheit/', en: 'accessibility/' },
   leichteSprache: { de: 'leichte-sprache/', en: null },
   impressum: { de: 'impressum/', en: 'legal-notice/' },

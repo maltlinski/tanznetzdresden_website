@@ -1,11 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
 
 const pages = [
   '/', '/termine/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
-  '/transparenz/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
+  '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
   '/en/', '/en/events/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
-  '/en/contact/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
+  '/en/contact/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
 ];
 
 /** Externe Anfragen sperren: die Seite selbst darf ohne Einwilligung nichts nachladen. */
@@ -158,4 +159,22 @@ test('Englische Termine nutzen englische Texte', async ({ page }) => {
   await page.goto('/en/events/');
   await expect(page.getByText('New short pieces from the network')).toBeVisible();
   await expect(page.locator('.badge', { hasText: 'Stage' }).first()).toBeVisible();
+});
+
+test('Spendenseite: ohne IBAN kein GiroCode, dafür Kontaktweg', async ({ page }) => {
+  await page.goto('/spenden/');
+  await dismissConsent(page);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Halte das Netz');
+  await expect(page.locator('.qr__code')).toHaveCount(0);
+  await expect(page.getByRole('button', { name: /Bankverbindung anfragen/ })).toBeVisible();
+  await page.getByRole('link', { name: /Spendennachweis öffnen/ }).click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Vereinfachter Spendennachweis');
+});
+
+test('GiroCode: IBAN-Prüfung und QR-Erzeugung', async () => {
+  expect(isValidIban('DE89 3704 0044 0532 0130 00')).toBe(true);
+  expect(isValidIban('DE89 3704 0044 0532 0130 01')).toBe(false);
+  expect(isValidIban('')).toBe(false);
+  const svg = await giroCodeSvg({ name: 'TanzNetzDresden e.V.', iban: 'DE89370400440532013000', amount: 50, text: 'Spende' });
+  expect(svg).toContain('<svg');
 });

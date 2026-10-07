@@ -14,14 +14,14 @@ const t = tr(lang, {
   de: {
     home: 'TanzNetzDresden – zur Startseite', blurb: `Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit ${v.founded}, seit 2020 als gemeinnütziger Verein.`,
     contact: 'Kontakt', writeMail: 'E-Mail schreiben', club: 'Verein', about: 'Über uns', board: 'Vorstand & Team', ags: 'Arbeitsgruppen', network: 'Netzwerk & Profile',
-    join: 'Mitglied werden', contactPress: 'Kontakt & Presse', transparency: 'Transparenz', intern: 'Interner Bereich', follow: 'Folgen', newsletter: 'Newsletter',
+    join: 'Mitglied werden', donate: 'Spenden', contactPress: 'Kontakt & Presse', transparency: 'Transparenz', intern: 'Interner Bereich', follow: 'Folgen', newsletter: 'Newsletter',
     ics: 'Kalender abonnieren (.ics)', partners: 'Partner', legal: 'Rechtliches', imprint: 'Impressum', privacy: 'Datenschutz', a11y: 'Barrierefreiheit',
     easy: 'Leichte Sprache', cookies: 'Cookie-Einstellungen',
   },
   en: {
     home: 'TanzNetzDresden – home', blurb: `Self-organised network of Dresden's independent dance scene. Since ${v.founded}, a registered non-profit association since 2020.`,
     contact: 'Contact', writeMail: 'Send an email', club: 'Association', about: 'About us', board: 'Board & team', ags: 'Working groups', network: 'Network & profiles',
-    join: 'Become a member', contactPress: 'Contact & press', transparency: 'Transparency', intern: 'Members area', follow: 'Follow', newsletter: 'Newsletter',
+    join: 'Become a member', donate: 'Donate', contactPress: 'Contact & press', transparency: 'Transparency', intern: 'Members area', follow: 'Follow', newsletter: 'Newsletter',
     ics: 'Subscribe to calendar (.ics)', partners: 'Partners', imprint: 'Legal notice', privacy: 'Privacy', a11y: 'Accessibility',
     easy: 'Leichte Sprache (German)', cookies: 'Cookie settings',
   },
@@ -47,6 +47,7 @@ const t = tr(lang, {
         <a href={url(lang, 'verein', '#arbeitsgruppen')}>{t.ags}</a>
         <a href={url(lang, 'netzwerk')}>{t.network}</a>
         <a href={url(lang, 'mitglied')}>{t.join}</a>
+        <a href={url(lang, 'spenden')}>{t.donate}</a>
         <a href={url(lang, 'kontakt')}>{t.contactPress}</a>
         <a href={url(lang, 'transparenz')}>{t.transparency}</a>
         <a href={url(lang, 'intern')}>{t.intern}</a>

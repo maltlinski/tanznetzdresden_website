@@ -1,0 +1,89 @@
+---
+/**
+ * Vereinfachter Zuwendungsnachweis (§ 50 Abs. 4 Nr. 2 EStDV) für Spenden bis 300 €.
+ * Zusammen mit dem Kontoauszug gilt er beim Finanzamt als Spendenbeleg.
+ * Pflichtangaben: steuerbegünstigter Zweck, Angaben zur Freistellung, Hinweis
+ * Spende/Mitgliedsbeitrag. Die Daten kommen aus verein.json → taxExemption.
+ */
+import Page from '../layouts/Page.astro';
+import { verein } from '../lib/settings';
+import { url } from '../lib/i18n';
+
+const tx = verein.taxExemption;
+const a = verein.address;
+const missing = [tx.office, tx.taxNumber, tx.noticeDate, tx.period].some((s) => s.includes('[BITTE'));
+---
+<Page title="Vereinfachter Spendennachweis" description="Spendenbeleg für Spenden bis 300 € an TanzNetzDresden e.V. – zusammen mit dem Kontoauszug beim Finanzamt einreichen." route="spendenNachweis" noindex>
+  <section class="section">
+    <div class="wrap">
+      <div class="toolbar">
+        <a class="mono-link" href={url('de', 'spenden')}>← Zurück zur Spendenseite</a>
+        <button type="button" class="btn btn--primary btn--marker" data-print>Drucken oder als PDF speichern</button>
+      </div>
+      {missing && (
+        <p class="warn" role="note">Hinweis für die Redaktion: Die Angaben zum Freistellungsbescheid fehlen noch (verein.json → taxExemption). Ohne sie ist der Nachweis nicht gültig.</p>
+      )}
+
+      <article class="doc">
+        <header class="doc__head">
+          <span class="doc__kicker">Zuwendungsnachweis · bis 300 €</span>
+          <h1 class="doc__title">Vereinfachter Spendennachweis</h1>
+          <p class="doc__sub">für Geldzuwendungen bis einschließlich 300 € nach § 50 Abs. 4 Satz 1 Nr. 2 EStDV</p>
+        </header>
+
+        <h2>Zuwendungsempfänger</h2>
+        <p>{verein.legalName}<br />{a.street}<br />{a.zip} {a.city}</p>
+
+        <h2>Steuerbegünstigung</h2>
+        <p>
+          Der Verein ist wegen {tx.purpose} nach dem letzten zugegangenen Freistellungsbescheid
+          ({tx.office}, Steuernummer {tx.taxNumber}, vom {tx.noticeDate}) für den Veranlagungszeitraum {tx.period} nach § 5 Abs. 1 Nr. 9 des
+          Körperschaftsteuergesetzes von der Körperschaftsteuer und nach § 3 Nr. 6 des Gewerbesteuergesetzes von der
+          Gewerbesteuer befreit.
+        </p>
+
+        <h2>Verwendung</h2>
+        <p>Die Zuwendung wird ausschließlich für die genannten steuerbegünstigten Zwecke verwendet.</p>
+
+        <h2>Art der Zuwendung</h2>
+        <p>Es handelt sich um eine <strong>Spende</strong>. Dieser Nachweis gilt nicht für Mitgliedsbeiträge.</p>
+
+        <div class="doc__how">
+          <h2>So nutzt du den Nachweis</h2>
+          <ol>
+            <li>Diesen Nachweis ausdrucken oder als PDF speichern.</li>
+            <li>Zusammen mit dem Kontoauszug, der Lastschrift- oder Online-Banking-Bestätigung aufbewahren. Darauf müssen Name und Kontonummer von dir und uns, Betrag und Buchungstag stehen.</li>
+            <li>Auf Nachfrage des Finanzamts beides vorlegen.</li>
+          </ol>
+          <p>Für Spenden über 300 € stellen wir eine Zuwendungsbestätigung nach amtlichem Muster aus.</p>
+        </div>
+      </article>
+    </div>
+  </section>
+</Page>
+
+<script>
+  document.querySelector('[data-print]')?.addEventListener('click', () => window.print());
+</script>
+
+<style>
+  .toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 28px; }
+  .toolbar a { color: var(--magenta-2); }
+  .warn { margin: 0 0 24px; padding: 12px 16px; border-left: 4px solid var(--magenta); background: var(--magenta-tint); color: var(--purple); }
+  .doc { max-width: 760px; padding: clamp(28px, 5vw, 56px); border: 1px solid var(--rule); border-top: 6px solid var(--purple); background: var(--paper); line-height: 1.65; }
+  .doc__kicker { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta-2); }
+  .doc__title { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4vw, 44px); line-height: 1; letter-spacing: -0.03em; color: var(--purple); margin: 10px 0 8px; }
+  .doc__sub { margin: 0 0 28px; color: var(--ink-soft); font-size: 14px; }
+  .doc h2 { margin: 24px 0 6px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+  .doc p { margin: 0; }
+  .doc strong { color: var(--magenta-2); }
+  .doc__how { margin-top: 32px; padding-top: 8px; border-top: 1px solid var(--rule); font-size: 14.5px; color: var(--ink-soft); }
+  .doc__how ol { margin: 0 0 12px; padding-left: 1.2em; }
+
+  @media print {
+    :global(.site-header), :global(.site-footer), :global(.skip-link), :global(.consent), .toolbar, .warn { display: none !important; }
+    :global(main) { padding: 0; }
+    .section { padding: 0; }
+    .doc { border: 0; padding: 0; max-width: none; }
+  }
+</style>

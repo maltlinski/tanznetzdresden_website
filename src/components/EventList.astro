@@ -18,7 +18,7 @@ interface Props {
 const { events, groupByMonth = false, id } = Astro.props;
 
 const lang = getLang(Astro);
-const t = tr(lang, { de: { empty: '{t.empty}' }, en: { empty: 'No events in this category right now.' } });
+const t = tr(lang, { de: { empty: 'Gerade keine Termine in dieser Kategorie.' }, en: { empty: 'No events in this category right now.' } });
 const rows = events.map((e) => ({
   ...e.data,
   id: e.id,
@@ -55,7 +55,7 @@ let lastMonth = '';
       </>
     );
   })}
-  <li class="events__empty" data-empty hidden>Gerade keine Termine in dieser Kategorie.</li>
+  <li class="events__empty" data-empty hidden>{t.empty}</li>
 </ul>
 
 <script>

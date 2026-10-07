@@ -67,6 +67,12 @@ Porträts aus dem internen Bereich liegen bei Supabase (Frankfurt am Main) und w
 
 Ob wir Besuche zählen, entscheidest du: Eine Statistik läuft nur, wenn sie eingerichtet ist und du der Kategorie „Statistik“ zustimmst (§ 25 Abs. 1 TDDDG, Art. 6 Abs. 1 lit. a DSGVO). Wir nutzen dafür [BITTE ERGÄNZEN, falls aktiviert: Matomo ohne Cookies auf eigenem Server / Plausible Analytics, EU]. Die IP-Adresse wird gekürzt, es werden keine Profile über mehrere Websites gebildet. Die Zahlen brauchen wir für Berichte an unsere Förderer.
 
+## Spenden
+
+Wenn du uns per Überweisung spendest, erhalten wir von unserer Bank deinen Namen, deine IBAN, den Betrag und den Verwendungszweck. Wir verarbeiten diese Daten, um die Spende zu verbuchen und auf Wunsch eine Zuwendungsbestätigung auszustellen (Art. 6 Abs. 1 lit. b und c DSGVO). Wir bewahren sie so lange auf, wie es die steuerrechtlichen Aufbewahrungsfristen verlangen (in der Regel zehn Jahre).
+
+Der GiroCode (QR-Code) auf der Spendenseite wird auf unserem Server erzeugt. Beim Scannen gehen keine Daten an uns. Spendest du online über einen Spendendienstleister, gilt zusätzlich dessen Datenschutzerklärung.
+
 ## Mitgliederverwaltung
 
 Daten von Mitglieder:innen (Name, Anschrift, Kontakt, Beitragsdaten) verarbeiten wir zur Durchführung der Mitgliedschaft (Art. 6 Abs. 1 lit. b DSGVO) und bewahren sie nach Austritt so lange auf, wie es steuer- und vereinsrechtlich vorgeschrieben ist.

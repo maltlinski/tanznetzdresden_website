@@ -224,6 +224,36 @@ collections:
               - { name: url, label: 'Adresse des Dienstes', widget: string, required: false }
               - { name: siteId, label: 'Site-ID (Matomo) bzw. Domain (Plausible)', widget: string, required: false }
               - { name: note, label: Notiz, widget: string, required: false }
+          - name: donation
+            label: Spenden
+            widget: object
+            fields:
+              - { name: accountHolder, label: Kontoinhaber, widget: string }
+              - { name: iban, label: 'IBAN (leer = Bankverbindung wird nicht angezeigt)', widget: string, required: false }
+              - { name: bic, label: BIC, widget: string, required: false }
+              - { name: bank, label: Bank, widget: string, required: false }
+              - { name: reference, label: 'Verwendungszweck (max. 140 Zeichen)', widget: string }
+              - { name: amounts, label: 'Beträge für den GiroCode (max. 4)', widget: list, field: { name: amount, label: Betrag, widget: number, value_type: int } }
+              - { name: onlineUrl, label: 'Online-Spende: Link zum Spendenformular (optional)', widget: string, required: false }
+              - { name: onlineProvider, label: 'Online-Spende: Name des Anbieters', widget: string, required: false }
+              - name: impact
+                label: Was deine Spende bewirkt
+                widget: list
+                fields:
+                  - { name: amount, label: Betrag (€), widget: number, value_type: int }
+                  - { name: text, label: Text, widget: string }
+                  - { name: text_en, label: Text Englisch, widget: string, required: false }
+              - { name: note, label: Notiz, widget: string, required: false }
+          - name: taxExemption
+            label: 'Gemeinnützigkeit (für den Spendennachweis)'
+            widget: object
+            fields:
+              - { name: purpose, label: Steuerbegünstigter Zweck, widget: string }
+              - { name: purpose_en, label: Zweck Englisch, widget: string }
+              - { name: office, label: Finanzamt, widget: string }
+              - { name: taxNumber, label: Steuernummer, widget: string }
+              - { name: noticeDate, label: Datum des Freistellungsbescheids, widget: string }
+              - { name: period, label: Veranlagungszeitraum, widget: string }
           - name: newsletter
             label: Newsletter
             widget: object

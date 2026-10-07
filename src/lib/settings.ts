@@ -42,6 +42,27 @@ const schema = z.object({
   fundingText: z.string(),
   analytics: z.object({ provider: z.enum(['', 'matomo', 'plausible']), url: z.string(), siteId: z.string(), note: z.string().optional() }),
   newsletter: z.object({ action: z.string(), note: z.string().optional() }),
+  taxExemption: z.object({
+    purpose: z.string(),
+    purpose_en: z.string(),
+    office: z.string(),
+    taxNumber: z.string(),
+    noticeDate: z.string(),
+    period: z.string(),
+  }),
+  donation: z.object({
+    accountHolder: z.string(),
+    /** leer lassen, solange es keine Spendenverbindung gibt */
+    iban: z.string(),
+    bic: z.string(),
+    bank: z.string(),
+    reference: z.string().max(140),
+    amounts: z.array(z.number().positive()).max(4),
+    onlineUrl: z.string(),
+    onlineProvider: z.string(),
+    impact: z.array(z.object({ amount: z.number().positive(), text: z.string(), text_en: z.string().optional() })),
+    note: z.string().optional(),
+  }),
   en: z
     .object({
       claim: z.string(),
@@ -53,6 +74,7 @@ const schema = z.object({
       register: z.object({ representationNote: z.string(), taxNote: z.string() }).partial(),
       press: z.object({ role: z.string() }).partial(),
       partners: z.array(z.string()),
+      donation: z.object({ reference: z.string().max(140) }).partial(),
     })
     .partial(),
 });
@@ -76,5 +98,11 @@ export function getVerein(lang: Lang): Verein {
     register: { ...verein.register, ...en.register },
     press: { ...verein.press, ...en.press },
     funders: verein.funders.map((f) => ({ ...f, name: f.name_en || f.name })),
+    donation: {
+      ...verein.donation,
+      ...en.donation,
+      impact: verein.donation.impact.map((i) => ({ ...i, text: i.text_en || i.text })),
+    },
+    taxExemption: { ...verein.taxExemption, purpose: verein.taxExemption.purpose_en },
   };
 }

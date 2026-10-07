@@ -134,6 +134,49 @@
       "Nationales Performance Netz",
       "Dachverband Tanz Deutschland",
       "Palucca University of Dance"
-    ]
+    ],
+    "donation": {
+      "reference": "Donation TanzNetzDresden"
+    }
+  },
+  "taxExemption": {
+    "purpose": "Förderung von Kunst und Kultur (§ 52 Abs. 2 Satz 1 Nr. 5 AO)",
+    "purpose_en": "Promotion of art and culture (§ 52(2) sentence 1 no. 5 German Fiscal Code)",
+    "office": "Finanzamt Dresden-[BITTE ERGÄNZEN]",
+    "taxNumber": "[BITTE ERGÄNZEN]",
+    "noticeDate": "[BITTE ERGÄNZEN: Datum des letzten Freistellungsbescheids]",
+    "period": "[BITTE ERGÄNZEN: Veranlagungszeitraum, z. B. 2023]"
+  },
+  "donation": {
+    "accountHolder": "TanzNetzDresden e.V.",
+    "iban": "",
+    "bic": "",
+    "bank": "",
+    "reference": "Spende TanzNetzDresden",
+    "amounts": [
+      25,
+      50,
+      100
+    ],
+    "onlineUrl": "",
+    "onlineProvider": "",
+    "impact": [
+      {
+        "amount": 27,
+        "text": "drei Trainingseinheiten KEEP UP für Newcomer:innen, die gerade in Dresden ankommen",
+        "text_en": "three KEEP UP training sessions for newcomers who have just arrived in Dresden"
+      },
+      {
+        "amount": 80,
+        "text": "ein Probentag im Studio für eine neue Arbeit aus dem Netzwerk [BITTE PRÜFEN]",
+        "text_en": "one rehearsal day in the studio for a new piece from the network [PLEASE CHECK]"
+      },
+      {
+        "amount": 250,
+        "text": "ein faires Honorar für ein Showing bei der Studio Round [BITTE PRÜFEN]",
+        "text_en": "a fair fee for one showing at Studio Round [PLEASE CHECK]"
+      }
+    ],
+    "note": "IBAN leer = Bankverbindung wird noch nicht angezeigt. onlineUrl: Spendenformular z. B. bei betterplace.org (nur als Link, kein eingebettetes Formular)."
   }
 }
