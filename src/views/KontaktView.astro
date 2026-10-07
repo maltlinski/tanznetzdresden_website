@@ -1,0 +1,95 @@
+---
+import Page from '../layouts/Page.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Tag from '../components/ui/Tag.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
+import ConsentEmbed from '../components/ConsentEmbed.astro';
+import { getVerein } from '../lib/settings';
+import { getLang, tr } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const verein = getVerein(lang);
+const { lat, lon } = verein.map;
+const d = 0.006;
+const mapSrc = `https://www.openstreetmap.org/export/embed.html?bbox=${lon - d * 1.6}%2C${lat - d}%2C${lon + d * 1.6}%2C${lat + d}&layer=mapnik&marker=${lat}%2C${lon}`;
+const a = verein.address;
+const t = tr(lang, {
+  de: {
+    title: 'Kontakt', desc: 'So erreichst du TanzNetzDresden e.V.: Kontakt, Vorstand, Presse und Termine einreichen.',
+    h1: 'Schreib uns.', accent: 'Wir antworten.',
+    general: 'Allgemein', generalH: 'Fragen, Ideen, Kooperationen', generalP: 'Für alles rund um Verein, Formate und Training.', write: 'E-Mail schreiben',
+    board: 'Vorstand', boardH: 'Vereinsangelegenheiten', boardP: 'Mitgliedschaft, Finanzen, Kooperationsverträge und alles, was der Vorstand entscheiden muss.', boardMail: 'E-Mail an den Vorstand', boardSubject: 'Anfrage an den Vorstand',
+    press: 'Presse', pressH: 'Presse & Öffentlichkeit', pressP: `Ansprechperson: ${verein.press.contact} (${verein.press.role}). Pressefotos und Infos auf Anfrage.`, pressMail: 'Presseanfrage senden', pressSubject: 'Presseanfrage',
+    cal: 'Tanzkalender', calH: 'Termin einreichen', calP: 'Du zeigst etwas in Dresden? Schick uns Titel, Datum und Uhrzeit, Ort, einen Satz zum Inhalt und einen Link. Wir nehmen Termine aus dem Netzwerk in den Kalender auf.', calMail: 'Termin per E-Mail schicken', calSubject: 'Termin für den Tanzkalender',
+    route: 'Anfahrt', osm: 'In OpenStreetMap öffnen →', mapTitle: 'Karte: Lage der TENZA Schmiede',
+  },
+  en: {
+    title: 'Contact', desc: 'How to reach TanzNetzDresden e.V.: general contact, board, press and event submissions.',
+    h1: 'Write to us.', accent: 'We will reply.',
+    general: 'General', generalH: 'Questions, ideas, cooperation', generalP: 'For everything about the association, formats and training. We are happy to answer in English.', write: 'Send an email',
+    board: 'Board', boardH: 'Association matters', boardP: 'Membership, finances, cooperation agreements and everything the board needs to decide.', boardMail: 'Email the board', boardSubject: 'Enquiry to the board',
+    press: 'Press', pressH: 'Press & public relations', pressP: `Contact: ${verein.press.contact} (${verein.press.role}). Press photos and information on request.`, pressMail: 'Send a press enquiry', pressSubject: 'Press enquiry',
+    cal: 'Dance calendar', calH: 'Submit an event', calP: 'Showing something in Dresden? Send us the title, date and time, venue, one sentence about it and a link. We add events from the network to the calendar.', calMail: 'Send an event by email', calSubject: 'Event for the dance calendar',
+    route: 'Getting here', osm: 'Open in OpenStreetMap →', mapTitle: 'Map: location of TENZA Schmiede',
+  },
+});
+---
+<Page title={t.title} description={t.desc} route="kontakt">
+  <PageIntro kicker={t.title} title={t.h1} accent={t.accent} />
+
+  <section class="section">
+    <div class="wrap contact-grid">
+      <div class="contact" data-reveal>
+        <Tag>{t.general}</Tag>
+        <h2>{t.generalH}</h2>
+        <p>{t.generalP}</p>
+        <ProtectedEmail email={verein.emails.kontakt} label={t.write} />
+        <a class="contact__tel" href={`tel:${verein.phone.replace(/\s/g, '')}`}>{verein.phone}</a>
+      </div>
+      <div class="contact" id="vorstand">
+        <Tag>{t.board}</Tag>
+        <h2>{t.boardH}</h2>
+        <p>{t.boardP}</p>
+        <ProtectedEmail email={verein.emails.vorstand} label={t.boardMail} subject={t.boardSubject} />
+      </div>
+      <div class="contact" id="presse">
+        <Tag>{t.press}</Tag>
+        <h2>{t.pressH}</h2>
+        <p>{t.pressP}</p>
+        <ProtectedEmail email={verein.emails.kontakt} label={t.pressMail} subject={t.pressSubject} />
+      </div>
+      <div class="contact" id="termin-einreichen">
+        <Tag>{t.cal}</Tag>
+        <h2>{t.calH}</h2>
+        <p>{t.calP}</p>
+        <ProtectedEmail email={verein.emails.kontakt} label={t.calMail} subject={t.calSubject} />
+      </div>
+    </div>
+  </section>
+
+  <section class="section map-section surface-tint" aria-labelledby="anfahrt-h">
+    <div class="wrap map-grid">
+      <div>
+        <Tag>{t.route}</Tag>
+        <h2 id="anfahrt-h" class="h2">{verein.training.place}</h2>
+        <address class="map-addr">{a.street}<br />{a.zip} {a.city}</address>
+        <a class="mono-link" href={`https://www.openstreetmap.org/?mlat=${lat}&mlon=${lon}#map=17/${lat}/${lon}`} rel="noopener" target="_blank">{t.osm}</a>
+      </div>
+      <ConsentEmbed src={mapSrc} title={t.mapTitle} provider="OpenStreetMap" privacyUrl="https://osmfoundation.org/wiki/Privacy_Policy" ratio="4 / 3" />
+    </div>
+  </section>
+</Page>
+
+<style>
+  .contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 0 clamp(32px, 6vw, 96px); }
+  .contact { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 32px 0 40px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 24px); }
+  .contact :global(.tag) { margin-bottom: 6px; }
+  .contact h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 2.6vw, 34px); letter-spacing: -0.025em; line-height: 1.05; color: var(--purple); margin: 0; }
+  .contact p { margin: 0 0 6px; max-width: 46ch; font-size: 15.5px; line-height: 1.6; color: var(--ink-soft); }
+  .contact :global(.protected-email) { font-size: 17px; color: var(--purple); }
+  .contact__tel { color: var(--purple); font-size: 15px; }
+  .map-section { background: var(--tint); }
+  .map-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 40px clamp(32px, 6vw, 96px); align-items: start; }
+  .map-grid :global(.tag) { margin-bottom: 16px; }
+  .map-addr { font-style: normal; margin: 20px 0 18px; font-size: 17px; line-height: 1.6; color: var(--purple); }
+</style>

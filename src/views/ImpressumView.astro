@@ -1,0 +1,37 @@
+---
+import TextPageView from './TextPageView.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
+import { getVerein } from '../lib/settings';
+import { getLang, tr } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const v = getVerein(lang);
+const a = v.address;
+const r = v.register;
+const t = tr(lang, {
+  de: {
+    kicker: 'Rechtliches', h: 'Angaben gemäß § 5 DDG', rep: 'Vertreten durch den Vorstand:', reg: 'Eingetragen im Vereinsregister', court: 'Registergericht', no: 'Registernummer',
+    contact: 'Kontakt', phone: 'Telefon', mail: 'E-Mail', show: 'Adresse anzeigen', resp: 'Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV',
+  },
+  en: {
+    kicker: 'Legal', h: 'Information pursuant to § 5 DDG (German Digital Services Act)', rep: 'Represented by the board:', reg: 'Registered in the register of associations', court: 'Register court', no: 'Register number',
+    contact: 'Contact', phone: 'Phone', mail: 'Email', show: 'Show address', resp: 'Responsible for content pursuant to § 18 (2) MStV',
+  },
+});
+---
+<TextPageView id="impressum" route="impressum" kicker={t.kicker}>
+  <Fragment slot="before">
+    <h2>{t.h}</h2>
+    <p><strong>{v.legalName}</strong><br />{a.street}<br />{a.zip} {a.city}</p>
+    <p>{t.rep} {r.representatives}<br />{r.representationNote}</p>
+    <p>{t.reg}<br />{t.court}: {r.court}<br />{t.no}: {r.number}</p>
+    <p>{r.taxNote}</p>
+    <h2>{t.contact}</h2>
+    <p>
+      {t.phone}: <a href={`tel:${v.phone.replace(/\s/g, '')}`}>{v.phone}</a><br />
+      {t.mail}: <ProtectedEmail email={v.emails.kontakt} label={t.show} />
+    </p>
+    <h2>{t.resp}</h2>
+    <p>{r.contentResponsible}</p>
+  </Fragment>
+</TextPageView>

@@ -13,6 +13,7 @@ import Intern from '../../../layouts/Intern.astro';
     </div>
   </div>
   <p class="i-msg" role="alert" data-dir-msg hidden></p>
+  <p class="dir-pending" data-dir-pending hidden></p>
   <ul class="dir" data-dir aria-live="polite"></ul>
   <template data-dir-item>
     <li class="dir__card">
@@ -21,6 +22,7 @@ import Intern from '../../../layouts/Intern.astro';
       <p class="dir__bio"></p>
       <span class="dir__ags"></span>
       <div class="dir__links"></div>
+      <div class="dir__approve" hidden></div>
     </li>
   </template>
 </Intern>
@@ -64,9 +66,42 @@ import Intern from '../../../layouts/Intern.astro';
       if (m.website) links.append(link(safeUrl(m.website), m.website.replace(/^https?:\/\//, '')));
       if (m.instagram) links.append(link(`https://www.instagram.com/${encodeURIComponent(m.instagram)}/`, `@${m.instagram}`));
       li.dataset.search = `${m.display_name} ${m.ags?.join(' ')}`.toLowerCase();
+
+      // Vorstand: öffentliche Profile freigeben
+      if (ctx.isVorstand && m.public_listing && m.slug) {
+        const box = li.querySelector<HTMLElement>('.dir__approve')!;
+        const render = (verified: boolean) => {
+          box.replaceChildren();
+          const label = document.createElement('span');
+          label.textContent = verified ? `Öffentlich unter /netzwerk/${m.slug}/` : 'Möchte ein öffentliches Profil';
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = verified ? 'i-linkbtn' : 'btn btn--primary btn--sm';
+          btn.textContent = verified ? 'Freigabe zurückziehen' : 'Profil freigeben';
+          btn.addEventListener('click', async () => {
+            const { error } = await ctx.sb.from('profiles').update({ verified: !verified }).eq('id', m.id);
+            if (error) return showMessage(msg, errorText(error));
+            m.verified = !verified;
+            render(m.verified);
+            updatePending();
+          });
+          box.dataset.state = verified ? 'ok' : 'wait';
+          box.append(label, btn);
+        };
+        box.hidden = false;
+        render(m.verified);
+      }
       return li;
     });
     list.replaceChildren(...cards);
+    const pending = document.querySelector<HTMLElement>('[data-dir-pending]');
+    const updatePending = () => {
+      if (!pending || !ctx.isVorstand) return;
+      const n = entries.filter((m) => m.public_listing && m.slug && !m.verified).length;
+      pending.hidden = n === 0;
+      pending.textContent = `${n} ${n === 1 ? 'Profil wartet' : 'Profile warten'} auf Freigabe für die Website.`;
+    };
+    updatePending();
     search?.addEventListener('input', () => {
       const q = search.value.trim().toLowerCase();
       cards.forEach((c) => (c.hidden = !!q && !(c.dataset.search ?? '').includes(q)));
@@ -87,5 +122,8 @@ import Intern from '../../../layouts/Intern.astro';
   :global(.dir__bio) { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
   :global(.dir__bio:empty), :global(.dir__pronouns:empty), :global(.dir__ags:empty) { display: none; }
   :global(.dir__links) { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+  :global(.dir__approve) { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 12px; margin-top: 8px; padding: 10px 12px; font-size: 13px; background: var(--magenta-tint); color: var(--purple); }
+  :global(.dir__approve[data-state='ok']) { background: var(--cyan-tint); }
+  .dir-pending { margin: 0 0 20px; padding: 12px 16px; border-left: 4px solid var(--magenta); background: var(--paper); color: var(--purple); font-weight: 600; }
   :global(.dir__links a) { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; word-break: break-all; }
 </style>

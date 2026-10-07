@@ -55,6 +55,10 @@ export function activateScripts(state: ConsentState | null): void {
   document.querySelectorAll<HTMLScriptElement>('script[type="text/plain"][data-consent]').forEach((el) => {
     if (!state.categories[el.dataset.consent ?? '']) return;
     const s = document.createElement('script');
+    // alle Attribute übernehmen (z. B. data-domain für Plausible), außer den Platzhalter-Attributen
+    for (const attr of [...el.attributes]) {
+      if (!['type', 'data-consent', 'data-src'].includes(attr.name)) s.setAttribute(attr.name, attr.value);
+    }
     if (el.dataset.src) s.src = el.dataset.src;
     else s.textContent = el.textContent;
     el.replaceWith(s);

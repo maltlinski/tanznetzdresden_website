@@ -1,0 +1,21 @@
+---
+import TextPageView from './TextPageView.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
+import { getVerein } from '../lib/settings';
+import { getLang, tr, url } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const v = getVerein(lang);
+const t = tr(lang, {
+  de: { kicker: 'Barrierefreiheit', h: 'Barriere melden', p: 'Ist dir eine Barriere aufgefallen? Schreib uns, wir kümmern uns darum.', mail: 'Barriere per E-Mail melden', subject: 'Barriere auf der Website', easy: 'Infos in Leichter Sprache' },
+  en: { kicker: 'Accessibility', h: 'Report a barrier', p: 'Have you found a barrier? Write to us and we will take care of it.', mail: 'Report a barrier by email', subject: 'Barrier on the website', easy: 'Information in Leichte Sprache (easy German)' },
+});
+---
+<TextPageView id="barrierefreiheit" route="barrierefreiheit" kicker={t.kicker} toc>
+  <a slot="toc-after" class="mono-link" href={url('de', 'leichteSprache')} lang="de">{t.easy} →</a>
+  <Fragment slot="after">
+    <h2 id="barriere-melden">{t.h}</h2>
+    <p>{t.p}</p>
+    <p><ProtectedEmail email={v.emails.kontakt} label={t.mail} subject={t.subject} /></p>
+  </Fragment>
+</TextPageView>

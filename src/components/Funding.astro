@@ -1,0 +1,62 @@
+---
+/**
+ * Förderhinweis (Publizitätspflicht der Landeshauptstadt Dresden u. a.).
+ * Förderer stehen in src/settings/verein.json → funders. Logo-Dateien liegen in
+ * src/assets/foerderer/ (Dateiname in "logo" eintragen). Ohne Logo erscheint der
+ * Name als Text – laut Merkblatt der Stadt ist Logo *und/oder* Text zulässig.
+ */
+import { Image } from 'astro:assets';
+import { getVerein } from '../lib/settings';
+import { getLang, tr } from '../lib/i18n';
+
+interface Props {
+  /** dunkle Fläche (Footer) oder helle Fläche */
+  tone?: 'dark' | 'light';
+}
+const { tone = 'dark' } = Astro.props;
+const lang = getLang(Astro);
+const v = getVerein(lang);
+const t = tr(lang, { de: { heading: 'Gefördert durch' }, en: { heading: 'Funded by' } });
+
+const logoFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/foerderer/*.{svg,png,jpg,jpeg,webp}', { eager: true });
+const logoFor = (file: string) => (file ? logoFiles[`../assets/foerderer/${file}`]?.default : undefined);
+const funders = v.funders.map((f) => ({ ...f, image: logoFor(f.logo) }));
+---
+{funders.length > 0 && (
+  <section class:list={['funding', `funding--${tone}`]} aria-labelledby="funding-h">
+    <h2 id="funding-h" class="funding__h">{t.heading}</h2>
+    <ul class="funding__list">
+      {funders.map((f) => (
+        <li>
+          <a href={f.url} rel="noopener" target="_blank" class="funding__item">
+            {f.image ? (
+              <span class="funding__logo"><Image src={f.image} alt={f.name} height={56} /></span>
+            ) : (
+              <span class="funding__name">{f.name}</span>
+            )}
+          </a>
+        </li>
+      ))}
+    </ul>
+    <p class="funding__text">{v.fundingText}</p>
+  </section>
+)}
+
+<style>
+  .funding { display: flex; flex-wrap: wrap; align-items: center; gap: 16px 40px; padding: 28px 0; }
+  .funding--dark { border-bottom: 1px solid var(--on-dark-rule); }
+  .funding__h {
+    margin: 0; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--cyan);
+  }
+  .funding--light .funding__h { color: var(--magenta-2); }
+  .funding__list { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px; }
+  .funding__item { display: inline-flex; align-items: center; color: inherit; }
+  /* Logos brauchen eine helle Fläche, damit Farblogos lesbar bleiben */
+  .funding__logo { display: inline-flex; background: #fff; padding: 10px 14px; }
+  .funding__logo :global(img) { height: 44px; width: auto; }
+  .funding__name { font-family: var(--font-display); font-weight: 700; font-size: 16px; color: #fff; border-bottom: 1.5px solid var(--magenta); padding-bottom: 2px; }
+  .funding--light .funding__name { color: var(--purple); }
+  .funding__text { margin: 0; flex: 1 1 260px; font-size: 13.5px; color: rgba(255, 255, 255, 0.78); }
+  .funding--light .funding__text { color: var(--ink-soft); }
+</style>

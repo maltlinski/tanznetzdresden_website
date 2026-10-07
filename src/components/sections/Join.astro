@@ -3,23 +3,34 @@ import Tag from '../ui/Tag.astro';
 import Button from '../ui/Button.astro';
 import KeilBar from '../ui/KeilBar.astro';
 import NewsletterForm from '../NewsletterForm.astro';
-import { href } from '../../lib/url';
+import { getLang, tr, url } from '../../lib/i18n';
+
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: {
+    kicker: 'Mitglied werden', l1: 'Werde Teil', l2: 'des Netzes.',
+    lead: 'Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.',
+    cta: 'Mitgliedsantrag', nlLead: 'Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.',
+  },
+  en: {
+    kicker: 'Become a member', l1: 'Become part', l2: 'of the network.',
+    lead: 'As a member you train at a reduced rate, join working groups and shape the formats of the association. For professional dance artists in and around Dresden.',
+    cta: 'How to join', nlLead: 'Once a month: events, open calls and news from the independent scene (in German).',
+  },
+});
 ---
 <section id="mitglied" class="join" aria-labelledby="join-h">
   <KeilBar color="var(--purple)" height={14} flip class="join__keil" />
   <div class="join__grid">
     <div data-reveal>
-      <Tag color="purple">Mitglied werden</Tag>
-      <h2 id="join-h" class="join__title">Werde Teil<br />des Netzes.</h2>
-      <p class="join__lead">
-        Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des
-        Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.
-      </p>
-      <Button href={href('mitglied-werden/')} size="lg" marker>Mitgliedsantrag</Button>
+      <Tag color="purple">{t.kicker}</Tag>
+      <h2 id="join-h" class="join__title">{t.l1}<br />{t.l2}</h2>
+      <p class="join__lead">{t.lead}</p>
+      <Button href={url(lang, 'mitglied')} size="lg" marker>{t.cta}</Button>
     </div>
     <div class="newsletter" id="newsletter">
       <h3 class="newsletter__title">Newsletter</h3>
-      <p class="newsletter__lead">Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.</p>
+      <p class="newsletter__lead">{t.nlLead}</p>
       <NewsletterForm />
     </div>
   </div>

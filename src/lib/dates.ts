@@ -1,4 +1,5 @@
 /** Datums-Helfer. Termine werden als Dresdner Ortszeit "JJJJ-MM-TT HH:MM" gepflegt. */
+import { dateLocale, type Lang } from './i18n';
 
 export interface LocalParts { y: number; m: number; d: number; hh: number; mm: number }
 
@@ -9,20 +10,22 @@ export function parseLocal(s: string): LocalParts {
   return { y, m, d, hh, mm };
 }
 
-const fmt = (opts: Intl.DateTimeFormatOptions, p: LocalParts) =>
-  new Intl.DateTimeFormat('de-DE', { ...opts, timeZone: 'UTC' }).format(new Date(Date.UTC(p.y, p.m - 1, p.d)));
+const fmt = (lang: Lang, opts: Intl.DateTimeFormatOptions, p: LocalParts) =>
+  new Intl.DateTimeFormat(dateLocale[lang], { ...opts, timeZone: 'UTC' }).format(new Date(Date.UTC(p.y, p.m - 1, p.d)));
 
-export function dateParts(s: string) {
+export function dateParts(s: string, lang: Lang = 'de') {
   const p = parseLocal(s);
+  const dow = fmt(lang, { weekday: 'short' }, p).replace('.', '');
+  const hhmm = `${String(p.hh).padStart(2, '0')}:${String(p.mm).padStart(2, '0')}`;
   return {
-    iso: `${s.replace(' ', 'T')}`,
-    dow: fmt({ weekday: 'short' }, p).replace('.', ''),
+    iso: s.replace(' ', 'T'),
+    dow,
     day: String(p.d).padStart(2, '0'),
-    month: fmt({ month: 'short' }, p).replace('.', ''),
-    monthLong: fmt({ month: 'long', year: 'numeric' }, p),
+    month: fmt(lang, { month: 'short' }, p).replace('.', ''),
+    monthLong: fmt(lang, { month: 'long', year: 'numeric' }, p),
     /** „Sa · 14. Juni 2026“ – Hausformat */
-    long: `${fmt({ weekday: 'short' }, p).replace('.', '')} · ${fmt({ day: 'numeric', month: 'long', year: 'numeric' }, p)}`,
-    time: `${String(p.hh).padStart(2, '0')}:${String(p.mm).padStart(2, '0')} Uhr`,
+    long: `${dow} · ${fmt(lang, { day: 'numeric', month: 'long', year: 'numeric' }, p)}`,
+    time: lang === 'de' ? `${hhmm} Uhr` : hhmm,
   };
 }
 

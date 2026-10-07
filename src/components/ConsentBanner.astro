@@ -5,26 +5,39 @@
  * Über jeden Button mit [data-consent-open] (z. B. im Footer) wieder aufrufbar.
  */
 import { consentCategories, CONSENT_VERSION } from '../settings/consent';
-import { href } from '../lib/url';
+import { getLang, tr, url } from '../lib/i18n';
 
-const categories = consentCategories.filter((c) => c.enabled);
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: {
+    h: 'Deine Privatsphäre',
+    text: 'Wir verwenden keine Tracking-Cookies. Für Karten, Videos und Social-Media-Beiträge brauchen wir aber deine Zustimmung, weil dabei Daten an andere Anbieter gehen. Du kannst sie jederzeit im Footer unter „Cookie-Einstellungen“ ändern. Mehr dazu in der',
+    privacy: 'Datenschutzerklärung', always: ' (immer aktiv)', all: 'Alle akzeptieren', necessary: 'Nur notwendige', settings: 'Einstellungen', save: 'Auswahl speichern',
+  },
+  en: {
+    h: 'Your privacy',
+    text: 'We do not use tracking cookies. For maps, videos and social media posts we need your consent, because data is sent to other providers. You can change your choice at any time under “Cookie settings” in the footer. More in our',
+    privacy: 'privacy policy', always: ' (always on)', all: 'Accept all', necessary: 'Necessary only', settings: 'Settings', save: 'Save selection',
+  },
+});
+const categories = consentCategories.filter((c) => c.enabled).map((c) => ({
+  ...c,
+  label: lang === 'en' ? c.label_en : c.label,
+  description: lang === 'en' ? c.description_en : c.description,
+}));
 const optional = categories.filter((c) => !c.required);
 ---
 {optional.length > 0 && (
   <section class="consent" role="dialog" aria-modal="false" aria-labelledby="consent-h" data-consent-banner data-version={CONSENT_VERSION} hidden>
-    <h2 id="consent-h" class="consent__h">Deine Privatsphäre</h2>
-    <p class="consent__text">
-      Wir verwenden keine Tracking-Cookies. Für Karten, Videos und Social-Media-Beiträge brauchen wir aber deine
-      Zustimmung, weil dabei Daten an andere Anbieter gehen. Du kannst sie jederzeit im Footer unter
-      „Cookie-Einstellungen“ ändern. Mehr dazu in der <a href={href('datenschutz/')}>Datenschutzerklärung</a>.
-    </p>
+    <h2 id="consent-h" class="consent__h">{t.h}</h2>
+    <p class="consent__text">{t.text} <a href={url(lang, 'datenschutz')}>{t.privacy}</a>.</p>
     <form class="consent__details" data-consent-form hidden>
       {categories.map((c) => (
         <label class="consent__cat">
           <input type="checkbox" name={c.id} checked={c.required} disabled={c.required} />
           <span class="consent__box" aria-hidden="true"></span>
           <span>
-            <strong>{c.label}</strong>{c.required && ' (immer aktiv)'}
+            <strong>{c.label}</strong>{c.required && t.always}
             <span class="consent__desc">{c.description}</span>
             {c.services.length > 0 && <span class="consent__svc">{c.services.join(' · ')}</span>}
           </span>
@@ -32,10 +45,10 @@ const optional = categories.filter((c) => !c.required);
       ))}
     </form>
     <div class="consent__actions">
-      <button type="button" class="btn btn--sm consent__btn" data-consent-all>Alle akzeptieren</button>
-      <button type="button" class="btn btn--sm consent__btn" data-consent-necessary>Nur notwendige</button>
-      <button type="button" class="consent__more" data-consent-toggle aria-expanded="false">Einstellungen</button>
-      <button type="button" class="btn btn--sm consent__btn" data-consent-save hidden>Auswahl speichern</button>
+      <button type="button" class="btn btn--sm consent__btn" data-consent-all>{t.all}</button>
+      <button type="button" class="btn btn--sm consent__btn" data-consent-necessary>{t.necessary}</button>
+      <button type="button" class="consent__more" data-consent-toggle aria-expanded="false">{t.settings}</button>
+      <button type="button" class="btn btn--sm consent__btn" data-consent-save hidden>{t.save}</button>
     </div>
   </section>
 )}

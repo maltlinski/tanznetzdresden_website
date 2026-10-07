@@ -4,6 +4,7 @@
  *   <ProtectedEmail email={verein.emails.vorstand} label="E-Mail an den Vorstand" />
  */
 import { protectEmail } from '../lib/protect-email';
+import { getLang, tr } from '../lib/i18n';
 
 interface Props {
   email: string;
@@ -12,7 +13,11 @@ interface Props {
   subject?: string;
   class?: string;
 }
-const { email, label = 'E-Mail-Adresse anzeigen', subject, class: className } = Astro.props;
+const t = tr(getLang(Astro), {
+  de: { label: 'E-Mail-Adresse anzeigen', hint: 'Klick zeigt die Adresse', busy: 'Adresse wird entschlüsselt …', done: 'E-Mail-Adresse:', fail: 'Das hat nicht geklappt. Bitte erneut versuchen.' },
+  en: { label: 'Show email address', hint: 'click reveals the address', busy: 'Decrypting address …', done: 'Email address:', fail: 'That did not work. Please try again.' },
+});
+const { email, label = t.label, subject, class: className } = Astro.props;
 const p = await protectEmail(email);
 // Nur der Teil vor dem @ wird als Hinweis gezeigt – ohne Domain ist er für Bots wertlos.
 const hint = email.split('@')[0];
@@ -26,9 +31,12 @@ const hint = email.split('@')[0];
   data-iv={p.iv}
   data-data={p.data}
   data-subject={subject}
+  data-msg-busy={t.busy}
+  data-msg-done={t.done}
+  data-msg-fail={t.fail}
 >
   <button type="button" class="protected-email__btn">
-    <span class="protected-email__icon" aria-hidden="true"></span>{label}<span class="visually-hidden"> ({hint} …, Klick zeigt die Adresse)</span>
+    <span class="protected-email__icon" aria-hidden="true"></span>{label}<span class="visually-hidden"> ({hint} …, {t.hint})</span>
   </button>
   <span class="visually-hidden" role="status"></span>
 </span>

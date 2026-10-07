@@ -26,12 +26,16 @@ collections:
     sortable_fields: [start, title]
     fields:
       - { name: title, label: Titel, widget: string }
+      - { name: title_en, label: 'Titel (Englisch, optional)', widget: string, required: false }
       - { name: start, label: 'Beginn (JJJJ-MM-TT HH:MM)', widget: string, pattern: ['^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$', 'Format: 2026-10-15 19:30'] }
       - { name: end, label: 'Ende (optional)', widget: string, required: false, pattern: ['^\d{4}-\d{2}-\d{2} \d{2}:\d{2}$', 'Format: 2026-10-15 21:30'] }
       - { name: venue, label: Ort, widget: string }
       - { name: timeLabel, label: 'Uhrzeit-Anzeige (optional, z. B. 11:00–15:00 Uhr)', widget: string, required: false }
+      - { name: timeLabel_en, label: 'Uhrzeit-Anzeige Englisch (optional)', widget: string, required: false }
       - { name: category, label: Kategorie, widget: select, options: ['Bühne', 'Training', 'Diskurs'] }
       - { name: teaser, label: Kurzbeschreibung, widget: string }
+      - { name: teaser_en, label: 'Kurzbeschreibung Englisch (optional)', widget: string, required: false }
+      - { name: people, label: 'Mitwirkende aus dem Netzwerk', widget: relation, collection: personen, file: personen, search_fields: ['personen.*.name'], value_field: 'personen.*.id', display_fields: ['personen.*.name'], multiple: true, required: false }
       - { name: link, label: 'Link (Tickets, Anmeldung)', widget: string, required: false }
       - { name: draft, label: Entwurf (nicht anzeigen), widget: boolean, default: false, required: false }
 
@@ -46,10 +50,14 @@ collections:
     fields:
       - { name: title, label: Titel, widget: string }
       - { name: order, label: Reihenfolge, widget: number, value_type: int }
+      - { name: title_en, label: 'Titel Englisch (optional)', widget: string, required: false }
       - { name: since, label: 'Seit (z. B. „seit 2021“)', widget: string }
+      - { name: since_en, label: 'Seit, Englisch (z. B. „since 2021“)', widget: string, required: false }
       - { name: summary, label: Kurztext, widget: text }
+      - { name: summary_en, label: 'Kurztext Englisch', widget: text, required: false }
       - { name: image, label: Foto, widget: image }
       - { name: alt, label: 'Bildbeschreibung (für Screenreader)', widget: string }
+      - { name: alt_en, label: 'Bildbeschreibung Englisch', widget: string, required: false }
       - { name: body, label: Ausführlicher Text, widget: markdown, required: false }
 
   - name: personen
@@ -68,9 +76,18 @@ collections:
               - { name: id, label: 'Kürzel (klein, ohne Leerzeichen)', widget: string }
               - { name: name, label: Name, widget: string }
               - { name: roles, label: Rollen, widget: select, multiple: true, options: [{ label: Mitglied, value: mitglied }, { label: Trainer:in, value: trainer }] }
+              - { name: pronouns, label: 'Pronomen (optional)', widget: string, required: false }
               - { name: vorstand, label: 'Funktion im Vorstand (optional)', widget: string, required: false }
+              - { name: vorstand_en, label: 'Funktion im Vorstand, Englisch', widget: string, required: false }
+              - { name: bio, label: 'Profiltext', widget: text, required: false }
+              - { name: bio_en, label: 'Profiltext Englisch', widget: text, required: false }
+              - { name: tags, label: 'Schwerpunkte', widget: list, required: false }
+              - { name: photo, label: 'Porträt', widget: image, required: false, media_folder: /src/assets/personen, public_folder: ../assets/personen }
+              - { name: photoCredit, label: 'Foto: Fotograf:in', widget: string, required: false }
               - { name: website, label: Website, widget: string, required: false }
               - { name: instagram, label: Instagram, widget: string, required: false }
+              - { name: vimeo, label: 'Vimeo / Video', widget: string, required: false }
+              - { name: email, label: 'Öffentliche E-Mail (wird verschlüsselt)', widget: string, required: false }
               - { name: featured, label: Auf der Startseite zeigen, widget: boolean, default: true, required: false }
 
   - name: seiten
@@ -92,6 +109,21 @@ collections:
           - { name: description, label: Beschreibung, widget: string, required: false }
           - { name: updated, label: 'Stand (JJJJ-MM-TT)', widget: string, required: false }
           - { name: body, label: Text, widget: markdown }
+
+  - name: seiten_weitere
+    label: Weitere Textseiten
+    files:
+      - { name: transparenz, label: Transparenz, file: src/content/seiten/transparenz.md, fields: [{ name: title, label: Titel, widget: string }, { name: description, label: Beschreibung, widget: string, required: false }, { name: updated, label: Stand, widget: string, required: false }, { name: body, label: Text, widget: markdown }] }
+      - { name: barrierefreiheit, label: Barrierefreiheit, file: src/content/seiten/barrierefreiheit.md, fields: [{ name: title, label: Titel, widget: string }, { name: description, label: Beschreibung, widget: string, required: false }, { name: updated, label: Stand, widget: string, required: false }, { name: body, label: Text, widget: markdown }] }
+      - { name: leichte-sprache, label: Leichte Sprache, file: src/content/seiten/leichte-sprache.md, fields: [{ name: title, label: Titel, widget: string }, { name: description, label: Beschreibung, widget: string, required: false }, { name: updated, label: Stand, widget: string, required: false }, { name: body, label: Text, widget: markdown }] }
+
+  - name: seiten_en
+    label: Textseiten Englisch
+    files:
+      - { name: impressum_en, label: Legal notice, file: src/content/seiten/en/impressum.md, fields: [{ name: title, label: Title, widget: string }, { name: description, label: Description, widget: string, required: false }, { name: updated, label: Updated, widget: string, required: false }, { name: body, label: Text, widget: markdown }] }
+      - { name: datenschutz_en, label: Privacy policy, file: src/content/seiten/en/datenschutz.md, fields: [{ name: title, label: Title, widget: string }, { name: description, label: Description, widget: string, required: false }, { name: updated, label: Updated, widget: string, required: false }, { name: body, label: Text, widget: markdown }] }
+      - { name: transparenz_en, label: Transparency, file: src/content/seiten/en/transparenz.md, fields: [{ name: title, label: Title, widget: string }, { name: description, label: Description, widget: string, required: false }, { name: updated, label: Updated, widget: string, required: false }, { name: body, label: Text, widget: markdown }] }
+      - { name: barrierefreiheit_en, label: Accessibility, file: src/content/seiten/en/barrierefreiheit.md, fields: [{ name: title, label: Title, widget: string }, { name: description, label: Description, widget: string, required: false }, { name: updated, label: Updated, widget: string, required: false }, { name: body, label: Text, widget: markdown }] }
 
   - name: einstellungen
     label: Einstellungen
@@ -173,7 +205,25 @@ collections:
             fields:
               - { name: contact, label: Ansprechperson, widget: string }
               - { name: role, label: Funktion, widget: string }
-          - { name: partners, label: Partner & Förderung, widget: list }
+          - { name: partners, label: Partner, widget: list }
+          - name: funders
+            label: 'Förderer (Förderhinweis – Pflicht laut Zuwendungsbescheid)'
+            widget: list
+            fields:
+              - { name: name, label: Name, widget: string }
+              - { name: name_en, label: Name Englisch, widget: string, required: false }
+              - { name: url, label: Website, widget: string }
+              - { name: logo, label: 'Logo-Datei (in src/assets/foerderer/)', widget: string, required: false }
+              - { name: note, label: Notiz, widget: string, required: false }
+          - { name: fundingText, label: 'Förderhinweis (Text)', widget: string }
+          - name: analytics
+            label: 'Statistik (optional, nur mit Einwilligung)'
+            widget: object
+            fields:
+              - { name: provider, label: Dienst, widget: select, options: ['', 'matomo', 'plausible'], required: false }
+              - { name: url, label: 'Adresse des Dienstes', widget: string, required: false }
+              - { name: siteId, label: 'Site-ID (Matomo) bzw. Domain (Plausible)', widget: string, required: false }
+              - { name: note, label: Notiz, widget: string, required: false }
           - name: newsletter
             label: Newsletter
             widget: object

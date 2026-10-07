@@ -2,17 +2,30 @@
 import { Image } from 'astro:assets';
 import Tag from '../ui/Tag.astro';
 import { getFormate } from '../../lib/content';
+import { getLang, loc, tr } from '../../lib/i18n';
 
-const items = (await getFormate()).map((f, i) => ({ ...f.data, id: f.id, n: String(i + 1).padStart(2, '0') }));
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: { kicker: 'Was wir machen', h: 'Formate & Reihen', intro: 'Getragen von Arbeitsgruppen aus dem Netzwerk. Jedes Format hat eine eigene AG, die es plant und weiterentwickelt.' },
+  en: { kicker: 'What we do', h: 'Formats & series', intro: 'Run by working groups from the network. Each format has its own group that plans and develops it.' },
+});
+const items = (await getFormate()).map((f, i) => ({
+  ...f.data,
+  id: f.id,
+  n: String(i + 1).padStart(2, '0'),
+  title: loc(f.data, 'title', lang),
+  since: loc(f.data, 'since', lang),
+  summary: loc(f.data, 'summary', lang),
+}));
 ---
 <section id="formate" class="section formate surface-tint" aria-labelledby="formate-h">
   <div class="wrap">
     <div class="section-head">
       <div data-reveal>
-        <Tag>Was wir machen</Tag>
-        <h2 id="formate-h" class="h2">Formate &amp; Reihen</h2>
+        <Tag>{t.kicker}</Tag>
+        <h2 id="formate-h" class="h2">{t.h}</h2>
       </div>
-      <p class="formate__intro">Getragen von Arbeitsgruppen aus dem Netzwerk. Jedes Format hat eine eigene AG, die es plant und weiterentwickelt.</p>
+      <p class="formate__intro">{t.intro}</p>
     </div>
 
     <div class="formate__grid" data-formats>

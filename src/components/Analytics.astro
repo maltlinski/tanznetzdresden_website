@@ -1,0 +1,18 @@
+---
+/**
+ * Optionale Reichweitenmessung – lädt erst nach Einwilligung (Kategorie „statistik“).
+ * Einrichtung in src/settings/verein.json → analytics:
+ *   Matomo:    { "provider": "matomo", "url": "https://statistik.example.de/", "siteId": "1" }
+ *   Plausible: { "provider": "plausible", "url": "https://plausible.io", "siteId": "tanznetzdresden.de" }
+ * Matomo bitte mit „Alle Tracking-Cookies deaktivieren“ betreiben.
+ */
+import { verein } from '../lib/settings';
+
+const a = verein.analytics;
+const base = a.url.replace(/\/?$/, '/');
+const matomo = `var _paq=window._paq=window._paq||[];_paq.push(['disableCookies']);_paq.push(['trackPageView']);_paq.push(['enableLinkTracking']);_paq.push(['setTrackerUrl','${base}matomo.php']);_paq.push(['setSiteId','${a.siteId}']);var g=document.createElement('script');g.async=true;g.src='${base}matomo.js';document.head.appendChild(g);`;
+---
+{a.provider === 'matomo' && <script is:inline type="text/plain" data-consent="statistik" set:html={matomo} />}
+{a.provider === 'plausible' && (
+  <script is:inline type="text/plain" data-consent="statistik" data-src={`${base}js/script.js`} defer data-domain={a.siteId} />
+)}

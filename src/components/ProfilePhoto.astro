@@ -1,0 +1,38 @@
+---
+/** Porträt im Keil-Ausschnitt; ohne Foto: Initialen auf Lila. */
+import { Image } from 'astro:assets';
+import { initials, type PublicProfile } from '../lib/profiles';
+
+interface Props {
+  profile: PublicProfile;
+  size?: 'card' | 'large';
+  eager?: boolean;
+}
+const { profile, size = 'card', eager = false } = Astro.props;
+const widths = size === 'large' ? [480, 720, 960] : [320, 480, 640];
+const sizes = size === 'large' ? '(min-width: 900px) 420px, 100vw' : '(min-width: 900px) 300px, 50vw';
+---
+<div class:list={['pp', `pp--${size}`]}>
+  {profile.photo ? (
+    typeof profile.photo === 'string' ? (
+      <Image src={profile.photo} alt="" inferSize widths={widths} sizes={sizes} loading={eager ? 'eager' : 'lazy'} class="pp__img" />
+    ) : (
+      <Image src={profile.photo} alt="" widths={widths} sizes={sizes} loading={eager ? 'eager' : 'lazy'} class="pp__img" />
+    )
+  ) : (
+    <span class="pp__initials" aria-hidden="true">{initials(profile.name)}</span>
+  )}
+  <span class="pp__sq" aria-hidden="true"></span>
+</div>
+
+<style>
+  .pp { position: relative; aspect-ratio: 4 / 5; background: var(--purple); overflow: hidden; clip-path: var(--keil-corner); }
+  .pp :global(.pp__img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .pp__initials {
+    position: absolute; inset: 0; display: grid; place-items: center; color: #fff;
+    font-family: var(--font-display); font-weight: 800; letter-spacing: -0.04em; font-size: clamp(48px, 7vw, 96px);
+  }
+  .pp--large .pp__initials { font-size: clamp(80px, 12vw, 160px); }
+  .pp__sq { position: absolute; top: 0; left: 0; width: 22px; height: 22px; background: var(--magenta); }
+  .pp--large .pp__sq { width: 38px; height: 38px; }
+</style>

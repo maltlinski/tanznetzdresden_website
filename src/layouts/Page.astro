@@ -1,18 +1,30 @@
 ---
-/** Standard-Seitenrahmen: Header, Inhalt, Footer. */
-import Base from './Base.astro';
+/**
+ * Standard-Seitenrahmen: Header, Inhalt, Footer.
+ * `route` (+ `rest`) sagt, welche Seite das ist – daraus entstehen der
+ * Sprachumschalter und die hreflang-Angaben.
+ */
+import Base, { type Alternates } from './Base.astro';
 import Header from '../components/sections/Header.astro';
 import Footer from '../components/sections/Footer.astro';
+import { routes, url, type RouteKey } from '../lib/i18n';
 
 interface Props {
   title?: string;
   description?: string;
   noindex?: boolean;
+  route?: RouteKey;
+  /** Zusatz hinter der Route, z. B. Profil-Kürzel "alba-t-alvarez/" */
+  rest?: string;
+  ogImage?: ImageMetadata;
 }
-const props = Astro.props;
+const { route, rest = '', ...props } = Astro.props;
+const alternates: Alternates = route
+  ? { de: url('de', route, rest), en: routes[route].en === null ? null : url('en', route, rest) }
+  : {};
 ---
-<Base {...props}>
-  <Header />
+<Base {...props} alternates={alternates}>
+  <Header alternates={alternates} />
   <main id="inhalt" tabindex="-1">
     <slot />
   </main>

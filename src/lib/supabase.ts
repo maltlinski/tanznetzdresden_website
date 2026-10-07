@@ -20,11 +20,36 @@ export interface Profile {
   show_phone: boolean;
   public_listing: boolean;
   role: 'mitglied' | 'vorstand' | 'admin';
+  // öffentliches Profil (Migration 20261008000000)
+  slug: string | null;
+  bio_en: string | null;
+  tags: string[];
+  photo_path: string | null;
+  photo_credit: string | null;
+  vimeo: string | null;
+  verified: boolean;
 }
 
-export interface DirectoryEntry extends Pick<Profile, 'id' | 'display_name' | 'pronouns' | 'bio' | 'website' | 'instagram' | 'is_trainer' | 'ags' | 'role'> {
+export interface DirectoryEntry extends Pick<Profile, 'id' | 'display_name' | 'pronouns' | 'bio' | 'website' | 'instagram' | 'is_trainer' | 'ags' | 'role' | 'slug' | 'public_listing' | 'verified'> {
   email: string | null;
   phone: string | null;
+}
+
+/** Öffentliche Adresse eines Porträts im Bucket „profilbilder“. */
+export function photoUrl(path: string | null): string | null {
+  return path && PUBLIC_SUPABASE_URL ? `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/profilbilder/${path}` : null;
+}
+
+/** Kürzel aus einem Namen: „Aurélie Lafaye“ → „aurelie-lafaye“ (wie in personen.yaml). */
+export function slugify(name: string): string {
+  return name
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/&/g, 'und')
+    .replace(/ß/g, 'ss')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
 }
 
 let client: SupabaseClient | null | undefined;

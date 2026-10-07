@@ -28,7 +28,7 @@ export function initProtectedEmails(root: ParentNode = document): void {
     btn?.addEventListener('click', async () => {
       btn.disabled = true;
       btn.setAttribute('aria-busy', 'true');
-      if (status) status.textContent = 'Adresse wird entschlüsselt …';
+      if (status) status.textContent = el.dataset.msgBusy ?? '…';
       try {
         const email = await reveal(el);
         if (!email) throw new Error('not found');
@@ -38,11 +38,11 @@ export function initProtectedEmails(root: ParentNode = document): void {
         a.className = btn.className.replace('protected-email__btn', 'protected-email__link');
         btn.replaceWith(a);
         a.focus();
-        if (status) status.textContent = `E-Mail-Adresse: ${email}`;
+        if (status) status.textContent = `${el.dataset.msgDone ?? ''} ${email}`;
       } catch {
         btn.disabled = false;
         btn.removeAttribute('aria-busy');
-        if (status) status.textContent = 'Das hat nicht geklappt. Bitte erneut versuchen.';
+        if (status) status.textContent = el.dataset.msgFail ?? '';
       }
     });
   });

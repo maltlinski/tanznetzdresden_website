@@ -1,0 +1,11 @@
+---
+import ProfilView from '../../views/ProfilView.astro';
+import { getProfiles, type PublicProfile } from '../../lib/profiles';
+
+export async function getStaticPaths() {
+  return (await getProfiles()).map((profile) => ({ params: { id: profile.id }, props: { profile } }));
+}
+
+const { profile } = Astro.props as { profile: PublicProfile };
+---
+<ProfilView profile={profile} />

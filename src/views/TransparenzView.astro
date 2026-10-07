@@ -1,0 +1,43 @@
+---
+/**
+ * Transparenz nach der Initiative Transparente Zivilgesellschaft (10 Angaben).
+ * Stammdaten und Vorstand kommen automatisch aus den Einstellungen,
+ * der Rest steht in src/content/seiten/transparenz.md (en/transparenz.md).
+ */
+import TextPageView from './TextPageView.astro';
+import { getProfiles } from '../lib/profiles';
+import { getVerein } from '../lib/settings';
+import { href } from '../lib/url';
+import { getLang, tr, url } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const v = getVerein(lang);
+const board = (await getProfiles()).filter((p) => p.vorstand);
+const t = tr(lang, {
+  de: {
+    kicker: 'Verein', h1: 'Name, Sitz und Gründung', founded: `Gegründet ${v.founded} als Netzwerk, seit 2020 eingetragener Verein.`, reg: 'Registergericht', no: 'Registernummer',
+    h2: 'Entscheidungsträger:innen', board: 'Der Vorstand (Koordinationsteam, gewählt 2026) leitet den Verein ehrenamtlich:', statutes: 'Satzung (PDF)',
+  },
+  en: {
+    kicker: 'Association', h1: 'Name, registered office and founding', founded: `Founded in ${v.founded} as a network, registered association since 2020.`, reg: 'Register court', no: 'Register number',
+    h2: 'Decision-makers', board: 'The board (coordination team, elected 2026) runs the association on a voluntary basis:', statutes: 'Statutes (PDF, German)',
+  },
+});
+---
+<TextPageView id="transparenz" route="transparenz" kicker={t.kicker} toc tocExtra={[{ slug: 'stammdaten', text: t.h1 }, { slug: 'entscheidungstraeger', text: t.h2 }]}>
+  <Fragment slot="before">
+    <h2 id="stammdaten">{t.h1}</h2>
+    <p>
+      <strong>{v.legalName}</strong><br />{v.address.street}, {v.address.zip} {v.address.city}<br />
+      {t.founded}<br />{t.reg}: {v.register.court} · {t.no}: {v.register.number}
+    </p>
+    {v.membership.statutesPdf && <p><a href={href(v.membership.statutesPdf)}>{t.statutes}</a></p>}
+    <h2 id="entscheidungstraeger">{t.h2}</h2>
+    <p>{t.board}</p>
+    <ul>
+      {board.map((p) => (
+        <li><a href={url(lang, 'netzwerk', `${p.id}/`)}>{p.name}</a>: {lang === 'en' ? p.vorstand_en ?? p.vorstand : p.vorstand}</li>
+      ))}
+    </ul>
+  </Fragment>
+</TextPageView>

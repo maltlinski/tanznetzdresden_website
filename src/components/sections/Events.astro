@@ -4,15 +4,21 @@ import EventList from '../EventList.astro';
 import EventFilter from '../EventFilter.astro';
 import { getUpcoming } from '../../lib/content';
 import { href } from '../../lib/url';
+import { getLang, tr, url } from '../../lib/i18n';
 
 const events = await getUpcoming(6);
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: { kicker: 'Tanzkalender', h: 'Nächste Termine', all: 'Ganzer Kalender →', ics: 'Kalender abonnieren (.ics)', submit: 'Termin einreichen' },
+  en: { kicker: 'Dance calendar', h: 'Upcoming events', all: 'Full calendar →', ics: 'Subscribe to calendar (.ics)', submit: 'Submit an event' },
+});
 ---
 <section id="termine" class="section" aria-labelledby="termine-h">
   <div class="wrap">
     <div class="section-head">
       <div data-reveal>
-        <Tag>Tanzkalender</Tag>
-        <h2 id="termine-h" class="h2">Nächste Termine</h2>
+        <Tag>{t.kicker}</Tag>
+        <h2 id="termine-h" class="h2">{t.h}</h2>
       </div>
       <EventFilter events={events} target="home-events" />
     </div>
@@ -20,9 +26,9 @@ const events = await getUpcoming(6);
     <EventList events={events} id="home-events" />
 
     <div class="events-links">
-      <a class="mono-link" href={href('termine/')}>Ganzer Kalender →</a>
-      <a class="mono-link" href={href('termine.ics')}>Kalender abonnieren (.ics)</a>
-      <a class="mono-link" href={href('kontakt/#termin-einreichen')}>Termin einreichen</a>
+      <a class="mono-link" href={url(lang, 'termine')}>{t.all}</a>
+      <a class="mono-link" href={href('termine.ics')}>{t.ics}</a>
+      <a class="mono-link" href={url(lang, 'kontakt', '#termin-einreichen')}>{t.submit}</a>
     </div>
   </div>
 </section>

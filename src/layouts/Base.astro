@@ -9,25 +9,38 @@ import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
 import '../styles/global.css';
 import { getImage } from 'astro:assets';
-import { verein as site } from '../lib/settings';
+import { getVerein } from '../lib/settings';
+import { getLang, htmlLang, tr, type Lang } from '../lib/i18n';
 import { CONSENT_VERSION } from '../settings/consent';
 import ConsentBanner from '../components/ConsentBanner.astro';
+import Analytics from '../components/Analytics.astro';
 import ogSource from '../assets/photos/duo-rot.jpg';
 import { token } from '../lib/tokens';
+
+export interface Alternates { de?: string | null; en?: string | null }
 
 interface Props {
   title?: string;
   description?: string;
   /** Seite nicht in Suchmaschinen aufnehmen (z. B. interner Bereich) */
   noindex?: boolean;
+  /** Adressen derselben Seite in den Sprachen (für hreflang) */
+  alternates?: Alternates;
+  /** Bild für Social-Media-Vorschau */
+  ogImage?: ImageMetadata;
 }
 
-const { title: pageTitle, description = site.description, noindex = false } = Astro.props;
-const title = pageTitle ? `${pageTitle} · ${site.name}` : `${site.name} · Freie Tanzszene Dresden`;
+const lang = getLang(Astro);
+const site = getVerein(lang);
+const { title: pageTitle, description = site.description, noindex = false, alternates = {}, ogImage } = Astro.props;
+const t = tr(lang, { de: { tagline: 'Freie Tanzszene Dresden', skip: 'Zum Inhalt springen', cal: 'Tanzkalender' }, en: { tagline: 'Independent dance scene Dresden', skip: 'Skip to content', cal: 'Dance calendar' } });
+const title = pageTitle ? `${pageTitle} · ${site.name}` : `${site.name} · ${t.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
-const og = await getImage({ src: ogSource, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
+const og = await getImage({ src: ogImage ?? ogSource, width: 1200, height: 630, fit: 'cover', format: 'jpg' });
 const ogUrl = new URL(og.src, Astro.site);
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const abs = (p?: string | null) => (p ? new URL(p, Astro.site).toString() : null);
+const alt = { de: abs(alternates.de), en: abs(alternates.en) };
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -46,7 +59,7 @@ const jsonLd = {
 };
 ---
 <!doctype html>
-<html lang="de" data-consent-version={CONSENT_VERSION}>
+<html lang={htmlLang[lang as Lang]} data-consent-version={CONSENT_VERSION}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -54,13 +67,16 @@ const jsonLd = {
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <link rel="alternate" type="text/calendar" title="Tanzkalender" href={`${base}termine.ics`} />
+    {alt.de && <link rel="alternate" hreflang="de" href={alt.de} />}
+    {alt.en && <link rel="alternate" hreflang="en" href={alt.en} />}
+    {alt.de && <link rel="alternate" hreflang="x-default" href={alt.de} />}
+    <link rel="alternate" type="text/calendar" title={t.cal} href={`${base}termine.ics`} />
     <meta name="theme-color" content={token('--purple')} />
     <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
     <link rel="sitemap" href={`${base}sitemap-index.xml`} />
 
     <meta property="og:type" content="website" />
-    <meta property="og:locale" content="de_DE" />
+    <meta property="og:locale" content={lang === 'en' ? 'en_GB' : 'de_DE'} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -75,9 +91,10 @@ const jsonLd = {
     <slot name="head" />
   </head>
   <body>
-    <a class="skip-link" href="#inhalt">Zum Inhalt springen</a>
+    <a class="skip-link" href="#inhalt">{t.skip}</a>
     <slot />
     <ConsentBanner />
+    <Analytics />
     <script>
       import { initReveal } from '../scripts/reveal';
       initReveal();

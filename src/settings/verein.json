@@ -76,5 +76,64 @@
   "press": {
     "contact": "Thomas Natzschka",
     "role": "Öffentlichkeitsarbeit"
+  },
+  "funders": [
+    {
+      "name": "Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz",
+      "name_en": "City of Dresden, Office for Culture and Monument Protection",
+      "url": "https://www.dresden.de/kultur",
+      "logo": "",
+      "note": "Logo als SVG/PNG in src/assets/foerderer/ ablegen und Dateinamen hier eintragen. Wortlaut laut Zuwendungsbescheid prüfen."
+    }
+  ],
+  "fundingText": "Gefördert durch die Landeshauptstadt Dresden.",
+  "analytics": {
+    "provider": "",
+    "url": "",
+    "siteId": "",
+    "note": "Optional: 'matomo' oder 'plausible' (selbst gehostet oder EU). Lädt nur nach Einwilligung (Kategorie Statistik)."
+  },
+  "en": {
+    "claim": "One city. One network.",
+    "description": "TanzNetzDresden connects more than 70 dance artists of Dresden's independent scene: training, stage formats, discourse and residencies.",
+    "stats": [
+      {
+        "value": "70+",
+        "label": "dance artists"
+      },
+      {
+        "value": "16",
+        "label": "years independent scene"
+      },
+      {
+        "value": "9",
+        "label": "working groups"
+      }
+    ],
+    "fundingText": "Funded by the City of Dresden.",
+    "training": {
+      "rhythmNote": "per week, plus workshops",
+      "feeNote": "regular / members · cash on site"
+    },
+    "membership": {
+      "fee": "[PLEASE ADD, e.g. €36 / year]",
+      "feeNote": "reduced on request"
+    },
+    "register": {
+      "representationNote": "The association is represented by the board in accordance with its statutes. [PLEASE CHECK]",
+      "taxNote": "The association is recognised as a non-profit organisation. [PLEASE CHECK]"
+    },
+    "press": {
+      "role": "Public relations"
+    },
+    "partners": [
+      "City of Dresden, Office for Culture and Monument Protection",
+      "Villa Wigman für Tanz",
+      "TENZA",
+      "Zentralwerk",
+      "Nationales Performance Netz",
+      "Dachverband Tanz Deutschland",
+      "Palucca University of Dance"
+    ]
   }
 }

@@ -14,7 +14,15 @@ export default defineConfig({
   trailingSlash: 'ignore',
   integrations: [sitemap({ filter: (page) => !/\/(intern|admin)\//.test(page) && !page.endsWith('/404/') })],
   prefetch: true,
+  // Deutsch ohne Präfix (/termine/), Englisch unter /en/ (/en/events/)
+  i18n: {
+    defaultLocale: 'de',
+    locales: ['de', 'en'],
+    routing: { prefixDefaultLocale: false },
+  },
   build: { inlineStylesheets: 'auto' },
+  // Porträts aus dem internen Bereich (Supabase Storage) beim Build optimieren
+  image: { remotePatterns: [{ protocol: 'https', hostname: '**.supabase.co' }] },
   env: {
     schema: {
       // Interner Bereich (Supabase). Beide Werte sind öffentlich – die Daten

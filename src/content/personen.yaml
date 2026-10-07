@@ -1,5 +1,8 @@
 # Personen im Netzwerk. Reihenfolge = Anzeige-Reihenfolge.
 # roles: mitglied | trainer · vorstand: Funktion im Koordinationsteam (optional)
+# Optionale Profilfelder: pronouns, bio, bio_en, tags, photo (../assets/personen/datei.jpg),
+# photoCredit, website, instagram, vimeo, email (wird verschlüsselt), featured (Startseite)
+# Mitglieder:innen können ihr Profil auch selbst im internen Bereich pflegen (docs/profile.md).
 - id: alba-t-alvarez
   name: "Alba T Álvarez"
   roles: [mitglied]
@@ -10,6 +13,7 @@
   name: "Alina Lucifero"
   roles: [mitglied]
   vorstand: "Regionale Kooperationen, Öffentlichkeitsarbeit, Projektleitung Studio Round"
+  vorstand_en: "Regional cooperation, public relations, project lead Studio Round"
 - id: amit-abend
   name: "Amit Abend"
   roles: [mitglied, trainer]
@@ -53,6 +57,7 @@
   name: "Justine Rouquart"
   roles: [mitglied]
   vorstand: "Mitgliederverwaltung, Projektleitung POP UP, Bodies & Textiles"
+  vorstand_en: "Membership administration, project lead POP UP, Bodies & Textiles"
 - id: laura-gary
   name: "Laura Gary"
   roles: [trainer]
@@ -63,6 +68,7 @@
   name: "Malte Leonard Herz"
   roles: [mitglied]
   vorstand: "Überregionale Kooperationen, Projektleitung Dresdance Gala, vision:danceable"
+  vorstand_en: "National cooperation, project lead Dresdance Gala, vision:danceable"
 - id: michael-tucker
   name: "Michael Tucker"
   roles: [mitglied]
@@ -73,6 +79,7 @@
   name: "Rika Yotsumoto"
   roles: [mitglied]
   vorstand: "Finanzen, AG-Koordination, Projektleitung KEEP UP"
+  vorstand_en: "Finances, working-group coordination, project lead KEEP UP"
 - id: yamile-anaid-navarro-luna
   name: "Yamile Anaid Navarro Luna"
   roles: [mitglied]

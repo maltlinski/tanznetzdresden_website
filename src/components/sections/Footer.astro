@@ -1,51 +1,76 @@
 ---
 import Logo from '../ui/Logo.astro';
 import ProtectedEmail from '../ProtectedEmail.astro';
-import { verein } from '../../lib/settings';
+import Funding from '../Funding.astro';
+import { getVerein } from '../../lib/settings';
 import { href } from '../../lib/url';
+import { getLang, tr, url } from '../../lib/i18n';
 
+const lang = getLang(Astro);
+const v = getVerein(lang);
 const year = new Date().getFullYear();
-const a = verein.address;
+const a = v.address;
+const t = tr(lang, {
+  de: {
+    home: 'TanzNetzDresden – zur Startseite', blurb: `Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit ${v.founded}, seit 2020 als gemeinnütziger Verein.`,
+    contact: 'Kontakt', writeMail: 'E-Mail schreiben', club: 'Verein', about: 'Über uns', board: 'Vorstand & Team', ags: 'Arbeitsgruppen', network: 'Netzwerk & Profile',
+    join: 'Mitglied werden', contactPress: 'Kontakt & Presse', transparency: 'Transparenz', intern: 'Interner Bereich', follow: 'Folgen', newsletter: 'Newsletter',
+    ics: 'Kalender abonnieren (.ics)', partners: 'Partner', legal: 'Rechtliches', imprint: 'Impressum', privacy: 'Datenschutz', a11y: 'Barrierefreiheit',
+    easy: 'Leichte Sprache', cookies: 'Cookie-Einstellungen',
+  },
+  en: {
+    home: 'TanzNetzDresden – home', blurb: `Self-organised network of Dresden's independent dance scene. Since ${v.founded}, a registered non-profit association since 2020.`,
+    contact: 'Contact', writeMail: 'Send an email', club: 'Association', about: 'About us', board: 'Board & team', ags: 'Working groups', network: 'Network & profiles',
+    join: 'Become a member', contactPress: 'Contact & press', transparency: 'Transparency', intern: 'Members area', follow: 'Follow', newsletter: 'Newsletter',
+    ics: 'Subscribe to calendar (.ics)', partners: 'Partners', imprint: 'Legal notice', privacy: 'Privacy', a11y: 'Accessibility',
+    easy: 'Leichte Sprache (German)', cookies: 'Cookie settings',
+  },
+});
 ---
 <footer class="site-footer">
   <div class="site-footer__inner">
     <div class="site-footer__cols">
       <div class="site-footer__brand">
-        <a href={href()} class="site-footer__logo" aria-label="TanzNetzDresden – zur Startseite"><Logo /></a>
-        <p>Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit {verein.founded}, seit 2020 als gemeinnütziger Verein.</p>
+        <a href={url(lang, 'home')} class="site-footer__logo" aria-label={t.home}><Logo /></a>
+        <p>{t.blurb}</p>
       </div>
       <div class="site-footer__col">
-        <h2 class="site-footer__h">Kontakt</h2>
+        <h2 class="site-footer__h">{t.contact}</h2>
         <address>{a.street}<br />{a.zip} {a.city}</address>
-        <ProtectedEmail email={verein.emails.kontakt} label="E-Mail schreiben" />
-        <a href={`tel:${verein.phone.replace(/\s/g, '')}`}>{verein.phone}</a>
+        <ProtectedEmail email={v.emails.kontakt} label={t.writeMail} />
+        <a href={`tel:${v.phone.replace(/\s/g, '')}`}>{v.phone}</a>
       </div>
-      <nav class="site-footer__col" aria-label="Verein">
-        <h2 class="site-footer__h">Verein</h2>
-        <a href={href('verein/')}>Über uns</a>
-        <a href={href('verein/#vorstand')}>Vorstand &amp; Team</a>
-        <a href={href('verein/#arbeitsgruppen')}>Arbeitsgruppen</a>
-        <a href={href('mitglied-werden/')}>Mitglied werden</a>
-        <a href={href('kontakt/')}>Kontakt &amp; Presse</a>
-        <a href={href('intern/')}>Interner Bereich</a>
+      <nav class="site-footer__col" aria-label={t.club}>
+        <h2 class="site-footer__h">{t.club}</h2>
+        <a href={url(lang, 'verein')}>{t.about}</a>
+        <a href={url(lang, 'verein', '#vorstand')}>{t.board}</a>
+        <a href={url(lang, 'verein', '#arbeitsgruppen')}>{t.ags}</a>
+        <a href={url(lang, 'netzwerk')}>{t.network}</a>
+        <a href={url(lang, 'mitglied')}>{t.join}</a>
+        <a href={url(lang, 'kontakt')}>{t.contactPress}</a>
+        <a href={url(lang, 'transparenz')}>{t.transparency}</a>
+        <a href={url(lang, 'intern')}>{t.intern}</a>
       </nav>
       <div class="site-footer__col">
-        <h2 class="site-footer__h">Folgen</h2>
-        <a href={verein.social.instagram} rel="noopener" target="_blank">Instagram · @tanznetzdresden</a>
-        {verein.social.telegram && <a href={verein.social.telegram} rel="noopener" target="_blank">Telegram · KEEP UP</a>}
-        <a href={href('#newsletter')}>Newsletter</a>
-        <a href={href('termine.ics')}>Kalender abonnieren (.ics)</a>
+        <h2 class="site-footer__h">{t.follow}</h2>
+        <a href={v.social.instagram} rel="noopener" target="_blank">Instagram · @tanznetzdresden</a>
+        {v.social.telegram && <a href={v.social.telegram} rel="noopener" target="_blank">Telegram · KEEP UP</a>}
+        <a href={url(lang, 'home', '#newsletter')}>{t.newsletter}</a>
+        <a href={href('termine.ics')}>{t.ics}</a>
       </div>
     </div>
+    <Funding />
     <div class="site-footer__partners">
-      <span class="site-footer__partners-h">Partner &amp; Förderung</span>
-      <p>{verein.partners.join(' · ')}</p>
+      <span class="site-footer__partners-h">{t.partners}</span>
+      <p>{v.partners.join(' · ')}</p>
     </div>
     <div class="site-footer__legal">
-      <span>© {year} {verein.legalName}</span>
-      <a href={href('impressum/')} class="site-footer__legal-first">Impressum</a>
-      <a href={href('datenschutz/')}>Datenschutz</a>
-      <button type="button" data-consent-open>Cookie-Einstellungen</button>
+      <span>© {year} {v.legalName}</span>
+      <a href={url(lang, 'impressum')} class="site-footer__legal-first">{t.imprint}</a>
+      <a href={url(lang, 'datenschutz')}>{t.privacy}</a>
+      <a href={url(lang, 'barrierefreiheit')}>{t.a11y}</a>
+      <a href={url('de', 'leichteSprache')} lang="de">{t.easy}</a>
+      <button type="button" data-consent-open>{t.cookies}</button>
     </div>
   </div>
 </footer>

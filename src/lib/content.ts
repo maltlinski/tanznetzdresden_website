@@ -5,6 +5,12 @@ export type Termin = CollectionEntry<'termine'>;
 
 export const badgeVariant = { Bühne: 'magenta', Training: 'cyan', Diskurs: 'purple' } as const;
 export const eventCategories = ['Bühne', 'Training', 'Diskurs'] as const;
+export type EventCategory = (typeof eventCategories)[number];
+/** Anzeigenamen der Kategorien je Sprache (der Wert in den Dateien bleibt deutsch). */
+export const categoryLabel: Record<'de' | 'en', Record<EventCategory | 'Alle', string>> = {
+  de: { Alle: 'Alle', Bühne: 'Bühne', Training: 'Training', Diskurs: 'Diskurs' },
+  en: { Alle: 'All', Bühne: 'Stage', Training: 'Training', Diskurs: 'Discourse' },
+};
 
 /** Alle veröffentlichten Termine, chronologisch. */
 export async function getTermine(): Promise<Termin[]> {
@@ -25,6 +31,7 @@ export async function getFormate() {
   return (await getCollection('formate')).sort((a, b) => a.data.order - b.data.order);
 }
 
-export async function getPersonen() {
-  return getCollection('personen');
+/** Termine, an denen eine Person mitwirkt (Feld `people` im Termin). */
+export async function getTermineFor(personId: string) {
+  return (await getUpcoming()).filter((t) => t.data.people.some((p) => p.id === personId));
 }

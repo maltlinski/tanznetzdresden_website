@@ -10,12 +10,18 @@ zwei Bühnenfotos durch das Netz.
 
 | Bereich | Was | Wo |
 |---|---|---|
-| Startseite | Netz-Hero, Termine mit Filter, Formate, Training, Netzwerk, Mitgliedschaft, Newsletter | `src/pages/index.astro` |
+| Startseite | Netz-Hero, Termine mit Filter, Formate, Training, Netzwerk, Mitgliedschaft, Newsletter | `src/views/HomeView.astro` |
+| **Zweisprachig** | Deutsch und Englisch (`/en/…`), Sprachumschalter, hreflang | `src/lib/i18n.ts` |
 | Tanzkalender | alle Termine nach Monaten, Filter, **Kalender-Abo (.ics)** | `/termine/`, `/termine.ics` |
+| **Profile** | eigene Seite je Künstler:in, Suche und Filter; Mitglieder pflegen selbst, Vorstand gibt frei | `/netzwerk/` |
 | Verein | Vorstand, Arbeitsgruppen, alle Mitglieder:innen | `/verein/` |
 | Mitglied werden | Vorteile, Ablauf, Beitrag, Antrag | `/mitglied-werden/` |
 | Kontakt | Kontakt, Vorstand, Presse, Termin einreichen, Karte | `/kontakt/` |
 | Rechtliches | Impressum (§ 5 DDG), Datenschutzerklärung (DSGVO) | `/impressum/`, `/datenschutz/` |
+| **Förderhinweis** | Logos/Text der Förderer auf jeder Seite (Publizitätspflicht Stadt Dresden) | `verein.json` → `funders` |
+| **Transparenz** | 10 Angaben nach Initiative Transparente Zivilgesellschaft | `/transparenz/` |
+| **Barrierefreiheit** | Erklärung mit Meldemöglichkeit, Seite in Leichter Sprache | `/barrierefreiheit/`, `/leichte-sprache/` |
+| Statistik (optional) | Matomo (cookielos) oder Plausible, nur mit Einwilligung | `verein.json` → `analytics` |
 | **Einwilligung** | eigener Consent-Manager nach TDDDG, Zwei-Klick-Lösung für Karten/Videos | `src/settings/consent.ts` |
 | **Bot-Schutz** | E-Mail-Adressen verschlüsselt, Entschlüsselung per Proof-of-Work im Browser | `src/components/ProtectedEmail.astro` |
 | **Interner Bereich** | Login (Passwort oder Link), eigenes Profil, Mitgliederverzeichnis, Dokumente | `/intern/` (Supabase) |
@@ -50,7 +56,8 @@ src/
     sections/         Abschnitte der Startseite, Header, Footer
     ui/               Designsystem-Bausteine: Tag, Button, Badge, KeilBar, Logo
   layouts/            Seitenrahmen (Base, Page, Intern)
-  pages/              Jede Datei = eine URL
+  views/              Inhalt jeder Seite (einmal für beide Sprachen)
+  pages/              Jede Datei = eine URL (de/ und en/ binden die Views ein)
   scripts/            Browser-Code: Netz-Animation, Consent, E-Mail-Schutz, interner Bereich
   styles/             globale Styles, Schriften, bewusste Abweichungen vom Designsystem
   assets/             Fotos (werden beim Build optimiert)
@@ -64,6 +71,8 @@ docs/                 Anleitungen
 
 - [Design ändern](design/README.md): Designsystem aus Claude Design übernehmen
 - [Inhalte bearbeiten](docs/inhalte.md): Termine, Formate, Personen, Texte, CMS
+- [Profile](docs/profile.md): öffentliche Profile, Freigabe, sofortige Aktualisierung
+- [Deutsch und Englisch](docs/mehrsprachigkeit.md): Übersetzen, neue Seiten in beiden Sprachen
 - [Interner Bereich einrichten](docs/intern.md): Supabase, Einladungen, Rollen
 - [Veröffentlichen](docs/deployment.md): GitHub Pages, eigene Domain, Hosting in der EU
 - [Vor dem Livegang](docs/livegang.md): Checkliste Recht & Inhalte

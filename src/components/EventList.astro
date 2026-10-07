@@ -4,9 +4,9 @@
  * unter /termine (vollständig, nach Monaten) verwendet.
  */
 import Badge from './ui/Badge.astro';
-import { badgeVariant, type Termin } from '../lib/content';
+import { badgeVariant, categoryLabel, type Termin } from '../lib/content';
 import { dateParts } from '../lib/dates';
-import { href } from '../lib/url';
+import { getLang, loc, tr, url } from '../lib/i18n';
 
 interface Props {
   events: Termin[];
@@ -17,7 +17,16 @@ interface Props {
 }
 const { events, groupByMonth = false, id } = Astro.props;
 
-const rows = events.map((e) => ({ ...e.data, id: e.id, ...dateParts(e.data.start) }));
+const lang = getLang(Astro);
+const t = tr(lang, { de: { empty: '{t.empty}' }, en: { empty: 'No events in this category right now.' } });
+const rows = events.map((e) => ({
+  ...e.data,
+  id: e.id,
+  ...dateParts(e.data.start, lang),
+  title: loc(e.data, 'title', lang),
+  teaser: loc(e.data, 'teaser', lang),
+  timeLabel: loc(e.data, 'timeLabel', lang),
+}));
 let lastMonth = '';
 ---
 <ul class="events" id={id} data-event-list>
@@ -27,7 +36,7 @@ let lastMonth = '';
       <>
         {heading && <li class="events__month" data-month>{heading}</li>}
         <li class="event" id={groupByMonth ? e.id : undefined} data-cat={e.category} data-end={(e.end ?? e.start).replace(' ', 'T')}>
-          <a href={e.link ?? href(`termine/#${e.id}`)} {...(e.link ? { rel: 'noopener', target: '_blank' } : {})}>
+          <a href={e.link ?? url(lang, 'termine', `#${e.id}`)} {...(e.link ? { rel: 'noopener', target: '_blank' } : {})}>
             <time class="event__date" datetime={e.iso}>
               <span class="event__dow" aria-hidden="true">{e.dow}</span>
               <span class="event__dm" aria-hidden="true"><span class="event__day">{e.day}</span><span class="event__mo">{e.month}</span></span>
@@ -38,7 +47,7 @@ let lastMonth = '';
               <p class="event__meta">{e.venue} · {e.timeLabel ?? e.time} · {e.teaser}</p>
             </div>
             <div class="event__side">
-              <Badge variant={badgeVariant[e.category]}>{e.category}</Badge>
+              <Badge variant={badgeVariant[e.category]}>{categoryLabel[lang][e.category]}</Badge>
               <span class="event__arrow" aria-hidden="true">→</span>
             </div>
           </a>

@@ -9,7 +9,9 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
 
 1. Auf supabase.com ein Konto anlegen und ein neues Projekt erstellen. **Region: Central EU (Frankfurt)**.
 2. Den Auftragsverarbeitungsvertrag (DPA) im Dashboard unter *Organization → Legal Documents* abschließen.
-3. *SQL Editor* öffnen und den Inhalt von `supabase/migrations/20261007000000_intern.sql` ausführen.
+3. *SQL Editor* öffnen und nacheinander ausführen:
+   `supabase/migrations/20261007000000_intern.sql` (Login, Profile, Dokumente) und
+   `supabase/migrations/20261008000000_oeffentliche_profile.sql` (öffentliche Profile mit Freigabe, Porträts).
 
 ## 2. Login konfigurieren
 
@@ -52,6 +54,5 @@ Der Vorstand kann danach Dokumente hochladen und löschen sowie Profile bearbeit
 
 ## Ideen für später
 
-- Öffentliche Netzwerk-Liste automatisch aus `public_profiles` erzeugen (beim Build abrufen).
 - Interne Termine (Plenum, AG-Treffen) als eigene Tabelle.
 - Einladungen direkt aus dem internen Bereich (braucht eine Supabase Edge Function mit Service-Key).

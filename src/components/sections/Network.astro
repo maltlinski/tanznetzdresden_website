@@ -1,38 +1,43 @@
 ---
 import Tag from '../ui/Tag.astro';
-import { getPersonen } from '../../lib/content';
-import { href } from '../../lib/url';
+import { getProfiles } from '../../lib/profiles';
+import { getLang, tr, url } from '../../lib/i18n';
 
-const people = (await getPersonen()).filter((p) => p.data.featured);
+const lang = getLang(Astro);
+const MAX = 24;
+const all = await getProfiles();
+const people = all.filter((p) => p.featured).slice(0, MAX);
+const more = all.length - people.length;
+const t = tr(lang, {
+  de: { kicker: 'Mitglieder:innen', h: 'Wer im Netz tanzt', group: 'Personen filtern', all: 'Alle', m: 'Mitglieder:innen', tr: 'Trainer:innen', more: more > 0 ? `und ${more} weitere →` : 'Alle Profile →' },
+  en: { kicker: 'Members', h: 'Who dances in the network', group: 'Filter people', all: 'All', m: 'Members', tr: 'Teachers', more: more > 0 ? `and ${more} more →` : 'All profiles →' },
+});
 const filters = [
-  { value: 'alle', label: 'Alle' },
-  { value: 'mitglied', label: 'Mitglieder:innen' },
-  { value: 'trainer', label: 'Trainer:innen' },
+  { value: 'alle', label: t.all },
+  { value: 'mitglied', label: t.m },
+  { value: 'trainer', label: t.tr },
 ];
 ---
 <section id="netzwerk" class="section" aria-labelledby="netzwerk-h">
   <div class="wrap">
     <div class="section-head netzwerk__head">
       <div data-reveal>
-        <Tag>Mitglieder:innen</Tag>
-        <h2 id="netzwerk-h" class="h2">Wer im Netz tanzt</h2>
+        <Tag>{t.kicker}</Tag>
+        <h2 id="netzwerk-h" class="h2">{t.h}</h2>
       </div>
-      <div class="chips" role="group" aria-label="Personen filtern" data-role-filter>
+      <div class="chips" role="group" aria-label={t.group} data-role-filter>
         {filters.map((f, i) => (
           <button type="button" class="chip" data-value={f.value} aria-pressed={i === 0 ? 'true' : 'false'}>{f.label}</button>
         ))}
       </div>
     </div>
     <ul class="members" data-members>
-      {people.map(({ data }) => {
-        const url = data.website ?? (data.instagram ? `https://www.instagram.com/${data.instagram.replace(/^@/, '')}/` : null);
-        return (
-          <li class="member" data-roles={data.roles.join(' ')}>
-            {url ? <a href={url} rel="noopener" target="_blank">{data.name}</a> : <span>{data.name}</span>}
-          </li>
-        );
-      })}
-      <li><a class="mono-link members__more" href={href('verein/#netzwerk')}>und über 40 weitere →</a></li>
+      {people.map((p) => (
+        <li class="member" data-roles={p.roles.join(' ')}>
+          <a href={url(lang, 'netzwerk', `${p.id}/`)}>{p.name}</a>
+        </li>
+      ))}
+      <li><a class="mono-link members__more" href={url(lang, 'netzwerk')}>{t.more}</a></li>
     </ul>
   </div>
 </section>
@@ -52,14 +57,14 @@ const filters = [
 <style>
   .netzwerk__head { margin-bottom: 44px; }
   .members { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; max-width: 1200px; list-style: none; margin: 0; padding: 0; }
-  .member > a, .member > span {
+  .member > a {
     display: flex; align-items: center; gap: 22px; font-family: var(--font-display); font-weight: 700;
     font-size: clamp(24px, 3vw, 40px); line-height: 1.15; letter-spacing: -0.025em; color: var(--purple);
     transition: opacity 300ms, color 150ms;
   }
-  .member > a::after, .member > span::after { content: ''; width: 9px; height: 9px; background: var(--magenta); flex: none; }
+  .member > a::after { content: ''; width: 9px; height: 9px; background: var(--magenta); flex: none; }
   .member > a:hover { color: var(--magenta); }
-  .member.is-dim > a, .member.is-dim > span { opacity: 0.16; }
+  .member.is-dim > a { opacity: 0.16; }
   .members__more { color: var(--magenta); letter-spacing: 0.14em; padding: 8px 0; display: inline-block; }
   .members__more:hover { color: var(--purple); }
 </style>

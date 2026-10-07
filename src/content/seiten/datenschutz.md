@@ -1,7 +1,7 @@
 ---
 title: Datenschutzerklärung
 description: Wie TanzNetzDresden e.V. mit personenbezogenen Daten umgeht.
-updated: "2026-10-07"
+updated: "2026-10-08"
 ---
 <!--
   MUSTERTEXT – keine Rechtsberatung. Vor dem Livegang prüfen (lassen) und an die
@@ -56,6 +56,16 @@ Für den internen Bereich nutzen wir **Supabase** (Supabase Inc., 970 Toa Payoh 
 Verarbeitet werden: E-Mail-Adresse, Passwort (nur verschlüsselt als Hash), Profilangaben, die du selbst einträgst, sowie Zeitpunkte von Anmeldungen. Rechtsgrundlage ist deine Mitgliedschaft im Verein (Art. 6 Abs. 1 lit. b DSGVO). Nach dem Login speichert dein Browser ein Sitzungs-Token (localStorage). Das ist technisch notwendig, damit du angemeldet bleibst. Es wird beim Abmelden gelöscht.
 
 Profilangaben, die du als „öffentlich“ markierst, können wir auf der Website zeigen. Alles andere sehen nur angemeldete Mitglieder:innen. Endet deine Mitgliedschaft, löschen wir dein Konto.
+
+## Öffentliche Profile im Netzwerk
+
+Auf den Profilseiten unter „Netzwerk“ zeigen wir Name, Profiltext, Schwerpunkte, Links und gegebenenfalls ein Porträt von Mitglieder:innen. Grundlage ist die Einwilligung der Person (Art. 6 Abs. 1 lit. a DSGVO): Profile aus dem internen Bereich erscheinen nur, wenn die Person „öffentlich zeigen“ wählt und der Vorstand das Profil freigegeben hat. Die Einwilligung lässt sich jederzeit im internen Bereich oder per E-Mail widerrufen; das Profil verschwindet dann beim nächsten Aktualisieren der Website (spätestens nach 24 Stunden).
+
+Porträts aus dem internen Bereich liegen bei Supabase (Frankfurt am Main) und werden beim Erstellen der Website auf unseren Server übernommen. Beim Besuch der Website gehen dafür keine Daten an Supabase.
+
+## Reichweitenmessung
+
+Ob wir Besuche zählen, entscheidest du: Eine Statistik läuft nur, wenn sie eingerichtet ist und du der Kategorie „Statistik“ zustimmst (§ 25 Abs. 1 TDDDG, Art. 6 Abs. 1 lit. a DSGVO). Wir nutzen dafür [BITTE ERGÄNZEN, falls aktiviert: Matomo ohne Cookies auf eigenem Server / Plausible Analytics, EU]. Die IP-Adresse wird gekürzt, es werden keine Profile über mehrere Websites gebildet. Die Zahlen brauchen wir für Berichte an unsere Förderer.
 
 ## Mitgliederverwaltung
 

@@ -7,4 +7,6 @@ venue: "TENZA Schmiede"
 timeLabel: "11:00–15:00 Uhr"
 category: Training
 teaser: "Anmeldung über die Telegram-Gruppe"
+teaser_en: "Registration via the Telegram group"
+timeLabel_en: "11:00–15:00"
 ---

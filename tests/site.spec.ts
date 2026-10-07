@@ -1,7 +1,12 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
-const pages = ['/', '/termine/', '/verein/', '/mitglied-werden/', '/kontakt/', '/impressum/', '/datenschutz/', '/intern/'];
+const pages = [
+  '/', '/termine/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
+  '/transparenz/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
+  '/en/', '/en/events/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
+  '/en/contact/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
+];
 
 /** Externe Anfragen sperren: die Seite selbst darf ohne Einwilligung nichts nachladen. */
 async function trackExternal(page: Page) {
@@ -18,7 +23,7 @@ async function trackExternal(page: Page) {
 }
 
 async function dismissConsent(page: Page) {
-  await page.getByRole('button', { name: 'Nur notwendige' }).click();
+  await page.getByRole('button', { name: /^(Nur notwendige|Necessary only)$/ }).click();
 }
 
 for (const path of pages) {
@@ -110,4 +115,47 @@ test('Mobiles Menü öffnet und schließt', async ({ page, isMobile }) => {
   await expect(page.getByRole('navigation', { name: 'Hauptnavigation' })).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+});
+
+test('Sprachumschalter führt zur passenden Seite in der anderen Sprache', async ({ page, isMobile }) => {
+  await page.goto('/termine/');
+  await dismissConsent(page);
+  if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
+  await page.getByRole('link', { name: 'English' }).click();
+  await expect(page).toHaveURL(/\/en\/events\/$/);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText("What's on");
+  if (isMobile) await page.getByRole('button', { name: 'Menu' }).click();
+  await page.getByRole('link', { name: 'Deutsch' }).click();
+  await expect(page).toHaveURL(/\/termine\/$/);
+});
+
+test('hreflang verweist auf beide Sprachfassungen', async ({ request }) => {
+  const html = await (await request.get('/verein/')).text();
+  expect(html).toMatch(/hreflang="de" href="[^"]*\/verein\/"/);
+  expect(html).toMatch(/hreflang="en" href="[^"]*\/en\/about\/"/);
+});
+
+test('Förderhinweis steht auf jeder Seite', async ({ page }) => {
+  for (const path of ['/', '/en/', '/kontakt/']) {
+    await page.goto(path);
+    await expect(page.locator('#funding-h')).toHaveText(/Gefördert durch|Funded by/);
+  }
+});
+
+test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
+  await page.goto('/netzwerk/');
+  await dismissConsent(page);
+  await page.getByLabel('Suchen').fill('rika');
+  await expect(page.locator('[data-net-list] .card:visible')).toHaveCount(1);
+  await page.locator('[data-net-list] .card:visible a').click();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Rika Yotsumoto');
+  await expect(page.getByRole('heading', { name: 'Nächste Termine' })).toBeVisible();
+  await expect(page.locator('.event')).toContainText(['KEEP UP']);
+});
+
+test('Englische Termine nutzen englische Texte', async ({ page }) => {
+  await page.goto('/en/events/');
+  await expect(page.getByText('New short pieces from the network')).toBeVisible();
+  await expect(page.locator('.badge', { hasText: 'Stage' }).first()).toBeVisible();
 });

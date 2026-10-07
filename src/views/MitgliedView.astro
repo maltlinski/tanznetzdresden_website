@@ -1,0 +1,108 @@
+---
+import Page from '../layouts/Page.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Tag from '../components/ui/Tag.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
+import { getVerein } from '../lib/settings';
+import { href } from '../lib/url';
+import { getLang, tr } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const verein = getVerein(lang);
+const m = verein.membership;
+const [feeRegular, feeMember] = verein.training.fee.split('/').map((s) => s.trim());
+const t = tr(lang, {
+  de: {
+    title: 'Mitglied werden', desc: 'Werde Mitglied bei TanzNetzDresden e.V.: günstiger trainieren, Formate mitgestalten, die freie Tanzszene stärken.',
+    kicker: 'Mitglied werden', h1: 'Werde Teil', accent: 'des Netzes.',
+    lead: 'Für professionell arbeitende Tanzschaffende in Dresden und Umgebung: Tänzer:innen, Choreograf:innen, Dozent:innen und alle, die den zeitgenössischen Tanz hier mittragen.',
+    whyKicker: 'Was du davon hast', whyH: 'Vorteile', howKicker: 'So geht’s', howH: 'In vier Schritten',
+    benefits: [
+      ['Günstiger trainieren', `KEEP UP Profitraining zum Mitgliedertarif (${feeMember ?? feeRegular} statt ${feeRegular}).`],
+      ['Formate mitgestalten', 'Steig in eine der Arbeitsgruppen ein und entwickle POP UP, Studio Round und Co. mit.'],
+      ['Sichtbar werden', 'Erscheine mit eigenem Profil im Netzwerk auf der Website und im Newsletter.'],
+      ['Stimme haben', 'Mitbestimmen in der Mitgliederversammlung und kulturpolitisch mit einer Stimme sprechen.'],
+    ],
+    steps: [
+      ['Antrag ausfüllen', m.applicationPdf ? 'Lade den Mitgliedsantrag herunter und fülle ihn aus.' : 'Schreib uns kurz, wer du bist und woran du arbeitest. Wir schicken dir den Antrag.'],
+      ['An den Vorstand senden', 'Per E-Mail oder per Post an die Vereinsadresse.'],
+      ['Kennenlernen', 'Wir laden dich zum nächsten Sharing ein, dem offenen Netzwerktreffen.'],
+      ['Zugang erhalten', 'Du bekommst eine Einladung in den internen Bereich und pflegst dort dein Profil.'],
+    ],
+    fee: 'Mitgliedsbeitrag', pdf: 'Mitgliedsantrag (PDF)', statutes: 'Satzung lesen →', questions: 'Fragen? Antrag?', mail: 'E-Mail an den Vorstand', subject: 'Mitgliedschaft',
+  },
+  en: {
+    title: 'Membership', desc: 'Become a member of TanzNetzDresden e.V.: train at a reduced rate, shape formats, strengthen the independent dance scene.',
+    kicker: 'Membership', h1: 'Become part', accent: 'of the network.',
+    lead: 'For professional dance artists in and around Dresden: dancers, choreographers, teachers and everyone who carries contemporary dance here.',
+    whyKicker: 'What you get', whyH: 'Benefits', howKicker: 'How it works', howH: 'In four steps',
+    benefits: [
+      ['Train for less', `KEEP UP professional training at the member rate (${feeMember ?? feeRegular} instead of ${feeRegular}).`],
+      ['Shape the formats', 'Join a working group and help develop POP UP, Studio Round and more.'],
+      ['Become visible', 'Appear with your own profile in the network on the website and in the newsletter.'],
+      ['Have a say', 'Vote at the general assembly and speak with one voice on cultural policy.'],
+    ],
+    steps: [
+      ['Fill in the form', m.applicationPdf ? 'Download the membership form and fill it in.' : 'Tell us briefly who you are and what you work on. We will send you the form.'],
+      ['Send it to the board', 'By email or by post to the association address.'],
+      ['Get to know us', 'We invite you to the next Sharing, our open network meeting.'],
+      ['Get access', 'You receive an invitation to the members area and set up your profile there.'],
+    ],
+    fee: 'Membership fee', pdf: 'Membership form (PDF, German)', statutes: 'Read the statutes (German) →', questions: 'Questions?', mail: 'Email the board', subject: 'Membership',
+  },
+});
+---
+<Page title={t.title} description={t.desc} route="mitglied">
+  <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} />
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head"><div data-reveal><Tag>{t.whyKicker}</Tag><h2 class="h2">{t.whyH}</h2></div></div>
+      <ul class="benefits">
+        {t.benefits.map(([title, text]) => <li><h3>{title}</h3><p>{text}</p></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section steps-wrap surface-tint">
+    <div class="wrap steps-grid">
+      <div>
+        <div data-reveal><Tag>{t.howKicker}</Tag><h2 class="h2">{t.howH}</h2></div>
+        <ol class="steps">
+          {t.steps.map(([title, text], i) => <li><span class="steps__n">{i + 1}</span><div><h3>{title}</h3><p>{text}</p></div></li>)}
+        </ol>
+      </div>
+      <aside class="card">
+        <span class="card__label">{t.fee}</span>
+        <span class="card__big">{m.fee}</span>
+        <span class="card__note">{m.feeNote}</span>
+        <div class="card__actions">
+          {m.applicationPdf && <a class="btn btn--primary btn--marker" href={href(m.applicationPdf)} download>{t.pdf}</a>}
+          {m.statutesPdf && <a class="mono-link card__link" href={href(m.statutesPdf)}>{t.statutes}</a>}
+          <span class="card__label">{t.questions}</span>
+          <ProtectedEmail email={verein.emails.vorstand} label={t.mail} subject={t.subject} />
+        </div>
+      </aside>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .benefits { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px; }
+  .benefits li { padding: 24px 22px 28px; border: 1px solid var(--rule); border-top: 3px solid var(--magenta); }
+  .benefits h3 { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; color: var(--purple); margin: 0 0 8px; }
+  .benefits p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .steps-wrap { background: var(--tint); }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px clamp(32px, 6vw, 96px); align-items: start; }
+  .steps { list-style: none; margin: 36px 0 0; padding: 0; border-top: 1px solid var(--rule); }
+  .steps li { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
+  .steps__n { font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 0.9; color: var(--magenta); }
+  .steps h3 { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--purple); margin: 0 0 4px; }
+  .steps p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .card { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 8px; padding: 30px 28px; background: var(--purple); color: #fff; clip-path: var(--keil-corner); }
+  .card__label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+  .card__big { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: -0.03em; }
+  .card__note { font-size: 14px; color: var(--on-dark-soft); }
+  .card__actions { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--on-dark-rule); }
+  .card__link { color: #fff; }
+</style>

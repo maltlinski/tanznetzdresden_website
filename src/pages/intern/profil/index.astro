@@ -1,10 +1,11 @@
 ---
 import Intern from '../../../layouts/Intern.astro';
 import { arbeitsgruppen } from '../../../settings/arbeitsgruppen';
+import { href } from '../../../lib/url';
 ---
 <Intern title="Mein Profil" current="profil">
   <h1 class="i-h1">Mein Profil</h1>
-  <p class="i-lead">Was du hier einträgst, sehen alle angemeldeten Mitglieder:innen. E-Mail und Telefon nur, wenn du sie freigibst.</p>
+  <p class="i-lead">Was du hier einträgst, sehen alle angemeldeten Mitglieder:innen. E-Mail und Telefon nur, wenn du sie freigibst. Ein öffentliches Profil auf der Website ist freiwillig.</p>
   <div class="i-card">
     <form class="i-form profile" data-profile-form>
       <div class="i-field">
@@ -18,7 +19,7 @@ import { arbeitsgruppen } from '../../../settings/arbeitsgruppen';
       <div class="i-field">
         <label for="p-bio">Kurzbio</label>
         <textarea id="p-bio" name="bio" maxlength="1200" aria-describedby="p-bio-hint"></textarea>
-        <span class="i-hint" id="p-bio-hint">Höchstens 1.200 Zeichen. Woran arbeitest du, was bietest du an?</span>
+        <span class="i-hint" id="p-bio-hint">Höchstens 1.200 Zeichen. Woran arbeitest du, was bietest du an? Absätze mit einer Leerzeile trennen.</span>
       </div>
       <div class="i-field">
         <label for="p-website">Website</label>
@@ -41,16 +42,59 @@ import { arbeitsgruppen } from '../../../settings/arbeitsgruppen';
         </div>
       </fieldset>
       <fieldset class="i-fieldset">
-        <legend class="i-legend">Sichtbarkeit</legend>
+        <legend class="i-legend">Für Mitglieder sichtbar</legend>
         <label class="i-check"><input type="checkbox" name="is_trainer" />Ich gebe Training (KEEP UP, Workshops)</label>
         <label class="i-check"><input type="checkbox" name="show_email" />Meine E-Mail-Adresse für Mitglieder:innen anzeigen</label>
         <label class="i-check"><input type="checkbox" name="show_phone" />Meine Telefonnummer für Mitglieder:innen anzeigen</label>
-        <label class="i-check"><input type="checkbox" name="public_listing" />Mich mit Name, Website und Instagram auf der öffentlichen Website zeigen</label>
       </fieldset>
+
+      <fieldset class="i-fieldset public">
+        <legend class="i-legend">Öffentliches Profil auf der Website</legend>
+        <label class="i-check"><input type="checkbox" name="public_listing" data-public-toggle />Ich möchte ein öffentliches Profil unter „Netzwerk“ (Name, Kurzbio, Schwerpunkte, Links, Foto)</label>
+        <p class="status" data-public-status hidden></p>
+        <div class="public__fields" data-public-fields>
+          <div class="i-field">
+            <label for="p-slug">Adresse</label>
+            <div class="slug"><span>…/netzwerk/</span><input id="p-slug" name="slug" pattern="[a-z0-9]+(-[a-z0-9]+)*" minlength="3" maxlength="60" aria-describedby="p-slug-hint" /><span>/</span></div>
+            <span class="i-hint" id="p-slug-hint">Kleinbuchstaben, Ziffern, Bindestriche. Steht dein Name schon auf der Website, nimm dasselbe Kürzel – dann wird das bestehende Profil ergänzt.</span>
+          </div>
+          <div class="i-field">
+            <label for="p-tags">Schwerpunkte</label>
+            <input id="p-tags" name="tags" placeholder="z. B. Choreografie, Contemporary, Somatics" aria-describedby="p-tags-hint" />
+            <span class="i-hint" id="p-tags-hint">Mit Komma trennen, höchstens 6.</span>
+          </div>
+          <div class="i-field">
+            <label for="p-bio-en">Kurzbio auf Englisch <span class="opt">optional</span></label>
+            <textarea id="p-bio-en" name="bio_en" maxlength="1200" lang="en"></textarea>
+            <span class="i-hint">Erscheint auf der englischen Seite. Leer = deutscher Text.</span>
+          </div>
+          <div class="i-field">
+            <label for="p-vimeo">Vimeo oder Video-Link <span class="opt">optional</span></label>
+            <input id="p-vimeo" name="vimeo" type="url" placeholder="https://vimeo.com/…" />
+          </div>
+          <div class="photo">
+            <div class="photo__preview" data-photo-preview><span>Kein Foto</span></div>
+            <div class="photo__controls">
+              <div class="i-field">
+                <label for="p-photo">Porträt</label>
+                <input id="p-photo" type="file" accept="image/jpeg,image/png,image/webp" data-photo-input aria-describedby="p-photo-hint" />
+                <span class="i-hint" id="p-photo-hint">JPG, PNG oder WebP, höchstens 5 MB, am besten Hochformat. Nur Fotos, an denen du die Rechte hast.</span>
+              </div>
+              <div class="i-field">
+                <label for="p-credit">Foto: Name der Fotograf:in</label>
+                <input id="p-credit" name="photo_credit" maxlength="80" />
+              </div>
+              <button type="button" class="i-linkbtn" data-photo-remove hidden>Foto entfernen</button>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+
       <p class="i-msg" role="status" data-profile-msg hidden></p>
       <div class="profile__actions">
         <button type="submit" class="btn btn--primary btn--marker">Speichern</button>
-        <a class="i-linkbtn" href="../passwort/">Passwort ändern</a>
+        <a class="i-linkbtn" href={href('intern/passwort/')}>Passwort ändern</a>
+        <a class="i-linkbtn" data-public-link hidden target="_blank" rel="noopener">Öffentliches Profil ansehen</a>
       </div>
     </form>
   </div>
@@ -58,26 +102,93 @@ import { arbeitsgruppen } from '../../../settings/arbeitsgruppen';
 
 <script>
   import { initIntern, errorText, showMessage } from '../../../scripts/intern/session';
+  import { photoUrl, slugify } from '../../../lib/supabase';
 
+  const BUCKET = 'profilbilder';
   const ctx = await initIntern(true);
   const form = document.querySelector<HTMLFormElement>('[data-profile-form]');
   const msg = document.querySelector<HTMLElement>('[data-profile-msg]');
-  const textFields = ['display_name', 'pronouns', 'bio', 'website', 'instagram', 'phone'] as const;
+  const textFields = ['display_name', 'pronouns', 'bio', 'bio_en', 'website', 'instagram', 'phone', 'slug', 'vimeo', 'photo_credit'] as const;
   const flags = ['is_trainer', 'show_email', 'show_phone', 'public_listing'] as const;
+  const preview = document.querySelector<HTMLElement>('[data-photo-preview]');
+  const photoInput = document.querySelector<HTMLInputElement>('[data-photo-input]');
+  const removeBtn = document.querySelector<HTMLButtonElement>('[data-photo-remove]');
+  const publicToggle = document.querySelector<HTMLInputElement>('[data-public-toggle]');
+  const publicFields = document.querySelector<HTMLElement>('[data-public-fields]');
+  const publicStatus = document.querySelector<HTMLElement>('[data-public-status]');
+  const publicLink = document.querySelector<HTMLAnchorElement>('[data-public-link]');
+  let photoPath: string | null = null;
+
+  const showPhoto = (path: string | null, localUrl?: string) => {
+    if (!preview) return;
+    const src = localUrl ?? photoUrl(path);
+    preview.innerHTML = src ? `<img src="${src}" alt="Dein Porträt (Vorschau)">` : '<span>Kein Foto</span>';
+    if (removeBtn) removeBtn.hidden = !path;
+  };
+  const showPublic = () => {
+    if (publicFields) publicFields.hidden = !publicToggle?.checked;
+  };
+  const showStatus = (verified: boolean, listed: boolean, slug: string | null) => {
+    if (!publicStatus) return;
+    publicStatus.hidden = !listed;
+    publicStatus.dataset.kind = verified ? 'ok' : 'wait';
+    publicStatus.textContent = verified
+      ? 'Freigegeben: Dein Profil ist öffentlich. Änderungen erscheinen spätestens am nächsten Tag.'
+      : 'Wartet auf Freigabe durch den Vorstand. Danach erscheint dein Profil auf der Website.';
+    if (publicLink) {
+      publicLink.hidden = !(verified && listed && slug);
+      publicLink.href = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}netzwerk/${slug}/`;
+    }
+  };
 
   if (ctx && form) {
     const p = ctx.profile;
     if (p) {
       for (const f of textFields) {
         const el = form.elements.namedItem(f) as HTMLInputElement | HTMLTextAreaElement | null;
-        if (el) el.value = p[f] ?? '';
+        if (el) el.value = (p[f] as string | null) ?? '';
       }
       for (const f of flags) {
         const el = form.elements.namedItem(f) as HTMLInputElement | null;
         if (el) el.checked = !!p[f];
       }
       form.querySelectorAll<HTMLInputElement>('input[name="ags"]').forEach((c) => (c.checked = p.ags?.includes(c.value) ?? false));
+      (form.elements.namedItem('tags') as HTMLInputElement).value = (p.tags ?? []).join(', ');
+      if (!p.slug) (form.elements.namedItem('slug') as HTMLInputElement).value = slugify(p.display_name);
+      photoPath = p.photo_path;
+      showPhoto(photoPath);
+      showStatus(p.verified, p.public_listing, p.slug);
     }
+    showPublic();
+    publicToggle?.addEventListener('change', showPublic);
+
+    photoInput?.addEventListener('change', async () => {
+      const file = photoInput.files?.[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) return showMessage(msg, 'Das Foto ist größer als 5 MB.');
+      const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+      // neuer Dateiname bei jedem Upload, damit Browser- und Build-Caches das neue Bild holen
+      const path = `${ctx.user.id}/portrait-${Date.now()}.${ext}`;
+      showPhoto(null, URL.createObjectURL(file));
+      const { error } = await ctx.sb.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false });
+      if (error) return showMessage(msg, errorText(error));
+      if (photoPath) await ctx.sb.storage.from(BUCKET).remove([photoPath]);
+      photoPath = path;
+      const { error: e2 } = await ctx.sb.from('profiles').update({ photo_path: path }).eq('id', ctx.user.id);
+      if (e2) return showMessage(msg, errorText(e2));
+      if (removeBtn) removeBtn.hidden = false;
+      showMessage(msg, 'Foto gespeichert.', 'ok');
+    });
+
+    removeBtn?.addEventListener('click', async () => {
+      if (!photoPath || !confirm('Foto wirklich entfernen?')) return;
+      await ctx.sb.storage.from(BUCKET).remove([photoPath]);
+      const { error } = await ctx.sb.from('profiles').update({ photo_path: null }).eq('id', ctx.user.id);
+      if (error) return showMessage(msg, errorText(error));
+      photoPath = null;
+      showPhoto(null);
+      showMessage(msg, 'Foto entfernt.', 'ok');
+    });
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -88,15 +199,23 @@ import { arbeitsgruppen } from '../../../settings/arbeitsgruppen';
         display_name: String(fd.get('display_name') ?? '').trim(),
         pronouns: clean(fd.get('pronouns')),
         bio: clean(fd.get('bio')),
+        bio_en: clean(fd.get('bio_en')),
         website: clean(fd.get('website')),
         instagram: clean(fd.get('instagram'))?.replace(/^@/, '') ?? null,
+        vimeo: clean(fd.get('vimeo')),
         phone: clean(fd.get('phone')),
+        slug: clean(fd.get('slug')),
+        photo_credit: clean(fd.get('photo_credit')),
+        tags: String(fd.get('tags') ?? '').split(',').map((t) => t.trim()).filter(Boolean).slice(0, 6),
         ags: fd.getAll('ags').map(String),
         ...Object.fromEntries(flags.map((f) => [f, fd.has(f)])),
       };
-      const { error } = await ctx.sb.from('profiles').update(update).eq('id', ctx.user.id);
-      if (error) return showMessage(msg, errorText(error));
+      const { data, error } = await ctx.sb.from('profiles').update(update).eq('id', ctx.user.id).select('verified, public_listing, slug').single();
+      if (error) {
+        return showMessage(msg, /duplicate|unique/i.test(error.message) ? 'Diese Adresse ist schon vergeben. Bitte wähle eine andere.' : errorText(error));
+      }
       document.querySelectorAll<HTMLElement>('[data-intern-name]').forEach((el) => (el.textContent = update.display_name));
+      showStatus(data.verified, data.public_listing, data.slug);
       showMessage(msg, 'Gespeichert.', 'ok');
     });
   }
@@ -107,5 +226,17 @@ import { arbeitsgruppen } from '../../../settings/arbeitsgruppen';
   :global(.i-fieldset) { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; }
   :global(.i-fieldset legend) { margin-bottom: 10px; }
   .ags { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 20px; }
+  .public { padding-top: 22px; border-top: 1px solid var(--rule); }
+  .public__fields { display: grid; gap: 18px; margin-top: 8px; }
+  .public__fields[hidden] { display: none; }
+  .slug { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px; color: var(--ink-muted); }
+  .slug input { flex: 1; }
+  .status { margin: 0; padding: 10px 14px; font-size: 14px; border-left: 4px solid var(--cyan-2); background: var(--cyan-tint); color: var(--purple); }
+  .status[data-kind='wait'] { border-left-color: var(--magenta); background: var(--magenta-tint); }
+  .photo { display: grid; grid-template-columns: 160px 1fr; gap: 20px; align-items: start; }
+  .photo__preview { aspect-ratio: 4 / 5; background: var(--purple); color: rgba(255, 255, 255, 0.7); display: grid; place-items: center; font-size: 13px; overflow: hidden; clip-path: var(--keil-corner); }
+  .photo__preview :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .photo__controls { display: grid; gap: 14px; align-content: start; }
   .profile__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+  @media (max-width: 560px) { .photo { grid-template-columns: 1fr; } .photo__preview { max-width: 200px; } }
 </style>

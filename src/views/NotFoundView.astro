@@ -1,0 +1,43 @@
+---
+/** Eine 404-Seite für beide Sprachen (GitHub Pages kennt nur eine 404.html). */
+import Page from '../layouts/Page.astro';
+import { url } from '../lib/i18n';
+import Tag from '../components/ui/Tag.astro';
+import KeilBar from '../components/ui/KeilBar.astro';
+---
+<Page title="404" noindex>
+  <section class="nf">
+    <div class="wrap nf__grid">
+      <div>
+        <Tag color="cyan">Fehler 404</Tag>
+        <h1 class="nf__title">Hier reißt<br /><em>das Netz.</em></h1>
+        <p>Diese Seite gibt es nicht (mehr).</p>
+        <div class="nf__actions">
+          <a class="btn btn--secondary btn--marker" href={url('de', 'home')}>Zur Startseite</a>
+          <a class="mono-link underline-link" href={url('de', 'termine')}>Tanzkalender →</a>
+        </div>
+      </div>
+      <div lang="en">
+        <Tag color="cyan">Error 404</Tag>
+        <p class="nf__title nf__title--en" role="presentation">The net<br /><em>tore here.</em></p>
+        <p>This page does not exist (any more).</p>
+        <div class="nf__actions">
+          <a class="btn btn--secondary btn--marker" href={url('en', 'home')}>Go to homepage</a>
+          <a class="mono-link underline-link" href={url('en', 'termine')}>Dance calendar →</a>
+        </div>
+      </div>
+    </div>
+    <KeilBar class="nf__keil" />
+  </section>
+</Page>
+
+<style>
+  .nf { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  .nf__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 56px clamp(32px, 6vw, 96px); padding-block: clamp(56px, 8vw, 112px); }
+  .nf :global(.tag) { margin-bottom: 24px; }
+  .nf__title { font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6vw, 88px); line-height: 0.92; letter-spacing: -0.035em; margin: 0 0 20px; }
+  .nf__title em { font-style: normal; color: var(--magenta); }
+  .nf p { color: rgba(255, 255, 255, 0.86); font-size: 17px; }
+  .nf__actions { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; margin-top: 28px; }
+  .nf :global(.nf__keil) { position: absolute; left: 0; bottom: 0; width: 34%; }
+</style>

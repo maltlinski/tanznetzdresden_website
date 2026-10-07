@@ -1,0 +1,129 @@
+---
+import Page from '../layouts/Page.astro';
+import PageIntro from '../components/PageIntro.astro';
+import Tag from '../components/ui/Tag.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
+import { getProfiles } from '../lib/profiles';
+import { getVerein } from '../lib/settings';
+import { getLang, tr, url } from '../lib/i18n';
+import { arbeitsgruppen } from '../settings/arbeitsgruppen';
+
+const lang = getLang(Astro);
+const verein = getVerein(lang);
+const profiles = await getProfiles();
+const vorstand = profiles.filter((p) => p.vorstand);
+const t = tr(lang, {
+  de: {
+    title: 'Über uns', desc: 'TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.',
+    kicker: `Über uns · seit ${verein.founded}`, h1: 'Dezentrale Kulturinstitution.', accent: 'Und Bildungsort.',
+    lead: `Seit ${verein.founded} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.`,
+    boardKicker: 'Koordinationsteam · gewählt 2026', boardH: 'Vorstand & Team', reach: 'Den Vorstand erreichen', boardMail: 'E-Mail an den Vorstand', boardSubject: 'Anfrage an den Vorstand',
+    agKicker: `${arbeitsgruppen.length} Arbeitsgruppen`, agH: 'Wer die Arbeit trägt', agIntro: 'Jedes Format hat eine eigene AG. Mitglieder:innen können jederzeit einsteigen.',
+    netKicker: 'Mitglieder:innen & Trainer:innen', netH: 'Das Netz', member: 'Mitglied', trainer: 'Training', allProfiles: 'Alle Profile ansehen →',
+    transparency: 'Wie wir arbeiten und uns finanzieren, steht auf unserer Transparenz-Seite.', transparencyCta: 'Transparenz →',
+  },
+  en: {
+    title: 'About us', desc: "TanzNetzDresden e.V.: self-organised network of Dresden's independent dance scene. Board, working groups and members.",
+    kicker: `About us · since ${verein.founded}`, h1: 'A decentralised cultural institution.', accent: 'And a place of learning.',
+    lead: `Since ${verein.founded}, dance artists of Dresden's independent scene have been building this network, since 2020 as a registered non-profit association. We organise formats, training, discourse and residencies and advocate for better working conditions in dance.`,
+    boardKicker: 'Coordination team · elected 2026', boardH: 'Board & team', reach: 'Contact the board', boardMail: 'Email the board', boardSubject: 'Enquiry to the board',
+    agKicker: `${arbeitsgruppen.length} working groups`, agH: 'Who carries the work', agIntro: 'Each format has its own working group. Members can join at any time.',
+    netKicker: 'Members & teachers', netH: 'The network', member: 'Member', trainer: 'Training', allProfiles: 'See all profiles →',
+    transparency: 'How we work and how we are funded is on our transparency page.', transparencyCta: 'Transparency →',
+  },
+});
+---
+<Page title={t.title} description={t.desc} route="verein">
+  <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} />
+
+  <section class="section" id="vorstand" aria-labelledby="vorstand-h">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <Tag>{t.boardKicker}</Tag>
+          <h2 id="vorstand-h" class="h2">{t.boardH}</h2>
+        </div>
+        <div class="vorstand-mail">
+          <span class="vorstand-mail__label">{t.reach}</span>
+          <ProtectedEmail email={verein.emails.vorstand} label={t.boardMail} subject={t.boardSubject} />
+        </div>
+      </div>
+      <ul class="board">
+        {vorstand.map((p) => (
+          <li>
+            <a class="board__card" href={url(lang, 'netzwerk', `${p.id}/`)}>
+              <span class="board__name">{p.name}</span>
+              <span class="board__role">{lang === 'en' ? p.vorstand_en ?? p.vorstand : p.vorstand}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section ags surface-tint" id="arbeitsgruppen" aria-labelledby="ags-h">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <Tag>{t.agKicker}</Tag>
+          <h2 id="ags-h" class="h2">{t.agH}</h2>
+        </div>
+        <p class="ags__intro">{t.agIntro}</p>
+      </div>
+      <ol class="ags__list">
+        {arbeitsgruppen.map((ag, i) => (
+          <li>
+            <span class="ags__n">{String(i + 1).padStart(2, '0')}</span>
+            <h3>{ag.name}</h3>
+            <p>{lang === 'en' ? ag.text_en : ag.text}</p>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" id="netzwerk" aria-labelledby="netz-h">
+    <div class="wrap">
+      <div class="section-head">
+        <div data-reveal>
+          <Tag>{t.netKicker}</Tag>
+          <h2 id="netz-h" class="h2">{t.netH}</h2>
+        </div>
+        <a class="mono-link" href={url(lang, 'netzwerk')}>{t.allProfiles}</a>
+      </div>
+      <ul class="people">
+        {profiles.map((p) => (
+          <li>
+            <a href={url(lang, 'netzwerk', `${p.id}/`)} class="people__name">{p.name}</a>
+            <span class="people__roles">{p.roles.map((r) => (r === 'mitglied' ? t.member : t.trainer)).join(' · ')}</span>
+          </li>
+        ))}
+      </ul>
+      <p class="people__note">{t.transparency} <a href={url(lang, 'transparenz')}>{t.transparencyCta}</a></p>
+    </div>
+  </section>
+</Page>
+
+<style>
+  .vorstand-mail { display: flex; flex-direction: column; gap: 10px; font-size: 16px; color: var(--purple); }
+  .vorstand-mail__label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .board { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px; }
+  .board__card { display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 24px 22px 28px; background: var(--paper); border: 1px solid var(--rule); border-top: 3px solid var(--magenta); color: var(--purple); transition: background var(--dur-base); }
+  .board__card:hover { background: var(--tint); color: var(--purple); }
+  .board__name { font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.05; letter-spacing: -0.025em; }
+  .board__role { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+  .ags { background: var(--tint); }
+  .ags__intro { max-width: 400px; margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .ags__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); border-top: 1px solid var(--rule); }
+  .ags__list li { padding: 24px 24px 28px 0; border-bottom: 1px solid var(--rule); }
+  .ags__n { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: var(--magenta-2); }
+  .ags__list h3 { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -0.025em; color: var(--purple); margin: 8px 0 6px; }
+  .ags__list p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 36ch; }
+  .people { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); border-top: 1px solid var(--rule); }
+  .people li { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); }
+  .people__name { font-family: var(--font-display); font-weight: 700; font-size: 19px; color: var(--purple); }
+  .people__name:hover { color: var(--magenta); }
+  .people__roles { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); white-space: nowrap; }
+  .people__note { margin: 28px 0 0; font-size: 15px; color: var(--ink-soft); }
+  .people__note a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+</style>

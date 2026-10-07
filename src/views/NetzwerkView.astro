@@ -1,0 +1,124 @@
+---
+import Page from '../layouts/Page.astro';
+import PageIntro from '../components/PageIntro.astro';
+import ProfilePhoto from '../components/ProfilePhoto.astro';
+import { bioParagraphs, getProfiles } from '../lib/profiles';
+import { getLang, tr, url } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const profiles = (await getProfiles()).sort((a, b) => a.name.localeCompare(b.name, 'de'));
+const t = tr(lang, {
+  de: {
+    title: 'Netzwerk', desc: 'Die Tanzschaffenden im TanzNetzDresden: Profile von Mitglieder:innen und Trainer:innen.',
+    kicker: 'Netzwerk', h1: 'Wer im Netz', accent: 'tanzt.',
+    lead: 'Tänzer:innen, Choreograf:innen und Dozent:innen der freien Szene in Dresden. Finde Menschen für dein nächstes Projekt, dein Training oder einen Austausch.',
+    group: 'Profile filtern', all: 'Alle', m: 'Mitglieder:innen', tr: 'Trainer:innen', search: 'Suchen', placeholder: 'Name oder Schwerpunkt',
+    member: 'Mitglied', trainer: 'Training', board: 'Vorstand', none: 'Keine Profile gefunden.', shown: 'Profile angezeigt',
+    own: 'Du bist Mitglied und möchtest hier ein ausführliches Profil mit Foto? Pflege es im internen Bereich.', ownCta: 'Zum internen Bereich →',
+  },
+  en: {
+    title: 'Network', desc: 'The dance artists of TanzNetzDresden: profiles of members and teachers.',
+    kicker: 'Network', h1: 'Who dances', accent: 'in the network.',
+    lead: "Dancers, choreographers and teachers of Dresden's independent scene. Find people for your next project, your training or an exchange.",
+    group: 'Filter profiles', all: 'All', m: 'Members', tr: 'Teachers', search: 'Search', placeholder: 'Name or focus',
+    member: 'Member', trainer: 'Training', board: 'Board', none: 'No profiles found.', shown: 'profiles shown',
+    own: 'Are you a member and would like a full profile with photo here? Edit it in the members area (German).', ownCta: 'Go to members area →',
+  },
+});
+---
+<Page title={t.title} description={t.desc} route="netzwerk">
+  <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} />
+  <section class="section">
+    <div class="wrap">
+      <div class="net-tools">
+        <div class="chips" role="group" aria-label={t.group} data-net-filter>
+          <button type="button" class="chip" data-value="alle" aria-pressed="true">{t.all}</button>
+          <button type="button" class="chip" data-value="mitglied" aria-pressed="false">{t.m}</button>
+          <button type="button" class="chip" data-value="trainer" aria-pressed="false">{t.tr}</button>
+        </div>
+        <div class="net-search">
+          <label for="net-q">{t.search}</label>
+          <input id="net-q" type="search" placeholder={t.placeholder} data-net-search />
+        </div>
+      </div>
+      <p class="visually-hidden" role="status" data-net-status data-msg={t.shown}></p>
+      <ul class="cards" data-net-list>
+        {profiles.map((p) => (
+          <li
+            class="card"
+            data-roles={p.roles.join(' ')}
+            data-search={`${p.name} ${p.tags.join(' ')} ${p.pronouns ?? ''}`.toLowerCase()}
+          >
+            <a href={url(lang, 'netzwerk', `${p.id}/`)}>
+              <ProfilePhoto profile={p} />
+              <span class="card__name">{p.name}</span>
+              <span class="card__meta">
+                {[p.vorstand ? t.board : null, p.roles.includes('mitglied') ? t.member : null, p.roles.includes('trainer') ? t.trainer : null].filter(Boolean).join(' · ')}
+              </span>
+              {p.tags.length > 0 && <span class="card__tags">{p.tags.slice(0, 3).join(' · ')}</span>}
+              {bioParagraphs(p, lang)[0] && <span class="card__bio">{bioParagraphs(p, lang)[0]}</span>}
+            </a>
+          </li>
+        ))}
+      </ul>
+      <p class="net-empty" data-net-empty hidden>{t.none}</p>
+      <aside class="net-own">
+        <p>{t.own}</p>
+        <a class="mono-link" href={url(lang, 'intern')}>{t.ownCta}</a>
+      </aside>
+    </div>
+  </section>
+</Page>
+
+<script>
+  const list = document.querySelector<HTMLElement>('[data-net-list]');
+  const cards = [...(list?.querySelectorAll<HTMLElement>('.card') ?? [])];
+  const group = document.querySelector<HTMLElement>('[data-net-filter]');
+  const search = document.querySelector<HTMLInputElement>('[data-net-search]');
+  const empty = document.querySelector<HTMLElement>('[data-net-empty]');
+  const status = document.querySelector<HTMLElement>('[data-net-status]');
+  let role = 'alle';
+  const apply = () => {
+    const q = (search?.value ?? '').trim().toLowerCase();
+    let shown = 0;
+    for (const c of cards) {
+      const ok = (role === 'alle' || (c.dataset.roles ?? '').split(' ').includes(role)) && (!q || (c.dataset.search ?? '').includes(q));
+      c.hidden = !ok;
+      if (ok) shown++;
+    }
+    if (empty) empty.hidden = shown > 0;
+    if (status) status.textContent = `${shown} ${status.dataset.msg ?? ''}`;
+  };
+  group?.addEventListener('click', (ev) => {
+    const btn = (ev.target as HTMLElement).closest<HTMLButtonElement>('button[data-value]');
+    if (!btn) return;
+    role = btn.dataset.value ?? 'alle';
+    group.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+    apply();
+  });
+  search?.addEventListener('input', apply);
+</script>
+
+<style>
+  .net-tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px 40px; margin-bottom: 36px; }
+  .net-search { display: flex; flex-direction: column; gap: 7px; min-width: min(100%, 300px); }
+  .net-search label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2); }
+  .net-search input {
+    font: inherit; font-size: 15px; color: var(--ink); background: var(--paper); border: 1.5px solid var(--rule);
+    border-radius: 0; padding: 11px 13px; outline: none;
+  }
+  .net-search input:focus { border-color: var(--magenta); box-shadow: inset 0 -2px 0 var(--magenta); }
+  .cards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: 40px 24px; }
+  .card a { display: flex; flex-direction: column; gap: 6px; color: var(--purple); }
+  .card a :global(.pp) { margin-bottom: 10px; transition: transform var(--dur-slow) var(--ease-out); }
+  .card a:hover :global(.pp) { transform: translateY(-4px); }
+  .card a:hover .card__name { color: var(--magenta); }
+  .card__name { font-family: var(--font-display); font-weight: 800; font-size: 22px; line-height: 1.1; letter-spacing: -0.02em; transition: color var(--dur-base); }
+  .card__meta, .card__tags { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  .card__tags { color: var(--magenta-2); }
+  .card__bio { font-size: 14px; line-height: 1.5; color: var(--ink-soft); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .net-empty { color: var(--ink-soft); }
+  .net-own { margin-top: 64px; padding: 28px 30px; background: var(--tint); border-left: 4px solid var(--magenta); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px; }
+  .net-own p { margin: 0; max-width: 60ch; color: var(--ink-soft); line-height: 1.6; }
+  .net-own a { color: var(--magenta-2); }
+</style>

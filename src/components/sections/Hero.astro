@@ -5,8 +5,8 @@ import Button from '../ui/Button.astro';
 import KeilBar from '../ui/KeilBar.astro';
 import soloBlau from '../../assets/photos/solo-blau.jpg';
 import duoRot from '../../assets/photos/duo-rot.jpg';
-import { verein } from '../../lib/settings';
-import { href } from '../../lib/url';
+import { getVerein } from '../../lib/settings';
+import { getLang, tr, url } from '../../lib/i18n';
 
 // Keep the original pixel dimensions: the hero script crops by source coordinates.
 const [blau, rot] = await Promise.all([
@@ -14,21 +14,32 @@ const [blau, rot] = await Promise.all([
   getImage({ src: duoRot, format: 'webp', quality: 82 }),
 ]);
 
+const lang = getLang(Astro);
+const verein = getVerein(lang);
 const stats = verein.stats.map((s) => ({ n: s.value, l: s.label }));
+const t = tr(lang, {
+  de: {
+    kicker: `Freie Tanzszene · Dresden · seit ${verein.founded}`, l1: 'Eine Stadt.', l2: 'Ein Netz.',
+    lead: 'TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene. Wir organisieren Training, Bühnenformate, Diskurs und Residenzen und machen den zeitgenössischen Tanz in Dresden sichtbar.',
+    cta: 'Nächste Termine', who: 'Wer im Netz tanzt →', replay: 'Netz neu knüpfen',
+  },
+  en: {
+    kicker: `Independent dance · Dresden · since ${verein.founded}`, l1: 'One city.', l2: 'One network.',
+    lead: "TanzNetzDresden connects more than 70 dance artists of the independent scene. We organise training, stage formats, discourse and residencies and make contemporary dance in Dresden visible.",
+    cta: 'Upcoming events', who: 'Who dances in the network →', replay: 'Re-knot the net',
+  },
+});
 ---
 <section id="top" class="hero" aria-labelledby="hero-title">
   <canvas class="hero__canvas" data-hero-canvas data-blau={blau.src} data-rot={rot.src} aria-hidden="true"></canvas>
   <div class="hero__content wrap">
     <div class="hero__text">
-      <Tag color="cyan" class="hero__tag">Freie Tanzszene · Dresden · seit {verein.founded}</Tag>
-      <h1 id="hero-title" class="hero__title" data-hero-title>Eine Stadt.<br /><em>Ein Netz.</em></h1>
-      <p class="hero__lead">
-        TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene. Wir organisieren Training,
-        Bühnenformate, Diskurs und Residenzen und machen den zeitgenössischen Tanz in Dresden sichtbar.
-      </p>
+      <Tag color="cyan" class="hero__tag">{t.kicker}</Tag>
+      <h1 id="hero-title" class="hero__title" data-hero-title>{t.l1}<br /><em>{t.l2}</em></h1>
+      <p class="hero__lead">{t.lead}</p>
       <div class="hero__actions">
-        <Button href={href('#termine')} variant="secondary" size="lg" marker>Nächste Termine</Button>
-        <a href={href('#netzwerk')} class="mono-link underline-link">Wer im Netz tanzt →</a>
+        <Button href={url(lang, 'home', '#termine')} variant="secondary" size="lg" marker>{t.cta}</Button>
+        <a href={url(lang, 'home', '#netzwerk')} class="mono-link underline-link">{t.who}</a>
       </div>
     </div>
   </div>
@@ -37,7 +48,7 @@ const stats = verein.stats.map((s) => ({ n: s.value, l: s.label }));
       {stats.map((s) => (
         <div class="stat"><span class="stat__n">{s.n}</span><span class="stat__l">{s.l}</span></div>
       ))}
-      <button type="button" class="replay" data-hero-replay>Netz neu knüpfen</button>
+      <button type="button" class="replay" data-hero-replay>{t.replay}</button>
     </div>
   </div>
   <KeilBar class="hero__keil" />

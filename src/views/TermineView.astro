@@ -1,0 +1,58 @@
+---
+import Page from '../layouts/Page.astro';
+import PageIntro from '../components/PageIntro.astro';
+import EventList from '../components/EventList.astro';
+import EventFilter from '../components/EventFilter.astro';
+import { getUpcoming } from '../lib/content';
+import { href } from '../lib/url';
+import { getLang, tr, url } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const events = await getUpcoming();
+const t = tr(lang, {
+  de: {
+    title: 'Tanzkalender', desc: 'Alle kommenden Termine der freien Tanzszene Dresden: Bühne, Training und Diskurs.',
+    kicker: 'Tanzkalender', h1: 'Was läuft', accent: 'im Netz.',
+    lead: 'Aufführungen, Training und Gespräche aus dem Netzwerk. Abonniere den Kalender, dann landen neue Termine automatisch in deiner Kalender-App.',
+    ics: 'Kalender abonnieren (.ics)', submit: 'Termin einreichen →', h2: 'Kommende Termine',
+  },
+  en: {
+    title: 'Dance calendar', desc: "All upcoming events of Dresden's independent dance scene: stage, training and discourse.",
+    kicker: 'Dance calendar', h1: "What's on", accent: 'in the network.',
+    lead: 'Performances, training and talks from the network. Subscribe to the calendar and new events appear in your calendar app automatically.',
+    ics: 'Subscribe to calendar (.ics)', submit: 'Submit an event →', h2: 'Upcoming events',
+  },
+});
+---
+<Page title={t.title} description={t.desc} route="termine">
+  <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead}>
+    <div class="cal-actions">
+      <a class="btn btn--secondary btn--marker" href={href('termine.ics')}>{t.ics}</a>
+      <a class="mono-link underline-link" href={url(lang, 'kontakt', '#termin-einreichen')}>{t.submit}</a>
+    </div>
+  </PageIntro>
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head">
+        <h2 class="h2">{t.h2}</h2>
+        <EventFilter events={events} target="all-events" />
+      </div>
+      <EventList events={events} id="all-events" groupByMonth />
+    </div>
+  </section>
+</Page>
+
+<script>
+  // #kategorie-training o. ä. in der URL wählt den passenden Filter vor.
+  const m = location.hash.match(/^#kategorie-(\w+)/);
+  if (m) {
+    const norm = (s: string) => s.toLowerCase().replace('ü', 'u');
+    document.querySelectorAll<HTMLButtonElement>('[data-event-filter] button').forEach((b) => {
+      if (norm(b.dataset.value ?? '') === norm(m[1])) b.click();
+    });
+  }
+</script>
+
+<style>
+  .cal-actions { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; margin-top: 32px; }
+</style>

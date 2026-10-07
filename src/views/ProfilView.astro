@@ -1,0 +1,132 @@
+---
+/** Öffentliche Profilseite einer Person aus dem Netzwerk. */
+import Page from '../layouts/Page.astro';
+import Tag from '../components/ui/Tag.astro';
+import KeilBar from '../components/ui/KeilBar.astro';
+import ProfilePhoto from '../components/ProfilePhoto.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
+import EventList from '../components/EventList.astro';
+import { bioParagraphs, instagramUrl, type PublicProfile } from '../lib/profiles';
+import { getTermineFor } from '../lib/content';
+import { getLang, tr, url } from '../lib/i18n';
+
+interface Props {
+  profile: PublicProfile;
+}
+const { profile: p } = Astro.props;
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: {
+    kicker: 'Netzwerk', member: 'Mitglied', trainer: 'Training', board: 'Vorstand', focus: 'Schwerpunkte', links: 'Links',
+    mail: 'E-Mail schreiben', events: 'Nächste Termine', back: '← Alle Profile', soon: 'Dieses Profil wird gerade aufgebaut.',
+    edit: 'Ist das dein Profil?', editCta: 'Im internen Bereich ergänzen →', photo: 'Foto',
+  },
+  en: {
+    kicker: 'Network', member: 'Member', trainer: 'Training', board: 'Board', focus: 'Focus', links: 'Links',
+    mail: 'Send an email', events: 'Upcoming events', back: '← All profiles', soon: 'This profile is being set up.',
+    edit: 'Is this your profile?', editCta: 'Complete it in the members area →', photo: 'Photo',
+  },
+});
+const bio = bioParagraphs(p, lang);
+const roleLine = [p.roles.includes('mitglied') ? t.member : null, p.roles.includes('trainer') ? t.trainer : null].filter(Boolean).join(' · ');
+const vorstand = lang === 'en' ? p.vorstand_en ?? p.vorstand : p.vorstand;
+const events = await getTermineFor(p.id);
+const links = [
+  p.website && { href: p.website, label: p.website.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '') },
+  p.instagram && { href: instagramUrl(p.instagram)!, label: `Instagram · @${p.instagram.replace(/^@/, '')}` },
+  p.vimeo && { href: p.vimeo, label: 'Vimeo' },
+].filter(Boolean) as { href: string; label: string }[];
+const description = bio[0]?.slice(0, 160) ?? `${p.name} · TanzNetzDresden`;
+---
+<Page title={p.name} description={description} route="netzwerk" rest={`${p.id}/`} ogImage={typeof p.photo === 'object' ? p.photo : undefined}>
+  <section class="pintro">
+    <div class="wrap">
+      <Tag color="cyan">{t.kicker} · {roleLine}</Tag>
+      <h1 class="pintro__name">{p.name}</h1>
+      {p.pronouns && <p class="pintro__pronouns">{p.pronouns}</p>}
+      {vorstand && <p class="pintro__board"><span>{t.board}</span> {vorstand}</p>}
+    </div>
+    <KeilBar class="pintro__keil" />
+  </section>
+
+  <section class="section">
+    <div class="wrap profile">
+      <div class="profile__media">
+        <ProfilePhoto profile={p} size="large" eager />
+        {p.photoCredit && <p class="profile__credit">{t.photo}: {p.photoCredit}</p>}
+      </div>
+      <div class="profile__body">
+        {bio.length > 0 ? (
+          <div class="profile__bio">{bio.map((para) => <p>{para}</p>)}</div>
+        ) : (
+          <p class="profile__soon">{t.soon}</p>
+        )}
+
+        {p.tags.length > 0 && (
+          <div class="profile__block">
+            <h2 class="profile__h">{t.focus}</h2>
+            <ul class="profile__tags">{p.tags.map((tag) => <li>{tag}</li>)}</ul>
+          </div>
+        )}
+
+        {(links.length > 0 || p.email) && (
+          <div class="profile__block">
+            <h2 class="profile__h">{t.links}</h2>
+            <ul class="profile__links">
+              {links.map((l) => <li><a href={l.href} rel="noopener me" target="_blank">{l.label} →</a></li>)}
+              {p.email && <li><ProtectedEmail email={p.email} label={t.mail} /></li>}
+            </ul>
+          </div>
+        )}
+      </div>
+    </div>
+  </section>
+
+  {events.length > 0 && (
+    <section class="section profile-events">
+      <div class="wrap">
+        <h2 class="h2">{t.events}</h2>
+        <EventList events={events} id="profile-events" />
+      </div>
+    </section>
+  )}
+
+  <section class="wrap profile-foot">
+    <a class="mono-link" href={url(lang, 'netzwerk')}>{t.back}</a>
+    {!p.selfManaged && <p>{t.edit} <a href={url(lang, 'intern', 'profil/')}>{t.editCta}</a></p>}
+  </section>
+</Page>
+
+<style>
+  .pintro { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  .pintro .wrap { padding-block: clamp(48px, 7vw, 96px) clamp(40px, 5vw, 72px); }
+  .pintro :global(.tag) { margin-bottom: 22px; }
+  .pintro__name { font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6.4vw, 96px); line-height: 0.92; letter-spacing: -0.035em; margin: 0; text-wrap: balance; }
+  .pintro__pronouns { margin: 14px 0 0; font-family: var(--font-mono); font-size: 13px; letter-spacing: 0.14em; color: var(--cyan); }
+  .pintro__board { margin: 18px 0 0; max-width: 60ch; color: rgba(255, 255, 255, 0.86); line-height: 1.6; }
+  .pintro__board span { display: inline-block; margin-right: 8px; padding: 2px 7px; background: var(--magenta); color: #fff; font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.04em; }
+  .pintro :global(.pintro__keil) { position: absolute; left: 0; bottom: 0; width: 34%; }
+  .profile { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 40px clamp(32px, 6vw, 96px); align-items: start; }
+  .profile__media { position: sticky; top: 100px; }
+  .profile__credit { margin: 10px 0 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--ink-muted); }
+  .profile__bio p { margin: 0 0 1em; font-size: clamp(16px, 1.4vw, 19px); line-height: 1.7; max-width: 62ch; text-wrap: pretty; }
+  .profile__bio p:first-child { font-size: clamp(19px, 1.8vw, 24px); line-height: 1.5; color: var(--purple); }
+  .profile__soon { color: var(--ink-soft); font-size: 17px; }
+  .profile__block { margin-top: 36px; padding-top: 22px; border-top: 1px solid var(--rule); }
+  .profile__h { margin: 0 0 14px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta-2); }
+  .profile__tags { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; }
+  .profile__tags li { padding: 7px 12px; border: 1.5px solid var(--purple); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
+  .profile__links { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; font-size: 16px; }
+  .profile__links a { color: var(--purple); border-bottom: 1.5px solid var(--magenta); padding-bottom: 2px; }
+  .profile__links a:hover { color: var(--magenta); }
+  .profile__links :global(.protected-email) { color: var(--purple); }
+  .profile-events { background: var(--tint); }
+  .profile-events .h2 { margin-bottom: 28px; }
+  .profile-foot { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 12px 32px; padding-block: 40px 72px; }
+  .profile-foot a { color: var(--magenta-2); }
+  .profile-foot p { margin: 0; color: var(--ink-soft); font-size: 14px; }
+  @media (max-width: 760px) {
+    .profile { grid-template-columns: 1fr; }
+    .profile__media { position: static; max-width: 360px; }
+  }
+</style>

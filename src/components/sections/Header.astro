@@ -1,25 +1,48 @@
 ---
 import Logo from '../ui/Logo.astro';
 import Button from '../ui/Button.astro';
-import { nav, href } from '../../lib/url';
+import type { Alternates } from '../../layouts/Base.astro';
+import { getLang, langNames, tr, url } from '../../lib/i18n';
+
+interface Props {
+  alternates?: Alternates;
+}
+const { alternates = {} } = Astro.props;
+const lang = getLang(Astro);
+const other = lang === 'de' ? 'en' : 'de';
+const otherUrl = alternates[other] ?? url(other, 'home');
+const t = tr(lang, {
+  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Intern', join: 'Mitglied werden', calendar: 'Kalender', formats: 'Formate', training: 'Training', network: 'Netzwerk', about: 'Über uns', switchTo: 'Switch to English' },
+  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Members', join: 'Become a member', calendar: 'Calendar', formats: 'Formats', training: 'Training', network: 'Network', about: 'About', switchTo: 'Auf Deutsch wechseln' },
+});
+const nav = [
+  { href: url(lang, 'home', '#termine'), label: t.calendar },
+  { href: url(lang, 'home', '#formate'), label: t.formats },
+  { href: url(lang, 'home', '#training'), label: t.training },
+  { href: url(lang, 'netzwerk'), label: t.network },
+  { href: url(lang, 'verein'), label: t.about },
+];
 ---
 <header class="site-header" data-header>
   <div class="site-header__inner">
-    <a href={href()} class="site-header__logo" aria-label="TanzNetzDresden – zur Startseite">
+    <a href={url(lang, 'home')} class="site-header__logo" aria-label={t.home}>
       <Logo part="word" />
     </a>
     <button type="button" class="menu-toggle" aria-expanded="false" aria-controls="site-menu" data-menu-toggle>
-      <span>Menü</span>
+      <span>{t.menu}</span>
       <span class="menu-toggle__icon" aria-hidden="true"><span></span><span></span></span>
     </button>
     <div class="site-header__right" id="site-menu" data-menu>
-      <nav class="site-nav" aria-label="Hauptnavigation">
-        {nav.map((item) => <a class="mono-link" href={href(item.path)} data-nav-link>{item.label}</a>)}
+      <nav class="site-nav" aria-label={t.mainNav}>
+        {nav.map((item) => <a class="mono-link" href={item.href} data-nav-link>{item.label}</a>)}
       </nav>
-      <a class="mono-link site-header__login" href={href('intern/')} data-nav-link>
-        <span class="site-header__login-dot" aria-hidden="true"></span>Intern
+      <a class="mono-link site-header__login" href={url(lang, 'intern')} data-nav-link>
+        <span class="site-header__login-dot" aria-hidden="true"></span>{t.intern}
       </a>
-      <Button href={href('mitglied-werden/')} variant="secondary" size="sm" marker>Mitglied werden</Button>
+      <a class="mono-link site-header__lang" href={otherUrl} hreflang={other} lang={other} title={t.switchTo}>
+        <span class="visually-hidden">{langNames[other]}</span><span aria-hidden="true">{other.toUpperCase()}</span>
+      </a>
+      <Button href={url(lang, 'mitglied')} variant="secondary" size="sm" marker>{t.join}</Button>
     </div>
   </div>
 </header>
@@ -43,7 +66,7 @@ import { nav, href } from '../../lib/url';
   // Aktiven Menüpunkt markieren: Unterseiten per Pfad, Startseite per sichtbarem Abschnitt.
   const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
   links.forEach((a) => {
-    if (!a.hash && location.pathname.startsWith(a.pathname)) a.setAttribute('aria-current', 'page');
+    if (!a.hash && a.pathname.length > 1 && location.pathname.startsWith(a.pathname)) a.setAttribute('aria-current', 'page');
   });
   const targets = links
     .filter((a) => a.hash && a.pathname === location.pathname)
@@ -87,6 +110,11 @@ import { nav, href } from '../../lib/url';
   .site-nav a[aria-current], .site-header__login[aria-current] { border-bottom-color: var(--magenta); }
   .site-header__login { display: inline-flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.78); }
   .site-header__login-dot { width: 7px; height: 7px; border: 1.5px solid currentColor; }
+  .site-header__lang {
+    color: #fff; padding: 5px 8px; border: 1.5px solid rgba(255, 255, 255, 0.4);
+    transition: border-color var(--dur-base), color var(--dur-base);
+  }
+  .site-header__lang:hover { border-color: var(--magenta); color: var(--cyan); }
 
   .menu-toggle {
     display: none; margin-left: auto; align-items: center; gap: 12px; background: transparent; border: 0;
@@ -97,7 +125,8 @@ import { nav, href } from '../../lib/url';
   .menu-toggle__icon span { height: 2px; background: currentColor; transition: transform var(--dur-slow) var(--ease-out), width var(--dur-slow); }
   .menu-toggle__icon span:last-child { width: 14px; background: var(--magenta); }
 
-  @media (max-width: 860px) {
+  /* Unterhalb 1100px passt die Navigation nicht mehr in eine Zeile → Menü */
+  @media (max-width: 1100px) {
     .site-header__inner { padding-block: 14px; }
     .site-header__logo { width: 168px; }
     .menu-toggle { display: inline-flex; }

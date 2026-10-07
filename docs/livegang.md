@@ -10,6 +10,13 @@ Alle Stellen mit `[BITTE …]` suchen: `grep -rn "BITTE" src`
       Newsletter-Dienst. Der Text ist ein Muster. Bitte prüfen lassen, z. B. über den Dachverband oder eine
       Datenschutzberatung für Vereine.
 - [ ] Auftragsverarbeitungsverträge mit Hoster, Newsletter-Dienst und Supabase abschließen.
+- [ ] **Förderhinweis**: Logo der Landeshauptstadt Dresden (nach deren Gestaltungshandbuch) in
+      `src/assets/foerderer/` ablegen, Dateinamen in `verein.json` → `funders[].logo` eintragen. Wortlaut von
+      `fundingText` mit dem Zuwendungsbescheid abgleichen. Weitere Förderer ergänzen.
+- [ ] **Transparenz-Seite** (`src/content/seiten/transparenz.md` + `en/`): Freistellungsbescheid, Tätigkeitsbericht,
+      Mittelherkunft und -verwendung jährlich eintragen.
+- [ ] **Leichte Sprache**: Text von Prüfer:innen aus der Zielgruppe gegenlesen lassen.
+- [ ] **Englische Rechtstexte** nach Änderungen an den deutschen mitziehen (`src/content/seiten/en/`).
 - [ ] **Fotonachweis** im Impressum-Text (Fotograf:in je Bild). Bildrechte für die Website klären.
 - [ ] E-Mail `vorstand@tanznetzdresden.de` existiert? (`verein.json` → `emails`)
 
@@ -25,5 +32,7 @@ Alle Stellen mit `[BITTE …]` suchen: `grep -rn "BITTE" src`
 ## Technik
 
 - [ ] Domain und HTTPS (docs/deployment.md)
-- [ ] Interner Bereich: Supabase eingerichtet, Test-Einladung durchgespielt (docs/intern.md)
+- [ ] Interner Bereich: Supabase eingerichtet, **beide** Migrationen eingespielt, Test-Einladung durchgespielt (docs/intern.md)
+- [ ] Profile: Freigabe-Ablauf mit dem Vorstand abstimmen, optional Webhook für sofortige Aktualisierung (docs/profile.md)
+- [ ] Statistik: entscheiden, ob und welche (Matomo cookielos / Plausible); Datenschutz-Abschnitt anpassen
 - [ ] CMS-Login eingerichtet (docs/inhalte.md)

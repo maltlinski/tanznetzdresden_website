@@ -1,18 +1,4 @@
 ---
-import Page from '../layouts/Page.astro';
-import PageIntro from '../components/PageIntro.astro';
-import { href } from '../lib/url';
+import NotFoundView from '../views/NotFoundView.astro';
 ---
-<Page title="Seite nicht gefunden" noindex>
-  <PageIntro kicker="Fehler 404" title="Hier reißt" accent="das Netz." lead="Diese Seite gibt es nicht (mehr). Vielleicht hilft einer dieser Wege weiter.">
-    <div class="nf-actions">
-      <a class="btn btn--secondary btn--marker" href={href()}>Zur Startseite</a>
-      <a class="mono-link underline-link" href={href('termine/')}>Tanzkalender →</a>
-      <a class="mono-link underline-link" href={href('kontakt/')}>Kontakt →</a>
-    </div>
-  </PageIntro>
-</Page>
-
-<style>
-  .nf-actions { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; margin-top: 32px; }
-</style>
+<NotFoundView />

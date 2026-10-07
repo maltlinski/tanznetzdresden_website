@@ -1,0 +1,26 @@
+---
+import TextPageView from './TextPageView.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
+import { getVerein } from '../lib/settings';
+import { getLang, tr } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const v = getVerein(lang);
+const a = v.address;
+const t = tr(lang, {
+  de: { kicker: 'Rechtliches', h: 'Verantwortliche Stelle', phone: 'Telefon', mail: 'E-Mail', show: 'Adresse anzeigen', rep: 'Vertreten durch den Vorstand:', cookies: 'Cookie-Einstellungen' },
+  en: { kicker: 'Legal', h: 'Controller', phone: 'Phone', mail: 'Email', show: 'Show address', rep: 'Represented by the board:', cookies: 'Cookie settings' },
+});
+---
+<TextPageView id="datenschutz" route="datenschutz" kicker={t.kicker} toc tocExtra={[{ slug: 'verantwortlich', text: t.h }]}>
+  <button slot="toc-after" type="button" class="btn btn--primary btn--sm" data-consent-open>{t.cookies}</button>
+  <Fragment slot="before">
+    <h2 id="verantwortlich">{t.h}</h2>
+    <p>
+      {v.legalName}<br />{a.street}<br />{a.zip} {a.city}<br />
+      {t.phone}: {v.phone}<br />
+      {t.mail}: <ProtectedEmail email={v.emails.datenschutz} label={t.show} subject="Datenschutz" />
+    </p>
+    <p>{t.rep} {v.register.representatives}.</p>
+  </Fragment>
+</TextPageView>

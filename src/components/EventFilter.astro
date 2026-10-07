@@ -1,6 +1,7 @@
 ---
 /** Filter-Chips für eine EventList (Kategorie). */
-import { eventCategories, type Termin } from '../lib/content';
+import { categoryLabel, eventCategories, type Termin } from '../lib/content';
+import { getLang, tr } from '../lib/i18n';
 
 interface Props {
   events: Termin[];
@@ -8,15 +9,20 @@ interface Props {
   target: string;
 }
 const { events, target } = Astro.props;
-const filters = [
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: { group: 'Termine nach Kategorie filtern', unit: 'Termine', shown: 'Termine angezeigt' },
+  en: { group: 'Filter events by category', unit: 'events', shown: 'events shown' },
+});
+const filters: { value: 'Alle' | (typeof eventCategories)[number]; count: number }[] = [
   { value: 'Alle', count: events.length },
   ...eventCategories.map((c) => ({ value: c, count: events.filter((e) => e.data.category === c).length })),
 ];
 ---
-<div class="chips" role="group" aria-label="Termine nach Kategorie filtern" aria-controls={target} data-event-filter={target}>
+<div class="chips" role="group" aria-label={t.group} aria-controls={target} data-event-filter={target} data-msg-shown={t.shown}>
   {filters.map((f, i) => (
     <button type="button" class="chip" data-value={f.value} aria-pressed={i === 0 ? 'true' : 'false'}>
-      {f.value}<span class="chip__count"><span class="visually-hidden">(</span>{f.count}<span class="visually-hidden"> Termine)</span></span>
+      {categoryLabel[lang][f.value]}<span class="chip__count"><span class="visually-hidden">(</span>{f.count}<span class="visually-hidden"> {t.unit})</span></span>
     </button>
   ))}
 </div>
@@ -51,7 +57,7 @@ const filters = [
       });
       const empty = list.querySelector<HTMLElement>('[data-empty]');
       if (empty) empty.hidden = shown > 0;
-      if (status) status.textContent = `${shown} Termine angezeigt`;
+      if (status) status.textContent = `${shown} ${group.dataset.msgShown ?? ''}`;
     });
   });
 </script>

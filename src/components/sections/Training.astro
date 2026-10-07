@@ -1,42 +1,53 @@
 ---
 import Tag from '../ui/Tag.astro';
 import Button from '../ui/Button.astro';
-import { verein } from '../../lib/settings';
-import { href } from '../../lib/url';
+import { getVerein } from '../../lib/settings';
+import { getLang, tr, url } from '../../lib/i18n';
 
+const lang = getLang(Astro);
+const verein = getVerein(lang);
 const t = verein.training;
+const s = tr(lang, {
+  de: {
+    kicker: 'Profitraining · KEEP UP', l1: 'Jede Woche', l2: 'im Studio.',
+    lead: 'Mit regelmäßig wechselnden Kursen von lokalen und internationalen Dozent:innen und dem offenen Training im Open Studio schaffen wir Raum für künstlerische Entwicklung und Austausch.',
+    plan: 'Trainingsplan ansehen', tg: 'Telegram-Gruppe →', rhythm: 'Rhythmus', fee: 'Beitrag', place: 'Ort',
+  },
+  en: {
+    kicker: 'Professional training · KEEP UP', l1: 'Every week', l2: 'in the studio.',
+    lead: 'With regularly changing classes by local and international teachers and open training in the Open Studio, we create space for artistic development and exchange.',
+    plan: 'See training schedule', tg: 'Telegram group →', rhythm: 'Frequency', fee: 'Fee', place: 'Venue',
+  },
+});
 const [feeA, feeB] = t.fee.split('/').map((s) => s.trim());
 ---
 <section id="training" class="section training" aria-labelledby="training-h">
   <div class="wrap training__grid">
     <div data-reveal>
-      <Tag color="cyan">Profitraining · KEEP UP</Tag>
-      <h2 id="training-h" class="training__title">Jede Woche<br /><em>im Studio.</em></h2>
-      <p class="training__lead">
-        Mit regelmäßig wechselnden Kursen von lokalen und internationalen Dozent:innen und dem offenen Training im
-        Open Studio schaffen wir Raum für künstlerische Entwicklung und Austausch.
-      </p>
+      <Tag color="cyan">{s.kicker}</Tag>
+      <h2 id="training-h" class="training__title">{s.l1}<br /><em>{s.l2}</em></h2>
+      <p class="training__lead">{s.lead}</p>
       <div class="training__actions">
-        <Button href={href('termine/#kategorie-training')} variant="secondary" marker>Trainingsplan ansehen</Button>
+        <Button href={url(lang, 'termine', '#kategorie-training')} variant="secondary" marker>{s.plan}</Button>
         {verein.social.telegram && (
-          <a href={verein.social.telegram} class="mono-link underline-link" rel="noopener">Telegram-Gruppe →</a>
+          <a href={verein.social.telegram} class="mono-link underline-link" rel="noopener">{s.tg}</a>
         )}
       </div>
     </div>
     <dl class="facts">
       <div class="fact">
-        <dt>Rhythmus</dt>
+        <dt>{s.rhythm}</dt>
         <dd><span class="fact__big">{t.rhythm}</span><span class="fact__note">{t.rhythmNote}</span></dd>
       </div>
       <div class="fact">
-        <dt>Beitrag</dt>
+        <dt>{s.fee}</dt>
         <dd>
           <span class="fact__big">{feeB ? <>{feeA} <em>/</em> {feeB}</> : feeA}</span>
           <span class="fact__note">{t.feeNote}</span>
         </dd>
       </div>
       <div class="fact fact--wide">
-        <dt>Ort</dt>
+        <dt>{s.place}</dt>
         <dd><span class="fact__place">{t.place}</span><span class="fact__note">{t.placeAddress}</span></dd>
       </div>
     </dl>
