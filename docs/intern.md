@@ -12,7 +12,8 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
 3. *SQL Editor* öffnen und nacheinander ausführen:
    `supabase/migrations/20261007000000_intern.sql` (Login, Profile, Dokumente),
    `supabase/migrations/20261008000000_oeffentliche_profile.sql` (öffentliche Profile mit Freigabe, Porträts) und
-   `supabase/migrations/20261009000000_news.sql` (News-Redaktion, Rolle „Presse“, siehe docs/news.md).
+   `supabase/migrations/20261009000000_news.sql` (News-Redaktion, Rolle „Presse“, siehe docs/news.md) und
+   `supabase/migrations/20261010000000_rollen_im_dashboard.sql` (Rollen auch im Dashboard änderbar).
 
 ## 2. Login konfigurieren
 
@@ -42,7 +43,8 @@ mit denselben Namen überschreiben.
 | `/intern/` zeigt „Noch nicht eingerichtet“ | Zugangsdaten fehlen in `src/settings/supabase.ts`, oder der Neubau läuft noch (*Actions*). |
 | Anmelden: „Für diese Adresse gibt es kein Konto“ | Person unter *Authentication → Users* einladen. Registrieren geht absichtlich nicht. |
 | Link aus der E-Mail führt auf `localhost` oder eine Fehlerseite | *Authentication → URL Configuration*: Site URL und Redirect URLs prüfen (Schritt 2). Bei GitHub Pages: `https://maltlinski.github.io/tanznetzdresden_website/intern/**`. |
-| Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle drei Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
+| Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle vier Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
+| Table Editor: „Nur der Vorstand kann Rollen ändern.“ | Vierte Migration `20261010000000_rollen_im_dashboard.sql` ausführen, dann erneut speichern. |
 | „News schreiben“ fehlt | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
 | Veröffentlichte News erscheinen erst am nächsten Morgen | Webhook fehlt (docs/news.md), oder `news-updated` fehlt in `.github/workflows/deploy.yml`. |
 
@@ -51,7 +53,8 @@ mit denselben Namen überschreiben.
 *Authentication → Users → Invite user*: E-Mail-Adresse eingeben. Die Person bekommt einen Link, legt ein Passwort
 fest und pflegt danach ihr Profil. Beim ersten Login wird automatisch ein Profil angelegt.
 
-**Ersten Vorstand ernennen:** *Table Editor → profiles* → bei der Person `role` auf `vorstand` setzen.
+**Ersten Vorstand ernennen:** *Table Editor → profiles* → bei der Person `role` auf `vorstand` oder `admin` setzen
+(braucht die vierte Migration, sonst kommt „Nur der Vorstand kann Rollen ändern.“).
 Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 
 | Rolle | darf |

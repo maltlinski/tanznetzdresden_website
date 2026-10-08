@@ -31,6 +31,8 @@ export function errorText(err: unknown): string {
   const msg = String((err as { message?: string })?.message ?? err ?? '');
   if (/invalid login credentials/i.test(msg)) return 'E-Mail oder Passwort stimmt nicht.';
   if (/email not confirmed/i.test(msg)) return 'Bitte bestätige zuerst deine E-Mail-Adresse.';
+  // eigene Meldungen der Datenbank-Trigger (supabase/migrations) sind schon verständlich
+  if (/^(Nur der Vorstand|Die Rolle Admin)/.test(msg)) return msg;
   if (/rate limit|too many/i.test(msg)) return 'Zu viele Versuche. Bitte warte kurz und versuche es dann erneut.';
   if (/password should be at least|weak password/i.test(msg)) return 'Das Passwort ist zu kurz oder zu schwach (mindestens 10 Zeichen).';
   if (/signups not allowed|user not found/i.test(msg)) return 'Für diese Adresse gibt es kein Konto. Zugänge vergibt der Vorstand.';
