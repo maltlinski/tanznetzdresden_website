@@ -27,11 +27,24 @@ Unter *Authentication*:
 
 ## 3. Website verbinden
 
-*Project Settings → API*: `Project URL` und `anon public key` kopieren.
+*Project Settings → API*: `Project URL` und `anon public key` kopieren und in **`src/settings/supabase.ts`**
+eintragen (direkt auf GitHub über den Stift bearbeiten). Die Adresse ohne `/rest/v1/` dahinter. Beide Werte sind
+öffentlich, die Daten schützt Row Level Security. **Niemals den `service_role`-Schlüssel eintragen.**
 
-- Lokal: in `.env` als `PUBLIC_SUPABASE_URL` und `PUBLIC_SUPABASE_ANON_KEY`.
-- GitHub: *Settings → Secrets and variables → Actions → Variables* mit denselben Namen anlegen.
-  Dann den Deploy-Workflow neu starten.
+Nach dem Speichern baut die Website neu, nach 2–3 Minuten ist der Login aktiv. Für ein Testprojekt lassen sich die
+Werte lokal per `.env` (`PUBLIC_SUPABASE_URL`, `PUBLIC_SUPABASE_ANON_KEY`) oder in GitHub als Actions-Variablen
+mit denselben Namen überschreiben.
+
+## Wenn es nicht klappt
+
+| Was passiert | Ursache und Lösung |
+|---|---|
+| `/intern/` zeigt „Noch nicht eingerichtet“ | Zugangsdaten fehlen in `src/settings/supabase.ts`, oder der Neubau läuft noch (*Actions*). |
+| Anmelden: „Für diese Adresse gibt es kein Konto“ | Person unter *Authentication → Users* einladen. Registrieren geht absichtlich nicht. |
+| Link aus der E-Mail führt auf `localhost` oder eine Fehlerseite | *Authentication → URL Configuration*: Site URL und Redirect URLs prüfen (Schritt 2). Bei GitHub Pages: `https://maltlinski.github.io/tanznetzdresden_website/intern/**`. |
+| Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle drei Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
+| „News schreiben“ fehlt | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
+| Veröffentlichte News erscheinen erst am nächsten Morgen | Webhook fehlt (docs/news.md), oder `news-updated` fehlt in `.github/workflows/deploy.yml`. |
 
 ## 4. Mitglieder einladen
 

@@ -7,7 +7,7 @@
  * Ist Supabase nicht erreichbar, baut die Website nur mit den Dateien (Warnung im Log).
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from 'astro:env/client';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
 import type { Lang } from './i18n';
 import { newsCategories } from '../content.config';
 import { renderMarkdown } from './markdown';
@@ -119,10 +119,10 @@ interface RemoteNews {
 let remoteCache: Promise<RemoteNews[]> | undefined;
 function fetchRemote(): Promise<RemoteNews[]> {
   remoteCache ??= (async () => {
-    if (!PUBLIC_SUPABASE_URL || !PUBLIC_SUPABASE_ANON_KEY) return [];
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
     try {
-      const res = await fetch(`${PUBLIC_SUPABASE_URL}/rest/v1/public_news?select=*&order=date.desc`, {
-        headers: { apikey: PUBLIC_SUPABASE_ANON_KEY, Authorization: `Bearer ${PUBLIC_SUPABASE_ANON_KEY}` },
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/public_news?select=*&order=date.desc`, {
+        headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
         signal: AbortSignal.timeout(10_000),
       });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -131,7 +131,7 @@ function fetchRemote(): Promise<RemoteNews[]> {
       await Promise.all(
         rows.map(async (r) => {
           if (!r.image_path) return;
-          const ok = await fetch(`${PUBLIC_SUPABASE_URL}/storage/v1/object/public/newsbilder/${r.image_path}`, { method: 'HEAD', signal: AbortSignal.timeout(10_000) })
+          const ok = await fetch(`${SUPABASE_URL}/storage/v1/object/public/newsbilder/${r.image_path}`, { method: 'HEAD', signal: AbortSignal.timeout(10_000) })
             .then((x) => x.ok, () => false);
           if (!ok) {
             console.warn(`[news] Foto zu „${r.slug}“ nicht gefunden – Beitrag erscheint ohne Foto.`);
@@ -154,7 +154,7 @@ function fromRemote(r: RemoteNews, lang: Lang): Draft {
   const body = pick(r.body, r.body_en);
   const teaser = pick(r.teaser, r.teaser_en);
   const quote = r.quote_text ? { text: pick(r.quote_text, r.quote_text_en), who: r.quote_who ?? '', role: pick(r.quote_role ?? undefined, r.quote_role_en) } : undefined;
-  const image = r.image_path ? `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/newsbilder/${r.image_path}` : undefined;
+  const image = r.image_path ? `${SUPABASE_URL}/storage/v1/object/public/newsbilder/${r.image_path}` : undefined;
   return {
     id: r.slug,
     html: renderMarkdown(body, import.meta.env.BASE_URL),

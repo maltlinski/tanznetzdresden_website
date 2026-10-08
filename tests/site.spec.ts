@@ -1,6 +1,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
+import { supabase } from '../src/settings/supabase';
 
 const pages = [
   '/', '/termine/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
@@ -36,7 +37,7 @@ for (const path of pages) {
     const external = await trackExternal(page);
     const res = await page.goto(path);
     expect(res?.status()).toBe(200);
-    await expect(page.locator('h1').first()).toBeVisible();
+    await expect(page.locator('h1:visible').first()).toBeVisible();
     await page.waitForLoadState('networkidle');
     expect(errors).toEqual([]);
     expect(external).toEqual([]);
@@ -105,10 +106,17 @@ test('Kalender-Feed ist gültiges iCalendar', async ({ request }) => {
   expect(body.trimEnd().endsWith('END:VCALENDAR')).toBe(true);
 });
 
-test('Interner Bereich ohne Supabase zeigt Einrichtungshinweis', async ({ page }) => {
-  test.skip(!!process.env.PUBLIC_SUPABASE_URL, 'Supabase ist konfiguriert');
+test('Interner Bereich zeigt Anmeldung (oder ohne Supabase den Einrichtungshinweis)', async ({ page }) => {
   await page.goto('/intern/');
-  await expect(page.getByRole('heading', { name: 'Noch nicht eingerichtet' })).toBeVisible();
+  const name = supabase.url && supabase.anonKey ? 'Anmelden' : 'Noch nicht eingerichtet';
+  await expect(page.getByRole('heading', { name, exact: true })).toBeVisible();
+});
+
+test('Geschützte interne Seiten leiten ohne Anmeldung zum Login', async ({ page }) => {
+  test.skip(!supabase.url || !supabase.anonKey, 'Supabase nicht eingetragen');
+  await page.goto('/intern/news/');
+  await expect(page).toHaveURL(/\/intern\/\?weiter=/);
+  await expect(page.getByRole('heading', { name: 'Anmelden', exact: true })).toBeVisible();
 });
 
 test('Mobiles Menü öffnet und schließt', async ({ page, isMobile }) => {

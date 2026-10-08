@@ -11,7 +11,7 @@
  */
 import type { ImageMetadata } from 'astro';
 import { getPersonen } from './content';
-import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from 'astro:env/client';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
 
 export type Role = 'mitglied' | 'trainer';
 
@@ -55,10 +55,10 @@ interface RemoteProfile {
 const clean = <T,>(v: T | null | undefined): T | undefined => (v === null || v === '' ? undefined : v);
 
 async function fetchRemote(): Promise<RemoteProfile[]> {
-  if (!PUBLIC_SUPABASE_URL || !PUBLIC_SUPABASE_ANON_KEY) return [];
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
   try {
-    const res = await fetch(`${PUBLIC_SUPABASE_URL}/rest/v1/public_profiles?select=*&order=display_name`, {
-      headers: { apikey: PUBLIC_SUPABASE_ANON_KEY, Authorization: `Bearer ${PUBLIC_SUPABASE_ANON_KEY}` },
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/public_profiles?select=*&order=display_name`, {
+      headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
       signal: AbortSignal.timeout(10_000),
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -77,7 +77,7 @@ export function getProfiles(): Promise<PublicProfile[]> {
     const list: PublicProfile[] = entries.map(({ id, data }) => ({ id, ...data, selfManaged: false }));
     const byId = new Map(list.map((p) => [p.id, p]));
     for (const r of remote) {
-      const photo = r.photo_path ? `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/profilbilder/${r.photo_path}` : undefined;
+      const photo = r.photo_path ? `${SUPABASE_URL}/storage/v1/object/public/profilbilder/${r.photo_path}` : undefined;
       const fromRemote = {
         name: r.display_name,
         pronouns: clean(r.pronouns),

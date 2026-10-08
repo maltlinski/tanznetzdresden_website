@@ -1,10 +1,10 @@
 /**
  * Supabase-Client für den internen Bereich (läuft nur im Browser).
- * Ohne konfigurierte Umgebungsvariablen gibt es keinen Client – der interne
+ * Ohne Zugangsdaten (src/settings/supabase.ts) gibt es keinen Client – der interne
  * Bereich zeigt dann einen Einrichtungs-Hinweis statt eines Fehlers.
  */
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
-import { PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY } from 'astro:env/client';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
 
 export interface Profile {
   id: string;
@@ -68,12 +68,12 @@ export interface NewsRow {
 
 /** Öffentliche Adresse eines Fotos im Bucket „newsbilder“. */
 export function newsPhotoUrl(path: string | null): string | null {
-  return path && PUBLIC_SUPABASE_URL ? `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/newsbilder/${path}` : null;
+  return path && SUPABASE_URL ? `${SUPABASE_URL}/storage/v1/object/public/newsbilder/${path}` : null;
 }
 
 /** Öffentliche Adresse eines Porträts im Bucket „profilbilder“. */
 export function photoUrl(path: string | null): string | null {
-  return path && PUBLIC_SUPABASE_URL ? `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/profilbilder/${path}` : null;
+  return path && SUPABASE_URL ? `${SUPABASE_URL}/storage/v1/object/public/profilbilder/${path}` : null;
 }
 
 /** Kürzel aus einem Namen: „Aurélie Lafaye“ → „aurelie-lafaye“ (wie in personen.yaml). */
@@ -93,8 +93,8 @@ let client: SupabaseClient | null | undefined;
 export function getSupabase(): SupabaseClient | null {
   if (client !== undefined) return client;
   client =
-    PUBLIC_SUPABASE_URL && PUBLIC_SUPABASE_ANON_KEY
-      ? createClient(PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY, {
+    SUPABASE_URL && SUPABASE_ANON_KEY
+      ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
           auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
         })
       : null;
