@@ -10,4 +10,10 @@
   /* Barrierefreiheit: #8B85A0 erreicht auf Weiß nur 3,6:1. Für kleinen Text
      braucht WCAG AA 4,5:1. Empfehlung: im Designsystem übernehmen. */
   --ink-muted: #6B6484;
+
+  /* Regenbogen, der beim Überfahren durch das TNDD-Zeichen im Header läuft
+     (Entwurf Startseite, Runde 4). Bewusste Ausnahme von „keine Verläufe“:
+     nur dort, nur als kurze Bewegung. */
+  --logo-rainbow: linear-gradient(105deg, transparent 0%, transparent 34%, #ff3b3b 39%, #ff9f1c 43%, #ffe600 47%,
+    #3ddc84 51%, #2fb8ff 55%, #6b5bff 59%, #d14bff 63%, transparent 67%, transparent 100%);
 }

@@ -1,0 +1,122 @@
+---
+import Intern from '../../../layouts/Intern.astro';
+import { href } from '../../../lib/url';
+---
+<Intern title="News" current="news">
+  <div class="nl-head">
+    <div>
+      <h1 class="i-h1">News schreiben</h1>
+      <p class="i-lead">
+        Hier entstehen die Beiträge für <a href={href('news/')}>Aus dem Netz</a>. Entwürfe sieht nur die Redaktion
+        (Presse, Vorstand, Admin). Was du veröffentlichst, steht wenige Minuten später auf der Website.
+      </p>
+    </div>
+    <a class="btn btn--primary btn--marker" href={href('intern/news/bearbeiten/')} data-new>Neuer Beitrag</a>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>News schreiben dürfen Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.
+      Der Vorstand vergibt die Rolle unter <a href={href('intern/mitglieder/')}>Mitglieder</a>.</p>
+  </div>
+
+  <div data-access hidden>
+    <div class="chips nl-tabs" role="group" aria-label="Beiträge filtern">
+      <button type="button" class="chip" data-tab="alle" aria-pressed="true">Alle <span class="chip__count" data-n="alle"></span></button>
+      <button type="button" class="chip" data-tab="entwurf" aria-pressed="false">Entwürfe <span class="chip__count" data-n="entwurf"></span></button>
+      <button type="button" class="chip" data-tab="veroeffentlicht" aria-pressed="false">Online <span class="chip__count" data-n="veroeffentlicht"></span></button>
+    </div>
+    <p class="i-msg" role="alert" data-msg hidden></p>
+    <ul class="nl" data-list aria-live="polite"></ul>
+    <p class="nl-empty" data-empty hidden>Noch keine Beiträge. Leg mit „Neuer Beitrag“ los – du kannst jederzeit als Entwurf speichern.</p>
+    <p class="i-hint nl-foot">
+      Ältere Beiträge, die als Datei im Repository liegen (<code>src/content/news/</code>), erscheinen hier nicht. Sie
+      lassen sich im CMS unter <a href={href('admin/')}>/admin</a> bearbeiten.
+    </p>
+  </div>
+  <template data-item>
+    <li class="nl__item">
+      <a class="nl__link">
+        <span class="nl__status"></span>
+        <span class="nl__title"></span>
+        <span class="nl__meta"></span>
+      </a>
+    </li>
+  </template>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage, internUrl } from '../../../scripts/intern/session';
+  import type { NewsRow } from '../../../lib/supabase';
+
+  const ctx = await initIntern(true);
+  const access = document.querySelector<HTMLElement>('[data-access]');
+  const noAccess = document.querySelector<HTMLElement>('[data-no-access]');
+  const newBtn = document.querySelector<HTMLElement>('[data-new]');
+  const msg = document.querySelector<HTMLElement>('[data-msg]');
+  const list = document.querySelector<HTMLUListElement>('[data-list]');
+  const tpl = document.querySelector<HTMLTemplateElement>('[data-item]');
+  const empty = document.querySelector<HTMLElement>('[data-empty]');
+
+  const fmt = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' });
+
+  if (ctx) {
+    if (newBtn) newBtn.hidden = !ctx.isRedaktion;
+    if (!ctx.isRedaktion) {
+      if (noAccess) noAccess.hidden = false;
+    } else if (access && list && tpl) {
+      access.hidden = false;
+      const { data, error } = await ctx.sb
+        .from('news_posts')
+        .select('id, slug, status, title, category, date, updated_at, title_en')
+        .order('date', { ascending: false });
+      if (error) showMessage(msg, errorText(error));
+      const rows = (data ?? []) as Pick<NewsRow, 'id' | 'slug' | 'status' | 'title' | 'category' | 'date' | 'updated_at' | 'title_en'>[];
+      const items = rows.map((r) => {
+        const li = tpl.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
+        const a = li.querySelector<HTMLAnchorElement>('.nl__link')!;
+        a.href = `${internUrl('news/bearbeiten/')}?id=${r.id}`;
+        const st = li.querySelector<HTMLElement>('.nl__status')!;
+        st.textContent = r.status === 'veroeffentlicht' ? 'Online' : 'Entwurf';
+        st.dataset.status = r.status;
+        li.querySelector('.nl__title')!.textContent = r.title;
+        li.querySelector('.nl__meta')!.textContent =
+          `${r.category} · ${fmt(r.date)}${r.title_en ? ' · DE/EN' : ' · nur DE'} · geändert ${new Date(r.updated_at).toLocaleDateString('de-DE')}`;
+        li.dataset.status = r.status;
+        return li;
+      });
+      list.replaceChildren(...items);
+      const count = (s: string) => (s === 'alle' ? rows.length : rows.filter((r) => r.status === s).length);
+      document.querySelectorAll<HTMLElement>('[data-n]').forEach((el) => (el.textContent = String(count(el.dataset.n!))));
+      if (empty) empty.hidden = rows.length > 0;
+      document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((b) =>
+        b.addEventListener('click', () => {
+          document.querySelectorAll('[data-tab]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+          items.forEach((li) => (li.hidden = b.dataset.tab !== 'alle' && li.dataset.status !== b.dataset.tab));
+        }),
+      );
+    }
+  }
+</script>
+
+<style>
+  .nl-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px 40px; margin-bottom: 28px; }
+  .nl-head .i-lead { margin-bottom: 0; }
+  .nl-head .i-lead a, .i-card a, .nl-foot a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  .nl-tabs { margin-bottom: 20px; }
+  .nl { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  :global(.nl__item[hidden]) { display: none; }
+  :global(.nl__link) {
+    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 16px; align-items: baseline; padding: 18px 20px;
+    background: var(--paper); border-left: 4px solid var(--rule); color: var(--purple);
+  }
+  :global(.nl__link:hover) { border-left-color: var(--magenta); }
+  :global(.nl__status) {
+    grid-row: span 2; align-self: center; font-family: var(--font-mono); font-size: 10px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 8px; background: var(--tint); color: var(--purple);
+  }
+  :global(.nl__status[data-status='veroeffentlicht']) { background: var(--cyan); }
+  :global(.nl__title) { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
+  :global(.nl__meta) { font-size: 13px; color: var(--ink-muted); }
+  .nl-empty { padding: 24px; background: var(--paper); color: var(--ink-soft); }
+  .nl-foot { margin-top: 28px; }
+</style>

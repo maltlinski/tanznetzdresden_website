@@ -8,7 +8,7 @@
  * Englisch: Felder mit Endung _en (z. B. teaser_en). Fehlen sie, erscheint
  * auf der englischen Seite der deutsche Text.
  */
-import { defineCollection, reference } from 'astro:content';
+import { defineCollection, reference, type SchemaContext } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 
@@ -129,4 +129,49 @@ const partnergruppen = defineCollection({
   }),
 });
 
-export const collections = { termine, formate, personen, seiten, orte, partnergruppen };
+/**
+ * News / Journal. Ein Beitrag = eine Datei in src/content/news/de/<adresse>.md,
+ * die englische Fassung (optional) liegt unter src/content/news/en/<adresse>.md und
+ * braucht nur die übersetzten Felder (title, teaser, facts, quote, alt + Text).
+ * Die Darstellung ergibt sich aus den Feldern: mit `deadline` → Ausschreibung,
+ * mit `quote` → Stimme, mit `image` → Foto, sonst Text.
+ */
+export const newsCategories = ['Netzwerk', 'Ausschreibung', 'Training', 'Verein', 'Rückblick', 'Stimme'] as const;
+/** Datum als „2026-10-01“ (YAML macht daraus ein Date – beides wird zu Text vereinheitlicht) */
+const isoDate = z
+  .union([z.date(), z.string().regex(/^\d{4}-\d{2}-\d{2}$/, 'Format: JJJJ-MM-TT')])
+  .transform((d) => (typeof d === 'string' ? d : d.toISOString().slice(0, 10)));
+const newsTranslatable = (image: SchemaContext['image']) => ({
+  title: z.string(),
+  teaser: z.string(),
+  /** „Auf einen Blick“ neben dem Text */
+  facts: z.array(z.object({ label: z.string(), value: z.string() })).default([]),
+  /** Für Beiträge der Kategorie „Stimme“: das Zitat in der Übersicht */
+  quote: z.object({ text: z.string(), who: z.string(), role: z.string().optional() }).optional(),
+  image: image().optional(),
+  alt: z.string().optional(),
+});
+const news = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/news/de' }),
+  schema: ({ image }) =>
+    z
+      .object({
+        ...newsTranslatable(image),
+        date: isoDate,
+        category: z.enum(newsCategories),
+        /** Wer den Text geschrieben hat */
+        author: z.string(),
+        /** Bewerbungsfrist – macht den Beitrag zur Ausschreibung */
+        deadline: isoDate.optional(),
+        /** Groß oben auf der News-Seite und auf der Startseite (sonst der neueste Beitrag mit Foto) */
+        featured: z.boolean().default(false),
+        draft: z.boolean().default(false),
+      })
+      .refine((d) => !d.image || d.alt, { message: 'Zum Foto fehlt die Bildbeschreibung (alt)', path: ['alt'] }),
+});
+const newsEn = defineCollection({
+  loader: glob({ pattern: '*.md', base: './src/content/news/en' }),
+  schema: ({ image }) => z.object(newsTranslatable(image)).partial(),
+});
+
+export const collections = { termine, formate, personen, seiten, orte, partnergruppen, news, newsEn };

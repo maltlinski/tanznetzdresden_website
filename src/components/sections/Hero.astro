@@ -3,16 +3,21 @@ import { getImage } from 'astro:assets';
 import Tag from '../ui/Tag.astro';
 import Button from '../ui/Button.astro';
 import KeilBar from '../ui/KeilBar.astro';
-import soloBlau from '../../assets/photos/solo-blau.jpg';
-import duoRot from '../../assets/photos/duo-rot.jpg';
 import { getVerein } from '../../lib/settings';
 import { getLang, tr, url } from '../../lib/i18n';
+import { heroFotos, knoten, netzAuslauf } from '../../settings/hero';
+import type { HeroPhoto } from '../../scripts/hero-net';
 
-// Keep the original pixel dimensions: the hero script crops by source coordinates.
-const [blau, rot] = await Promise.all([
-  getImage({ src: soloBlau, format: 'webp', quality: 82 }),
-  getImage({ src: duoRot, format: 'webp', quality: 82 }),
-]);
+// Fotos aus src/settings/hero.ts. Originalgröße behalten: das Skript schneidet nach Pixeln aus.
+const files = import.meta.glob<{ default: ImageMetadata }>('../../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
+const photos: HeroPhoto[] = await Promise.all(
+  heroFotos.map(async (f) => {
+    const file = files[`../../assets/photos/${f.datei}`];
+    if (!file) throw new Error(`src/settings/hero.ts: Foto „${f.datei}“ fehlt in src/assets/photos/`);
+    const img = await getImage({ src: file.default, format: 'webp', quality: 82 });
+    return { src: img.src, s: f.ausschnitt, d: f.ziel, box: f.koerper, floorY: f.boden };
+  }),
+);
 
 const lang = getLang(Astro);
 const verein = getVerein(lang);
@@ -30,14 +35,23 @@ const t = tr(lang, {
   },
 });
 ---
-<section id="top" class="hero" aria-labelledby="hero-title">
-  <canvas class="hero__canvas" data-hero-canvas data-blau={blau.src} data-rot={rot.src} aria-hidden="true"></canvas>
+<section id="top" class="hero" aria-labelledby="hero-title" data-hero>
+  <canvas
+    class="hero__canvas"
+    data-hero-canvas
+    data-photos={JSON.stringify(photos)}
+    data-nodes={knoten}
+    data-fade={netzAuslauf}
+    aria-hidden="true"
+  ></canvas>
   <div class="hero__content wrap">
     <div class="hero__text">
-      <Tag color="cyan" class="hero__tag">{t.kicker}</Tag>
-      <h1 id="hero-title" class="hero__title" data-hero-title>{t.l1}<br /><em>{t.l2}</em></h1>
-      <p class="hero__lead">{t.lead}</p>
-      <div class="hero__actions">
+      <div data-rise="0.1"><Tag color="cyan" class="hero__tag">{t.kicker}</Tag></div>
+      <h1 id="hero-title" class="hero__title" data-hero-title>
+        <span data-sweep="0.3" data-bar="var(--cyan)">{t.l1}</span><br /><em data-sweep="0.55" data-bar="var(--magenta)">{t.l2}</em>
+      </h1>
+      <p class="hero__lead" data-rise="0.95">{t.lead}</p>
+      <div class="hero__actions" data-rise="1.15">
         <Button href={url(lang, 'home', '#termine')} variant="secondary" size="lg" marker>{t.cta}</Button>
         <a href={url(lang, 'home', '#netzwerk')} class="mono-link underline-link">{t.who}</a>
       </div>
@@ -45,32 +59,39 @@ const t = tr(lang, {
   </div>
   <div class="hero__floor" data-hero-floor>
     <div class="hero__floor-inner">
-      {stats.map((s) => (
-        <div class="stat"><span class="stat__n">{s.n}</span><span class="stat__l">{s.l}</span></div>
+      {stats.map((s, i) => (
+        <div class="stat" data-rise={(1.4 + i / 10).toFixed(1)}><span class="stat__n">{s.n}</span><span class="stat__l">{s.l}</span></div>
       ))}
-      <button type="button" class="replay" data-hero-replay>{t.replay}</button>
+      <button type="button" class="replay" data-hero-replay data-rise="1.7">{t.replay}</button>
     </div>
   </div>
   <KeilBar class="hero__keil" />
 </section>
 
 <script>
-  import { HeroNet } from '../../scripts/hero-net';
+  import { HeroNet, type HeroPhoto } from '../../scripts/hero-net';
+  import { introText } from '../../scripts/intro-text';
 
-  const canvas = document.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
-  if (canvas) {
+  const root = document.querySelector<HTMLElement>('[data-hero]');
+  const canvas = root?.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
+  if (root && canvas) {
+    introText(root);
     const hero = new HeroNet({
       canvas,
-      floor: document.querySelector<HTMLElement>('[data-hero-floor]'),
-      title: document.querySelector<HTMLElement>('[data-hero-title]'),
-      photos: { blau: canvas.dataset.blau ?? '', rot: canvas.dataset.rot ?? '' },
-      nodeCount: 110,
+      floor: root.querySelector<HTMLElement>('[data-hero-floor]'),
+      title: root.querySelector<HTMLElement>('[data-hero-title]'),
+      photos: JSON.parse(canvas.dataset.photos ?? '[]') as HeroPhoto[],
+      nodeCount: Number(canvas.dataset.nodes) || 110,
+      netFade: Number(canvas.dataset.fade ?? 1),
       interactive: true,
     });
     const run = () => hero.start();
     // Wait for the display font so the headline width (photo anchor) is final.
     document.fonts?.ready.then(run, run) ?? run();
-    document.querySelector('[data-hero-replay]')?.addEventListener('click', () => hero.replay());
+    root.querySelector('[data-hero-replay]')?.addEventListener('click', () => {
+      introText(root);
+      hero.replay();
+    });
   }
 </script>
 
@@ -86,7 +107,7 @@ const t = tr(lang, {
   .hero__text :global(.hero__tag) { margin-bottom: 26px; }
   .hero__title {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, 7.8vw, 124px);
-    line-height: 0.9; letter-spacing: -0.035em; margin: 0 0 30px; color: #fff; text-wrap: balance;
+    line-height: 0.9; letter-spacing: -0.035em; margin: 0 0 30px; color: #fff;
   }
   .hero__title em { font-style: normal; color: var(--magenta); }
   .hero__lead {

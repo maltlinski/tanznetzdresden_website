@@ -1,0 +1,107 @@
+---
+/** Startseite: „Aus dem Netz“ – Titelthema groß, daneben offene Ausschreibungen und das Neueste. */
+import NewsImage from '../NewsImage.astro';
+import Tag from '../ui/Tag.astro';
+import { getNews, leadPost, daysLeft, dateShort, newsCategoryLabel } from '../../lib/news';
+import { getLang, tr, url } from '../../lib/i18n';
+
+const lang = getLang(Astro);
+const posts = await getNews(lang);
+const lead = leadPost(posts);
+const rest = posts.filter((p) => p !== lead);
+const open = rest.filter((p) => p.deadline && daysLeft(p.deadline) >= 0);
+const side = [...open, ...rest.filter((p) => !open.includes(p))].slice(0, 2);
+const t = tr(lang, {
+  de: { kicker: 'Journal', h: 'Aus dem Netz', all: 'Alle Beiträge →', deadline: 'Frist' },
+  en: { kicker: 'Journal', h: 'From the network', all: 'All posts →', deadline: 'Deadline' },
+});
+const meta = (p: (typeof posts)[number]) => `${newsCategoryLabel[lang][p.category]} · ${dateShort(p.date, lang)}`;
+const link = (p: (typeof posts)[number]) => url(lang, 'news', `${p.id}/`);
+---
+{lead && (
+  <section id="news" class="news" aria-labelledby="news-h">
+    <div class="wrap">
+      <div class="news__head">
+        <div data-reveal>
+          <Tag>{t.kicker}</Tag>
+          <h2 id="news-h" class="h2">{t.h}</h2>
+        </div>
+        <a class="mono-link news__all" href={url(lang, 'news')}>{t.all}</a>
+      </div>
+      <div class="news__grid">
+        <a href={link(lead)} class="news__lead">
+          {lead.image && (
+            <div class="news__img">
+              <NewsImage src={lead.image} alt={lead.alt ?? ''} sizes="(min-width: 1000px) 760px, 100vw" />
+              <span class="news__corner" aria-hidden="true"></span>
+            </div>
+          )}
+          <span class="news__meta">{meta(lead)}</span>
+          <h3 class="news__lead-title">{lead.title}</h3>
+          <p class="news__lead-teaser">{lead.teaser}</p>
+        </a>
+        <div class="news__side">
+          {side.map((p, i) => (
+            <a href={link(p)} class:list={['news__item', i === 0 && 'news__item--first']}>
+              <span class="news__meta">{meta(p)}</span>
+              <h3 class="news__item-title">{p.title}</h3>
+              <p class="news__item-teaser">{p.teaser}</p>
+              {p.deadline && daysLeft(p.deadline) >= 0 && (
+                <span class="news__deadline" data-deadline={p.deadline} data-deadline-open>
+                  <span class="news__dot" aria-hidden="true"></span>{t.deadline} · {dateShort(p.deadline, lang)}
+                </span>
+              )}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+)}
+
+<script>
+  import '../../scripts/deadline';
+</script>
+
+<style>
+  .news { scroll-margin-top: var(--header-h); padding: 0 0 var(--section-y); }
+  .news__head {
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px;
+    border-top: 2px solid var(--purple); padding-top: clamp(40px, 5vw, 64px); margin-bottom: 36px;
+  }
+  .news__head :global(.tag) { margin-bottom: 16px; }
+  .news__all { letter-spacing: 0.14em; color: var(--magenta); }
+  .news__all:hover { color: var(--purple); }
+  .news__grid { display: flex; flex-wrap: wrap; gap: 36px clamp(24px, 4vw, 56px); }
+  .news__lead { flex: 1.6 1 460px; min-width: 0; display: flex; flex-direction: column; gap: 14px; color: var(--purple); }
+  .news__lead:hover, .news__item:hover { color: var(--magenta); }
+  .news__img {
+    position: relative; aspect-ratio: 16 / 9; background: var(--purple); overflow: hidden; margin-bottom: 8px;
+    clip-path: polygon(0 0, 100% 0, 100% 86%, 93% 100%, 0 100%);
+  }
+  .news__img :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .news__corner { position: absolute; top: 0; left: 0; width: 32px; height: 32px; background: var(--magenta); }
+  .news__meta {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--ink-muted);
+  }
+  .news__lead-title, .news__item-title {
+    font-family: var(--font-display); font-weight: 800; margin: 0; color: inherit; transition: color var(--dur-base);
+  }
+  .news__lead-title { font-size: clamp(28px, 3vw, 42px); line-height: 1.02; letter-spacing: -0.03em; }
+  .news__lead-teaser { margin: 0; max-width: 600px; font-size: 15.5px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
+  .news__side { flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; }
+  .news__item {
+    display: flex; flex-direction: column; gap: 12px; padding: 22px 0 28px; color: var(--purple);
+    border-top: 1px solid var(--rule);
+  }
+  .news__item:last-child { border-bottom: 1px solid var(--rule); }
+  .news__item--first { border-top: 3px solid var(--magenta); }
+  .news__item-title { font-size: clamp(24px, 2.4vw, 30px); line-height: 1.05; letter-spacing: -0.025em; }
+  .news__item-teaser { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+  .news__deadline {
+    display: flex; align-items: center; gap: 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta);
+  }
+  .news__dot { width: 8px; height: 8px; background: var(--magenta); }
+</style>

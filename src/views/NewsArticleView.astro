@@ -1,0 +1,326 @@
+---
+/** Einzelner News-Beitrag: Kopf auf Lila, Foto, Text mit „Auf einen Blick“, Teilen, Weiterlesen. */
+import Page from '../layouts/Page.astro';
+import Tag from '../components/ui/Tag.astro';
+import Badge from '../components/ui/Badge.astro';
+import KeilBar from '../components/ui/KeilBar.astro';
+import NewsImage from '../components/NewsImage.astro';
+import {
+  getNews, daysLeft, deadlineText, dateLong, dateShort, nrLabel, newsBadge, newsBadgeOnDark, newsCategoryLabel,
+  type NewsPost,
+} from '../lib/news';
+import { getVerein } from '../lib/settings';
+import { getLang, tr, url } from '../lib/i18n';
+
+interface Props {
+  post: NewsPost;
+}
+const { post } = Astro.props;
+const lang = getLang(Astro);
+const verein = getVerein(lang);
+const all = await getNews(lang);
+const i = all.findIndex((p) => p.id === post.id);
+const next = [1, 2].map((d) => all[(i + d) % all.length]).filter((p, k, a) => p && p.id !== post.id && a.indexOf(p) === k);
+const t = tr(lang, {
+  de: {
+    back: '← Alle Beiträge', read: 'Lesezeit', min: 'Min', text: 'Text', published: 'Veröffentlicht', deadline: 'Bewerbungsfrist',
+    until: 'bis', glance: 'Auf einen Blick', share: 'Teilen', copy: 'Link kopieren', copied: 'Link kopiert', mail: 'E-Mail',
+    more: 'Weiterlesen', moreH: 'Mehr aus dem Netz', chronicle: 'Zur Chronik →', credit: 'Foto',
+    onlyDe: '',
+  },
+  en: {
+    back: '← All posts', read: 'read', min: 'min', text: 'Text', published: 'Published', deadline: 'Application deadline',
+    until: 'until', glance: 'At a glance', share: 'Share', copy: 'Copy link', copied: 'Link copied', mail: 'Email',
+    more: 'Keep reading', moreH: 'More from the network', chronicle: 'To the chronicle →', credit: 'Photo',
+    onlyDe: 'This post is only available in German so far.',
+  },
+});
+const cat = newsCategoryLabel[lang][post.category];
+const days = post.deadline ? daysLeft(post.deadline) : 0;
+const canonical = new URL(url(lang, 'news', `${post.id}/`), Astro.site).href;
+const mail = `mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(`${post.teaser}\n\n${canonical}`)}`;
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline: post.title,
+  description: post.teaser,
+  datePublished: post.date,
+  inLanguage: post.translated ? lang : 'de',
+  author: { '@type': 'Person', name: post.author },
+  publisher: { '@type': 'Organization', name: verein.legalName },
+  mainEntityOfPage: canonical,
+};
+---
+<Page
+  route="news"
+  rest={`${post.id}/`}
+  title={post.title}
+  description={post.teaser}
+  ogImage={typeof post.image === 'object' ? post.image : undefined}
+>
+  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+
+  <article data-article>
+    <header class="ah">
+      <div class="wrap ah__inner">
+        <a href={url(lang, 'news', '#journal')} class="ah__back" data-rise="0">{t.back}</a>
+        <div class="ah__meta" data-rise="0.08">
+          <Badge variant={newsBadgeOnDark(post.category)}>{cat}</Badge>
+          <span>{nrLabel(post.nr)} · <time datetime={post.date}>{dateLong(post.date, lang)}</time> · {post.minutes} {t.min} {t.read}</span>
+        </div>
+        <h1 class="ah__title" data-rise="0.16">{post.title}</h1>
+        <p class="ah__teaser" data-rise="0.26">{post.teaser}</p>
+        <span class="ah__author" data-rise="0.34">{t.text} · {post.author}</span>
+      </div>
+      <KeilBar class="ah__keil" />
+    </header>
+
+    {post.image && (
+      <div class="wrap">
+        <figure class="ah__img">
+          <div class="ah__img-frame">
+            <NewsImage src={post.image} alt={post.alt ?? ''} widths={[640, 1000, 1400, 1900]} sizes="(min-width: 1320px) 1224px, 100vw" loading="eager" />
+            <span class="ah__corner" aria-hidden="true"></span>
+          </div>
+          {post.imageCredit && <figcaption class="ah__credit">{t.credit}: {post.imageCredit}</figcaption>}
+        </figure>
+      </div>
+    )}
+
+    <section class="ab">
+      <div class="wrap ab__inner">
+        <div class="ab__main">
+          {!post.translated && <p class="ab__note" lang="en">{t.onlyDe}</p>}
+          <div class="ab__text" lang={post.translated ? undefined : 'de'} set:html={post.html} />
+          <p class="ab__foot">{t.text} · {post.author} · {t.published} {dateLong(post.date, lang)}</p>
+        </div>
+
+        <aside class="ab__aside">
+          {post.deadline && (
+            <div class="ab__call">
+              <span class="ab__call-k">{t.deadline}</span>
+              <span class="ab__call-n" data-deadline={post.deadline} data-deadline-part="n">{deadlineText(days, 'n', lang)}</span>
+              <span class="ab__call-u">
+                <span data-deadline={post.deadline} data-deadline-part="unit">{deadlineText(days, 'unit', lang)}</span> · {t.until} {dateShort(post.deadline, lang)}
+              </span>
+            </div>
+          )}
+          {post.facts.length > 0 && (
+            <div class="ab__facts">
+              <h2 class="ab__aside-h">{t.glance}</h2>
+              <dl>
+                {post.facts.map((f) => (
+                  <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
+                ))}
+              </dl>
+            </div>
+          )}
+          <div class="ab__share">
+            <h2 class="ab__aside-h">{t.share}</h2>
+            <div class="ab__share-btns">
+              <button type="button" class="chip" data-copy data-copied={t.copied}>{t.copy}</button>
+              <a class="chip" href={mail}>{t.mail}</a>
+            </div>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    {next.length > 0 && (
+      <section class="more surface-tint" aria-labelledby="more-h">
+        <div class="wrap">
+          <div class="more__head">
+            <div>
+              <Tag>{t.more}</Tag>
+              <h2 id="more-h" class="more__h">{t.moreH}</h2>
+            </div>
+            <a class="mono-link more__all" href={url(lang, 'news', '#journal')}>{t.chronicle}</a>
+          </div>
+          <div class="more__grid">
+            {next.map((p) => (
+              <a href={url(lang, 'news', `${p.id}/`)} class="more__card">
+                <div class="more__meta">
+                  <span>{dateShort(p.date, lang)}</span>
+                  <Badge variant={newsBadge[p.category]}>{newsCategoryLabel[lang][p.category]}</Badge>
+                </div>
+                <h3 class="more__title">{p.title}</h3>
+                <p class="more__teaser">{p.teaser}</p>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+  </article>
+</Page>
+
+<script>
+  import { introText } from '../scripts/intro-text';
+  import '../scripts/deadline';
+
+  const article = document.querySelector<HTMLElement>('[data-article]');
+  introText(article?.querySelector('.ah') ?? null);
+
+  // Lesefortschritt als Magenta-Linie unter dem Header
+  const header = document.querySelector<HTMLElement>('[data-header]');
+  if (header && article) {
+    const bar = document.createElement('div');
+    bar.className = 'read-progress';
+    bar.setAttribute('aria-hidden', 'true');
+    header.append(bar);
+    const update = () => {
+      const h = document.documentElement.scrollHeight - innerHeight;
+      bar.style.transform = `scaleX(${h > 0 ? Math.min(1, scrollY / h) : 0})`;
+    };
+    addEventListener('scroll', update, { passive: true });
+    update();
+  }
+
+  // Link kopieren
+  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
+    const label = btn.textContent;
+    btn.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(location.href.split('#')[0]);
+        btn.textContent = btn.dataset.copied ?? label;
+        btn.setAttribute('aria-pressed', 'true');
+        setTimeout(() => {
+          btn.textContent = label;
+          btn.removeAttribute('aria-pressed');
+        }, 2000);
+      } catch {
+        prompt('Link', location.href);
+      }
+    });
+  });
+</script>
+
+<style>
+  :global(.read-progress) {
+    position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; background: var(--magenta);
+    transform: scaleX(0); transform-origin: 0 50%; pointer-events: none;
+  }
+
+  /* ---------- Kopf ---------- */
+  .ah { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  .ah__inner { padding-block: clamp(36px, 5vw, 64px) clamp(80px, 11vw, 150px); }
+  .ah__back {
+    display: inline-flex; align-items: center; gap: 10px; margin-bottom: clamp(36px, 5vw, 64px); color: #fff;
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .ah__back:hover { color: var(--cyan); }
+  .ah__meta {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 24px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan);
+  }
+  .ah__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6.6vw, 108px); line-height: 0.94;
+    letter-spacing: -0.04em; margin: 0 0 28px; color: #fff; max-width: 14ch; text-wrap: balance; hyphens: auto;
+  }
+  .ah__teaser { margin: 0 0 28px; max-width: 680px; font-size: clamp(17px, 1.6vw, 21px); line-height: 1.55; color: rgba(255, 255, 255, 0.9); text-wrap: pretty; }
+  .ah__author { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-dark-soft); }
+  .ah :global(.ah__keil) { position: absolute; left: 0; bottom: 0; width: 34%; z-index: 2; }
+
+  .ah__img { margin: calc(-1 * clamp(48px, 7vw, 104px)) 0 0; position: relative; z-index: 3; }
+  .ah__img-frame {
+    position: relative; aspect-ratio: 21 / 9; background: var(--purple); overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 86%, 94% 100%, 0 100%);
+  }
+  .ah__img-frame :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ah__corner { position: absolute; top: 0; left: 0; width: 40px; height: 40px; background: var(--magenta); }
+  @media (max-width: 700px) {
+    .ah__img-frame { aspect-ratio: 4 / 3; }
+    .ah__corner { width: 28px; height: 28px; }
+  }
+  .ah__credit { margin-top: 10px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; color: var(--ink-muted); }
+
+  /* ---------- Text + Seitenspalte ---------- */
+  .ab { padding: clamp(48px, 7vw, 96px) 0; }
+  .ab__inner { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 56px clamp(40px, 6vw, 96px); }
+  .ab__main { flex: 1 1 520px; max-width: 720px; min-width: 0; }
+  .ab__note { margin: 0 0 28px; padding: 12px 16px; border-left: 4px solid var(--cyan); background: var(--cyan-tint); color: var(--purple); font-size: 15px; }
+  .ab__text { font-size: 18px; line-height: 1.75; color: var(--ink); }
+  .ab__text :global(p) { margin: 0 0 1.3em; text-wrap: pretty; }
+  .ab__text :global(h2), .ab__text :global(h3) {
+    display: flex; align-items: center; gap: 14px; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(24px, 2.4vw, 30px); line-height: 1.1; letter-spacing: -0.02em; color: var(--purple); margin: 1.8em 0 0.7em;
+  }
+  .ab__text :global(h3) { font-size: 22px; }
+  .ab__text :global(h2::before) { content: ''; flex: none; width: 10px; height: 10px; background: var(--magenta); }
+  .ab__text :global(a) { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+  .ab__text :global(a:hover) { color: var(--magenta); }
+  .ab__text :global(strong) { font-weight: 700; color: var(--purple); }
+  .ab__text :global(ul), .ab__text :global(ol) { margin: 0 0 1.3em; padding-left: 1.2em; }
+  .ab__text :global(ul li::marker) { color: var(--magenta); }
+  /* Zitat: „> Text“, darunter „> — Name“ */
+  .ab__text :global(blockquote) {
+    position: relative; margin: 2.4em 0; padding: 80px 0 24px; border-top: 3px solid var(--magenta); border-bottom: 1px solid var(--rule);
+  }
+  /* „ sitzt auf der Grundlinie: Unterkante des Zeichens knapp über dem Zitat */
+  .ab__text :global(blockquote::before) {
+    content: '„'; position: absolute; left: -4px; top: 68px; transform: translateY(-100%);
+    font-family: var(--font-display); font-weight: 800; font-size: 110px; line-height: 1; color: var(--magenta);
+  }
+  .ab__text :global(blockquote p) {
+    margin: 0 0 18px; font-family: var(--font-display); font-weight: 700; font-size: clamp(26px, 3vw, 38px);
+    line-height: 1.14; letter-spacing: -0.02em; color: var(--purple); text-wrap: balance;
+  }
+  .ab__text :global(blockquote p:last-child:not(:first-child)) {
+    margin: 0; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--ink-muted);
+  }
+  /* Liste, deren Punkte mit einem fetten Namen beginnen → Karten (z. B. Vorstand) */
+  .ab__text :global(ul:has(> li > strong:first-child)) {
+    list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+    gap: 0 32px; margin: 1.6em 0 2em;
+  }
+  .ab__text :global(ul:has(> li > strong:first-child) > li) {
+    padding: 18px 0 20px; border-top: 3px solid var(--magenta); font-size: 14.5px; line-height: 1.55; color: var(--ink-soft);
+  }
+  .ab__text :global(ul:has(> li > strong:first-child) > li > strong:first-child) {
+    display: block; margin-bottom: 6px; font-family: var(--font-display); font-weight: 800; font-size: 22px;
+    letter-spacing: -0.02em; color: var(--purple);
+  }
+  .ab__foot {
+    margin: 40px 0 0; padding-top: 18px; border-top: 1px solid var(--rule); font-family: var(--font-mono); font-size: 11px;
+    font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted);
+  }
+
+  .ab__aside { flex: 0 1 300px; min-width: 240px; align-self: flex-start; position: sticky; top: calc(var(--header-h) + 30px); display: flex; flex-direction: column; gap: 32px; }
+  .ab__aside-h {
+    margin: 0 0 6px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--purple);
+  }
+  .ab__call {
+    display: flex; flex-direction: column; background: var(--purple); color: #fff; padding: 24px 24px 26px;
+    clip-path: polygon(0 0, 100% 0, 100% 84%, 88% 100%, 0 100%);
+  }
+  .ab__call-k, .ab__call-u { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
+  .ab__call-k { color: var(--cyan); margin-bottom: 12px; }
+  .ab__call-n { font-family: var(--font-display); font-weight: 800; font-size: 88px; line-height: 0.86; letter-spacing: -0.045em; color: var(--magenta); }
+  .ab__call-u { margin-top: 8px; }
+  .ab__facts { border-top: 3px solid var(--magenta); padding-top: 18px; }
+  .ab__facts dl { margin: 0; }
+  .ab__facts dl > div { padding: 14px 0; border-bottom: 1px solid var(--rule); display: flex; flex-direction: column; gap: 4px; }
+  .ab__facts dt { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .ab__facts dd { margin: 0; font-size: 15px; line-height: 1.5; font-weight: 600; color: var(--purple); }
+  .ab__share-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+
+  @media (max-width: 860px) {
+    .ab__aside { position: static; }
+  }
+
+  /* ---------- Weiterlesen ---------- */
+  .more { background: var(--tint); padding: clamp(56px, 7vw, 96px) 0; }
+  .more__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px; margin-bottom: 32px; }
+  .more__head :global(.tag) { margin-bottom: 16px; }
+  .more__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 4.4vw, 56px); line-height: 0.98; letter-spacing: -0.03em; color: var(--purple); }
+  .more__all { color: var(--magenta-2); letter-spacing: 0.14em; }
+  .more__all:hover { color: var(--purple); }
+  .more__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+  .more__card { display: flex; flex-direction: column; gap: 12px; background: var(--paper); border-top: 3px solid var(--magenta); padding: 24px 24px 28px; color: var(--purple); }
+  .more__card:hover { color: var(--magenta-2); }
+  .more__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+  .more__title { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.05; letter-spacing: -0.025em; color: inherit; text-wrap: balance; }
+  .more__teaser { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+</style>

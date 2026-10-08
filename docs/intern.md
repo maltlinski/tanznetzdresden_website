@@ -10,8 +10,9 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
 1. Auf supabase.com ein Konto anlegen und ein neues Projekt erstellen. **Region: Central EU (Frankfurt)**.
 2. Den Auftragsverarbeitungsvertrag (DPA) im Dashboard unter *Organization → Legal Documents* abschließen.
 3. *SQL Editor* öffnen und nacheinander ausführen:
-   `supabase/migrations/20261007000000_intern.sql` (Login, Profile, Dokumente) und
-   `supabase/migrations/20261008000000_oeffentliche_profile.sql` (öffentliche Profile mit Freigabe, Porträts).
+   `supabase/migrations/20261007000000_intern.sql` (Login, Profile, Dokumente),
+   `supabase/migrations/20261008000000_oeffentliche_profile.sql` (öffentliche Profile mit Freigabe, Porträts) und
+   `supabase/migrations/20261009000000_news.sql` (News-Redaktion, Rolle „Presse“, siehe docs/news.md).
 
 ## 2. Login konfigurieren
 
@@ -37,8 +38,15 @@ Unter *Authentication*:
 *Authentication → Users → Invite user*: E-Mail-Adresse eingeben. Die Person bekommt einen Link, legt ein Passwort
 fest und pflegt danach ihr Profil. Beim ersten Login wird automatisch ein Profil angelegt.
 
-**Vorstand ernennen:** *Table Editor → profiles* → bei der Person `role` auf `vorstand` setzen.
-Der Vorstand kann danach Dokumente hochladen und löschen sowie Profile bearbeiten.
+**Ersten Vorstand ernennen:** *Table Editor → profiles* → bei der Person `role` auf `vorstand` setzen.
+Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
+
+| Rolle | darf |
+|---|---|
+| Mitglied | eigenes Profil, Mitgliederliste, Dokumente lesen |
+| Presse | zusätzlich News schreiben und veröffentlichen |
+| Vorstand | zusätzlich Rollen vergeben, Profile freigeben, Dokumente hochladen, News |
+| Admin | wie Vorstand (Admin vergeben nur Admins) |
 
 **Mitgliedschaft beendet:** *Authentication → Users* → Person löschen. Das Profil wird mit gelöscht.
 
@@ -51,6 +59,7 @@ Der Vorstand kann danach Dokumente hochladen und löschen sowie Profile bearbeit
 | `public_listing` | Name, Website und Instagram dürfen öffentlich erscheinen (Ansicht `public_profiles`) |
 | Dokumente (Bucket `intern`) | Lesen: alle Mitglieder:innen · Hochladen/Löschen: Vorstand |
 | Rolle | ändern kann nur der Vorstand |
+| News (`news_posts`, Bucket `newsbilder`) | Entwürfe: nur Presse/Vorstand/Admin · veröffentlicht: öffentlich über `public_news` |
 
 ## Ideen für später
 

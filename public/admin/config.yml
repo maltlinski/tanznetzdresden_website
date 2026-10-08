@@ -12,6 +12,13 @@ backend:
     delete: 'Inhalt: {{collection}} „{{slug}}“ gelöscht'
 
 locale: de
+# Mehrsprachige Sammlungen (News): deutsche und englische Fassung nebeneinander bearbeiten.
+# Englisch ist freiwillig – fehlt es, zeigt die englische Seite den deutschen Text.
+i18n:
+  structure: multiple_folders
+  locales: [de, en]
+  default_locale: de
+  save_all_locales: false
 media_folder: src/assets/photos
 public_folder: ../../assets/photos
 
@@ -38,6 +45,52 @@ collections:
       - { name: people, label: 'Mitwirkende aus dem Netzwerk', widget: relation, collection: personen, file: personen, search_fields: ['personen.*.name'], value_field: 'personen.*.id', display_fields: ['personen.*.name'], multiple: true, required: false }
       - { name: link, label: 'Link (Tickets, Anmeldung)', widget: string, required: false }
       - { name: draft, label: Entwurf (nicht anzeigen), widget: boolean, default: false, required: false }
+
+  - name: news
+    label: News
+    label_singular: Beitrag
+    description: >-
+      Beiträge für „Aus dem Netz“. Einfacher geht es im internen Bereich unter Intern → News schreiben
+      (für Presse, Vorstand, Admin). Hier liegen die Beiträge als Dateien im Repository.
+    folder: src/content/news
+    i18n: true
+    create: true
+    slug: '{{title}}'
+    summary: '{{date}} · {{title}}'
+    sortable_fields: [date, title]
+    media_folder: /src/assets/photos
+    public_folder: ../../../assets/photos
+    fields:
+      - { name: title, label: Titel, widget: string, i18n: true }
+      - { name: teaser, label: 'Kurztext (Übersicht, Startseite, Teilen)', widget: text, i18n: true }
+      - { name: date, label: Datum, widget: datetime, format: YYYY-MM-DD, date_format: DD.MM.YYYY, time_format: false, i18n: duplicate }
+      - { name: category, label: Kategorie, widget: select, options: [Netzwerk, Ausschreibung, Training, Verein, Rückblick, Stimme], i18n: duplicate }
+      - { name: author, label: 'Text von', widget: string, i18n: duplicate }
+      - { name: image, label: 'Foto (optional – macht den Beitrag zum Foto-Beitrag)', widget: image, required: false, i18n: duplicate }
+      - { name: alt, label: 'Bildbeschreibung (Pflicht bei Foto)', widget: string, required: false, i18n: true }
+      - { name: deadline, label: 'Bewerbungsfrist (optional – macht den Beitrag zur Ausschreibung)', widget: datetime, format: YYYY-MM-DD, date_format: DD.MM.YYYY, time_format: false, required: false, i18n: duplicate }
+      - name: quote
+        label: 'Zitat für die Übersicht (optional – für „Stimme“)'
+        widget: object
+        required: false
+        collapsed: true
+        i18n: true
+        fields:
+          - { name: text, label: Zitat, widget: text }
+          - { name: who, label: 'Wer sagt das?', widget: string }
+          - { name: role, label: 'Funktion', widget: string, required: false }
+      - name: facts
+        label: 'Auf einen Blick (optional)'
+        widget: list
+        required: false
+        i18n: true
+        summary: '{{label}}: {{value}}'
+        fields:
+          - { name: label, label: Bezeichnung, widget: string }
+          - { name: value, label: Angabe, widget: string }
+      - { name: featured, label: 'Titelthema (groß oben)', widget: boolean, default: false, required: false, i18n: duplicate }
+      - { name: draft, label: 'Entwurf (nicht anzeigen)', widget: boolean, default: false, required: false, i18n: duplicate }
+      - { name: body, label: Text, widget: markdown, i18n: true }
 
   - name: formate
     label: Formate

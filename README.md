@@ -10,7 +10,8 @@ zwei Bühnenfotos durch das Netz.
 
 | Bereich | Was | Wo |
 |---|---|---|
-| Startseite | Netz-Hero, Termine mit Filter, Formate, Training, Netzwerk, Mitgliedschaft, Newsletter | `src/views/HomeView.astro` |
+| Startseite | Netz-Hero (wechselndes Bühnenfoto, Fotos in `src/settings/hero.ts`), Termine, News, Formate, Training, Netzwerk, Mitgliedschaft | `src/views/HomeView.astro` |
+| **News** | „Aus dem Netz“: Titelthema, Ausschreibungen mit Countdown, Chronik mit Filter, Beitragsseiten, RSS; Presse schreibt im internen Bereich | `/news/`, docs/news.md |
 | **Zweisprachig** | Deutsch und Englisch (`/en/…`), Sprachumschalter, hreflang | `src/lib/i18n.ts` |
 | Tanzkalender | alle Termine nach Monaten, Filter, **Kalender-Abo (.ics)** | `/termine/`, `/termine.ics` |
 | **Profile** | eigene Seite je Künstler:in, Suche und Filter; Mitglieder pflegen selbst, Vorstand gibt frei | `/netzwerk/` |
@@ -26,7 +27,7 @@ zwei Bühnenfotos durch das Netz.
 | Statistik (optional) | Matomo (cookielos) oder Plausible, nur mit Einwilligung | `verein.json` → `analytics` |
 | **Einwilligung** | eigener Consent-Manager nach TDDDG, Zwei-Klick-Lösung für Karten/Videos | `src/settings/consent.ts` |
 | **Bot-Schutz** | E-Mail-Adressen verschlüsselt, Entschlüsselung per Proof-of-Work im Browser | `src/components/ProtectedEmail.astro` |
-| **Interner Bereich** | Login (Passwort oder Link), eigenes Profil, Mitgliederverzeichnis, Dokumente | `/intern/` (Supabase) |
+| **Interner Bereich** | Login (Passwort oder Link), eigenes Profil, Mitgliederverzeichnis, Rollen, Dokumente, **News-Editor** | `/intern/` (Supabase) |
 | Redaktion | Inhalte im Browser bearbeiten, ohne Code | `/admin/` (Sveltia CMS) |
 
 Außerdem: keine Tracking-Cookies, keine Google-Fonts-Anfragen (Schriften liegen lokal), automatisch optimierte
@@ -73,6 +74,7 @@ docs/                 Anleitungen
 
 - [Design ändern](design/README.md): Designsystem aus Claude Design übernehmen
 - [Inhalte bearbeiten](docs/inhalte.md): Termine, Formate, Personen, Texte, CMS
+- [News](docs/news.md): Beiträge schreiben (intern oder als Datei), Rolle Presse, Webhook
 - [Profile](docs/profile.md): öffentliche Profile, Freigabe, sofortige Aktualisierung
 - [Deutsch und Englisch](docs/mehrsprachigkeit.md): Übersetzen, neue Seiten in beiden Sprachen
 - [Interner Bereich einrichten](docs/intern.md): Supabase, Einladungen, Rollen

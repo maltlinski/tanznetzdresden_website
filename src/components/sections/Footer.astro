@@ -13,14 +13,14 @@ const a = v.address;
 const t = tr(lang, {
   de: {
     home: 'TanzNetzDresden – zur Startseite', blurb: `Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit ${v.founded}, seit 2020 als gemeinnütziger Verein.`,
-    contact: 'Kontakt', writeMail: 'E-Mail schreiben', club: 'Verein', about: 'Über uns', board: 'Vorstand & Team', ags: 'Arbeitsgruppen', network: 'Netzwerk & Profile',
+    news: 'News', rss: 'News als RSS-Feed', contact: 'Kontakt', writeMail: 'E-Mail schreiben', club: 'Verein', about: 'Über uns', board: 'Vorstand & Team', ags: 'Arbeitsgruppen', network: 'Netzwerk & Profile',
     join: 'Mitglied werden', donate: 'Spenden', coop: 'Kooperationen', contactPress: 'Kontakt & Presse', transparency: 'Transparenz', intern: 'Interner Bereich', follow: 'Folgen', newsletter: 'Newsletter',
     ics: 'Kalender abonnieren (.ics)', partners: 'Partner', legal: 'Rechtliches', imprint: 'Impressum', privacy: 'Datenschutz', a11y: 'Barrierefreiheit',
     easy: 'Leichte Sprache', cookies: 'Cookie-Einstellungen',
   },
   en: {
     home: 'TanzNetzDresden – home', blurb: `Self-organised network of Dresden's independent dance scene. Since ${v.founded}, a registered non-profit association since 2020.`,
-    contact: 'Contact', writeMail: 'Send an email', club: 'Association', about: 'About us', board: 'Board & team', ags: 'Working groups', network: 'Network & profiles',
+    news: 'News', rss: 'News as RSS feed', contact: 'Contact', writeMail: 'Send an email', club: 'Association', about: 'About us', board: 'Board & team', ags: 'Working groups', network: 'Network & profiles',
     join: 'Become a member', donate: 'Donate', coop: 'Partners', contactPress: 'Contact & press', transparency: 'Transparency', intern: 'Members area', follow: 'Follow', newsletter: 'Newsletter',
     ics: 'Subscribe to calendar (.ics)', partners: 'Partners', imprint: 'Legal notice', privacy: 'Privacy', a11y: 'Accessibility',
     easy: 'Leichte Sprache (German)', cookies: 'Cookie settings',
@@ -44,6 +44,7 @@ const t = tr(lang, {
       <nav class="site-footer__col" aria-label={t.club}>
         <h2 class="site-footer__h">{t.club}</h2>
         <a href={url(lang, 'verein')}>{t.about}</a>
+        <a href={url(lang, 'news')}>{t.news}</a>
         <a href={url(lang, 'verein', '#vorstand')}>{t.board}</a>
         <a href={url(lang, 'verein', '#arbeitsgruppen')}>{t.ags}</a>
         <a href={url(lang, 'netzwerk')}>{t.network}</a>
@@ -60,6 +61,7 @@ const t = tr(lang, {
         {v.social.telegram && <a href={v.social.telegram} rel="noopener" target="_blank">Telegram · KEEP UP</a>}
         <a href={url(lang, 'home', '#newsletter')}>{t.newsletter}</a>
         <a href={href('termine.ics')}>{t.ics}</a>
+        <a href={href(lang === 'de' ? 'news.xml' : 'en/news.xml')}>{t.rss}</a>
       </div>
     </div>
     <div class="site-footer__partners">
@@ -81,7 +83,7 @@ const t = tr(lang, {
   .site-footer { background: var(--purple); color: #fff; }
   .site-footer__inner { max-width: var(--wrap); margin: 0 auto; padding: clamp(56px, 7vw, 88px) var(--gutter) 28px; }
   .site-footer__cols {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px 48px;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 40px 48px;
     padding-bottom: 48px; border-bottom: 1px solid var(--on-dark-rule);
   }
   .site-footer__brand { grid-column: span 2; min-width: 0; max-width: 100%; }

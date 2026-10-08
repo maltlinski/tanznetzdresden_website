@@ -41,7 +41,8 @@ import { href } from '../../lib/url';
       <li><a href={href('intern/profil/')}><span class="tiles__n">01</span><strong>Mein Profil</strong><span>Name, Kurzbio, Links und was andere sehen dürfen.</span></a></li>
       <li><a href={href('intern/mitglieder/')}><span class="tiles__n">02</span><strong>Mitglieder</strong><span>Wer ist im Netz? Kontakte und Arbeitsgruppen.</span></a></li>
       <li><a href={href('intern/dokumente/')}><span class="tiles__n">03</span><strong>Dokumente</strong><span>Protokolle, Satzung, Vorlagen und Logos.</span></a></li>
-      <li data-vorstand-only hidden><a href="https://supabase.com/dashboard" rel="noopener" target="_blank"><span class="tiles__n">04</span><strong>Verwaltung</strong><span>Mitglieder einladen und Rollen vergeben (Supabase-Dashboard).</span></a></li>
+      <li data-redaktion-only hidden><a href={href('intern/news/')}><span class="tiles__n">04</span><strong>News schreiben</strong><span>Beiträge für die Website anlegen, bebildern und veröffentlichen.</span></a></li>
+      <li data-vorstand-only hidden><a href="https://supabase.com/dashboard" rel="noopener" target="_blank"><span class="tiles__n">05</span><strong>Verwaltung</strong><span>Mitglieder einladen und Rollen vergeben (Supabase-Dashboard).</span></a></li>
     </ul>
   </div>
 </Intern>

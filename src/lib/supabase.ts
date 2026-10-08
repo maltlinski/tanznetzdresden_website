@@ -19,7 +19,7 @@ export interface Profile {
   show_email: boolean;
   show_phone: boolean;
   public_listing: boolean;
-  role: 'mitglied' | 'vorstand' | 'admin';
+  role: 'mitglied' | 'presse' | 'vorstand' | 'admin';
   // öffentliches Profil (Migration 20261008000000)
   slug: string | null;
   bio_en: string | null;
@@ -33,6 +33,42 @@ export interface Profile {
 export interface DirectoryEntry extends Pick<Profile, 'id' | 'display_name' | 'pronouns' | 'bio' | 'website' | 'instagram' | 'is_trainer' | 'ags' | 'role' | 'slug' | 'public_listing' | 'verified'> {
   email: string | null;
   phone: string | null;
+}
+
+/** News-Beitrag aus dem internen Bereich (Migration 20261009000000_news.sql) */
+export interface NewsRow {
+  id: string;
+  slug: string;
+  status: 'entwurf' | 'veroeffentlicht';
+  category: 'Netzwerk' | 'Ausschreibung' | 'Training' | 'Verein' | 'Rückblick' | 'Stimme';
+  date: string;
+  author: string;
+  featured: boolean;
+  deadline: string | null;
+  title: string;
+  teaser: string;
+  body: string;
+  facts: { label: string; value: string }[];
+  image_path: string | null;
+  image_alt: string | null;
+  image_credit: string | null;
+  quote_text: string | null;
+  quote_who: string | null;
+  quote_role: string | null;
+  title_en: string | null;
+  teaser_en: string | null;
+  body_en: string | null;
+  facts_en: { label: string; value: string }[];
+  image_alt_en: string | null;
+  quote_text_en: string | null;
+  quote_role_en: string | null;
+  updated_at: string;
+  published_at: string | null;
+}
+
+/** Öffentliche Adresse eines Fotos im Bucket „newsbilder“. */
+export function newsPhotoUrl(path: string | null): string | null {
+  return path && PUBLIC_SUPABASE_URL ? `${PUBLIC_SUPABASE_URL}/storage/v1/object/public/newsbilder/${path}` : null;
 }
 
 /** Öffentliche Adresse eines Porträts im Bucket „profilbilder“. */

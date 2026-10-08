@@ -1,0 +1,662 @@
+---
+/**
+ * News-Editor für Presse, Vorstand und Admin.
+ * Schritt für Schritt: Art des Beitrags → Inhalt → (Foto / Frist / Zitat) →
+ * Auf einen Blick → Einordnung → Englisch (optional) → Speichern/Veröffentlichen.
+ * Der Text ist Markdown, die Werkzeugleiste schreibt die Zeichen – niemand muss sie kennen.
+ */
+import Intern from '../../../../layouts/Intern.astro';
+import { href } from '../../../../lib/url';
+import { newsCategories } from '../../../../content.config';
+
+const kinds = [
+  { id: 'text', label: 'Meldung', text: 'Neuigkeit, Bericht, Ankündigung – nur Text.', cat: 'Netzwerk' },
+  { id: 'photo', label: 'Mit Foto', text: 'Erscheint mit großem Bild in der Übersicht.', cat: 'Netzwerk' },
+  { id: 'call', label: 'Ausschreibung', text: 'Mit Bewerbungsfrist – der Countdown läuft automatisch.', cat: 'Ausschreibung' },
+  { id: 'quote', label: 'Stimme', text: 'Interview oder Porträt – ein Zitat steht im Mittelpunkt.', cat: 'Stimme' },
+];
+const tools = [
+  { cmd: 'h', label: 'Zwischenüberschrift', icon: 'H' },
+  { cmd: 'b', label: 'Fett', icon: 'B' },
+  { cmd: 'list', label: 'Aufzählung', icon: '•' },
+  { cmd: 'quote', label: 'Zitat', icon: '„' },
+  { cmd: 'link', label: 'Link', icon: '↗' },
+];
+---
+<Intern title="Beitrag bearbeiten" current="news">
+  <a class="ne-back" href={href('intern/news/')}>← Alle Beiträge</a>
+  <div class="ne-head">
+    <h1 class="i-h1" data-heading>Neuer Beitrag</h1>
+    <span class="ne-status" data-status-badge>Entwurf</span>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>News schreiben dürfen Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
+  </div>
+
+  <form class="ne" data-form novalidate hidden>
+    <!-- 1 · Art -->
+    <fieldset class="ne-step">
+      <legend class="ne-step__h"><span>1</span> Was für ein Beitrag?</legend>
+      <div class="ne-kinds">
+        {kinds.map((k, i) => (
+          <label class="ne-kind">
+            <input type="radio" name="kind" value={k.id} data-cat={k.cat} checked={i === 0} />
+            <strong>{k.label}</strong>
+            <span>{k.text}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+
+    <!-- 2 · Inhalt -->
+    <fieldset class="ne-step">
+      <legend class="ne-step__h"><span>2</span> Inhalt</legend>
+      <div class="i-field">
+        <label for="ne-title">Titel</label>
+        <input id="ne-title" name="title" maxlength="160" required placeholder="z. B. Open Call: POP UP Frühjahr 2027" />
+      </div>
+      <div class="i-field">
+        <label for="ne-teaser">Kurztext</label>
+        <textarea id="ne-teaser" name="teaser" maxlength="400" rows="3" required
+          placeholder="Ein bis zwei Sätze. Erscheinen in der Übersicht, auf der Startseite und beim Teilen."></textarea>
+        <span class="i-hint"><span data-count="teaser">0</span> / 400 Zeichen</span>
+      </div>
+      <div class="i-field">
+        <span class="ne-label" id="ne-body-l">Text</span>
+        <div class="ne-editor" data-editor="body">
+          <div class="ne-tools" role="toolbar" aria-labelledby="ne-body-l">
+            {tools.map((t) => <button type="button" data-cmd={t.cmd} title={t.label} aria-label={t.label}><span aria-hidden="true">{t.icon}</span></button>)}
+            <span class="ne-tools__sep"></span>
+            <button type="button" class="ne-tab" data-view="write" aria-pressed="true">Schreiben</button>
+            <button type="button" class="ne-tab" data-view="preview" aria-pressed="false">Vorschau</button>
+          </div>
+          <textarea class="ne-ta" name="body" rows="14" maxlength="30000" aria-labelledby="ne-body-l"
+            placeholder="Absätze mit einer Leerzeile trennen. Markiere Text und nutze die Knöpfe oben für Überschrift, Fett, Liste, Zitat oder Link."></textarea>
+          <div class="ne-preview" data-preview hidden></div>
+        </div>
+        <span class="i-hint">Tipp für Zitate: Zitat und darunter „— Name · Funktion“ in zwei Zeilen schreiben, beide markieren und den Knopf „„“ drücken.</span>
+      </div>
+    </fieldset>
+
+    <!-- 3 · je nach Art -->
+    <fieldset class="ne-step" data-for="photo">
+      <legend class="ne-step__h"><span>3</span> Foto</legend>
+      <div class="ne-photo">
+        <div class="ne-photo__frame" data-photo-frame>
+          <img alt="" data-photo-img hidden />
+          <span data-photo-empty>Noch kein Foto</span>
+        </div>
+        <div class="ne-photo__side">
+          <label class="btn btn--secondary btn--sm ne-upload">
+            Foto auswählen
+            <input type="file" accept="image/jpeg,image/png,image/webp" data-photo-input />
+          </label>
+          <button type="button" class="i-linkbtn" data-photo-remove hidden>Foto entfernen</button>
+          <span class="i-hint">JPG, PNG oder WebP. Große Fotos werden automatisch verkleinert. Querformat wirkt am besten.</span>
+          <p class="i-msg" data-photo-msg hidden></p>
+        </div>
+      </div>
+      <div class="i-field">
+        <label for="ne-alt">Bildbeschreibung</label>
+        <input id="ne-alt" name="image_alt" maxlength="300" placeholder="Was ist zu sehen? z. B. Zwei Tänzerinnen im Gegenlicht auf der Bühne" />
+        <span class="i-hint">Für Menschen, die das Bild nicht sehen können. Pflicht, sobald ein Foto da ist.</span>
+      </div>
+      <div class="i-field">
+        <label for="ne-credit">Foto: Name der Fotograf:in (optional)</label>
+        <input id="ne-credit" name="image_credit" maxlength="120" />
+      </div>
+    </fieldset>
+
+    <fieldset class="ne-step" data-for="call">
+      <legend class="ne-step__h"><span>3</span> Bewerbungsfrist</legend>
+      <div class="i-field ne-short">
+        <label for="ne-deadline">Frist (letzter Tag)</label>
+        <input id="ne-deadline" name="deadline" type="date" />
+        <span class="i-hint">Bis dahin zählt die Website die Tage herunter, danach verschwindet der Hinweis „Offene Frist“.</span>
+      </div>
+    </fieldset>
+
+    <fieldset class="ne-step" data-for="quote">
+      <legend class="ne-step__h"><span>3</span> Zitat für die Übersicht</legend>
+      <div class="i-field">
+        <label for="ne-qtext">Zitat</label>
+        <textarea id="ne-qtext" name="quote_text" rows="2" maxlength="400" placeholder="Ein Satz, der neugierig macht."></textarea>
+      </div>
+      <div class="ne-row">
+        <div class="i-field"><label for="ne-qwho">Wer sagt das?</label><input id="ne-qwho" name="quote_who" maxlength="120" /></div>
+        <div class="i-field"><label for="ne-qrole">Funktion (optional)</label><input id="ne-qrole" name="quote_role" maxlength="160" placeholder="z. B. Projektleitung KEEP UP" /></div>
+      </div>
+    </fieldset>
+
+    <!-- 4 · Auf einen Blick -->
+    <fieldset class="ne-step">
+      <legend class="ne-step__h"><span data-stepnr="4">4</span> Auf einen Blick <em>optional</em></legend>
+      <p class="i-hint">Kurze Fakten neben dem Text, z. B. „Wann · Do, 15. Oktober, 19:30 Uhr“ oder „Wo · Villa Wigman“.</p>
+      <div class="ne-facts" data-facts="facts"></div>
+      <button type="button" class="i-linkbtn" data-add-fact="facts">+ Zeile hinzufügen</button>
+    </fieldset>
+
+    <!-- 5 · Einordnung -->
+    <fieldset class="ne-step">
+      <legend class="ne-step__h"><span data-stepnr="5">5</span> Einordnung</legend>
+      <div class="ne-row">
+        <div class="i-field">
+          <label for="ne-cat">Kategorie</label>
+          <select id="ne-cat" name="category">{newsCategories.map((c) => <option value={c}>{c}</option>)}</select>
+        </div>
+        <div class="i-field">
+          <label for="ne-date">Datum</label>
+          <input id="ne-date" name="date" type="date" required />
+        </div>
+        <div class="i-field">
+          <label for="ne-author">Text von</label>
+          <input id="ne-author" name="author" maxlength="120" placeholder="Name oder AG" />
+        </div>
+      </div>
+      <label class="i-check">
+        <input type="checkbox" name="featured" />
+        <span><strong>Titelthema:</strong> groß oben auf der News-Seite und auf der Startseite (gilt für den neuesten markierten Beitrag).</span>
+      </label>
+    </fieldset>
+
+    <!-- 6 · Englisch -->
+    <details class="ne-step ne-en" data-en>
+      <summary class="ne-step__h"><span data-stepnr="6">6</span> Englische Fassung <em>optional</em> <span class="ne-en__state" data-en-state></span></summary>
+      <p class="i-hint">Alles hier ist freiwillig. Fehlt ein Feld, zeigt die englische Seite den deutschen Text – beim Haupttext mit einem kurzen Hinweis.</p>
+      <div class="i-field"><label for="ne-title-en">Title</label><input id="ne-title-en" name="title_en" maxlength="160" lang="en" /></div>
+      <div class="i-field"><label for="ne-teaser-en">Short text</label><textarea id="ne-teaser-en" name="teaser_en" maxlength="400" rows="3" lang="en"></textarea></div>
+      <div class="i-field">
+        <span class="ne-label" id="ne-body-en-l">Text</span>
+        <div class="ne-editor" data-editor="body_en">
+          <div class="ne-tools" role="toolbar" aria-labelledby="ne-body-en-l">
+            {tools.map((t) => <button type="button" data-cmd={t.cmd} title={t.label} aria-label={t.label}><span aria-hidden="true">{t.icon}</span></button>)}
+            <span class="ne-tools__sep"></span>
+            <button type="button" class="ne-tab" data-view="write" aria-pressed="true">Schreiben</button>
+            <button type="button" class="ne-tab" data-view="preview" aria-pressed="false">Vorschau</button>
+          </div>
+          <textarea class="ne-ta" name="body_en" rows="10" maxlength="30000" lang="en" aria-labelledby="ne-body-en-l"></textarea>
+          <div class="ne-preview" data-preview hidden></div>
+        </div>
+      </div>
+      <div class="i-field" data-for="photo"><label for="ne-alt-en">Image description</label><input id="ne-alt-en" name="image_alt_en" maxlength="300" lang="en" /></div>
+      <div data-for="quote">
+        <div class="i-field"><label for="ne-qtext-en">Quote</label><textarea id="ne-qtext-en" name="quote_text_en" rows="2" maxlength="400" lang="en"></textarea></div>
+        <div class="i-field"><label for="ne-qrole-en">Role</label><input id="ne-qrole-en" name="quote_role_en" maxlength="160" lang="en" /></div>
+      </div>
+      <div class="ne-facts-en">
+        <span class="ne-label">At a glance</span>
+        <p class="i-hint">Eine Zeile je deutscher Zeile. Leer lassen = deutsche Angabe.</p>
+        <div class="ne-facts" data-facts="facts_en" data-mirror></div>
+      </div>
+    </details>
+
+    <!-- Adresse -->
+    <details class="ne-step ne-more">
+      <summary class="ne-step__h">Adresse des Beitrags</summary>
+      <div class="i-field">
+        <label for="ne-slug">Adresse</label>
+        <input id="ne-slug" name="slug" maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" />
+        <span class="i-hint">Wird aus dem Titel gebildet. Nach dem Veröffentlichen besser nicht mehr ändern, sonst gehen geteilte Links ins Leere.
+          Vorschau: <code data-slug-preview></code></span>
+      </div>
+    </details>
+
+    <!-- Aktionen -->
+    <div class="ne-bar">
+      <p class="i-msg" role="status" data-msg hidden></p>
+      <div class="ne-bar__btns">
+        <button type="button" class="btn btn--primary btn--marker" data-publish>Veröffentlichen</button>
+        <button type="button" class="btn btn--secondary" data-save>Als Entwurf speichern</button>
+        <a class="i-linkbtn" data-view-live hidden target="_blank" rel="noopener">Auf der Website ansehen ↗</a>
+        <button type="button" class="i-linkbtn ne-danger" data-delete hidden>Löschen</button>
+      </div>
+      <span class="i-hint" data-saved-at></span>
+    </div>
+  </form>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage, internUrl } from '../../../../scripts/intern/session';
+  import { slugify, newsPhotoUrl, type NewsRow } from '../../../../lib/supabase';
+  import { renderMarkdown } from '../../../../lib/markdown';
+
+  type Fact = { label: string; value: string };
+  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
+
+  const ctx = await initIntern(true);
+  const form = $<HTMLFormElement>('[data-form]');
+  const msg = $('[data-msg]');
+  const id0 = new URLSearchParams(location.search).get('id');
+
+  if (ctx && form) {
+    if (!ctx.isRedaktion) {
+      $('[data-no-access]')!.hidden = false;
+    } else {
+      form.hidden = false;
+      let row: Partial<NewsRow> = {};
+      let imagePath: string | null = null;
+      let dirty = false;
+      let slugTouched = false;
+      const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(name: string) =>
+        form.elements.namedItem(name) as T | null;
+
+      // ---------- Laden ----------
+      if (id0) {
+        const { data, error } = await ctx.sb.from('news_posts').select('*').eq('id', id0).maybeSingle<NewsRow>();
+        if (error || !data) showMessage(msg, error ? errorText(error) : 'Diesen Beitrag gibt es nicht (mehr).');
+        if (data) row = data;
+      }
+      const kindOf = (r: Partial<NewsRow>) => (r.deadline ? 'call' : r.quote_text ? 'quote' : r.image_path ? 'photo' : 'text');
+      const set = (name: string, v: unknown) => {
+        const el = field(name);
+        if (!el) return;
+        if (el instanceof HTMLInputElement && el.type === 'checkbox') el.checked = !!v;
+        else el.value = v == null ? '' : String(v);
+      };
+      for (const k of ['title', 'teaser', 'body', 'image_alt', 'image_credit', 'deadline', 'quote_text', 'quote_who', 'quote_role',
+        'category', 'date', 'author', 'featured', 'title_en', 'teaser_en', 'body_en', 'image_alt_en', 'quote_text_en', 'quote_role_en', 'slug']) {
+        set(k, (row as Record<string, unknown>)[k]);
+      }
+      if (!row.date) set('date', new Date().toISOString().slice(0, 10));
+      if (!row.category) set('category', 'Netzwerk');
+      if (!row.author) set('author', ctx.profile?.display_name ?? '');
+      slugTouched = !!row.slug;
+      imagePath = row.image_path ?? null;
+      const kindInput = form.querySelector<HTMLInputElement>(`input[name="kind"][value="${kindOf(row)}"]`);
+      if (kindInput) kindInput.checked = true;
+      if (row.title_en || row.body_en) ($<HTMLDetailsElement>('[data-en]')!).open = true;
+
+      // ---------- Art des Beitrags ----------
+      const kind = () => form.querySelector<HTMLInputElement>('input[name="kind"]:checked')?.value ?? 'text';
+      const applyKind = () => {
+        const k = kind();
+        form.querySelectorAll<HTMLElement>('[data-for]').forEach((el) => (el.hidden = el.dataset.for !== k));
+        // Schritt-Nummern hinter dem optionalen Schritt 3 anpassen
+        const extra = k === 'text' ? 0 : 1;
+        form.querySelectorAll<HTMLElement>('[data-stepnr]').forEach((el) => {
+          el.textContent = String(Number(el.dataset.stepnr) - 1 + extra);
+        });
+      };
+      form.querySelectorAll<HTMLInputElement>('input[name="kind"]').forEach((r) =>
+        r.addEventListener('change', () => {
+          applyKind();
+          // passende Kategorie vorschlagen
+          const cat = field<HTMLSelectElement>('category');
+          if (cat && r.dataset.cat && (['Netzwerk', 'Ausschreibung', 'Stimme'].includes(cat.value))) cat.value = r.dataset.cat;
+        }),
+      );
+      applyKind();
+
+      // ---------- Zähler, Adresse ----------
+      const teaser = field<HTMLTextAreaElement>('teaser')!;
+      const counter = $('[data-count="teaser"]');
+      const count = () => counter && (counter.textContent = String(teaser.value.length));
+      teaser.addEventListener('input', count);
+      count();
+      const slug = field<HTMLInputElement>('slug')!;
+      const slugPreview = $('[data-slug-preview]');
+      const showSlug = () => slugPreview && (slugPreview.textContent = `${location.origin}${base}news/${slug.value || '…'}/`);
+      field<HTMLInputElement>('title')!.addEventListener('input', (e) => {
+        if (!slugTouched) slug.value = slugify((e.target as HTMLInputElement).value).slice(0, 80).replace(/-+$/, '');
+        showSlug();
+      });
+      slug.addEventListener('input', () => {
+        slugTouched = true;
+        slug.value = slugify(slug.value);
+        showSlug();
+      });
+      showSlug();
+
+      // ---------- Auf einen Blick ----------
+      const factBoxes = {
+        facts: $('[data-facts="facts"]')!,
+        facts_en: $('[data-facts="facts_en"]')!,
+      };
+      const factRow = (box: HTMLElement, f: Fact, mirror?: Fact) => {
+        const div = document.createElement('div');
+        div.className = 'ne-fact';
+        const l = Object.assign(document.createElement('input'), { value: f.label, placeholder: mirror?.label || 'z. B. Wann', maxLength: 60 });
+        const v = Object.assign(document.createElement('input'), { value: f.value, placeholder: mirror?.value || 'z. B. Do · 15. Oktober · 19:30 Uhr', maxLength: 200 });
+        l.setAttribute('aria-label', 'Bezeichnung');
+        v.setAttribute('aria-label', 'Angabe');
+        div.append(l, v);
+        if (!box.hasAttribute('data-mirror')) {
+          const del = Object.assign(document.createElement('button'), { type: 'button', className: 'i-linkbtn', textContent: 'Entfernen' });
+          del.addEventListener('click', () => {
+            div.remove();
+            syncMirror();
+            dirty = true;
+          });
+          div.append(del);
+        }
+        box.append(div);
+      };
+      const readFacts = (box: HTMLElement): Fact[] =>
+        [...box.querySelectorAll('.ne-fact')].map((d) => {
+          const [l, v] = d.querySelectorAll('input');
+          return { label: l.value.trim(), value: v.value.trim() };
+        });
+      const syncMirror = () => {
+        const de = readFacts(factBoxes.facts);
+        const en = readFacts(factBoxes.facts_en);
+        factBoxes.facts_en.replaceChildren();
+        de.forEach((f, i) => factRow(factBoxes.facts_en, en[i] ?? { label: '', value: '' }, f));
+        $('.ne-facts-en')!.hidden = de.length === 0;
+      };
+      (row.facts ?? []).forEach((f) => factRow(factBoxes.facts, f));
+      (row.facts ?? []).forEach((f, i) => factRow(factBoxes.facts_en, row.facts_en?.[i] ?? { label: '', value: '' }, f));
+      $('.ne-facts-en')!.hidden = !(row.facts ?? []).length;
+      $('[data-add-fact="facts"]')!.addEventListener('click', () => {
+        factRow(factBoxes.facts, { label: '', value: '' });
+        syncMirror();
+        factBoxes.facts.querySelector<HTMLInputElement>('.ne-fact:last-child input')?.focus();
+      });
+      factBoxes.facts.addEventListener('change', syncMirror);
+
+      // ---------- Werkzeugleiste + Vorschau ----------
+      form.querySelectorAll<HTMLElement>('[data-editor]').forEach((ed) => {
+        const ta = ed.querySelector('textarea')!;
+        const preview = ed.querySelector<HTMLElement>('[data-preview]')!;
+        const wrap = (before: string, after = '', placeholder = '') => {
+          const { selectionStart: s, selectionEnd: e, value } = ta;
+          const sel = value.slice(s, e) || placeholder;
+          ta.setRangeText(before + sel + after, s, e, 'select');
+          ta.setSelectionRange(s + before.length, s + before.length + sel.length);
+          ta.focus();
+          ta.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+        /** Ganze Zeilen der Auswahl mit Markdown-Zeichen versehen (Überschrift, Liste, Zitat). */
+        const linePrefix = (prefix: string, placeholder: string) => {
+          const { selectionStart: s, selectionEnd: e, value } = ta;
+          const start = value.lastIndexOf('\n', s - 1) + 1;
+          const nl = value.indexOf('\n', e);
+          const end = nl === -1 ? value.length : nl;
+          const lines = (value.slice(start, end) || placeholder).split('\n').map((l) => l.replace(/^(#+ |> ?|- )/, '')).filter((l) => l.trim());
+          // Zitat: jede Zeile ein eigener Absatz („Zitat“, darunter „— Name“)
+          const block = prefix === '> ' ? lines.map((l) => `> ${l}`).join('\n>\n') : lines.map((l) => prefix + l).join('\n');
+          // Leerzeile davor, damit der Block sauber beginnt
+          const gap = start > 0 && value.slice(0, start).trimEnd() !== '' && !value.slice(0, start).endsWith('\n\n') ? '\n' : '';
+          ta.setRangeText(gap + block, start, end, 'end');
+          ta.focus();
+          ta.dispatchEvent(new Event('input', { bubbles: true }));
+        };
+        ed.querySelectorAll<HTMLButtonElement>('[data-cmd]').forEach((b) =>
+          b.addEventListener('click', () => {
+            const cmd = b.dataset.cmd;
+            if (cmd === 'b') wrap('**', '**', 'fetter Text');
+            if (cmd === 'h') linePrefix('## ', 'Zwischenüberschrift');
+            if (cmd === 'list') linePrefix('- ', 'Punkt');
+            if (cmd === 'quote') linePrefix('> ', 'Zitat');
+            if (cmd === 'link') {
+              const url = prompt('Adresse des Links (z. B. https://… oder /kontakt/ für eine Seite der Website):', 'https://');
+              if (url && url !== 'https://') wrap('[', `](${url.trim()})`, 'Linktext');
+            }
+          }),
+        );
+        ed.querySelectorAll<HTMLButtonElement>('[data-view]').forEach((b) =>
+          b.addEventListener('click', () => {
+            const show = b.dataset.view === 'preview';
+            ed.querySelectorAll('[data-view]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+            if (show) preview.innerHTML = renderMarkdown(ta.value, base) || '<p class="i-hint">Noch kein Text.</p>';
+            preview.hidden = !show;
+            ta.hidden = show;
+          }),
+        );
+      });
+
+      // ---------- Foto ----------
+      const img = $<HTMLImageElement>('[data-photo-img]')!;
+      const emptyLabel = $('[data-photo-empty]')!;
+      const removeBtn = $('[data-photo-remove]')!;
+      const photoMsg = $('[data-photo-msg]');
+      const showPhoto = () => {
+        const src = newsPhotoUrl(imagePath);
+        img.hidden = !src;
+        if (src) img.src = src;
+        emptyLabel.hidden = !!src;
+        removeBtn.hidden = !src;
+      };
+      showPhoto();
+      /** Große Fotos im Browser verkleinern (max. 2400 px), damit der Upload schnell geht. */
+      const shrink = async (file: File): Promise<Blob> => {
+        const bmp = await createImageBitmap(file).catch(() => null);
+        if (!bmp) return file;
+        const scale = Math.min(1, 2400 / Math.max(bmp.width, bmp.height));
+        if (scale === 1 && file.size < 3_000_000) return file;
+        const c = document.createElement('canvas');
+        c.width = Math.round(bmp.width * scale);
+        c.height = Math.round(bmp.height * scale);
+        c.getContext('2d')!.drawImage(bmp, 0, 0, c.width, c.height);
+        return new Promise((res) => c.toBlob((b) => res(b ?? file), 'image/jpeg', 0.86));
+      };
+      $<HTMLInputElement>('[data-photo-input]')!.addEventListener('change', async (e) => {
+        const file = (e.target as HTMLInputElement).files?.[0];
+        if (!file) return;
+        showMessage(photoMsg, 'Foto wird hochgeladen …', 'ok');
+        const blob = await shrink(file);
+        const ext = blob.type === 'image/png' ? 'png' : blob.type === 'image/webp' ? 'webp' : 'jpg';
+        const path = `${new Date().getFullYear()}/${slug.value || 'beitrag'}-${Date.now().toString(36)}.${ext}`;
+        const { error } = await ctx.sb.storage.from('newsbilder').upload(path, blob, { contentType: blob.type || 'image/jpeg', upsert: false });
+        if (error) return showMessage(photoMsg, errorText(error));
+        imagePath = path;
+        dirty = true;
+        showPhoto();
+        showMessage(photoMsg, 'Foto ist da. Bitte noch beschreiben, was zu sehen ist.', 'ok');
+        field<HTMLInputElement>('image_alt')?.focus();
+      });
+      removeBtn.addEventListener('click', () => {
+        imagePath = null;
+        dirty = true;
+        showPhoto();
+      });
+
+      // ---------- Englisch-Status ----------
+      const enState = $('[data-en-state]');
+      const updateEn = () => {
+        if (!enState) return;
+        const has = ['title_en', 'teaser_en', 'body_en'].filter((n) => field(n)?.value.trim()).length;
+        enState.textContent = has === 3 ? '· übersetzt' : has ? '· teilweise' : '· noch nicht übersetzt';
+      };
+      form.addEventListener('input', () => {
+        dirty = true;
+        updateEn();
+      });
+      updateEn();
+
+      // ---------- Speichern ----------
+      const statusBadge = $('[data-status-badge]')!;
+      const publishBtn = $<HTMLButtonElement>('[data-publish]')!;
+      const saveBtn = $<HTMLButtonElement>('[data-save]')!;
+      const delBtn = $<HTMLButtonElement>('[data-delete]')!;
+      const live = $<HTMLAnchorElement>('[data-view-live]')!;
+      const savedAt = $('[data-saved-at]');
+      const renderStatus = () => {
+        const online = row.status === 'veroeffentlicht';
+        statusBadge.textContent = online ? 'Online' : 'Entwurf';
+        statusBadge.dataset.status = row.status ?? 'entwurf';
+        $('[data-heading]')!.textContent = row.id ? 'Beitrag bearbeiten' : 'Neuer Beitrag';
+        publishBtn.textContent = online ? 'Änderungen veröffentlichen' : 'Veröffentlichen';
+        saveBtn.textContent = online ? 'Zurückziehen (wieder Entwurf)' : 'Als Entwurf speichern';
+        delBtn.hidden = !row.id;
+        live.hidden = !online;
+        live.href = `${base}news/${row.slug}/`;
+        if (savedAt && row.updated_at) savedAt.textContent = `Zuletzt gespeichert: ${new Date(row.updated_at).toLocaleString('de-DE')}`;
+      };
+      renderStatus();
+
+      const val = (n: string) => field(n)?.value.trim() ?? '';
+      const orNull = (v: string) => v || null;
+      const problems = (publish: boolean): string[] => {
+        const p: string[] = [];
+        if (val('title').length < 3) p.push('Titel fehlt.');
+        if (!slug.value || slug.value.length < 3) p.push('Adresse fehlt (wird aus dem Titel gebildet).');
+        if (imagePath && !val('image_alt')) p.push('Zum Foto fehlt die Bildbeschreibung.');
+        if (publish) {
+          if (!val('teaser')) p.push('Kurztext fehlt.');
+          if (kind() === 'photo' && !imagePath) p.push('Für „Mit Foto“ fehlt das Foto.');
+          if (kind() === 'call' && !val('deadline')) p.push('Für die Ausschreibung fehlt die Frist.');
+          if (kind() === 'quote' && (!val('quote_text') || !val('quote_who'))) p.push('Für „Stimme“ fehlen Zitat und Name.');
+        }
+        return p;
+      };
+      const save = async (status: 'entwurf' | 'veroeffentlicht') => {
+        const p = problems(status === 'veroeffentlicht');
+        if (p.length) return showMessage(msg, `Bitte noch ergänzen: ${p.join(' ')}`);
+        const k = kind();
+        const de = readFacts(factBoxes.facts).filter((f) => f.label || f.value);
+        const en = readFacts(factBoxes.facts_en);
+        const payload = {
+          slug: slug.value,
+          status,
+          category: val('category'),
+          date: val('date'),
+          author: val('author'),
+          featured: field<HTMLInputElement>('featured')!.checked,
+          title: val('title'),
+          teaser: val('teaser'),
+          body: field('body')!.value,
+          facts: de,
+          facts_en: en.some((f) => f.label || f.value) ? en.slice(0, de.length) : [],
+          // Felder anderer Beitragsarten werden geleert, damit die Darstellung eindeutig ist
+          deadline: k === 'call' ? orNull(val('deadline')) : null,
+          image_path: k === 'photo' ? imagePath : null,
+          image_alt: k === 'photo' ? orNull(val('image_alt')) : null,
+          image_credit: k === 'photo' ? orNull(val('image_credit')) : null,
+          image_alt_en: k === 'photo' ? orNull(val('image_alt_en')) : null,
+          quote_text: k === 'quote' ? orNull(val('quote_text')) : null,
+          quote_who: k === 'quote' ? orNull(val('quote_who')) : null,
+          quote_role: k === 'quote' ? orNull(val('quote_role')) : null,
+          quote_text_en: k === 'quote' ? orNull(val('quote_text_en')) : null,
+          quote_role_en: k === 'quote' ? orNull(val('quote_role_en')) : null,
+          title_en: orNull(val('title_en')),
+          teaser_en: orNull(val('teaser_en')),
+          body_en: orNull(field('body_en')!.value.trim()),
+        };
+        publishBtn.disabled = saveBtn.disabled = true;
+        const q = row.id
+          ? ctx.sb.from('news_posts').update(payload).eq('id', row.id).select().single<NewsRow>()
+          : ctx.sb.from('news_posts').insert(payload).select().single<NewsRow>();
+        const { data, error } = await q;
+        publishBtn.disabled = saveBtn.disabled = false;
+        if (error) {
+          const dup = /duplicate|unique/i.test(error.message);
+          return showMessage(msg, dup ? 'Diese Adresse ist schon vergeben. Bitte unter „Adresse des Beitrags“ eine andere wählen.' : errorText(error));
+        }
+        const wasOnline = row.status === 'veroeffentlicht';
+        row = data;
+        dirty = false;
+        if (!id0 || id0 !== row.id) history.replaceState(null, '', `${internUrl('news/bearbeiten/')}?id=${row.id}`);
+        renderStatus();
+        showMessage(
+          msg,
+          status === 'veroeffentlicht'
+            ? 'Veröffentlicht. Die Website wird jetzt neu gebaut – in wenigen Minuten ist der Beitrag online (spätestens nach dem nächtlichen Update).'
+            : wasOnline
+              ? 'Zurückgezogen. Der Beitrag verschwindet beim nächsten Update von der Website.'
+              : 'Entwurf gespeichert. Nur die Redaktion sieht ihn.',
+          'ok',
+        );
+      };
+      publishBtn.addEventListener('click', () => save('veroeffentlicht'));
+      saveBtn.addEventListener('click', () => save('entwurf'));
+      delBtn.addEventListener('click', async () => {
+        if (!row.id || !confirm(`„${row.title}“ wirklich löschen? Das lässt sich nicht rückgängig machen.`)) return;
+        const { error } = await ctx.sb.from('news_posts').delete().eq('id', row.id);
+        if (error) return showMessage(msg, errorText(error));
+        if (row.image_path) await ctx.sb.storage.from('newsbilder').remove([row.image_path]);
+        dirty = false;
+        location.href = internUrl('news/');
+      });
+      addEventListener('beforeunload', (e) => {
+        if (dirty) e.preventDefault();
+      });
+    }
+  }
+</script>
+
+<style>
+  .ne-back { display: inline-block; margin-bottom: 18px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
+  .ne-back:hover { color: var(--magenta-2); }
+  .ne-head { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; margin-bottom: 28px; }
+  .ne-head .i-h1 { margin: 0; }
+  .ne-status {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    padding: 5px 10px; background: var(--paper); color: var(--purple); border: 1.5px solid var(--purple);
+  }
+  .ne-status[data-status='veroeffentlicht'] { background: var(--cyan); border-color: var(--cyan); }
+  .ne { display: flex; flex-direction: column; gap: 20px; max-width: 860px; }
+  .ne[hidden], .ne [hidden] { display: none !important; }
+  .ne-step { margin: 0; border: 0; background: var(--paper); padding: clamp(22px, 3vw, 32px); display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+  details.ne-step { display: block; }
+  details.ne-step[open] > :not(summary) { margin-top: 18px; }
+  .ne-step__h {
+    display: flex; align-items: center; gap: 12px; padding: 0; font-family: var(--font-display); font-weight: 800;
+    font-size: 22px; letter-spacing: -0.02em; color: var(--purple); cursor: default;
+  }
+  summary.ne-step__h { cursor: pointer; list-style: none; }
+  summary.ne-step__h::-webkit-details-marker { display: none; }
+  summary.ne-step__h::after { content: '+'; margin-left: auto; font-size: 26px; color: var(--magenta); }
+  details[open] > summary.ne-step__h::after { content: '–'; }
+  .ne-step__h > span:first-child {
+    display: inline-grid; place-items: center; width: 30px; height: 30px; background: var(--magenta); color: #fff; font-size: 15px;
+  }
+  .ne-step__h em, .ne-en__state { font-style: normal; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  .ne-step > .i-hint, details.ne-step > .i-hint { margin: 0; }
+  .ne-label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2); }
+
+  .ne-kinds { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 170px), 1fr)); gap: 10px; }
+  .ne-kind { position: relative; display: flex; flex-direction: column; gap: 6px; padding: 16px; border: 1.5px solid var(--rule); cursor: pointer; transition: border-color var(--dur-base); }
+  .ne-kind:hover { border-color: var(--purple); }
+  .ne-kind:has(input:checked) { border-color: var(--magenta); box-shadow: inset 0 3px 0 var(--magenta); }
+  .ne-kind:has(input:focus-visible) { outline: 2px solid var(--purple); outline-offset: 2px; }
+  .ne-kind input { position: absolute; opacity: 0; pointer-events: none; }
+  .ne-kind strong { font-family: var(--font-display); font-size: 18px; color: var(--purple); }
+  .ne-kind span { font-size: 13.5px; line-height: 1.45; color: var(--ink-soft); }
+
+  .ne-editor { border: 1.5px solid var(--rule); background: var(--paper); }
+  .ne-editor:focus-within { border-color: var(--magenta); }
+  .ne-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 2px; padding: 6px; border-bottom: 1px solid var(--rule); background: var(--tint); }
+  .ne-tools button {
+    min-width: 36px; height: 34px; padding: 0 10px; background: transparent; border: 0; cursor: pointer; color: var(--purple);
+    font-family: var(--font-display); font-weight: 800; font-size: 16px;
+  }
+  .ne-tools button:hover { background: var(--paper); color: var(--magenta-2); }
+  .ne-tools__sep { flex: 1; }
+  .ne-tools .ne-tab { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  .ne-tools .ne-tab[aria-pressed='true'] { background: var(--purple); color: #fff; }
+  .ne-editor textarea.ne-ta { border: 0; box-shadow: none; min-height: 260px; font-size: 16px; line-height: 1.6; width: 100%; padding: 14px 16px; outline: none; resize: vertical; font-family: var(--font-body); color: var(--ink); background: var(--paper); }
+  .ne-preview { padding: 16px 18px; min-height: 260px; font-size: 16px; line-height: 1.65; }
+  .ne-preview :global(h2) { font-family: var(--font-display); font-size: 22px; color: var(--purple); margin: 1.2em 0 0.4em; }
+  .ne-preview :global(blockquote) { margin: 1em 0; padding-left: 16px; border-left: 3px solid var(--magenta); color: var(--purple); }
+  .ne-preview :global(a) { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); }
+
+  .ne-photo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 18px; align-items: start; }
+  .ne-photo__frame { position: relative; aspect-ratio: 16 / 10; background: var(--tint); display: grid; place-items: center; color: var(--ink-muted); font-size: 14px; overflow: hidden; }
+  .ne-photo__frame img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ne-photo__side { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
+  .ne-upload { position: relative; cursor: pointer; }
+  .ne-upload input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .ne-upload:has(input:focus-visible) { outline: 2px solid var(--purple); outline-offset: 2px; }
+
+  .ne-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 18px; }
+  .ne-short { max-width: 260px; }
+  .ne-facts { display: flex; flex-direction: column; gap: 8px; }
+  :global(.ne-fact) { display: grid; grid-template-columns: minmax(90px, 1fr) minmax(0, 2.4fr) auto; gap: 8px; align-items: center; }
+  .ne-facts-en :global(.ne-fact) { grid-template-columns: minmax(90px, 1fr) minmax(0, 2.4fr); }
+  :global(.ne-fact input) {
+    font: inherit; font-size: 15px; padding: 9px 11px; border: 1.5px solid var(--rule); border-radius: 0; background: var(--paper); color: var(--ink); min-width: 0;
+  }
+  :global(.ne-fact input:focus) { outline: none; border-color: var(--magenta); }
+  .ne-facts-en { display: flex; flex-direction: column; gap: 8px; }
+
+  .ne-bar {
+    position: sticky; bottom: 0; z-index: 5; display: flex; flex-direction: column; gap: 12px; padding: 18px clamp(18px, 3vw, 28px);
+    background: var(--paper); border-top: 3px solid var(--magenta);
+  }
+  .ne-bar__btns { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+  .ne-bar button:disabled { opacity: 0.5; cursor: wait; }
+  .ne-danger { margin-left: auto; color: var(--magenta-2) !important; }
+  .ne code { font-size: 12.5px; word-break: break-all; }
+</style>

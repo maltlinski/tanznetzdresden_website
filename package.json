@@ -20,6 +20,7 @@
     "@supabase/supabase-js": "^2.117.3",
     "astro": "^7.3.6",
     "leaflet": "^1.9.4",
+    "marked": "^15.0.12",
     "qrcode": "^1.5.4"
   },
   "devDependencies": {

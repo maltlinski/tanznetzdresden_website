@@ -42,7 +42,8 @@ Alle Stellen mit `[BITTE …]` suchen: `grep -rn "BITTE" src`
 ## Technik
 
 - [ ] Domain und HTTPS (docs/deployment.md)
-- [ ] Interner Bereich: Supabase eingerichtet, **beide** Migrationen eingespielt, Test-Einladung durchgespielt (docs/intern.md)
+- [ ] Interner Bereich: Supabase eingerichtet, **alle drei** Migrationen eingespielt, Test-Einladung durchgespielt (docs/intern.md)
+- [ ] News: Rolle „Presse“ vergeben, einen Testbeitrag schreiben, veröffentlichen und wieder zurückziehen; Webhook `news-updated` einrichten (docs/news.md)
 - [ ] Profile: Freigabe-Ablauf mit dem Vorstand abstimmen, optional Webhook für sofortige Aktualisierung (docs/profile.md)
 - [ ] Statistik: entscheiden, ob und welche (Matomo cookielos / Plausible); Datenschutz-Abschnitt anpassen
 - [ ] CMS-Login eingerichtet (docs/inhalte.md)

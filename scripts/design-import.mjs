@@ -67,6 +67,7 @@ if (existsSync(bundlePath)) {
   if (mark && word) {
     writeFileSync(join(keepLogo, 'tndd-logo.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 572.94" fill="currentColor">\n${mark}\n${word}\n</svg>\n`);
     writeFileSync(join(keepLogo, 'tndd-word.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="130 445 920 80" fill="currentColor">\n${word}\n</svg>\n`);
+    writeFileSync(join(keepLogo, 'tndd-mark.svg'), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="45 48 1010 378" fill="currentColor">\n${mark}\n</svg>\n`);
     extracted = true;
   }
 }

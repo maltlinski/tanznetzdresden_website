@@ -1,0 +1,19 @@
+---
+/**
+ * Foto eines News-Beitrags. Auch Fotos aus dem internen Bereich (Supabase) werden
+ * beim Build heruntergeladen und optimiert – Besucher:innen laden nichts von Supabase.
+ */
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  widths?: number[];
+  sizes?: string;
+  loading?: 'lazy' | 'eager';
+}
+const { src, alt, widths = [480, 800, 1200], sizes = '100vw', loading = 'lazy' } = Astro.props;
+---
+{typeof src === 'string'
+  ? <Image src={src} alt={alt} inferSize widths={widths} sizes={sizes} loading={loading} />
+  : <Image src={src} alt={alt} widths={widths} sizes={sizes} loading={loading} />}

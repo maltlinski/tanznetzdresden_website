@@ -13,6 +13,8 @@ export interface InternContext {
   user: User;
   profile: Profile | null;
   isVorstand: boolean;
+  /** darf News schreiben (Presse, Vorstand, Admin) */
+  isRedaktion: boolean;
 }
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -64,9 +66,11 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
   }
   const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle<Profile>();
   const isVorstand = profile?.role === 'vorstand' || profile?.role === 'admin';
+  const isRedaktion = isVorstand || profile?.role === 'presse';
 
   document.querySelectorAll<HTMLElement>('[data-intern-name]').forEach((el) => (el.textContent = profile?.display_name || user.email || ''));
   document.querySelectorAll<HTMLElement>('[data-vorstand-only]').forEach((el) => (el.hidden = !isVorstand));
+  document.querySelectorAll<HTMLElement>('[data-redaktion-only]').forEach((el) => (el.hidden = !isRedaktion));
   document.querySelectorAll<HTMLButtonElement>('[data-logout]').forEach((btn) =>
     btn.addEventListener('click', async () => {
       await sb.auth.signOut();
@@ -77,5 +81,5 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
     if (event === 'SIGNED_OUT') location.href = internUrl();
   });
   setState('ready');
-  return { sb, user, profile: profile ?? null, isVorstand };
+  return { sb, user, profile: profile ?? null, isVorstand, isRedaktion };
 }

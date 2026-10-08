@@ -59,4 +59,5 @@ Die automatischen Tests (`npm test`) prüfen zusätzlich die Kontraste. Wird ein
 
 `entwuerfe/` ist die Ablage für Seiten- und Abschnittsentwürfe aus Claude Design, z. B.
 `entwuerfe/2027-02-residenzen/`. Sie dienen als Vorlage für die Umsetzung in `src/` und werden nicht direkt
-ausgeliefert. `2026-10-startseite/` ist der Entwurf, nach dem die aktuelle Startseite gebaut ist (Runde 3a).
+ausgeliefert. `2026-10-startseite/` ist der Entwurf der aktuellen Startseite (Runde 4), `2026-10-news/` der News-Seiten,
+`2026-10-kooperationen/` der Kooperationsseite.

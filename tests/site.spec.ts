@@ -3,9 +3,10 @@ import AxeBuilder from '@axe-core/playwright';
 import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
 
 const pages = [
-  '/', '/termine/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
+  '/', '/termine/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
   '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
-  '/en/', '/en/events/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
+  '/intern/news/', '/intern/news/bearbeiten/',
+  '/en/', '/en/events/', '/en/news/', '/en/news/neues-koordinationsteam/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
   '/en/contact/', '/en/partners/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
 ];
 
@@ -39,6 +40,9 @@ for (const path of pages) {
     await page.waitForLoadState('networkidle');
     expect(errors).toEqual([]);
     expect(external).toEqual([]);
+    // nichts ragt seitlich über den Bildschirm hinaus
+    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    expect(overflow).toBeLessThanOrEqual(1);
   });
 
   test(`${path} ist barrierearm (axe)`, async ({ page }) => {
@@ -206,4 +210,63 @@ test('Kooperationen: Orte in Datei-Reihenfolge, Karte erst nach Klick', async ({
   // Liste und Netz sind gekoppelt
   await page.locator('.venue').nth(2).hover();
   await expect(page.locator('.venue').nth(2)).toHaveClass(/is-hot/);
+});
+
+test('News: Startseite zeigt Titelthema und offene Ausschreibung, Links führen zum Beitrag', async ({ page }) => {
+  await page.goto('/');
+  const news = page.locator('#news');
+  await expect(news.getByRole('heading', { name: 'Aus dem Netz' })).toBeVisible();
+  await expect(news.getByRole('link', { name: /Studio Round #9/ })).toHaveAttribute('href', /\/news\/studio-round-9\/$/);
+  await expect(news.getByText(/Frist · 15\. Nov 2026/)).toBeVisible();
+  await news.getByRole('link', { name: 'Alle Beiträge →' }).click();
+  await expect(page).toHaveURL(/\/news\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Aus dem');
+});
+
+test('News: Filter zeigt nur die gewählte Kategorie, „Alle“ blendet das Titelthema in der Chronik aus', async ({ page }) => {
+  await page.goto('/news/');
+  await dismissConsent(page);
+  const posts = page.locator('[data-post]:visible');
+  const total = await page.locator('[data-post]').count();
+  await expect(posts).toHaveCount(total - 1);
+  await page.getByRole('button', { name: /^Verein/ }).click();
+  await expect(page.getByRole('button', { name: /^Verein/ })).toHaveAttribute('aria-pressed', 'true');
+  await expect(posts).toHaveCount(2);
+  await page.getByRole('button', { name: /^Netzwerk/ }).click();
+  await expect(posts.filter({ hasText: 'Studio Round #9' })).toHaveCount(1);
+});
+
+test('News: englische Seite nutzt die Übersetzung und weist auf fehlende Übersetzungen hin', async ({ page }) => {
+  await page.goto('/en/news/open-call-pop-up-2027/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Open call: POP UP spring 2027');
+  await expect(page.getByText('This post is only available in German so far.')).toHaveCount(0);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en');
+  // Sprachumschalter führt zum selben Beitrag
+  await expect(page.locator('.site-header__lang')).toHaveAttribute('href', /\/news\/open-call-pop-up-2027\/$/);
+});
+
+test('News: RSS-Feeds sind gültig und verlinken die Beiträge', async ({ request }) => {
+  for (const [path, link] of [['/news.xml', '/news/studio-round-9/'], ['/en/news.xml', '/en/news/studio-round-9/']]) {
+    const res = await request.get(path);
+    expect(res.status()).toBe(200);
+    const xml = await res.text();
+    expect(xml).toContain('<rss version="2.0"');
+    expect(xml).toContain(link);
+  }
+});
+
+test('Header: TNDD-Zeichen führt zur Startseite, News steht im Menü', async ({ page, isMobile }) => {
+  await page.goto('/news/');
+  await dismissConsent(page);
+  if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
+  await expect(page.getByRole('navigation', { name: 'Hauptnavigation' }).getByRole('link', { name: 'News' })).toHaveAttribute('aria-current', 'page');
+  await page.locator('[data-header]').getByRole('link', { name: 'TanzNetzDresden – zur Startseite' }).click();
+  await expect(page).toHaveURL(/\/$/);
+});
+
+test('Hero: Text ist ohne Animation sofort lesbar', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/');
+  await expect(page.locator('[data-sweep-bar]')).toHaveCount(0);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Eine Stadt\.\s*Ein Netz\./);
 });

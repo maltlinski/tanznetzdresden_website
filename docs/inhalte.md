@@ -20,6 +20,7 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 
 | Was | Datei | Hinweis |
 |---|---|---|
+| News | am einfachsten im internen Bereich: *Intern → News schreiben* | als Datei: `src/content/news/de/` + `en/`, siehe docs/news.md |
 | Termin | `src/content/termine/JJJJ-MM-TT-titel.md` | Pflichtfelder siehe unten |
 | Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge |
 | Personen | `src/content/personen.yaml` | Reihenfolge = Anzeige |
@@ -30,6 +31,7 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 | Arbeitsgruppen | `src/settings/arbeitsgruppen.ts` | |
 | Impressum-Zusatztext, Datenschutz | `src/content/seiten/*.md` | |
 | Fotos | `src/assets/photos/` | werden automatisch verkleinert |
+| Fotos im Hero der Startseite | `src/settings/hero.ts` | Ausschnitt und Position je Foto, eines pro Besuch |
 | PDFs (Antrag, Satzung) | `public/downloads/` | Pfad in `verein.json` eintragen |
 
 ### Beispiel: neuer Termin

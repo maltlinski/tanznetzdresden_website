@@ -10,6 +10,7 @@ Verknüpfung über `hreflang`.
 |---|---|---|
 | Texte der Oberfläche (Buttons, Überschriften …) | direkt in der Komponente: `tr(lang, { de: {…}, en: {…} })` | erscheint Deutsch |
 | Termine | `title_en`, `teaser_en`, `timeLabel_en` in der Termin-Datei | erscheint Deutsch |
+| News | Datei `src/content/news/en/<name>.md` oder im Editor „Englische Fassung“ | erscheint Deutsch, beim Text mit Hinweis |
 | Formate | `title_en`, `since_en`, `summary_en`, `alt_en` | erscheint Deutsch |
 | Personen | `bio_en`, `vorstand_en` (oder selbst im internen Bereich) | erscheint Deutsch |
 | Arbeitsgruppen | `text_en` in `src/settings/arbeitsgruppen.ts` | – |

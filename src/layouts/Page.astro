@@ -24,6 +24,7 @@ const alternates: Alternates = route
   : {};
 ---
 <Base {...props} alternates={alternates}>
+  <slot name="head" slot="head" />
   <Header alternates={alternates} />
   <main id="inhalt" tabindex="-1">
     <slot />

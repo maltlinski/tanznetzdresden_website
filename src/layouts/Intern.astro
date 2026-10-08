@@ -11,7 +11,7 @@ import { href } from '../lib/url';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
-  current?: 'start' | 'profil' | 'mitglieder' | 'dokumente';
+  current?: 'start' | 'profil' | 'mitglieder' | 'dokumente' | 'news';
   /** Index-Seite zeigt selbst das Login-Formular */
   loginPage?: boolean;
 }
@@ -21,6 +21,8 @@ const items = [
   { id: 'profil', label: 'Mein Profil', path: 'intern/profil/' },
   { id: 'mitglieder', label: 'Mitglieder', path: 'intern/mitglieder/' },
   { id: 'dokumente', label: 'Dokumente', path: 'intern/dokumente/' },
+  // nur für Presse, Vorstand und Admin sichtbar
+  { id: 'news', label: 'News schreiben', path: 'intern/news/', redaktion: true },
 ];
 ---
 <Page title={`${title} · Intern`} noindex>
@@ -30,7 +32,7 @@ const items = [
         <Tag color="cyan">Interner Bereich</Tag>
         <nav class="intern__nav" aria-label="Interner Bereich" data-when="ready">
           {items.map((i) => (
-            <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined}>{i.label}</a>
+            <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined} data-redaktion-only={i.redaktion} hidden={i.redaktion}>{i.label}</a>
           ))}
         </nav>
         <div class="intern__user" data-when="ready">

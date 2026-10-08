@@ -27,6 +27,7 @@ export function getLang(astro: { currentLocale?: string }): Lang {
 export const routes = {
   home: { de: '', en: '' },
   termine: { de: 'termine/', en: 'events/' },
+  news: { de: 'news/', en: 'news/' },
   netzwerk: { de: 'netzwerk/', en: 'network/' },
   kooperationen: { de: 'kooperationen/', en: 'partners/' },
   verein: { de: 'verein/', en: 'about/' },

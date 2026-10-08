@@ -2,14 +2,15 @@ name: Deploy (GitHub Pages)
 
 # Baut bei jeder Änderung auf main (auch aus dem CMS), jede Nacht (vergangene
 # Termine verschwinden, neue freigegebene Profile erscheinen) und auf Zuruf von
-# Supabase, wenn ein Profil geändert wurde (repository_dispatch, siehe docs/profile.md).
+# Supabase, wenn ein Profil oder ein News-Beitrag geändert wurde (repository_dispatch,
+# siehe docs/profile.md und docs/news.md).
 on:
   push:
     branches: [main]
   schedule:
     - cron: '17 3 * * *'
   repository_dispatch:
-    types: [profile-updated]
+    types: [profile-updated, news-updated]
   workflow_dispatch:
 
 permissions:

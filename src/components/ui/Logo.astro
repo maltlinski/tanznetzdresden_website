@@ -2,13 +2,14 @@
 // Logos stammen aus dem Designsystem (design/system/assets/logo, beim Import extrahiert).
 import Full from '../../../design/system/assets/logo/tndd-logo.svg';
 import Word from '../../../design/system/assets/logo/tndd-word.svg';
+import Mark from '../../../design/system/assets/logo/tndd-mark.svg';
 
 interface Props {
-  part?: 'full' | 'word';
+  part?: 'full' | 'mark' | 'word';
   class?: string;
 }
 const { part = 'full', class: className } = Astro.props;
-const Svg = part === 'word' ? Word : Full;
+const Svg = { full: Full, mark: Mark, word: Word }[part];
 ---
 <Svg class:list={['logo', className]} role="img" aria-label="TanzNetzDresden" />
 
