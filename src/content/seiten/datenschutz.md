@@ -30,7 +30,7 @@ Alle anderen Dienste setzen wir nur mit deiner Einwilligung ein (§ 25 Abs. 1 TD
 
 Wenn du zustimmst oder einen Inhalt einzeln lädst, wird eine Verbindung zum jeweiligen Anbieter aufgebaut. Dabei erhält der Anbieter mindestens deine IP-Adresse.
 
-- **OpenStreetMap** (Karte auf der Kontaktseite): OpenStreetMap Foundation, St John’s Innovation Centre, Cowley Road, Cambridge, CB4 0WS, Großbritannien. [Datenschutzerklärung](https://osmfoundation.org/wiki/Privacy_Policy). Für Großbritannien besteht ein Angemessenheitsbeschluss der EU-Kommission.
+- **OpenStreetMap** (Karten auf der Kontakt- und der Kooperationsseite): OpenStreetMap Foundation, St John’s Innovation Centre, Cowley Road, Cambridge, CB4 0WS, Großbritannien. [Datenschutzerklärung](https://osmfoundation.org/wiki/Privacy_Policy). Für Großbritannien besteht ein Angemessenheitsbeschluss der EU-Kommission.
 - **YouTube** (falls Videos eingebunden sind), im erweiterten Datenschutzmodus über youtube-nocookie.com: Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland. [Datenschutzerklärung](https://policies.google.com/privacy).
 
 Links zu Instagram und Telegram sind normale Links. Daten gehen erst an diese Dienste, wenn du den Link anklickst.

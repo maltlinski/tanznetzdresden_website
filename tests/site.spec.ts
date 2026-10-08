@@ -4,9 +4,9 @@ import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
 
 const pages = [
   '/', '/termine/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
-  '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
+  '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
   '/en/', '/en/events/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
-  '/en/contact/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
+  '/en/contact/', '/en/partners/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
 ];
 
 /** Externe Anfragen sperren: die Seite selbst darf ohne Einwilligung nichts nachladen. */
@@ -185,4 +185,25 @@ test('GiroCode: IBAN-Prüfung und QR-Erzeugung', async () => {
   expect(isValidIban('')).toBe(false);
   const svg = await giroCodeSvg({ name: 'TanzNetzDresden e.V.', iban: 'DE89370400440532013000', amount: 50, text: 'Spende' });
   expect(svg).toContain('<svg');
+});
+
+test('Kooperationen: Orte in Datei-Reihenfolge, Karte erst nach Klick', async ({ page }) => {
+  const tiles: string[] = [];
+  await page.route('https://tile.openstreetmap.org/**', (r) => {
+    tiles.push(r.request().url());
+    return r.fulfill({ status: 204 });
+  });
+  await page.goto('/kooperationen/');
+  await dismissConsent(page);
+  await expect(page.locator('.venue__name').first()).toHaveText('TENZA Schmiede');
+  await expect(page.locator('.venue.is-seed')).toHaveCount(1);
+  await expect(page.locator('.group')).toHaveCount(8);
+  await page.waitForTimeout(500);
+  expect(tiles).toEqual([]);
+  await page.getByRole('button', { name: 'Stadtkarte einblenden' }).click();
+  await expect(page.locator('[data-netmap]')).toHaveClass(/has-tiles/);
+  await expect.poll(() => tiles.length).toBeGreaterThan(0);
+  // Liste und Netz sind gekoppelt
+  await page.locator('.venue').nth(2).hover();
+  await expect(page.locator('.venue').nth(2)).toHaveClass(/is-hot/);
 });

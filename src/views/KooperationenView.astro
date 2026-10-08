@@ -1,0 +1,276 @@
+---
+/**
+ * Kooperationspartner – „Ein Netz aus Orten“.
+ * Inhalte: src/content/kooperation/orte.yaml (Karte) und gruppen.yaml (Partnerliste),
+ * beide auch im CMS. Entwurf: design/entwuerfe/2026-10-kooperationen/.
+ */
+import 'leaflet/dist/leaflet.css';
+import { getOrte, getPartnergruppen } from '../lib/content';
+import Page from '../layouts/Page.astro';
+import Tag from '../components/ui/Tag.astro';
+import KeilBar from '../components/ui/KeilBar.astro';
+import ProtectedEmail from '../components/ProtectedEmail.astro';
+import { getVerein } from '../lib/settings';
+import { getLang, loc, tr, url } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const v = getVerein(lang);
+const orte = await getOrte();
+const gruppen = await getPartnergruppen();
+
+// Verbindungen aus „verbunden“ in Index-Paare übersetzen (unbekannte ids brechen den Build ab)
+const index = new Map(orte.map((o, i) => [o.id, i]));
+const links: [number, number][] = [];
+for (const [i, o] of orte.entries()) {
+  for (const target of o.data.verbunden) {
+    const j = index.get(target);
+    if (j === undefined) throw new Error(`orte.yaml: „${o.id}“ ist mit unbekanntem Ort „${target}“ verbunden.`);
+    links.push([i, j]);
+  }
+}
+const venues = orte.map((o) => ({ name: o.data.name, label: o.data.kurz ?? o.data.name, lat: o.data.lat, lon: o.data.lon, seed: o.data.sitz }));
+
+const t = tr(lang, {
+  de: {
+    title: 'Kooperationspartner', desc: 'Mit wem TanzNetzDresden arbeitet: Spielorte, Hochschulen, Förderer und Netzwerke in Dresden und darüber hinaus.',
+    kicker: 'Kooperationspartner', h1: 'Ein Netz', accent: 'aus Orten.',
+    lead: 'Unsere Formate entstehen mit Spielorten, Hochschulen, Förderern und Netzwerken in Dresden und darüber hinaus. Hier zeigen wir, mit wem wir arbeiten.',
+    places: 'Orte in Dresden', mapLabel: 'Karte: Partnerorte in Dresden, als Netz verbunden',
+    tilesBtn: 'Stadtkarte einblenden', tilesHint: 'Kartenbilder von OpenStreetMap – dabei wird deine IP-Adresse übertragen.', tilesAlways: 'Immer erlauben',
+    allKicker: 'Alle Partner', allH: 'Mit wem wir arbeiten', allIntro: 'Von der Probebühne bis zur bundesweiten Förderung. Sortiert danach, was wir gemeinsam machen.',
+    coopKicker: 'Kooperation', coopL1: 'Ihr wollt mit uns', coopL2: 'arbeiten?',
+    coopP: 'Spielorte, Festivals, Netzwerke und Initiativen: Schreibt uns, wir melden uns mit einem Vorschlag für ein erstes Gespräch.',
+    coopBtn: 'E-Mail schreiben', coopSubject: 'Kooperationsanfrage', funders: 'Unsere Förderer stehen unten auf jeder Seite.',
+  },
+  en: {
+    title: 'Partners', desc: 'Who TanzNetzDresden works with: venues, universities, funders and networks in Dresden and beyond.',
+    kicker: 'Partners', h1: 'A network', accent: 'of places.',
+    lead: 'Our formats are created together with venues, universities, funders and networks in Dresden and beyond. Here is who we work with.',
+    places: 'Places in Dresden', mapLabel: 'Map: partner venues in Dresden, connected as a network',
+    tilesBtn: 'Show city map', tilesHint: 'Map images from OpenStreetMap – this transmits your IP address.', tilesAlways: 'Always allow',
+    allKicker: 'All partners', allH: 'Who we work with', allIntro: 'From rehearsal stages to national funding. Grouped by what we do together.',
+    coopKicker: 'Cooperation', coopL1: 'Want to work', coopL2: 'with us?',
+    coopP: 'Venues, festivals, networks and initiatives: write to us and we will get back to you with a suggestion for a first conversation.',
+    coopBtn: 'Send an email', coopSubject: 'Cooperation enquiry', funders: 'Our funders are listed at the bottom of every page.',
+  },
+});
+const pad = (n: number) => String(n).padStart(2, '0');
+---
+<Page title={t.title} description={t.desc} route="kooperationen">
+  <section class="khero">
+    <div class="wrap khero__grid">
+      <div class="khero__text">
+        <Tag color="cyan" class="khero__tag">{t.kicker}</Tag>
+        <h1 class="khero__title">{t.h1}<br /><em>{t.accent}</em></h1>
+        <p class="khero__lead">{t.lead}</p>
+        <h2 class="khero__places-h" id="orte-h">{t.places}</h2>
+        <ul class="venues" aria-labelledby="orte-h" data-venues>
+          {orte.map((o, i) => (
+            <li class:list={['venue', o.data.sitz && 'is-seed']} data-index={i}>
+              <span class="venue__mark" aria-hidden="true"></span>
+              {o.data.url ? (
+                <a class="venue__name" href={o.data.url} rel="noopener" target="_blank">{o.data.name}</a>
+              ) : (
+                <span class="venue__name">{o.data.name}</span>
+              )}
+              <span class="venue__role">{loc(o.data, 'rolle', lang)}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="netmap" data-netmap data-venues={JSON.stringify(venues)} data-links={JSON.stringify(links)}>
+        <div class="netmap__map" data-netmap-map role="region" aria-label={t.mapLabel}></div>
+        <canvas class="netmap__canvas" data-netmap-canvas aria-hidden="true"></canvas>
+        <div class="netmap__consent" data-netmap-consent>
+          <button type="button" class="netmap__btn" data-tiles-once>{t.tilesBtn}</button>
+          <button type="button" class="netmap__always" data-tiles-always>{t.tilesAlways}</button>
+          <p>{t.tilesHint}</p>
+        </div>
+      </div>
+    </div>
+    <KeilBar class="khero__keil" />
+  </section>
+
+  <section class="section" aria-labelledby="alle-h">
+    <div class="wrap">
+      <div class="section-head groups__head">
+        <div data-reveal>
+          <Tag>{t.allKicker}</Tag>
+          <h2 id="alle-h" class="h2">{t.allH}</h2>
+        </div>
+        <p class="groups__intro">{t.allIntro}</p>
+      </div>
+      <div class="groups">
+        {gruppen.map((g) => (
+          <section class="group" aria-labelledby={`gruppe-${g.id}`}>
+            <div class="group__head">
+              <h3 id={`gruppe-${g.id}`}>{loc(g.data, 'titel', lang)}</h3>
+              <span class="group__count" aria-hidden="true">{pad(g.data.partner.length)}</span>
+            </div>
+            <ul class="group__list">
+              {g.data.partner.map((p) => (
+                <li>
+                  {p.url ? <a href={p.url} rel="noopener" target="_blank" class="group__name">{p.name} →</a> : <span class="group__name">{p.name}</span>}
+                  <span class="group__role">{loc(p, 'rolle', lang)}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        ))}
+      </div>
+      <p class="groups__funders"><a href="#funding-h">{t.funders} ↓</a></p>
+    </div>
+  </section>
+
+  <section class="coop" aria-labelledby="coop-h">
+    <KeilBar color="var(--purple)" height={14} flip class="coop__keil" />
+    <div class="wrap coop__inner">
+      <div class="coop__text">
+        <Tag color="purple">{t.coopKicker}</Tag>
+        <h2 id="coop-h" class="coop__title">{t.coopL1}<br />{t.coopL2}</h2>
+        <p>{t.coopP}</p>
+      </div>
+      <ProtectedEmail email={v.emails.kontakt} label={t.coopBtn} subject={t.coopSubject} button />
+    </div>
+  </section>
+</Page>
+
+<script>
+  import { PartnerNet, type Venue } from '../scripts/partner-net';
+  import { hasConsent, onConsent, readConsent, saveConsent } from '../scripts/consent';
+
+  const box = document.querySelector<HTMLElement>('[data-netmap]');
+  const mapEl = box?.querySelector<HTMLElement>('[data-netmap-map]');
+  const canvas = box?.querySelector<HTMLCanvasElement>('[data-netmap-canvas]');
+  const items = [...document.querySelectorAll<HTMLElement>('[data-venues] .venue')];
+
+  if (box && mapEl && canvas) {
+    const net = new PartnerNet({
+      box,
+      mapEl,
+      canvas,
+      venues: JSON.parse(box.dataset.venues ?? '[]') as Venue[],
+      links: JSON.parse(box.dataset.links ?? '[]') as [number, number][],
+      onHot: (i) => items.forEach((li, j) => li.classList.toggle('is-hot', i === j)),
+    });
+
+    // Liste ↔ Karte: Überfahren eines Ortes in der Liste hebt ihn im Netz hervor
+    items.forEach((li, i) => {
+      li.addEventListener('pointerenter', () => net.setHot(i));
+      li.addEventListener('pointerleave', () => net.setHot(-1));
+      li.querySelector('a')?.addEventListener('focus', () => net.setHot(i));
+      li.querySelector('a')?.addEventListener('blur', () => net.setHot(-1));
+    });
+
+    const consentBox = box.querySelector<HTMLElement>('[data-netmap-consent]');
+    const tiles = () => {
+      net.showTiles();
+      if (consentBox) consentBox.hidden = true;
+    };
+    void net.start().then(() => {
+      if (hasConsent('medien')) tiles();
+    });
+    onConsent((c) => c.medien && tiles());
+    box.querySelector('[data-tiles-once]')?.addEventListener('click', tiles);
+    box.querySelector('[data-tiles-always]')?.addEventListener('click', () => {
+      const v = Number(document.documentElement.dataset.consentVersion ?? 1);
+      saveConsent(v, { ...(readConsent(v)?.categories ?? {}), medien: true });
+    });
+  }
+</script>
+
+<style>
+  /* ---------- Hero mit Netzkarte ---------- */
+  .khero { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  .khero__grid {
+    padding-block: clamp(48px, 7vw, 96px) clamp(56px, 7vw, 96px);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 40px clamp(32px, 5vw, 72px); align-items: stretch;
+  }
+  .khero__text { display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
+  .khero :global(.khero__tag) { margin-bottom: 24px; }
+  .khero__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(48px, 6.4vw, 96px); line-height: 0.92;
+    letter-spacing: -0.035em; margin: 0 0 26px; color: #fff; text-wrap: balance;
+  }
+  .khero__title em { font-style: normal; color: var(--magenta); }
+  .khero__lead { margin: 0 0 36px; max-width: 440px; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
+  .khero__places-h {
+    margin: 0 0 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: rgba(255, 255, 255, 0.7);
+  }
+  .venues { list-style: none; margin: 0; padding: 0; max-width: 460px; border-top: 1px solid rgba(255, 255, 255, 0.18); }
+  .venue {
+    display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 14px; align-items: baseline;
+    padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+  }
+  .venue__mark { width: 10px; height: 10px; background: var(--cyan); align-self: center; transition: background 200ms; }
+  .venue.is-seed .venue__mark, .venue.is-hot .venue__mark { background: var(--magenta); }
+  .khero:has(.venue.is-hot) .venue.is-seed:not(.is-hot) .venue__mark { background: var(--cyan); }
+  .venue__name { font-family: var(--font-display); font-weight: 700; font-size: 18px; letter-spacing: -0.01em; color: #fff; transition: color 200ms; }
+  .venue.is-hot .venue__name { color: var(--cyan); }
+  .venue__role {
+    font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.7); text-align: right;
+  }
+
+  .netmap { position: relative; min-height: clamp(420px, 58vh, 640px); }
+  .netmap__map { position: absolute; inset: 0; z-index: 0; }
+  .netmap__canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+  /* Leaflet ans Designsystem anpassen: transparent, eckig, lila */
+  .netmap :global(.leaflet-container) { background: transparent; font-family: var(--font-body); }
+  .netmap :global(.leaflet-tile-pane) { filter: grayscale(1) invert(1) contrast(1.15) brightness(1.1); opacity: 0.45; mix-blend-mode: screen; }
+  .netmap :global(.leaflet-bar) { border: 0; border-radius: 0; box-shadow: none; }
+  .netmap :global(.leaflet-bar a) {
+    border-radius: 0 !important; background: var(--purple); color: #fff; border: 1.5px solid rgba(255, 255, 255, 0.4);
+    width: 32px; height: 32px; line-height: 29px;
+  }
+  .netmap :global(.leaflet-bar a:hover) { border-color: var(--magenta); color: var(--cyan); background: var(--purple); }
+  .netmap :global(.leaflet-control-attribution) { background: color-mix(in srgb, var(--purple) 90%, transparent); color: rgba(255, 255, 255, 0.8); font-size: 10px; }
+  .netmap :global(.leaflet-control-attribution a) { color: #fff; }
+  .netmap__consent {
+    position: absolute; left: 0; top: 0; z-index: 2; max-width: 250px; display: flex; flex-wrap: wrap; align-items: center;
+    gap: 6px 14px; padding: 10px 12px; background: color-mix(in srgb, var(--purple) 92%, transparent);
+    border-left: 3px solid var(--magenta);
+  }
+  .netmap__consent p { margin: 0; flex-basis: 100%; font-size: 11px; line-height: 1.4; color: rgba(255, 255, 255, 0.75); }
+  .netmap__btn, .netmap__always {
+    background: none; cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.14em; text-transform: uppercase; color: #fff;
+  }
+  .netmap__btn { border: 1.5px solid var(--cyan); padding: 7px 12px; }
+  .netmap__btn:hover { background: var(--cyan); color: var(--purple); }
+  .netmap__always { border: 0; border-bottom: 1.5px solid var(--magenta); padding: 4px 0; }
+  .netmap__always:hover { color: var(--cyan); }
+  .khero :global(.khero__keil) { position: absolute; left: 0; bottom: 0; width: 34%; }
+
+  /* ---------- Partnergruppen ---------- */
+  .groups__head { margin-bottom: 48px; }
+  .groups__intro { max-width: 420px; margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 48px clamp(28px, 4vw, 56px); }
+  .group { border-top: 3px solid var(--magenta); padding-top: 20px; }
+  .group__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
+  .group__head h3 { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; color: var(--purple); margin: 0; }
+  .group__count { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; color: var(--ink-muted); }
+  .group__list { list-style: none; margin: 0; padding: 0; }
+  .group__list li { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  .group__name { font-size: 16px; font-weight: 600; line-height: 1.35; color: var(--purple); }
+  a.group__name:hover { color: var(--magenta); }
+  .group__role { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  .groups__funders { margin: 40px 0 0; font-size: 14px; color: var(--ink-soft); }
+  .groups__funders a { color: var(--ink-soft); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  .groups__funders a:hover { color: var(--magenta-2); }
+
+  /* ---------- Kooperation anfragen ---------- */
+  .coop { position: relative; background: var(--cyan); color: var(--purple); }
+  .coop :global(.coop__keil) { position: absolute; right: 0; top: 0; width: 42%; }
+  .coop__inner {
+    padding-block: clamp(56px, 7vw, 96px); display: flex; flex-wrap: wrap; align-items: flex-end;
+    justify-content: space-between; gap: 32px 64px;
+  }
+  .coop__text { max-width: 620px; }
+  .coop :global(.tag) { margin-bottom: 18px; }
+  .coop__title { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 4.4vw, 56px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 18px; color: var(--purple); }
+  .coop__text p { margin: 0; font-size: 16px; line-height: 1.6; }
+</style>

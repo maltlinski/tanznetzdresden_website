@@ -12,12 +12,14 @@ interface Props {
   label?: string;
   subject?: string;
   class?: string;
+  /** als großer Button (Designsystem) statt als unterstrichener Link */
+  button?: boolean;
 }
 const t = tr(getLang(Astro), {
   de: { label: 'E-Mail-Adresse anzeigen', hint: 'Klick zeigt die Adresse', busy: 'Adresse wird entschlüsselt …', done: 'E-Mail-Adresse:', fail: 'Das hat nicht geklappt. Bitte erneut versuchen.' },
   en: { label: 'Show email address', hint: 'click reveals the address', busy: 'Decrypting address …', done: 'Email address:', fail: 'That did not work. Please try again.' },
 });
-const { email, label = t.label, subject, class: className } = Astro.props;
+const { email, label = t.label, subject, class: className, button = false } = Astro.props;
 const p = await protectEmail(email);
 // Nur der Teil vor dem @ wird als Hinweis gezeigt – ohne Domain ist er für Bots wertlos.
 const hint = email.split('@')[0];
@@ -35,7 +37,7 @@ const hint = email.split('@')[0];
   data-msg-done={t.done}
   data-msg-fail={t.fail}
 >
-  <button type="button" class="protected-email__btn">
+  <button type="button" class:list={['protected-email__btn', button && 'protected-email__btn--button btn btn--primary btn--lg']}>
     <span class="protected-email__icon" aria-hidden="true"></span>{label}<span class="visually-hidden"> ({hint} …, {t.hint})</span>
   </button>
   <span class="visually-hidden" role="status"></span>
@@ -58,5 +60,14 @@ const hint = email.split('@')[0];
   .protected-email__btn[aria-busy='true'] .protected-email__icon { animation: tndd-pulse 0.6s steps(2) infinite; }
   .protected-email__icon { width: 8px; height: 8px; background: var(--magenta); flex: none; }
   :global(.protected-email__link) { color: inherit; border-bottom: 1.5px solid var(--magenta); padding-bottom: 3px; word-break: break-all; }
+  /* Button-Variante: Optik kommt von .btn/.btn--primary (global), hier nur die Link-Optik aufheben */
+  .protected-email__btn.protected-email__btn--button {
+    padding: 16px 28px; border: 1.5px solid transparent; background: var(--purple); color: #fff;
+    font-family: var(--font-body); font-weight: 600; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; line-height: 1;
+  }
+  .protected-email__btn.protected-email__btn--button:hover { background: var(--magenta); color: #fff; }
+  .protected-email__btn--button .protected-email__icon { width: 6px; height: 6px; background: currentColor; }
+  :global(.protected-email__link.protected-email__btn--button) { border-bottom: 1.5px solid transparent; padding: 16px 28px; color: #fff; word-break: normal; text-transform: none; letter-spacing: 0.02em; }
+  :global(.protected-email__link.protected-email__btn--button:hover) { color: #fff; }
   @keyframes tndd-pulse { to { opacity: 0.2; } }
 </style>

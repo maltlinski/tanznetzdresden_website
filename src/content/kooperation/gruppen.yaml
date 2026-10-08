@@ -1,0 +1,61 @@
+# Partnergruppen auf der Kooperationsseite. Reihenfolge = Anzeige.
+# Je Partner: name, rolle (was wir zusammen machen), optional rolle_en und url.
+- id: spielorte
+  titel: "Spielorte & Häuser"
+  titel_en: "Venues & houses"
+  partner:
+    - { name: "TENZA", rolle: "KEEP UP · Trainings- und Proberäume", rolle_en: "KEEP UP · training and rehearsal spaces" }
+    - { name: "Villa Wigman für Tanz e.V.", rolle: "Langjährige Partnerschaft", rolle_en: "Long-standing partnership" }
+    - { name: "Societaetstheater", rolle: "vision:danceable · Welttanztag", rolle_en: "vision:danceable · International Dance Day" }
+    - { name: "Zentralwerk Dresden", rolle: "Langjährige Partnerschaft", rolle_en: "Long-standing partnership" }
+    - { name: "Semperoper Dresden", rolle: "Kooperation", rolle_en: "Cooperation" }
+    - { name: "Staatsoperette Dresden", rolle: "Kooperation", rolle_en: "Cooperation" }
+    - { name: "HELLERAU – Europäisches Zentrum der Künste", rolle: "Kooperation", rolle_en: "Cooperation" }
+- id: pop-up
+  titel: "POP UP Partner"
+  titel_en: "POP UP partners"
+  partner:
+    - { name: "Landesbühnen Sachsen", rolle: "POP UP Performance" }
+    - { name: "Galerie Stephanie Kelly", rolle: "POP UP Performance" }
+    - { name: "Wurzelwerk Pieschen e.V.", rolle: "POP UP Performance" }
+    - { name: "DerHalle e.V.", rolle: "POP UP Performance" }
+    - { name: "FOR:UM Initiative", rolle: "POP UP Performance" }
+- id: projekte
+  titel: "Projektpartner"
+  titel_en: "Project partners"
+  partner:
+    - { name: "4 rooms company", rolle: "vision:danceable · seit 2024", rolle_en: "vision:danceable · since 2024" }
+    - { name: "about blank collective", rolle: "vision:danceable · seit 2024", rolle_en: "vision:danceable · since 2024" }
+    - { name: "Wir Gestalten Dresden", rolle: "Bodies & Textiles" }
+    - { name: "Slow Fashion Festival", rolle: "Bodies & Textiles" }
+    - { name: "Dresdance Gala", rolle: "Beteiligung seit 2025", rolle_en: "Participating since 2025" }
+- id: ueberregional
+  titel: "Überregional"
+  titel_en: "Beyond Dresden"
+  partner:
+    - { name: "Tanznetz Freiburg", rolle: "Studio Round · POP UP · seit 2024", rolle_en: "Studio Round · POP UP · since 2024" }
+    - { name: "ID Frankfurt", rolle: "Studio Round · POP UP · seit 2024", rolle_en: "Studio Round · POP UP · since 2024" }
+    - { name: "Tanznetzwerke in Brandenburg, Bremen und Leipzig", rolle: "Kontinuierlicher Austausch", rolle_en: "Ongoing exchange" }
+- id: netzwerke
+  titel: "Netzwerke & Verbände"
+  titel_en: "Networks & associations"
+  partner:
+    - { name: "Dachverband Tanz Deutschland", rolle: "Enge Zusammenarbeit", rolle_en: "Close collaboration" }
+    - { name: "TanzAllianzen", rolle: "Neue Initiative", rolle_en: "New initiative" }
+- id: ausbildung
+  titel: "Ausbildung"
+  titel_en: "Education"
+  partner:
+    - { name: "Palucca Hochschule für Tanz", rolle: "Absolvent:innen · Newcomer:innen", rolle_en: "Graduates · newcomers" }
+- id: nachhaltigkeit
+  titel: "Nachhaltigkeit"
+  titel_en: "Sustainability"
+  partner:
+    - { name: "Zündstoffe Materialvermittlung Dresden", rolle: "Materialpool · seit 2022", rolle_en: "Material pool · since 2022" }
+    - { name: "Nytt. Materialdepot", rolle: "Materialpool · seit 2022", rolle_en: "Material pool · since 2022" }
+- id: foerderung
+  titel: "Förderung"
+  titel_en: "Funding"
+  partner:
+    - { name: "Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz", rolle: "Institutionelle Förderung", rolle_en: "Institutional funding" }
+    - { name: "Nationales Performance Netz", rolle: "Impulsförderung · Studio Round, POP UP", rolle_en: "Impulse funding · Studio Round, POP UP" }

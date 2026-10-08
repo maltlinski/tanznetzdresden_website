@@ -21,6 +21,8 @@ Alle Stellen mit `[BITTE …]` suchen: `grep -rn "BITTE" src`
       Bankverbindung und GiroCode), Wirkungs-Beispiele mit echten Kosten abgleichen, Freistellungsbescheid
       (Finanzamt, Steuernummer, Datum, Zeitraum) eintragen – ohne ihn ist der vereinfachte Spendennachweis
       ungültig. Klären, ob die Satzung Fördermitglieder vorsieht. Online-Spende optional (z. B. betterplace).
+- [ ] **Kooperationen** (`src/content/kooperation/`): Partnerliste und Rollen mit den Partnern abstimmen,
+      Koordinaten der Orte prüfen, optional Website-Links (`url`) ergänzen.
 - [ ] **Transparenz-Seite** (`src/content/seiten/transparenz.md` + `en/`): Freistellungsbescheid, Tätigkeitsbericht,
       Mittelherkunft und -verwendung jährlich eintragen.
 - [ ] **Leichte Sprache**: Text von Prüfer:innen aus der Zielgruppe gegenlesen lassen.

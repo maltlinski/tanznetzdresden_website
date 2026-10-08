@@ -1,5 +1,25 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { sortKey } from './dates';
+import personenRaw from '../content/personen.yaml?raw';
+import orteRaw from '../content/kooperation/orte.yaml?raw';
+import gruppenRaw from '../content/kooperation/gruppen.yaml?raw';
+
+/**
+ * Sammlungen aus einer YAML-Datei kommen alphabetisch nach id zurück.
+ * Für die Anzeige gilt aber die Reihenfolge in der Datei – so, wie man sie dort sieht.
+ */
+function inFileOrder<T extends { id: string }>(entries: T[], raw: string): T[] {
+  const order = [...raw.matchAll(/^-\s+id:\s*["']?([^"'\s#]+)/gm)].map((m) => m[1]);
+  const pos = (id: string) => {
+    const i = order.indexOf(id);
+    return i === -1 ? order.length : i;
+  };
+  return [...entries].sort((a, b) => pos(a.id) - pos(b.id));
+}
+
+export const getPersonen = async () => inFileOrder(await getCollection('personen'), personenRaw);
+export const getOrte = async () => inFileOrder(await getCollection('orte'), orteRaw);
+export const getPartnergruppen = async () => inFileOrder(await getCollection('partnergruppen'), gruppenRaw);
 
 export type Termin = CollectionEntry<'termine'>;
 

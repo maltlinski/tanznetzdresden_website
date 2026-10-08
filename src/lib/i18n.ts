@@ -28,6 +28,7 @@ export const routes = {
   home: { de: '', en: '' },
   termine: { de: 'termine/', en: 'events/' },
   netzwerk: { de: 'netzwerk/', en: 'network/' },
+  kooperationen: { de: 'kooperationen/', en: 'partners/' },
   verein: { de: 'verein/', en: 'about/' },
   mitglied: { de: 'mitglied-werden/', en: 'membership/' },
   kontakt: { de: 'kontakt/', en: 'contact/' },

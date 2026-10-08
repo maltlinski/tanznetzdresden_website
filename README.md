@@ -19,6 +19,7 @@ zwei Bühnenfotos durch das Netz.
 | Kontakt | Kontakt, Vorstand, Presse, Termin einreichen, Karte | `/kontakt/` |
 | Rechtliches | Impressum (§ 5 DDG), Datenschutzerklärung (DSGVO) | `/impressum/`, `/datenschutz/` |
 | **Förderhinweis** | Logos/Text der Förderer auf jeder Seite (Publizitätspflicht Stadt Dresden) | `verein.json` → `funders` |
+| **Kooperationen** | „Ein Netz aus Orten“: Partnerorte als Netz auf der Dresden-Karte (Karte erst nach Einwilligung), alle Partner nach Gruppen | `/kooperationen/` |
 | **Spenden** | Überweisung mit GiroCode (QR für Banking-Apps), optional Online-Spende, druckbarer Spendennachweis bis 300 € | `/spenden/` |
 | **Transparenz** | 10 Angaben nach Initiative Transparente Zivilgesellschaft | `/transparenz/` |
 | **Barrierefreiheit** | Erklärung mit Meldemöglichkeit, Seite in Leichter Sprache | `/barrierefreiheit/`, `/leichte-sprache/` |

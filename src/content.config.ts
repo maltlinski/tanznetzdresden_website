@@ -95,4 +95,38 @@ const seiten = defineCollection({
   }),
 });
 
-export const collections = { termine, formate, personen, seiten };
+const orte = defineCollection({
+  loader: file('./src/content/kooperation/orte.yaml'),
+  schema: z.object({
+    name: z.string(),
+    /** kurze Beschriftung auf der Karte */
+    kurz: z.string().optional(),
+    rolle: z.string(),
+    rolle_en: z.string().optional(),
+    lat: z.number().min(-90).max(90),
+    lon: z.number().min(-180).max(180),
+    /** Ausgangspunkt des Netzes (magenta) */
+    sitz: z.boolean().default(false),
+    /** ids anderer Orte, zu denen eine Linie gezogen wird */
+    verbunden: z.array(z.string()).default([]),
+    url: z.url().optional(),
+  }),
+});
+
+const partner = z.object({
+  name: z.string(),
+  rolle: z.string(),
+  rolle_en: z.string().optional(),
+  url: z.url().optional(),
+});
+
+const partnergruppen = defineCollection({
+  loader: file('./src/content/kooperation/gruppen.yaml'),
+  schema: z.object({
+    titel: z.string(),
+    titel_en: z.string().optional(),
+    partner: z.array(partner).min(1),
+  }),
+});
+
+export const collections = { termine, formate, personen, seiten, orte, partnergruppen };

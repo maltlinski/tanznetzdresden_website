@@ -90,6 +90,52 @@ collections:
               - { name: email, label: 'Öffentliche E-Mail (wird verschlüsselt)', widget: string, required: false }
               - { name: featured, label: Auf der Startseite zeigen, widget: boolean, default: true, required: false }
 
+  - name: kooperation
+    label: Kooperationspartner
+    files:
+      - name: orte
+        label: Orte auf der Karte
+        file: src/content/kooperation/orte.yaml
+        fields:
+          - name: orte
+            label: Orte
+            widget: list
+            root: true
+            summary: '{{name}}'
+            fields:
+              - { name: id, label: 'Kürzel (klein, ohne Leerzeichen)', widget: string }
+              - { name: name, label: Name, widget: string }
+              - { name: kurz, label: 'Beschriftung auf der Karte (kurz, optional)', widget: string, required: false }
+              - { name: rolle, label: 'Was wir dort machen', widget: string }
+              - { name: rolle_en, label: 'Was wir dort machen (Englisch)', widget: string, required: false }
+              - { name: lat, label: Breitengrad, widget: number, value_type: float }
+              - { name: lon, label: Längengrad, widget: number, value_type: float }
+              - { name: sitz, label: 'Ausgangspunkt des Netzes (Sitz)', widget: boolean, default: false, required: false }
+              - { name: verbunden, label: 'Verbunden mit (Kürzel anderer Orte)', widget: list, required: false }
+              - { name: url, label: Website, widget: string, required: false }
+      - name: gruppen
+        label: Partnergruppen
+        file: src/content/kooperation/gruppen.yaml
+        fields:
+          - name: gruppen
+            label: Gruppen
+            widget: list
+            root: true
+            summary: '{{titel}}'
+            fields:
+              - { name: id, label: 'Kürzel (klein, ohne Leerzeichen)', widget: string }
+              - { name: titel, label: Titel, widget: string }
+              - { name: titel_en, label: Titel Englisch, widget: string, required: false }
+              - name: partner
+                label: Partner
+                widget: list
+                summary: '{{name}}'
+                fields:
+                  - { name: name, label: Name, widget: string }
+                  - { name: rolle, label: 'Was wir zusammen machen', widget: string }
+                  - { name: rolle_en, label: 'Was wir zusammen machen (Englisch)', widget: string, required: false }
+                  - { name: url, label: Website, widget: string, required: false }
+
   - name: seiten
     label: Rechtliche Seiten
     files:

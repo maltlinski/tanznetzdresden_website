@@ -1,0 +1,65 @@
+# Orte auf der Karte der Kooperationsseite (/kooperationen/).
+# lat/lon: Koordinaten (z. B. aus OpenStreetMap: Rechtsklick → „Adresse anzeigen“).
+# sitz: true markiert den Ausgangspunkt des Netzes (magenta). verbunden: ids anderer Orte → Linien.
+# kurz: Beschriftung auf der Karte (sonst name). Reihenfolge = Reihenfolge in der Liste.
+- id: tenza
+  name: "TENZA Schmiede"
+  kurz: "TENZA"
+  rolle: "Sitz · KEEP UP"
+  rolle_en: "Home · KEEP UP"
+  lat: 51.05798
+  lon: 13.77153
+  sitz: true
+  verbunden: [villa-wigman, palucca, semperoper]
+- id: villa-wigman
+  name: "Villa Wigman für Tanz"
+  kurz: "Villa Wigman"
+  rolle: "Partnerschaft"
+  rolle_en: "Partnership"
+  lat: 51.06566
+  lon: 13.76699
+  verbunden: [societaetstheater, hellerau]
+- id: societaetstheater
+  name: "Societaetstheater"
+  rolle: "vision:danceable"
+  lat: 51.06056
+  lon: 13.74264
+  verbunden: [semperoper, zentralwerk]
+- id: zentralwerk
+  name: "Zentralwerk Dresden"
+  kurz: "Zentralwerk"
+  rolle: "Partnerschaft"
+  rolle_en: "Partnership"
+  lat: 51.08111
+  lon: 13.72882
+  verbunden: [hellerau]
+- id: palucca
+  name: "Palucca Hochschule für Tanz"
+  kurz: "Palucca"
+  rolle: "Newcomer:innen"
+  rolle_en: "Newcomers"
+  lat: 51.02897
+  lon: 13.77092
+  verbunden: [semperoper]
+- id: semperoper
+  name: "Semperoper Dresden"
+  kurz: "Semperoper"
+  rolle: "Kooperation"
+  rolle_en: "Cooperation"
+  lat: 51.05454
+  lon: 13.73523
+  verbunden: [staatsoperette]
+- id: staatsoperette
+  name: "Staatsoperette Dresden"
+  kurz: "Staatsoperette"
+  rolle: "Kooperation"
+  rolle_en: "Cooperation"
+  lat: 51.05238
+  lon: 13.72259
+  verbunden: [zentralwerk]
+- id: hellerau
+  name: "HELLERAU"
+  rolle: "Kooperation"
+  rolle_en: "Cooperation"
+  lat: 51.11388
+  lon: 13.75311

@@ -12,14 +12,15 @@ const lang = getLang(Astro);
 const other = lang === 'de' ? 'en' : 'de';
 const otherUrl = alternates[other] ?? url(other, 'home');
 const t = tr(lang, {
-  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Intern', join: 'Mitglied werden', calendar: 'Kalender', formats: 'Formate', training: 'Training', network: 'Netzwerk', about: 'Über uns', switchTo: 'Switch to English' },
-  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Members', join: 'Become a member', calendar: 'Calendar', formats: 'Formats', training: 'Training', network: 'Network', about: 'About', switchTo: 'Auf Deutsch wechseln' },
+  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Intern', join: 'Mitglied werden', calendar: 'Kalender', formats: 'Formate', training: 'Training', network: 'Netzwerk', partners: 'Partner', about: 'Über uns', switchTo: 'Switch to English' },
+  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Members', join: 'Become a member', calendar: 'Calendar', formats: 'Formats', training: 'Training', network: 'Network', partners: 'Partners', about: 'About', switchTo: 'Auf Deutsch wechseln' },
 });
 const nav = [
   { href: url(lang, 'home', '#termine'), label: t.calendar },
   { href: url(lang, 'home', '#formate'), label: t.formats },
   { href: url(lang, 'home', '#training'), label: t.training },
   { href: url(lang, 'netzwerk'), label: t.network },
+  { href: url(lang, 'kooperationen'), label: t.partners },
   { href: url(lang, 'verein'), label: t.about },
 ];
 ---

@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>TanzNetzDresden · Kooperationspartner</title>
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/base.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/styles.css">
+  <script src="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/_ds_bundle.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous">
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous"></script>
+  <style>
+    html{scroll-behavior:smooth}
+    body{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);hyphens:auto}
+    *{box-sizing:border-box}
+    a{color:var(--magenta);text-decoration:none}
+    a:hover{color:var(--purple)}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:#fff">
+  <header style="position:sticky;top:0;z-index:30;background:var(--purple);border-bottom:1px solid rgba(255,255,255,0.12)">
+    <div style="max-width:1320px;margin:0 auto;padding:16px clamp(20px,4vw,48px);display:flex;align-items:center;flex-wrap:wrap;gap:16px 40px">
+      <a href="TanzNetzDresden Website.dc.html" style="display:flex;align-items:center">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="76px" hint-size="76px,36px"></x-import>
+      </a>
+      <div style="margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:12px clamp(16px,2.4vw,36px)">
+        <nav style="display:flex;flex-wrap:wrap;gap:6px clamp(14px,2vw,28px)">
+          <a href="TanzNetzDresden Website.dc.html#termine" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Kalender</a>
+          <a href="TanzNetzDresden Website.dc.html#formate" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Formate</a>
+          <a href="TanzNetzDresden Website.dc.html#training" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Training</a>
+          <a href="TanzNetzDresden Website.dc.html#netzwerk" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Netzwerk</a>
+          <a href="#top" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);padding:6px 0;border-bottom:2px solid var(--magenta)">Partner</a>
+          <a href="TanzNetzDresden Website.dc.html#verein" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Über uns</a>
+        </nav>
+        <a href="TanzNetzDresden Website.dc.html#mitglied" style="display:flex">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="sm" marker="{{ true }}" hint-size="160px,32px">Mitglied werden</x-import>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO · Stadtnetz -->
+  <section id="top" style="position:relative;background:var(--purple);color:#fff;overflow:hidden">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(48px,7vw,96px) clamp(20px,4vw,48px) clamp(56px,7vw,96px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:40px clamp(32px,5vw,72px);align-items:stretch">
+      <div style="display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" style="margin-bottom:24px" hint-size="220px,16px">Kooperationspartner</x-import>
+        <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(48px,6.4vw,96px);line-height:0.92;letter-spacing:-0.035em;margin:0 0 26px;color:#fff;text-wrap:balance">Ein Netz<br><span style="color:var(--magenta)">aus Orten.</span></h1>
+        <p style="margin:0 0 36px;max-width:440px;font-size:17px;line-height:1.6;color:rgba(255,255,255,0.88);text-wrap:pretty">Unsere Formate entstehen mit Spielorten, Hochschulen, Förderern und Netzwerken in Dresden und darüber hinaus. Hier zeigen wir, mit wem wir arbeiten.</p>
+        <div style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.7);margin-bottom:10px">Orte in Dresden</div>
+        <div style="border-top:1px solid rgba(255,255,255,0.18);max-width:460px">
+          <sc-for list="{{ venues }}" as="v" hint-placeholder-count="5">
+            <div onMouseEnter="{{ v.enter }}" onMouseLeave="{{ v.leave }}" style="display:grid;grid-template-columns:14px minmax(0,1fr) auto;gap:14px;align-items:baseline;padding:12px 0;border-bottom:1px solid rgba(255,255,255,0.18);cursor:default">
+              <span style="width:10px;height:10px;background:{{ v.mark }};align-self:center;transition:background 200ms"></span>
+              <span style="font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-0.01em;color:{{ v.color }};transition:color 200ms">{{ v.name }}</span>
+              <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7);text-align:right">{{ v.role }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+      <div ref="{{ boxRef }}" onMouseMove="{{ onMove }}" onMouseLeave="{{ onLeave }}" style="position:relative;min-height:clamp(420px,58vh,640px)">
+        <div ref="{{ mapRef }}" style="position:absolute;inset:0;background:transparent;z-index:0"></div>
+        <canvas ref="{{ canvasRef }}" style="position:absolute;inset:0;width:100%;height:100%;display:block;z-index:1;pointer-events:none"></canvas>
+        
+      </div>
+    </div>
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 12 }}" style="position:absolute;left:0;bottom:0;width:34%" hint-size="34%,12px"></x-import>
+  </section>
+
+  <!-- PARTNER-GRUPPEN -->
+  <section style="padding:clamp(64px,9vw,120px) 0">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px;margin-bottom:48px">
+        <div>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" style="margin-bottom:16px" hint-size="200px,16px">Alle Partner</x-import>
+          <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,5vw,64px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">Mit wem wir arbeiten</h2>
+        </div>
+        <p style="max-width:420px;margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">Von der Probebühne bis zur bundesweiten Förderung. Sortiert danach, was wir gemeinsam machen.</p>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:48px clamp(28px,4vw,56px)">
+        <sc-for list="{{ groups }}" as="g" hint-placeholder-count="5">
+          <div style="border-top:3px solid var(--magenta);padding-top:20px">
+            <div style="display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px">
+              <h3 style="font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-0.02em;color:var(--purple);margin:0">{{ g.title }}</h3>
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;color:var(--ink-muted)">{{ g.count }}</span>
+            </div>
+            <div>
+              <sc-for list="{{ g.items }}" as="p" hint-placeholder-count="3">
+                <div style="display:flex;flex-direction:column;gap:4px;padding:14px 0;border-bottom:1px solid var(--rule)">
+                  <span style="font-size:16px;font-weight:600;line-height:1.35;color:var(--purple)">{{ p.name }}</span>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ p.role }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- KOOPERATION ANFRAGEN -->
+  <section style="background:var(--cyan);color:var(--purple);position:relative">
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--purple)" height="{{ 14 }}" flip="{{ true }}" style="position:absolute;right:0;top:0;width:42%" hint-size="42%,14px"></x-import>
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,96px) clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:32px 64px">
+      <div style="max-width:620px">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--purple)" style="margin-bottom:18px" hint-size="200px,16px">Kooperation</x-import>
+        <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(36px,4.4vw,56px);line-height:0.98;letter-spacing:-0.03em;margin:0 0 18px">Ihr wollt mit uns<br>arbeiten?</h2>
+        <p style="margin:0;font-size:16px;line-height:1.6;color:var(--purple)">Spielorte, Festivals, Netzwerke und Initiativen: Schreibt uns, wir melden uns mit einem Vorschlag für ein erstes Gespräch.</p>
+      </div>
+      <a href="mailto:kontakt@tanznetzdresden.de" style="display:flex">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" size="lg" marker="{{ true }}" hint-size="260px,46px">kontakt@tanznetzdresden.de</x-import>
+      </a>
+    </div>
+  </section>
+
+  <footer style="background:var(--purple);color:#fff">
+    <div style="max-width:1320px;margin:0 auto;padding:28px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7)">
+      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="56px" hint-size="56px,26px"></x-import>
+      <span>© 2026 TanzNetzDresden e.V.</span>
+      <a href="TanzNetzDresden Website.dc.html" style="color:rgba(255,255,255,0.7);margin-left:auto" style-hover="color:var(--cyan)">Startseite</a>
+      <a href="#top" style="color:rgba(255,255,255,0.7)" style-hover="color:var(--cyan)">Impressum</a>
+      <a href="#top" style="color:rgba(255,255,255,0.7)" style-hover="color:var(--cyan)">Datenschutz</a>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+const VENUES = [
+  { name: 'TENZA Schmiede', short: 'TENZA', role: 'Sitz · KEEP UP', ll: [51.05798, 13.77153], seed: true },
+  { name: 'Villa Wigman für Tanz', short: 'Villa Wigman', role: 'Partnerschaft', ll: [51.06566, 13.76699] },
+  { name: 'Societaetstheater', role: 'vision:danceable', ll: [51.06056, 13.74264] },
+  { name: 'Zentralwerk Dresden', short: 'Zentralwerk', role: 'Partnerschaft', ll: [51.08111, 13.72882] },
+  { name: 'Palucca Hochschule für Tanz', short: 'Palucca', role: 'Newcomer:innen', ll: [51.02897, 13.77092] },
+  { name: 'Semperoper Dresden', short: 'Semperoper', role: 'Kooperation', ll: [51.05454, 13.73523] },
+  { name: 'Staatsoperette Dresden', short: 'Staatsoperette', role: 'Kooperation', ll: [51.05238, 13.72259] },
+  { name: 'HELLERAU', role: 'Kooperation', ll: [51.11388, 13.75311] },
+];
+const LINKS = [[0, 1], [0, 4], [1, 2], [2, 5], [5, 6], [6, 3], [2, 3], [1, 7], [3, 7], [0, 5], [4, 5]];
+const GROUPS = [
+  { title: 'Spielorte & Häuser', items: [
+    { name: 'TENZA', role: 'KEEP UP · Trainings- und Proberäume' },
+    { name: 'Villa Wigman für Tanz e.V.', role: 'Langjährige Partnerschaft' },
+    { name: 'Societaetstheater', role: 'vision:danceable · Welttanztag' },
+    { name: 'Zentralwerk Dresden', role: 'Langjährige Partnerschaft' },
+    { name: 'Semperoper Dresden', role: 'Kooperation' },
+    { name: 'Staatsoperette Dresden', role: 'Kooperation' },
+    { name: 'HELLERAU – Europäisches Zentrum der Künste', role: 'Kooperation' },
+  ] },
+  { title: 'POP UP Partner', items: [
+    { name: 'Landesbühnen Sachsen', role: 'POP UP Performance' },
+    { name: 'Galerie Stephanie Kelly', role: 'POP UP Performance' },
+    { name: 'Wurzelwerk Pieschen e.V.', role: 'POP UP Performance' },
+    { name: 'DerHalle e.V.', role: 'POP UP Performance' },
+    { name: 'FOR:UM Initiative', role: 'POP UP Performance' },
+  ] },
+  { title: 'Projektpartner', items: [
+    { name: '4 rooms company', role: 'vision:danceable · seit 2024' },
+    { name: 'about blank collective', role: 'vision:danceable · seit 2024' },
+    { name: 'Wir Gestalten Dresden', role: 'Bodies & Textiles' },
+    { name: 'Slow Fashion Festival', role: 'Bodies & Textiles' },
+    { name: 'Dresdance Gala', role: 'Beteiligung seit 2025' },
+  ] },
+  { title: 'Überregional', items: [
+    { name: 'Tanznetz Freiburg', role: 'Studio Round · POP UP · seit 2024' },
+    { name: 'ID Frankfurt', role: 'Studio Round · POP UP · seit 2024' },
+    { name: 'Tanznetzwerke in Brandenburg, Bremen und Leipzig', role: 'Kontinuierlicher Austausch' },
+  ] },
+  { title: 'Netzwerke & Verbände', items: [
+    { name: 'Dachverband Tanz Deutschland', role: 'Enge Zusammenarbeit' },
+    { name: 'TanzAllianzen', role: 'Neue Initiative' },
+  ] },
+  { title: 'Ausbildung', items: [
+    { name: 'Palucca Hochschule für Tanz', role: 'Absolvent:innen · Newcomer:innen' },
+  ] },
+  { title: 'Nachhaltigkeit', items: [
+    { name: 'Zündstoffe Materialvermittlung Dresden', role: 'Materialpool · seit 2022' },
+    { name: 'Nytt. Materialdepot', role: 'Materialpool · seit 2022' },
+  ] },
+  { title: 'Förderung', items: [
+    { name: 'Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz', role: 'Institutionelle Förderung' },
+    { name: 'Nationales Performance Netz', role: 'Impulsförderung · Studio Round, POP UP' },
+  ] },
+];
+
+class Component extends DCLogic {
+  state = { hot: -1 };
+  canvasRef = React.createRef();
+  boxRef = React.createRef();
+  mapRef = React.createRef();
+
+  ensureMap() {
+    if (this.map) return this.map;
+    const el = this.mapRef.current; if (!el || !window.L) return null;
+    const L = window.L;
+    const map = L.map(el, { zoomControl: false, attributionControl: true, scrollWheelZoom: false, zoomSnap: 0.25, fadeAnimation: false, zoomAnimation: false, markerZoomAnimation: false, inertia: false });
+    map.attributionControl.setPrefix(false);
+    L.control.zoom({ position: 'topright' }).addTo(map);
+    el.querySelectorAll('.leaflet-control-zoom, .leaflet-control-zoom a').forEach((a) => { a.style.borderRadius = '0'; a.style.boxShadow = 'none'; });
+    el.querySelectorAll('.leaflet-control-zoom a').forEach((a) => { a.style.background = '#2E1A4D'; a.style.color = '#fff'; a.style.border = '1.5px solid rgba(255,255,255,0.4)'; });
+    const ac = map.attributionControl.getContainer(); ac.style.background = 'rgba(46,26,77,0.9)'; ac.style.color = 'rgba(255,255,255,0.75)'; ac.style.fontSize = '10px';
+    el.style.background = 'transparent';
+    const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', { maxZoom: 19, attribution: '© OpenStreetMap-Mitwirkende' }).addTo(map);
+    const styleTiles = () => { const tc = tiles.getContainer(); if (tc) { tc.style.filter = 'grayscale(1) invert(1) contrast(1.15) brightness(1.1)'; tc.style.opacity = '0.45'; tc.style.mixBlendMode = 'screen'; } };
+    tiles.on('loading load', styleTiles);
+    this.styleTiles = styleTiles;
+    this.map = map;
+    return map;
+  }
+  mouse = null;
+
+  componentDidMount() {
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    this.build(this.reduced);
+    this.ro = new ResizeObserver(() => { clearTimeout(this._rt); this._rt = setTimeout(() => this.build(true), 120); });
+    if (this.boxRef.current) this.ro.observe(this.boxRef.current);
+    const loop = (now) => { this.frame(now); this.raf = requestAnimationFrame(loop); };
+    this.raf = requestAnimationFrame(loop);
+  }
+  componentWillUnmount() { cancelAnimationFrame(this.raf); clearTimeout(this._wait); if (this.map) this.map.remove(); if (this.ro) this.ro.disconnect(); clearTimeout(this._rt); }
+
+  build(settled) {
+    const c = this.canvasRef.current; if (!c) return;
+    const r = c.getBoundingClientRect(); if (!r.width || !r.height) return;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2), W = r.width, H = r.height;
+    if (this.W === W && this.H === H && this.nodes && settled) return;
+    c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+    const ctx = c.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const map = this.ensureMap();
+    if (!map) { clearTimeout(this._wait); this._wait = setTimeout(() => this.build(settled), 150); return; }
+    map.invalidateSize(false);
+    map.fitBounds(VENUES.map((v) => v.ll), { paddingTopLeft: [40, 50], paddingBottomRight: [Math.min(200, W * 0.3), 50], animate: false });
+    if (this.styleTiles) this.styleTiles();
+    const P = VENUES.map((v) => { const p = map.latLngToContainerPoint(v.ll); return [p.x, p.y]; });
+    const venues = P.map((p, i) => ({ ll: VENUES[i].ll, tx: p[0], ty: p[1], v: i, venue: true, label: (VENUES[i].short || VENUES[i].name).toUpperCase(), seed: !!VENUES[i].seed }));
+    const g = () => (Math.random() + Math.random() + Math.random() - 1.5) / 1.5;
+    const spread = Math.min(W, H) * 0.22;
+    const dots = [];
+    for (let i = 0; i < 70; i++) {
+      const v = venues[(Math.random() * venues.length) | 0];
+      dots.push({ tx: Math.max(8, Math.min(W - 8, v.tx + g() * spread * 1.3)), ty: Math.max(8, Math.min(H - 8, v.ty + g() * spread)) });
+    }
+    dots.forEach((d) => { const q = map.containerPointToLatLng([d.tx, d.ty]); d.ll = [q.lat, q.lng]; });
+    const pts = venues.concat(dots);
+    pts.forEach((p) => { p.sx = Math.random() * W; p.sy = Math.random() * H; p.d = Math.random() * 0.6; p.ph = Math.random() * 6.283; });
+    const seed = venues[0], maxD = Math.hypot(W, H) * 0.7;
+    const keys = new Set(), edges = [];
+    const add = (i, j, kind) => {
+      const k = i < j ? i + '-' + j : j + '-' + i; if (keys.has(k)) return; keys.add(k);
+      const mx = (pts[i].tx + pts[j].tx) / 2, my = (pts[i].ty + pts[j].ty) / 2;
+      edges.push({ a: i, b: j, kind, at: 0.5 + Math.min(1, Math.hypot(mx - seed.tx, my - seed.ty) / maxD) * 1.5 });
+    };
+    LINKS.forEach(([a, b]) => add(a, b, 'venue'));
+    dots.forEach((d, n) => {
+      const i = venues.length + n;
+      let nv = 0, nd = Infinity; venues.forEach((v, k) => { const dd = Math.hypot(v.tx - d.tx, v.ty - d.ty); if (dd < nd) { nd = dd; nv = k; } });
+      d.home = nv;
+      if (nd < spread * 1.1) add(i, nv, 'home');
+      pts.map((q, j) => [j, Math.hypot(q.tx - d.tx, q.ty - d.ty)]).filter(([j]) => j !== i && j >= venues.length).sort((a, b) => a[1] - b[1]).slice(0, 2).forEach(([j]) => add(i, j, 'dot'));
+    });
+    this._seen = false; this._settled = settled;
+    Object.assign(this, { ctx, W, H, nodes: pts, edges, nV: venues.length, t0: performance.now() - (settled ? 20000 : 0) });
+  }
+
+  frame(now) {
+    const { ctx, W, H, nodes, edges, nV } = this; if (!ctx || !nodes) return;
+    const c = this.canvasRef.current; if (!c) return;
+    const rr = c.getBoundingClientRect(); if (rr.bottom < 0 || rr.top > window.innerHeight) return;
+    if (!this._seen) { this._seen = true; if (!this._settled) this.t0 = now; }
+    if (this.map) for (const n of nodes) { if (!n.ll) continue; const p = this.map.latLngToContainerPoint(n.ll); n.tx = p.x; n.ty = p.y; }
+    const t = (now - this.t0) / 1000, hot = this.state.hot;
+    const cl = (v) => v < 0 ? 0 : v > 1 ? 1 : v, ease = (v) => v >= 1 ? 1 : 1 - Math.pow(2, -10 * v);
+    ctx.clearRect(0, 0, W, H);
+    for (const n of nodes) {
+      const q = ease(cl((t - n.d) / 2));
+      n.x = n.sx + (n.tx - n.sx) * q + (n.venue ? 0 : Math.sin(t * 0.5 + n.ph) * 1.5 * q);
+      n.y = n.sy + (n.ty - n.sy) * q + (n.venue ? 0 : Math.cos(t * 0.42 + n.ph) * 1.5 * q);
+    }
+    for (const e of edges) {
+      const q = ease(cl((t - e.at) / 0.6)); if (q <= 0) continue;
+      const a = nodes[e.a], b = nodes[e.b];
+      const lit = hot >= 0 && (e.a === hot || e.b === hot || (e.kind !== 'venue' && (a.home === hot && b.home === hot)));
+      let al = e.kind === 'venue' ? 0.75 : e.kind === 'home' ? 0.3 : 0.16;
+      if (hot >= 0) al = lit ? (e.kind === 'venue' ? 1 : 0.7) : al * 0.4;
+      ctx.lineWidth = e.kind === 'venue' ? 2 : 1;
+      ctx.strokeStyle = (lit && e.kind !== 'venue' ? 'rgba(218,26,106,' : 'rgba(72,198,215,') + al.toFixed(3) + ')';
+      ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(a.x + (b.x - a.x) * q, a.y + (b.y - a.y) * q); ctx.stroke();
+    }
+    for (let i = nV; i < nodes.length; i++) {
+      const n = nodes[i], on = hot >= 0 && n.home === hot;
+      ctx.fillStyle = on ? '#fff' : 'rgba(255,255,255,' + (hot >= 0 ? 0.35 : 0.75) + ')';
+      const s = on ? 4 : 3; ctx.fillRect(n.x - s / 2, n.y - s / 2, s, s);
+    }
+    const la = ease(cl((t - 1.8) / 0.8));
+    ctx.font = '600 11px "JetBrains Mono", ui-monospace, monospace';
+    if ('letterSpacing' in ctx) ctx.letterSpacing = '2px';
+    const sq = (i) => (nodes[i].seed ? 16 : hot === i ? 14 : 10);
+    if (la > 0) {
+      const placed = [], hit = (r) => r.x < 4 || r.y < 4 || r.x + r.w > W - 4 || r.y + r.h > H - 4 || placed.some((p) => r.x < p.x + p.w + 4 && r.x + r.w + 4 > p.x && r.y < p.y + p.h + 3 && r.y + r.h + 3 > p.y) || nodes.slice(0, nV).some((m, j) => { const s = (nodes[j].seed ? 16 : 14) / 2 + 3; return r.x < m.x + s && r.x + r.w > m.x - s && r.y < m.y + s && r.y + r.h > m.y - s; });
+      const order = [...Array(nV).keys()].sort((p, q) => (nodes[p].seed ? -1 : nodes[q].seed ? 1 : nodes[p].ty - nodes[q].ty || p - q));
+      for (const i of order) {
+        const n = nodes[i], w = ctx.measureText(n.label).width + 14, h = 22, gap = 12 + (n.seed ? 16 : 14) / 2;
+        let box = null;
+        for (const dy of [0, -28, 28, -56, 56, -84, 84]) {
+          for (const side of [1, -1]) {
+            const r = { x: side > 0 ? n.x + gap : n.x - gap - w, y: n.y - h / 2 + dy, w, h, dy, side };
+            if (!hit(r)) { box = r; break; }
+          }
+          if (box) break;
+        }
+        if (!box) box = { x: Math.min(n.x + gap, W - w - 4), y: n.y - h / 2, w, h, dy: 0, side: 1 };
+        placed.push(box); box.i = i;
+      }
+      for (const r of placed) {
+        const n = nodes[r.i], on = hot === r.i;
+        ctx.globalAlpha = la * (hot >= 0 && !on ? 0.5 : 1);
+        if (r.dy !== 0) {
+          ctx.strokeStyle = on || n.seed ? '#DA1A6A' : 'rgba(255,255,255,0.55)'; ctx.lineWidth = 1;
+          ctx.beginPath(); ctx.moveTo(n.x, n.y); ctx.lineTo(r.side > 0 ? r.x : r.x + r.w, r.y + r.h / 2); ctx.stroke();
+        }
+        const sx = (1 - la) * 12 * r.side;
+        ctx.fillStyle = on || n.seed ? '#DA1A6A' : 'rgba(46,26,77,0.92)'; ctx.fillRect(r.x + sx, r.y, r.w, r.h);
+        ctx.fillStyle = '#fff'; ctx.fillText(n.label, r.x + sx + 7, r.y + 15);
+      }
+      ctx.globalAlpha = 1;
+    }
+    const sqOrder = [...Array(nV).keys()].sort((p, q) => (nodes[p].seed || p === hot ? 1 : 0) - (nodes[q].seed || q === hot ? 1 : 0));
+    for (const i of sqOrder) {
+      const n = nodes[i], s = sq(i);
+      ctx.fillStyle = n.seed || hot === i ? '#DA1A6A' : '#48C6D7';
+      ctx.fillRect(n.x - s / 2, n.y - s / 2, s, s);
+    }
+    if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+  }
+
+  renderVals() {
+    const hot = this.state.hot;
+    const set = (i) => { if (this.state.hot !== i) this.setState({ hot: i }); };
+    return {
+      canvasRef: this.canvasRef, boxRef: this.boxRef, mapRef: this.mapRef,
+      onMove: (e) => {
+        if (!this.nodes) return;
+        const r = this.canvasRef.current.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+        let best = -1, bd = 44;
+        for (let i = 0; i < this.nV; i++) { const d = Math.hypot(this.nodes[i].x - x, this.nodes[i].y - y); if (d < bd) { bd = d; best = i; } }
+        set(best);
+      },
+      onLeave: () => set(-1),
+      venues: VENUES.map((v, i) => ({
+        name: v.name, role: v.role,
+        mark: hot === i || (hot < 0 && v.seed) ? 'var(--magenta)' : 'var(--cyan)',
+        color: hot === i ? 'var(--cyan)' : '#fff',
+        enter: () => set(i), leave: () => set(-1),
+      })),
+      groups: GROUPS.map((g) => ({ ...g, count: String(g.items.length).padStart(2, '0') })),
+    };
+  }
+}
+</script>
+</body>
+</html>

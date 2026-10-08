@@ -28,7 +28,7 @@ We only use all other services with your consent (§ 25(1) TDDDG, Art. 6(1)(a) G
 
 If you consent or load an item individually, a connection to the respective provider is established. The provider receives at least your IP address.
 
-- **OpenStreetMap** (map on the contact page): OpenStreetMap Foundation, St John’s Innovation Centre, Cowley Road, Cambridge, CB4 0WS, United Kingdom. [Privacy policy](https://osmfoundation.org/wiki/Privacy_Policy). An EU adequacy decision exists for the United Kingdom.
+- **OpenStreetMap** (maps on the contact and partners pages): OpenStreetMap Foundation, St John’s Innovation Centre, Cowley Road, Cambridge, CB4 0WS, United Kingdom. [Privacy policy](https://osmfoundation.org/wiki/Privacy_Policy). An EU adequacy decision exists for the United Kingdom.
 - **YouTube** (if videos are embedded), in privacy-enhanced mode via youtube-nocookie.com: Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Ireland. [Privacy policy](https://policies.google.com/privacy).
 
 Links to Instagram and Telegram are ordinary links. Data is only sent to these services when you click the link.

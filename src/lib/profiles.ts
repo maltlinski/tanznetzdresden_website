@@ -10,7 +10,7 @@
  * Ist Supabase nicht erreichbar, baut die Website nur mit der Datei (Warnung im Log).
  */
 import type { ImageMetadata } from 'astro';
-import { getCollection } from 'astro:content';
+import { getPersonen } from './content';
 import { PUBLIC_SUPABASE_ANON_KEY, PUBLIC_SUPABASE_URL } from 'astro:env/client';
 
 export type Role = 'mitglied' | 'trainer';
@@ -73,7 +73,7 @@ let cache: Promise<PublicProfile[]> | undefined;
 
 export function getProfiles(): Promise<PublicProfile[]> {
   cache ??= (async () => {
-    const [entries, remote] = await Promise.all([getCollection('personen'), fetchRemote()]);
+    const [entries, remote] = await Promise.all([getPersonen(), fetchRemote()]);
     const list: PublicProfile[] = entries.map(({ id, data }) => ({ id, ...data, selfManaged: false }));
     const byId = new Map(list.map((p) => [p.id, p]));
     for (const r of remote) {
