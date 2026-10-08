@@ -4,7 +4,7 @@ Die Website ist statisch (HTML, CSS, JS) und läuft auf jedem Webspace.
 
 ## GitHub Pages (eingerichtet)
 
-`.github/workflows/deploy.yml` (liegt vorerst in `docs/github-workflows/`, siehe README dort) baut bei jedem Push auf `main` und jede Nacht neu.
+`.github/workflows/deploy.yml` baut bei jedem Push auf `main` und jede Nacht neu.
 
 Einmalig: *Settings → Pages → Build and deployment → Source: **GitHub Actions***.
 
