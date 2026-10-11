@@ -7,4 +7,5 @@ category: Bühne
 teaser: "Kurzstückreihe mit 4 rooms company und about blank collective"
 teaser_en: "Short-piece series with 4 rooms company and about blank collective"
 people: [malte-leonard-herz]
+news: vision-danceable-6
 ---

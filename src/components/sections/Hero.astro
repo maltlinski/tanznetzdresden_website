@@ -31,8 +31,7 @@ const words = claim[lang].woerter;
 const next = (await getUpcoming(3)).map((e) => {
   const d = dateParts(e.data.start, lang);
   return {
-    href: e.data.link ?? url(lang, 'termine', `#${e.id}`),
-    external: !!e.data.link,
+    href: url(lang, 'termine', `${e.id}/`),
     end: (e.data.end ?? e.data.start).replace(' ', 'T'),
     day: d.day,
     dm: `${d.dow} · ${d.month}`,
@@ -73,7 +72,6 @@ const t = tr(lang, {
       data-hero-up
       data-end={e.end}
       hidden={i > 0}
-      {...(e.external ? { rel: 'noopener', target: '_blank' } : {})}
     >
       <span class="up__kicker" aria-hidden="true"><span class="up__sq"></span>{t.next}<span class="up__line"></span></span>
       <span class="visually-hidden">{t.nextLabel}: {e.long},</span>

@@ -4,10 +4,10 @@ import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
 import { supabase } from '../src/settings/supabase';
 
 const pages = [
-  '/', '/termine/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
+  '/', '/termine/', '/termine/2026-10-15-studio-round-9/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
   '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
   '/intern/news/', '/intern/news/bearbeiten/',
-  '/en/', '/en/events/', '/en/news/', '/en/news/neues-koordinationsteam/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
+  '/en/', '/en/events/', '/en/events/2026-10-15-studio-round-9/', '/en/news/', '/en/news/neues-koordinationsteam/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
   '/en/contact/', '/en/partners/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
 ];
 
@@ -286,7 +286,38 @@ test('Hero: zeigt den nächsten Termin und verlinkt ihn', async ({ page }) => {
   const up = page.locator('[data-hero-up]:visible');
   await expect(up).toHaveCount(1);
   await expect(up).toContainText('Upcoming');
-  await expect(up).toHaveAttribute('href', /\/termine\/#|^https?:/);
+  await up.click();
+  await expect(page).toHaveURL(/\/termine\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+});
+
+test('Startseite: Termine und News führen auf ihre eigene Seite', async ({ page }) => {
+  await page.goto('/');
+  await dismissConsent(page);
+  const ev = page.locator('#home-events a').first();
+  const evTitle = (await ev.locator('h3').textContent())!.trim();
+  await ev.click();
+  await expect(page).toHaveURL(/\/termine\/[^/#]+\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(evTitle);
+  await expect(page.getByRole('link', { name: 'In meinen Kalender (.ics)' })).toHaveAttribute('href', /\/termine\/[^/]+\.ics$/);
+
+  await page.goto('/');
+  const lead = page.locator('#news .news__lead');
+  const newsTitle = (await lead.locator('h3').textContent())!.trim();
+  await lead.click();
+  await expect(page).toHaveURL(/\/news\/[^/#]+\/$/);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(newsTitle);
+});
+
+test('Terminseite: Englisch, Kalenderdatei und passender Beitrag', async ({ page, request }) => {
+  await page.goto('/en/events/2026-10-15-studio-round-9/');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Studio Round #9');
+  await expect(page.getByRole('link', { name: /Studio Round #9: / })).toHaveAttribute('href', /\/en\/news\/studio-round-9\/$/);
+  const ics = await request.get('/termine/2026-10-15-studio-round-9.ics');
+  expect(ics.status()).toBe(200);
+  const body = await ics.text();
+  expect(body.match(/BEGIN:VEVENT/g)).toHaveLength(1);
+  expect(body).toContain('SUMMARY:Studio Round #9');
 });
 
 test('Startseite: Haltung & Wirkung mit Partnern', async ({ page }) => {

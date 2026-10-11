@@ -1,0 +1,10 @@
+---
+import TerminView from '../../../views/TerminView.astro';
+import { getTermine } from '../../../lib/content';
+
+export async function getStaticPaths() {
+  return (await getTermine()).map((termin) => ({ params: { id: termin.id }, props: { termin } }));
+}
+const { termin } = Astro.props;
+---
+<TerminView termin={termin} />

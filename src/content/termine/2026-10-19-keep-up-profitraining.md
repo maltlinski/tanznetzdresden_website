@@ -9,4 +9,5 @@ teaser: "Contemporary, wöchentlich mit wechselnden Dozent:innen"
 teaser_en: "Contemporary, weekly with changing teachers"
 title_en: "KEEP UP · Professional training"
 people: [rika-yotsumoto]
+news: keep-up-herbst
 ---

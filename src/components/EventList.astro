@@ -36,7 +36,7 @@ let lastMonth = '';
       <>
         {heading && <li class="events__month" data-month>{heading}</li>}
         <li class="event" id={groupByMonth ? e.id : undefined} data-cat={e.category} data-end={(e.end ?? e.start).replace(' ', 'T')}>
-          <a href={e.link ?? url(lang, 'termine', `#${e.id}`)} {...(e.link ? { rel: 'noopener', target: '_blank' } : {})}>
+          <a href={url(lang, 'termine', `${e.id}/`)}>
             <time class="event__date" datetime={e.iso}>
               <span class="event__dow" aria-hidden="true">{e.dow}</span>
               <span class="event__dm" aria-hidden="true"><span class="event__day">{e.day}</span><span class="event__mo">{e.month}</span></span>

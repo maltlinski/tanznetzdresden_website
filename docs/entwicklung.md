@@ -53,7 +53,7 @@ Der Abschnitt „Haltung & Wirkung“ liest seine Texte aus `src/settings/haltun
 
 ## Ideen für die nächsten Schritte
 
-- Einzelseiten je Format und Termin (`src/pages/formate/[id].astro`).
+- Einzelseiten je Format (`src/pages/formate/[id].astro`). Termine haben schon eigene Seiten (`src/views/TerminView.astro`).
 - Pressebereich mit Download-Paket.
 - Ausschreibungen & Open Calls als eigene Sammlung mit Ablaufdatum.
 - Interner Bereich auf Englisch.

@@ -34,8 +34,10 @@ const termine = defineCollection({
     teaser_en: z.string().optional(),
     /** Mitwirkende aus dem Netzwerk (ids aus personen.yaml) – erscheinen auf deren Profil */
     people: z.array(reference('personen')).default([]),
-    /** Externer Link (Tickets, Anmeldung …) */
+    /** Externer Link (Tickets, Anmeldung …) – erscheint als Button auf der Terminseite */
     link: z.url().optional(),
+    /** Passender News-Beitrag (Dateiname ohne .md aus src/content/news/de/), z. B. "studio-round-9" */
+    news: z.string().optional(),
     draft: z.boolean().default(false),
   }),
 });

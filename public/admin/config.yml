@@ -44,6 +44,8 @@ collections:
       - { name: teaser_en, label: 'Kurzbeschreibung Englisch (optional)', widget: string, required: false }
       - { name: people, label: 'Mitwirkende aus dem Netzwerk', widget: relation, collection: personen, file: personen, search_fields: ['personen.*.name'], value_field: 'personen.*.id', display_fields: ['personen.*.name'], multiple: true, required: false }
       - { name: link, label: 'Link (Tickets, Anmeldung)', widget: string, required: false }
+      - { name: news, label: 'Passender News-Beitrag (optional)', widget: relation, collection: news, search_fields: [title], value_field: '{{slug}}', display_fields: [title], required: false }
+      - { name: body, label: 'Beschreibung (optional, für die Terminseite)', widget: markdown, required: false }
       - { name: draft, label: Entwurf (nicht anzeigen), widget: boolean, default: false, required: false }
 
   - name: news
