@@ -1,47 +1,58 @@
 /**
- * Hero „Das Netz“ — a diagonal Keil edge sweeps left to right and reveals the
- * net together with one stage photo. The photo's black stage ground is keyed
- * out, so the dancer appears to shine through the purple (screen blend), and
- * the net is erased wherever a body is (the net runs *behind* the dancers).
- * Towards the photo on the right the net fades out.
+ * Hero „Das Netz“ (Entwurf v2) — three stage photos as depth layers: two in the
+ * back, one in front of the net. Their black stage ground is keyed out, so the
+ * dancers stand free on the purple. A diagonal Keil edge sweeps left to right and
+ * reveals everything. The net gathers around the „Upcoming“ field: nodes lean
+ * away from it, magenta links run from its corner to the nearest nodes.
+ * Scrolling pulls the photos upward, the front one fastest.
  *
- * Ported from the Claude Design prototype (TanzNetzDresden Website.dc.html, round 4).
+ * Ported from the Claude Design prototype (TanzNetzDresden_Website_v2.dc.html).
  */
 
 export interface HeroPhoto {
   src: string;
-  /** source crop in image pixels */
+  /** source crop in image pixels, feet at the bottom */
   s: [number, number, number, number];
-  /** destination on the 1280×800 stage */
-  d: [number, number, number, number];
-  /** bounding box of the body on the stage */
-  box: [number, number, number, number];
-  /** y on the stage below which a floor reflection is keyed out harder */
-  floorY?: number;
+  /** fraction of the crop height below which a floor reflection is keyed out harder */
+  floor?: number;
 }
 
 export interface HeroNetOptions {
   canvas: HTMLCanvasElement;
   /** Element whose top edge is the stage floor (stats bar). */
   floor: HTMLElement | null;
-  /** Headline — photos are never placed over its text. */
-  title: HTMLElement | null;
+  /** The „Upcoming“ field the net gathers around. */
+  focus: HTMLElement | null;
+  /** Back left, front centre, back right (phones: the first two). */
   photos: HeroPhoto[];
   /** Base node count at 1440×820 (scaled by area). */
   nodeCount?: number;
-  /** How strongly the net fades out towards the right (0–1). */
-  netFade?: number;
   /** Whether the pointer links up with nearby nodes. */
   interactive?: boolean;
+  /** Scrolling pulls the photos upward. */
+  scrollWipe?: boolean;
 }
 
-interface Node { tx: number; ty: number; ph: number; x: number; y: number; md: number }
-interface Edge { a: number; b: number; base: number }
-interface Layer { cv: HTMLCanvasElement; mask: HTMLCanvasElement; box: [number, number, number, number] }
+interface Node { tx: number; ty: number; ph: number; x: number; y: number; px: number; py: number; md: number; fd: number }
+interface Edge { a: number; b: number; v: number }
+interface Layer { cv: HTMLCanvasElement; front: boolean; speed: number }
+interface Box { x0: number; y0: number; x1: number; y1: number }
 
 type Rgb = [number, number, number];
 
 const R = 170; // pointer radius
+const BASE = 0.3; // edge opacity
+
+/** Placement on the stage: centre x (share of width), height factor, y offset, opacity, scroll speed. */
+const SETS_WIDE = [
+  { cx: 0.14, k: 0.76, oy: 0.1, a: 0.88, sp: 0.7, front: false },
+  { cx: 0.52, k: 1.06, oy: 0, a: 1, sp: 1.3, front: true },
+  { cx: 0.82, k: 0.88, oy: -0.05, a: 0.92, sp: 0.95, front: false },
+];
+const SETS_NARROW = [
+  { cx: 0.25, k: 0.84, oy: 0.08, a: 0.9, sp: 0.8, front: false },
+  { cx: 0.68, k: 1.04, oy: 0, a: 1, sp: 1.3, front: true },
+];
 
 /** Farben aus den Design-Tokens (design/system) lesen – als [r, g, b]. */
 function tokenRgb(name: string, fallback: Rgb): Rgb {
@@ -56,7 +67,33 @@ function tokenRgb(name: string, fallback: Rgb): Rgb {
 const rgba = ([r, g, b]: Rgb, a = 1) => `rgba(${r},${g},${b},${a.toFixed(3)})`;
 
 const clamp01 = (v: number) => (v < 0 ? 0 : v > 1 ? 1 : v);
+const easeOutExpo = (v: number) => (v >= 1 ? 1 : 1 - Math.pow(2, -10 * v));
 const easeInOutCubic = (v: number) => (v < 0.5 ? 4 * v * v * v : 1 - Math.pow(-2 * v + 2, 3) / 2);
+
+/** Does segment a→b pass through box B (grown by pad)? */
+function segHits(ax: number, ay: number, bx: number, by: number, B: Box, pad: number, skipStart = false): boolean {
+  const x0 = B.x0 - pad, y0 = B.y0 - pad, x1 = B.x1 + pad, y1 = B.y1 + pad;
+  let t0 = skipStart ? 0.04 : 0;
+  let t1 = 1;
+  const dx = bx - ax, dy = by - ay;
+  const p = [-dx, dx, -dy, dy];
+  const q = [ax - x0, x1 - ax, ay - y0, y1 - ay];
+  for (let i = 0; i < 4; i++) {
+    if (p[i] === 0) {
+      if (q[i] < 0) return false;
+      continue;
+    }
+    const r = q[i] / p[i];
+    if (p[i] < 0) {
+      if (r > t1) return false;
+      if (r > t0) t0 = r;
+    } else {
+      if (r < t0) return false;
+      if (r < t1) t1 = r;
+    }
+  }
+  return t1 - t0 > (skipStart ? 0.03 : 0);
+}
 
 function loadImage(src: string): Promise<HTMLImageElement | null> {
   return new Promise((resolve) => {
@@ -69,23 +106,23 @@ function loadImage(src: string): Promise<HTMLImageElement | null> {
 }
 
 export class HeroNet {
-  private opts: Required<Omit<HeroNetOptions, 'floor' | 'title'>> & Pick<HeroNetOptions, 'floor' | 'title'>;
+  private opts: Required<Omit<HeroNetOptions, 'floor' | 'focus'>> & Pick<HeroNetOptions, 'floor' | 'focus'>;
   private ctx: CanvasRenderingContext2D | null = null;
   private net: HTMLCanvasElement | null = null;
   private nctx: CanvasRenderingContext2D | null = null;
   private W = 0;
   private H = 0;
-  private textRight = 0;
   private nodes: Node[] = [];
   private edges: Edge[] = [];
-  private accents: Node[] = [];
-  private layer: Layer | null = null;
+  private layers: Layer[] = [];
   private images = new Map<string, Promise<HTMLImageElement | null>>();
-  private photoIdx: number;
+  private buildId = 0;
   private t0 = 0;
   private raf = 0;
   private visible = true;
   private mouse: { x: number; y: number } | null = null;
+  private hover = false;
+  private hov = 0;
   private reduced: boolean;
   private resizeTimer = 0;
   private lastWidth = 0;
@@ -93,10 +130,8 @@ export class HeroNet {
   private colors: Record<'purple' | 'magenta' | 'cyan', Rgb> = { purple: [46, 26, 77], magenta: [218, 26, 106], cyan: [72, 198, 215] };
 
   constructor(options: HeroNetOptions) {
-    this.opts = { nodeCount: 110, netFade: 1, interactive: true, ...options };
+    this.opts = { nodeCount: 100, interactive: true, scrollWipe: true, ...options };
     this.reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    // One photo per visit. Chosen at random, so nothing is stored on the device.
-    this.photoIdx = Math.floor(Math.random() * Math.max(1, this.opts.photos.length));
   }
 
   start(): void {
@@ -145,10 +180,14 @@ export class HeroNet {
     this.loop();
   }
 
-  /** Next photo, knot the net again. */
+  /** Knot the net again. */
   replay(): void {
-    if (this.opts.photos.length) this.photoIdx = (this.photoIdx + 1) % this.opts.photos.length;
     this.build(this.reduced);
+  }
+
+  /** The „Upcoming“ field is hovered or focused: the net leans in a little more. */
+  setHover(on: boolean): void {
+    this.hover = on;
   }
 
   destroy(): void {
@@ -175,18 +214,21 @@ export class HeroNet {
   }
 
   private build(settled: boolean): void {
-    const idx = this.photoIdx;
-    const def = this.opts.photos[idx];
-    if (!def) {
-      this.buildNow(settled, null, null);
-      return;
-    }
-    void this.loadPhoto(def.src).then((img) => {
-      if (idx === this.photoIdx) this.buildNow(settled, def, img);
+    const id = ++this.buildId;
+    const narrow = this.opts.canvas.getBoundingClientRect().width < 640;
+    const sets = narrow ? SETS_NARROW : SETS_WIDE;
+    const defs = this.opts.photos.slice(0, sets.length);
+    void Promise.all(defs.map((d) => this.loadPhoto(d.src))).then((imgs) => {
+      if (id === this.buildId) this.buildNow(settled, defs, imgs, sets);
     });
   }
 
-  private buildNow(settled: boolean, hp: HeroPhoto | null, img: HTMLImageElement | null): void {
+  private buildNow(
+    settled: boolean,
+    defs: HeroPhoto[],
+    imgs: (HTMLImageElement | null)[],
+    sets: typeof SETS_WIDE,
+  ): void {
     const c = this.opts.canvas;
     const r = c.getBoundingClientRect();
     if (!r.width) return;
@@ -207,79 +249,56 @@ export class HeroNet {
     nctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     Object.assign(this, { ctx, net, nctx, W, H });
 
-    // The photo is laid out on a 1280×800 stage, scaled to the hero height and
-    // anchored right — but the body never starts left of the headline's end.
     const fl = this.opts.floor;
-    const h1 = this.opts.title;
     const floor = fl ? fl.getBoundingClientRect().top - r.top : H;
-    let textRight = W * 0.45;
-    if (h1) {
-      const rg = document.createRange();
-      rg.selectNodeContents(h1);
-      textRight = rg.getBoundingClientRect().right - r.left;
-    }
-    this.textRight = textRight;
-    const k = Math.max(0.5, floor / 800);
-    const ox = Math.max(W - 1280 * k, textRight + 24 - (hp ? hp.box[0] : 545) * k);
-    const X = (x: number) => ox + x * k;
-    const Y = (y: number) => y * k;
     const PW = c.width;
     const PH = c.height;
 
-    this.layer = null;
-    // Too narrow for the photo next to the headline (phones): show the net only,
-    // rather than a body cut off at the edge.
-    const fits = hp ? W - X(hp.box[0]) >= (hp.box[2] - hp.box[0]) * k * 0.5 : false;
-    if (hp && img && fits) {
+    // Photos: each on its own canvas, black stage keyed out (only within its box).
+    this.layers = [];
+    defs.forEach((p, i) => {
+      const im = imgs[i];
+      const L = sets[i];
+      if (!im) return;
+      const dh = floor * 1.02 * L.k;
+      const dw = dh * (p.s[2] / p.s[3]);
+      const dx = W * L.cx - dw / 2;
+      const dy = floor * (1.02 + L.oy) - dh;
       const cv = document.createElement('canvas');
       cv.width = PW;
       cv.height = PH;
       const x = cv.getContext('2d', { willReadFrequently: true });
-      const mask = document.createElement('canvas');
-      mask.width = PW;
-      mask.height = PH;
-      if (x) {
-        x.setTransform(dpr, 0, 0, dpr, 0, 0);
-        x.fillStyle = '#000';
-        x.fillRect(0, 0, W, H);
-        x.drawImage(img, ...hp.s, X(hp.d[0]), Y(hp.d[1]), hp.d[2] * k, hp.d[3] * k);
+      if (!x) return;
+      x.setTransform(dpr, 0, 0, dpr, 0, 0);
+      x.drawImage(im, ...p.s, dx, dy, dw, dh);
+      const bx = Math.max(0, Math.floor(dx * dpr));
+      const by = Math.max(0, Math.floor(dy * dpr));
+      const bw = Math.min(PW, Math.ceil((dx + dw) * dpr)) - bx;
+      const bh = Math.min(PH, Math.ceil((dy + dh) * dpr)) - by;
+      const floorPx = p.floor == null ? Infinity : (dy + p.floor * dh) * dpr - by;
+      if (bw > 0 && bh > 0) {
         try {
-          // Key out the black stage: dark pixels fade to black (invisible under
-          // `screen`), and the alpha mask marks where the body is.
-          const id = x.getImageData(0, 0, PW, PH);
+          const id = x.getImageData(bx, by, bw, bh);
           const data = id.data;
-          const mctx = mask.getContext('2d');
-          if (mctx) {
-            const mid = mctx.createImageData(PW, PH);
-            const md = mid.data;
-            const floorPx = hp.floorY ? Y(hp.floorY) * dpr : Infinity;
-            for (let i = 0; i < data.length; i += 4) {
-              const yy = ((i / 4) / PW) | 0;
-              const mx = Math.max(data[i], data[i + 1], data[i + 2]);
-              const below = yy > floorPx;
-              const lo = below ? 150 : 56;
-              const span = below ? 50 : 54;
-              const fa = mx < lo ? 0 : mx < lo + span ? (mx - lo) / span : 1;
-              if (fa < 1) {
-                data[i] *= fa;
-                data[i + 1] *= fa;
-                data[i + 2] *= fa;
-              }
-              if (fa > 0.06) md[i + 3] = 255;
-            }
-            x.setTransform(1, 0, 0, 1, 0, 0);
-            x.putImageData(id, 0, 0);
-            mctx.putImageData(mid, 0, 0);
+          for (let j = 0; j < data.length; j += 4) {
+            const yy = ((j / 4) / bw) | 0;
+            const mx = Math.max(data[j], data[j + 1], data[j + 2]);
+            const below = yy > floorPx;
+            const lo = below ? 150 : 56;
+            const span = below ? 50 : 54;
+            const fa = mx < lo ? 0 : mx < lo + span ? (mx - lo) / span : 1;
+            data[j + 3] = 255 * fa * L.a;
           }
+          x.setTransform(1, 0, 0, 1, 0, 0);
+          x.putImageData(id, bx, by);
         } catch {
-          // Tainted canvas (e.g. file://): the photo still shows via `screen`, the net just isn't masked.
+          // Tainted canvas (e.g. file://): the photo shows with its black ground.
         }
-        this.layer = { cv, mask, box: [X(hp.box[0]), Y(hp.box[1]), X(hp.box[2]), Y(hp.box[3])] };
       }
-    }
+      this.layers.push({ cv, front: L.front, speed: L.sp });
+    });
 
-    // Nodes: best-candidate sampling for an even spread, slightly denser on the
-    // left (behind the text); count scaled by area.
+    // Nodes: best-candidate sampling for an even spread; count scaled by area.
     const base = this.opts.nodeCount;
     const N = Math.max(30, Math.round(base * Math.min(1.4, Math.max(0.45, (W * H) / (1440 * 820)))));
     const pts: Node[] = [];
@@ -287,7 +306,7 @@ export class HeroNet {
       let best: [number, number] = [W / 2, H / 2];
       let bd = -1;
       for (let q = 0; q < 16; q++) {
-        const cx = 16 + Math.pow(Math.random(), 1.3) * (W - 32);
+        const cx = 16 + Math.random() * (W - 32);
         const cy = 16 + Math.random() * (H - 32);
         let d = Infinity;
         for (const p of pts) {
@@ -299,10 +318,10 @@ export class HeroNet {
           best = [cx, cy];
         }
       }
-      pts.push({ tx: best[0], ty: best[1], ph: Math.random() * Math.PI * 2, x: best[0], y: best[1], md: Infinity });
+      pts.push({ tx: best[0], ty: best[1], ph: Math.random() * Math.PI * 2, x: best[0], y: best[1], px: 0, py: 0, md: Infinity, fd: Infinity });
     }
 
-    // Edges: each node knots to its 3 nearest; quieter behind the headline.
+    // Edges: each node knots to its 3 nearest.
     const keys = new Set<string>();
     const edges: Edge[] = [];
     pts.forEach((p, i) => {
@@ -315,77 +334,112 @@ export class HeroNet {
           const key = i < j ? `${i}-${j}` : `${j}-${i}`;
           if (keys.has(key)) return;
           keys.add(key);
-          const mx = (p.tx + pts[j].tx) / 2;
-          const my = (p.ty + pts[j].ty) / 2;
-          const inText = mx < W * 0.46 && my > H * 0.32;
-          edges.push({ a: i, b: j, base: inText ? 0.14 : 0.3 });
+          edges.push({ a: i, b: j, v: 1 });
         });
     });
     this.nodes = pts;
     this.edges = edges;
-
-    // Three magenta accent squares, away from the text and the body.
-    this.accents = [];
-    const L = this.layer;
-    for (let i = 0; i < 300 && this.accents.length < 3; i++) {
-      const p = pts[(Math.random() * pts.length) | 0];
-      const inBody = !!L && p.tx > L.box[0] && p.tx < L.box[2] && p.ty > L.box[1];
-      if (!inBody && !(p.tx < W * 0.5 && p.ty > H * 0.3) && !this.accents.includes(p)) this.accents.push(p);
-    }
 
     this.t0 = performance.now() - (settled ? 20000 : 0);
     if (!this.raf && this.visible) this.loop();
   }
 
   private frame(now: number): void {
-    const { ctx, nctx, net, W, H, layer } = this;
+    const { ctx, nctx, net, W, H } = this;
     if (!ctx || !nctx || !net || !this.nodes.length) return;
+    const c = this.opts.canvas;
+    const cr = c.getBoundingClientRect();
+    if (cr.bottom < 0) return;
     const t = (now - this.t0) / 1000;
     const m = this.opts.interactive ? this.mouse : null;
     const drift = this.reduced ? 0 : 2;
+    const { purple, magenta, cyan } = this.colors;
 
-    // Keil wipe: a diagonal edge sweeps left to right and opens net and photo.
+    // Scrolling pulls the photo layers upward, each at its own speed.
+    const sp = this.opts.scrollWipe && !this.reduced ? clamp01(window.scrollY / Math.max(1, H)) : 0;
+    const se = 1 - (1 - sp) * (1 - sp);
+
+    // The „Upcoming“ field: its box and its corner (the node the magenta links start from).
+    let FP: { x: number; y: number } | null = null;
+    let BX: Box | null = null;
+    const fe = this.opts.focus;
+    if (fe) {
+      const ur = fe.getBoundingClientRect();
+      if (ur.width) {
+        FP = { x: ur.left - cr.left + 6, y: ur.top - cr.top + 8 };
+        BX = { x0: ur.left - cr.left, y0: ur.top - cr.top, x1: ur.right - cr.left, y1: ur.bottom - cr.top };
+      }
+    }
+    const fon = clamp01((t - 1.8) / 1.2);
+    this.hov += ((this.hover ? 1 : 0) - this.hov) * 0.12;
+    const RF = 260 + 30 * this.hov;
+
+    // Keil wipe: a diagonal edge sweeps left to right and opens net and photos.
     const sl = H * 0.16;
     const f = easeInOutCubic(clamp01((t - 0.35) / 1.9));
     const fx = -sl + (W + 2 * sl) * f;
-    const reveal = (c: CanvasRenderingContext2D) => {
-      c.beginPath();
+    const reveal = (c2: CanvasRenderingContext2D) => {
+      c2.beginPath();
       if (f <= 0) return false;
-      if (f >= 1) c.rect(0, 0, W, H);
+      if (f >= 1) c2.rect(0, 0, W, H);
       else {
-        c.moveTo(0, 0);
-        c.lineTo(fx + sl, 0);
-        c.lineTo(fx - sl, H);
-        c.lineTo(0, H);
-        c.closePath();
+        c2.moveTo(0, 0);
+        c2.lineTo(fx + sl, 0);
+        c2.lineTo(fx - sl, H);
+        c2.lineTo(0, H);
+        c2.closePath();
       }
       return true;
     };
 
-    // 1 · ground + photo (screen blend)
+    // 1 · ground + back photos
     ctx.globalCompositeOperation = 'source-over';
     ctx.globalAlpha = 1;
-    ctx.fillStyle = rgba(this.colors.purple);
+    ctx.fillStyle = rgba(purple);
     ctx.fillRect(0, 0, W, H);
-    if (layer) {
-      ctx.globalCompositeOperation = 'screen';
-      ctx.save();
-      if (reveal(ctx)) {
-        ctx.clip();
-        ctx.drawImage(layer.cv, 0, 0, W, H);
-      }
-      ctx.restore();
-      ctx.globalCompositeOperation = 'source-over';
+    ctx.save();
+    if (reveal(ctx)) {
+      ctx.clip();
+      for (const l of this.layers) if (!l.front) ctx.drawImage(l.cv, 0, -se * H * l.speed, W, H);
     }
+    ctx.restore();
 
     // 2 · the net, on its own layer
-    nctx.globalCompositeOperation = 'source-over';
-    nctx.globalAlpha = 1;
     nctx.clearRect(0, 0, W, H);
     for (const n of this.nodes) {
       let x = n.tx + Math.sin(t * 0.5 + n.ph) * drift;
       let y = n.ty + Math.cos(t * 0.42 + n.ph) * drift;
       n.md = Infinity;
+      n.fd = Infinity;
+      // nodes lean away from the Upcoming field, the net keeps running underneath
+      let px = 0;
+      let py = 0;
+      if (BX) {
+        const P = 34 + 6 * this.hov;
+        const push = (14 + 4 * this.hov) * fon;
+        const qx = Math.max(BX.x0, Math.min(x, BX.x1));
+        const qy = Math.max(BX.y0, Math.min(y, BX.y1));
+        const dx = x - qx;
+        const dy = y - qy;
+        const d = Math.hypot(dx, dy);
+        if (d === 0) {
+          const cx = (BX.x0 + BX.x1) / 2;
+          const cy = (BX.y0 + BX.y1) / 2;
+          const ux = (x - cx) / ((BX.x1 - BX.x0) / 2 || 1);
+          const uy = (y - cy) / ((BX.y1 - BX.y0) / 2 || 1);
+          const ul = Math.hypot(ux, uy) || 1;
+          px = (ux / ul) * push * 1.6;
+          py = (uy / ul) * push * 1.6;
+        } else if (d < P) {
+          px = (dx / d) * push * (1 - d / P);
+          py = (dy / d) * push * (1 - d / P);
+        }
+      }
+      n.px += (px - n.px) * 0.14;
+      n.py += (py - n.py) * 0.14;
+      x += n.px;
+      y += n.py;
+      if (FP) n.fd = Math.hypot(FP.x - x, FP.y - y);
       if (m) {
         const d = Math.hypot(m.x - x, m.y - y);
         n.md = d;
@@ -402,69 +456,67 @@ export class HeroNet {
     for (const e of this.edges) {
       const a = this.nodes[e.a];
       const b = this.nodes[e.b];
+      const hit = !!BX && fon > 0 && segHits(a.x, a.y, b.x, b.y, BX, 10);
+      e.v += ((hit ? 0.45 : 1) - e.v) * 0.15;
       const near = m ? Math.max(0, 1 - Math.min(a.md, b.md) / R) : 0;
-      nctx.strokeStyle = rgba(this.colors.cyan, e.base + near * 0.45);
+      const fn = FP ? Math.max(0, 1 - Math.min(a.fd, b.fd) / RF) * fon : 0;
+      nctx.strokeStyle = rgba(cyan, (BASE * (1 - 0.45 * fon) + near * 0.45 + fn * 0.5) * e.v);
       nctx.beginPath();
       nctx.moveTo(a.x, a.y);
       nctx.lineTo(b.x, b.y);
       nctx.stroke();
     }
     for (const n of this.nodes) {
-      const hot = n.md < R;
+      const hot = n.md < R || n.fd < RF * 0.55 * fon;
       nctx.fillStyle = hot ? '#fff' : 'rgba(255,255,255,0.55)';
       const s = hot ? 4 : 2.5;
       nctx.fillRect(n.x - s / 2, n.y - s / 2, s, s);
     }
-    nctx.fillStyle = rgba(this.colors.magenta);
-    for (const p of this.accents) nctx.fillRect(p.x - 5, p.y - 5, 10, 10);
-
-    // 3 · the net runs out towards the photo on the right
-    const fade = clamp01(this.opts.netFade);
-    if (fade > 0) {
-      const x0 = Math.min(W * 0.75, Math.max(W * 0.45, (this.textRight || W * 0.45) + 40));
-      const g = nctx.createLinearGradient(x0, 0, W, 0);
-      g.addColorStop(0, 'rgba(0,0,0,0)');
-      g.addColorStop(0.4, `rgba(0,0,0,${(fade * 0.85).toFixed(3)})`);
-      g.addColorStop(0.7, `rgba(0,0,0,${(fade * 0.97).toFixed(3)})`);
-      g.addColorStop(1, `rgba(0,0,0,${fade.toFixed(3)})`);
-      nctx.globalCompositeOperation = 'destination-out';
-      nctx.fillStyle = g;
-      nctx.fillRect(0, 0, W, H);
-      nctx.globalCompositeOperation = 'source-over';
+    // magenta links from the Upcoming corner to the nearest nodes
+    if (FP && BX && fon > 0) {
+      const K = 9;
+      const near = this.nodes
+        .filter((n) => n.fd < RF && !segHits(FP.x, FP.y, n.x, n.y, BX, -2, true))
+        .sort((a, b) => a.fd - b.fd)
+        .slice(0, K);
+      nctx.lineWidth = 1.25;
+      near.forEach((n, k) => {
+        const q = easeOutExpo(clamp01((t - 1.8 - k * 0.08) / 0.7));
+        const al = (1 - n.fd / RF) * (0.55 + 0.25 * this.hov) * q;
+        if (al <= 0.01) return;
+        nctx.strokeStyle = rgba(magenta, al);
+        nctx.beginPath();
+        nctx.moveTo(FP.x, FP.y);
+        nctx.lineTo(FP.x + (n.x - FP.x) * q, FP.y + (n.y - FP.y) * q);
+        nctx.stroke();
+      });
+      nctx.lineWidth = 1;
     }
     if (m) {
       nctx.lineWidth = 1.25;
       for (const n of this.nodes) {
         if (n.md >= R) continue;
-        nctx.strokeStyle = rgba(this.colors.magenta, (1 - n.md / R) * 0.85);
+        nctx.strokeStyle = rgba(magenta, (1 - n.md / R) * 0.85);
         nctx.beginPath();
         nctx.moveTo(m.x, m.y);
         nctx.lineTo(n.x, n.y);
         nctx.stroke();
       }
+      nctx.lineWidth = 1;
     }
 
-    // 4 · erase the net wherever the body is
-    if (layer) {
-      nctx.globalCompositeOperation = 'destination-out';
-      nctx.save();
-      if (reveal(nctx)) {
-        nctx.clip();
-        nctx.drawImage(layer.mask, 0, 0, W, H);
-      }
-      nctx.restore();
-      nctx.globalCompositeOperation = 'source-over';
-    }
+    // 3 · net, then the front photo above it
     ctx.save();
     if (reveal(ctx)) {
       ctx.clip();
       ctx.drawImage(net, 0, 0, W, H);
+      for (const l of this.layers) if (l.front) ctx.drawImage(l.cv, 0, -se * H * l.speed, W, H);
     }
     ctx.restore();
 
     // the Keil edge itself, fading out as it leaves
     if (f > 0 && f < 1) {
-      ctx.strokeStyle = rgba(this.colors.magenta, Math.min(1, (1 - f) * 4));
+      ctx.strokeStyle = rgba(magenta, Math.min(1, (1 - f) * 4));
       ctx.lineWidth = 3;
       ctx.beginPath();
       ctx.moveTo(fx + sl, 0);
@@ -472,7 +524,7 @@ export class HeroNet {
       ctx.stroke();
     }
     if (m) {
-      ctx.fillStyle = rgba(this.colors.magenta);
+      ctx.fillStyle = rgba(magenta);
       ctx.fillRect(m.x - 5, m.y - 5, 10, 10);
     }
   }

@@ -15,14 +15,14 @@ const t = tr(lang, {
     home: 'TanzNetzDresden – zur Startseite', blurb: `Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit ${v.founded}, seit 2020 als gemeinnütziger Verein.`,
     news: 'News', rss: 'News als RSS-Feed', contact: 'Kontakt', writeMail: 'E-Mail schreiben', club: 'Verein', about: 'Über uns', board: 'Vorstand & Team', ags: 'Arbeitsgruppen', network: 'Netzwerk & Profile',
     join: 'Mitglied werden', donate: 'Spenden', coop: 'Kooperationen', contactPress: 'Kontakt & Presse', transparency: 'Transparenz', intern: 'Interner Bereich', follow: 'Folgen', newsletter: 'Newsletter',
-    ics: 'Kalender abonnieren (.ics)', partners: 'Partner', legal: 'Rechtliches', imprint: 'Impressum', privacy: 'Datenschutz', a11y: 'Barrierefreiheit',
+    ics: 'Kalender abonnieren (.ics)', legal: 'Rechtliches', imprint: 'Impressum', privacy: 'Datenschutz', a11y: 'Barrierefreiheit',
     easy: 'Leichte Sprache', cookies: 'Cookie-Einstellungen',
   },
   en: {
     home: 'TanzNetzDresden – home', blurb: `Self-organised network of Dresden's independent dance scene. Since ${v.founded}, a registered non-profit association since 2020.`,
     news: 'News', rss: 'News as RSS feed', contact: 'Contact', writeMail: 'Send an email', club: 'Association', about: 'About us', board: 'Board & team', ags: 'Working groups', network: 'Network & profiles',
     join: 'Become a member', donate: 'Donate', coop: 'Partners', contactPress: 'Contact & press', transparency: 'Transparency', intern: 'Members area', follow: 'Follow', newsletter: 'Newsletter',
-    ics: 'Subscribe to calendar (.ics)', partners: 'Partners', imprint: 'Legal notice', privacy: 'Privacy', a11y: 'Accessibility',
+    ics: 'Subscribe to calendar (.ics)', imprint: 'Legal notice', privacy: 'Privacy', a11y: 'Accessibility',
     easy: 'Leichte Sprache (German)', cookies: 'Cookie settings',
   },
 });
@@ -64,10 +64,6 @@ const t = tr(lang, {
         <a href={href(lang === 'de' ? 'news.xml' : 'en/news.xml')}>{t.rss}</a>
       </div>
     </div>
-    <div class="site-footer__partners">
-      <a class="site-footer__partners-h" href={url(lang, 'kooperationen')}>{t.partners} →</a>
-      <p>{v.partners.join(' · ')}</p>
-    </div>
     <div class="site-footer__legal">
       <span>© {year} {v.legalName}</span>
       <a href={url(lang, 'impressum')} class="site-footer__legal-first">{t.imprint}</a>
@@ -98,16 +94,6 @@ const t = tr(lang, {
   .site-footer__col address { font-style: normal; color: rgba(255, 255, 255, 0.86); }
   .site-footer__col a, .site-footer__col :global(.protected-email) { color: #fff; }
   .site-footer__col a:hover { color: var(--cyan); }
-  .site-footer__partners {
-    display: flex; flex-wrap: wrap; gap: 14px 40px; padding: 28px 0;
-    border-bottom: 1px solid var(--on-dark-rule); align-items: baseline;
-  }
-  .site-footer__partners-h {
-    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: rgba(255, 255, 255, 0.7);
-  }
-  .site-footer__partners-h:hover { color: var(--cyan); }
-  .site-footer__partners p { margin: 0; font-size: 13.5px; line-height: 1.7; color: rgba(255, 255, 255, 0.86); flex: 1 1 480px; }
   .site-footer__legal {
     display: flex; flex-wrap: wrap; gap: 12px 28px; padding-top: 22px; font-family: var(--font-mono);
     font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7);

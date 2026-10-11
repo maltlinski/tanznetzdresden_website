@@ -272,9 +272,27 @@ test('Header: TNDD-Zeichen führt zur Startseite, News steht im Menü', async ({
   await expect(page).toHaveURL(/\/$/);
 });
 
-test('Hero: Text ist ohne Animation sofort lesbar', async ({ page }) => {
+test('Startseite: Überschrift und Claim sind ohne Animation sofort lesbar', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
+  await page.locator('#intro').scrollIntoViewIfNeeded();
   await expect(page.locator('[data-sweep-bar]')).toHaveCount(0);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Eine Stadt\.\s*Ein Netz\./);
+  await expect(page.locator('[data-claim-word]')).toHaveText('Dresden');
+});
+
+test('Hero: zeigt den nächsten Termin und verlinkt ihn', async ({ page }) => {
+  await page.goto('/');
+  const up = page.locator('[data-hero-up]:visible');
+  await expect(up).toHaveCount(1);
+  await expect(up).toContainText('Upcoming');
+  await expect(up).toHaveAttribute('href', /\/termine\/#|^https?:/);
+});
+
+test('Startseite: Haltung & Wirkung mit Partnern', async ({ page }) => {
+  await page.goto('/');
+  const s = page.locator('#haltung');
+  await expect(s.getByRole('heading', { level: 2 })).toHaveText(/Tanz gehört\s*in die Stadt\./);
+  await expect(s.getByRole('listitem')).toHaveCount(6); // 4 Säulen + 2 Auszeichnungen
+  await expect(s.getByRole('link', { name: 'Alle Partner →' })).toHaveAttribute('href', /\/kooperationen\/$/);
 });

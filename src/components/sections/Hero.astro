@@ -1,68 +1,99 @@
 ---
+/**
+ * Hero der Startseite (Entwurf v2): nur Bild. Drei Bühnenfotos, das Netz, oben „Tanz für …“,
+ * in der Mitte der nächste Termin. Die Überschrift der Seite steht im Intro darunter.
+ * Einstellungen: src/settings/hero.ts
+ */
 import { getImage } from 'astro:assets';
-import Tag from '../ui/Tag.astro';
-import Button from '../ui/Button.astro';
 import KeilBar from '../ui/KeilBar.astro';
 import { getVerein } from '../../lib/settings';
-import { getLang, tr, url } from '../../lib/i18n';
-import { heroFotos, knoten, netzAuslauf } from '../../settings/hero';
+import { getUpcoming } from '../../lib/content';
+import { dateParts } from '../../lib/dates';
+import { getLang, loc, tr, url } from '../../lib/i18n';
+import { heroFotos, claim, wortPause, knoten, scrollWegziehen } from '../../settings/hero';
 import type { HeroPhoto } from '../../scripts/hero-net';
 
-// Fotos aus src/settings/hero.ts. Originalgröße behalten: das Skript schneidet nach Pixeln aus.
+// Originalgröße behalten: der Ausschnitt in src/settings/hero.ts ist in Originalpixeln angegeben.
 const files = import.meta.glob<{ default: ImageMetadata }>('../../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
 const photos: HeroPhoto[] = await Promise.all(
   heroFotos.map(async (f) => {
     const file = files[`../../assets/photos/${f.datei}`];
     if (!file) throw new Error(`src/settings/hero.ts: Foto „${f.datei}“ fehlt in src/assets/photos/`);
-    const img = await getImage({ src: file.default, format: 'webp', quality: 82 });
-    return { src: img.src, s: f.ausschnitt, d: f.ziel, box: f.koerper, floorY: f.boden };
+    const img = await getImage({ src: file.default, format: 'webp', quality: 80 });
+    return { src: img.src, s: f.ausschnitt, floor: f.boden };
   }),
 );
 
 const lang = getLang(Astro);
 const verein = getVerein(lang);
-const stats = verein.stats.map((s) => ({ n: s.value, l: s.label }));
+const words = claim[lang].woerter;
+// Die nächsten Termine: der Browser zeigt den ersten, der noch nicht vorbei ist.
+const next = (await getUpcoming(3)).map((e) => {
+  const d = dateParts(e.data.start, lang);
+  return {
+    href: e.data.link ?? url(lang, 'termine', `#${e.id}`),
+    external: !!e.data.link,
+    end: (e.data.end ?? e.data.start).replace(' ', 'T'),
+    day: d.day,
+    dm: `${d.dow} · ${d.month}`,
+    long: d.long,
+    title: loc(e.data, 'title', lang),
+    where: `${e.data.venue} · ${loc(e.data, 'timeLabel', lang) ?? d.time}`,
+  };
+});
 const t = tr(lang, {
-  de: {
-    kicker: `Freie Tanzszene · Dresden · seit ${verein.founded}`, l1: 'Eine Stadt.', l2: 'Ein Netz.',
-    lead: 'TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene. Wir organisieren Training, Bühnenformate, Diskurs und Residenzen und machen den zeitgenössischen Tanz in Dresden sichtbar.',
-    cta: 'Nächste Termine', who: 'Wer im Netz tanzt →', replay: 'Netz neu knüpfen',
-  },
-  en: {
-    kicker: `Independent dance · Dresden · since ${verein.founded}`, l1: 'One city.', l2: 'One network.',
-    lead: "TanzNetzDresden connects more than 70 dance artists of the independent scene. We organise training, stage formats, discourse and residencies and make contemporary dance in Dresden visible.",
-    cta: 'Upcoming events', who: 'Who dances in the network →', replay: 'Re-knot the net',
-  },
+  de: { replay: 'Netz neu knüpfen', next: 'Upcoming', nextLabel: 'Nächster Termin' },
+  en: { replay: 'Re-knot the net', next: 'Upcoming', nextLabel: 'Next event' },
 });
 ---
-<section id="top" class="hero" aria-labelledby="hero-title" data-hero>
+<section id="top" class="hero" aria-label={verein.name} data-hero>
   <canvas
     class="hero__canvas"
     data-hero-canvas
     data-photos={JSON.stringify(photos)}
     data-nodes={knoten}
-    data-fade={netzAuslauf}
+    data-scroll={scrollWegziehen ? '1' : '0'}
     aria-hidden="true"
   ></canvas>
-  <div class="hero__content wrap">
-    <div class="hero__text">
-      <div data-rise="0.1"><Tag color="cyan" class="hero__tag">{t.kicker}</Tag></div>
-      <h1 id="hero-title" class="hero__title" data-hero-title>
-        <span data-sweep="0.3" data-bar="var(--cyan)">{t.l1}</span><br /><em data-sweep="0.55" data-bar="var(--magenta)">{t.l2}</em>
-      </h1>
-      <p class="hero__lead" data-rise="0.95">{t.lead}</p>
-      <div class="hero__actions" data-rise="1.15">
-        <Button href={url(lang, 'home', '#termine')} variant="secondary" size="lg" marker>{t.cta}</Button>
-        <a href={url(lang, 'home', '#netzwerk')} class="mono-link underline-link">{t.who}</a>
-      </div>
-    </div>
-  </div>
+
+  <button type="button" class="replay" data-hero-replay>{t.replay}</button>
+
+  {words.length > 0 && (
+    <p class="claim" data-claim data-words={JSON.stringify(words)} data-pause={wortPause}>
+      <span class="visually-hidden">{claim[lang].lead} {words.join(', ')}</span>
+      <span class="claim__lead" aria-hidden="true" data-claim-lead>{claim[lang].lead}</span>
+      <span class="claim__mask" aria-hidden="true"><span class="claim__word" data-claim-word>{words[0]}</span></span>
+    </p>
+  )}
+
+  {next.map((e, i) => (
+    <a
+      href={e.href}
+      class="up"
+      data-hero-up
+      data-end={e.end}
+      hidden={i > 0}
+      {...(e.external ? { rel: 'noopener', target: '_blank' } : {})}
+    >
+      <span class="up__kicker" aria-hidden="true"><span class="up__sq"></span>{t.next}<span class="up__line"></span></span>
+      <span class="visually-hidden">{t.nextLabel}: {e.long},</span>
+      <span class="up__row">
+        <span class="up__day" aria-hidden="true">{e.day}</span>
+        <span class="up__text">
+          <span class="up__dm" aria-hidden="true">{e.dm}</span>
+          <span class="up__title">{e.title}</span>
+        </span>
+      </span>
+      <span class="up__where">{e.where}<span class="up__arrow" aria-hidden="true">→</span><span class="up__bar" aria-hidden="true"></span></span>
+    </a>
+  ))}
+
   <div class="hero__floor" data-hero-floor>
     <div class="hero__floor-inner">
-      {stats.map((s, i) => (
-        <div class="stat" data-rise={(1.4 + i / 10).toFixed(1)}><span class="stat__n">{s.n}</span><span class="stat__l">{s.l}</span></div>
+      {verein.stats.map((s) => (
+        <div class="stat"><span class="stat__n">{s.value}</span><span class="stat__l">{s.label}</span></div>
       ))}
-      <button type="button" class="replay" data-hero-replay data-rise="1.7">{t.replay}</button>
+      <span class="hero__word" aria-hidden="true">{verein.name}</span>
     </div>
   </div>
   <KeilBar class="hero__keil" />
@@ -70,54 +101,149 @@ const t = tr(lang, {
 
 <script>
   import { HeroNet, type HeroPhoto } from '../../scripts/hero-net';
-  import { introText } from '../../scripts/intro-text';
 
+  const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const canAnimate = !reduced && 'animate' in Element.prototype;
   const root = document.querySelector<HTMLElement>('[data-hero]');
   const canvas = root?.querySelector<HTMLCanvasElement>('[data-hero-canvas]');
+
+  // Nächster Termin: den ersten zeigen, der noch nicht vorbei ist (die Seite wird nur einmal am Tag gebaut).
+  const ups = [...(root?.querySelectorAll<HTMLElement>('[data-hero-up]') ?? [])];
+  const now = Date.now();
+  const up = ups.find((a) => new Date(a.dataset.end ?? '').getTime() >= now) ?? null;
+  ups.forEach((a) => (a.hidden = a !== up));
+
+  // „Tanz für …“: Wörter wechseln, nach einer Runde bleibt das erste stehen.
+  function runClaim(el: HTMLElement) {
+    const word = el.querySelector<HTMLElement>('[data-claim-word]');
+    const lead = el.querySelector<HTMLElement>('[data-claim-lead]');
+    const words = JSON.parse(el.dataset.words ?? '[]') as string[];
+    const pause = Number(el.dataset.pause || 4) * 1000;
+    if (!word || !canAnimate) return;
+    lead?.animate([{ opacity: 0, transform: 'translateX(-64px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: 250, easing: EASE, fill: 'backwards' });
+    word.animate([{ transform: 'translateX(-105%)' }, { transform: 'none' }], { duration: 900, delay: 550, easing: EASE, fill: 'backwards' });
+    if (words.length < 2) return;
+    let i = 0;
+    const tick = () => {
+      if (document.hidden) return void setTimeout(tick, 500);
+      word.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateX(48px)', opacity: 0 }], { duration: 260, easing: 'cubic-bezier(0.7, 0, 0.84, 0)', fill: 'forwards' })
+        .finished.then(() => {
+          i = (i + 1) % words.length;
+          word.textContent = words[i];
+          word.getAnimations().forEach((a) => a.cancel());
+          word.animate([{ transform: 'translateX(-105%)' }, { transform: 'none' }], { duration: 700, easing: EASE });
+          if (i !== 0) setTimeout(tick, 700 + pause);
+        });
+    };
+    setTimeout(tick, 1250 + pause);
+  }
+
   if (root && canvas) {
-    introText(root);
+    const claimEl = root.querySelector<HTMLElement>('[data-claim]');
+    if (claimEl) runClaim(claimEl);
+    if (up && canAnimate) {
+      up.animate([{ opacity: 0, translate: '0 32px' }, { opacity: 1, translate: '0 0' }], { duration: 900, delay: 2100, easing: EASE, fill: 'backwards' });
+    }
+
     const hero = new HeroNet({
       canvas,
       floor: root.querySelector<HTMLElement>('[data-hero-floor]'),
-      title: root.querySelector<HTMLElement>('[data-hero-title]'),
+      focus: up,
       photos: JSON.parse(canvas.dataset.photos ?? '[]') as HeroPhoto[],
-      nodeCount: Number(canvas.dataset.nodes) || 110,
-      netFade: Number(canvas.dataset.fade ?? 1),
+      nodeCount: Number(canvas.dataset.nodes) || 100,
+      scrollWipe: canvas.dataset.scroll === '1',
       interactive: true,
     });
+    if (up) {
+      const on = () => hero.setHover(true);
+      const off = () => hero.setHover(false);
+      up.addEventListener('pointerenter', on);
+      up.addEventListener('pointerleave', off);
+      up.addEventListener('focus', on);
+      up.addEventListener('blur', off);
+    }
     const run = () => hero.start();
-    // Wait for the display font so the headline width (photo anchor) is final.
+    // Wait for the display font so the Upcoming field has its final size.
     document.fonts?.ready.then(run, run) ?? run();
-    root.querySelector('[data-hero-replay]')?.addEventListener('click', () => {
-      introText(root);
-      hero.replay();
-    });
+    root.querySelector('[data-hero-replay]')?.addEventListener('click', () => hero.replay());
   }
 </script>
 
 <style>
   .hero {
-    position: relative; background: var(--purple); color: #fff;
-    min-height: clamp(620px, 88vh, 940px); min-height: clamp(620px, 88svh, 940px);
-    display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden;
+    position: relative; background: var(--purple); color: #fff; overflow: hidden;
+    height: clamp(560px, calc(100vh - 72px), 940px); height: clamp(560px, calc(100svh - 72px), 940px);
+    display: flex; flex-direction: column; justify-content: flex-end;
   }
-  .hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
-  .hero__content { position: relative; z-index: 1; width: 100%; pointer-events: none; padding-top: clamp(40px, 8vh, 96px); }
-  .hero__text { max-width: min(640px, 100%); padding-bottom: clamp(36px, 6vh, 72px); }
-  .hero__text :global(.hero__tag) { margin-bottom: 26px; }
-  .hero__title {
-    font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, 7.8vw, 124px);
-    line-height: 0.9; letter-spacing: -0.035em; margin: 0 0 30px; color: #fff;
+  .hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .replay {
+    position: absolute; z-index: 2; top: 20px; right: var(--gutter);
+    display: flex; align-items: center; gap: 10px; background: transparent;
+    border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff; padding: 9px 14px;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; cursor: pointer; border-radius: 0;
+    transition: border-color var(--dur-base), color var(--dur-base);
   }
-  .hero__title em { font-style: normal; color: var(--magenta); }
-  .hero__lead {
-    font-size: clamp(16px, 1.5vw, 20px); line-height: 1.55; color: rgba(255, 255, 255, 0.88);
-    max-width: 460px; margin: 0 0 34px; text-wrap: pretty;
+  .replay::before { content: ''; width: 8px; height: 8px; background: var(--magenta); }
+  .replay:hover { border-color: var(--magenta); color: var(--cyan); }
+
+  .claim {
+    position: absolute; z-index: 3; left: var(--gutter); right: var(--gutter); top: clamp(28px, 6vh, 72px);
+    margin: 0; pointer-events: none; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(40px, 7vw, 112px); line-height: 0.92; letter-spacing: -0.035em; color: #fff;
   }
-  .hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; pointer-events: auto; }
+  .claim__lead { display: block; }
+  .claim__mask { display: block; overflow: hidden; padding: 0 0.06em 0.08em 0; margin-left: -0.04em; }
+  .claim__word { display: inline-block; padding-left: 0.04em; color: var(--magenta); overflow-wrap: anywhere; }
+
+  .up {
+    position: absolute; z-index: 3; left: 50%; top: 62%; transform: translate(-50%, -50%);
+    max-width: calc(100% - 40px); display: flex; flex-direction: column; align-items: flex-start; color: #fff;
+  }
+  .up[hidden] { display: none; }
+  .up:hover { color: #fff; }
+  .up__kicker {
+    display: flex; align-items: center; gap: 14px; font-family: var(--font-mono); font-size: 16px; font-weight: 700;
+    letter-spacing: 0.24em; text-transform: uppercase; white-space: nowrap;
+  }
+  .up__sq { width: 14px; height: 14px; background: var(--magenta); flex: none; }
+  .up__line { width: 36px; height: 2px; background: var(--magenta); transition: width 550ms var(--ease-out); }
+  .up__row { display: flex; align-items: flex-end; gap: 24px; margin-top: 20px; }
+  .up__day {
+    font-family: var(--font-display); font-weight: 800; flex: none; font-size: clamp(88px, 14vw, 220px);
+    line-height: 0.78; letter-spacing: -0.05em;
+  }
+  .up__text {
+    min-width: 0; display: flex; flex-direction: column; gap: 6px; padding-bottom: 4px;
+    transition: transform 550ms var(--ease-out);
+  }
+  .up__dm {
+    font-family: var(--font-mono); font-weight: 600; text-transform: uppercase; font-size: 15px;
+    letter-spacing: 0.2em; color: var(--cyan);
+  }
+  .up__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4vw, 60px); line-height: 0.95;
+    letter-spacing: -0.035em; text-wrap: balance;
+  }
+  .up__where {
+    position: relative; margin-top: 22px; padding-bottom: 10px; display: flex; align-items: center; gap: 14px;
+    font-family: var(--font-mono); font-weight: 600; text-transform: uppercase; font-size: 14px; letter-spacing: 0.16em;
+  }
+  .up__arrow { font-family: var(--font-display); font-size: 26px; color: var(--magenta); transition: transform 550ms var(--ease-out); }
+  .up__bar {
+    position: absolute; left: 0; right: 0; bottom: 0; height: 2px; background: var(--magenta);
+    transform: scaleX(0); transform-origin: 0 50%; transition: transform 600ms var(--ease-out);
+  }
+  .up:hover .up__line, .up:focus-visible .up__line { width: 56px; }
+  .up:hover .up__text, .up:hover .up__arrow,
+  .up:focus-visible .up__text, .up:focus-visible .up__arrow { transform: translateX(6px); }
+  .up:hover .up__bar, .up:focus-visible .up__bar { transform: scaleX(1); }
+
   .hero__floor { position: relative; z-index: 1; border-top: 1px solid var(--on-dark-rule); }
   .hero__floor-inner {
-    max-width: var(--wrap); margin: 0 auto; padding: 18px var(--gutter) 26px;
+    max-width: var(--wrap); margin: 0 auto; padding: 18px var(--gutter) 30px;
     display: flex; flex-wrap: wrap; align-items: center; gap: 14px 44px;
   }
   .stat { display: flex; align-items: baseline; gap: 10px; }
@@ -126,14 +252,24 @@ const t = tr(lang, {
     font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
     color: var(--on-dark-soft);
   }
-  .replay {
-    margin-left: auto; display: flex; align-items: center; gap: 10px; background: transparent;
-    border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff; padding: 9px 14px;
-    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
-    text-transform: uppercase; cursor: pointer; border-radius: 0;
-    transition: border-color var(--dur-base), color var(--dur-base);
+  .hero__word {
+    margin-left: auto; font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1;
+    letter-spacing: -0.02em; color: rgba(255, 255, 255, 0.7); white-space: nowrap;
   }
-  .replay::before { content: ''; width: 8px; height: 8px; background: var(--magenta); }
-  .replay:hover { border-color: var(--magenta); color: var(--cyan); }
   .hero :global(.hero__keil) { position: absolute; left: 0; bottom: 0; width: 34%; z-index: 2; }
+
+  @media (min-width: 640px) {
+    .claim__word { white-space: nowrap; overflow-wrap: normal; }
+  }
+  @media (max-width: 639px) {
+    /* kein Platz neben der Überschrift; ohne Maus ist das Netz ohnehin ruhig */
+    .replay, .hero__word { display: none; }
+    /* die Zahlen stehen direkt darunter im Intro; so bleibt den Fotos mehr Höhe */
+    .hero__floor-inner { padding: 0 var(--gutter) 28px; }
+    .stat { display: none; }
+    .up { left: var(--gutter); right: var(--gutter); top: auto; bottom: 64px; transform: none; max-width: none; }
+    .up__row { gap: 16px; }
+    .up__kicker { font-size: 13px; }
+    .up__where { font-size: 12px; }
+  }
 </style>

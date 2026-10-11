@@ -43,9 +43,13 @@ Siehe [mehrsprachigkeit.md](mehrsprachigkeit.md#neue-seite-in-beiden-sprachen): 
 
 ## Netz-Animation
 
-`src/scripts/hero-net.ts`. Stellschrauben: `nodeCount` (Dichte, Standard 110), `interactive` (Cursor verknüpft
-sich), die Foto-Positionen in `PHOTO_DEFS` (auf einer 1280×800-Bühne). Die Fotos müssen einen dunklen Bühnenhintergrund
-haben, weil Schwarz ausgestanzt wird.
+`src/scripts/hero-net.ts`, Einstellungen in `src/settings/hero.ts`: die drei Fotos (links hinten, Mitte vorn,
+rechts hinten; auf dem Handy nur die ersten beiden), die Wörter für „Tanz für …“, Standzeit pro Wort, Knotendichte und
+ob die Fotos beim Scrollen wegziehen. Die Fotos müssen einen dunklen Bühnenhintergrund haben, weil Schwarz ausgestanzt
+wird. Das Netz sammelt sich um den nächsten Termin („Upcoming“).
+
+Der Abschnitt „Haltung & Wirkung“ liest seine Texte aus `src/settings/haltung.ts`, die Partnerliste aus
+`src/settings/verein.json` (`partners`).
 
 ## Ideen für die nächsten Schritte
 

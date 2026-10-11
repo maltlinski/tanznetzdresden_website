@@ -1,0 +1,126 @@
+---
+/** Startseite: „Haltung & Wirkung“ – vier Säulen, Auszeichnungen, Partner (Entwurf v2). */
+import { Image } from 'astro:assets';
+import Tag from '../ui/Tag.astro';
+import KeilBar from '../ui/KeilBar.astro';
+import { getVerein } from '../../lib/settings';
+import { getLang, tr, url } from '../../lib/i18n';
+import { haltung, haltungFoto } from '../../settings/haltung';
+
+const lang = getLang(Astro);
+const verein = getVerein(lang);
+const h = haltung[lang];
+const files = import.meta.glob<{ default: ImageMetadata }>('../../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
+const foto = files[`../../assets/photos/${haltungFoto.datei}`];
+if (!foto) throw new Error(`src/settings/haltung.ts: Foto „${haltungFoto.datei}“ fehlt in src/assets/photos/`);
+const t = tr(lang, {
+  de: { awards: 'Ausgezeichnet mit', with: 'Gemeinsam mit', all: 'Alle Partner →' },
+  en: { awards: 'Awarded', with: 'Together with', all: 'All partners →' },
+});
+---
+<section id="haltung" class="haltung" aria-labelledby="haltung-h">
+  <KeilBar color="var(--cyan)" flip class="haltung__keil" />
+  <div class="wrap">
+    <div class="haltung__head">
+      <div data-reveal>
+        <Tag color="cyan">{h.kicker}</Tag>
+        <h2 id="haltung-h" class="haltung__title">{h.l1}<br /><em>{h.l2}</em></h2>
+      </div>
+      <p class="haltung__lead">{h.lead}</p>
+    </div>
+
+    <ol class="pillars">
+      {h.saeulen.map((s, i) => (
+        <li class="pillar">
+          <span class="pillar__n"><span class="pillar__sq" aria-hidden="true"></span>{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="pillar__t">{s.titel}</h3>
+          <p class="pillar__d">{s.text}</p>
+        </li>
+      ))}
+    </ol>
+
+    <div class="haltung__more">
+      <div class="haltung__photo">
+        <Image src={foto.default} alt={haltungFoto.alt[lang]} widths={[480, 760, 1200]} sizes="(min-width: 1000px) 600px, 100vw" />
+        <span class="haltung__corner" aria-hidden="true"></span>
+      </div>
+      <div class="haltung__facts">
+        {h.auszeichnungen.length > 0 && (
+          <div class="haltung__awards">
+            <h3 class="haltung__k">{t.awards}</h3>
+            <ul>{h.auszeichnungen.map((a) => <li>{a}</li>)}</ul>
+          </div>
+        )}
+        <div class="haltung__partners">
+          <h3 class="haltung__k">{t.with}</h3>
+          <p>{verein.partners.join(' · ')}</p>
+          <a class="mono-link underline-link" href={url(lang, 'kooperationen')}>{t.all}</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .haltung {
+    scroll-margin-top: var(--header-h); position: relative; overflow: hidden;
+    background: var(--purple); color: #fff; padding: clamp(72px, 9vw, 128px) 0 0;
+  }
+  .haltung :global(.haltung__keil) { position: absolute; right: 0; top: 0; width: 40%; }
+  .haltung__head {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: 40px clamp(32px, 6vw, 96px); align-items: end; margin-bottom: clamp(48px, 6vw, 80px);
+  }
+  .haltung__head :global(.tag) { margin-bottom: 20px; }
+  .haltung__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6vw, 92px);
+    line-height: 0.92; letter-spacing: -0.035em; margin: 0; color: #fff;
+  }
+  .haltung__title em { font-style: normal; color: var(--cyan); }
+  .haltung__lead { max-width: 520px; margin: 0; font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
+
+  .pillars {
+    list-style: none; margin: 0; padding: 0;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
+    border-top: 1px solid rgba(255, 255, 255, 0.22);
+  }
+  .pillar {
+    display: flex; flex-direction: column; gap: 14px; padding: 30px clamp(0px, 2vw, 28px) 36px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.22);
+  }
+  .pillar__n, .haltung__k {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
+    text-transform: uppercase; color: var(--cyan);
+  }
+  .pillar__n { display: flex; align-items: center; gap: 12px; }
+  .pillar__sq { width: 10px; height: 10px; background: var(--magenta); flex: none; }
+  .pillar__t { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 2.4vw, 34px); line-height: 1.02; letter-spacing: -0.025em; margin: 0; color: #fff; }
+  .pillar__d { margin: 0; font-size: 15px; line-height: 1.6; color: rgba(255, 255, 255, 0.84); text-wrap: pretty; }
+
+  .haltung__more {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
+    gap: 48px clamp(32px, 6vw, 96px); padding: clamp(56px, 7vw, 96px) 0 clamp(64px, 8vw, 112px); align-items: start;
+  }
+  .haltung__photo {
+    position: relative; aspect-ratio: 4 / 3; width: 100%; background: var(--tint); overflow: hidden;
+    clip-path: polygon(0 0, 100% 0, 100% 88%, 88% 100%, 0 100%);
+  }
+  .haltung__photo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .haltung__corner { position: absolute; top: 0; left: 0; width: 34px; height: 34px; background: var(--magenta); }
+  .haltung__facts { display: flex; flex-direction: column; gap: 40px; }
+  .haltung__k { margin: 0; }
+  .haltung__awards {
+    border-top: 3px solid var(--magenta); padding-top: 22px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .haltung__awards ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 14px; }
+  .haltung__awards li {
+    font-family: var(--font-display); font-weight: 700; font-size: clamp(20px, 1.8vw, 24px);
+    line-height: 1.25; letter-spacing: -0.015em; color: #fff;
+  }
+  .haltung__partners {
+    border-top: 1px solid rgba(255, 255, 255, 0.22); padding-top: 22px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .haltung__partners p { margin: 0; font-size: 15px; line-height: 1.7; color: rgba(255, 255, 255, 0.86); }
+  .haltung__partners a { align-self: flex-start; }
+  .haltung__partners a:hover { color: var(--cyan); }
+</style>

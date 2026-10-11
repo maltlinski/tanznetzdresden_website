@@ -64,10 +64,10 @@ const link = (p: (typeof posts)[number]) => url(lang, 'news', `${p.id}/`);
 </script>
 
 <style>
-  .news { scroll-margin-top: var(--header-h); padding: 0 0 var(--section-y); }
+  .news { scroll-margin-top: var(--header-h); padding: var(--section-y) 0; }
   .news__head {
     display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px;
-    border-top: 2px solid var(--purple); padding-top: clamp(40px, 5vw, 64px); margin-bottom: 36px;
+    margin-bottom: 36px;
   }
   .news__head :global(.tag) { margin-bottom: 16px; }
   .news__all { letter-spacing: 0.14em; color: var(--magenta); }
