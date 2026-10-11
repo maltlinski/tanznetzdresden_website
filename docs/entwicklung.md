@@ -50,6 +50,23 @@ den Fokus mit. Bei „Bewegung reduzieren“ bleibt es beim normalen Scrollen. S
 `ANCHOR_DURATION`. Eigene Scroll-Bereiche scrollen weiter selbst; falls nicht, `data-lenis-prevent` ans Element.
 Programmatisch scrollen: `getLenis()?.scrollTo(ziel)` statt `window.scrollTo`.
 
+## Animationen mit GSAP
+
+[GSAP](https://gsap.com) mit ScrollTrigger ist installiert (npm-Paket, kostenlos auch mit allen Plugins, kein
+externer Dienst). Immer über `src/scripts/gsap.ts` importieren: dort ist ScrollTrigger registriert und mit Lenis
+verbunden. Nur in den Komponenten importieren, die es brauchen, dann lädt GSAP nur auf diesen Seiten.
+
+```ts
+import { gsap, EASE, motionOk } from '../scripts/gsap';
+if (motionOk()) {
+  gsap.from('.formats .format', { x: -48, opacity: 0, stagger: 0.06, ease: EASE, scrollTrigger: { trigger: '.formats', start: 'top 80%' } });
+}
+```
+
+Regeln: `EASE` (= `--ease-out`, schnell, kein Federn), nichts bei „Bewegung reduzieren“, Inhalte müssen ohne
+JavaScript sichtbar bleiben (`gsap.from` statt Elemente per CSS zu verstecken). Die bestehenden Auftritte
+(`intro-text.ts`, `reveal.ts`) und die Netz-Animationen laufen ohne GSAP.
+
 ## Netz-Animation
 
 `src/scripts/hero-net.ts`, Einstellungen in `src/settings/hero.ts`: die drei Fotos (links hinten, Mitte vorn,
