@@ -28,6 +28,8 @@
 
 *, *::before, *::after { box-sizing: border-box; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header-h); }
+/* Lenis (src/scripts/smooth-scroll.ts) scrollt selbst – das Browser-Gleiten würde dagegen arbeiten */
+html.lenis { scroll-behavior: auto; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); hyphens: auto; }
 a { color: var(--magenta); text-decoration: none; }
 a:hover { color: var(--purple); }

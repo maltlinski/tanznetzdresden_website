@@ -327,3 +327,21 @@ test('Startseite: Haltung & Wirkung mit Partnern', async ({ page }) => {
   await expect(s.getByRole('listitem')).toHaveCount(6); // 4 Säulen + 2 Auszeichnungen
   await expect(s.getByRole('link', { name: 'Alle Partner →' })).toHaveAttribute('href', /\/kooperationen\/$/);
 });
+
+test('Weiches Scrollen: Lenis aktiv, Sprungmarke landet unter dem Header; aus bei „Bewegung reduzieren“', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Touch scrollt nativ');
+  await page.goto('/');
+  await dismissConsent(page);
+  await expect(page.locator('html')).toHaveClass(/\blenis\b/);
+  const link = page.locator('#intro a[href$="#termine"]').first();
+  await link.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1200);
+  await link.click();
+  await expect(page).toHaveURL(/#termine$/);
+  await expect.poll(() => page.evaluate(() => Math.round(document.getElementById('termine')!.getBoundingClientRect().top))).toBe(70);
+  await expect(page.locator('#termine')).toBeFocused();
+
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.reload();
+  await expect(page.locator('html')).not.toHaveClass(/\blenis\b/);
+});

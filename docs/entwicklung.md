@@ -41,6 +41,15 @@ Siehe [mehrsprachigkeit.md](mehrsprachigkeit.md#neue-seite-in-beiden-sprachen): 
 `src/lib/i18n.ts`, je eine Seite unter `src/pages/` und `src/pages/en/`. Danach ggf. in Header (`nav` in
 `src/components/sections/Header.astro`) und Footer verlinken.
 
+## Scrollen
+
+Weiches Scrollen mit [Lenis](https://github.com/darkroomengineering/lenis) (npm-Paket, wird mit der Website
+ausgeliefert, kein externer Dienst): `src/scripts/smooth-scroll.ts`, eingebunden in `src/layouts/Base.astro`.
+Mausrad und Trackpad gleiten nach, Touch bleibt nativ, Sprungmarken (`#termine`) gleiten unter den Header und nehmen
+den Fokus mit. Bei „Bewegung reduzieren“ bleibt es beim normalen Scrollen. Stellschrauben: `LERP` und
+`ANCHOR_DURATION`. Eigene Scroll-Bereiche scrollen weiter selbst; falls nicht, `data-lenis-prevent` ans Element.
+Programmatisch scrollen: `getLenis()?.scrollTo(ziel)` statt `window.scrollTo`.
+
 ## Netz-Animation
 
 `src/scripts/hero-net.ts`, Einstellungen in `src/settings/hero.ts`: die drei Fotos (links hinten, Mitte vorn,
