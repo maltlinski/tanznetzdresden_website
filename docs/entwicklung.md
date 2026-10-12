@@ -76,7 +76,7 @@ Wo GSAP läuft:
 | Terminlisten (Startseite, Tanzkalender, Terminseite) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
 | Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |
 | Profitraining: Kalender | `keep-up/Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Tagesansicht und Filter-Markierungen animiert |
-| Profitraining: Dozent:innen | `keep-up/Stapel.astro` | Kartenstapel: `position: sticky` + Timeline mit `scrub`, Bewegung „stapel“/„fächer“ in `src/settings/keep-up.ts` |
+| Profitraining: Dozent:innen | `keep-up/Stapel.astro` | Kartenstapel zum Durchblättern (Pfeile, Punkte, Wischen, Pfeiltasten – nicht durch Scrollen): die nächste Karte kommt von rechts, die vorigen rücken nach links; Bewegung „stapel“/„fächer“ in `src/settings/keep-up.ts` |
 | Profitraining: Kopf | `views/ProfitrainingView.astro` | Überschrift mit SplitText (Buchstaben aus einer Maske), Foto als Keil |
 
 ## Netz-Animation

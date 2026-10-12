@@ -349,7 +349,7 @@ test('Weiches Scrollen: Lenis aktiv, Sprungmarke landet unter dem Header; aus be
 
 /** Profitraining-Seite mit festem Datum (Platzhalter-Trainingsplan Sep.–Dez. 2026) */
 async function openTraining(page: Page, path = '/profitraining/') {
-  await page.clock.setFixedTime(new Date('2026-10-12T08:00:00+02:00'));
+  await page.clock.install({ time: new Date('2026-10-12T08:00:00+02:00') }); // Uhr läuft weiter (Animationen)
   await page.goto(path);
   await dismissConsent(page);
 }
@@ -395,22 +395,39 @@ test('Profitraining: Pfeiltasten wandern durch die Trainingstage', async ({ page
   await expect(cal.locator('[data-kcal-date]')).toHaveText('20. Oktober');
 });
 
-test('Profitraining: Kartenstapel, Wechsel zwischen Karte und Kalender', async ({ page }) => {
+test('Profitraining: Kartenstapel zum Durchblättern, Wechsel zwischen Karte und Kalender', async ({ page }) => {
   await openTraining(page);
   const stack = page.locator('[data-stack]');
-  await expect(stack).toHaveClass(/is-stacked/);
+  await expect(stack).toHaveClass(/is-deck/);
   await expect(stack.locator('[data-card]')).toHaveCount(6);
   await expect(page.locator('#dozentin-alexandre-may .card__range')).toHaveText('19.–23. Okt.');
+  const active = stack.locator('[data-card]:not([inert])');
+  await expect(active).toHaveCount(1);
+  await expect(active).toHaveId('dozentin-alexandre-may');
 
-  // „Zur Dozent:in →“ im Kalender holt die Karte im Stapel nach oben
+  // Pfeil weiter: nächste Karte kommt von rechts
+  await stack.getByRole('button', { name: 'Nächste Dozent:in' }).click();
+  await expect(active).toHaveId('dozentin-aurora-fradella');
+  await expect(stack.locator('[data-deck-count]')).toHaveText('02 / 06');
+  await expect(stack.getByRole('button', { name: 'Aurora Fradella' })).toHaveAttribute('aria-current', 'true');
+  // Pfeiltaste und Punkt
+  await page.keyboard.press('ArrowRight');
+  await expect(active).toHaveId('dozentin-charles-washington');
+  await stack.getByRole('button', { name: 'Leon Börgens', exact: true }).click();
+  await expect(active).toHaveId('dozentin-leon-borgens');
+  await expect(stack.getByRole('button', { name: 'Nächste Dozent:in' })).toBeDisabled();
+  await stack.getByRole('button', { name: 'Vorherige Dozent:in' }).click();
+  await expect(active).toHaveId('dozentin-laura-gary');
+
+  // Scrollen allein blättert nicht
+  await page.mouse.wheel(0, 600);
+  await page.waitForTimeout(600);
+  await expect(active).toHaveId('dozentin-laura-gary');
+
+  // „Zur Dozent:in →“ im Kalender schlägt die Karte auf
   await page.locator('#kalender [data-kcal-items] a', { hasText: 'Zur Dozent:in' }).click();
   await expect(page).toHaveURL(/#dozentin-leon-borgens$/);
-  const topCard = () =>
-    page.evaluate(() => {
-      const r = document.querySelector('.stack__inner')!.getBoundingClientRect();
-      return document.elementFromPoint(r.left + r.width * 0.75, r.top + r.height / 2)?.closest('[data-card]')?.id;
-    });
-  await expect.poll(topCard, { timeout: 5000 }).toBe('dozentin-leon-borgens');
+  await expect(active).toHaveId('dozentin-leon-borgens');
 
   // „Termine im Kalender →“ filtert den Kalender auf diese Dozent:in
   await page.locator('#dozentin-leon-borgens').getByRole('link', { name: 'Termine im Kalender →' }).click();
@@ -418,14 +435,42 @@ test('Profitraining: Kartenstapel, Wechsel zwischen Karte und Kalender', async (
   await expect(page.locator('#kalender [data-kcal-items]')).toContainText('Leon Börgens');
 });
 
-test('Profitraining: bei „Bewegung reduzieren“ stehen die Karten untereinander', async ({ page }) => {
+test('Profitraining: Wischen nach links blättert weiter, nach rechts zurück', async ({ page }) => {
+  await openTraining(page);
+  const stage = page.locator('[data-stack] [data-stage]');
+  await stage.scrollIntoViewIfNeeded();
+  await page.waitForTimeout(1200);
+  const box = (await stage.boundingBox())!;
+  const swipe = async (dx: number) => {
+    const y = box.y + box.height * 0.3;
+    const x = box.x + box.width * 0.5;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    await page.mouse.move(x + dx / 2, y, { steps: 4 });
+    await page.mouse.move(x + dx, y, { steps: 4 });
+    await page.mouse.up();
+  };
+  const active = page.locator('[data-stack] [data-card]:not([inert])');
+  await swipe(-160);
+  await expect(active).toHaveId('dozentin-aurora-fradella');
+  await swipe(160);
+  await expect(active).toHaveId('dozentin-alexandre-may');
+});
+
+test('Profitraining: ohne JavaScript stehen die Karten untereinander, bei „Bewegung reduzieren“ blättert der Stapel ohne Animation', async ({ browser, page }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const nojs = await ctx.newPage();
+  await nojs.goto('/profitraining/');
+  const tops = await nojs.locator('[data-stack] [data-card]').evaluateAll((cards) => cards.map((c) => c.getBoundingClientRect().top));
+  for (let i = 1; i < tops.length; i++) expect(tops[i]).toBeGreaterThan(tops[i - 1] + 100);
+  await expect(nojs.locator('.deck__controls')).toBeHidden();
+  await ctx.close();
+
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await openTraining(page);
-  const stack = page.locator('[data-stack]');
-  await expect(stack).not.toHaveClass(/is-stacked/);
-  const tops = await stack.locator('[data-card]').evaluateAll((cards) => cards.map((c) => c.getBoundingClientRect().top));
-  for (let i = 1; i < tops.length; i++) expect(tops[i]).toBeGreaterThan(tops[i - 1] + 100);
   await expect(page.locator('#ku-h1')).toHaveText(/KEEP UP\s*Training\./);
+  await page.getByRole('button', { name: 'Nächste Dozent:in' }).click();
+  await expect(page.locator('[data-stack] [data-card]:not([inert])')).toHaveId('dozentin-aurora-fradella');
 });
 
 test('Profitraining: englische Fassung und Verlinkung aus Menü und Formaten', async ({ page, isMobile }) => {

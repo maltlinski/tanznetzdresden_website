@@ -11,7 +11,7 @@ export const keepUp = {
     lead: 'Drei- bis fünfmal pro Woche trainieren professionelle Tänzer:innen der freien Szene gemeinsam in der TENZA. Jede Woche unterrichtet eine andere Dozent:in aus Dresden oder von außerhalb. Dazu kommen Workshops am Wochenende.',
     /** Überschrift über dem Kartenstapel */
     saison: 'Herbst 2026',
-    stapelText: 'Jede Woche unterrichtet eine andere Dozent:in. Scroll durch den Stapel, um alle kennenzulernen.',
+    stapelText: 'Jede Woche unterrichtet eine andere Dozent:in. Blättere mit den Pfeilen oder wische durch den Stapel, um alle kennenzulernen.',
     wann: 'Mo–Fr · 10:00–11:30',
     wannText: 'Drei bis fünf Einheiten pro Woche. Der Kalender zeigt, an welchen Tagen trainiert wird.',
     woText: 'Workshops finden je nach Format auch in Partnerräumen statt.',
@@ -27,7 +27,7 @@ export const keepUp = {
     l2: 'Training.',
     lead: 'Three to five times a week, professional dancers from the independent scene train together at TENZA. Each week a different teacher from Dresden or elsewhere leads the class. On top of that there are weekend workshops.',
     saison: 'Autumn 2026',
-    stapelText: 'Each week a different teacher leads the class. Scroll through the stack to meet them all.',
+    stapelText: 'Each week a different teacher leads the class. Use the arrows or swipe through the stack to meet them all.',
     wann: 'Mon–Fri · 10:00–11:30',
     wannText: 'Three to five classes a week. The calendar shows which days we train.',
     woText: 'Depending on the format, workshops also take place at partner venues.',
