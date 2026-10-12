@@ -2,12 +2,12 @@
 import { Image } from 'astro:assets';
 import Tag from '../ui/Tag.astro';
 import { getFormate } from '../../lib/content';
-import { getLang, loc, tr } from '../../lib/i18n';
+import { getLang, loc, tr, url } from '../../lib/i18n';
 
 const lang = getLang(Astro);
 const t = tr(lang, {
-  de: { kicker: 'Was wir machen', h: 'Formate & Reihen', intro: 'Getragen von Arbeitsgruppen aus dem Netzwerk. Jedes Format hat eine eigene AG, die es plant und weiterentwickelt.' },
-  en: { kicker: 'What we do', h: 'Formats & series', intro: 'Run by working groups from the network. Each format has its own group that plans and develops it.' },
+  de: { kicker: 'Was wir machen', h: 'Formate & Reihen', intro: 'Getragen von Arbeitsgruppen aus dem Netzwerk. Jedes Format hat eine eigene AG, die es plant und weiterentwickelt.', more: 'Mehr zu' },
+  en: { kicker: 'What we do', h: 'Formats & series', intro: 'Run by working groups from the network. Each format has its own group that plans and develops it.', more: 'More on' },
 });
 const items = (await getFormate()).map((f, i) => ({
   ...f.data,
@@ -16,6 +16,7 @@ const items = (await getFormate()).map((f, i) => ({
   title: loc(f.data, 'title', lang),
   since: loc(f.data, 'since', lang),
   summary: loc(f.data, 'summary', lang),
+  page: f.data.seite ? url(lang, f.data.seite) : undefined,
 }));
 ---
 <section id="formate" class="section formate surface-tint" aria-labelledby="formate-h">
@@ -38,7 +39,10 @@ const items = (await getFormate()).map((f, i) => ({
                 <span class="format__mk" aria-hidden="true"></span>
                 <h3 class="format__t">{f.title}</h3>
               </button>
-              <p class="format__d" id={`format-d-${i}`}>{f.summary}</p>
+              <div class="format__d" id={`format-d-${i}`}>
+                <p>{f.summary}</p>
+                {f.page && <a class="mono-link format__link" href={f.page}>{t.more} {f.title} →</a>}
+              </div>
             </div>
             <span class="format__since">{f.since}</span>
           </li>
@@ -46,7 +50,8 @@ const items = (await getFormate()).map((f, i) => ({
       </ul>
 
       <div class="format-photo" aria-hidden="true">
-        <div class="format-photo__frame">
+        <div class="format-photo__frame" data-format-frame>
+          <div class="format-photo__track" data-format-track>
           {items.map((f, i) => (
             <Image
               src={f.image}
@@ -58,6 +63,7 @@ const items = (await getFormate()).map((f, i) => ({
               data-index={i}
             />
           ))}
+          </div>
           <div class="format-photo__sq"></div>
           <div class="format-photo__cap">
             <span class="format-photo__meta" data-format-meta>{items[0].n} · {items[0].since}</span>
@@ -70,25 +76,57 @@ const items = (await getFormate()).map((f, i) => ({
 </section>
 
 <script>
+  import { gsap, EASE, motionOk } from '../../scripts/gsap';
+
   const root = document.querySelector<HTMLElement>('[data-formats]');
   if (root) {
     const rows = [...root.querySelectorAll<HTMLElement>('.format')];
     const imgs = [...root.querySelectorAll<HTMLElement>('.format-photo__img')];
+    const frame = root.querySelector<HTMLElement>('[data-format-frame]');
+    const track = root.querySelector<HTMLElement>('[data-format-track]');
     const meta = root.querySelector<HTMLElement>('[data-format-meta]');
     const title = root.querySelector<HTMLElement>('[data-format-title]');
+    const motion = motionOk();
     let active = 0;
+
+    // Mit GSAP übernimmt das Skript den Bildwechsel (sonst: CSS-Übergang)
+    if (motion) root.classList.add('is-gsap');
 
     const pick = (i: number) => {
       if (i === active) return;
+      const prev = active;
       active = i;
       rows.forEach((row, j) => {
         row.classList.toggle('is-active', j === i);
         row.querySelector('.format__head')?.setAttribute('aria-expanded', String(j === i));
       });
-      imgs.forEach((img, j) => img.classList.toggle('is-active', j === i));
       const row = rows[i];
       if (meta) meta.textContent = `${row.querySelector('.format__n')?.textContent} · ${row.querySelector('.format__since')?.textContent}`;
       if (title) title.textContent = row.querySelector('.format__t')?.textContent ?? '';
+
+      if (!motion) {
+        imgs.forEach((img, j) => img.classList.toggle('is-active', j === i));
+        return;
+      }
+      // Neues Foto wischt als Keil von links über das alte, das darunter stehen bleibt
+      const img = imgs[i];
+      gsap.killTweensOf(imgs);
+      imgs.forEach((el, j) => {
+        el.classList.toggle('is-active', j === i);
+        el.classList.toggle('is-prev', j === prev);
+      });
+      gsap.fromTo(
+        img,
+        { clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)', scale: 1.14 },
+        {
+          clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', scale: 1, duration: 0.85, ease: EASE,
+          onComplete: () => imgs[prev].classList.remove('is-prev'),
+        },
+      );
+      gsap.fromTo([meta, title], { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: EASE, stagger: 0.05, clearProps: 'transform,opacity' });
+      // Beschreibung klappt auf
+      const more = row.querySelector<HTMLElement>('.format__d');
+      if (more) gsap.from(more, { height: 0, opacity: 0, duration: 0.5, ease: EASE, clearProps: 'height,opacity' });
     };
 
     const canHover = matchMedia('(hover: hover)').matches;
@@ -97,6 +135,28 @@ const items = (await getFormate()).map((f, i) => ({
       row.addEventListener('click', () => pick(i));
       row.querySelector('.format__head')?.addEventListener('focus', () => pick(i));
     });
+
+    if (motion) {
+      // Zeilen laufen nacheinander von links ein
+      gsap.from(rows, {
+        x: -56, opacity: 0, duration: 0.9, ease: EASE, stagger: 0.08, clearProps: 'transform,opacity',
+        scrollTrigger: { trigger: root, start: 'top 80%', once: true },
+      });
+      // Bildrahmen öffnet sich als Keil
+      if (frame) {
+        gsap.from(frame, {
+          clipPath: 'polygon(0% 0%, 0% 0%, 0% 88%, 0% 100%, 0% 100%)', duration: 1.1, ease: EASE, clearProps: 'clipPath',
+          scrollTrigger: { trigger: frame, start: 'top 85%', once: true },
+        });
+      }
+      // Leichte Parallaxe: das Foto wandert langsamer als die Seite
+      if (track) {
+        gsap.fromTo(track, { yPercent: -5 }, {
+          yPercent: 5, ease: 'none',
+          scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: true },
+        });
+      }
+    }
   }
 </script>
 
@@ -124,7 +184,10 @@ const items = (await getFormate()).map((f, i) => ({
     font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 3.4vw, 46px);
     line-height: 1; letter-spacing: -0.03em; margin: 0; color: var(--purple); transition: color 200ms;
   }
-  .format__d { margin: 14px 0 4px; max-width: 480px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
+  .format__d { overflow: hidden; }
+  .format__d p { margin: 14px 0 4px; max-width: 480px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
+  .format__link { display: inline-block; margin-top: 10px; color: var(--magenta-2); }
+  .format__link:hover { color: var(--purple); }
   .format__since {
     font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
     text-transform: uppercase; color: var(--ink-soft); white-space: nowrap;
@@ -145,6 +208,10 @@ const items = (await getFormate()).map((f, i) => ({
     transition: clip-path 620ms var(--ease-out);
   }
   .format-photo__frame :global(.format-photo__img.is-active) { clip-path: inset(0 0 0 0); z-index: 1; }
+  /* GSAP-Bildwechsel (Skript): leicht vergrößerte Spur für die Parallaxe, altes Foto bleibt darunter */
+  .format-photo__track { position: absolute; inset: -6% 0; }
+  .is-gsap .format-photo__frame :global(.format-photo__img) { transition: none; }
+  .is-gsap .format-photo__frame :global(.format-photo__img.is-prev) { clip-path: none; z-index: 0; }
   .format-photo__sq { position: absolute; z-index: 2; top: 0; left: 0; width: 38px; height: 38px; background: var(--magenta); }
   .format-photo__cap {
     position: absolute; z-index: 2; left: 0; bottom: 0; right: 12%; background: color-mix(in srgb, var(--purple) 90%, transparent);

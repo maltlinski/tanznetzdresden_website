@@ -1,6 +1,6 @@
 ---
 # PLATZHALTER aus dem Entwurf – vor dem Livegang durch echte Termine ersetzen
-title: "KEEP UP · Workshop"
+title: "KEEP UP · Workshop Floorwork"
 start: "2026-11-14 11:00"
 end: "2026-11-14 15:00"
 venue: "TENZA Schmiede"
@@ -9,5 +9,8 @@ category: Training
 teaser: "Anmeldung über die Telegram-Gruppe"
 teaser_en: "Registration via the Telegram group"
 timeLabel_en: "11:00–15:00"
+title_en: "KEEP UP · Floorwork workshop"
+people: [aurora-fradella]
+format: keep-up
 news: keep-up-herbst
 ---

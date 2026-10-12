@@ -45,6 +45,7 @@ collections:
       - { name: people, label: 'Mitwirkende aus dem Netzwerk', widget: relation, collection: personen, file: personen, search_fields: ['personen.*.name'], value_field: 'personen.*.id', display_fields: ['personen.*.name'], multiple: true, required: false }
       - { name: link, label: 'Link (Tickets, Anmeldung)', widget: string, required: false }
       - { name: news, label: 'Passender News-Beitrag (optional)', widget: relation, collection: news, search_fields: [title], value_field: '{{slug}}', display_fields: [title], required: false }
+      - { name: format, label: 'Gehört zum Format (optional, „keep-up“ = Workshop im Profitrainings-Kalender)', widget: relation, collection: formate, search_fields: [title], value_field: '{{slug}}', display_fields: [title], required: false }
       - { name: body, label: 'Beschreibung (optional, für die Terminseite)', widget: markdown, required: false }
       - { name: draft, label: Entwurf (nicht anzeigen), widget: boolean, default: false, required: false }
 
@@ -113,6 +114,7 @@ collections:
       - { name: image, label: Foto, widget: image }
       - { name: alt, label: 'Bildbeschreibung (für Screenreader)', widget: string }
       - { name: alt_en, label: 'Bildbeschreibung Englisch', widget: string, required: false }
+      - { name: seite, label: 'Eigene Seite (optional)', widget: select, options: [profitraining], required: false }
       - { name: body, label: Ausführlicher Text, widget: markdown, required: false }
 
   - name: personen
@@ -144,6 +146,41 @@ collections:
               - { name: vimeo, label: 'Vimeo / Video', widget: string, required: false }
               - { name: email, label: 'Öffentliche E-Mail (wird verschlüsselt)', widget: string, required: false }
               - { name: featured, label: Auf der Startseite zeigen, widget: boolean, default: true, required: false }
+
+  - name: keepup
+    label: 'KEEP UP · Profitraining'
+    files:
+      - name: wochen
+        label: Trainingsplan (Wochen)
+        file: src/content/keep-up/wochen.yaml
+        fields:
+          - name: wochen
+            label: Wochen
+            widget: list
+            root: true
+            summary: '{{id}} · {{dozent}}'
+            fields:
+              - { name: id, label: 'Montag der Woche (JJJJ-MM-TT)', widget: string, pattern: ['^\d{4}-\d{2}-\d{2}$', 'Format: 2027-01-11'] }
+              - { name: dozent, label: 'Dozent:in', widget: relation, collection: keepup, file: dozentinnen, search_fields: ['dozentinnen.*.id'], value_field: 'dozentinnen.*.id', display_fields: ['dozentinnen.*.id'] }
+              - { name: tage, label: Trainingstage, widget: select, multiple: true, options: [mo, di, mi, do, fr, sa, so] }
+              - { name: zeit, label: 'Uhrzeit (optional, Standard 10:00–11:30)', widget: string, required: false }
+              - { name: ort, label: 'Ort (optional, Standard aus den Vereinsdaten)', widget: string, required: false }
+      - name: dozentinnen
+        label: Dozent:innen
+        file: src/content/keep-up/dozentinnen.yaml
+        fields:
+          - name: dozentinnen
+            label: Dozent:innen
+            widget: list
+            root: true
+            summary: '{{id}} · {{stil}}'
+            fields:
+              - { name: id, label: 'Person', widget: relation, collection: personen, file: personen, search_fields: ['personen.*.name'], value_field: 'personen.*.id', display_fields: ['personen.*.name'] }
+              - { name: stil, label: 'Stil / Schwerpunkt', widget: string }
+              - { name: stil_en, label: 'Stil Englisch (optional)', widget: string, required: false }
+              - { name: text, label: 'Text zum Unterricht (2–3 Sätze)', widget: text }
+              - { name: text_en, label: 'Text Englisch (optional)', widget: text, required: false }
+              - { name: foto, label: 'Foto (optional)', widget: image, required: false, media_folder: /src/assets/keep-up, public_folder: ../../assets/keep-up }
 
   - name: kooperation
     label: Kooperationspartner

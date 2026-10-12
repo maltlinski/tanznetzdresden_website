@@ -59,12 +59,31 @@ let lastMonth = '';
 </ul>
 
 <script>
+  import { gsap, ScrollTrigger, EASE, motionOk } from '../scripts/gsap';
+
   // Vergangene Termine ausblenden, auch wenn die Seite seit dem letzten Build nicht neu gebaut wurde.
   const now = Date.now();
   document.querySelectorAll<HTMLElement>('[data-event-list] .event[data-end]').forEach((li) => {
     const end = Date.parse(li.dataset.end ?? '');
     if (end && end + 3 * 3600_000 < now) li.remove();
   });
+
+  // Termine laufen beim Scrollen gruppenweise von links ein, das Datum steigt kurz nach
+  if (motionOk()) {
+    document.querySelectorAll<HTMLElement>('[data-event-list]').forEach((list) => {
+      const rows = [...list.querySelectorAll<HTMLElement>('.event, .events__month')];
+      gsap.set(rows, { opacity: 0, x: -40 });
+      ScrollTrigger.batch(rows, {
+        start: 'top 92%',
+        once: true,
+        onEnter: (batch) => {
+          gsap.to(batch, { opacity: 1, x: 0, duration: 0.8, ease: EASE, stagger: 0.07, clearProps: 'transform,opacity' });
+          const days = batch.flatMap((r) => [...r.querySelectorAll('.event__day')]);
+          gsap.from(days, { yPercent: 60, opacity: 0, duration: 0.7, ease: EASE, stagger: 0.07, delay: 0.12, clearProps: 'transform,opacity' });
+        },
+      });
+    });
+  }
 </script>
 
 <style>

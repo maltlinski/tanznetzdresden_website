@@ -65,7 +65,19 @@ if (motionOk()) {
 
 Regeln: `EASE` (= `--ease-out`, schnell, kein Federn), nichts bei „Bewegung reduzieren“, Inhalte müssen ohne
 JavaScript sichtbar bleiben (`gsap.from` statt Elemente per CSS zu verstecken). Die bestehenden Auftritte
-(`intro-text.ts`, `reveal.ts`) und die Netz-Animationen laufen ohne GSAP.
+(`intro-text.ts`, `reveal.ts`) und die Netz-Animationen laufen ohne GSAP. Weitere Plugins (Flip, SplitText …)
+direkt aus `gsap/…` importieren und dort registrieren, wo sie gebraucht werden.
+
+Wo GSAP läuft:
+
+| Stelle | Datei | Was passiert |
+|---|---|---|
+| Formate (Startseite) | `sections/Formats.astro` | Zeilen laufen nacheinander ein, Bildrahmen öffnet sich als Keil, Foto mit leichter Parallaxe, neues Foto wischt über das alte, Beschreibung klappt auf |
+| Terminlisten (Startseite, Tanzkalender, Terminseite) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
+| Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |
+| Profitraining: Kalender | `keep-up/Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Tagesansicht und Filter-Markierungen animiert |
+| Profitraining: Dozent:innen | `keep-up/Stapel.astro` | Kartenstapel: `position: sticky` + Timeline mit `scrub`, Bewegung „stapel“/„fächer“ in `src/settings/keep-up.ts` |
+| Profitraining: Kopf | `views/ProfitrainingView.astro` | Überschrift mit SplitText (Buchstaben aus einer Maske), Foto als Keil |
 
 ## Netz-Animation
 
@@ -79,7 +91,7 @@ Der Abschnitt „Haltung & Wirkung“ liest seine Texte aus `src/settings/haltun
 
 ## Ideen für die nächsten Schritte
 
-- Einzelseiten je Format (`src/pages/formate/[id].astro`). Termine haben schon eigene Seiten (`src/views/TerminView.astro`).
+- Einzelseiten für weitere Formate (wie `/profitraining/`: Route in `src/lib/i18n.ts`, `seite:` im Format). Termine haben schon eigene Seiten (`src/views/TerminView.astro`).
 - Pressebereich mit Download-Paket.
 - Ausschreibungen & Open Calls als eigene Sammlung mit Ablaufdatum.
 - Interner Bereich auf Englisch.

@@ -28,7 +28,7 @@ const [feeA, feeB] = t.fee.split('/').map((s) => s.trim());
       <h2 id="training-h" class="training__title">{s.l1}<br /><em>{s.l2}</em></h2>
       <p class="training__lead">{s.lead}</p>
       <div class="training__actions">
-        <Button href={url(lang, 'termine', '#kategorie-training')} variant="secondary" marker>{s.plan}</Button>
+        <Button href={url(lang, 'profitraining', '#kalender')} variant="secondary" marker>{s.plan}</Button>
         {verein.social.telegram && (
           <a href={verein.social.telegram} class="mono-link underline-link" rel="noopener">{s.tg}</a>
         )}

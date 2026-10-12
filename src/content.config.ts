@@ -11,6 +11,7 @@
 import { defineCollection, reference, type SchemaContext } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
+import { routes, type RouteKey } from './lib/i18n';
 
 const localDateTime = z
   .string()
@@ -38,6 +39,8 @@ const termine = defineCollection({
     link: z.url().optional(),
     /** Passender News-Beitrag (Dateiname ohne .md aus src/content/news/de/), z. B. "studio-round-9" */
     news: z.string().optional(),
+    /** Gehört zu einem Format (Dateiname ohne .md aus src/content/formate/). `keep-up` = Workshop im Profitrainings-Kalender */
+    format: reference('formate').optional(),
     draft: z.boolean().default(false),
   }),
 });
@@ -56,7 +59,38 @@ const formate = defineCollection({
       image: image(),
       alt: z.string(),
       alt_en: z.string().optional(),
+      /** Eigene Seite des Formats (Route aus src/lib/i18n.ts), z. B. "profitraining" */
+      seite: z.enum(Object.keys(routes) as [RouteKey, ...RouteKey[]]).optional(),
     }),
+});
+
+/**
+ * KEEP UP (Profitraining, /profitraining/): Dozent:innen im Kartenstapel und Trainingswochen im Kalender.
+ * Workshops sind normale Termine mit `format: keep-up`.
+ */
+const keepUpDozentinnen = defineCollection({
+  loader: file('./src/content/keep-up/dozentinnen.yaml'),
+  schema: ({ image }) =>
+    z.object({
+      /** Schwerpunkt im Unterricht, z. B. Contemporary */
+      stil: z.string(),
+      stil_en: z.string().optional(),
+      /** zwei bis drei Sätze zum Unterricht */
+      text: z.string(),
+      text_en: z.string().optional(),
+      /** Porträt (optional, sonst Profilfoto, sonst Platzhalter) */
+      foto: image().optional(),
+    }),
+});
+
+const keepUpWochen = defineCollection({
+  loader: file('./src/content/keep-up/wochen.yaml'),
+  schema: z.object({
+    dozent: reference('keepUpDozentinnen'),
+    tage: z.array(z.enum(['mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'])).min(1),
+    zeit: z.string().regex(/^\d{2}:\d{2}\s*[–-]\s*\d{2}:\d{2}$/, 'Format: 10:00–11:30').default('10:00–11:30'),
+    ort: z.string().optional(),
+  }),
 });
 
 const personen = defineCollection({
@@ -176,4 +210,4 @@ const newsEn = defineCollection({
   schema: ({ image }) => z.object(newsTranslatable(image)).partial(),
 });
 
-export const collections = { termine, formate, personen, seiten, orte, partnergruppen, news, newsEn };
+export const collections = { termine, formate, keepUpDozentinnen, keepUpWochen, personen, seiten, orte, partnergruppen, news, newsEn };

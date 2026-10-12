@@ -8,7 +8,7 @@ import gruppenRaw from '../content/kooperation/gruppen.yaml?raw';
  * Sammlungen aus einer YAML-Datei kommen alphabetisch nach id zurück.
  * Für die Anzeige gilt aber die Reihenfolge in der Datei – so, wie man sie dort sieht.
  */
-function inFileOrder<T extends { id: string }>(entries: T[], raw: string): T[] {
+export function inFileOrder<T extends { id: string }>(entries: T[], raw: string): T[] {
   const order = [...raw.matchAll(/^-\s+id:\s*["']?([^"'\s#]+)/gm)].map((m) => m[1]);
   const pos = (id: string) => {
     const i = order.indexOf(id);

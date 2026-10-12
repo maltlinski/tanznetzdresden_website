@@ -29,6 +29,12 @@ const filters: { value: 'Alle' | (typeof eventCategories)[number]; count: number
 <p class="visually-hidden" role="status" data-event-status={target}></p>
 
 <script>
+  import { Flip } from 'gsap/Flip';
+  import { gsap, ScrollTrigger, EASE, motionOk } from '../scripts/gsap';
+
+  gsap.registerPlugin(Flip);
+  const motion = motionOk();
+
   document.querySelectorAll<HTMLElement>('[data-event-filter]').forEach((group) => {
     const id = group.dataset.eventFilter ?? '';
     const list = document.getElementById(id);
@@ -39,6 +45,9 @@ const filters: { value: 'Alle' | (typeof eventCategories)[number]; count: number
       if (!btn) return;
       const value = btn.dataset.value;
       group.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+      // Liste gleitet in die neue Ordnung (GSAP Flip): bleibende Termine rücken nach, neue laufen ein
+      const items = [...list.querySelectorAll<HTMLElement>('.event, [data-month], [data-empty]')];
+      const state = motion ? Flip.getState(items) : null;
       let shown = 0;
       list.querySelectorAll<HTMLElement>('.event').forEach((li) => {
         const show = value === 'Alle' || li.dataset.cat === value;
@@ -58,6 +67,18 @@ const filters: { value: 'Alle' | (typeof eventCategories)[number]; count: number
       const empty = list.querySelector<HTMLElement>('[data-empty]');
       if (empty) empty.hidden = shown > 0;
       if (status) status.textContent = `${shown} ${group.dataset.msgShown ?? ''}`;
+      if (state) {
+        gsap.killTweensOf(items);
+        Flip.from(state, {
+          targets: items,
+          duration: 0.6,
+          ease: EASE,
+          stagger: 0.02,
+          onEnter: (els) => gsap.fromTo(els, { opacity: 0, x: -32 }, { opacity: 1, x: 0, duration: 0.6, ease: EASE, stagger: 0.04, clearProps: 'transform,opacity' }),
+          onLeave: (els) => gsap.to(els, { opacity: 0, duration: 0.2 }),
+          onComplete: () => ScrollTrigger.refresh(),
+        });
+      }
     });
   });
 </script>

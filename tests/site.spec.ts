@@ -4,10 +4,10 @@ import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
 import { supabase } from '../src/settings/supabase';
 
 const pages = [
-  '/', '/termine/', '/termine/2026-10-15-studio-round-9/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
+  '/', '/termine/', '/termine/2026-10-15-studio-round-9/', '/profitraining/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
   '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
   '/intern/news/', '/intern/news/bearbeiten/',
-  '/en/', '/en/events/', '/en/events/2026-10-15-studio-round-9/', '/en/news/', '/en/news/neues-koordinationsteam/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
+  '/en/', '/en/events/', '/en/events/2026-10-15-studio-round-9/', '/en/training/', '/en/news/', '/en/news/neues-koordinationsteam/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
   '/en/contact/', '/en/partners/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
 ];
 
@@ -94,7 +94,8 @@ test('Terminfilter zeigt nur die gewählte Kategorie', async ({ page }) => {
   await page.getByRole('group', { name: /Termine/ }).getByRole('button', { name: /^Training/ }).click();
   const visible = page.locator('#home-events .event:visible');
   await expect(visible.first()).toBeVisible();
-  for (const badge of await visible.locator('.badge').allTextContents()) expect(badge).toBe('Training');
+  // ausgeblendete Termine gleiten kurz heraus (GSAP Flip), danach stehen nur noch Trainings da
+  await expect.poll(async () => [...new Set(await visible.locator('.badge').allTextContents())]).toEqual(['Training']);
 });
 
 test('Kalender-Feed ist gültiges iCalendar', async ({ request }) => {
@@ -344,4 +345,97 @@ test('Weiches Scrollen: Lenis aktiv, Sprungmarke landet unter dem Header; aus be
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.reload();
   await expect(page.locator('html')).not.toHaveClass(/\blenis\b/);
+});
+
+/** Profitraining-Seite mit festem Datum (Platzhalter-Trainingsplan Sep.–Dez. 2026) */
+async function openTraining(page: Page, path = '/profitraining/') {
+  await page.clock.setFixedTime(new Date('2026-10-12T08:00:00+02:00'));
+  await page.goto(path);
+  await dismissConsent(page);
+}
+
+test('Profitraining: Kalender mit Tagesansicht, Monaten und Filter nach Dozent:in', async ({ page }) => {
+  await openTraining(page);
+  const cal = page.locator('#kalender');
+  await expect(cal.locator('[data-kcal-label]')).toHaveText('Oktober 2026');
+  // nächster Trainingstag ist vorgewählt
+  await expect(cal.getByRole('button', { name: /^Montag, 12\. Oktober 2026: Training mit Leon Börgens/ })).toHaveAttribute('aria-pressed', 'true');
+  await expect(cal.locator('[data-kcal-items]')).toContainText('Leon Börgens');
+  await expect(page.locator('[data-next-date]')).toHaveText('Mo · 12. Oktober');
+
+  // Tag wählen
+  await cal.getByRole('button', { name: /^Montag, 19\. Oktober 2026/ }).click();
+  await expect(cal.locator('[data-kcal-date]')).toHaveText('19. Oktober');
+  await expect(cal.locator('[data-kcal-items]')).toContainText('Alexandre May');
+
+  // Monat weiter: Workshop im November
+  await cal.getByRole('button', { name: 'Nächster Monat' }).click();
+  await expect(cal.locator('[data-kcal-label]')).toHaveText('November 2026');
+  await cal.getByRole('button', { name: /^Samstag, 14\. November 2026: KEEP UP · Workshop Floorwork mit Aurora Fradella/ }).click();
+  await expect(cal.locator('[data-kcal-items] a', { hasText: 'Zum Workshop' })).toHaveAttribute('href', /\/termine\/2026-11-14-keep-up-workshop\/$/);
+
+  // Filter: nur Charles – andere Tage sind gesperrt, Auswahl springt auf den nächsten Termin von Charles
+  await cal.getByRole('button', { name: 'Charles Washington', exact: true }).click();
+  await expect(cal.getByRole('button', { name: 'Charles Washington', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(cal.locator('[data-kcal-label]')).toHaveText('November 2026');
+  await expect(cal.locator('[data-kcal-date]')).toHaveText('2. November');
+  await expect(cal.getByRole('button', { name: /^Montag, 9\. November 2026/ })).toBeDisabled();
+});
+
+test('Profitraining: Pfeiltasten wandern durch die Trainingstage', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Tastatur');
+  await openTraining(page);
+  const cal = page.locator('#kalender');
+  await cal.getByRole('button', { name: /^Montag, 12\. Oktober 2026/ }).focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(cal.getByRole('button', { name: /^Dienstag, 13\. Oktober 2026/ })).toBeFocused();
+  await page.keyboard.press('ArrowDown');
+  await expect(cal.getByRole('button', { name: /^Dienstag, 20\. Oktober 2026/ })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(cal.locator('[data-kcal-date]')).toHaveText('20. Oktober');
+});
+
+test('Profitraining: Kartenstapel, Wechsel zwischen Karte und Kalender', async ({ page }) => {
+  await openTraining(page);
+  const stack = page.locator('[data-stack]');
+  await expect(stack).toHaveClass(/is-stacked/);
+  await expect(stack.locator('[data-card]')).toHaveCount(6);
+  await expect(page.locator('#dozentin-alexandre-may .card__range')).toHaveText('19.–23. Okt.');
+
+  // „Zur Dozent:in →“ im Kalender holt die Karte im Stapel nach oben
+  await page.locator('#kalender [data-kcal-items] a', { hasText: 'Zur Dozent:in' }).click();
+  await expect(page).toHaveURL(/#dozentin-leon-borgens$/);
+  const topCard = () =>
+    page.evaluate(() => {
+      const r = document.querySelector('.stack__inner')!.getBoundingClientRect();
+      return document.elementFromPoint(r.left + r.width * 0.75, r.top + r.height / 2)?.closest('[data-card]')?.id;
+    });
+  await expect.poll(topCard, { timeout: 5000 }).toBe('dozentin-leon-borgens');
+
+  // „Termine im Kalender →“ filtert den Kalender auf diese Dozent:in
+  await page.locator('#dozentin-leon-borgens').getByRole('link', { name: 'Termine im Kalender →' }).click();
+  await expect(page.locator('#kalender').getByRole('button', { name: 'Leon Börgens', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#kalender [data-kcal-items]')).toContainText('Leon Börgens');
+});
+
+test('Profitraining: bei „Bewegung reduzieren“ stehen die Karten untereinander', async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await openTraining(page);
+  const stack = page.locator('[data-stack]');
+  await expect(stack).not.toHaveClass(/is-stacked/);
+  const tops = await stack.locator('[data-card]').evaluateAll((cards) => cards.map((c) => c.getBoundingClientRect().top));
+  for (let i = 1; i < tops.length; i++) expect(tops[i]).toBeGreaterThan(tops[i - 1] + 100);
+  await expect(page.locator('#ku-h1')).toHaveText(/KEEP UP\s*Training\./);
+});
+
+test('Profitraining: englische Fassung und Verlinkung aus Menü und Formaten', async ({ page, isMobile }) => {
+  await openTraining(page, '/en/training/');
+  await expect(page.locator('#kalender [data-kcal-label]')).toHaveText('October 2026');
+  await expect(page.getByRole('heading', { name: 'Who teaches' })).toBeVisible();
+
+  await page.goto('/');
+  if (!isMobile) await expect(page.locator('.site-nav').getByRole('link', { name: 'Training' })).toHaveAttribute('href', /\/profitraining\/$/);
+  const keepUp = page.locator('#formate .format', { hasText: 'KEEP UP' });
+  await keepUp.locator('.format__head').focus();
+  await expect(keepUp.getByRole('link', { name: 'Mehr zu KEEP UP →' })).toHaveAttribute('href', /\/profitraining\/$/);
 });

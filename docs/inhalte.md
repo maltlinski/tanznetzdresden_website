@@ -22,7 +22,10 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 |---|---|---|
 | News | am einfachsten im internen Bereich: *Intern → News schreiben* | als Datei: `src/content/news/de/` + `en/`, siehe docs/news.md |
 | Termin | `src/content/termine/JJJJ-MM-TT-titel.md` | Pflichtfelder siehe unten |
-| Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge |
+| Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge, `seite` verlinkt eine eigene Seite |
+| KEEP UP: Trainingsplan | `src/content/keep-up/wochen.yaml` | eine Zeile pro Woche, siehe unten |
+| KEEP UP: Dozent:innen im Kartenstapel | `src/content/keep-up/dozentinnen.yaml` | Reihenfolge = Stapel |
+| KEEP UP: Seitentexte, Kopf-Foto | `src/settings/keep-up.ts` | |
 | Personen | `src/content/personen.yaml` | Reihenfolge = Anzeige |
 | Vereinsdaten, Impressum-Angaben, Training, Newsletter | `src/settings/verein.json` | |
 | Kooperationspartner: Orte auf der Karte | `src/content/kooperation/orte.yaml` | Koordinaten + `verbunden` für die Linien |
@@ -49,6 +52,23 @@ link: "https://tickets.example"  # optional
 draft: false                     # true = noch nicht anzeigen
 ---
 ```
+
+### KEEP UP · Profitraining (`/profitraining/`)
+
+Der Kalender auf der Seite entsteht aus drei Quellen:
+
+```yaml
+# src/content/keep-up/wochen.yaml – eine Zeile pro Woche (id = Montag der Woche)
+- { id: "2027-01-11", dozent: alexandre-may, tage: [mo, di, mi, do, fr] }
+- { id: "2027-01-18", dozent: aurora-fradella, tage: [mo, mi, fr], zeit: "09:30–11:00" }   # zeit/ort optional
+```
+
+- `dozent` ist ein Kürzel aus `src/content/keep-up/dozentinnen.yaml`. Dort stehen Stil, ein kurzer Text zum
+  Unterricht und optional ein Foto; Name und Profil-Link kommen aus `personen.yaml` (gleiches Kürzel).
+  Ohne Foto erscheint ein Platzhalter (`src/settings/keep-up.ts`).
+- Workshops sind normale Termine mit `format: keep-up` (und `people: [kürzel]` für die Dozent:in). Sie stehen
+  dann im Tanzkalender und im Profitrainings-Kalender (magenta).
+- Ort und Beitrag kommen aus `src/settings/verein.json` (`training`).
 
 Zeiten sind immer Dresdner Ortszeit. Vergangene Termine verschwinden automatisch (nächtlicher Neubau und zusätzlich im
 Browser). Fehlt ein Pflichtfeld oder ist ein Datum falsch geschrieben, bricht der Build mit einer verständlichen

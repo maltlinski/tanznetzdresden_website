@@ -1,0 +1,32 @@
+# KEEP UP · Dozent:innen im Kartenstapel auf /profitraining/. Reihenfolge = Reihenfolge im Stapel.
+# id = Kürzel aus personen.yaml (Name und Profil-Link kommen von dort).
+# stil: Schwerpunkt im Unterricht · text: zwei bis drei Sätze zum Unterricht
+# foto (optional): Porträt, z. B. ../../assets/keep-up/alexandre-may.jpg – sonst das Profilfoto,
+# sonst ein Platzhalterfoto (src/settings/keep-up.ts).
+# PLATZHALTER aus dem Entwurf – Stil und Text vor dem Livegang ersetzen.
+- id: alexandre-may
+  stil: Contemporary
+  text: "Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen."
+  text_en: "Placeholder text. Short biography to follow: training, career and teaching focus in two or three sentences."
+- id: aurora-fradella
+  stil: Floorwork
+  text: "Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen."
+  text_en: "Placeholder text. Short biography to follow: training, career and teaching focus in two or three sentences."
+- id: charles-washington
+  stil: Release-Technik
+  stil_en: Release technique
+  text: "Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen."
+  text_en: "Placeholder text. Short biography to follow: training, career and teaching focus in two or three sentences."
+- id: beatrice-panero
+  stil: Ballett für Zeitgenössische
+  stil_en: Ballet for contemporary dancers
+  text: "Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen."
+  text_en: "Placeholder text. Short biography to follow: training, career and teaching focus in two or three sentences."
+- id: laura-gary
+  stil: Improvisation
+  text: "Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen."
+  text_en: "Placeholder text. Short biography to follow: training, career and teaching focus in two or three sentences."
+- id: leon-borgens
+  stil: Partnering
+  text: "Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen."
+  text_en: "Placeholder text. Short biography to follow: training, career and teaching focus in two or three sentences."

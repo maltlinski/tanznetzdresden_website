@@ -1,0 +1,191 @@
+---
+/**
+ * KEEP UP · Profitraining (Entwurf design/entwuerfe/2026-10-profitraining/).
+ * Kopf mit nächster Einheit, Monatskalender, Dozent:innen im Kartenstapel, Infos, Mitglieds-Band.
+ */
+import { Image } from 'astro:assets';
+import { getEntry } from 'astro:content';
+import Page from '../layouts/Page.astro';
+import Tag from '../components/ui/Tag.astro';
+import Button from '../components/ui/Button.astro';
+import KeilBar from '../components/ui/KeilBar.astro';
+import Kalender from '../components/keep-up/Kalender.astro';
+import Stapel from '../components/keep-up/Stapel.astro';
+import { getVerein } from '../lib/settings';
+import { getKeepUp, todayKey } from '../lib/keep-up';
+import { dateLocale, getLang, loc, tr, url } from '../lib/i18n';
+import { keepUp, keepUpFoto } from '../settings/keep-up';
+
+const lang = getLang(Astro);
+const verein = getVerein(lang);
+const s = keepUp[lang];
+const { dozentinnen, days, months } = await getKeepUp(lang);
+const format = await getEntry('formate', 'keep-up');
+const since = format ? loc(format.data, 'since', lang) : '';
+
+const files = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
+const foto = files[`../assets/photos/${keepUpFoto.datei}`];
+if (!foto) throw new Error(`src/settings/keep-up.ts: Foto „${keepUpFoto.datei}“ fehlt in src/assets/photos/`);
+
+const t = tr(lang, {
+  de: {
+    title: 'KEEP UP · Profitraining', desc: 'Profitraining für Tänzer:innen der freien Szene in Dresden: Kalender, Dozent:innen, Ort und Beitrag.',
+    toCal: 'Zum Kalender', who: 'Wer unterrichtet →', next: 'Nächste Einheit',
+    infos: 'Infos', infosH: 'So läuft das Training', when: 'Wann', where: 'Wo', forWhom: 'Für wen', fee: 'Beitrag', join: 'Mitglied werden',
+  },
+  en: {
+    title: 'KEEP UP · Professional training', desc: "Professional training for dancers of Dresden's independent scene: calendar, teachers, venue and fee.",
+    toCal: 'To the calendar', who: 'Who teaches →', next: 'Next class',
+    infos: 'Info', infosH: 'How training works', when: 'When', where: 'Where', forWhom: 'For whom', fee: 'Fee', join: 'Become a member',
+  },
+});
+
+// Nächste Einheit beim Build (der Kalender rechnet im Browser mit dem heutigen Datum nach)
+const nk = Object.keys(days).find((d) => d >= todayKey());
+const ne = nk ? days[nk][0] : undefined;
+const nd = nk ? new Date(`${nk}T00:00:00Z`) : undefined;
+const f = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(dateLocale[lang], { ...o, timeZone: 'UTC' });
+const nextDate = nd ? `${f({ weekday: 'short' }).format(nd).replace('.', '')} · ${f({ day: 'numeric', month: 'long' }).format(nd)}` : '';
+const nextInfo = ne ? [ne.time, ne.who, ne.where].filter(Boolean).join(' · ') : '';
+const [feeA, feeB] = verein.training.fee.split('/').map((x) => x.trim());
+---
+<Page title={t.title} description={t.desc} route="profitraining" ogImage={foto.default}>
+  <section class="ku-hero" aria-labelledby="ku-h1">
+    <div class="wrap ku-hero__grid">
+      <div>
+        <Tag color="cyan">{s.kicker}{since && ` · ${since}`}</Tag>
+        <h1 id="ku-h1" class="ku-hero__title" data-split>{s.l1}<br /><em>{s.l2}</em></h1>
+        <p class="ku-hero__lead">{s.lead}</p>
+        <div class="ku-hero__actions">
+          <Button href="#kalender" variant="secondary" size="lg" marker>{t.toCal}</Button>
+          <a href="#dozentinnen" class="mono-link underline-link">{t.who}</a>
+        </div>
+      </div>
+      <div class="ku-hero__photo">
+        <Image src={foto.default} alt={keepUpFoto.alt[lang]} widths={[480, 720, 1040]} sizes="(min-width: 1000px) 520px, 100vw" loading="eager" />
+      </div>
+    </div>
+    <div class="ku-next" data-next-unit hidden={!ne}>
+      <div class="wrap ku-next__inner">
+        <span class="ku-next__k"><span class="ku-next__sq" aria-hidden="true"></span>{t.next}</span>
+        <span class="ku-next__date" data-next-date>{nextDate}</span>
+        <span class="ku-next__info" data-next-info>{nextInfo}</span>
+      </div>
+    </div>
+    <KeilBar class="ku-hero__keil" />
+  </section>
+
+  <Kalender dozentinnen={dozentinnen} days={days} months={months} />
+
+  <Stapel dozentinnen={dozentinnen} />
+
+  <section id="infos" class="section ku-infos" aria-labelledby="infos-h">
+    <div class="wrap">
+      <div data-reveal>
+        <Tag>{t.infos}</Tag>
+        <h2 id="infos-h" class="h2 ku-infos__h">{t.infosH}</h2>
+      </div>
+      <dl class="ku-infos__grid">
+        <div class="ku-info">
+          <dt>{t.when}</dt>
+          <dd><span class="ku-info__big">{s.wann}</span><span class="ku-info__text">{s.wannText}</span></dd>
+        </div>
+        <div class="ku-info">
+          <dt>{t.where}</dt>
+          <dd><span class="ku-info__big">{verein.training.place}</span><span class="ku-info__text">{verein.training.placeAddress}. {s.woText}</span></dd>
+        </div>
+        <div class="ku-info">
+          <dt>{t.forWhom}</dt>
+          <dd><span class="ku-info__big">{s.fuerWen}</span><span class="ku-info__text">{s.fuerWenText}</span></dd>
+        </div>
+        <div class="ku-info">
+          <dt>{t.fee}</dt>
+          <dd><span class="ku-info__big">{feeB ? <>{feeA} <em>/</em> {feeB}</> : feeA}</span><span class="ku-info__text">{verein.training.feeNote}</span></dd>
+        </div>
+      </dl>
+    </div>
+  </section>
+
+  <section class="ku-cta" aria-labelledby="ku-cta-h">
+    <KeilBar color="var(--purple)" height={14} flip class="ku-cta__keil" />
+    <div class="wrap ku-cta__inner">
+      <h2 id="ku-cta-h" class="ku-cta__h">{s.cta1}<br />{s.cta2}</h2>
+      <Button href={url(lang, 'mitglied')} variant="primary" size="lg" marker>{t.join}</Button>
+    </div>
+  </section>
+</Page>
+
+<script>
+  import { SplitText } from 'gsap/SplitText';
+  import { gsap, EASE, motionOk } from '../scripts/gsap';
+
+  // Kopfzeile: Buchstaben steigen aus einer Maske auf (Entwurf: SplitText)
+  if (motionOk()) {
+    gsap.registerPlugin(SplitText);
+    const h1 = document.querySelector<HTMLElement>('.ku-hero [data-split]');
+    if (h1) {
+      gsap.set(h1, { opacity: 0 });
+      document.fonts.ready.then(() => {
+        gsap.set(h1, { opacity: 1 });
+        SplitText.create(h1, {
+          type: 'words,chars',
+          mask: 'chars',
+          onSplit: (self) => gsap.from(self.chars, { yPercent: 115, duration: 1, ease: EASE, stagger: 0.03, delay: 0.1 }),
+        });
+      });
+    }
+    gsap.from('.ku-hero__photo', { clipPath: 'polygon(0% 0%, 0% 0%, 0% 88%, 0% 100%, 0% 100%)', duration: 1.1, ease: EASE, delay: 0.2, clearProps: 'clipPath' });
+  }
+</script>
+
+<style>
+  .ku-hero { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  .ku-hero__grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: 48px clamp(32px, 6vw, 96px); align-items: end;
+    padding-block: clamp(56px, 8vw, 112px) clamp(56px, 7vw, 96px);
+  }
+  .ku-hero :global(.tag) { margin-bottom: 24px; }
+  .ku-hero__title {
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, 8vw, 128px); line-height: 0.9;
+    letter-spacing: -0.035em; margin: 0 0 32px; color: #fff;
+  }
+  .ku-hero__title em { font-style: normal; color: var(--magenta); }
+  .ku-hero__lead { max-width: 500px; margin: 0 0 36px; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
+  .ku-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
+  .ku-hero__photo {
+    position: relative; aspect-ratio: 4 / 5; max-height: 620px; width: 100%; max-width: 520px; justify-self: end;
+    clip-path: var(--keil-corner); background: var(--purple);
+  }
+  .ku-hero__photo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ku-next { border-top: 1px solid var(--on-dark-rule); }
+  .ku-next__inner { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 36px; padding-block: 20px 32px; }
+  .ku-next__k {
+    display: flex; align-items: center; gap: 12px; font-family: var(--font-mono); font-size: 12px; font-weight: 700;
+    letter-spacing: 0.2em; text-transform: uppercase;
+  }
+  .ku-next__sq { width: 10px; height: 10px; background: var(--magenta); }
+  .ku-next__date { font-family: var(--font-display); font-weight: 800; font-size: clamp(20px, 2vw, 26px); letter-spacing: -0.02em; color: var(--cyan); }
+  .ku-next__info { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.86); }
+  .ku-hero :global(.ku-hero__keil) { position: absolute; left: 0; bottom: 0; width: 34%; }
+
+  .ku-infos__h { margin-bottom: 48px; }
+  .ku-infos__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 0 clamp(28px, 4vw, 56px); margin: 0; }
+  .ku-info { padding: 24px 0; border-top: 3px solid var(--magenta); }
+  .ku-info dt { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .ku-info dd { margin: 0; }
+  .ku-info__big {
+    display: block; font-family: var(--font-display); font-weight: 800; font-size: 28px; line-height: 1.05;
+    letter-spacing: -0.025em; color: var(--purple); margin: 10px 0 12px;
+  }
+  .ku-info__big em { font-style: normal; color: var(--magenta-2); }
+  .ku-info__text { display: block; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+
+  .ku-cta { position: relative; background: var(--cyan); color: var(--purple); }
+  .ku-cta :global(.ku-cta__keil) { position: absolute; right: 0; top: 0; width: 42%; }
+  .ku-cta__inner {
+    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 32px 56px;
+    padding-block: clamp(64px, 8vw, 104px);
+  }
+  .ku-cta__h { font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 4.6vw, 60px); line-height: 0.98; letter-spacing: -0.03em; margin: 0; color: var(--purple); }
+</style>
