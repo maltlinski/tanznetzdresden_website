@@ -44,7 +44,7 @@ mit denselben Namen überschreiben.
 | Anmelden: „Für diese Adresse gibt es kein Konto“ | Person unter *Authentication → Users* einladen. Registrieren geht absichtlich nicht. |
 | Link aus der E-Mail führt auf `localhost` oder eine Fehlerseite | *Authentication → URL Configuration*: Site URL und Redirect URLs prüfen (Schritt 2). Bei GitHub Pages: `https://maltlinski.github.io/tanznetzdresden_website/intern/**`. |
 | Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle vier Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
-| Table Editor: „Nur der Vorstand kann Rollen ändern.“ | Vierte Migration `20261010000000_rollen_im_dashboard.sql` ausführen, dann erneut speichern. |
+| Table Editor oder SQL-Editor: „Nur der Vorstand kann Rollen ändern.“ | Vierte Migration `20261010000000_rollen_im_dashboard.sql` (noch einmal) ausführen, dann erneut speichern. Passiert das, obwohl sie schon lief, wurde danach eine ältere Migration erneut ausgeführt und hat die Prüfung zurückgesetzt. Im SQL-Editor oben rechts muss als Rolle `postgres` stehen, nicht ein angemeldetes Mitglied. |
 | „Redaktion“ fehlt im Menü | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
 | Redaktion: „noch nicht eingerichtet“ | Supabase-Funktion `inhalte` und GitHub-Schlüssel fehlen, siehe [redaktion.md](redaktion.md#einrichten-einmalig-admin). |
 | Veröffentlichte News erscheinen erst am nächsten Morgen | Webhook fehlt (docs/news.md), oder `news-updated` fehlt in `.github/workflows/deploy.yml`. |

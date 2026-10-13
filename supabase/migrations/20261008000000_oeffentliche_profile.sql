@@ -21,20 +21,29 @@ comment on column public.profiles.verified is 'Vom Vorstand für die öffentlich
 
 -- Rolle UND Freigabe darf nur der Vorstand ändern. Ändert die Person ihr Profil
 -- inhaltlich, bleibt die Freigabe bestehen; ein neuer Slug braucht neue Freigabe.
+-- Gleiche Fassung wie in 20261010000000_rollen_im_dashboard.sql: Die Prüfung gilt nur für
+-- angemeldete Mitglieder, im Dashboard (Table Editor, SQL-Editor) lassen sich Rollen ändern.
+-- So schadet es nicht, wenn diese Datei später noch einmal ausgeführt wird.
 create or replace function public.profiles_before_update()
 returns trigger
 language plpgsql security definer set search_path = public
 as $$
 begin
-  if not public.is_vorstand() then
-    if new.role is distinct from old.role then
-      raise exception 'Nur der Vorstand kann Rollen ändern.';
-    end if;
-    if new.verified is distinct from old.verified then
-      raise exception 'Nur der Vorstand kann Profile freigeben.';
-    end if;
-    if new.slug is distinct from old.slug then
-      new.verified := false;
+  if auth.uid() is not null then
+    if not public.is_vorstand() then
+      if new.role is distinct from old.role then
+        raise exception 'Nur der Vorstand kann Rollen ändern.';
+      end if;
+      if new.verified is distinct from old.verified then
+        raise exception 'Nur der Vorstand kann Profile freigeben.';
+      end if;
+      if new.slug is distinct from old.slug then
+        new.verified := false;
+      end if;
+    elsif new.role is distinct from old.role
+      and 'admin' in (new.role::text, old.role::text)
+      and not exists (select 1 from public.profiles where id = auth.uid() and role::text = 'admin') then
+      raise exception 'Die Rolle Admin vergeben und entziehen nur Admins.';
     end if;
   end if;
   new.updated_at := now();
