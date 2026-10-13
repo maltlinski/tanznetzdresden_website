@@ -27,7 +27,7 @@ const title = loc(d, 'title', lang);
 const teaser = loc(d, 'teaser', lang);
 const time = loc(d, 'timeLabel', lang) ?? (d.end ? `${date.time.replace(' Uhr', '')}–${dateParts(d.end, lang).time}` : date.time);
 const body = termin.body?.trim() ? renderMarkdown(termin.body, import.meta.env.BASE_URL) : '';
-const people = (await Promise.all(d.people.map(async (p) => ({ id: p.id, profile: await getProfile(p.id) }))))
+const people = (await Promise.all(d.people.map(async (id) => ({ id, profile: await getProfile(id) }))))
   .filter((p) => p.profile)
   .map((p) => ({ id: p.id, name: p.profile!.name }));
 const post = d.news ? (await getNews(lang)).find((p) => p.id === d.news) : undefined;

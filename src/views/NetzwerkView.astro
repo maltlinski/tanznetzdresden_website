@@ -3,6 +3,7 @@ import Page from '../layouts/Page.astro';
 import PageIntro from '../components/PageIntro.astro';
 import ProfilePhoto from '../components/ProfilePhoto.astro';
 import { bioParagraphs, getProfiles } from '../lib/profiles';
+import { demoFuer } from '../lib/demo';
 import { getLang, tr, url } from '../lib/i18n';
 
 const lang = getLang(Astro);
@@ -43,23 +44,25 @@ const t = tr(lang, {
       </div>
       <p class="visually-hidden" role="status" data-net-status data-msg={t.shown}></p>
       <ul class="cards" data-net-list>
-        {profiles.map((p) => (
+        {profiles.map((p) => { const demo = demoFuer(p, lang); return (
           <li
             class="card"
             data-roles={p.roles.join(' ')}
             data-search={`${p.name} ${p.tags.join(' ')} ${p.pronouns ?? ''}`.toLowerCase()}
           >
             <a href={url(lang, 'netzwerk', `${p.id}/`)}>
-              <ProfilePhoto profile={p} />
+              <ProfilePhoto profile={p} demo={demo.photo} />
               <span class="card__name">{p.name}</span>
               <span class="card__meta">
                 {[p.vorstand ? t.board : null, p.roles.includes('mitglied') ? t.member : null, p.roles.includes('trainer') ? t.trainer : null].filter(Boolean).join(' · ')}
               </span>
               {p.tags.length > 0 && <span class="card__tags">{p.tags.slice(0, 3).join(' · ')}</span>}
+              {demo.tags && <span class="card__tags demo-an">{demo.tags.join(' · ')}</span>}
               {bioParagraphs(p, lang)[0] && <span class="card__bio">{bioParagraphs(p, lang)[0]}</span>}
+              {demo.bio && <span class="card__bio demo-an">{demo.bio[0]}</span>}
             </a>
           </li>
-        ))}
+        ); })}
       </ul>
       <p class="net-empty" data-net-empty hidden>{t.none}</p>
       <aside class="net-own">

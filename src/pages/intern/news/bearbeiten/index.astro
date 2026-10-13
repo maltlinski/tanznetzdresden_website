@@ -220,6 +220,7 @@ const tools = [
   import { initIntern, errorText, showMessage, internUrl } from '../../../../scripts/intern/session';
   import { slugify, newsPhotoUrl, type NewsRow } from '../../../../lib/supabase';
   import { renderMarkdown } from '../../../../lib/markdown';
+  import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
 
   type Fact = { label: string; value: string };
   const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -549,12 +550,15 @@ const tools = [
         dirty = false;
         if (!id0 || id0 !== row.id) history.replaceState(null, '', `${internUrl('news/bearbeiten/')}?id=${row.id}`);
         renderStatus();
+        // Online-Stand geändert: Website neu bauen lassen (holt die News beim Build aus Supabase)
+        const baut = status === 'veroeffentlicht' || wasOnline ? await neuBauenLassen(ctx.sb) : false;
+        const wann = baut ? 'in 2–3 Minuten' : 'mit dem nächsten Update, spätestens morgen früh';
         showMessage(
           msg,
           status === 'veroeffentlicht'
-            ? 'Veröffentlicht. Die Website wird jetzt neu gebaut – in wenigen Minuten ist der Beitrag online (spätestens nach dem nächtlichen Update).'
+            ? `Veröffentlicht. Der Beitrag ist ${wann} online.`
             : wasOnline
-              ? 'Zurückgezogen. Der Beitrag verschwindet beim nächsten Update von der Website.'
+              ? `Zurückgezogen. Der Beitrag verschwindet ${wann} von der Website.`
               : 'Entwurf gespeichert. Nur die Redaktion sieht ihn.',
           'ok',
         );
@@ -566,6 +570,7 @@ const tools = [
         const { error } = await ctx.sb.from('news_posts').delete().eq('id', row.id);
         if (error) return showMessage(msg, errorText(error));
         if (row.image_path) await ctx.sb.storage.from('newsbilder').remove([row.image_path]);
+        if (row.status === 'veroeffentlicht') await neuBauenLassen(ctx.sb);
         dirty = false;
         location.href = internUrl('news/');
       });

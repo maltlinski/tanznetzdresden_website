@@ -31,7 +31,7 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 | Termin | `src/content/termine/JJJJ-MM-TT-titel.md` | Pflichtfelder siehe unten |
 | Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge, `seite` verlinkt eine eigene Seite |
 | KEEP UP: Trainingsplan | `src/content/keep-up/wochen.yaml` | eine Zeile pro Woche, siehe unten |
-| KEEP UP: Dozent:innen im Kartenstapel | `src/content/keep-up/dozentinnen.yaml` | Reihenfolge = Stapel |
+| KEEP UP: Dozent:innen im Kartenstapel | `src/content/keep-up/dozentinnen.yaml` | Reihenfolge = Stapel; Name und Foto aus dem Profil |
 | KEEP UP: Seitentexte, Kopf-Foto | `src/settings/keep-up.json` | Platzhalterfotos und Stapel-Bewegung in `keep-up.ts` |
 | Personen | `src/content/personen.yaml` | Reihenfolge = Anzeige |
 | Vereinsdaten, Impressum-Angaben, Training, Newsletter | `src/settings/verein.json` | |
@@ -61,6 +61,18 @@ draft: false                     # true = noch nicht anzeigen
 ---
 ```
 
+### Ein Kalender für alles
+
+Der Tanzkalender (`/termine/`) und das Profitraining (`/profitraining/`) nutzen denselben Monatskalender
+(`src/components/Kalender.astro`, Daten aus `src/lib/kalender.ts`):
+
+- **Tanzkalender:** alle Termine aus `src/content/termine/` und jeder Trainingstag von KEEP UP, Filter nach Kategorie
+  (Bühne, Training, Diskurs). Auch das Kalender-Abo (`/termine.ics`) enthält die Trainingstage.
+- **Profitraining:** nur Trainingstage und KEEP UP-Workshops, Filter nach Dozent:in.
+
+Das Training also **nicht** zusätzlich als Termin eintragen. Es kommt aus dem Trainingsplan. Workshops dagegen sind
+Termine (mit `format: keep-up`) und erscheinen in beiden Kalendern.
+
 ### KEEP UP · Profitraining (`/profitraining/`)
 
 Der Kalender auf der Seite entsteht aus drei Quellen:
@@ -71,9 +83,11 @@ Der Kalender auf der Seite entsteht aus drei Quellen:
 - { id: "2027-01-18", dozent: aurora-fradella, tage: [mo, mi, fr], zeit: "09:30–11:00" }   # zeit/ort optional
 ```
 
-- `dozent` ist ein Kürzel aus `src/content/keep-up/dozentinnen.yaml`. Dort stehen Stil, ein kurzer Text zum
-  Unterricht und optional ein Foto; Name und Profil-Link kommen aus `personen.yaml` (gleiches Kürzel).
-  Ohne Foto erscheint ein Platzhalter (`platzhalterFotos` in `src/settings/keep-up.ts`).
+- `dozent` ist ein Kürzel aus `src/content/keep-up/dozentinnen.yaml`. Dort stehen Stil und ein kurzer Text zum
+  Unterricht. Name, Foto und Profil-Link kommen aus dem Profil der Person (gleiches Kürzel, aus `personen.yaml` oder
+  ein freigegebenes Mitgliederprofil, docs/profile.md). Lädt die Person im internen Bereich ein Foto hoch, steht es
+  nach der Freigabe auch auf ihrer Karte. Ohne Foto erscheint ein Platzhalter (`platzhalterFotos` in
+  `src/settings/keep-up.ts`).
 - Workshops sind normale Termine mit `format: keep-up` (und `people: [kürzel]` für die Dozent:in). Sie stehen
   dann im Tanzkalender und im Profitrainings-Kalender (magenta).
 - Ort und Beitrag kommen aus `src/settings/verein.json` (`training`).

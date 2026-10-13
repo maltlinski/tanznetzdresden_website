@@ -64,10 +64,14 @@ export interface Namen extends Kontext {
   laden(quelle: string): Promise<Geladen | undefined>;
 }
 
-/** Lädt die Bereiche, deren Namen gebraucht werden (inkl. Abhängigkeiten), und die News aus Supabase. */
+/**
+ * Lädt die Bereiche, deren Namen gebraucht werden (inkl. Abhängigkeiten), dazu aus Supabase die News und
+ * die freigegebenen Mitgliederprofile (auch sie lassen sich in Terminen und als Dozent:in auswählen).
+ */
 export async function namenLaden(r: Redaktion, quellen: string[]): Promise<Namen> {
   const cache = new Map<string, Geladen>();
   const news = new Map<string, string>();
+  const mitglieder = new Map<string, string>();
   const ladeMit = async (id: string): Promise<void> => {
     if (cache.has(id)) return;
     const b = bereichNach(id);
@@ -80,18 +84,23 @@ export async function namenLaden(r: Redaktion, quellen: string[]): Promise<Namen
     const { data } = await r.ctx.sb.from('news_posts').select('slug, title, status');
     for (const n of (data ?? []) as { slug: string; title: string; status: string }[]) news.set(n.slug, `${n.title}${n.status === 'veroeffentlicht' ? '' : ' (Entwurf)'}`);
   }
+  if (cache.has('personen')) {
+    const { data } = await r.ctx.sb.from('public_profiles').select('slug, display_name');
+    for (const p of (data ?? []) as { slug: string; display_name: string }[]) mitglieder.set(p.slug, p.display_name);
+  }
   const k: Namen = {
     name(quelle, id) {
       if (!id) return '';
       const g = cache.get(quelle);
       const e = g?.eintraege.find((x) => x.id === id);
       if (e) return g!.bereich.titel(e, k);
-      return news.get(id) ?? id;
+      return (quelle === 'personen' ? mitglieder.get(id) : news.get(id)) ?? id;
     },
     optionen(quelle) {
       const g = cache.get(quelle);
       const aus = (g?.eintraege ?? []).map((e) => ({ wert: e.id, label: g!.bereich.titel(e, k) }));
       if (quelle === 'news') for (const [slug, t] of news) if (!aus.some((o) => o.wert === slug)) aus.push({ wert: slug, label: `${t} (News schreiben)` });
+      if (quelle === 'personen') for (const [slug, n] of mitglieder) if (!aus.some((o) => o.wert === slug)) aus.push({ wert: slug, label: `${n} (Mitgliederprofil)` });
       return aus.sort((x, y) => x.label.localeCompare(y.label, 'de'));
     },
     laden: async (q) => {

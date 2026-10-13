@@ -80,6 +80,10 @@ function fakeGitHub(start: Record<string, string>, rolle = 'presse') {
     if (method === 'GET' && p.startsWith('/actions/workflows/deploy.yml/runs')) {
       return res({ workflow_runs: [{ status: 'in_progress', conclusion: null, created_at: '', updated_at: '2026-10-13T10:00:00Z', html_url: 'https://github.test/run/1', head_sha: head }] });
     }
+    if (method === 'POST' && p === '/dispatches') {
+      expect(body).toEqual({ event_type: 'profile-updated' });
+      return new Response(null, { status: 204 });
+    }
     if (method === 'GET' && p === '/commits') {
       const c = commits.get(head)!;
       return res([{ sha: head, html_url: 'https://github.test/c', commit: { message: c.message, author: { date: '2026-10-13T10:00:00Z' } } }]);
@@ -218,4 +222,16 @@ test('Rechtliches nur für den Vorstand', async () => {
   const vorstand = fakeGitHub(start, 'vorstand');
   expect((await call(vorstand, { aktion: 'speichern', aenderungen: [{ pfad: 'src/content/seiten/impressum.md', text: '---\ntitle: I\n---\n' }] })).status).toBe(200);
   expect(vereinPruefen('{"register":{"number":"1"}}', '{"register":{"number":"2"}}')).toMatch(/register/);
+});
+
+test('neu_bauen stößt den Deploy-Workflow an (repository_dispatch), nur für die Redaktion', async () => {
+  const gh = fakeGitHub({});
+  const r = await call(gh, { aktion: 'neu_bauen' });
+  expect(r.status).toBe(200);
+  expect(await r.json()).toEqual({ ok: true });
+  expect(gh.log).toEqual(['POST /dispatches']);
+
+  const mitglied = fakeGitHub({}, 'mitglied');
+  expect((await call(mitglied, { aktion: 'neu_bauen' })).status).toBe(403);
+  expect(mitglied.log).toEqual([]);
 });

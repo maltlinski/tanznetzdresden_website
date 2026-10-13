@@ -1,5 +1,5 @@
 ---
-/** Porträt im Keil-Ausschnitt; ohne Foto: Initialen auf Lila. */
+/** Porträt im Keil-Ausschnitt; ohne Foto: Initialen auf Lila (in der Demo-Ansicht ein Beispielfoto). */
 import { Image } from 'astro:assets';
 import { initials, type PublicProfile } from '../lib/profiles';
 
@@ -7,8 +7,10 @@ interface Props {
   profile: PublicProfile;
   size?: 'card' | 'large';
   eager?: boolean;
+  /** Beispielfoto für die Demo-Ansicht (src/lib/demo.ts) */
+  demo?: ImageMetadata;
 }
-const { profile, size = 'card', eager = false } = Astro.props;
+const { profile, size = 'card', eager = false, demo } = Astro.props;
 const widths = size === 'large' ? [480, 720, 960] : [320, 480, 640];
 const sizes = size === 'large' ? '(min-width: 900px) 420px, 100vw' : '(min-width: 900px) 300px, 50vw';
 ---
@@ -20,7 +22,10 @@ const sizes = size === 'large' ? '(min-width: 900px) 420px, 100vw' : '(min-width
       <Image src={profile.photo} alt="" widths={widths} sizes={sizes} loading={eager ? 'eager' : 'lazy'} class="pp__img" />
     )
   ) : (
-    <span class="pp__initials" aria-hidden="true">{initials(profile.name)}</span>
+    <>
+      <span class:list={['pp__initials', demo && 'demo-aus']} aria-hidden="true">{initials(profile.name)}</span>
+      {demo && <Image src={demo} alt="" widths={widths} sizes={sizes} loading="lazy" class="pp__img demo-an" />}
+    </>
   )}
   <span class="pp__sq" aria-hidden="true"></span>
 </div>

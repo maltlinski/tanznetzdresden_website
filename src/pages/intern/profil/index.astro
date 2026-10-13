@@ -73,12 +73,15 @@ import { href } from '../../../lib/url';
             <input id="p-vimeo" name="vimeo" type="url" placeholder="https://vimeo.com/…" />
           </div>
           <div class="photo">
-            <div class="photo__preview" data-photo-preview><span>Kein Foto</span></div>
+            <div class="photo__box">
+              <div class="photo__preview" data-photo-preview><span>Kein Foto</span></div>
+              <span class="photo__wait" data-photo-wait hidden>Wartet auf Freigabe</span>
+            </div>
             <div class="photo__controls">
               <div class="i-field">
                 <label for="p-photo">Porträt</label>
                 <input id="p-photo" type="file" accept="image/jpeg,image/png,image/webp" data-photo-input aria-describedby="p-photo-hint" />
-                <span class="i-hint" id="p-photo-hint">JPG, PNG oder WebP, höchstens 5 MB, am besten Hochformat. Nur Fotos, an denen du die Rechte hast.</span>
+                <span class="i-hint" id="p-photo-hint">JPG, PNG oder WebP, höchstens 5 MB, am besten Hochformat. Nur Fotos, an denen du die Rechte hast. Neue Fotos erscheinen nach der Freigabe durch Presse oder Vorstand, bis dahin bleibt das bisherige.</span>
               </div>
               <div class="i-field">
                 <label for="p-credit">Foto: Name der Fotograf:in</label>
@@ -117,13 +120,28 @@ import { href } from '../../../lib/url';
   const publicFields = document.querySelector<HTMLElement>('[data-public-fields]');
   const publicStatus = document.querySelector<HTMLElement>('[data-public-status]');
   const publicLink = document.querySelector<HTMLAnchorElement>('[data-public-link]');
+  const waitTag = document.querySelector<HTMLElement>('[data-photo-wait]');
+  /** freigegebenes Foto (auf der Website) und neues, das auf Freigabe wartet */
   let photoPath: string | null = null;
+  let pendingPath: string | null = null;
 
-  const showPhoto = (path: string | null, localUrl?: string) => {
+  const showPhoto = (localUrl?: string) => {
     if (!preview) return;
-    const src = localUrl ?? photoUrl(path);
-    preview.innerHTML = src ? `<img src="${src}" alt="Dein Porträt (Vorschau)">` : '<span>Kein Foto</span>';
-    if (removeBtn) removeBtn.hidden = !path;
+    const src = localUrl ?? photoUrl(pendingPath ?? photoPath);
+    preview.replaceChildren();
+    if (src) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = 'Dein Porträt (Vorschau)';
+      preview.append(img);
+    } else {
+      preview.innerHTML = '<span>Kein Foto</span>';
+    }
+    if (waitTag) waitTag.hidden = !pendingPath;
+    if (removeBtn) {
+      removeBtn.hidden = !pendingPath && !photoPath;
+      removeBtn.textContent = pendingPath ? (photoPath ? 'Neues Foto verwerfen' : 'Foto verwerfen') : 'Foto entfernen';
+    }
   };
   const showPublic = () => {
     if (publicFields) publicFields.hidden = !publicToggle?.checked;
@@ -133,8 +151,8 @@ import { href } from '../../../lib/url';
     publicStatus.hidden = !listed;
     publicStatus.dataset.kind = verified ? 'ok' : 'wait';
     publicStatus.textContent = verified
-      ? 'Freigegeben: Dein Profil ist öffentlich. Änderungen erscheinen spätestens am nächsten Tag.'
-      : 'Wartet auf Freigabe durch den Vorstand. Danach erscheint dein Profil auf der Website.';
+      ? 'Freigegeben: Dein Profil ist öffentlich. Textänderungen erscheinen spätestens am nächsten Morgen, neue Fotos nach der Freigabe.'
+      : 'Wartet auf Freigabe durch Presse oder Vorstand. Danach erscheint dein Profil auf der Website.';
     if (publicLink) {
       publicLink.hidden = !(verified && listed && slug);
       publicLink.href = `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}netzwerk/${slug}/`;
@@ -156,7 +174,8 @@ import { href } from '../../../lib/url';
       (form.elements.namedItem('tags') as HTMLInputElement).value = (p.tags ?? []).join(', ');
       if (!p.slug) (form.elements.namedItem('slug') as HTMLInputElement).value = slugify(p.display_name);
       photoPath = p.photo_path;
-      showPhoto(photoPath);
+      pendingPath = p.photo_pending;
+      showPhoto();
       showStatus(p.verified, p.public_listing, p.slug);
     }
     showPublic();
@@ -169,25 +188,30 @@ import { href } from '../../../lib/url';
       const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
       // neuer Dateiname bei jedem Upload, damit Browser- und Build-Caches das neue Bild holen
       const path = `${ctx.user.id}/portrait-${Date.now()}.${ext}`;
-      showPhoto(null, URL.createObjectURL(file));
+      showPhoto(URL.createObjectURL(file));
       const { error } = await ctx.sb.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false });
       if (error) return showMessage(msg, errorText(error));
-      if (photoPath) await ctx.sb.storage.from(BUCKET).remove([photoPath]);
-      photoPath = path;
-      const { error: e2 } = await ctx.sb.from('profiles').update({ photo_path: path }).eq('id', ctx.user.id);
+      // ein älteres, noch nicht freigegebenes Foto wird ersetzt
+      const { error: e2 } = await ctx.sb.from('profiles').update({ photo_pending: path }).eq('id', ctx.user.id);
       if (e2) return showMessage(msg, errorText(e2));
-      if (removeBtn) removeBtn.hidden = false;
-      showMessage(msg, 'Foto gespeichert.', 'ok');
+      if (pendingPath) await ctx.sb.storage.from(BUCKET).remove([pendingPath]);
+      pendingPath = path;
+      photoInput.value = '';
+      showPhoto();
+      showMessage(msg, 'Foto hochgeladen. Auf der Website erscheint es, sobald Presse oder Vorstand es freigegeben haben.', 'ok');
     });
 
     removeBtn?.addEventListener('click', async () => {
-      if (!photoPath || !confirm('Foto wirklich entfernen?')) return;
-      await ctx.sb.storage.from(BUCKET).remove([photoPath]);
-      const { error } = await ctx.sb.from('profiles').update({ photo_path: null }).eq('id', ctx.user.id);
+      const pending = !!pendingPath;
+      const path = pendingPath ?? photoPath;
+      if (!path || !confirm(pending ? 'Das neue Foto verwerfen?' : 'Foto wirklich entfernen? Es verschwindet auch von der Website.')) return;
+      const { error } = await ctx.sb.from('profiles').update(pending ? { photo_pending: null } : { photo_path: null }).eq('id', ctx.user.id);
       if (error) return showMessage(msg, errorText(error));
-      photoPath = null;
-      showPhoto(null);
-      showMessage(msg, 'Foto entfernt.', 'ok');
+      await ctx.sb.storage.from(BUCKET).remove([path]);
+      if (pending) pendingPath = null;
+      else photoPath = null;
+      showPhoto();
+      showMessage(msg, pending ? 'Neues Foto verworfen.' : 'Foto entfernt.', 'ok');
     });
 
     form.addEventListener('submit', async (e) => {
@@ -234,9 +258,12 @@ import { href } from '../../../lib/url';
   .status { margin: 0; padding: 10px 14px; font-size: 14px; border-left: 4px solid var(--cyan-2); background: var(--cyan-tint); color: var(--purple); }
   .status[data-kind='wait'] { border-left-color: var(--magenta); background: var(--magenta-tint); }
   .photo { display: grid; grid-template-columns: 160px 1fr; gap: 20px; align-items: start; }
+  .photo__box { display: grid; gap: 8px; align-content: start; }
+  .photo__wait { justify-self: start; padding: 3px 7px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; background: var(--magenta-tint); color: var(--purple); border-left: 3px solid var(--magenta); }
+  .photo__wait[hidden] { display: none; }
   .photo__preview { aspect-ratio: 4 / 5; background: var(--purple); color: rgba(255, 255, 255, 0.7); display: grid; place-items: center; font-size: 13px; overflow: hidden; clip-path: var(--keil-corner); }
   .photo__preview :global(img) { width: 100%; height: 100%; object-fit: cover; }
   .photo__controls { display: grid; gap: 14px; align-content: start; }
   .profile__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
-  @media (max-width: 560px) { .photo { grid-template-columns: 1fr; } .photo__preview { max-width: 200px; } }
+  @media (max-width: 560px) { .photo { grid-template-columns: 1fr; } .photo__box { max-width: 200px; } }
 </style>

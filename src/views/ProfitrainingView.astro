@@ -9,10 +9,10 @@ import Page from '../layouts/Page.astro';
 import Tag from '../components/ui/Tag.astro';
 import Button from '../components/ui/Button.astro';
 import KeilBar from '../components/ui/KeilBar.astro';
-import Kalender from '../components/keep-up/Kalender.astro';
+import Kalender from '../components/Kalender.astro';
 import Stapel from '../components/keep-up/Stapel.astro';
 import { getVerein } from '../lib/settings';
-import { getKeepUp, todayKey } from '../lib/keep-up';
+import { getKeepUp, todayKey, weekLabel } from '../lib/keep-up';
 import { dateLocale, getLang, loc, tr, url } from '../lib/i18n';
 import { keepUp, keepUpFoto } from '../settings/keep-up';
 
@@ -31,11 +31,15 @@ const t = tr(lang, {
   de: {
     title: 'KEEP UP · Profitraining', desc: 'Profitraining für Tänzer:innen der freien Szene in Dresden: Kalender, Dozent:innen, Ort und Beitrag.',
     toCal: 'Zum Kalender', who: 'Wer unterrichtet →', next: 'Nächste Einheit',
+    calKicker: 'Kalender', calH: 'Wann wir trainieren', filter: 'Nach Dozent:in filtern', training: 'Profitraining', workshop: 'Workshop',
+    signup: 'Anmeldung', telegram: 'Telegram-Gruppe →', contact: 'Kontakt →', weeks: 'Trainingswochen', workshops: 'Workshops',
     infos: 'Infos', infosH: 'So läuft das Training', when: 'Wann', where: 'Wo', forWhom: 'Für wen', fee: 'Beitrag', join: 'Mitglied werden',
   },
   en: {
     title: 'KEEP UP · Professional training', desc: "Professional training for dancers of Dresden's independent scene: calendar, teachers, venue and fee.",
     toCal: 'To the calendar', who: 'Who teaches →', next: 'Next class',
+    calKicker: 'Calendar', calH: 'When we train', filter: 'Filter by teacher', training: 'Professional training', workshop: 'Workshop',
+    signup: 'Registration', telegram: 'Telegram group →', contact: 'Contact →', weeks: 'Training weeks', workshops: 'Workshops',
     infos: 'Info', infosH: 'How training works', when: 'When', where: 'Where', forWhom: 'For whom', fee: 'Fee', join: 'Become a member',
   },
 });
@@ -46,8 +50,19 @@ const ne = nk ? days[nk][0] : undefined;
 const nd = nk ? new Date(`${nk}T00:00:00Z`) : undefined;
 const f = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat(dateLocale[lang], { ...o, timeZone: 'UTC' });
 const nextDate = nd ? `${f({ weekday: 'short' }).format(nd).replace('.', '')} · ${f({ day: 'numeric', month: 'long' }).format(nd)}` : '';
-const nextInfo = ne ? [ne.time, ne.who, ne.where].filter(Boolean).join(' · ') : '';
+const nextInfo = ne ? [ne.time, ne.title, ne.sub].filter(Boolean).join(' · ') : '';
 const [feeA, feeB] = verein.training.fee.split('/').map((x) => x.trim());
+
+// Liste für Browser ohne JavaScript
+const today = todayKey();
+const longDay = new Intl.DateTimeFormat(dateLocale[lang], { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
+const wochen = dozentinnen
+  .flatMap((d) => d.weeks.map((w) => ({ w, d })))
+  .filter(({ w }) => w[1] >= today)
+  .sort((a, b) => a.w[0].localeCompare(b.w[0]));
+const workshops = Object.entries(days).flatMap(([date, list]) =>
+  list.filter((e) => e.color === 'magenta' && date >= today).map((e) => ({ date, e })),
+);
 ---
 <Page title={t.title} description={t.desc} route="profitraining" ogImage={foto.default}>
   <section class="ku-hero" aria-labelledby="ku-h1">
@@ -75,7 +90,36 @@ const [feeA, feeB] = verein.training.fee.split('/').map((x) => x.trim());
     <KeilBar class="ku-hero__keil" />
   </section>
 
-  <Kalender dozentinnen={dozentinnen} days={days} months={months} />
+  <Kalender
+    days={days}
+    months={months}
+    kicker={t.calKicker}
+    title={t.calH}
+    filter={{ label: t.filter, chips: dozentinnen.map((d) => ({ key: d.id, label: d.first, name: d.name })) }}
+    legende={[{ color: 'cyan', label: t.training }, { color: 'magenta', label: t.workshop }]}
+  >
+    <Fragment slot="notiz">
+      <span class="kcal__note-k">{t.signup}</span>
+      <p>{s.anmeldung}</p>
+      {verein.social.telegram
+        ? <a class="mono-link" href={verein.social.telegram} rel="noopener">{t.telegram}</a>
+        : <a class="mono-link" href={url(lang, 'kontakt')}>{t.contact}</a>}
+    </Fragment>
+    <Fragment slot="liste">
+      <h3 class="ku-list__h">{t.weeks}</h3>
+      <ul class="ku-list">
+        {wochen.map(({ w, d }) => <li><strong>{weekLabel(lang, w)}</strong> · {d.name} · {d.stil}</li>)}
+      </ul>
+      {workshops.length > 0 && (
+        <>
+          <h3 class="ku-list__h">{t.workshops}</h3>
+          <ul class="ku-list">
+            {workshops.map(({ date, e }) => <li><strong>{longDay.format(new Date(`${date}T00:00:00Z`))}</strong> · {e.time} · <a href={e.links[0].href}>{e.sub}</a></li>)}
+          </ul>
+        </>
+      )}
+    </Fragment>
+  </Kalender>
 
   <Stapel dozentinnen={dozentinnen} />
 
@@ -168,6 +212,11 @@ const [feeA, feeB] = verein.training.fee.split('/').map((x) => x.trim());
   .ku-next__date { font-family: var(--font-display); font-weight: 800; font-size: clamp(20px, 2vw, 26px); letter-spacing: -0.02em; color: var(--cyan); }
   .ku-next__info { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.86); }
   .ku-hero :global(.ku-hero__keil) { position: absolute; left: 0; bottom: 0; width: 34%; }
+
+  .ku-list__h { font-family: var(--font-display); font-weight: 800; font-size: 24px; color: var(--purple); margin: 0 0 12px; }
+  .ku-list { margin: 0 0 32px; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+  .ku-list li { padding: 12px 0; border-bottom: 1px solid var(--rule); color: var(--ink-soft); }
+  .ku-list strong { color: var(--purple); }
 
   .ku-infos__h { margin-bottom: 48px; }
   .ku-infos__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 0 clamp(28px, 4vw, 56px); margin: 0; }

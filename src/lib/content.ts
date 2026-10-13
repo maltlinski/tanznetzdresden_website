@@ -53,5 +53,5 @@ export async function getFormate() {
 
 /** Termine, an denen eine Person mitwirkt (Feld `people` im Termin). */
 export async function getTermineFor(personId: string) {
-  return (await getUpcoming()).filter((t) => t.data.people.some((p) => p.id === personId));
+  return (await getUpcoming()).filter((t) => t.data.people.includes(personId));
 }

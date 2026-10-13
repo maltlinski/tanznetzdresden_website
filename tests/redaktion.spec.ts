@@ -30,8 +30,17 @@ interface Gespeichert {
   aenderungen: { pfad: string; text?: string; base64?: string; loeschen?: boolean; alt?: string | null }[];
 }
 
-/** Meldet eine Person mit Rolle an und baut Supabase samt Funktion „inhalte“ nach. */
-async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' = 'presse') {
+/** Mitgliederprofil, wie es die Freigaben-Seite aus Supabase liest */
+interface Mitglied {
+  id: string; display_name: string; slug: string; verified: boolean; photo_path: string | null; photo_pending: string | null;
+  pronouns?: string | null; bio?: string | null; tags?: string[]; is_trainer?: boolean;
+}
+
+/**
+ * Meldet eine Person mit Rolle an und baut Supabase samt Funktion „inhalte“ nach.
+ * `mitglieder`: Profile für Redaktion → Freigaben; `aufrufe` sammelt Freigaben, gelöschte Fotos und Neubauten.
+ */
+async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' = 'presse', mitglieder: Mitglied[] = [], aufrufe: string[] = []) {
   const gespeichert: Gespeichert[] = [];
   const dateien = ['src', 'public'].flatMap((d) => alleDateien(d)).filter((p) => ERLAUBT.test(p));
   const b64 = (o: object) => Buffer.from(JSON.stringify(o)).toString('base64url');
@@ -50,6 +59,20 @@ async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' =
     const url = new URL(req.url());
     const json = (body: unknown, status = 200) => route.fulfill({ status, contentType: 'application/json', body: JSON.stringify(body), headers: { 'Access-Control-Allow-Origin': '*', 'Access-Control-Allow-Headers': '*' } });
     if (req.method() === 'OPTIONS') return json({});
+    if (url.pathname === '/rest/v1/profiles' && url.searchParams.has('public_listing')) {
+      const offen = mitglieder.filter((m) => !m.verified || m.photo_pending).length;
+      if (req.method() === 'HEAD') return route.fulfill({ status: 200, headers: { 'content-range': `0-0/${offen}`, 'Access-Control-Allow-Origin': '*', 'Access-Control-Expose-Headers': 'content-range' } });
+      return json(mitglieder.map((m) => ({ pronouns: null, bio: null, tags: [], is_trainer: false, ...m })));
+    }
+    if (url.pathname === '/rest/v1/public_profiles') return json([{ slug: 'mira-mitglied', display_name: 'Mira Mitglied' }]);
+    if (url.pathname === '/rest/v1/rpc/freigabe') {
+      aufrufe.push(`freigabe ${JSON.stringify(req.postDataJSON())}`);
+      return json(req.postDataJSON().aktion === 'zurueckziehen' ? null : 'alt/foto.jpg');
+    }
+    if (url.pathname === '/storage/v1/object/profilbilder' && req.method() === 'DELETE') {
+      aufrufe.push(`löschen ${JSON.stringify(req.postDataJSON().prefixes)}`);
+      return json([]);
+    }
     if (url.pathname === '/rest/v1/profiles') {
       const p = { id: 'u1', display_name: 'Pia Presse', role: rolle };
       return json(req.headers()['accept']?.includes('object') ? p : [p]);
@@ -76,6 +99,9 @@ async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' =
         case 'speichern':
           gespeichert.push({ nachricht: body.nachricht, aenderungen: body.aenderungen });
           return json({ commit: 'c2', url: '' });
+        case 'neu_bauen':
+          aufrufe.push('neu bauen');
+          return json({ ok: true });
       }
     }
     return json({ message: 'nicht nachgebaut' }, 404);
@@ -129,6 +155,9 @@ test('Termin anlegen: Pflichtfelder, Verweise, gespeicherte Datei', async ({ pag
   await feld(page, 'Kategorie').selectOption('Diskurs');
   await feld(page, 'Kurzbeschreibung').fill('Wir zeigen, woran wir gerade arbeiten.');
   await page.getByLabel('Link für Tickets oder Anmeldung').fill('javascript:alert(1)');
+  // freigegebene Mitgliederprofile stehen mit zur Auswahl
+  await page.getByRole('searchbox', { name: 'Mitwirkende aus dem Netzwerk: suchen' }).fill('mira');
+  await expect(page.getByRole('checkbox', { name: 'Mira Mitglied (Mitgliederprofil)' })).toBeVisible();
   await page.getByRole('searchbox', { name: 'Mitwirkende aus dem Netzwerk: suchen' }).fill('alina');
   await page.getByRole('checkbox', { name: 'Alina Lucifero' }).check();
   await page.getByLabel('Gehört zum Format').selectOption({ label: 'POP UP' });
@@ -290,7 +319,49 @@ test('Textseite mit englischer Fassung bearbeiten', async ({ page }) => {
   expect(gespeichert[0].aenderungen[1].text!.trimEnd().endsWith('New paragraph.')).toBe(true);
 });
 
-for (const pfad of ['/intern/redaktion/', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9', '/intern/redaktion/eintrag/?b=verein']) {
+test('Freigaben: Profil mit Foto freigeben, neues Foto ablehnen, Hinweis auf doppelte Person', async ({ page }) => {
+  const aufrufe: string[] = [];
+  await redaktion(page, 'presse', [
+    { id: 'u2', display_name: 'Rika Yotsumoto', slug: 'rika-yotsumoto', verified: false, photo_path: null, photo_pending: 'u2/neu.jpg', bio: 'Tänzerin.', tags: ['Contemporary'], is_trainer: true },
+    { id: 'u3', display_name: 'Alina Lucifero', slug: 'alina', verified: true, photo_path: 'u3/a.jpg', photo_pending: 'u3/b.jpg' },
+    { id: 'u4', display_name: 'Olga Online', slug: 'olga-online', verified: true, photo_path: 'u4/x.jpg', photo_pending: null },
+  ], aufrufe);
+  await page.goto('/intern/redaktion/freigaben/');
+  const offen = page.locator('[data-offen] > li');
+  await expect(offen).toHaveCount(2);
+  await expect(page.locator('[data-online] > li')).toHaveCount(2);
+  const rika = offen.filter({ hasText: 'Rika Yotsumoto' });
+  await expect(rika).toContainText('Ergänzt „Rika Yotsumoto“ aus Personen');
+  await expect(offen.filter({ hasText: 'Alina Lucifero' })).toContainText('Achtung: „Alina Lucifero“ steht schon unter /netzwerk/alina-lucifero/');
+
+  await rika.getByRole('button', { name: 'Profil und Foto freigeben' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Profil freigegeben.' })).toContainText('in 2–3 Minuten');
+  expect(aufrufe).toEqual(['freigabe {"person":"u2","aktion":"profil"}', 'löschen ["alt/foto.jpg"]', 'neu bauen']);
+
+  aufrufe.length = 0;
+  page.once('dialog', (d) => d.accept());
+  await offen.filter({ hasText: 'Alina Lucifero' }).getByRole('button', { name: 'Foto ablehnen' }).click();
+  await expect(page.getByRole('status').filter({ hasText: 'Foto abgelehnt.' })).toBeVisible();
+  // ein abgelehntes Foto war nie online: kein Neubau
+  expect(aufrufe).toEqual(['freigabe {"person":"u3","aktion":"foto_ablehnen"}', 'löschen ["alt/foto.jpg"]']);
+});
+
+test('Freigaben: Zahl der offenen Freigaben auf Übersicht und in der Redaktion', async ({ page }) => {
+  await redaktion(page, 'presse', [{ id: 'u2', display_name: 'Neu', slug: 'neu', verified: false, photo_path: null, photo_pending: null }]);
+  await page.goto('/intern/');
+  await expect(page.getByRole('link', { name: '1 Profil oder Foto wartet auf Freigabe →' })).toHaveAttribute('href', /\/intern\/redaktion\/freigaben\/$/);
+  await page.goto('/intern/redaktion/');
+  await expect(page.locator('[data-access]').getByRole('link', { name: /^Freigaben\s*1/ })).toBeVisible();
+});
+
+test('Freigaben: ohne Rolle Presse/Vorstand kein Zugang', async ({ page }) => {
+  await redaktion(page, 'mitglied');
+  await page.goto('/intern/redaktion/freigaben/');
+  await expect(page.getByText(/Freigeben dürfen Mitglieder mit der Rolle/)).toBeVisible();
+  await expect(page.locator('[data-access]')).toBeHidden();
+});
+
+for (const pfad of ['/intern/redaktion/freigaben/', '/intern/redaktion/', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9', '/intern/redaktion/eintrag/?b=verein']) {
   test(`${pfad} ist barrierearm (axe)`, async ({ page }) => {
     await redaktion(page);
     await page.emulateMedia({ reducedMotion: 'reduce' });

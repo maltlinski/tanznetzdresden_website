@@ -3,6 +3,7 @@
  * je Termin eine Datei zum Eintragen (/termine/<id>.ics).
  */
 import type { Termin } from './content';
+import type { Training } from './keep-up';
 import { parseLocal } from './dates';
 import { verein } from './settings';
 
@@ -40,9 +41,13 @@ interface Options {
   pageUrl?: (t: Termin) => string;
   /** true: abonnierbarer Kalender mit Namen und Aktualisierungsintervall */
   feed?: boolean;
+  /** KEEP UP-Trainingstage (nur im abonnierbaren Kalender) */
+  trainings?: Training[];
+  /** Adresse der Profitrainings-Seite */
+  trainingUrl?: string;
 }
 
-export function icsResponse(termine: Termin[], { site, pageUrl, feed = false }: Options): Response {
+export function icsResponse(termine: Termin[], { site, pageUrl, feed = false, trainings = [], trainingUrl }: Options): Response {
   const host = site ? new URL(site).host : 'tanznetzdresden.de';
   const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
   const lines = [
@@ -65,6 +70,23 @@ export function icsResponse(termine: Termin[], { site, pageUrl, feed = false }: 
       `DESCRIPTION:${escape(d.teaser)}`,
       `CATEGORIES:${escape(d.category)}`,
       ...(page || d.link ? [`URL:${page ?? d.link}`] : []),
+      'END:VEVENT',
+    );
+  }
+  for (const e of trainings) {
+    const [from, to] = e.time.split('–');
+    const page = trainingUrl && site ? new URL(trainingUrl, site).href : undefined;
+    lines.push(
+      'BEGIN:VEVENT',
+      `UID:keep-up-${e.date}-${from.replace(':', '')}@${host}`,
+      `DTSTAMP:${stamp}`,
+      `DTSTART;TZID=Europe/Berlin:${local(`${e.date} ${from}`)}`,
+      `DTEND;TZID=Europe/Berlin:${local(`${e.date} ${to}`)}`,
+      `SUMMARY:${escape(`KEEP UP · Profitraining mit ${e.dozentin.name}`)}`,
+      `LOCATION:${escape(e.where)}`,
+      `DESCRIPTION:${escape(e.dozentin.stil)}`,
+      'CATEGORIES:Training',
+      ...(page ? [`URL:${page}`] : []),
       'END:VEVENT',
     );
   }

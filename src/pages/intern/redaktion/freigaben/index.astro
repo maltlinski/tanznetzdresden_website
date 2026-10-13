@@ -1,0 +1,244 @@
+---
+/**
+ * Freigaben: Mitgliederprofile und neue Fotos für die Website freigeben (Presse, Vorstand, Admin).
+ * Läuft nur mit Supabase (Funktion public.freigabe, Migration 20261013000000_freigaben.sql), auch ohne
+ * GitHub-Schlüssel. Nach einer Freigabe wird die Website neu gebaut, falls die Redaktion eingerichtet ist.
+ */
+import Intern from '../../../../layouts/Intern.astro';
+import { getPersonen } from '../../../../lib/content';
+import { href } from '../../../../lib/url';
+import '../../../../styles/redaktion.css';
+
+// Personen, die schon auf der Website stehen: Ein Mitgliederprofil mit gleichem Kürzel ergänzt sie.
+const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, name: p.data.name }))).replace(/</g, '\\u003c');
+---
+<Intern title="Freigaben" current="redaktion">
+  <a class="r-back" href={href('intern/redaktion/')}>← Redaktion</a>
+  <h1 class="i-h1">Profile und Fotos freigeben</h1>
+  <p class="i-lead">
+    Mitglieder pflegen ihr Profil selbst unter <a href={href('intern/profil/')}>Mein Profil</a>. Auf der Website (Netzwerk,
+    Dozent:innen beim Profitraining) erscheint es erst, wenn du es hier freigibst. Neue Fotos brauchen jedes Mal eine
+    Freigabe, Textänderungen nicht.
+  </p>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Freigeben dürfen Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.</p>
+  </div>
+  <p class="i-msg" role="status" data-msg hidden></p>
+
+  <div data-access hidden>
+    <section class="r-gruppe" aria-labelledby="fg-offen">
+      <h2 class="r-gruppe__h" id="fg-offen">Wartet auf Freigabe <span data-n-offen></span></h2>
+      <ul class="fg" data-offen></ul>
+      <p class="r-leer" data-leer-offen hidden>Gerade wartet nichts. Neue Profile und Fotos erscheinen hier.</p>
+    </section>
+    <section class="r-gruppe" aria-labelledby="fg-online">
+      <h2 class="r-gruppe__h" id="fg-online">Auf der Website <span data-n-online></span></h2>
+      <ul class="fg fg--kurz" data-online></ul>
+      <p class="r-leer" data-leer-online hidden>Noch keine freigegebenen Mitgliederprofile.</p>
+    </section>
+  </div>
+  <script type="application/json" data-personen set:html={personen} />
+</Intern>
+
+<script>
+  import { initIntern, errorText } from '../../../../scripts/intern/session';
+  import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
+  import { photoUrl, slugify } from '../../../../lib/supabase';
+  import { meldung, websiteUrl } from '../../../../scripts/intern/redaktion/seite';
+
+  interface Zeile {
+    id: string;
+    display_name: string;
+    pronouns: string | null;
+    bio: string | null;
+    tags: string[] | null;
+    is_trainer: boolean;
+    slug: string;
+    verified: boolean;
+    photo_path: string | null;
+    photo_pending: string | null;
+  }
+  type Aktion = 'profil' | 'foto' | 'foto_ablehnen' | 'foto_entfernen' | 'zurueckziehen';
+
+  const ctx = await initIntern(true);
+  const personen = JSON.parse(document.querySelector('[data-personen]')?.textContent ?? '[]') as { id: string; name: string }[];
+  const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+
+  if (ctx && !ctx.isRedaktion) $('[data-no-access]').hidden = false;
+  if (ctx?.isRedaktion) {
+    $('[data-access]').hidden = false;
+    await laden();
+  }
+
+  async function laden() {
+    const { data, error } = await ctx!.sb
+      .from('profiles')
+      .select('id, display_name, pronouns, bio, tags, is_trainer, slug, verified, photo_path, photo_pending')
+      .eq('public_listing', true)
+      .not('slug', 'is', null)
+      .order('display_name');
+    if (error) return meldung(errorText(error));
+    const zeilen = (data ?? []) as Zeile[];
+    const offen = zeilen.filter((z) => !z.verified || z.photo_pending);
+    const online = zeilen.filter((z) => z.verified);
+    $('[data-offen]').replaceChildren(...offen.map((z) => karte(z, true)));
+    $('[data-online]').replaceChildren(...online.map((z) => karte(z, false)));
+    $('[data-n-offen]').textContent = offen.length ? `(${offen.length})` : '';
+    $('[data-n-online]').textContent = online.length ? `(${online.length})` : '';
+    $('[data-leer-offen]').hidden = offen.length > 0;
+    $('[data-leer-online]').hidden = online.length > 0;
+  }
+
+  function h<K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text = '') {
+    const el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text) el.textContent = text;
+    return el;
+  }
+
+  function foto(path: string | null, label: string) {
+    const fig = h('figure', 'fg__foto');
+    const url = photoUrl(path);
+    if (url) {
+      const img = h('img');
+      img.src = url;
+      img.alt = `${label} (Vorschau)`;
+      img.loading = 'lazy';
+      fig.append(img);
+    } else {
+      fig.append(h('span', 'fg__ohne', 'Kein Foto'));
+    }
+    fig.append(h('figcaption', '', label));
+    return fig;
+  }
+
+  /** Woher kennt die Website diese Person schon? */
+  function bezug(z: Zeile) {
+    const gleich = personen.find((p) => p.id === z.slug);
+    if (gleich) return { text: `Ergänzt „${gleich.name}“ aus Personen (gleiche Adresse).`, warnung: false };
+    const name = personen.find((p) => p.id === slugify(z.display_name) || p.name.toLowerCase() === z.display_name.trim().toLowerCase());
+    if (name) {
+      return {
+        text: `Achtung: „${name.name}“ steht schon unter /netzwerk/${name.id}/. Mit dieser Adresse entstünde ein zweites Profil. Bitte die Person, als Adresse „${name.id}“ zu wählen.`,
+        warnung: true,
+      };
+    }
+    return { text: 'Neue Person auf der Website.', warnung: false };
+  }
+
+  function karte(z: Zeile, offen: boolean) {
+    const li = h('li', 'fg__karte');
+    const fotos = h('div', 'fg__fotos');
+    if (offen && z.photo_pending) {
+      if (z.photo_path && z.verified) fotos.append(foto(z.photo_path, 'Bisher'));
+      fotos.append(foto(z.photo_pending, 'Neues Foto'));
+    } else {
+      fotos.append(foto(z.photo_path, z.verified ? 'Auf der Website' : 'Foto'));
+    }
+    const body = h('div', 'fg__body');
+    const top = h('div', 'fg__top');
+    top.append(h('strong', 'fg__name', z.display_name || 'Ohne Namen'));
+    const marken = [!z.verified ? 'Neues Profil' : '', offen && z.photo_pending ? 'Neues Foto' : '', z.is_trainer ? 'Training' : ''].filter(Boolean);
+    for (const m of marken) top.append(h('span', `fg__marke${m === 'Training' ? ' fg__marke--hell' : ''}`, m));
+    body.append(top);
+
+    const adr = h('p', 'fg__adr');
+    const a = h('a', '', `/netzwerk/${z.slug}/`);
+    a.href = websiteUrl(`netzwerk/${z.slug}/`);
+    a.target = '_blank';
+    a.rel = 'noopener';
+    adr.append(a);
+    if (!z.verified) adr.append(document.createTextNode(' (erst nach der Freigabe erreichbar)'));
+    body.append(adr);
+
+    if (offen) {
+      const b = bezug(z);
+      body.append(h('p', b.warnung ? 'fg__hinweis fg__hinweis--warn' : 'fg__hinweis', b.text));
+      if (z.pronouns) body.append(h('p', 'fg__meta', z.pronouns));
+      if (z.bio) body.append(h('p', 'fg__bio', z.bio.length > 420 ? `${z.bio.slice(0, 420)} …` : z.bio));
+      if (z.tags?.length) body.append(h('p', 'fg__meta', z.tags.join(' · ')));
+    }
+
+    const knoepfe = h('div', 'fg__knoepfe');
+    const knopf = (text: string, aktion: Aktion, haupt = false, frage?: string) => {
+      const btn = h('button', haupt ? 'btn btn--primary btn--sm' : 'i-linkbtn', text);
+      btn.type = 'button';
+      btn.addEventListener('click', () => ausfuehren(z, aktion, btn, frage));
+      knoepfe.append(btn);
+    };
+    if (offen) {
+      if (!z.verified) knopf(z.photo_pending ? 'Profil und Foto freigeben' : 'Profil freigeben', 'profil', true);
+      else knopf('Foto freigeben', 'foto', true);
+      if (z.photo_pending) knopf('Foto ablehnen', 'foto_ablehnen', false, `Das neue Foto von ${z.display_name} ablehnen? Sag der Person am besten kurz Bescheid, warum.`);
+    } else {
+      if (z.photo_path) knopf('Foto entfernen', 'foto_entfernen', false, `Das Foto von ${z.display_name} von der Website nehmen?`);
+      knopf('Freigabe zurückziehen', 'zurueckziehen', false, `Das Profil von ${z.display_name} von der Website nehmen? Die Person kann es weiter bearbeiten.`);
+    }
+    body.append(knoepfe);
+    li.append(fotos, body);
+    return li;
+  }
+
+  const erledigt: Record<Aktion, string> = {
+    profil: 'Profil freigegeben.',
+    foto: 'Foto freigegeben.',
+    foto_ablehnen: 'Foto abgelehnt.',
+    foto_entfernen: 'Foto entfernt.',
+    zurueckziehen: 'Freigabe zurückgezogen.',
+  };
+
+  async function ausfuehren(z: Zeile, aktion: Aktion, btn: HTMLButtonElement, frage?: string) {
+    if (frage && !confirm(frage)) return;
+    btn.disabled = true;
+    const { data, error } = await ctx!.sb.rpc('freigabe', { person: z.id, aktion });
+    btn.disabled = false;
+    if (error) {
+      return meldung(/function .*freigabe|could not find the function/i.test(error.message)
+        ? 'Die Datenbank kennt die Freigabe noch nicht: Bitte die Migration 20261013000000_freigaben.sql im SQL-Editor ausführen.'
+        : errorText(error));
+    }
+    // ersetztes oder abgelehntes Foto aufräumen
+    if (typeof data === 'string' && data) await ctx!.sb.storage.from('profilbilder').remove([data]);
+    let text = erledigt[aktion];
+    // ein abgelehntes Foto war nie auf der Website, alles andere ändert sie
+    if (aktion !== 'foto_ablehnen') {
+      text += (await neuBauenLassen(ctx!.sb))
+        ? ' Die Website wird gerade aktualisiert und ist in 2–3 Minuten auf dem neuen Stand.'
+        : ' Auf der Website erscheint es mit dem nächsten Update, spätestens morgen früh.';
+    }
+    meldung(text, 'ok');
+    await laden();
+  }
+</script>
+
+<style>
+  .i-lead a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  .i-lead a:hover { color: var(--magenta-2); }
+  .fg { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
+  :global(.fg__karte) { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; padding: 20px; background: var(--paper); border-top: 3px solid var(--magenta); }
+  .fg--kurz :global(.fg__karte) { border-top-color: var(--cyan-2); padding: 14px 20px; }
+  :global(.fg__fotos) { display: flex; gap: 10px; align-items: flex-start; }
+  :global(.fg__foto) { margin: 0; width: 120px; display: grid; gap: 6px; }
+  .fg--kurz :global(.fg__foto) { width: 64px; }
+  .fg--kurz :global(.fg__foto figcaption) { display: none; }
+  :global(.fg__foto img), :global(.fg__ohne) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; background: var(--purple); clip-path: var(--keil-corner); }
+  :global(.fg__ohne) { display: grid; place-items: center; color: #fff; font-size: 12px; text-align: center; }
+  :global(.fg__foto figcaption) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  :global(.fg__body) { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  :global(.fg__top) { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 10px; }
+  :global(.fg__name) { font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--purple); margin-right: 4px; }
+  :global(.fg__marke) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; padding: 3px 7px; background: var(--magenta-tint); color: var(--purple); border-left: 3px solid var(--magenta); }
+  :global(.fg__marke--hell) { background: var(--cyan-tint); border-left-color: var(--cyan-2); }
+  :global(.fg__adr) { margin: 0; font-family: var(--font-mono); font-size: 12px; color: var(--ink-muted); word-break: break-all; }
+  :global(.fg__adr a) { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  :global(.fg__hinweis) { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+  :global(.fg__hinweis--warn) { padding: 8px 12px; background: var(--magenta-tint); border-left: 4px solid var(--magenta); color: var(--purple); }
+  :global(.fg__meta) { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  :global(.fg__bio) { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); white-space: pre-line; max-width: 70ch; }
+  :global(.fg__knoepfe) { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: 6px; }
+  @media (max-width: 560px) {
+    :global(.fg__karte) { grid-template-columns: minmax(0, 1fr); }
+    :global(.fg__foto) { width: 100px; }
+  }
+</style>

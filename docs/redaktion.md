@@ -9,7 +9,7 @@ landet als Commit im Repository. Danach baut sich die Website neu und ist nach 2
 
 | Rolle | darf |
 |---|---|
-| Presse | alles in der Redaktion, außer Impressum, Datenschutz und den rechtlichen Vereinsdaten |
+| Presse | alles in der Redaktion (auch Profile und Fotos freigeben), außer Impressum, Datenschutz und den rechtlichen Vereinsdaten |
 | Vorstand, Admin | alles |
 | Mitglied | nichts in der Redaktion (eigenes Profil wie bisher) |
 
@@ -21,10 +21,11 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 |---|---|---|
 | **News schreiben** | neue Beiträge mit Foto, Frist oder Zitat (docs/news.md) | nach Datum |
 | **Termine** | Tanzkalender, Startseite, eigene Terminseite | nach Datum, automatisch |
+| **Freigaben** | Profile und Fotos, die Mitglieder selbst pflegen (docs/profile.md) | – |
 | **Formate** | KEEP UP, POP UP … auf der Startseite | von Hand |
 | **News-Archiv** | ältere Beiträge, die als Datei vorliegen | nach Datum |
-| **Trainingsplan** | KEEP UP: wer wann unterrichtet (Kalender auf /profitraining/) | nach Datum, automatisch |
-| **Dozent:innen** | die Karten im Stapel auf /profitraining/ | von Hand = Reihenfolge im Stapel |
+| **Trainingsplan** | KEEP UP: wer wann unterrichtet (Kalender auf /profitraining/ und im Tanzkalender) | nach Datum, automatisch |
+| **Dozent:innen** | die Karten im Stapel auf /profitraining/ (Name und Foto aus dem Profil) | von Hand = Reihenfolge im Stapel |
 | **Seite Profitraining** | Überschrift, Einleitung, Infos, Kopffoto | – |
 | **Personen** | Mitglieder:innen und Trainer:innen mit Profil | von Hand = Anzeige |
 | **Orte auf der Karte**, **Partner** | Kooperationsseite | von Hand |
@@ -52,6 +53,22 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 - **Text formatieren:** Über dem Textfeld setzen die Knöpfe Zwischenüberschrift, Fett, Aufzählung, Zitat und Link.
   „Vorschau“ zeigt das Ergebnis. Eigenes HTML ist aus Sicherheitsgründen nicht erlaubt.
 - **Entwurf:** Termine und News mit dem Haken „Entwurf“ erscheinen nicht auf der Website.
+- **Personen auswählen:** Bei *Mitwirkende* (Termine) und *Person* (Dozent:innen) stehen auch freigegebene
+  Mitgliederprofile zur Auswahl, gekennzeichnet als „(Mitgliederprofil)“. Eine Person muss also nicht doppelt unter
+  *Personen* angelegt werden.
+
+### Freigaben
+
+Mitglieder pflegen ihr Profil und Foto unter *Mein Profil*. Unter *Redaktion → Freigaben* steht, was wartet:
+
+- **Profil freigeben:** Das Profil erscheint unter Netzwerk, ein mitgeschicktes Foto gleich mit.
+- **Foto freigeben** oder **Foto ablehnen:** für neue Fotos schon freigegebener Profile. Bis zur Freigabe bleibt
+  das bisherige Foto online.
+- **Auf der Website:** Foto entfernen oder die Freigabe zurückziehen.
+- Steht ein Name schon mit einer anderen Adresse auf der Website, warnt die Seite vor einem doppelten Profil.
+
+Nach jeder Freigabe baut sich die Website neu (2–3 Minuten). Das funktioniert auch, wenn sonst nichts in der Redaktion
+gespeichert wird. Auf der Übersicht im internen Bereich und unter *Mitglieder* steht, wie viel wartet.
 
 ### Wann ist es online?
 
@@ -84,7 +101,8 @@ Auf GitHub (Konto mit Schreibrechten auf das Repository): *Settings → Develope
 Fine-grained tokens → Generate new token*.
 
 - **Repository access:** *Only select repositories* → `tanznetzdresden_website`
-- **Permissions → Repository:** *Contents: Read and write*, *Actions: Read-only* (für den Website-Status).
+- **Permissions → Repository:** *Contents: Read and write* (speichern und die Website nach Freigaben und News neu
+  bauen lassen), *Actions: Read-only* (für den Website-Status).
   *Metadata: Read-only* kommt automatisch dazu.
 - **Expiration:** so lang wie möglich, und einen Kalendereintrag zum Erneuern machen. Läuft der Schlüssel ab,
   meldet die Redaktion „Der GitHub-Schlüssel der Redaktion ist ungültig oder abgelaufen“.
@@ -130,6 +148,7 @@ löschen.
 | „GitHub verweigert den Zugriff (403/404)“ | Schlüssel hat keine Rechte auf das Repository oder `GITHUB_REPO` ist falsch geschrieben. |
 | „Die Redaktion ist für Mitglieder mit der Rolle …“ | Rolle unter *Intern → Mitglieder* auf Presse oder Vorstand setzen. |
 | Status bleibt „nicht abrufbar“ | Schlüssel ohne *Actions: Read-only*. Speichern geht trotzdem. |
+| Freigabe oder News: „erscheint … spätestens morgen früh“ | Die Funktion `inhalte` ist nicht eingerichtet oder der Schlüssel darf nicht schreiben. Schritte 1–3. |
 | Gespeichert, aber die Website ändert sich nicht | Unter *Actions* auf GitHub nachsehen. Rot = Build-Fehler, Meldung lesen und den Wert in der Redaktion korrigieren. |
 
 ## Sicherheit
@@ -155,7 +174,8 @@ löschen.
 | Bereiche und Felder | `src/scripts/intern/redaktion/bereiche.ts` |
 | Lesen/Schreiben von Markdown, YAML, JSON (Kommentare bleiben erhalten) | `src/scripts/intern/redaktion/daten.ts` |
 | Formularbausteine | `src/scripts/intern/redaktion/formular.ts` |
-| Seiten | `src/pages/intern/redaktion/` (Übersicht, `liste/`, `eintrag/`), Stil: `src/styles/redaktion.css` |
+| Seiten | `src/pages/intern/redaktion/` (Übersicht, `liste/`, `eintrag/`, `freigaben/`), Stil: `src/styles/redaktion.css` |
+| Freigaben (Datenbank) | `supabase/migrations/20261013000000_freigaben.sql` (Funktion `freigabe()`), Zähler: `src/scripts/intern/freigaben.ts` |
 | Browser-Tests (Supabase und Funktion nachgebaut) | `tests/redaktion.spec.ts` |
 
 **Neues Feld in einem Schema** (`src/content.config.ts`, `src/lib/settings.ts`): in `bereiche.ts` beim passenden
@@ -168,4 +188,5 @@ Bereiche (`typ: 'verweis'`) schützen automatisch vor dem Löschen verwendeter E
 **Texte aus `.ts`-Dateien:** Die Redaktion kann nur Markdown, YAML und JSON schreiben. Texte, die sie ändern soll,
 gehören in eine JSON-Datei unter `src/settings/`, die `.ts`-Datei liest sie ein (siehe `haltung.ts`).
 
-**Funktion ändern:** Danach in Supabase neu einspielen (Schritt 2), sonst läuft die alte Fassung weiter.
+**Funktion ändern:** Danach in Supabase neu einspielen (Schritt 2), sonst läuft die alte Fassung weiter. Seit den
+Freigaben kennt sie die Aktion `neu_bauen`. Wer die Funktion vorher angelegt hat, spielt sie einmal neu ein.

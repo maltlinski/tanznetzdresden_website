@@ -12,8 +12,10 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
 3. *SQL Editor* öffnen und nacheinander ausführen:
    `supabase/migrations/20261007000000_intern.sql` (Login, Profile, Dokumente),
    `supabase/migrations/20261008000000_oeffentliche_profile.sql` (öffentliche Profile mit Freigabe, Porträts) und
-   `supabase/migrations/20261009000000_news.sql` (News-Redaktion, Rolle „Presse“, siehe docs/news.md) und
-   `supabase/migrations/20261010000000_rollen_im_dashboard.sql` (Rollen auch im Dashboard änderbar).
+   `supabase/migrations/20261009000000_news.sql` (News-Redaktion, Rolle „Presse“, siehe docs/news.md),
+   `supabase/migrations/20261010000000_rollen_im_dashboard.sql` (Rollen auch im Dashboard änderbar) und
+   `supabase/migrations/20261013000000_freigaben.sql` (Presse gibt Profile frei, neue Fotos warten auf Freigabe).
+   Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
 
 ## 2. Login konfigurieren
 
@@ -43,11 +45,13 @@ mit denselben Namen überschreiben.
 | `/intern/` zeigt „Noch nicht eingerichtet“ | Zugangsdaten fehlen in `src/settings/supabase.ts`, oder der Neubau läuft noch (*Actions*). |
 | Anmelden: „Für diese Adresse gibt es kein Konto“ | Person unter *Authentication → Users* einladen. Registrieren geht absichtlich nicht. |
 | Link aus der E-Mail führt auf `localhost` oder eine Fehlerseite | *Authentication → URL Configuration*: Site URL und Redirect URLs prüfen (Schritt 2). Bei GitHub Pages: `https://maltlinski.github.io/tanznetzdresden_website/intern/**`. |
-| Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle vier Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
-| Table Editor oder SQL-Editor: „Nur der Vorstand kann Rollen ändern.“ | Vierte Migration `20261010000000_rollen_im_dashboard.sql` (noch einmal) ausführen, dann erneut speichern. Passiert das, obwohl sie schon lief, wurde danach eine ältere Migration erneut ausgeführt und hat die Prüfung zurückgesetzt. Im SQL-Editor oben rechts muss als Rolle `postgres` stehen, nicht ein angemeldetes Mitglied. |
+| Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle fünf Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
+| Table Editor oder SQL-Editor: „Nur der Vorstand kann Rollen ändern.“ | Fünfte Migration `20261013000000_freigaben.sql` (noch einmal) ausführen, dann erneut speichern. Im SQL-Editor oben rechts muss als Rolle `postgres` stehen, nicht ein angemeldetes Mitglied. |
+| Freigaben: „Die Datenbank kennt die Freigabe noch nicht“ | Fünfte Migration `20261013000000_freigaben.sql` ausführen. |
+| Mein Profil: „Neue Fotos gibt die Redaktion frei.“ | Die Seite ist älter als die Datenbank. Seite neu laden. |
 | „Redaktion“ fehlt im Menü | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
 | Redaktion: „noch nicht eingerichtet“ | Supabase-Funktion `inhalte` und GitHub-Schlüssel fehlen, siehe [redaktion.md](redaktion.md#einrichten-einmalig-admin). |
-| Veröffentlichte News erscheinen erst am nächsten Morgen | Webhook fehlt (docs/news.md), oder `news-updated` fehlt in `.github/workflows/deploy.yml`. |
+| Veröffentlichte News oder freigegebene Profile erscheinen erst am nächsten Morgen | Die Redaktion (Funktion `inhalte` mit GitHub-Schlüssel) ist nicht eingerichtet; sie stößt den Neubau an. Siehe [redaktion.md](redaktion.md#einrichten-einmalig-admin). |
 
 ## 4. Mitglieder einladen
 
@@ -61,8 +65,8 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 | Rolle | darf |
 |---|---|
 | Mitglied | eigenes Profil, Mitgliederliste, Dokumente lesen |
-| Presse | zusätzlich die Redaktion: News, Termine, Formate, Profitraining, Personen, Partner, Texte (docs/redaktion.md) |
-| Vorstand | zusätzlich Rollen vergeben, Profile freigeben, Dokumente hochladen, Redaktion inkl. Impressum, Datenschutz und rechtlicher Vereinsdaten |
+| Presse | zusätzlich die Redaktion: News, Termine, Formate, Profitraining, Personen, Partner, Texte, Profile und Fotos freigeben (docs/redaktion.md) |
+| Vorstand | zusätzlich Rollen vergeben, Dokumente hochladen, Redaktion inkl. Impressum, Datenschutz und rechtlicher Vereinsdaten |
 | Admin | wie Vorstand (Admin vergeben nur Admins) |
 
 **Mitgliedschaft beendet:** *Authentication → Users* → Person löschen. Das Profil wird mit gelöscht.
@@ -73,7 +77,8 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 |---|---|
 | Name, Pronomen, Kurzbio, Website, Instagram, AGs | alle angemeldeten Mitglieder:innen |
 | E-Mail, Telefon | nur, wenn die Person es freigibt |
-| `public_listing` | Name, Website und Instagram dürfen öffentlich erscheinen (Ansicht `public_profiles`) |
+| `public_listing` | öffentliches Profil gewünscht; erscheint nach Freigabe (`verified`) in der Ansicht `public_profiles` |
+| Porträt (Bucket `profilbilder`) | öffentlich; ein neues Foto (`photo_pending`) erscheint erst nach Freigabe auf der Website |
 | Dokumente (Bucket `intern`) | Lesen: alle Mitglieder:innen · Hochladen/Löschen: Vorstand |
 | Rolle | ändern kann nur der Vorstand |
 | News (`news_posts`, Bucket `newsbilder`) | Entwürfe: nur Presse/Vorstand/Admin · veröffentlicht: öffentlich über `public_news` |
@@ -85,5 +90,5 @@ Einrichtung in [redaktion.md](redaktion.md#einrichten-einmalig-admin).
 
 ## Ideen für später
 
-- Interne Termine (Plenum, AG-Treffen) als eigene Tabelle.
+- Interne Termine (Plenum, AG-Treffen) im selben Kalender (`src/components/Kalender.astro`), sichtbar nur für Mitglieder.
 - Einladungen direkt aus dem internen Bereich (braucht eine Supabase Edge Function mit Service-Key).

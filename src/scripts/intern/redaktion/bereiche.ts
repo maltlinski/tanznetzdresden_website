@@ -271,10 +271,9 @@ export const bereiche: Bereich[] = [
     info: (e) => e.data.stil ?? '',
     seite: (e) => `profitraining/#dozentin-${e.id}`,
     felder: [
-      { typ: 'verweis', key: 'id', label: 'Person', pflicht: true, nurNeu: true, quelle: 'personen', hilfe: 'Name und Profil kommen aus „Personen“. Wer fehlt, dort zuerst anlegen.' },
+      { typ: 'verweis', key: 'id', label: 'Person', pflicht: true, nurNeu: true, quelle: 'personen', hilfe: 'Name, Profil und Foto kommen aus dem Profil der Person. Wer fehlt: unter „Personen“ anlegen oder das eigene Profil im internen Bereich freigeben lassen.' },
       { typ: 'text', key: 'stil', label: 'Schwerpunkt im Unterricht', pflicht: true, en: true, platzhalter: 'z. B. Contemporary' },
       { typ: 'textlang', key: 'text', label: 'Text zum Unterricht', pflicht: true, en: true, zeilen: 4, max: 600, hilfe: 'Zwei bis drei Sätze.' },
-      { typ: 'bild', key: 'foto', label: 'Porträt', ordner: 'photos', form: 'relativ', hilfe: 'Optional. Sonst das Profilfoto oder ein Platzhalter.' },
     ],
   },
   {

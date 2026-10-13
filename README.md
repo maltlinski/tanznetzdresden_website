@@ -13,8 +13,8 @@ zwei Bühnenfotos durch das Netz.
 | Startseite | Netz-Hero (wechselndes Bühnenfoto, Fotos in `src/settings/hero.ts`), Termine, News, Formate, Training, Netzwerk, Mitgliedschaft | `src/views/HomeView.astro` |
 | **News** | „Aus dem Netz“: Titelthema, Ausschreibungen mit Countdown, Chronik mit Filter, Beitragsseiten, RSS; Presse schreibt im internen Bereich | `/news/`, docs/news.md |
 | **Zweisprachig** | Deutsch und Englisch (`/en/…`), Sprachumschalter, hreflang | `src/lib/i18n.ts` |
-| Tanzkalender | alle Termine nach Monaten, Filter, **Kalender-Abo (.ics)** | `/termine/`, `/termine.ics` |
-| **Profile** | eigene Seite je Künstler:in, Suche und Filter; Mitglieder pflegen selbst, Vorstand gibt frei | `/netzwerk/` |
+| Tanzkalender | ein Monatskalender für alle Termine und das Profitraining, Filter nach Kategorie, **Kalender-Abo (.ics)**; derselbe Kalender auf `/profitraining/` | `/termine/`, `/termine.ics`, `src/components/Kalender.astro` |
+| **Profile** | eigene Seite je Künstler:in, Suche und Filter; Mitglieder pflegen Profil und Foto selbst, Presse oder Vorstand geben frei; Demo-Ansicht zum Weiterentwickeln | `/netzwerk/`, docs/profile.md |
 | Verein | Vorstand, Arbeitsgruppen, alle Mitglieder:innen | `/verein/` |
 | Mitglied werden | Vorteile, Ablauf, Beitrag, Antrag | `/mitglied-werden/` |
 | Kontakt | Kontakt, Vorstand, Presse, Termin einreichen, Karte | `/kontakt/` |
@@ -74,8 +74,8 @@ docs/                 Anleitungen
 
 - [Design ändern](design/README.md): Designsystem aus Claude Design übernehmen
 - [Inhalte bearbeiten](docs/inhalte.md): Termine, Formate, Personen, Texte, CMS
-- [News](docs/news.md): Beiträge schreiben (intern oder als Datei), Rolle Presse, Webhook
-- [Profile](docs/profile.md): öffentliche Profile, Freigabe, sofortige Aktualisierung
+- [News](docs/news.md): Beiträge schreiben (intern oder als Datei), Rolle Presse, sofort online
+- [Profile](docs/profile.md): öffentliche Profile, Freigabe von Profilen und Fotos, wo sie erscheinen, Demo-Ansicht
 - [Deutsch und Englisch](docs/mehrsprachigkeit.md): Übersetzen, neue Seiten in beiden Sprachen
 - [Interner Bereich einrichten](docs/intern.md): Supabase, Einladungen, Rollen
 - [Veröffentlichen](docs/deployment.md): GitHub Pages, eigene Domain, Hosting in der EU

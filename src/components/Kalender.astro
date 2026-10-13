@@ -1,39 +1,34 @@
 ---
 /**
- * KEEP UP · Monatskalender mit Filter nach Dozent:in und Tagesansicht (Entwurf „KEEP UP Profitraining“).
- * Alle Monate werden beim Build gerendert, der Browser blättert nur. Ohne JavaScript erscheint
- * stattdessen die Liste der Trainingswochen und Workshops.
+ * Monatskalender mit Filter und Tagesansicht – derselbe für den Tanzkalender (/termine/) und
+ * das Profitraining (/profitraining/), siehe src/lib/kalender.ts. Alle Monate werden beim Build
+ * gerendert, der Browser blättert nur. Ohne JavaScript erscheint stattdessen der Slot „liste“.
+ *
+ * Slots: „liste“ (ohne JavaScript), „notiz“ (Kasten unter der Tagesansicht).
+ * Andere Teile der Seite filtern per `document.dispatchEvent(new CustomEvent('kalender:filter', { detail: key }))`.
+ * `#kategorie-<key>` in der Adresse wählt einen Filter vor.
  */
-import Tag from '../ui/Tag.astro';
-import { getVerein } from '../../lib/settings';
-import { dateLocale, getLang, tr, url } from '../../lib/i18n';
-import { todayKey, weekLabel, type Dozentin, type Einheit, type Monat } from '../../lib/keep-up';
-import { keepUp } from '../../settings/keep-up';
+import Tag from './ui/Tag.astro';
+import { dateLocale, getLang, tr } from '../lib/i18n';
+import { todayKey } from '../lib/keep-up';
+import type { Farbe, Monat, Tage } from '../lib/kalender';
 
 interface Props {
-  dozentinnen: Dozentin[];
-  days: Record<string, Einheit[]>;
+  days: Tage;
   months: Monat[];
+  kicker: string;
+  title: string;
+  /** Beschriftung der Filtergruppe und die Chips (key = Wert in KalenderEintrag.keys) */
+  filter: { label: string; chips: { key: string; label: string; name?: string }[] };
+  legende: { color: Farbe; label: string }[];
+  /** id der Section (Sprungziel) */
+  id?: string;
 }
-const { dozentinnen, days, months } = Astro.props;
+const { days, months, kicker, title, filter, legende, id = 'kalender' } = Astro.props;
 const lang = getLang(Astro);
-const verein = getVerein(lang);
-const s = keepUp[lang];
 const t = tr(lang, {
-  de: {
-    kicker: 'Kalender', h: 'Wann wir trainieren', filter: 'Nach Dozent:in filtern', all: 'Alle',
-    prev: 'Vorheriger Monat', next: 'Nächster Monat', legendTraining: 'Profitraining', legendWorkshop: 'Workshop', today: 'Heute',
-    training: 'Training', workshop: 'Workshop', with: 'mit', toCard: 'Zur Dozent:in →', toEvent: 'Zum Workshop →',
-    none: 'Gerade sind keine Termine geplant.', signup: 'Anmeldung', telegram: 'Telegram-Gruppe →', contact: 'Kontakt →',
-    weeks: 'Trainingswochen', workshops: 'Workshops',
-  },
-  en: {
-    kicker: 'Calendar', h: 'When we train', filter: 'Filter by teacher', all: 'All',
-    prev: 'Previous month', next: 'Next month', legendTraining: 'Professional training', legendWorkshop: 'Workshop', today: 'Today',
-    training: 'Training', workshop: 'Workshop', with: 'with', toCard: 'Meet the teacher →', toEvent: 'About the workshop →',
-    none: 'No classes scheduled right now.', signup: 'Registration', telegram: 'Telegram group →', contact: 'Contact →',
-    weeks: 'Training weeks', workshops: 'Workshops',
-  },
+  de: { all: 'Alle', prev: 'Vorheriger Monat', next: 'Nächster Monat', today: 'Heute', none: 'Gerade sind keine Termine geplant.' },
+  en: { all: 'All', prev: 'Previous month', next: 'Next month', today: 'Today', none: 'Nothing scheduled right now.' },
 });
 
 const locale = dateLocale[lang];
@@ -42,138 +37,107 @@ const longDay = new Intl.DateTimeFormat(locale, { weekday: 'long', day: 'numeric
 const dows = Array.from({ length: 7 }, (_, i) =>
   new Intl.DateTimeFormat(locale, { weekday: 'short', timeZone: 'UTC' }).format(utc(`2026-01-${String(5 + i).padStart(2, '0')}`)).replace('.', ''),
 );
-const describe = (e: Einheit) =>
-  e.kind === 'training' ? `${t.training} ${t.with} ${e.who}` : `${e.what}${e.who ? ` ${t.with} ${e.who}` : ''}`;
 
 // Beim Build sichtbarer Monat: der mit dem nächsten Termin (der Browser rechnet beim Öffnen neu)
 const today = todayKey();
 const nextKey = Object.keys(days).find((d) => d >= today);
-const startMonth = Math.max(0, months.findIndex((m) => nextKey?.startsWith(m.key)));
-const shown = nextKey ? startMonth : months.length - 1;
-
-// Liste ohne JavaScript
-const wochen = dozentinnen
-  .flatMap((d) => d.weeks.map((w) => ({ w, d })))
-  .filter(({ w }) => w[1] >= today)
-  .sort((a, b) => a.w[0].localeCompare(b.w[0]));
-const workshops = Object.entries(days).flatMap(([date, list]) =>
-  list.filter((e) => e.kind === 'workshop' && date >= today).map((e) => ({ date, e })),
-);
+const shown = nextKey ? Math.max(0, months.findIndex((m) => nextKey.startsWith(m.key))) : months.length - 1;
 
 const json = JSON.stringify({ days }).replace(/</g, '\\u003c');
-const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard: t.toCard, toEvent: t.toEvent, none: t.none });
+const hId = `${id}-h`;
 ---
-<section id="kalender" class="kcal section" aria-labelledby="kalender-h" data-kcal data-locale={locale} data-i18n={i18n}>
+<section id={id} class="kcal section" aria-labelledby={hId} data-kcal data-locale={locale} data-none={t.none}>
   <div class="wrap">
     <div class="section-head">
       <div data-reveal>
-        <Tag>{t.kicker}</Tag>
-        <h2 id="kalender-h" class="h2">{t.h}</h2>
+        <Tag>{kicker}</Tag>
+        <h2 id={hId} class="h2">{title}</h2>
       </div>
-      <div class="chips kcal__chips" role="group" aria-label={t.filter} data-kcal-chips>
-        <button type="button" class="chip" data-tr="" aria-pressed="true">{t.all}</button>
-        {dozentinnen.map((d) => (
-          <button type="button" class="chip" data-tr={d.id} aria-pressed="false" aria-label={d.name}>{d.first}</button>
-        ))}
-      </div>
-    </div>
-
-    <div class="kcal__layout">
-      <div class="kcal__main">
-        <div class="kcal__bar">
-          <h3 class="kcal__month-label" aria-live="polite" data-kcal-label>{months[shown]?.label}</h3>
-          <div class="kcal__nav">
-            <button type="button" class="kcal__arrow" aria-label={t.prev} data-kcal-prev>←</button>
-            <button type="button" class="kcal__arrow" aria-label={t.next} data-kcal-next>→</button>
-          </div>
-        </div>
-        <div class="kcal__dows" aria-hidden="true">{dows.map((d) => <span>{d}</span>)}</div>
-        <div class="kcal__months" data-kcal-grid>
-          {months.map((m, i) => (
-            <div class="kcal__month" role="group" aria-label={m.label} data-month={m.key} data-label={m.label} hidden={i !== shown}>
-              {m.cells.map((c) =>
-                !c ? (
-                  <span class="kcal__cell kcal__cell--blank" aria-hidden="true"></span>
-                ) : c.items.length ? (
-                  <button
-                    type="button"
-                    class="kcal__cell kcal__day"
-                    data-date={c.date}
-                    data-tr={[...new Set(c.items.map((e) => e.tr).filter(Boolean))].join(' ')}
-                    aria-pressed="false"
-                    tabindex="-1"
-                    aria-label={`${longDay.format(utc(c.date))}: ${c.items.map(describe).join('; ')}`}
-                  >
-                    <span class="kcal__num">{c.day}</span>
-                    <span class="kcal__meta">
-                      <span class="kcal__name">{c.items.find((e) => e.kind === 'training')?.who.split(/\s+/)[0] ?? t.workshop}</span>
-                      <span class="kcal__marks">
-                        {c.items.map((e) => <span class:list={['kcal__mark', e.kind === 'workshop' && 'kcal__mark--ws']} data-tr={e.tr ?? ''}></span>)}
-                      </span>
-                    </span>
-                  </button>
-                ) : (
-                  <span class="kcal__cell kcal__empty" data-date={c.date} aria-hidden="true"><span class="kcal__num">{c.day}</span></span>
-                ),
-              )}
-            </div>
+      {filter.chips.length > 1 && (
+        <div class="chips kcal__chips" role="group" aria-label={filter.label} data-kcal-chips>
+          <button type="button" class="chip" data-key="" aria-pressed="true">{t.all}</button>
+          {filter.chips.map((c) => (
+            <button type="button" class="chip" data-key={c.key} aria-pressed="false" aria-label={c.name}>{c.label}</button>
           ))}
         </div>
-        <div class="kcal__legend" aria-hidden="true">
-          <span><span class="kcal__mark"></span>{t.legendTraining}</span>
-          <span><span class="kcal__mark kcal__mark--ws"></span>{t.legendWorkshop}</span>
-          <span><span class="kcal__today-mk"></span>{t.today}</span>
-        </div>
-      </div>
-
-      <aside class="kcal__panel">
-        <div aria-live="polite" data-kcal-panel>
-          <span class="kcal__dow" data-kcal-dow></span>
-          <p class="kcal__date" data-kcal-date></p>
-          <div class="kcal__items" data-kcal-items></div>
-        </div>
-        <div class="kcal__note">
-          <span class="kcal__note-k">{t.signup}</span>
-          <p>{s.anmeldung}</p>
-          {verein.social.telegram
-            ? <a class="mono-link" href={verein.social.telegram} rel="noopener">{t.telegram}</a>
-            : <a class="mono-link" href={url(lang, 'kontakt')}>{t.contact}</a>}
-        </div>
-      </aside>
-    </div>
-
-    <div class="kcal__list">
-      <h3 class="kcal__list-h">{t.weeks}</h3>
-      <ul>
-        {wochen.map(({ w, d }) => (
-          <li><strong>{weekLabel(lang, w)}</strong> · {d.name} · {d.stil}</li>
-        ))}
-      </ul>
-      {workshops.length > 0 && (
-        <>
-          <h3 class="kcal__list-h">{t.workshops}</h3>
-          <ul>
-            {workshops.map(({ date, e }) => (
-              <li><strong>{longDay.format(utc(date))}</strong> · {e.time} · <a href={e.href}>{e.what}</a></li>
-            ))}
-          </ul>
-        </>
       )}
     </div>
+
+    {months.length === 0 ? (
+      <p class="kcal__empty-all">{t.none}</p>
+    ) : (
+      <div class="kcal__layout">
+        <div class="kcal__main">
+          <div class="kcal__bar">
+            <h3 class="kcal__month-label" aria-live="polite" data-kcal-label>{months[shown]?.label}</h3>
+            <div class="kcal__nav">
+              <button type="button" class="kcal__arrow" aria-label={t.prev} data-kcal-prev>←</button>
+              <button type="button" class="kcal__arrow" aria-label={t.next} data-kcal-next>→</button>
+            </div>
+          </div>
+          <div class="kcal__dows" aria-hidden="true">{dows.map((d) => <span>{d}</span>)}</div>
+          <div class="kcal__months" data-kcal-grid>
+            {months.map((m, i) => (
+              <div class="kcal__month" role="group" aria-label={m.label} data-month={m.key} data-label={m.label} hidden={i !== shown}>
+                {m.cells.map((c) =>
+                  !c ? (
+                    <span class="kcal__cell kcal__cell--blank" aria-hidden="true"></span>
+                  ) : c.items.length ? (
+                    <button
+                      type="button"
+                      class="kcal__cell kcal__day"
+                      data-date={c.date}
+                      data-keys={[...new Set(c.items.flatMap((e) => e.keys))].join(' ')}
+                      aria-pressed="false"
+                      tabindex="-1"
+                      aria-label={`${longDay.format(utc(c.date))}: ${c.items.map((e) => e.label).join('; ')}`}
+                    >
+                      <span class="kcal__num">{c.day}</span>
+                      <span class="kcal__meta">
+                        <span class="kcal__name">{(c.items.find((e) => !e.nebenbei) ?? c.items[0]).short}</span>
+                        <span class="kcal__marks">
+                          {c.items.map((e) => <span class:list={['kcal__mark', `kcal__mark--${e.color}`]} data-keys={e.keys.join(' ')}></span>)}
+                        </span>
+                      </span>
+                    </button>
+                  ) : (
+                    <span class="kcal__cell kcal__empty" data-date={c.date} aria-hidden="true"><span class="kcal__num">{c.day}</span></span>
+                  ),
+                )}
+              </div>
+            ))}
+          </div>
+          <div class="kcal__legend" aria-hidden="true">
+            {legende.map((l) => <span><span class:list={['kcal__mark', `kcal__mark--${l.color}`]}></span>{l.label}</span>)}
+            <span><span class="kcal__today-mk"></span>{t.today}</span>
+          </div>
+        </div>
+
+        <aside class="kcal__panel">
+          <div aria-live="polite" data-kcal-panel>
+            <span class="kcal__dow" data-kcal-dow></span>
+            <p class="kcal__date" data-kcal-date></p>
+            <div class="kcal__items" data-kcal-items></div>
+          </div>
+          {Astro.slots.has('notiz') && <div class="kcal__note"><slot name="notiz" /></div>}
+        </aside>
+      </div>
+    )}
+
+    <div class="kcal__list"><slot name="liste" /></div>
   </div>
   <script type="application/json" data-kcal-data set:html={json} />
 </section>
 
 <script>
-  import { gsap, EASE, motionOk } from '../../scripts/gsap';
-  import type { Einheit } from '../../lib/keep-up';
+  import { gsap, EASE, motionOk } from '../scripts/gsap';
+  import type { KalenderEintrag } from '../lib/kalender';
 
   const root = document.querySelector<HTMLElement>('[data-kcal]');
-  if (root) initKalender(root);
+  if (root?.querySelector('[data-kcal-grid]')) initKalender(root);
 
   function initKalender(root: HTMLElement) {
-    const { days } = JSON.parse(root.querySelector('[data-kcal-data]')?.textContent ?? '{"days":{}}') as { days: Record<string, Einheit[]> };
-    const t = JSON.parse(root.dataset.i18n ?? '{}') as Record<string, string>;
+    const { days } = JSON.parse(root.querySelector('[data-kcal-data]')?.textContent ?? '{"days":{}}') as { days: Record<string, KalenderEintrag[]> };
     const locale = root.dataset.locale ?? 'de-DE';
     const motion = motionOk();
     const $ = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T & HTMLElement>(sel)!;
@@ -201,7 +165,7 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
     let selected: string | null = null;
     let current = Math.max(0, months.findIndex((m) => !m.hidden));
 
-    const matches = (e: Einheit) => !filter || e.tr === filter;
+    const matches = (e: KalenderEintrag) => !filter || e.keys.includes(filter);
     const dayMatches = (d: string) => (days[d] ?? []).some(matches);
     const nextFrom = (d: string) => keys.find((k) => k >= d && dayMatches(k));
     const enabled = () => [...months[current].querySelectorAll<HTMLButtonElement>('button[data-date]:not(:disabled)')];
@@ -256,7 +220,7 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
       if (!selected) {
         dowEl.textContent = '';
         dateEl.textContent = '—';
-        itemsEl.append(el('p', 'kcal__none', t.none));
+        itemsEl.append(el('p', 'kcal__none', root.dataset.none ?? ''));
         return;
       }
       const d = utc(selected);
@@ -265,22 +229,18 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
       for (const e of (days[selected] ?? []).filter(matches)) {
         const item = el('div', 'kcal__item');
         const top = el('div', 'kcal__item-top');
-        top.append(el('span', 'kcal__time', e.time), el('span', `badge ${e.kind === 'workshop' ? '' : 'badge--cyan'}`, e.kind === 'workshop' ? t.workshop : t.training));
-        item.append(top);
-        if (e.who) item.append(el('span', 'kcal__who', e.who));
-        item.append(el('span', 'kcal__what', `${e.what} · ${e.where}`));
-        const links = el('div', 'kcal__links');
-        if (e.href) {
-          const a = el('a', 'kcal__link', t.toEvent);
-          a.href = e.href;
-          links.append(a);
+        top.append(el('span', 'kcal__time', e.time), el('span', `badge${e.color === 'magenta' ? '' : ` badge--${e.color}`}`, e.badge));
+        item.append(top, el('span', 'kcal__who', e.title));
+        if (e.sub) item.append(el('span', 'kcal__what', e.sub));
+        if (e.links.length) {
+          const links = el('div', 'kcal__links');
+          for (const l of e.links) {
+            const a = el('a', 'kcal__link', l.text);
+            a.href = l.href;
+            links.append(a);
+          }
+          item.append(links);
         }
-        if (e.tr) {
-          const a = el('a', 'kcal__link', t.toCard);
-          a.href = `#dozentin-${e.tr}`;
-          links.append(a);
-        }
-        if (links.childElementCount) item.append(links);
         itemsEl.append(item);
       }
       if (motion && animate) {
@@ -296,12 +256,12 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
       roving();
     }
 
-    function setFilter(id: string, animate = true) {
-      filter = id;
-      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.tr === id)));
+    function setFilter(key: string, animate = true) {
+      filter = key;
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.key === key)));
       allDays.forEach((b) => {
-        b.disabled = !!id && !(b.dataset.tr ?? '').split(' ').includes(id);
-        b.querySelectorAll<HTMLElement>('.kcal__mark').forEach((mk) => mk.classList.toggle('is-off', !!id && mk.dataset.tr !== id));
+        b.disabled = !!key && !(b.dataset.keys ?? '').split(' ').includes(key);
+        b.querySelectorAll<HTMLElement>('.kcal__mark').forEach((mk) => mk.classList.toggle('is-off', !!key && !(mk.dataset.keys ?? '').split(' ').includes(key)));
       });
       const d = nextFrom(today) ?? null;
       showMonthOf(d);
@@ -314,7 +274,7 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
 
     prev.addEventListener('click', () => showMonth(current - 1, -1));
     next.addEventListener('click', () => showMonth(current + 1, 1));
-    chips.forEach((c) => c.addEventListener('click', () => setFilter(c.dataset.tr ?? '')));
+    chips.forEach((c) => c.addEventListener('click', () => setFilter(c.dataset.key ?? '')));
     grid.addEventListener('click', (e) => {
       const b = (e.target as Element).closest<HTMLButtonElement>('button[data-date]');
       if (b && !b.disabled) select(b.dataset.date ?? null);
@@ -338,10 +298,10 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
       allDays.forEach((x) => (x.tabIndex = x === to ? 0 : -1));
       to.focus();
     });
-    // „Termine im Kalender →“ auf einer Karte im Stapel
-    document.addEventListener('keepup:filter', (e) => setFilter((e as CustomEvent<string>).detail));
+    // z. B. „Termine im Kalender →“ auf einer Karte im Profitrainings-Stapel
+    document.addEventListener('kalender:filter', (e) => setFilter((e as CustomEvent<string>).detail));
 
-    // Kopfbereich: nächste Einheit ab heute
+    // Kopfbereich der Seite (falls vorhanden): nächster Eintrag ab heute
     const nk = keys.find((k) => k >= today);
     const head = document.querySelector<HTMLElement>('[data-next-unit]');
     if (head) {
@@ -350,11 +310,15 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
       if (nk && e) {
         const d = utc(nk);
         head.querySelector('[data-next-date]')!.textContent = `${fmt({ weekday: 'short' }).format(d).replace('.', '')} · ${fmt({ day: 'numeric', month: 'long' }).format(d)}`;
-        head.querySelector('[data-next-info]')!.textContent = [e.time, e.who, e.where].filter(Boolean).join(' · ');
+        head.querySelector('[data-next-info]')!.textContent = [e.time, e.title, e.sub].filter(Boolean).join(' · ');
       }
     }
 
-    setFilter('', false);
+    // #kategorie-training o. ä. in der Adresse wählt einen Filter vor
+    const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const vor = location.hash.match(/^#kategorie-([\w-]+)/)?.[1];
+    const chip = vor ? chips.find((c) => c.dataset.key && norm(c.dataset.key) === norm(vor)) : undefined;
+    setFilter(chip?.dataset.key ?? '', false);
 
     // Auftritt: Tage laufen ein, sobald der Kalender ins Bild kommt
     if (motion) {
@@ -411,6 +375,7 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
   .kcal__day.is-past { color: var(--ink-muted); }
   .kcal__day:disabled { cursor: default; opacity: 0.45; }
   .kcal__day[aria-pressed='true'] { background: var(--purple); color: #fff; }
+  .kcal__day[aria-pressed='true'] .kcal__mark--purple { background: #fff; }
   .kcal__cell.is-today:not([aria-pressed='true']) { outline: 2px solid var(--magenta); outline-offset: -2px; }
   .kcal__num { font-family: var(--font-display); font-weight: 800; font-size: clamp(15px, 1.6vw, 22px); line-height: 1; letter-spacing: -0.02em; }
   .kcal__meta { display: flex; flex-direction: column; gap: 4px; width: 100%; min-width: 0; }
@@ -420,7 +385,8 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
   }
   .kcal__marks { display: flex; gap: 3px; }
   .kcal__mark { display: inline-block; width: 16px; height: 4px; background: var(--cyan); }
-  .kcal__mark--ws { background: var(--magenta); }
+  .kcal__mark--magenta { background: var(--magenta); }
+  .kcal__mark--purple { background: var(--purple); }
   .kcal__mark.is-off { opacity: 0.25; }
 
   .kcal__legend {
@@ -453,15 +419,11 @@ const i18n = JSON.stringify({ training: t.training, workshop: t.workshop, toCard
   .kcal__items :global(.kcal__none) { margin: 0; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
 
   .kcal__note { margin-top: 32px; padding: 20px; background: var(--tint); display: flex; flex-direction: column; gap: 10px; }
-  .kcal__note-k { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple); }
-  .kcal__note p { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
-  .kcal__note a { align-self: flex-start; font-size: 11px; letter-spacing: 0.14em; color: var(--magenta-2); }
-  .kcal__note a:hover { color: var(--purple); }
-
-  .kcal__list-h { font-family: var(--font-display); font-weight: 800; font-size: 24px; color: var(--purple); margin: 0 0 12px; }
-  .kcal__list ul { margin: 0 0 32px; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
-  .kcal__list li { padding: 12px 0; border-bottom: 1px solid var(--rule); color: var(--ink-soft); }
-  .kcal__list strong { color: var(--purple); }
+  .kcal__note :global(.kcal__note-k) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple); }
+  .kcal__note :global(p) { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+  .kcal__note :global(a) { align-self: flex-start; font-size: 11px; letter-spacing: 0.14em; color: var(--magenta-2); }
+  .kcal__note :global(a:hover) { color: var(--purple); }
+  .kcal__empty-all { margin: 0; padding: 24px 0; border-top: 2px solid var(--purple); color: var(--ink-soft); }
 
   @media (max-width: 900px) {
     .kcal__layout { grid-template-columns: minmax(0, 1fr); }

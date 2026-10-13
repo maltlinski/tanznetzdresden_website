@@ -75,9 +75,9 @@ Wo GSAP läuft:
 | Stelle | Datei | Was passiert |
 |---|---|---|
 | Formate (Startseite) | `sections/Formats.astro` | Zeilen laufen nacheinander ein, Bildrahmen öffnet sich als Keil, Foto mit leichter Parallaxe, neues Foto wischt über das alte, Beschreibung klappt auf |
-| Terminlisten (Startseite, Tanzkalender, Terminseite) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
+| Terminlisten (Startseite, Terminseite, Tanzkalender ohne JavaScript) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
 | Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |
-| Profitraining: Kalender | `keep-up/Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Tagesansicht und Filter-Markierungen animiert |
+| Kalender (Tanzkalender und Profitraining) | `Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Tagesansicht und Filter-Markierungen animiert |
 | Profitraining: Dozent:innen | `keep-up/Stapel.astro` | Kartenstapel zum Durchblättern (Pfeile, Punkte, Wischen, Pfeiltasten – nicht durch Scrollen): die nächste Karte kommt von rechts, die vorigen rücken nach links; Bewegung „stapel“/„fächer“ in `src/settings/keep-up.ts` |
 | Profitraining: Kopf | `views/ProfitrainingView.astro` | Überschrift mit SplitText (Buchstaben aus einer Maske), Foto als Keil |
 

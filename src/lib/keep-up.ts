@@ -1,7 +1,7 @@
 /**
  * KEEP UP · Profitraining: Trainingswochen (src/content/keep-up/wochen.yaml), Dozent:innen
  * (keep-up/dozentinnen.yaml + Profile) und Workshops (Termine mit `format: keep-up`)
- * werden hier zu einem Kalender nach Tagen zusammengeführt.
+ * werden hier zu Kalendertagen zusammengeführt. Die Trainingstage erscheinen auch im Tanzkalender.
  */
 import type { ImageMetadata } from 'astro';
 import { getCollection } from 'astro:content';
@@ -9,22 +9,9 @@ import dozentinnenRaw from '../content/keep-up/dozentinnen.yaml?raw';
 import { getTermine, inFileOrder } from './content';
 import { getProfiles } from './profiles';
 import { getVerein } from './settings';
-import { dateLocale, loc, url, type Lang } from './i18n';
+import { dateLocale, loc, tr, url, type Lang } from './i18n';
+import { monate, type KalenderEintrag, type Tage } from './kalender';
 import { platzhalterFotos } from '../settings/keep-up';
-
-export interface Einheit {
-  kind: 'training' | 'workshop';
-  /** „10:00–11:30“ */
-  time: string;
-  /** Kürzel der Dozent:in (falls im Stapel) */
-  tr?: string;
-  who: string;
-  /** Stil (Training) bzw. Titel (Workshop) */
-  what: string;
-  where: string;
-  /** Terminseite (Workshop) */
-  href?: string;
-}
 
 export interface Dozentin {
   id: string;
@@ -35,22 +22,18 @@ export interface Dozentin {
   photo: ImageMetadata | string;
   /** Platzhalterfoto, nicht die Person */
   placeholder: boolean;
+  /** Profilseite (leer, wenn es kein öffentliches Profil gibt) */
   profile: string;
   /** Trainingswochen [erster Tag, letzter Tag] als JJJJ-MM-TT */
   weeks: [string, string][];
 }
 
-export interface KalenderTag {
+/** Ein Trainingstag (für den Tanzkalender) */
+export interface Training {
   date: string;
-  day: number;
-  items: Einheit[];
-}
-
-export interface Monat {
-  key: string;
-  label: string;
-  /** Montag zuerst; null = Feld vor dem 1. bzw. nach dem Monatsende */
-  cells: (KalenderTag | null)[];
+  time: string;
+  dozentin: Dozentin;
+  where: string;
 }
 
 const TAGE = ['mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'] as const;
@@ -77,87 +60,86 @@ export async function getKeepUp(lang: Lang) {
   const profiles = new Map((await getProfiles()).map((p) => [p.id, p]));
   const eintraege = inFileOrder(await getCollection('keepUpDozentinnen'), dozentinnenRaw);
   const wochen = (await getCollection('keepUpWochen')).sort((a, b) => a.id.localeCompare(b.id));
+  const t = tr(lang, {
+    de: { training: 'Training', workshop: 'Workshop', with: 'mit', toCard: 'Zur Dozent:in →', toEvent: 'Zum Workshop →' },
+    en: { training: 'Training', workshop: 'Workshop', with: 'with', toCard: 'Meet the teacher →', toEvent: 'About the workshop →' },
+  });
 
+  // Name, Profil und Foto kommen aus dem Profil der Person (personen.yaml oder selbst gepflegt).
+  // Fehlt das Profil (z. B. nicht mehr öffentlich), bleibt das Training mit dem Namen aus dem Kürzel stehen.
   const dozentinnen: Dozentin[] = eintraege.map(({ id, data }, i) => {
     const p = profiles.get(id);
-    if (!p) throw new Error(`src/content/keep-up/dozentinnen.yaml: „${id}“ fehlt in src/content/personen.yaml`);
-    const platzhalter = fotos[`../assets/photos/${platzhalterFotos[i % platzhalterFotos.length]}`];
-    const photo = data.foto ?? p.photo ?? platzhalter?.default;
-    if (!photo) throw new Error(`src/settings/keep-up.ts: Platzhalterfoto „${platzhalterFotos[i % platzhalterFotos.length]}“ fehlt`);
+    if (!p) console.warn(`[keep-up] Dozent:in „${id}“ hat kein öffentliches Profil – Name aus dem Kürzel, ohne Foto.`);
+    const name = p?.name ?? id.split('-').map((w) => w[0].toUpperCase() + w.slice(1)).join(' ');
+    const datei = platzhalterFotos[i % platzhalterFotos.length];
+    const photo = p?.photo ?? fotos[`../assets/photos/${datei}`]?.default;
+    if (!photo) throw new Error(`src/settings/keep-up.ts: Platzhalterfoto „${datei}“ fehlt`);
     return {
       id,
-      name: p.name,
-      first: p.name.split(/\s+/)[0],
+      name,
+      first: name.split(/\s+/)[0],
       stil: loc(data, 'stil', lang),
       text: loc(data, 'text', lang),
       photo,
-      placeholder: !data.foto && !p.photo,
-      profile: url(lang, 'netzwerk', `${id}/`),
+      placeholder: !p?.photo,
+      profile: p ? url(lang, 'netzwerk', `${id}/`) : '',
       weeks: [],
     };
   });
   const byId = new Map(dozentinnen.map((d) => [d.id, d]));
 
-  const days = new Map<string, Einheit[]>();
-  const add = (date: string, e: Einheit) => days.set(date, [...(days.get(date) ?? []), e]);
+  const trainings: Training[] = [];
+  const days: Tage = {};
+  const add = (date: string, e: KalenderEintrag) => (days[date] ??= []).push(e);
 
   for (const w of wochen) {
     if (utc(w.id).getUTCDay() !== 1) throw new Error(`src/content/keep-up/wochen.yaml: „${w.id}“ ist kein Montag`);
     const d = byId.get(w.data.dozent.id);
     if (!d) throw new Error(`src/content/keep-up/wochen.yaml: Dozent:in „${w.data.dozent.id}“ fehlt in dozentinnen.yaml`);
-    const offsets = w.data.tage.map((t) => TAGE.indexOf(t)).sort((a, b) => a - b);
+    const offsets = w.data.tage.map((x) => TAGE.indexOf(x)).sort((a, b) => a - b);
+    const time = w.data.zeit.replace(/\s*[–-]\s*/, '–');
+    const where = w.data.ort ?? verein.training.place;
     for (const o of offsets) {
-      add(addDays(w.id, o), {
-        kind: 'training',
-        time: w.data.zeit.replace(/\s*[–-]\s*/, '–'),
-        tr: d.id,
-        who: d.name,
-        what: d.stil,
-        where: w.data.ort ?? verein.training.place,
+      const date = addDays(w.id, o);
+      trainings.push({ date, time, dozentin: d, where });
+      add(date, {
+        time,
+        title: d.name,
+        sub: `${d.stil} · ${where}`,
+        badge: t.training,
+        color: 'cyan',
+        short: d.first,
+        keys: [d.id],
+        label: `${t.training} ${t.with} ${d.name}`,
+        links: [{ href: `#dozentin-${d.id}`, text: t.toCard }],
       });
     }
     d.weeks.push([addDays(w.id, offsets[0]), addDays(w.id, offsets[offsets.length - 1])]);
   }
 
-  for (const t of await getTermine()) {
-    if (t.data.format?.id !== 'keep-up') continue;
-    const [date, from] = t.data.start.split(' ');
-    const to = t.data.end?.split(' ')[1];
-    const person = t.data.people[0]?.id;
+  // Workshops: Termine mit `format: keep-up`
+  for (const termin of await getTermine()) {
+    if (termin.data.format?.id !== 'keep-up') continue;
+    const [date, from] = termin.data.start.split(' ');
+    const to = termin.data.end?.split(' ')[1];
+    const person = termin.data.people[0];
+    const who = (person && (byId.get(person)?.name ?? profiles.get(person)?.name)) || '';
+    const what = loc(termin.data, 'title', lang);
     add(date, {
-      kind: 'workshop',
       time: to ? `${from}–${to}` : from,
-      tr: person && byId.has(person) ? person : undefined,
-      who: (person && profiles.get(person)?.name) ?? '',
-      what: loc(t.data, 'title', lang),
-      where: t.data.venue,
-      href: url(lang, 'termine', `${t.id}/`),
+      title: who || what,
+      sub: who ? `${what} · ${termin.data.venue}` : termin.data.venue,
+      badge: t.workshop,
+      color: 'magenta',
+      short: t.workshop,
+      keys: person ? [person] : [],
+      label: `${what}${who ? ` ${t.with} ${who}` : ''}`,
+      links: [
+        { href: url(lang, 'termine', `${termin.id}/`), text: t.toEvent },
+        ...(person && byId.has(person) ? [{ href: `#dozentin-${person}`, text: t.toCard }] : []),
+      ],
     });
   }
-  for (const list of days.values()) list.sort((a, b) => a.time.localeCompare(b.time));
 
-  // Monatsraster vom ersten bis zum letzten Termin
-  const keys = [...days.keys()].sort();
-  const months: Monat[] = [];
-  if (keys.length) {
-    const monthFmt = new Intl.DateTimeFormat(dateLocale[lang], { month: 'long', year: 'numeric', timeZone: 'UTC' });
-    let [y, m] = keys[0].split('-').map(Number);
-    const [ly, lm] = keys[keys.length - 1].split('-').map(Number);
-    while (y < ly || (y === ly && m <= lm)) {
-      const key = `${y}-${String(m).padStart(2, '0')}`;
-      const first = utc(`${key}-01`);
-      const lead = (first.getUTCDay() + 6) % 7;
-      const count = new Date(Date.UTC(y, m, 0)).getUTCDate();
-      const cells: (KalenderTag | null)[] = Array(lead).fill(null);
-      for (let d = 1; d <= count; d++) {
-        const date = `${key}-${String(d).padStart(2, '0')}`;
-        cells.push({ date, day: d, items: days.get(date) ?? [] });
-      }
-      while (cells.length % 7) cells.push(null);
-      months.push({ key, label: monthFmt.format(first), cells });
-      if (++m > 12) { m = 1; y++; }
-    }
-  }
-
-  return { dozentinnen, days: Object.fromEntries(keys.map((k) => [k, days.get(k)!])), months };
+  return { dozentinnen, trainings, ...monate(days, lang) };
 }

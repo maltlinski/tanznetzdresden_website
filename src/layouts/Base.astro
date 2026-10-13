@@ -13,6 +13,8 @@ import { getVerein } from '../lib/settings';
 import { getLang, htmlLang, tr, type Lang } from '../lib/i18n';
 import { CONSENT_VERSION } from '../settings/consent';
 import ConsentBanner from '../components/ConsentBanner.astro';
+import DemoBand from '../components/DemoBand.astro';
+import { DEMO_KEY } from '../lib/demo';
 import Analytics from '../components/Analytics.astro';
 import ogSource from '../assets/photos/duo-rot.jpg';
 import { token } from '../lib/tokens';
@@ -87,6 +89,15 @@ const jsonLd = {
     <meta name="twitter:card" content="summary_large_image" />
 
     <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline define:vars={{ key: DEMO_KEY }}>
+      // Demo-Ansicht (src/lib/demo.ts): ?demo=1 schaltet an, ?demo=0 aus, sonst gilt der gespeicherte Schalter
+      try {
+        const q = new URLSearchParams(location.search).get('demo');
+        if (q === '1') localStorage.setItem(key, '1');
+        if (q === '0') localStorage.removeItem(key);
+        if (localStorage.getItem(key) === '1') document.documentElement.classList.add('demo');
+      } catch {}
+    </script>
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
     <slot name="head" />
   </head>
@@ -94,6 +105,7 @@ const jsonLd = {
     <a class="skip-link" href="#inhalt">{t.skip}</a>
     <slot />
     <ConsentBanner />
+    <DemoBand />
     <Analytics />
     <script>
       import { initReveal } from '../scripts/reveal';

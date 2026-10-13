@@ -37,23 +37,48 @@ import { href } from '../../lib/url';
   <div data-when="ready">
     <h1 class="i-h1">Hallo, <span data-intern-name></span>.</h1>
     <p class="i-lead">Willkommen im internen Bereich. Hier pflegst du dein Profil und findest Kontakte und Dokumente aus dem Netzwerk.</p>
+    <p class="hinweis" data-freigaben hidden></p>
     <ul class="tiles">
       <li><a href={href('intern/profil/')}><span class="tiles__n">01</span><strong>Mein Profil</strong><span>Name, Kurzbio, Links und was andere sehen dürfen.</span></a></li>
       <li><a href={href('intern/mitglieder/')}><span class="tiles__n">02</span><strong>Mitglieder</strong><span>Wer ist im Netz? Kontakte und Arbeitsgruppen.</span></a></li>
       <li><a href={href('intern/dokumente/')}><span class="tiles__n">03</span><strong>Dokumente</strong><span>Protokolle, Satzung, Vorlagen und Logos.</span></a></li>
-      <li data-redaktion-only hidden><a href={href('intern/redaktion/')}><span class="tiles__n">04</span><strong>Redaktion</strong><span>Die Website pflegen: News, Termine, Formate, Personen, Partner und Texte.</span></a></li>
+      <li data-redaktion-only hidden><a href={href('intern/redaktion/')}><span class="tiles__n">04</span><strong>Redaktion</strong><span>Die Website pflegen: News, Termine, Formate, Personen, Partner und Texte. Profile und Fotos freigeben.</span></a></li>
       <li data-vorstand-only hidden><a href="https://supabase.com/dashboard" rel="noopener" target="_blank"><span class="tiles__n">05</span><strong>Verwaltung</strong><span>Mitglieder einladen und Rollen vergeben (Supabase-Dashboard).</span></a></li>
     </ul>
+    <div class="demo" data-redaktion-only hidden>
+      <label class="i-check"><input type="checkbox" data-demo-schalter />Demo-Ansicht</label>
+      <p class="i-hint">
+        Füllt leere Profile auf der Website mit Beispielfoto, -text und Schwerpunkten, damit sich Gestaltung und
+        Abläufe ausprobieren lassen. Gilt nur in diesem Browser, echte Angaben bleiben unverändert. Ein Band unten links
+        zeigt, dass sie an ist. Ohne Anmeldung: Adresse mit <code>?demo=1</code> öffnen, <code>?demo=0</code> schaltet aus.
+      </p>
+    </div>
   </div>
 </Intern>
 
 <script>
   import { getSupabase } from '../../lib/supabase';
   import { initIntern, errorText, showMessage, internUrl } from '../../scripts/intern/session';
+  import { freigabenHinweis } from '../../scripts/intern/freigaben';
+  import { DEMO_KEY } from '../../lib/demo';
 
   const ctx = await initIntern(false);
   const next = new URLSearchParams(location.search).get('weiter');
   if (ctx && next?.startsWith('/')) location.replace(next);
+  if (ctx?.isRedaktion) void freigabenHinweis(ctx.sb, document.querySelector('[data-freigaben]'));
+
+  // Demo-Ansicht an/aus (src/lib/demo.ts)
+  const demo = document.querySelector<HTMLInputElement>('[data-demo-schalter]');
+  if (demo) {
+    demo.checked = document.documentElement.classList.contains('demo');
+    demo.addEventListener('change', () => {
+      try {
+        if (demo.checked) localStorage.setItem(DEMO_KEY, '1');
+        else localStorage.removeItem(DEMO_KEY);
+      } catch {}
+      document.documentElement.classList.toggle('demo', demo.checked);
+    });
+  }
 
   const sb = getSupabase();
   const form = document.querySelector<HTMLFormElement>('[data-login-form]');
@@ -114,6 +139,11 @@ import { href } from '../../lib/url';
   .login__aside { padding-top: 12px; }
   .login__aside h2 { font-family: var(--font-display); font-weight: 800; font-size: 24px; color: var(--purple); margin: 0 0 8px; }
   .login__aside p { margin: 0 0 16px; color: var(--ink-soft); line-height: 1.6; font-size: 15px; }
+  .hinweis { margin: -8px 0 24px; padding: 12px 16px; border-left: 4px solid var(--magenta); background: var(--paper); font-weight: 600; }
+  .hinweis :global(a) { color: var(--purple); }
+  .hinweis :global(a:hover) { color: var(--magenta-2); }
+  .demo { margin-top: 40px; padding-top: 20px; border-top: 1px solid var(--rule); display: grid; gap: 6px; max-width: 70ch; }
+  .demo .i-hint { margin: 0; }
   .tiles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px; }
   .tiles a { display: flex; flex-direction: column; gap: 8px; height: 100%; padding: 24px 22px 28px; background: var(--paper); border-top: 3px solid var(--magenta); color: var(--purple); transition: background var(--dur-base); }
   .tiles a:hover { background: var(--purple); color: #fff; }

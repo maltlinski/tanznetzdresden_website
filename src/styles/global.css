@@ -36,6 +36,8 @@ a:hover { color: var(--purple); }
 ::selection { background: var(--magenta); color: #fff; }
 img, svg, canvas { display: block; max-width: 100%; }
 [hidden] { display: none !important; }
+/* Demo-Ansicht (src/lib/demo.ts): Beispiele nur zeigen, wenn sie an ist, und dafür die Platzhalter ausblenden */
+html:not(.demo) .demo-an, html.demo .demo-aus { display: none !important; }
 button { font: inherit; }
 :focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 3px; }
 

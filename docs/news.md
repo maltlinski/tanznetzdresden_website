@@ -34,9 +34,10 @@ Der einfachste Weg. Man braucht keinen GitHub-Zugang und muss kein Markdown kenn
 6. **Englische Fassung** (optional): Alles kann auch später nachgetragen werden.
 7. **Speichern oder veröffentlichen.**
    - **Als Entwurf speichern:** Den Beitrag sieht nur die Redaktion.
-   - **Veröffentlichen:** Die Website baut sich neu. Mit Webhook (siehe unten) ist der Beitrag nach 1–2 Minuten
-     online, sonst nach dem nächtlichen Update.
-   - **Zurückziehen:** Der Beitrag wird wieder Entwurf und verschwindet beim nächsten Update.
+   - **Veröffentlichen:** Die Website baut sich neu, nach 2–3 Minuten ist der Beitrag online. Das stößt die
+     Supabase-Funktion `inhalte` der Redaktion an (docs/redaktion.md). Ist sie nicht eingerichtet, erscheint der
+     Beitrag mit dem nächtlichen Update.
+   - **Zurückziehen:** Der Beitrag wird wieder Entwurf und verschwindet genauso schnell von der Website.
 
 **Fotos** werden im Browser automatisch verkleinert. Ohne Bildbeschreibung kann ein Foto nicht veröffentlicht
 werden, weil sie für Barrierefreiheit Pflicht ist. Die Website lädt die Fotos beim Bauen herunter, deshalb
@@ -82,12 +83,11 @@ Build-Log warnt.
 Englisch ist überall freiwillig. Fehlt ein englisches Feld, steht auf der englischen Seite das deutsche. Fehlt der
 englische Haupttext, steht über dem deutschen Text der Hinweis „This post is only available in German so far.“
 
-## Sofort online statt nachts: Webhook
+## Sofort online statt nachts
 
-Wie bei den Profilen (docs/profile.md), nur für die Tabelle `news_posts`:
-*Supabase → Database → Webhooks → Create*, Tabelle `news_posts`, Ereignisse *Insert, Update, Delete*,
-`POST https://api.github.com/repos/maltlinski/tanznetzdresden_website/dispatches`, Header wie dort,
-Body `{"event_type":"news-updated"}`.
+Nach Veröffentlichen, Zurückziehen und Löschen stößt der Editor über die Funktion `inhalte` einen Neubau an
+(`repository_dispatch` mit `profile-updated`, darauf reagiert `.github/workflows/deploy.yml`). Ein eigener
+Supabase-Webhook ist dafür nicht mehr nötig.
 
 ## Datenbank
 

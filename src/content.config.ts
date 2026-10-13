@@ -33,8 +33,11 @@ const termine = defineCollection({
     category: z.enum(['Bühne', 'Training', 'Diskurs']),
     teaser: z.string(),
     teaser_en: z.string().optional(),
-    /** Mitwirkende aus dem Netzwerk (ids aus personen.yaml) – erscheinen auf deren Profil */
-    people: z.array(reference('personen')).default([]),
+    /**
+     * Mitwirkende aus dem Netzwerk – erscheinen auf deren Profil. Kürzel aus personen.yaml oder Adresse
+     * eines freigegebenen Mitgliederprofils (deshalb kein reference(): die kommen erst beim Build aus Supabase).
+     */
+    people: z.array(z.string().regex(/^[a-z0-9]+(-[a-z0-9]+)*$/, 'Kürzel wie „vorname-nachname“')).default([]),
     /** Externer Link (Tickets, Anmeldung …) – erscheint als Button auf der Terminseite */
     link: z.url().optional(),
     /** Passender News-Beitrag (Dateiname ohne .md aus src/content/news/de/), z. B. "studio-round-9" */
@@ -70,17 +73,15 @@ const formate = defineCollection({
  */
 const keepUpDozentinnen = defineCollection({
   loader: file('./src/content/keep-up/dozentinnen.yaml'),
-  schema: ({ image }) =>
-    z.object({
-      /** Schwerpunkt im Unterricht, z. B. Contemporary */
-      stil: z.string(),
-      stil_en: z.string().optional(),
-      /** zwei bis drei Sätze zum Unterricht */
-      text: z.string(),
-      text_en: z.string().optional(),
-      /** Porträt (optional, sonst Profilfoto, sonst Platzhalter) */
-      foto: image().optional(),
-    }),
+  /** Name, Profil und Foto kommen aus dem Profil der Person (gleiches Kürzel) */
+  schema: z.object({
+    /** Schwerpunkt im Unterricht, z. B. Contemporary */
+    stil: z.string(),
+    stil_en: z.string().optional(),
+    /** zwei bis drei Sätze zum Unterricht */
+    text: z.string(),
+    text_en: z.string().optional(),
+  }),
 });
 
 const keepUpWochen = defineCollection({

@@ -1,8 +1,7 @@
 # KEEP UP · Dozent:innen im Kartenstapel auf /profitraining/. Reihenfolge = Reihenfolge im Stapel.
-# id = Kürzel aus personen.yaml (Name und Profil-Link kommen von dort).
+# id = Kürzel der Person (personen.yaml oder freigegebenes Mitgliederprofil). Name, Profil-Link und Foto
+# kommen aus dem Profil; ohne Foto erscheint ein Platzhalterfoto (src/settings/keep-up.ts).
 # stil: Schwerpunkt im Unterricht · text: zwei bis drei Sätze zum Unterricht
-# foto (optional): Porträt, z. B. ../../assets/keep-up/alexandre-may.jpg – sonst das Profilfoto,
-# sonst ein Platzhalterfoto (src/settings/keep-up.ts).
 # PLATZHALTER aus dem Entwurf – Stil und Text vor dem Livegang ersetzen.
 - id: alexandre-may
   stil: Contemporary

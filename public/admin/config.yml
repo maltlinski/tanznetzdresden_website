@@ -180,7 +180,6 @@ collections:
               - { name: stil_en, label: 'Stil Englisch (optional)', widget: string, required: false }
               - { name: text, label: 'Text zum Unterricht (2–3 Sätze)', widget: text }
               - { name: text_en, label: 'Text Englisch (optional)', widget: text, required: false }
-              - { name: foto, label: 'Foto (optional)', widget: image, required: false, media_folder: /src/assets/keep-up, public_folder: ../../assets/keep-up }
 
   - name: kooperation
     label: Kooperationspartner

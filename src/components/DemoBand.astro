@@ -1,0 +1,41 @@
+---
+/**
+ * Hinweisband der Demo-Ansicht (src/lib/demo.ts). Erscheint nur, wenn sie in diesem Browser an ist.
+ */
+import { DEMO_KEY } from '../lib/demo';
+import { getLang, tr } from '../lib/i18n';
+
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: { text: 'Demo-Ansicht: Leere Profile zeigen Beispielinhalte. Nur in diesem Browser.', off: 'Ausschalten' },
+  en: { text: 'Demo view: empty profiles show sample content. Only in this browser.', off: 'Turn off' },
+});
+---
+<div class="demo-band demo-an" role="note">
+  <span class="demo-band__sq" aria-hidden="true"></span>
+  <span>{t.text}</span>
+  <button type="button" data-demo-aus data-key={DEMO_KEY}>{t.off}</button>
+</div>
+
+<script>
+  document.querySelector<HTMLButtonElement>('[data-demo-aus]')?.addEventListener('click', (e) => {
+    try {
+      localStorage.removeItem((e.currentTarget as HTMLElement).dataset.key ?? '');
+    } catch {}
+    document.documentElement.classList.remove('demo');
+  });
+</script>
+
+<style>
+  .demo-band {
+    position: fixed; left: 16px; bottom: 16px; z-index: 90; display: flex; align-items: center; gap: 12px;
+    max-width: calc(100vw - 32px); padding: 10px 14px; background: var(--purple); color: #fff;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; line-height: 1.4;
+  }
+  .demo-band__sq { flex: none; width: 10px; height: 10px; background: var(--magenta); }
+  .demo-band button {
+    flex: none; padding: 4px 8px; border: 1.5px solid #fff; border-radius: 0; background: none; color: #fff;
+    font: inherit; text-transform: uppercase; letter-spacing: 0.14em; cursor: pointer;
+  }
+  .demo-band button:hover { border-color: var(--magenta); color: var(--magenta); }
+</style>

@@ -7,6 +7,7 @@ import ProfilePhoto from '../components/ProfilePhoto.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
 import EventList from '../components/EventList.astro';
 import { bioParagraphs, instagramUrl, type PublicProfile } from '../lib/profiles';
+import { demoFuer } from '../lib/demo';
 import { getTermineFor } from '../lib/content';
 import { getLang, tr, url } from '../lib/i18n';
 
@@ -28,6 +29,7 @@ const t = tr(lang, {
   },
 });
 const bio = bioParagraphs(p, lang);
+const demo = demoFuer(p, lang);
 const roleLine = [p.roles.includes('mitglied') ? t.member : null, p.roles.includes('trainer') ? t.trainer : null].filter(Boolean).join(' · ');
 const vorstand = lang === 'en' ? p.vorstand_en ?? p.vorstand : p.vorstand;
 const events = await getTermineFor(p.id);
@@ -52,20 +54,23 @@ const description = bio[0]?.slice(0, 160) ?? `${p.name} · TanzNetzDresden`;
   <section class="section">
     <div class="wrap profile">
       <div class="profile__media">
-        <ProfilePhoto profile={p} size="large" eager />
+        <ProfilePhoto profile={p} size="large" eager demo={demo.photo} />
         {p.photoCredit && <p class="profile__credit">{t.photo}: {p.photoCredit}</p>}
       </div>
       <div class="profile__body">
         {bio.length > 0 ? (
           <div class="profile__bio">{bio.map((para) => <p>{para}</p>)}</div>
         ) : (
-          <p class="profile__soon">{t.soon}</p>
+          <>
+            <p class="profile__soon demo-aus">{t.soon}</p>
+            {demo.bio && <div class="profile__bio demo-an">{demo.bio.map((para) => <p>{para}</p>)}</div>}
+          </>
         )}
 
-        {p.tags.length > 0 && (
-          <div class="profile__block">
+        {(p.tags.length > 0 || demo.tags) && (
+          <div class:list={['profile__block', !p.tags.length && 'demo-an']}>
             <h2 class="profile__h">{t.focus}</h2>
-            <ul class="profile__tags">{p.tags.map((tag) => <li>{tag}</li>)}</ul>
+            <ul class="profile__tags">{(p.tags.length ? p.tags : demo.tags!).map((tag) => <li>{tag}</li>)}</ul>
           </div>
         )}
 

@@ -11,6 +11,7 @@
  *   - Nur Vorstand/Admin: Impressum, Datenschutz und die rechtlichen Angaben in verein.json
  *     (Anschrift, E-Mail-Adressen, Register, Steuer, Bankverbindung).
  *   - Code, Workflows und alles andere: niemand. Eigenes HTML in Texten wird abgelehnt.
+ *   - Website neu bauen (nach einer Freigabe oder neuen News aus Supabase): Presse, Vorstand, Admin.
  *
  * Einrichtung: docs/redaktion.md (Abschnitt „Einrichten“). Secrets: GITHUB_TOKEN, GITHUB_REPO,
  * optional GITHUB_BRANCH (Standard main). SUPABASE_URL und SUPABASE_ANON_KEY setzt Supabase selbst.
@@ -341,6 +342,11 @@ export async function handle(req: Request, env: Env, f: typeof fetch = fetch): P
         return json(await speichern(gh, env, wer, body));
       case 'status':
         return json(await status(gh, env));
+      case 'neu_bauen':
+        // Profile und News aus Supabase holt die Website beim Build. Der Deploy-Workflow
+        // reagiert auf dieses Ereignis (repository_dispatch, braucht „Contents: Read and write“).
+        await gh('/dispatches', { method: 'POST', body: JSON.stringify({ event_type: 'profile-updated' }) });
+        return json({ ok: true });
       default:
         throw new Fehler(400, 'Unbekannte Aktion.');
     }

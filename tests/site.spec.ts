@@ -6,7 +6,7 @@ import { supabase } from '../src/settings/supabase';
 const pages = [
   '/', '/termine/', '/termine/2026-10-15-studio-round-9/', '/profitraining/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
   '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
-  '/intern/news/', '/intern/news/bearbeiten/', '/intern/redaktion/', '/intern/redaktion/liste/', '/intern/redaktion/eintrag/',
+  '/intern/news/', '/intern/news/bearbeiten/', '/intern/redaktion/', '/intern/redaktion/liste/', '/intern/redaktion/eintrag/', '/intern/redaktion/freigaben/',
   '/en/', '/en/events/', '/en/events/2026-10-15-studio-round-9/', '/en/training/', '/en/news/', '/en/news/neues-koordinationsteam/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
   '/en/contact/', '/en/partners/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
 ];
@@ -105,6 +105,9 @@ test('Kalender-Feed ist gültiges iCalendar', async ({ request }) => {
   expect(body.startsWith('BEGIN:VCALENDAR')).toBe(true);
   expect(body).toContain('BEGIN:VEVENT');
   expect(body.trimEnd().endsWith('END:VCALENDAR')).toBe(true);
+  // wie der Tanzkalender: auch die Trainingstage von KEEP UP
+  expect(body).toMatch(/UID:keep-up-2026-10-12-1000@/);
+  expect(body).toContain('SUMMARY:KEEP UP · Profitraining mit Leon Börgens');
 });
 
 test('Interner Bereich zeigt Anmeldung (oder ohne Supabase den Einrichtungshinweis)', async ({ page }) => {
@@ -168,18 +171,75 @@ test('Förderhinweis steht auf jeder Seite', async ({ page }) => {
 test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
   await page.goto('/netzwerk/');
   await dismissConsent(page);
-  await page.getByLabel('Suchen').fill('rika');
+  await page.getByLabel('Suchen').fill('justine');
   await expect(page.locator('[data-net-list] .card:visible')).toHaveCount(1);
   await page.locator('[data-net-list] .card:visible a').click();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Rika Yotsumoto');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Justine Rouquart');
   await expect(page.getByRole('heading', { name: 'Nächste Termine' })).toBeVisible();
-  await expect(page.locator('.event')).toContainText(['KEEP UP']);
+  await expect(page.locator('.event')).toContainText(['POP UP']);
 });
 
-test('Englische Termine nutzen englische Texte', async ({ page }) => {
-  await page.goto('/en/events/');
-  await expect(page.getByText('New short pieces from the network')).toBeVisible();
-  await expect(page.locator('.badge', { hasText: 'Stage' }).first()).toBeVisible();
+/** Tanzkalender mit festem Datum (Platzhalter-Termine Okt.–Dez. 2026) */
+async function openKalender(page: Page, path = '/termine/') {
+  await page.clock.install({ time: new Date('2026-10-12T08:00:00+02:00') });
+  await page.goto(path);
+  await dismissConsent(page);
+  return page.locator('#kalender');
+}
+
+test('Tanzkalender: Termine und Profitraining in einem Kalender, Filter nach Kategorie', async ({ page }) => {
+  const cal = await openKalender(page);
+  await expect(cal.locator('[data-kcal-label]')).toHaveText('Oktober 2026');
+  // heute: Profitraining
+  await expect(cal.locator('[data-kcal-date]')).toHaveText('12. Oktober');
+  await expect(cal.locator('[data-kcal-items]')).toContainText('KEEP UP · Leon Börgens');
+  await expect(cal.locator('[data-kcal-items] a', { hasText: 'Zum Profitraining' })).toHaveAttribute('href', /\/profitraining\/#kalender$/);
+  // Termin wählen
+  await cal.getByRole('button', { name: /^Donnerstag, 15\. Oktober 2026/ }).click();
+  await expect(cal.locator('[data-kcal-items]')).toContainText('Studio Round');
+  await expect(cal.locator('[data-kcal-items] a', { hasText: 'Zum Termin' })).toHaveAttribute('href', /\/termine\/2026-10-15-studio-round-9\/$/);
+  // nur Bühne: Trainingstage sind gesperrt, Auswahl springt zum nächsten Bühnentermin
+  await cal.getByRole('button', { name: 'Bühne', exact: true }).click();
+  await expect(cal.getByRole('button', { name: /^Montag, 12\. Oktober 2026/ })).toBeDisabled();
+  await expect(cal.locator('[data-kcal-date]')).toHaveText('31. Oktober');
+  await expect(cal.locator('[data-kcal-items]')).toContainText('POP UP');
+});
+
+test('Tanzkalender: #kategorie-… wählt den Filter vor; englische Texte', async ({ page }) => {
+  const cal = await openKalender(page, '/en/events/#kategorie-buhne');
+  await expect(cal.getByRole('button', { name: 'Stage', exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(cal.locator('[data-kcal-date]')).toHaveText('31 October');
+  await expect(cal.locator('[data-kcal-items]')).toContainText('New short pieces from the network');
+  await expect(cal.locator('[data-kcal-items] .badge')).toHaveText('Stage');
+});
+
+test('Tanzkalender ohne JavaScript: Liste aller kommenden Termine', async ({ browser }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const page = await ctx.newPage();
+  await page.goto('/termine/');
+  await expect(page.locator('#kalender .kcal__layout')).toBeHidden();
+  await expect(page.locator('#all-events .event').first()).toBeVisible();
+  await ctx.close();
+});
+
+test('Demo-Ansicht: Beispielinhalte nur mit Schalter, Echtes bleibt', async ({ page }) => {
+  await page.goto('/netzwerk/alina-lucifero/');
+  await dismissConsent(page);
+  await expect(page.getByText('Dieses Profil wird gerade aufgebaut.')).toBeVisible();
+  await expect(page.getByText(/^Beispieltext/)).toBeHidden();
+  await expect(page.getByRole('note')).toBeHidden();
+
+  await page.goto('/netzwerk/alina-lucifero/?demo=1');
+  await expect(page.getByText(/^Beispieltext/)).toBeVisible();
+  await expect(page.getByText('Dieses Profil wird gerade aufgebaut.')).toBeHidden();
+  await expect(page.getByRole('note')).toContainText('Demo-Ansicht');
+  // gilt weiter auf anderen Seiten, bis sie ausgeschaltet wird
+  await page.goto('/netzwerk/');
+  await expect(page.locator('.card__bio.demo-an').first()).toBeVisible();
+  await page.getByRole('note').getByRole('button', { name: 'Ausschalten' }).click();
+  await expect(page.locator('.card__bio.demo-an').first()).toBeHidden();
+  await page.reload();
+  await expect(page.getByRole('note')).toBeHidden();
 });
 
 test('Spendenseite: ohne IBAN kein GiroCode, dafür Kontaktweg', async ({ page }) => {

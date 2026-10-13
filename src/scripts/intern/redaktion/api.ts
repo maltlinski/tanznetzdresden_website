@@ -67,6 +67,21 @@ export function api(sb: SupabaseClient) {
     datei: (pfad: string) => call<{ sha: string; base64: string }>('datei', { pfad }),
     speichern: (nachricht: string, aenderungen: Aenderung[]) => call<{ commit: string; url: string }>('speichern', { nachricht, aenderungen }),
     status: () => call<WebsiteStatus>('status'),
+    /** Website neu bauen lassen (holt freigegebene Profile und News aus Supabase) */
+    neuBauen: () => call<{ ok: true }>('neu_bauen'),
   };
 }
 export type Api = ReturnType<typeof api>;
+
+/**
+ * Website neu bauen lassen, z. B. nach einer Freigabe oder neuen News. true = läuft;
+ * false = Redaktion nicht eingerichtet o. Ä., dann kommt die Änderung mit dem nächtlichen Update.
+ */
+export async function neuBauenLassen(sb: SupabaseClient): Promise<boolean> {
+  try {
+    await api(sb).neuBauen();
+    return true;
+  } catch {
+    return false;
+  }
+}

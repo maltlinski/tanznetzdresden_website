@@ -74,7 +74,7 @@ const total = String(dozentinnen.length).padStart(2, '0');
                   </div>
                   <div class="card__links">
                     <a href="#kalender" class="card__link" data-cal-filter={d.id}>{t.toCal}</a>
-                    <a href={d.profile} class="card__link">{t.profile}</a>
+                    {d.profile && <a href={d.profile} class="card__link">{t.profile}</a>}
                   </div>
                 </div>
               </div>
@@ -118,7 +118,7 @@ const total = String(dozentinnen.length).padStart(2, '0');
     // „Termine im Kalender →“: Kalender auf diese Dozent:in filtern, das Hinscrollen übernimmt der Link
     wrap.addEventListener('click', (e) => {
       const a = (e.target as Element).closest<HTMLElement>('[data-cal-filter]');
-      if (a) document.dispatchEvent(new CustomEvent('keepup:filter', { detail: a.dataset.calFilter }));
+      if (a) document.dispatchEvent(new CustomEvent('kalender:filter', { detail: a.dataset.calFilter }));
     });
 
     if (cards.length > 1) initDeck(wrap, cards);

@@ -25,6 +25,8 @@ export interface Profile {
   bio_en: string | null;
   tags: string[];
   photo_path: string | null;
+  /** neues Foto, wartet auf Freigabe (Migration 20261013000000) */
+  photo_pending: string | null;
   photo_credit: string | null;
   vimeo: string | null;
   verified: boolean;
