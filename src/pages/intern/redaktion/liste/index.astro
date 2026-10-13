@@ -1,0 +1,319 @@
+---
+/**
+ * Redaktion: Einträge eines Bereichs (?b=termine) – suchen, filtern, sortieren, anlegen, duplizieren, löschen.
+ */
+import Intern from '../../../../layouts/Intern.astro';
+import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
+import { href } from '../../../../lib/url';
+import '../../../../styles/redaktion.css';
+---
+<Intern title="Redaktion" current="redaktion">
+  <a class="r-back" href={href('intern/redaktion/')}>← Redaktion</a>
+  <div class="r-head">
+    <div>
+      <h1 class="i-h1" data-titel>Redaktion</h1>
+      <p class="i-lead" data-beschreibung></p>
+    </div>
+    <div class="r-head__side">
+      <a class="btn btn--primary btn--marker" data-neu hidden>Neu</a>
+      <RedaktionStatus />
+    </div>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Redaktion ist für Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <p class="i-hint" data-loading hidden>Inhalte werden geladen …</p>
+
+  <div data-access hidden>
+    <div class="r-tools">
+      <div class="chips" role="group" aria-label="Filtern" data-filter hidden></div>
+      <label class="r-suche">
+        <span class="visually-hidden">Suchen</span>
+        <input type="search" placeholder="Suchen …" data-suche />
+      </label>
+    </div>
+    <p class="i-hint r-sort-hinweis" data-sort-hinweis hidden>
+      Reihenfolge ändern: mit den Pfeilen oder per Ziehen. Danach „Reihenfolge speichern“.
+    </p>
+    <ul class="r-liste" data-liste aria-live="polite"></ul>
+    <p class="r-leer" data-leer hidden>Keine Einträge.</p>
+
+    <div class="r-bar" data-sortbar hidden>
+      <span>Die Reihenfolge ist geändert.</span>
+      <div class="r-bar__btns">
+        <button type="button" class="btn btn--primary btn--marker" data-sort-speichern>Reihenfolge speichern</button>
+        <button type="button" class="i-linkbtn" data-sort-verwerfen>Verwerfen</button>
+      </div>
+    </div>
+  </div>
+
+  <dialog class="r-dialog" data-dialog aria-labelledby="r-dialog-h">
+    <form method="dialog">
+      <h2 id="r-dialog-h" class="r-dialog__h" data-dialog-titel></h2>
+      <div data-dialog-text></div>
+      <div class="r-dialog__btns">
+        <button value="ok" class="btn btn--primary btn--marker" data-dialog-ok>Löschen</button>
+        <button value="abbrechen" class="i-linkbtn" data-dialog-abbrechen>Abbrechen</button>
+      </div>
+    </form>
+  </dialog>
+</Intern>
+
+<script>
+  import { bereich as bereichNach } from '../../../../scripts/intern/redaktion/bereiche';
+  import { laden, loeschAenderungen, reihenfolgeAenderungen, type Eintrag, type Geladen } from '../../../../scripts/intern/redaktion/daten';
+  import { $, meldung, namenLaden, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
+
+  const b = bereichNach(new URLSearchParams(location.search).get('b'));
+  const r = await starten();
+  if (r && !b) meldung('Diesen Bereich gibt es nicht.');
+  if (r && b) {
+    if (b.art === 'einstellung') location.replace(redaktionUrl('eintrag/', { b: b.id }));
+    const status = statusAnzeigen(r, $('[data-website-status]'));
+    document.title = `${b.label} · Redaktion · Intern`;
+    $('[data-titel]')!.textContent = b.label;
+    $('[data-beschreibung]')!.textContent = b.beschreibung;
+    const neuBtn = $<HTMLAnchorElement>('[data-neu]')!;
+    if (b.art !== 'einstellung' && b.anlegen) {
+      neuBtn.hidden = false;
+      neuBtn.textContent = `${b.einzahl} anlegen`;
+      neuBtn.href = redaktionUrl('eintrag/', { b: b.id, neu: '1' });
+    }
+
+    const liste = $<HTMLUListElement>('[data-liste]')!;
+    const suche = $<HTMLInputElement>('[data-suche]')!;
+    const leer = $('[data-leer]')!;
+    const sortbar = $('[data-sortbar]')!;
+    const sortierbar = (b.art === 'liste' && b.sortierung === 'hand') || (b.art === 'ordner' && b.sortierung === 'order');
+    $('[data-sort-hinweis]')!.hidden = !sortierbar;
+
+    let g: Geladen;
+    let namen: Namen;
+    try {
+      [g, namen] = await Promise.all([laden(r.a, b, r.stand.dateien), namenLaden(r, verweisQuellen(b))]);
+    } catch (e) {
+      meldung((e as Error).message);
+      throw e;
+    }
+
+    const ordnen = (xs: Eintrag[]) => {
+      if (b.art === 'ordner') {
+        if (b.sortierung === 'order') return [...xs].sort((x, y) => (x.data.order ?? 99) - (y.data.order ?? 99));
+        const { feld, abwaerts } = b.sortierung;
+        return [...xs].sort((x, y) => String(x.data[feld] ?? '').localeCompare(String(y.data[feld] ?? ''), 'de') * (abwaerts ? -1 : 1));
+      }
+      if (b.art === 'liste' && b.sortierung === 'id') return [...xs].sort((x, y) => x.id.localeCompare(y.id));
+      return xs;
+    };
+    const ursprung = ordnen(g.eintraege).map((e) => e.id);
+    let reihenfolge = [...ursprung];
+    let filter = b.art === 'ordner' && b.filter ? b.filter[0].id : '';
+
+    // Filter (z. B. Kommende / Vergangene / Entwürfe)
+    if (b.art === 'ordner' && b.filter) {
+      const box = $('[data-filter]')!;
+      box.hidden = false;
+      for (const f of [...b.filter, { id: '', label: 'Alle', passt: () => true }]) {
+        const n = g.eintraege.filter(f.passt).length;
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chip';
+        btn.setAttribute('aria-pressed', String(f.id === filter));
+        btn.innerHTML = `${f.label} <span class="chip__count">${n}</span>`;
+        btn.addEventListener('click', () => {
+          filter = f.id;
+          box.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === btn)));
+          zeichnen();
+        });
+        box.append(btn);
+      }
+    }
+    // Vergangene Termine: neueste zuerst
+    const sichtbar = () => {
+      const nachId = new Map(g.eintraege.map((e) => [e.id, e]));
+      const q = suche.value.trim().toLowerCase();
+      let xs = reihenfolge.map((id) => nachId.get(id)!);
+      if (b.art === 'ordner' && b.filter && filter) xs = xs.filter(b.filter.find((f) => f.id === filter)!.passt);
+      if (filter === 'vergangen') xs.reverse();
+      if (q) xs = xs.filter((e) => `${titelVon(b, e, namen)} ${b.info?.(e, namen) ?? ''} ${e.id}`.toLowerCase().includes(q));
+      return xs;
+    };
+    const sortAktiv = () => sortierbar && !suche.value.trim();
+
+    function zeichnen(fokus?: { id: string; k: string }) {
+      const xs = sichtbar();
+      leer.hidden = xs.length > 0;
+      leer.textContent = suche.value.trim() ? 'Nichts gefunden.' : 'Keine Einträge.';
+      liste.replaceChildren(...xs.map((e, i) => zeile(e, i, xs.length)));
+      sortbar.hidden = reihenfolge.join() === ursprung.join();
+      if (fokus) liste.querySelector<HTMLElement>(`[data-id="${CSS.escape(fokus.id)}"] [data-k="${fokus.k}"]:not(:disabled)`)?.focus();
+    }
+
+    function zeile(e: Eintrag, i: number, n: number) {
+      const titel = titelVon(b!, e, namen);
+      const li = document.createElement('li');
+      li.className = 'r-zeile';
+      li.dataset.id = e.id;
+      const gesperrt = !!b!.nurVorstand?.(e.id) && !r!.vorstand;
+      const link = document.createElement('a');
+      link.className = 'r-zeile__link';
+      link.href = redaktionUrl('eintrag/', { b: b!.id, id: e.id });
+      link.innerHTML = '<span class="r-zeile__t"></span><span class="r-zeile__m"></span>';
+      link.querySelector('.r-zeile__t')!.textContent = titel;
+      link.querySelector('.r-zeile__m')!.textContent = [b!.info?.(e, namen), gesperrt ? 'nur Vorstand' : ''].filter(Boolean).join(' · ');
+      li.append(link);
+
+      const knoepfe = document.createElement('div');
+      knoepfe.className = 'r-zeile__btns';
+      const knopf = (k: string, label: string, fn: () => void, aus = false) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'rf-mini';
+        btn.dataset.k = k;
+        btn.textContent = k;
+        btn.title = label;
+        btn.setAttribute('aria-label', `${label}: ${titel}`);
+        btn.disabled = aus;
+        btn.addEventListener('click', fn);
+        knoepfe.append(btn);
+      };
+      if (sortAktiv()) {
+        const pos = reihenfolge.indexOf(e.id);
+        knopf('↑', 'Nach oben', () => tauschen(pos, pos - 1, '↑'), i === 0);
+        knopf('↓', 'Nach unten', () => tauschen(pos, pos + 1, '↓'), i === n - 1);
+        li.draggable = true;
+      }
+      const seite = b!.seite?.(e);
+      if (seite !== undefined && seite !== null) {
+        const a = document.createElement('a');
+        a.className = 'r-zeile__ext';
+        a.href = websiteUrl(seite);
+        a.target = '_blank';
+        a.rel = 'noopener';
+        a.textContent = 'Ansehen';
+        a.setAttribute('aria-label', `${titel} auf der Website ansehen (neues Fenster)`);
+        knoepfe.append(a);
+      }
+      if (b!.art === 'ordner' && b!.duplizieren) {
+        const a = document.createElement('a');
+        a.className = 'r-zeile__ext';
+        a.href = redaktionUrl('eintrag/', { b: b!.id, neu: '1', kopie: e.id });
+        a.textContent = 'Kopieren';
+        a.setAttribute('aria-label', `${titel} als Vorlage für einen neuen Eintrag`);
+        knoepfe.append(a);
+      }
+      if (b!.art !== 'einstellung' && b!.loeschen && !gesperrt) knopf('✕', 'Löschen', () => void loeschen(e, titel));
+      li.append(knoepfe);
+      return li;
+    }
+
+    function tauschen(a: number, z: number, k: string) {
+      if (z < 0 || z >= reihenfolge.length) return;
+      const id = reihenfolge[a];
+      reihenfolge.splice(a, 1);
+      reihenfolge.splice(z, 0, id);
+      zeichnen({ id, k });
+    }
+
+    // Ziehen und Ablegen (Maus)
+    let gezogen: string | null = null;
+    liste.addEventListener('dragstart', (ev) => {
+      gezogen = (ev.target as HTMLElement).closest<HTMLElement>('[data-id]')?.dataset.id ?? null;
+      ev.dataTransfer?.setData('text/plain', gezogen ?? '');
+      (ev.target as HTMLElement).classList.add('is-drag');
+    });
+    liste.addEventListener('dragover', (ev) => {
+      if (!gezogen) return;
+      ev.preventDefault();
+      const ueber = (ev.target as HTMLElement).closest<HTMLElement>('[data-id]');
+      if (!ueber || ueber.dataset.id === gezogen) return;
+      const von = reihenfolge.indexOf(gezogen);
+      const nach = reihenfolge.indexOf(ueber.dataset.id!);
+      reihenfolge.splice(von, 1);
+      reihenfolge.splice(nach, 0, gezogen);
+      zeichnen();
+      liste.querySelector(`[data-id="${CSS.escape(gezogen)}"]`)?.classList.add('is-drag');
+    });
+    liste.addEventListener('dragend', () => {
+      gezogen = null;
+      zeichnen();
+    });
+
+    suche.addEventListener('input', () => zeichnen());
+    $('[data-sort-verwerfen]')!.addEventListener('click', () => {
+      reihenfolge = [...ursprung];
+      zeichnen();
+    });
+    $<HTMLButtonElement>('[data-sort-speichern]')!.addEventListener('click', async (ev) => {
+      const btn = ev.currentTarget as HTMLButtonElement;
+      btn.disabled = true;
+      try {
+        const aenderungen = reihenfolgeAenderungen(g, reihenfolge);
+        if (aenderungen.length) await r.a.speichern(`${b.label}: Reihenfolge geändert`, aenderungen);
+        location.href = redaktionUrl('liste/', { b: b.id, gespeichert: 'reihenfolge' });
+      } catch (e) {
+        meldung((e as Error).message);
+        btn.disabled = false;
+      }
+    });
+
+    // Löschen mit Rückfrage – und nur, wenn nichts mehr darauf verweist
+    const dialog = $<HTMLDialogElement>('[data-dialog]')!;
+    async function loeschen(e: Eintrag, titel: string) {
+      meldung('Prüfe, ob der Eintrag noch verwendet wird …', 'ok');
+      let benutzt: string[];
+      try {
+        benutzt = await verwendungen(r!, b!, e.id, namen);
+      } catch (err) {
+        return meldung((err as Error).message);
+      }
+      meldung('');
+      const text = $('[data-dialog-text]')!;
+      const ok = $<HTMLButtonElement>('[data-dialog-ok]')!;
+      $('[data-dialog-titel]')!.textContent = benutzt.length ? `„${titel}“ wird noch verwendet` : `„${titel}“ löschen?`;
+      text.replaceChildren();
+      if (benutzt.length) {
+        const p = document.createElement('p');
+        p.textContent = 'Bitte entferne den Eintrag zuerst dort:';
+        const ul = document.createElement('ul');
+        benutzt.forEach((x) => {
+          const li = document.createElement('li');
+          li.textContent = x;
+          ul.append(li);
+        });
+        text.append(p, ul);
+      } else {
+        const p = document.createElement('p');
+        p.textContent = 'Der Eintrag verschwindet mit dem nächsten Update von der Website. Zurückholen kann ihn danach nur der Admin.';
+        text.append(p);
+      }
+      ok.hidden = benutzt.length > 0;
+      $('[data-dialog-abbrechen]')!.textContent = benutzt.length ? 'Schließen' : 'Abbrechen';
+      dialog.returnValue = '';
+      dialog.showModal();
+      dialog.addEventListener(
+        'close',
+        async () => {
+          if (dialog.returnValue !== 'ok' || benutzt.length) return;
+          try {
+            await r!.a.speichern(`${b!.einzahl} „${titel}“ gelöscht`, loeschAenderungen(g, e.id));
+            location.href = redaktionUrl('liste/', { b: b!.id, gespeichert: 'geloescht' });
+          } catch (err) {
+            meldung((err as Error).message);
+          }
+        },
+        { once: true },
+      );
+    }
+
+    const gespeichert = new URLSearchParams(location.search).get('gespeichert');
+    if (gespeichert) {
+      meldung(gespeichert === 'geloescht' ? 'Gelöscht. Die Website ist in etwa 2–3 Minuten aktualisiert.' : 'Gespeichert. Die Website ist in etwa 2–3 Minuten aktualisiert.', 'ok');
+      status?.neu();
+      history.replaceState(null, '', redaktionUrl('liste/', { b: b.id }));
+    }
+    zeichnen();
+  }
+</script>

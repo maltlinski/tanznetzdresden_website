@@ -3,7 +3,9 @@
 ## Grundsätze
 
 - **Inhalte gehören nicht in den Code.** Neue Inhaltstypen als Content Collection in `src/content.config.ts`
-  anlegen (mit Schema) und im CMS (`public/admin/config.yml`) ergänzen.
+  anlegen (mit Schema) und in der Redaktion (`src/scripts/intern/redaktion/bereiche.ts`, siehe
+  [redaktion.md](redaktion.md#für-entwicklerinnen)) sowie im CMS (`public/admin/config.yml`) ergänzen. Texte, die
+  die Redaktion ändern soll, gehören in JSON-Dateien unter `src/settings/` (wie `haltung.json`), nicht in `.ts`.
 - **Statisch zuerst.** Seiten werden beim Build erzeugt. JavaScript nur dort, wo Interaktion nötig ist (Astro-Skripte
   in der jeweiligen Komponente).
 - **Links zu Seiten immer über `url(lang, 'route')`** aus `src/lib/i18n.ts` (kennt beide Sprachen und den
@@ -81,12 +83,12 @@ Wo GSAP läuft:
 
 ## Netz-Animation
 
-`src/scripts/hero-net.ts`, Einstellungen in `src/settings/hero.ts`: die drei Fotos (links hinten, Mitte vorn,
+`src/scripts/hero-net.ts`, Einstellungen in `src/settings/hero.ts` (Wörter und Standzeit in `hero.json`): die drei Fotos (links hinten, Mitte vorn,
 rechts hinten; auf dem Handy nur die ersten beiden), die Wörter für „Tanz für …“, Standzeit pro Wort, Knotendichte und
 ob die Fotos beim Scrollen wegziehen. Die Fotos müssen einen dunklen Bühnenhintergrund haben, weil Schwarz ausgestanzt
 wird. Das Netz sammelt sich um den nächsten Termin („Upcoming“).
 
-Der Abschnitt „Haltung & Wirkung“ liest seine Texte aus `src/settings/haltung.ts`, die Partnerliste aus
+Der Abschnitt „Haltung & Wirkung“ liest seine Texte aus `src/settings/haltung.json`, die Partnerliste aus
 `src/settings/verein.json` (`partners`).
 
 ## Ideen für die nächsten Schritte

@@ -2,7 +2,8 @@
 import Intern from '../../../layouts/Intern.astro';
 import { href } from '../../../lib/url';
 ---
-<Intern title="News" current="news">
+<Intern title="News" current="redaktion">
+  <a class="nl-back" href={href('intern/redaktion/')}>← Redaktion</a>
   <div class="nl-head">
     <div>
       <h1 class="i-h1">News schreiben</h1>
@@ -29,8 +30,8 @@ import { href } from '../../../lib/url';
     <ul class="nl" data-list aria-live="polite"></ul>
     <p class="nl-empty" data-empty hidden>Noch keine Beiträge. Leg mit „Neuer Beitrag“ los – du kannst jederzeit als Entwurf speichern.</p>
     <p class="i-hint nl-foot">
-      Ältere Beiträge, die als Datei im Repository liegen (<code>src/content/news/</code>), erscheinen hier nicht. Sie
-      lassen sich im CMS unter <a href={href('admin/')}>/admin</a> bearbeiten.
+      Ältere Beiträge, die als Datei im Repository liegen, erscheinen hier nicht. Sie stehen in der Redaktion unter
+      <a href={href('intern/redaktion/liste/?b=news')}>News-Archiv</a>.
     </p>
   </div>
   <template data-item>
@@ -99,6 +100,8 @@ import { href } from '../../../lib/url';
 </script>
 
 <style>
+  .nl-back { display: inline-block; margin-bottom: 18px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
+  .nl-back:hover { color: var(--magenta-2); }
   .nl-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px 40px; margin-bottom: 28px; }
   .nl-head .i-lead { margin-bottom: 0; }
   .nl-head .i-lead a, .i-card a, .nl-foot a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }

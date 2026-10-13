@@ -11,7 +11,7 @@ import { href } from '../lib/url';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
-  current?: 'start' | 'profil' | 'mitglieder' | 'dokumente' | 'news';
+  current?: 'start' | 'profil' | 'mitglieder' | 'dokumente' | 'redaktion';
   /** Index-Seite zeigt selbst das Login-Formular */
   loginPage?: boolean;
 }
@@ -21,8 +21,8 @@ const items = [
   { id: 'profil', label: 'Mein Profil', path: 'intern/profil/' },
   { id: 'mitglieder', label: 'Mitglieder', path: 'intern/mitglieder/' },
   { id: 'dokumente', label: 'Dokumente', path: 'intern/dokumente/' },
-  // nur für Presse, Vorstand und Admin sichtbar
-  { id: 'news', label: 'News schreiben', path: 'intern/news/', redaktion: true },
+  // nur für Presse, Vorstand und Admin sichtbar (News schreiben liegt in der Redaktion)
+  { id: 'redaktion', label: 'Redaktion', path: 'intern/redaktion/', redaktion: true },
 ];
 ---
 <Page title={`${title} · Intern`} noindex>

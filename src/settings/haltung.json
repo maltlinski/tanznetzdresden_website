@@ -1,0 +1,65 @@
+{
+  "de": {
+    "kicker": "Haltung & Wirkung",
+    "l1": "Tanz gehört",
+    "l2": "in die Stadt.",
+    "lead": "Wir verstehen uns als dezentrale Kulturinstitution und Bildungsort. Seit über 15 Jahren setzen wir uns dafür ein, dass zeitgenössischer Tanz in Dresden entsteht, gezeigt wird und ein Publikum findet.",
+    "saeulen": [
+      {
+        "titel": "Zugang",
+        "text": "Tanz braucht kein Vorwissen. Wir zeigen ihn in Theatern, Studios und auf der Straße und laden nach den Vorstellungen zum Gespräch ein."
+      },
+      {
+        "titel": "Arbeit",
+        "text": "Wir schaffen Bedingungen, unter denen Tanzschaffende in Dresden arbeiten können: Profitraining, Bühnen, Residenzen."
+      },
+      {
+        "titel": "Verbindung",
+        "text": "Wir vernetzen die freie Szene in Dresden, mit Freiburg und Frankfurt und mit Partner:innen bis nach Finnland und Nigeria."
+      },
+      {
+        "titel": "Stimme",
+        "text": "Wir vertreten die freie Tanzszene gegenüber Stadt und Land, gemeinsam mit dem Dachverband Tanz Deutschland und den TanzAllianzen."
+      }
+    ],
+    "auszeichnungen": [
+      "Sächsischer Initiativpreis für Kunst und Kultur",
+      "Förderpreis der Landeshauptstadt Dresden"
+    ]
+  },
+  "en": {
+    "kicker": "Stance & impact",
+    "l1": "Dance belongs",
+    "l2": "in the city.",
+    "lead": "We see ourselves as a decentralised cultural institution and place of learning. For more than 15 years we have worked to make sure contemporary dance is created in Dresden, shown here and finds an audience.",
+    "saeulen": [
+      {
+        "titel": "Access",
+        "text": "Dance needs no prior knowledge. We show it in theatres, studios and on the street, and invite everyone to talk after the performances."
+      },
+      {
+        "titel": "Work",
+        "text": "We create conditions under which dance artists can work in Dresden: professional training, stages, residencies."
+      },
+      {
+        "titel": "Connection",
+        "text": "We connect the independent scene in Dresden, with Freiburg and Frankfurt and with partners as far as Finland and Nigeria."
+      },
+      {
+        "titel": "Voice",
+        "text": "We speak for the independent dance scene towards city and state, together with Dachverband Tanz Deutschland and the TanzAllianzen."
+      }
+    ],
+    "auszeichnungen": [
+      "Saxon Initiative Prize for Art and Culture",
+      "Promotion Prize of the City of Dresden"
+    ]
+  },
+  "foto": {
+    "datei": "ensemble-curtain-call.jpg",
+    "alt": {
+      "de": "Ensemble beim Schlussapplaus auf der Bühne",
+      "en": "Ensemble taking a bow on stage"
+    }
+  }
+}

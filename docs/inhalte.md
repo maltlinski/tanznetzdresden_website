@@ -1,8 +1,15 @@
 # Inhalte bearbeiten
 
-Alle Inhalte liegen als Dateien im Repository. Es gibt zwei Wege, sie zu ändern.
+Alle Inhalte liegen als Dateien im Repository. Es gibt drei Wege, sie zu ändern.
 
-## A) Im Browser mit dem CMS (empfohlen für die Redaktion)
+## A) Im internen Bereich: Redaktion (empfohlen)
+
+*Intern → Redaktion* ist für Mitglieder mit der Rolle Presse, Vorstand oder Admin. Termine, News, Formate,
+Profitraining, Personen, Partner, Startseiten-Texte, Vereinsdaten und Textseiten lassen sich dort in Formularen
+anlegen, sortieren, bearbeiten und löschen. Ein GitHub-Konto ist nicht nötig. Anleitung und Einrichtung:
+[redaktion.md](redaktion.md).
+
+## B) Im Browser mit dem CMS (für Admins)
 
 Unter `https://<website>/admin/` läuft [Sveltia CMS](https://github.com/sveltia/sveltia-cms). Jede Änderung wird als
 Commit gespeichert, die Website baut sich danach in 1–2 Minuten neu.
@@ -16,23 +23,24 @@ Commit gespeichert, die Website baut sich danach in 1–2 Minuten neu.
 
 Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „Sign in with Token“ auf der Login-Seite).
 
-## B) Direkt in den Dateien
+## C) Direkt in den Dateien
 
 | Was | Datei | Hinweis |
 |---|---|---|
-| News | am einfachsten im internen Bereich: *Intern → News schreiben* | als Datei: `src/content/news/de/` + `en/`, siehe docs/news.md |
+| News | am einfachsten im internen Bereich: *Intern → Redaktion → News schreiben* | als Datei: `src/content/news/de/` + `en/`, siehe docs/news.md |
 | Termin | `src/content/termine/JJJJ-MM-TT-titel.md` | Pflichtfelder siehe unten |
 | Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge, `seite` verlinkt eine eigene Seite |
 | KEEP UP: Trainingsplan | `src/content/keep-up/wochen.yaml` | eine Zeile pro Woche, siehe unten |
 | KEEP UP: Dozent:innen im Kartenstapel | `src/content/keep-up/dozentinnen.yaml` | Reihenfolge = Stapel |
-| KEEP UP: Seitentexte, Kopf-Foto | `src/settings/keep-up.ts` | |
+| KEEP UP: Seitentexte, Kopf-Foto | `src/settings/keep-up.json` | Platzhalterfotos und Stapel-Bewegung in `keep-up.ts` |
 | Personen | `src/content/personen.yaml` | Reihenfolge = Anzeige |
 | Vereinsdaten, Impressum-Angaben, Training, Newsletter | `src/settings/verein.json` | |
 | Kooperationspartner: Orte auf der Karte | `src/content/kooperation/orte.yaml` | Koordinaten + `verbunden` für die Linien |
 | Kooperationspartner: Gruppen und Partner | `src/content/kooperation/gruppen.yaml` | Reihenfolge = Anzeige |
 | Spenden: Bankverbindung, Beträge, Wirkung, Steuerbescheid | `src/settings/verein.json` → `donation`, `taxExemption` | GiroCode entsteht automatisch |
-| Arbeitsgruppen | `src/settings/arbeitsgruppen.ts` | |
-| Impressum-Zusatztext, Datenschutz | `src/content/seiten/*.md` | |
+| Arbeitsgruppen | `src/settings/arbeitsgruppen.json` | |
+| Startseite: „Tanz für …“, Haltung & Wirkung | `src/settings/hero.json`, `src/settings/haltung.json` | |
+| Impressum-Zusatztext, Datenschutz, Transparenz … | `src/content/seiten/*.md` (englisch: `seiten/en/`) | |
 | Fotos | `src/assets/photos/` | werden automatisch verkleinert |
 | Fotos im Hero der Startseite | `src/settings/hero.ts` | Ausschnitt und Position je Foto, eines pro Besuch |
 | PDFs (Antrag, Satzung) | `public/downloads/` | Pfad in `verein.json` eintragen |
@@ -65,7 +73,7 @@ Der Kalender auf der Seite entsteht aus drei Quellen:
 
 - `dozent` ist ein Kürzel aus `src/content/keep-up/dozentinnen.yaml`. Dort stehen Stil, ein kurzer Text zum
   Unterricht und optional ein Foto; Name und Profil-Link kommen aus `personen.yaml` (gleiches Kürzel).
-  Ohne Foto erscheint ein Platzhalter (`src/settings/keep-up.ts`).
+  Ohne Foto erscheint ein Platzhalter (`platzhalterFotos` in `src/settings/keep-up.ts`).
 - Workshops sind normale Termine mit `format: keep-up` (und `people: [kürzel]` für die Dozent:in). Sie stehen
   dann im Tanzkalender und im Profitrainings-Kalender (magenta).
 - Ort und Beitrag kommen aus `src/settings/verein.json` (`training`).

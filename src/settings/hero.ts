@@ -14,6 +14,8 @@
  * Auf schmalen Bildschirmen erscheinen nur die ersten beiden (links hinten, rechts vorn).
  * Fehlt eine Datei, bricht der Build mit einer Meldung ab.
  */
+import data from './hero.json';
+
 export interface HeroFoto {
   datei: string;
   ausschnitt: [number, number, number, number];
@@ -26,14 +28,13 @@ export const heroFotos: HeroFoto[] = [
   { datei: 'kopfstand.jpg', ausschnitt: [240, 0, 1110, 1333] },
 ];
 
-/** „Tanz für …“ – die Wörter wechseln nacheinander. Leere Liste = Zeile ausblenden. */
-export const claim = {
-  de: { lead: 'Tanz für', woerter: ['Dresden', 'alle', 'Professionals', 'Newcomer:innen', 'die freie Szene', 'den Stadtraum'] },
-  en: { lead: 'Dance for', woerter: ['Dresden', 'everyone', 'professionals', 'newcomers', 'the independent scene', 'the city'] },
-};
-
-/** Standzeit pro Wort in Sekunden. Nach einer Runde bleibt das erste Wort stehen. */
-export const wortPause = 4;
+/**
+ * „Tanz für …“ (claim) und Standzeit pro Wort in Sekunden (wortPause) stehen in hero.json
+ * (bearbeitbar unter Intern → Redaktion → Startseite). Die Wörter wechseln nacheinander,
+ * nach einer Runde bleibt das erste stehen. Leere Liste = Zeile ausblenden.
+ */
+export const claim = { de: data.claim.de, en: data.claim.en };
+export const wortPause: number = data.wortPause;
 
 /** Knotendichte bei 1440 × 820 (wird mit der Fläche skaliert). */
 export const knoten = 100;

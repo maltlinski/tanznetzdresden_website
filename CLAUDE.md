@@ -3,7 +3,8 @@
 Website des TanzNetzDresden e.V. – Astro 7, TypeScript (strict), statischer Build. Sprache der Inhalte und Kommentare: Deutsch.
 
 - Lies zuerst `docs/entwicklung.md` (Konventionen, Designsystem-Regeln).
-- Inhalte liegen in `src/content/` und `src/settings/`, nicht im Code. Schemas in `src/content.config.ts`.
+- Inhalte liegen in `src/content/` und `src/settings/` (Texte als JSON), nicht im Code. Schemas in `src/content.config.ts`.
+- Redaktion (Intern → Redaktion) bearbeitet diese Dateien über die Supabase-Funktion `supabase/functions/inhalte/`. Neues Feld im Schema → auch in `src/scripts/intern/redaktion/bereiche.ts` eintragen (docs/redaktion.md).
 - Zweisprachig (de ohne Präfix, en unter /en/): Seiteninhalt in `src/views/`, Seiten in `src/pages/` + `src/pages/en/`. Texte mit `tr(lang, {de, en})`, Inhaltsfelder `*_en` mit `loc()`. Siehe `docs/mehrsprachigkeit.md`.
 - Links zu Seiten nur über `url(lang, 'route')` aus `src/lib/i18n.ts`, zu Dateien über `href()` (Seite läuft auch unter einem Unterpfad).
 - Profile: `src/lib/profiles.ts` führt `personen.yaml` und freigegebene Supabase-Profile zusammen (docs/profile.md).

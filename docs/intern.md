@@ -45,7 +45,8 @@ mit denselben Namen überschreiben.
 | Link aus der E-Mail führt auf `localhost` oder eine Fehlerseite | *Authentication → URL Configuration*: Site URL und Redirect URLs prüfen (Schritt 2). Bei GitHub Pages: `https://maltlinski.github.io/tanznetzdresden_website/intern/**`. |
 | Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle vier Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
 | Table Editor: „Nur der Vorstand kann Rollen ändern.“ | Vierte Migration `20261010000000_rollen_im_dashboard.sql` ausführen, dann erneut speichern. |
-| „News schreiben“ fehlt | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
+| „Redaktion“ fehlt im Menü | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
+| Redaktion: „noch nicht eingerichtet“ | Supabase-Funktion `inhalte` und GitHub-Schlüssel fehlen, siehe [redaktion.md](redaktion.md#einrichten-einmalig-admin). |
 | Veröffentlichte News erscheinen erst am nächsten Morgen | Webhook fehlt (docs/news.md), oder `news-updated` fehlt in `.github/workflows/deploy.yml`. |
 
 ## 4. Mitglieder einladen
@@ -60,8 +61,8 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 | Rolle | darf |
 |---|---|
 | Mitglied | eigenes Profil, Mitgliederliste, Dokumente lesen |
-| Presse | zusätzlich News schreiben und veröffentlichen |
-| Vorstand | zusätzlich Rollen vergeben, Profile freigeben, Dokumente hochladen, News |
+| Presse | zusätzlich die Redaktion: News, Termine, Formate, Profitraining, Personen, Partner, Texte (docs/redaktion.md) |
+| Vorstand | zusätzlich Rollen vergeben, Profile freigeben, Dokumente hochladen, Redaktion inkl. Impressum, Datenschutz und rechtlicher Vereinsdaten |
 | Admin | wie Vorstand (Admin vergeben nur Admins) |
 
 **Mitgliedschaft beendet:** *Authentication → Users* → Person löschen. Das Profil wird mit gelöscht.
@@ -76,6 +77,11 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 | Dokumente (Bucket `intern`) | Lesen: alle Mitglieder:innen · Hochladen/Löschen: Vorstand |
 | Rolle | ändern kann nur der Vorstand |
 | News (`news_posts`, Bucket `newsbilder`) | Entwürfe: nur Presse/Vorstand/Admin · veröffentlicht: öffentlich über `public_news` |
+
+## Redaktion
+
+Die Redaktion (*Intern → Redaktion*) braucht zusätzlich die Supabase-Funktion `inhalte` und einen GitHub-Schlüssel.
+Einrichtung in [redaktion.md](redaktion.md#einrichten-einmalig-admin).
 
 ## Ideen für später
 

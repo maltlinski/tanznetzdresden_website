@@ -13,7 +13,7 @@ Verknüpfung über `hreflang`.
 | News | Datei `src/content/news/en/<name>.md` oder im Editor „Englische Fassung“ | erscheint Deutsch, beim Text mit Hinweis |
 | Formate | `title_en`, `since_en`, `summary_en`, `alt_en` | erscheint Deutsch |
 | Personen | `bio_en`, `vorstand_en` (oder selbst im internen Bereich) | erscheint Deutsch |
-| Arbeitsgruppen | `text_en` in `src/settings/arbeitsgruppen.ts` | – |
+| Arbeitsgruppen | `text_en` in `src/settings/arbeitsgruppen.json` | – |
 | Vereinsdaten | Block `"en"` in `src/settings/verein.json` | erscheint Deutsch |
 | Textseiten (Impressum, Datenschutz, Transparenz, Barrierefreiheit) | `src/content/seiten/en/<name>.md` | deutsche Seite mit Hinweis |
 | Einwilligungs-Dialog | `label_en`, `description_en` in `src/settings/consent.ts` | – |

@@ -1,0 +1,282 @@
+---
+/**
+ * Redaktion: einen Eintrag bearbeiten oder anlegen.
+ *   ?b=termine&id=2026-10-15-studio-round-9   bearbeiten
+ *   ?b=termine&neu=1[&kopie=<id>]             neu (optional als Kopie)
+ *   ?b=verein                                 Einstellungen (eine Datei)
+ */
+import Intern from '../../../../layouts/Intern.astro';
+import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
+import { href } from '../../../../lib/url';
+import '../../../../styles/redaktion.css';
+---
+<Intern title="Redaktion" current="redaktion">
+  <a class="r-back" href={href('intern/redaktion/')} data-zurueck>← Redaktion</a>
+  <div class="r-head">
+    <div>
+      <p class="r-kicker" data-kicker></p>
+      <h1 class="i-h1" data-titel>Bearbeiten</h1>
+    </div>
+    <div class="r-head__side">
+      <RedaktionStatus />
+    </div>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Redaktion ist für Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <p class="i-hint" data-loading hidden>Inhalte werden geladen …</p>
+
+  <div data-access hidden>
+    <p class="i-msg" data-gesperrt hidden>Diesen Eintrag ändert nur der Vorstand. Du kannst ihn lesen, aber nicht speichern.</p>
+    <form class="r-form" data-form novalidate>
+      <div data-felder></div>
+      <div class="r-bar r-bar--form">
+        <div class="r-bar__btns">
+          <button type="submit" class="btn btn--primary btn--marker" data-speichern>Speichern</button>
+          <a class="i-linkbtn" data-abbrechen>Abbrechen</a>
+          <a class="i-linkbtn" data-ansehen target="_blank" rel="noopener" hidden>Auf der Website ansehen</a>
+        </div>
+        <button type="button" class="i-linkbtn r-danger" data-loeschen hidden>Löschen</button>
+      </div>
+    </form>
+  </div>
+
+  <dialog class="r-dialog" data-dialog aria-labelledby="r-dialog-h">
+    <form method="dialog">
+      <h2 id="r-dialog-h" class="r-dialog__h" data-dialog-titel></h2>
+      <div data-dialog-text></div>
+      <div class="r-dialog__btns">
+        <button value="ok" class="btn btn--primary btn--marker" data-dialog-ok>Löschen</button>
+        <button value="abbrechen" class="i-linkbtn" data-dialog-abbrechen>Abbrechen</button>
+      </div>
+    </form>
+  </dialog>
+</Intern>
+
+<script>
+  import { bereich as bereichNach } from '../../../../scripts/intern/redaktion/bereiche';
+  import { aenderungenFuer, dateiPfad, freieId, laden, leer, loeschAenderungen, type Eintrag, type Geladen } from '../../../../scripts/intern/redaktion/daten';
+  import { base64, dateiName, formular, verkleinern, type FormKontext } from '../../../../scripts/intern/redaktion/formular';
+  import type { Aenderung } from '../../../../scripts/intern/redaktion/api';
+  import { $, meldung, namenLaden, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
+
+  const params = new URLSearchParams(location.search);
+  const b = bereichNach(params.get('b'));
+  const r = await starten();
+  if (r && !b) meldung('Diesen Bereich gibt es nicht.');
+  if (r && b) {
+    const status = statusAnzeigen(r, $('[data-website-status]'));
+    const neu = b.art !== 'einstellung' && params.get('neu') === '1';
+    const kopie = params.get('kopie');
+    const idParam = b.art === 'einstellung' ? b.id : (params.get('id') ?? '');
+    const listeUrl = b.art === 'einstellung' ? redaktionUrl() : redaktionUrl('liste/', { b: b.id });
+    if (b.art !== 'einstellung') {
+      const zurueck = $<HTMLAnchorElement>('[data-zurueck]')!;
+      zurueck.href = listeUrl;
+      zurueck.textContent = `← ${b.label}`;
+    }
+    $<HTMLAnchorElement>('[data-abbrechen]')!.href = listeUrl;
+    $('[data-kicker]')!.textContent = b.art === 'einstellung' ? b.gruppe : b.label;
+
+    let g: Geladen;
+    let namen: Namen;
+    try {
+      [g, namen] = await Promise.all([
+        // Ordner: nur die eine Datei (bzw. die Vorlage) lesen; Listen und Einstellungen: die ganze Datei
+        laden(r.a, b, r.stand.dateien, b.art === 'ordner' ? (neu ? (kopie ?? '\0') : idParam) : undefined),
+        namenLaden(r, verweisQuellen(b)),
+      ]);
+    } catch (e) {
+      meldung((e as Error).message);
+      throw e;
+    }
+
+    const vorlage = neu ? (kopie ? g.eintraege.find((e) => e.id === kopie) : undefined) : g.eintraege.find((e) => e.id === idParam);
+    if (!neu && !vorlage) {
+      meldung('Diesen Eintrag gibt es nicht (mehr). Vielleicht hat ihn jemand gelöscht oder umbenannt.');
+      $('[data-form]')!.hidden = true;
+      throw new Error('Eintrag fehlt');
+    }
+    // Arbeitskopie: das Formular schreibt direkt hinein
+    const e: Eintrag = structuredClone(
+      vorlage
+        ? { ...vorlage, id: neu ? '' : vorlage.id }
+        : { id: '', data: {}, body: '', en: b.art === 'ordner' && b.uebersetzung ? { data: {}, body: '' } : undefined },
+    );
+    if (neu && kopie && b.art === 'ordner') {
+      // Kopie: als Entwurf starten, damit nichts doppelt online geht
+      if (b.felder.some((f) => f.key === 'draft')) e.data.draft = true;
+    }
+    const gesperrt = !!b.nurVorstand?.(idParam) && !r.vorstand;
+    $('[data-gesperrt]')!.hidden = !gesperrt;
+
+    const setzeTitel = () => {
+      const t = neu ? `${b.einzahl} anlegen` : titelVon(b, e, namen);
+      $('[data-titel]')!.textContent = t;
+      document.title = `${t} · Redaktion · Intern`;
+    };
+    setzeTitel();
+    const seite = !neu ? b.seite?.(e) : null;
+    if (seite !== undefined && seite !== null) {
+      const a = $<HTMLAnchorElement>('[data-ansehen]')!;
+      a.href = websiteUrl(seite);
+      a.hidden = false;
+    }
+
+    // Dateien, die mit dem Eintrag hochgeladen werden
+    const uploads = new Map<string, Blob>();
+    const vorschauCache = new Map<string, string | null>();
+    const ORDNER: Record<string, string> = { photos: 'src/assets/photos', personen: 'src/assets/personen', foerderer: 'src/assets/foerderer', downloads: 'public/downloads' };
+    let geaendert = false;
+    const pfadDerDatei = b.art === 'ordner' ? dateiPfad(b, idParam || 'neu') : b.datei;
+
+    const k: FormKontext = {
+      vorstand: r.vorstand,
+      neu,
+      json: b.art === 'einstellung',
+      dateiPfad: pfadDerDatei,
+      optionen: (q) => namen.optionen(q),
+      dateien(ordner) {
+        const prefix = `${ORDNER[ordner]}/`;
+        const namenListe = [...r!.stand.dateien.map((d) => d.pfad), ...uploads.keys()].filter((p) => p.startsWith(prefix) && !p.slice(prefix.length).includes('/'));
+        return [...new Set(namenListe.map((p) => p.slice(prefix.length)))].sort((x, y) => x.localeCompare(y, 'de'));
+      },
+      async vorschau(pfad) {
+        if (uploads.has(pfad)) return URL.createObjectURL(uploads.get(pfad)!);
+        if (!vorschauCache.has(pfad)) {
+          try {
+            const d = await r!.a.datei(pfad);
+            const bytes = Uint8Array.from(atob(d.base64), (c) => c.charCodeAt(0));
+            const typ = pfad.endsWith('.png') ? 'image/png' : pfad.endsWith('.webp') ? 'image/webp' : 'image/jpeg';
+            vorschauCache.set(pfad, URL.createObjectURL(new Blob([bytes], { type: typ })));
+          } catch {
+            vorschauCache.set(pfad, null);
+          }
+        }
+        return vorschauCache.get(pfad)!;
+      },
+      async hochladen(ordner, datei) {
+        const pdf = ordner === 'downloads';
+        if (pdf && datei.type !== 'application/pdf') throw new Error('Bitte eine PDF-Datei wählen.');
+        const { blob, endung } = pdf ? { blob: datei as Blob, endung: 'pdf' } : await verkleinern(datei);
+        if (blob.size > 8_000_000) throw new Error('Die Datei ist größer als 8 MB.');
+        const basis = dateiName(datei.name, endung).replace(/\.[^.]+$/, '');
+        const belegt = (n: string) => r!.stand.dateien.some((d) => d.pfad === `${ORDNER[ordner]}/${n}.${endung}`) || uploads.has(`${ORDNER[ordner]}/${n}.${endung}`);
+        const pfad = `${ORDNER[ordner]}/${freieId(basis, belegt)}.${endung}`;
+        uploads.set(pfad, blob);
+        return pfad;
+      },
+      geaendert() {
+        geaendert = true;
+        setzeTitel();
+      },
+    };
+
+    const form = formular(b, e, k);
+    $('[data-felder]')!.append(form.el);
+    const speichernBtn = $<HTMLButtonElement>('[data-speichern]')!;
+    speichernBtn.hidden = gesperrt;
+    if (neu) speichernBtn.textContent = `${b.einzahl} anlegen`;
+    window.addEventListener('beforeunload', (ev) => {
+      if (geaendert) ev.preventDefault();
+    });
+
+    // Zusätzliche Prüfungen: Bereichsregeln, englische Pflichtfelder, eindeutige Kennung
+    const zusatz = (): Record<string, string> => {
+      const out = { ...(b.pruefen?.(e) ?? {}) };
+      if (b.art === 'ordner' && b.enPflicht && e.en) {
+        const hatEn = Object.values(e.en.data).some((v) => !leer(v)) || e.en.body.trim() !== '';
+        for (const key of b.enPflicht) if (hatEn && leer(e.en.data[key])) out[key] ??= 'Für die englische Fassung fehlt der Titel (Englisch).';
+      }
+      if (neu && b.art === 'liste' && b.felder.some((f) => f.key === 'id') && e.id && g.eintraege.some((x) => x.id === e.id)) {
+        out.id = 'Diesen Eintrag gibt es schon.';
+      }
+      return out;
+    };
+
+    $<HTMLFormElement>('[data-form]')!.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      if (gesperrt) return;
+      meldung('');
+      const fehler = form.pruefen(zusatz());
+      if (fehler) return meldung(fehler === 1 ? 'Ein Feld braucht noch deine Aufmerksamkeit.' : `${fehler} Felder brauchen noch deine Aufmerksamkeit.`);
+      // Kennung für neue Einträge
+      if (neu && !b.felder.some((f) => f.key === 'id')) {
+        const wunsch = b.neueId?.(e.data) ?? '';
+        e.id =
+          b.art === 'ordner'
+            ? freieId(wunsch, (id) => r!.stand.dateien.some((d) => d.pfad === dateiPfad(b, id)))
+            : freieId(wunsch, (id) => g.eintraege.some((x) => x.id === id));
+      }
+      const titel = titelVon(b, e, namen);
+      speichernBtn.disabled = true;
+      speichernBtn.textContent = 'Wird gespeichert …';
+      try {
+        const dateien: Aenderung[] = [];
+        for (const [pfad, blob] of uploads) {
+          // nur Dateien, die im Eintrag auch verwendet werden
+          if (JSON.stringify(e).includes(pfad.split('/').pop()!)) dateien.push({ pfad, base64: await base64(blob), alt: null });
+        }
+        const aenderungen = [...aenderungenFuer(g, e, neu), ...dateien];
+        await r!.a.speichern(`${b.einzahl} „${titel}“ ${neu ? 'angelegt' : 'geändert'}`, aenderungen);
+        geaendert = false;
+        if (b.art === 'einstellung') location.href = redaktionUrl('eintrag/', { b: b.id, gespeichert: '1' });
+        else location.href = redaktionUrl('eintrag/', { b: b.id, id: e.id, gespeichert: '1' });
+      } catch (err) {
+        meldung((err as Error).message);
+        speichernBtn.disabled = false;
+        speichernBtn.textContent = neu ? `${b.einzahl} anlegen` : 'Speichern';
+      }
+    });
+
+    // Löschen
+    const loeschenBtn = $<HTMLButtonElement>('[data-loeschen]')!;
+    if (!neu && !gesperrt && b.art !== 'einstellung' && b.loeschen) {
+      loeschenBtn.hidden = false;
+      const dialog = $<HTMLDialogElement>('[data-dialog]')!;
+      loeschenBtn.addEventListener('click', async () => {
+        const titel = titelVon(b, e, namen);
+        let benutzt: string[];
+        try {
+          benutzt = await verwendungen(r!, b, idParam, namen);
+        } catch (err) {
+          return meldung((err as Error).message);
+        }
+        $('[data-dialog-titel]')!.textContent = benutzt.length ? `„${titel}“ wird noch verwendet` : `„${titel}“ löschen?`;
+        const text = $('[data-dialog-text]')!;
+        text.replaceChildren();
+        const p = document.createElement('p');
+        p.textContent = benutzt.length ? `Bitte entferne den Eintrag zuerst dort: ${benutzt.join(', ')}.` : 'Der Eintrag verschwindet mit dem nächsten Update von der Website. Zurückholen kann ihn danach nur der Admin.';
+        text.append(p);
+        $('[data-dialog-ok]')!.hidden = benutzt.length > 0;
+        $('[data-dialog-abbrechen]')!.textContent = benutzt.length ? 'Schließen' : 'Abbrechen';
+        dialog.returnValue = '';
+        dialog.showModal();
+        dialog.addEventListener(
+          'close',
+          async () => {
+            if (dialog.returnValue !== 'ok' || benutzt.length) return;
+            try {
+              // Liste: vollständig laden, damit die anderen Einträge erhalten bleiben (ist bei Listen schon der Fall)
+              await r!.a.speichern(`${b.einzahl} „${titel}“ gelöscht`, loeschAenderungen(g, idParam));
+              geaendert = false;
+              location.href = redaktionUrl('liste/', { b: b.id, gespeichert: 'geloescht' });
+            } catch (err) {
+              meldung((err as Error).message);
+            }
+          },
+          { once: true },
+        );
+      });
+    }
+
+    if (params.get('gespeichert')) {
+      meldung('Gespeichert. Die Website ist in etwa 2–3 Minuten aktualisiert.', 'ok');
+      status?.neu();
+      params.delete('gespeichert');
+      history.replaceState(null, '', `${location.pathname}?${params}`);
+    }
+  }
+</script>

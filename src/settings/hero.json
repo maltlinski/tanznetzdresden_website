@@ -1,0 +1,27 @@
+{
+  "claim": {
+    "de": {
+      "lead": "Tanz für",
+      "woerter": [
+        "Dresden",
+        "alle",
+        "Professionals",
+        "Newcomer:innen",
+        "die freie Szene",
+        "den Stadtraum"
+      ]
+    },
+    "en": {
+      "lead": "Dance for",
+      "woerter": [
+        "Dresden",
+        "everyone",
+        "professionals",
+        "newcomers",
+        "the independent scene",
+        "the city"
+      ]
+    }
+  },
+  "wortPause": 4
+}

@@ -1,0 +1,83 @@
+---
+/**
+ * Redaktion: Übersicht über alles, was Presse, Vorstand und Admin an der Website bearbeiten können.
+ * Gespeichert wird über die Supabase-Funktion „inhalte“ direkt im Repository (docs/redaktion.md).
+ */
+import Intern from '../../../layouts/Intern.astro';
+import RedaktionStatus from '../../../components/intern/RedaktionStatus.astro';
+import { href } from '../../../lib/url';
+import { bereiche, gruppen } from '../../../scripts/intern/redaktion/bereiche';
+import '../../../styles/redaktion.css';
+
+const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `intern/redaktion/eintrag/?b=${b.id}` : `intern/redaktion/liste/?b=${b.id}`);
+---
+<Intern title="Redaktion" current="redaktion">
+  <div class="r-head">
+    <div>
+      <h1 class="i-h1">Redaktion</h1>
+      <p class="i-lead">
+        Hier pflegst du die Website: Termine, News, Formate, Profitraining, Personen, Partner und Texte. Was du
+        speicherst, ist nach 2–3 Minuten online. Jede Änderung wird mit deinem Namen festgehalten und lässt sich
+        zurückholen.
+      </p>
+    </div>
+    <RedaktionStatus />
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Redaktion ist für Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.
+      Der Vorstand vergibt die Rolle unter <a href={href('intern/mitglieder/')}>Mitglieder</a>.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <p class="i-hint" data-loading hidden>Inhalte werden geladen …</p>
+
+  <div data-access hidden>
+    {gruppen.map((g, gi) => (
+      <section class="r-gruppe" aria-labelledby={`g-${gi}`}>
+        <h2 class="r-gruppe__h" id={`g-${gi}`}>{g}</h2>
+        <ul class="r-tiles">
+          {g === 'Programm' && (
+            <li>
+              <a href={href('intern/news/')}>
+                <strong>News schreiben</strong>
+                <span>Beiträge für „Aus dem Netz“ mit Foto, Frist oder Zitat anlegen und veröffentlichen.</span>
+              </a>
+            </li>
+          )}
+          {bereiche.filter((b) => b.gruppe === g).map((b) => (
+            <li>
+              <a href={ziel(b)} data-bereich={b.id}>
+                <strong>{b.label}<span class="r-tiles__n" data-anzahl={b.art === 'ordner' ? b.ordner : undefined}></span></strong>
+                <span>{b.beschreibung}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))}
+
+    <section class="r-gruppe" aria-labelledby="g-verlauf">
+      <h2 class="r-gruppe__h" id="g-verlauf">Zuletzt geändert</h2>
+      <ol class="rs-verlauf" data-verlauf></ol>
+      <p class="i-hint r-hilfe">
+        Fragen zur Redaktion? Die Anleitung steht in <code>docs/redaktion.md</code>. Etwas ist schiefgegangen? Jede
+        Änderung lässt sich auf GitHub rückgängig machen. Das macht der Admin.
+      </p>
+    </section>
+  </div>
+</Intern>
+
+<script>
+  import { $, starten, statusAnzeigen } from '../../../scripts/intern/redaktion/seite';
+
+  const r = await starten();
+  if (r) {
+    statusAnzeigen(r, $('[data-website-status]'), $('[data-verlauf]'));
+    // Anzahl je Ordner (Dateien im Repository)
+    document.querySelectorAll<HTMLElement>('[data-anzahl]').forEach((el) => {
+      const prefix = `${el.dataset.anzahl}/`;
+      const n = r.stand.dateien.filter((d) => d.pfad.startsWith(prefix) && d.pfad.endsWith('.md') && !d.pfad.slice(prefix.length).includes('/')).length;
+      el.textContent = String(n);
+    });
+  }
+</script>
