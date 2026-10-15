@@ -232,6 +232,25 @@ export const bereiche: Bereich[] = [
     ],
   },
 
+  {
+    id: 'news-bausteine',
+    art: 'einstellung',
+    label: 'News-Bausteine',
+    einzahl: 'News-Bausteine',
+    gruppe: 'Programm',
+    beschreibung: 'Wiederkehrende Texte wie Förderhinweise, mit einem Klick in News einfügen.',
+    datei: 'src/settings/news-bausteine.json',
+    wurzel: 'liste',
+    titel: () => 'News-Bausteine',
+    felder: [
+      { typ: 'liste', key: 'liste', label: 'Bausteine', pflicht: true, neu: 'Baustein hinzufügen', titel: (v) => v.name ?? '', felder: [
+        { typ: 'text', key: 'name', label: 'Name', pflicht: true, platzhalter: 'z. B. Förderhinweis TANZPAKT', hilfe: 'So heißt der Knopf im Editor.' },
+        { typ: 'auswahl', key: 'typ', label: 'Erscheint als', pflicht: true, optionen: [{ wert: 'hinweis', label: 'Hinweiskasten' }, { wert: 'text', label: 'normaler Text' }] },
+        { typ: 'textlang', key: 'text', label: 'Text', pflicht: true, en: true, zeilen: 5 },
+      ] },
+    ],
+  },
+
   // ---------------- Profitraining ----------------
   {
     id: 'wochen',

@@ -14,55 +14,65 @@ Dazu kommen RSS-Feeds unter `/news.xml` und `/en/news.xml`.
 
 Der einfachste Weg. Man braucht keinen GitHub-Zugang und muss kein Markdown kennen.
 
-1. Im internen Bereich anmelden und **News schreiben → Neuer Beitrag** öffnen.
-2. **Art wählen.** Daraus ergibt sich, welche Felder kommen und wie der Beitrag in der Übersicht aussieht:
+1. Im internen Bereich anmelden und **News schreiben → Neuer Beitrag** öffnen. Auf großen Bildschirmen steht rechts
+   die **Vorschau**: Sie zeigt den Beitrag beim Schreiben genau wie auf der Website (Computer oder Handy, Deutsch
+   oder Englisch). Ein Klick in die Vorschau springt im Editor an die Stelle. „Vorschau daneben ausblenden“ merkt
+   sich der Browser. Auf kleinen Bildschirmen öffnet der Knopf **Vorschau** sie groß.
+2. **Art wählen** – oder schneller mit einer **Vorlage** starten (*Rückblick*, *Ausschreibung*, *Veranstaltung*).
+   Die Vorlage legt Art, Kategorie, „Auf einen Blick“ und die Abschnitte an; graue Hinweise sagen, was hineingehört.
 
    | Art | zusätzlich | erscheint als |
    |---|---|---|
    | Meldung | – | Textzeile mit Pfeil |
-   | Mit Foto | Titelfoto mit Ausschnitt, Bildbeschreibung, Fotograf:in | Bild links, Text rechts; im Beitrag groß oben |
+   | Mit Foto | Titelfoto mit Ausschnitt, Fotograf:in | Bild links, Text rechts; im Beitrag groß oben |
    | Ausschreibung | Frist | Kasten mit Countdown („noch 38 Tage“), oben auf der News-Seite als „Offene Frist“ |
    | Stimme | Zitat, Name, Funktion | Zitatkarte in Cyan |
 
-3. **Titel, Kurztext, Text.** Der Text besteht aus **Abschnitten**, die sich mit „+ Abschnitt einfügen“ ergänzen
-   und mit ↑ ↓ verschieben lassen:
+3. **Titel, Kurztext, Text.** Der Text besteht aus **Abschnitten**. „+ Abschnitt einfügen“ fügt einen neuen ein,
+   verschieben geht durch **Ziehen am Griff ⠿** oder mit ↑ ↓.
    - **Text:** Die Knöpfe setzen Zwischenüberschrift (H2), Unterüberschrift (H3), Fett, Aufzählung, Zitat und Link.
+     - **Link einfügen (↗):** Personen aus dem Netzwerk, Termine, News und Seiten der Website suchen und wählen –
+       oder eine andere Website eintragen. Markierter Text wird zum Linktext.
      - **Zitat mit Namen:** Das Zitat in eine Zeile schreiben, darunter „— Name · Funktion“. Dann beide Zeilen
        markieren und den Zitat-Knopf drücken.
      - **Personenkarten** (z. B. Resident:innen, Vorstand): eine Aufzählung, deren Punkte mit einem fetten Namen beginnen.
-   - **Bilder:** ein Foto oder eine Galerie. Mehrere Fotos auf einmal auswählen oder in den Abschnitt ziehen.
-     - Ein Foto anklicken: Bildbeschreibung (Pflicht zum Veröffentlichen), Reihenfolge, **Drehen**, Entfernen.
-     - **Format:** Original, Quer (3 : 2), Hoch (3 : 4) oder Quadrat. Beim Zuschneiden bestimmt ein Klick ins
-       große Foto, welche Stelle sichtbar bleibt (**Bildausschnitt**).
-     - **Fotos pro Reihe** (2–4, auf dem Handy höchstens zwei), **Bildunterschrift** und **Foto(s) von**.
-     - Ein einzelnes Foto kann groß in Textbreite stehen oder **neben dem Text** (halbe Breite, der folgende Text
-       fließt daneben).
-     - Das Raster im Editor sieht aus wie auf der Website. Dort öffnet ein Klick die Großansicht, in der man durch
-       die Galerie blättern kann.
+   - **Bilder:** ein Foto oder eine Galerie. Mehrere Fotos auf einmal auswählen, in den Abschnitt ziehen oder
+     **aus früheren Beiträgen wählen** (Mediathek, ohne erneutes Hochladen). Reihenfolge durch Ziehen.
+     - Ein Foto anklicken öffnet die Details: **Drehen**, nach vorn/hinten, Entfernen, beim Zuschneiden der
+       **Bildausschnitt** per Klick ins Foto. Die **Bildbeschreibung** ist eingeklappt und freiwillig, aber
+       empfohlen (für Menschen, die das Foto nicht sehen können). „Fertig“ schließt die Details.
+     - **Darstellung und Bildunterschrift** (eingeklappt, die Zeile zeigt den Stand): Format (Original, Quer 3 : 2,
+       Hoch 3 : 4, Quadrat), Fotos pro Reihe (2–4, auf dem Handy höchstens zwei), Bildunterschrift, Foto(s) von;
+       ein einzelnes Foto groß in Textbreite oder **neben dem Text**.
+     - Das Raster im Editor sieht aus wie auf der Website. Dort öffnet ein Klick die Großansicht.
    - **Hinweiskasten:** abgesetzter Kasten, z. B. für den Förderhinweis am Ende.
+   - **Bausteine:** wiederkehrende Texte wie Förderhinweise stehen unter „+ Abschnitt einfügen → Baustein“. Sie werden
+     unter *Redaktion → News-Bausteine* gepflegt (`src/settings/news-bausteine.json`).
    - **Englisch** steht bei jedem Abschnitt zum Aufklappen.
-4. **Auf einen Blick** (optional): kurze Fakten wie Wann, Wo, Eintritt. Sie stehen neben dem Text.
+4. **Auf einen Blick** (aufklappen, optional): kurze Fakten wie Wann, Wo, Eintritt. Sie stehen neben dem Text.
 5. **Einordnung:** Kategorie, Datum, Autor:in. Mit dem Haken **Titelthema** steht der Beitrag groß oben.
+   **Planen:** Ein Datum in der Zukunft veröffentlicht den Beitrag erst an diesem Tag (mit dem Update am frühen
+   Morgen). In der Liste steht dann „Geplant“.
 6. **Englische Fassung** (optional): Titel, Kurztext, Fakten. Die Texte der Abschnitte stehen bei den Abschnitten.
-   Alles kann auch später nachgetragen werden.
-7. **Vorschau:** zeigt den Beitrag genau wie auf der Website, auch ungespeichert. Umschaltbar zwischen Computer
-   und Handy, Deutsch und Englisch. „Link für andere kopieren“ gibt einen Link zum zuletzt gespeicherten Stand,
-   z. B. zum Gegenlesen im Vorstand (nur für Presse, Vorstand und Admin).
+7. **Checkliste** über den Knöpfen: zeigt, was zum Veröffentlichen noch fehlt (Titel, Kurztext, je nach Art Titelfoto,
+   Frist oder Zitat) und was empfohlen ist (Text, Bildbeschreibungen, Englisch). Ein Klick springt zum Feld.
 8. **Speichern oder veröffentlichen.**
    - **Als Entwurf speichern:** Den Beitrag sieht nur die Redaktion.
    - **Veröffentlichen:** Die Website baut sich neu, nach 2–3 Minuten ist der Beitrag online. Das stößt die
      Supabase-Funktion `inhalte` der Redaktion an (docs/redaktion.md). Ist sie nicht eingerichtet, erscheint der
      Beitrag mit dem nächtlichen Update.
    - **Zurückziehen:** Der Beitrag wird wieder Entwurf und verschwindet genauso schnell von der Website.
+   - **Vorschau-Link kopieren:** Link zum zuletzt gespeicherten Stand, z. B. zum Gegenlesen im Vorstand (nur für
+     Presse, Vorstand und Admin).
 
-**Fotos** werden im Browser automatisch verkleinert (höchstens 2400 px). Ohne Bildbeschreibung kann ein Foto nicht
-veröffentlicht werden, weil sie für Barrierefreiheit Pflicht ist. Die Website lädt alle Fotos beim Bauen herunter
+**Nichts geht verloren:** Der Browser sichert Ungespeichertes alle paar Sekunden auf diesem Gerät („Auf diesem Gerät
+gesichert · 14:32“). Wird die Seite geschlossen oder stürzt der Browser ab, bietet der Editor beim nächsten Öffnen
+„Wiederherstellen“ an. Nach dem Speichern wird die Sicherung gelöscht.
+
+**Fotos** werden im Browser automatisch verkleinert (höchstens 2400 px). Die Website lädt alle Fotos beim Bauen herunter
 und erzeugt passende Größen, deshalb stellen Besucher:innen keine Verbindung zu Supabase her. Fotos, die beim
-Bearbeiten hochgeladen, aber nicht verwendet wurden, löscht der Editor beim Speichern wieder.
-
-**Beispiel:** Ein Rückblick wie „3 Jahre TANZPAKT in residence“ besteht aus Titelfoto, Text mit Zwischen- und
-Unterüberschriften, Listen mit fetten Namen (werden zu Karten), Galerien mit 4 Fotos pro Reihe, einem großen
-Einzelfoto mit Bildunterschrift und am Ende einem Hinweiskasten mit dem Förderhinweis.
+Bearbeiten hochgeladen, aber nicht verwendet wurden, löscht der Editor beim Speichern wieder. Beim Löschen eines
+Beitrags bleiben Fotos erhalten, die ein anderer Beitrag noch verwendet.
 
 **Rolle „Presse“ vergeben:** Der Vorstand wählt unter *Intern → Mitglieder* bei der Person die Rolle
 **Presse**. Presse darf News schreiben, sonst nichts Zusätzliches. Admin vergeben nur Admins.
@@ -80,7 +90,7 @@ date: 2026-10-06
 category: Ausschreibung        # Netzwerk · Ausschreibung · Training · Verein · Rückblick · Stimme
 author: AG POP UP
 deadline: 2026-11-15           # optional → Ausschreibung
-image: ../../../assets/photos/foto.jpg   # optional → Foto-Beitrag (dann alt Pflicht)
+image: ../../../assets/photos/foto.jpg   # optional → Foto-Beitrag
 alt: Was auf dem Foto zu sehen ist
 featured: false                # Titelthema
 quote: { text: '…', who: Name, role: Funktion }   # optional → Stimme
@@ -130,7 +140,8 @@ Supabase-Webhook ist dafür nicht mehr nötig.
 ## Datenbank
 
 Migrationen `supabase/migrations/20261009000000_news.sql` und `20261015000000_news_bilder.sql` im SQL-Editor
-ausführen. Die zweite erlaubt längere Texte (bis 100.000 Zeichen) und speichert den Bildausschnitt des Titelfotos.
+ausführen. Die zweite erlaubt längere Texte (bis 100.000 Zeichen), speichert den Bildausschnitt des Titelfotos und
+macht die Bildbeschreibung zum Titelfoto freiwillig.
 Die erste legt an:
 
 - die Rolle `presse`,
@@ -147,7 +158,11 @@ Die erste legt an:
 | Abschnitte ↔ Markdown (Format der Bilder-Abschnitte) | `src/lib/news-bloecke.ts` |
 | Fotos im Text beim Build optimieren | `bilderOptimieren()` in `src/lib/news.ts` |
 | Stile des Beitrags (Seite und Vorschau) | `src/styles/artikel.css`, Großansicht `src/scripts/lightbox.ts` |
-| Abschnitts-Editor, Fotos hochladen/drehen | `src/scripts/intern/news/` |
+| Abschnitts-Editor, Fotos hochladen/drehen, Mediathek | `src/scripts/intern/news/abschnitte.ts`, `fotos.ts` |
+| Vorschau daneben/groß, Sprung in den Editor | `src/scripts/intern/news/vorschau.ts` |
+| Link einfügen, Vorlagen | `src/scripts/intern/news/links.ts`, `vorlagen.ts` |
+| Bausteine | `src/settings/news-bausteine.json` |
+| Stile des Editors | `src/styles/news-editor.css` |
 | Vorschau | `src/pages/intern/news/vorschau/` |
 | Startseiten-Abschnitt | `src/components/sections/News.astro` |
 | Übersicht / Beitrag | `src/views/NewsView.astro`, `src/views/NewsArticleView.astro` |

@@ -5,13 +5,16 @@
 -- siehe src/lib/news-bloecke.ts). Dafür:
 --  - längere Texte erlaubt (Rückblicke mit vielen Abschnitten und Bildern),
 --  - Bildausschnitt des Titelfotos (image_focus, z. B. „50% 30%“),
---  - die öffentliche Ansicht public_news gibt image_focus mit aus.
+--  - die öffentliche Ansicht public_news gibt image_focus mit aus,
+--  - die Bildbeschreibung zum Titelfoto ist keine Pflicht mehr (empfohlen, nicht erzwungen).
 -- Einspielen: nach den anderen Migrationen im SQL-Editor ausführen (Rolle oben rechts: postgres).
 -- Mehrfaches Ausführen schadet nicht.
 -- =====================================================================
 
 alter table public.news_posts
   add column if not exists image_focus text check (image_focus ~ '^\d{1,3}% \d{1,3}%$');
+
+alter table public.news_posts drop constraint if exists news_image_alt;
 
 alter table public.news_posts drop constraint if exists news_posts_body_check;
 alter table public.news_posts add constraint news_posts_body_check check (char_length(body) <= 100000);

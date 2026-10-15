@@ -82,7 +82,10 @@ import '../../../../styles/artikel.css';
   const article = $('[data-article]');
   initLightbox(article);
 
-  function zeigen(b: Beitrag, lang: 'de' | 'en') {
+  type MitAbschnitten = Beitrag & { abschnitte?: string[] };
+  const eingebettet = window.parent !== window;
+
+  function zeigen(b: MitAbschnitten, lang: 'de' | 'en') {
     const t = T[lang];
     const en = lang === 'en';
     const pick = <X,>(de: X, e: X | null | undefined) => (en && e != null && e !== '' && !(Array.isArray(e) && !e.length) ? e : de);
@@ -112,7 +115,20 @@ import '../../../../styles/artikel.css';
     }
 
     v('only-de').hidden = !(en && !b.body_en && (b.body ?? '').trim());
-    v('html').innerHTML = renderMarkdown(body, base, { lang }) || `<p class="i-hint">${en ? 'No text yet.' : 'Noch kein Text.'}</p>`;
+    // Aus dem Editor: jeder Abschnitt einzeln, damit ein Klick zur Stelle im Editor springt
+    if (b.abschnitte) {
+      const html = v('html');
+      html.replaceChildren(...b.abschnitte.map((md, i) => {
+        const teil = document.createElement('div');
+        teil.className = 'vs-teil';
+        teil.dataset.abschnitt = String(i);
+        teil.innerHTML = renderMarkdown(md, base, { lang }) || `<p class="vs-leer">${en ? 'Empty section' : 'Leerer Abschnitt'}</p>`;
+        return teil;
+      }));
+      if (!b.abschnitte.length) html.innerHTML = `<p class="vs-leer">${en ? 'No text yet.' : 'Noch kein Text.'}</p>`;
+    } else {
+      v('html').innerHTML = renderMarkdown(body, base, { lang }) || `<p class="vs-leer">${en ? 'No text yet.' : 'Noch kein Text.'}</p>`;
+    }
     v('foot').textContent = `${t.text} · ${b.author ?? ''} · ${t.published} ${dateLong(date, lang)}`;
 
     v('call').hidden = !b.deadline;
@@ -160,10 +176,32 @@ import '../../../../styles/artikel.css';
   }
   // Aus dem Editor (gleiche Adresse): aktueller, auch ungespeicherter Stand
   addEventListener('message', (e) => {
-    if (e.origin !== location.origin || e.data?.typ !== 'news-vorschau') return;
-    zeigen(e.data.beitrag as Beitrag, e.data.lang === 'en' ? 'en' : 'de');
+    if (e.origin !== location.origin) return;
+    if (e.data?.typ === 'news-vorschau') zeigen(e.data.beitrag as MitAbschnitten, e.data.lang === 'en' ? 'en' : 'de');
+    if (e.data?.typ === 'news-zeigen') {
+      const teil = document.querySelector<HTMLElement>(`[data-abschnitt="${Number(e.data.i)}"]`);
+      const ziel = teil?.firstElementChild as HTMLElement | null;
+      if (!ziel) return;
+      ziel.scrollIntoView({ block: 'center', behavior: 'smooth' });
+      document.querySelectorAll('.vs-aktiv').forEach((x) => x.classList.remove('vs-aktiv'));
+      teil!.classList.add('vs-aktiv');
+    }
   });
-  if (params.has('eingebettet')) document.documentElement.classList.add('vorschau-eingebettet');
+
+  // Klick in der Vorschau → zur Stelle im Editor
+  if (eingebettet) {
+    document.documentElement.classList.add('vorschau-eingebettet');
+    const ziele: [string, string][] = [['.ah__title', 'titel'], ['.ah__teaser', 'kurztext'], ['.ah__img', 'titelfoto'], ['.ab__facts', 'fakten'], ['.ab__call', 'frist']];
+    article.addEventListener('click', (e) => {
+      const t = e.target as Element;
+      const teil = t.closest<HTMLElement>('[data-abschnitt]');
+      const ziel = teil ? null : ziele.find(([sel]) => t.closest(sel))?.[1];
+      if (!teil && !ziel) return;
+      e.preventDefault();
+      e.stopPropagation();
+      parent.postMessage(teil ? { typ: 'news-springen', ziel: 'abschnitt', i: Number(teil.dataset.abschnitt) } : { typ: 'news-springen', ziel }, location.origin);
+    }, true);
+  }
 </script>
 
 <style>
@@ -173,5 +211,11 @@ import '../../../../styles/artikel.css';
   }
   .vb--fehler { background: var(--purple); }
   .ah__back { cursor: default; }
-  :global(.vorschau-eingebettet) :global([data-header]) { position: static; }
+  /* Abschnitte liegen als display: contents im Text, damit die Abstände wie auf der Website bleiben */
+  :global(.vs-teil) { display: contents; }
+  :global(.vs-leer) { color: var(--ink-muted); font-style: italic; }
+  :global(.vorschau-eingebettet .vs-teil > *),
+  :global(.vorschau-eingebettet .ah__title), :global(.vorschau-eingebettet .ah__teaser), :global(.vorschau-eingebettet .ah__img),
+  :global(.vorschau-eingebettet .ab__facts), :global(.vorschau-eingebettet .ab__call) { cursor: pointer; }
+  :global(.vorschau-eingebettet .vs-teil:hover > *), :global(.vorschau-eingebettet .vs-aktiv > *) { outline: 2px dashed var(--magenta); outline-offset: 6px; }
 </style>

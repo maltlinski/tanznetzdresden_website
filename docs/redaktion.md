@@ -20,6 +20,7 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 | Bereich | Was | Sortieren |
 |---|---|---|
 | **News schreiben** | neue Beiträge mit Foto, Frist oder Zitat (docs/news.md) | nach Datum |
+| **News-Bausteine** | wiederkehrende Texte wie Förderhinweise für den News-Editor | im Formular |
 | **Termine** | Tanzkalender, Startseite, eigene Terminseite | nach Datum, automatisch |
 | **Freigaben** | Profile und Fotos, die Mitglieder selbst pflegen (docs/profile.md) | – |
 | **Formate** | KEEP UP, POP UP … auf der Startseite | von Hand |

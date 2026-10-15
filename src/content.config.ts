@@ -205,8 +205,7 @@ const news = defineCollection({
         /** Groß oben auf der News-Seite und auf der Startseite (sonst der neueste Beitrag mit Foto) */
         featured: z.boolean().default(false),
         draft: z.boolean().default(false),
-      })
-      .refine((d) => !d.image || d.alt, { message: 'Zum Foto fehlt die Bildbeschreibung (alt)', path: ['alt'] }),
+      }),
 });
 const newsEn = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/news/en' }),

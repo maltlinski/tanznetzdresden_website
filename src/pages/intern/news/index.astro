@@ -77,8 +77,10 @@ import { href } from '../../../lib/url';
         const a = li.querySelector<HTMLAnchorElement>('.nl__link')!;
         a.href = `${internUrl('news/bearbeiten/')}?id=${r.id}`;
         const st = li.querySelector<HTMLElement>('.nl__status')!;
-        st.textContent = r.status === 'veroeffentlicht' ? 'Online' : 'Entwurf';
-        st.dataset.status = r.status;
+        const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
+        const geplant = r.status === 'veroeffentlicht' && r.date > heute;
+        st.textContent = geplant ? `Geplant · ${fmt(r.date)}` : r.status === 'veroeffentlicht' ? 'Online' : 'Entwurf';
+        st.dataset.status = geplant ? 'geplant' : r.status;
         li.querySelector('.nl__title')!.textContent = r.title;
         li.querySelector('.nl__meta')!.textContent =
           `${r.category} · ${fmt(r.date)}${r.title_en ? ' · DE/EN' : ' · nur DE'} · geändert ${new Date(r.updated_at).toLocaleDateString('de-DE')}`;
@@ -118,6 +120,7 @@ import { href } from '../../../lib/url';
     letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 8px; background: var(--tint); color: var(--purple);
   }
   :global(.nl__status[data-status='veroeffentlicht']) { background: var(--cyan); }
+  :global(.nl__status[data-status='geplant']) { background: var(--magenta-tint); }
   :global(.nl__title) { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
   :global(.nl__meta) { font-size: 13px; color: var(--ink-muted); }
   .nl-empty { padding: 24px; background: var(--paper); color: var(--ink-soft); }

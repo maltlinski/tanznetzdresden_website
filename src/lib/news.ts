@@ -191,9 +191,11 @@ export async function getNews(lang: Lang): Promise<NewsPost[]> {
     }
     posts.push(fromRemote(r, lang));
   }
-  posts.sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
-  await Promise.all(posts.map(async (p) => (p.html = await bilderOptimieren(p.html, p.id))));
-  return posts.map((p, i) => ({ ...p, nr: posts.length - i }));
+  // Datum in der Zukunft = geplant: erscheint mit dem ersten Build an diesem Tag (nächtlich)
+  const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
+  const sichtbar = posts.filter((p) => p.date <= heute).sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
+  await Promise.all(sichtbar.map(async (p) => (p.html = await bilderOptimieren(p.html, p.id))));
+  return sichtbar.map((p, i) => ({ ...p, nr: sichtbar.length - i }));
 }
 
 /**
