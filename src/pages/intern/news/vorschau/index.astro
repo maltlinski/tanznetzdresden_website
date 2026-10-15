@@ -1,0 +1,177 @@
+---
+/**
+ * Vorschau eines News-Beitrags, so wie er auf der Website erscheint (gleiche Stile: src/styles/artikel.css,
+ * gleiches Gerüst wie src/views/NewsArticleView.astro – bei Änderungen dort hier mitziehen).
+ *  - im Editor (Rahmen, ?eingebettet=1): bekommt den aktuellen Stand per postMessage, auch ungespeichert
+ *  - als Link (?id=…): zeigt den zuletzt gespeicherten Stand, nur für Presse, Vorstand und Admin
+ */
+import Page from '../../../../layouts/Page.astro';
+import KeilBar from '../../../../components/ui/KeilBar.astro';
+import '../../../../styles/artikel.css';
+---
+<Page title="Vorschau · News" noindex>
+  <p class="vb" data-vorschau-band>Vorschau · so erscheint der Beitrag auf der Website <span data-vorschau-stand></span></p>
+  <p class="vb vb--fehler" data-vorschau-fehler hidden></p>
+
+  <article data-article hidden>
+    <header class="ah">
+      <div class="wrap ah__inner">
+        <span class="ah__back" data-t="back"></span>
+        <div class="ah__meta">
+          <span class="badge" data-v="badge"></span>
+          <span data-v="meta"></span>
+        </div>
+        <h1 class="ah__title" data-v="title"></h1>
+        <p class="ah__teaser" data-v="teaser"></p>
+        <span class="ah__author" data-v="author"></span>
+      </div>
+      <KeilBar class="ah__keil" />
+    </header>
+
+    <div class="wrap" data-v="cover" hidden>
+      <figure class="ah__img">
+        <div class="ah__img-frame">
+          <img alt="" data-v="cover-img" />
+          <span class="ah__corner" aria-hidden="true"></span>
+        </div>
+        <figcaption class="ah__credit" data-v="credit"></figcaption>
+      </figure>
+    </div>
+
+    <section class="ab">
+      <div class="wrap ab__inner">
+        <div class="ab__main">
+          <p class="ab__note" lang="en" data-v="only-de" hidden>This post is only available in German so far.</p>
+          <div class="ab__text" data-v="html"></div>
+          <p class="ab__foot" data-v="foot"></p>
+        </div>
+        <aside class="ab__aside">
+          <div class="ab__call" data-v="call" hidden>
+            <span class="ab__call-k" data-t="deadline"></span>
+            <span class="ab__call-n" data-v="call-n"></span>
+            <span class="ab__call-u" data-v="call-u"></span>
+          </div>
+          <div class="ab__facts" data-v="facts" hidden>
+            <h2 class="ab__aside-h" data-t="glance"></h2>
+            <dl data-v="facts-dl"></dl>
+          </div>
+          <div class="ab__share">
+            <h2 class="ab__aside-h" data-t="share"></h2>
+            <div class="ab__share-btns"><span class="chip" data-t="copy"></span><span class="chip" data-t="mail"></span></div>
+          </div>
+        </aside>
+      </div>
+    </section>
+  </article>
+</Page>
+
+<script>
+  import { renderMarkdown } from '../../../../lib/markdown';
+  import { newsPhotoUrl, getSupabase, type NewsRow } from '../../../../lib/supabase';
+  import { dateLong, daysLeft, deadlineText, dateShort, newsBadgeOnDark, newsCategoryLabel } from '../../../../lib/news-format';
+  import { initLightbox } from '../../../../scripts/lightbox';
+
+  type Beitrag = Partial<NewsRow>;
+  const base = import.meta.env.BASE_URL;
+  const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
+  const v = (k: string) => $(`[data-v="${k}"]`);
+  const T = {
+    de: { back: '← Alle Beiträge', min: 'Min Lesezeit', text: 'Text', published: 'Veröffentlicht', deadline: 'Bewerbungsfrist', until: 'bis', glance: 'Auf einen Blick', share: 'Teilen', copy: 'Link kopieren', mail: 'E-Mail', credit: 'Foto' },
+    en: { back: '← All posts', min: 'min read', text: 'Text', published: 'Published', deadline: 'Application deadline', until: 'until', glance: 'At a glance', share: 'Share', copy: 'Copy link', mail: 'Email', credit: 'Photo' },
+  };
+  const article = $('[data-article]');
+  initLightbox(article);
+
+  function zeigen(b: Beitrag, lang: 'de' | 'en') {
+    const t = T[lang];
+    const en = lang === 'en';
+    const pick = <X,>(de: X, e: X | null | undefined) => (en && e != null && e !== '' && !(Array.isArray(e) && !e.length) ? e : de);
+    const body = pick(b.body ?? '', b.body_en);
+    const cat = b.category ?? 'Netzwerk';
+    const date = b.date || new Date().toISOString().slice(0, 10);
+    const words = `${b.teaser ?? ''} ${body}`.replace(/::: bilder[\s\S]*?:::/g, '').split(/\s+/).filter(Boolean).length;
+
+    document.documentElement.lang = lang;
+    document.querySelectorAll<HTMLElement>('[data-t]').forEach((el) => (el.textContent = t[el.dataset.t as keyof typeof t] ?? ''));
+    const badge = v('badge');
+    badge.className = `badge${newsBadgeOnDark(cat) === 'magenta' ? '' : ` badge--${newsBadgeOnDark(cat)}`}`;
+    badge.textContent = newsCategoryLabel[lang][cat];
+    v('meta').textContent = `${dateLong(date, lang)} · ${Math.max(2, Math.ceil(words / 180))} ${t.min}`;
+    v('title').textContent = pick(b.title ?? '', b.title_en) || (en ? 'Title' : 'Titel');
+    v('teaser').textContent = pick(b.teaser ?? '', b.teaser_en);
+    v('author').textContent = `${t.text} · ${b.author ?? ''}`;
+
+    const cover = newsPhotoUrl(b.image_path ?? null);
+    v('cover').hidden = !cover;
+    if (cover) {
+      const img = v('cover-img') as HTMLImageElement;
+      img.src = cover;
+      img.alt = pick(b.image_alt ?? '', b.image_alt_en);
+      img.style.objectPosition = b.image_focus ?? '';
+      v('credit').textContent = b.image_credit ? `${t.credit}: ${b.image_credit}` : '';
+    }
+
+    v('only-de').hidden = !(en && !b.body_en && (b.body ?? '').trim());
+    v('html').innerHTML = renderMarkdown(body, base, { lang }) || `<p class="i-hint">${en ? 'No text yet.' : 'Noch kein Text.'}</p>`;
+    v('foot').textContent = `${t.text} · ${b.author ?? ''} · ${t.published} ${dateLong(date, lang)}`;
+
+    v('call').hidden = !b.deadline;
+    if (b.deadline) {
+      const days = daysLeft(b.deadline);
+      v('call-n').textContent = deadlineText(days, 'n', lang);
+      v('call-u').textContent = `${deadlineText(days, 'unit', lang)} · ${t.until} ${dateShort(b.deadline, lang)}`;
+    }
+    const facts = pick(b.facts ?? [], b.facts_en).filter((f) => f.label || f.value);
+    v('facts').hidden = !facts.length;
+    v('facts-dl').replaceChildren(...facts.map((f) => {
+      const div = document.createElement('div');
+      const dt = document.createElement('dt');
+      const dd = document.createElement('dd');
+      dt.textContent = f.label;
+      dd.textContent = f.value;
+      div.append(dt, dd);
+      return div;
+    }));
+    article.hidden = false;
+  }
+
+  const fehler = (text: string) => {
+    const el = $('[data-vorschau-fehler]');
+    el.textContent = text;
+    el.hidden = false;
+  };
+
+  const params = new URLSearchParams(location.search);
+  const id = params.get('id');
+  if (id) {
+    // Gespeicherter Stand: nur für die Redaktion (Row Level Security auf news_posts)
+    const sb = getSupabase();
+    const { data: s } = (await sb?.auth.getSession()) ?? { data: null };
+    if (!sb || !s?.session) {
+      location.replace(`${base.replace(/\/?$/, '/')}intern/?weiter=${encodeURIComponent(location.pathname + location.search)}`);
+    } else {
+      const { data, error } = await sb.from('news_posts').select('*').eq('id', id).maybeSingle<NewsRow>();
+      if (error || !data) fehler('Diesen Beitrag gibt es nicht, oder die Vorschau ist nur für Presse, Vorstand und Admin.');
+      else {
+        $('[data-vorschau-stand]').textContent = `· gespeichert am ${new Date(data.updated_at).toLocaleString('de-DE')}${data.status === 'veroeffentlicht' ? ' · online' : ' · Entwurf'}`;
+        zeigen(data, params.get('lang') === 'en' ? 'en' : 'de');
+      }
+    }
+  }
+  // Aus dem Editor (gleiche Adresse): aktueller, auch ungespeicherter Stand
+  addEventListener('message', (e) => {
+    if (e.origin !== location.origin || e.data?.typ !== 'news-vorschau') return;
+    zeigen(e.data.beitrag as Beitrag, e.data.lang === 'en' ? 'en' : 'de');
+  });
+  if (params.has('eingebettet')) document.documentElement.classList.add('vorschau-eingebettet');
+</script>
+
+<style>
+  .vb {
+    margin: 0; padding: 10px clamp(16px, 3vw, 28px); background: var(--magenta); color: #fff; font-family: var(--font-mono);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .vb--fehler { background: var(--purple); }
+  .ah__back { cursor: default; }
+  :global(.vorschau-eingebettet) :global([data-header]) { position: static; }
+</style>

@@ -75,7 +75,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
       {lead ? (
         <a href={link(lead)} class="ni__lead" data-rise="0.95">
           <div class="ni__lead-img">
-            {lead.image && <NewsImage src={lead.image} alt={lead.alt ?? ''} sizes="(min-width: 900px) 620px, 100vw" loading="eager" />}
+            {lead.image && <NewsImage src={lead.image} alt={lead.alt ?? ''} focus={lead.imageFocus} sizes="(min-width: 900px) 620px, 100vw" loading="eager" />}
             <span class="ni__corner" aria-hidden="true"></span>
           </div>
           <div class="ni__lead-text">
@@ -147,7 +147,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
                   <a href={link(p)} class:list={['post', `post--${p.kind}`]} data-post data-cat={p.category} data-lead={isLead ? '' : undefined} hidden={isLead}>
                     {p.kind === 'photo' && (
                       <>
-                        <div class="post__img">{p.image && <NewsImage src={p.image} alt={p.alt ?? ''} sizes="(min-width: 900px) 420px, 100vw" />}</div>
+                        <div class="post__img">{p.image && <NewsImage src={p.image} alt={p.alt ?? ''} focus={p.imageFocus} sizes="(min-width: 900px) 420px, 100vw" />}</div>
                         <div class="post__body">
                           {meta}
                           <h4 class="post__title">{p.title}</h4>

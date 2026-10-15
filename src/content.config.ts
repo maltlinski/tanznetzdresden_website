@@ -198,6 +198,8 @@ const news = defineCollection({
         category: z.enum(newsCategories),
         /** Wer den Text geschrieben hat */
         author: z.string(),
+        /** Bildausschnitt des Fotos, z. B. "50% 30%" (waagerecht, senkrecht) */
+        imageFocus: z.string().regex(/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30%').optional(),
         /** Bewerbungsfrist – macht den Beitrag zur Ausschreibung */
         deadline: isoDate.optional(),
         /** Groß oben auf der News-Seite und auf der Startseite (sonst der neueste Beitrag mit Foto) */

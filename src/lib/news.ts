@@ -7,12 +7,15 @@
  * Ist Supabase nicht erreichbar, baut die Website nur mit den Dateien (Warnung im Log).
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
+import { getImage } from 'astro:assets';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
 import type { Lang } from './i18n';
 import { newsCategories } from '../content.config';
 import { renderMarkdown } from './markdown';
+import { ASSET } from './news-bloecke';
 
-export type NewsCategory = (typeof newsCategories)[number];
+import type { NewsCategory } from './news-format';
+export * from './news-format';
 export type NewsKind = 'call' | 'quote' | 'photo' | 'text';
 
 type De = CollectionEntry<'news'>;
@@ -33,6 +36,8 @@ export interface NewsPost {
   image?: ImageMetadata | string;
   alt?: string;
   imageCredit?: string;
+  /** Bildausschnitt des Titelfotos, z. B. „50% 30%“ */
+  imageFocus?: string;
   date: string;
   category: NewsCategory;
   author: string;
@@ -44,17 +49,6 @@ export interface NewsPost {
   /** Lesezeit in Minuten */
   minutes: number;
 }
-
-export const newsCategoryLabel: Record<Lang, Record<NewsCategory | 'Alle', string>> = {
-  de: { Alle: 'Alle', Netzwerk: 'Netzwerk', Ausschreibung: 'Ausschreibung', Training: 'Training', Verein: 'Verein', Rückblick: 'Rückblick', Stimme: 'Stimme' },
-  en: { Alle: 'All', Netzwerk: 'Network', Ausschreibung: 'Open call', Training: 'Training', Verein: 'Association', Rückblick: 'Review', Stimme: 'Voices' },
-};
-
-export const newsBadge: Record<NewsCategory, 'purple' | 'magenta' | 'cyan'> = {
-  Netzwerk: 'purple', Ausschreibung: 'magenta', Training: 'cyan', Verein: 'purple', Rückblick: 'cyan', Stimme: 'magenta',
-};
-/** Auf Lila ist ein lila Badge unsichtbar – dort Cyan. */
-export const newsBadgeOnDark = (c: NewsCategory) => (newsBadge[c] === 'purple' ? 'cyan' : newsBadge[c]);
 
 const words = (s: string) => s.split(/\s+/).filter(Boolean).length;
 const minutes = (...texts: string[]) => Math.max(2, Math.ceil(texts.reduce((n, t) => n + words(t), 0) / 180));
@@ -71,7 +65,7 @@ function fromFile(d: De, e: En | undefined, lang: Lang): Draft {
   const teaser = filled(t.teaser) ? t.teaser : d.data.teaser;
   return {
     id: d.id,
-    html: renderMarkdown(entry.body ?? '', import.meta.env.BASE_URL),
+    html: renderMarkdown(entry.body ?? '', import.meta.env.BASE_URL, { lang }),
     translated: lang === 'de' || entry === e,
     title,
     teaser,
@@ -79,6 +73,7 @@ function fromFile(d: De, e: En | undefined, lang: Lang): Draft {
     quote: d.data.quote ? { ...d.data.quote, ...t.quote } : undefined,
     image: d.data.image,
     alt: filled(t.alt) ? t.alt : d.data.alt,
+    imageFocus: d.data.imageFocus,
     date: d.data.date,
     category: d.data.category,
     author: d.data.author,
@@ -104,6 +99,8 @@ interface RemoteNews {
   image_path: string | null;
   image_alt: string | null;
   image_credit: string | null;
+  /** Migration 20261015000000 */
+  image_focus?: string | null;
   quote_text: string | null;
   quote_who: string | null;
   quote_role: string | null;
@@ -157,7 +154,7 @@ function fromRemote(r: RemoteNews, lang: Lang): Draft {
   const image = r.image_path ? `${SUPABASE_URL}/storage/v1/object/public/newsbilder/${r.image_path}` : undefined;
   return {
     id: r.slug,
-    html: renderMarkdown(body, import.meta.env.BASE_URL),
+    html: renderMarkdown(body, import.meta.env.BASE_URL, { lang }),
     translated: !en || filled(r.body_en) || !r.body.trim(),
     title: pick(r.title, r.title_en),
     teaser,
@@ -166,6 +163,7 @@ function fromRemote(r: RemoteNews, lang: Lang): Draft {
     image,
     alt: pick(r.image_alt ?? undefined, r.image_alt_en),
     imageCredit: r.image_credit ?? undefined,
+    imageFocus: r.image_focus && /^\d{1,3}% \d{1,3}%$/.test(r.image_focus) ? r.image_focus : undefined,
     date: r.date,
     category: r.category,
     author: r.author,
@@ -194,42 +192,52 @@ export async function getNews(lang: Lang): Promise<NewsPost[]> {
     posts.push(fromRemote(r, lang));
   }
   posts.sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
+  await Promise.all(posts.map(async (p) => (p.html = await bilderOptimieren(p.html, p.id))));
   return posts.map((p, i) => ({ ...p, nr: posts.length - i }));
+}
+
+/**
+ * Fotos aus Bilder-Abschnitten (src/lib/markdown.ts) beim Build herunterladen und optimieren:
+ * kleine Fassungen für die Seite, eine große für die Großansicht. Besucher:innen laden nichts von Supabase.
+ * Fehlt ein Foto, fällt es weg (Warnung im Log) statt den Build abzubrechen.
+ */
+const NB = /<a class="nb__item" href="([^"]*)" data-lightbox data-bild="[^"]*"><img src="[^"]*"([^>]*)><\/a>/g;
+const versionen = new Map<string, ReturnType<typeof bildVersionen>>();
+const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
+async function bildVersionen(url: string | ImageMetadata) {
+  const remote = typeof url === 'string' ? { inferSize: true } : {};
+  const [klein, gross] = await Promise.all([
+    getImage({ src: url, ...remote, widths: [360, 540, 720, 1080, 1440], format: 'webp', quality: 80 }),
+    getImage({ src: url, ...remote, width: 2000, format: 'webp', quality: 82 }),
+  ]);
+  return { klein, gross };
+}
+async function bilderOptimieren(html: string, id: string): Promise<string> {
+  const treffer = [...html.matchAll(NB)];
+  if (!treffer.length) return html;
+  const ersatz = await Promise.all(
+    treffer.map(async ([ganz, href, rest]) => {
+      const url = href.replace(/&amp;/g, '&');
+      const asset = url.match(ASSET)?.[1];
+      if (!/^https:\/\//.test(url) && !asset) return ganz;
+      if (!versionen.has(url)) {
+        const quelle = asset ? fotos[`../assets/photos/${asset}`]?.default : url;
+        versionen.set(url, quelle ? bildVersionen(quelle) : Promise.reject(new Error('Datei fehlt in src/assets/photos/')));
+      }
+      try {
+        const { klein, gross } = await versionen.get(url)!;
+        const { width, height } = klein.attributes as { width?: number; height?: number };
+        return `<a class="nb__item" href="${gross.src}" data-lightbox><img src="${klein.src}" srcset="${klein.srcSet.attribute}" width="${width}" height="${height}"${rest}></a>`;
+      } catch (err) {
+        console.warn(`[news] Foto in „${id}“ nicht gefunden (${url}) – es fällt weg. ${String(err).slice(0, 120)}`);
+        return '';
+      }
+    }),
+  );
+  let i = 0;
+  return html.replace(NB, () => ersatz[i++]);
 }
 
 /** Titelthema: markierter Beitrag, sonst der neueste mit Foto, sonst der neueste. */
 export const leadPost = (posts: NewsPost[]) => posts.find((p) => p.featured) ?? posts.find((p) => p.image) ?? posts[0];
 
-const MONTHS: Record<Lang, string[]> = {
-  de: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'],
-  en: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-};
-const MON: Record<Lang, string[]> = {
-  de: ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'],
-  en: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
-};
-const ymd = (iso: string) => iso.split('-').map(Number) as [number, number, number];
-const pad = (n: number) => String(n).padStart(2, '0');
-
-/** 01. Oktober 2026 / 1 October 2026 */
-export function dateLong(iso: string, lang: Lang) {
-  const [y, m, d] = ymd(iso);
-  return lang === 'de' ? `${pad(d)}. ${MONTHS.de[m - 1]} ${y}` : `${d} ${MONTHS.en[m - 1]} ${y}`;
-}
-/** 01. Okt 2026 / 1 Oct 2026 */
-export function dateShort(iso: string, lang: Lang) {
-  const [y, m, d] = ymd(iso);
-  return lang === 'de' ? `${pad(d)}. ${MON.de[m - 1]} ${y}` : `${d} ${MON.en[m - 1]} ${y}`;
-}
-export const monthShort = (iso: string, lang: Lang) => MON[lang][ymd(iso)[1] - 1];
-export const monthLong = (iso: string, lang: Lang) => `${MONTHS[lang][ymd(iso)[1] - 1]} ${ymd(iso)[0]}`;
-
-/** Ganze Tage bis zum Ende des Fristtages (Ortszeit); negativ = abgelaufen. */
-export function daysLeft(deadline: string, now = new Date()) {
-  const [y, m, d] = ymd(deadline);
-  return Math.ceil((new Date(y, m - 1, d, 23, 59, 59).getTime() - now.getTime()) / 864e5);
-}
-
-export { deadlineText } from './deadline-text';
-
-export const nrLabel = (n: number) => `Nº ${pad(n)}`;

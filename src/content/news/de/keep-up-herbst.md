@@ -20,3 +20,24 @@ Im Herbst wechseln die Kurse wöchentlich. Das Open Studio bleibt für freies Tr
 ## Workshop im November
 
 Am 14. November findet ein Workshop von 11 bis 15 Uhr statt. Die Anmeldung läuft über die Telegram-Gruppe.
+
+::: bilder
+format: quer
+spalten: 2
+text: Eindrücke aus dem Training (Platzhalterfotos)
+foto: Archiv TanzNetzDresden
+bilder:
+  - datei: ../../../assets/photos/solo-blau.jpg
+    alt: Tänzerin in blauem Licht auf der Bühne
+  - datei: ../../../assets/photos/sprung.jpg
+    alt: Tänzer im Sprung vor dunklem Hintergrund
+  - datei: ../../../assets/photos/duo-rot.jpg
+    alt: Zwei Tänzerinnen in rotem Licht
+    fokus: 50% 30%
+  - datei: ../../../assets/photos/kopfstand.jpg
+    alt: Tänzer im Kopfstand auf dunkler Bühne
+:::
+
+::: hinweis
+**Gut zu wissen:** Zum Training kommst du ohne Anmeldung. Für den Workshop melde dich bitte in der Telegram-Gruppe KEEP UP an.
+:::

@@ -16,3 +16,24 @@ In autumn the classes change every week. The Open Studio remains open for free t
 ## Workshop in November
 
 On 14 November there is a workshop from 11 am to 3 pm. Registration is via the Telegram group.
+
+::: bilder
+format: quer
+spalten: 2
+text: Impressions from training (placeholder photos)
+foto: TanzNetzDresden archive
+bilder:
+  - datei: ../../../assets/photos/solo-blau.jpg
+    alt: A dancer in blue light on stage
+  - datei: ../../../assets/photos/sprung.jpg
+    alt: A dancer mid-jump against a dark background
+  - datei: ../../../assets/photos/duo-rot.jpg
+    alt: Two dancers in red light
+    fokus: 50% 30%
+  - datei: ../../../assets/photos/kopfstand.jpg
+    alt: A dancer in a headstand on a dark stage
+:::
+
+::: hinweis
+**Good to know:** You can join training without registering. For the workshop, please sign up in the KEEP UP Telegram group.
+:::

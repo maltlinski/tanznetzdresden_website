@@ -20,28 +20,49 @@ Der einfachste Weg. Man braucht keinen GitHub-Zugang und muss kein Markdown kenn
    | Art | zusätzlich | erscheint als |
    |---|---|---|
    | Meldung | – | Textzeile mit Pfeil |
-   | Mit Foto | Foto, Bildbeschreibung, Fotograf:in | Bild links, Text rechts |
+   | Mit Foto | Titelfoto mit Ausschnitt, Bildbeschreibung, Fotograf:in | Bild links, Text rechts; im Beitrag groß oben |
    | Ausschreibung | Frist | Kasten mit Countdown („noch 38 Tage“), oben auf der News-Seite als „Offene Frist“ |
    | Stimme | Zitat, Name, Funktion | Zitatkarte in Cyan |
 
-3. **Titel, Kurztext, Text.** Die Knöpfe über dem Textfeld setzen Zwischenüberschrift, Fett, Aufzählung, Zitat
-   und Link. „Vorschau“ zeigt, wie es aussieht.
-   - **Zitat mit Namen:** Das Zitat in eine Zeile schreiben, darunter „— Name · Funktion“. Dann beide Zeilen
-     markieren und den Zitat-Knopf drücken.
-   - **Personenkarten** (z. B. für den Vorstand): eine Aufzählung, deren Punkte mit einem fetten Namen beginnen.
+3. **Titel, Kurztext, Text.** Der Text besteht aus **Abschnitten**, die sich mit „+ Abschnitt einfügen“ ergänzen
+   und mit ↑ ↓ verschieben lassen:
+   - **Text:** Die Knöpfe setzen Zwischenüberschrift (H2), Unterüberschrift (H3), Fett, Aufzählung, Zitat und Link.
+     - **Zitat mit Namen:** Das Zitat in eine Zeile schreiben, darunter „— Name · Funktion“. Dann beide Zeilen
+       markieren und den Zitat-Knopf drücken.
+     - **Personenkarten** (z. B. Resident:innen, Vorstand): eine Aufzählung, deren Punkte mit einem fetten Namen beginnen.
+   - **Bilder:** ein Foto oder eine Galerie. Mehrere Fotos auf einmal auswählen oder in den Abschnitt ziehen.
+     - Ein Foto anklicken: Bildbeschreibung (Pflicht zum Veröffentlichen), Reihenfolge, **Drehen**, Entfernen.
+     - **Format:** Original, Quer (3 : 2), Hoch (3 : 4) oder Quadrat. Beim Zuschneiden bestimmt ein Klick ins
+       große Foto, welche Stelle sichtbar bleibt (**Bildausschnitt**).
+     - **Fotos pro Reihe** (2–4, auf dem Handy höchstens zwei), **Bildunterschrift** und **Foto(s) von**.
+     - Ein einzelnes Foto kann groß in Textbreite stehen oder **neben dem Text** (halbe Breite, der folgende Text
+       fließt daneben).
+     - Das Raster im Editor sieht aus wie auf der Website. Dort öffnet ein Klick die Großansicht, in der man durch
+       die Galerie blättern kann.
+   - **Hinweiskasten:** abgesetzter Kasten, z. B. für den Förderhinweis am Ende.
+   - **Englisch** steht bei jedem Abschnitt zum Aufklappen.
 4. **Auf einen Blick** (optional): kurze Fakten wie Wann, Wo, Eintritt. Sie stehen neben dem Text.
 5. **Einordnung:** Kategorie, Datum, Autor:in. Mit dem Haken **Titelthema** steht der Beitrag groß oben.
-6. **Englische Fassung** (optional): Alles kann auch später nachgetragen werden.
-7. **Speichern oder veröffentlichen.**
+6. **Englische Fassung** (optional): Titel, Kurztext, Fakten. Die Texte der Abschnitte stehen bei den Abschnitten.
+   Alles kann auch später nachgetragen werden.
+7. **Vorschau:** zeigt den Beitrag genau wie auf der Website, auch ungespeichert. Umschaltbar zwischen Computer
+   und Handy, Deutsch und Englisch. „Link für andere kopieren“ gibt einen Link zum zuletzt gespeicherten Stand,
+   z. B. zum Gegenlesen im Vorstand (nur für Presse, Vorstand und Admin).
+8. **Speichern oder veröffentlichen.**
    - **Als Entwurf speichern:** Den Beitrag sieht nur die Redaktion.
    - **Veröffentlichen:** Die Website baut sich neu, nach 2–3 Minuten ist der Beitrag online. Das stößt die
      Supabase-Funktion `inhalte` der Redaktion an (docs/redaktion.md). Ist sie nicht eingerichtet, erscheint der
      Beitrag mit dem nächtlichen Update.
    - **Zurückziehen:** Der Beitrag wird wieder Entwurf und verschwindet genauso schnell von der Website.
 
-**Fotos** werden im Browser automatisch verkleinert. Ohne Bildbeschreibung kann ein Foto nicht veröffentlicht
-werden, weil sie für Barrierefreiheit Pflicht ist. Die Website lädt die Fotos beim Bauen herunter, deshalb
-stellen Besucher:innen keine Verbindung zu Supabase her.
+**Fotos** werden im Browser automatisch verkleinert (höchstens 2400 px). Ohne Bildbeschreibung kann ein Foto nicht
+veröffentlicht werden, weil sie für Barrierefreiheit Pflicht ist. Die Website lädt alle Fotos beim Bauen herunter
+und erzeugt passende Größen, deshalb stellen Besucher:innen keine Verbindung zu Supabase her. Fotos, die beim
+Bearbeiten hochgeladen, aber nicht verwendet wurden, löscht der Editor beim Speichern wieder.
+
+**Beispiel:** Ein Rückblick wie „3 Jahre TANZPAKT in residence“ besteht aus Titelfoto, Text mit Zwischen- und
+Unterüberschriften, Listen mit fetten Namen (werden zu Karten), Galerien mit 4 Fotos pro Reihe, einem großen
+Einzelfoto mit Bildunterschrift und am Ende einem Hinweiskasten mit dem Förderhinweis.
 
 **Rolle „Presse“ vergeben:** Der Vorstand wählt unter *Intern → Mitglieder* bei der Person die Rolle
 **Presse**. Presse darf News schreiben, sonst nichts Zusätzliches. Admin vergeben nur Admins.
@@ -69,7 +90,24 @@ facts:
 ---
 
 Text in Markdown. Links zu Seiten der Website mit /kontakt/ (der Unterpfad wird automatisch ergänzt).
+
+::: bilder
+format: quer          # original · quer · hoch · quadrat
+spalten: 2            # 2–4, bei mehreren Fotos
+text: Bildunterschrift
+foto: Name Fotograf:in
+bilder:
+  - datei: ../../../assets/photos/foto.jpg
+    alt: Was auf dem Foto zu sehen ist
+    fokus: 50% 30%    # optional: Bildausschnitt beim Zuschneiden
+:::
+
+::: hinweis
+Förderhinweis oder anderer abgesetzter Text.
+:::
 ```
+
+Ein Beispiel steht in `src/content/news/de/keep-up-herbst.md`.
 
 Die englische Datei braucht nur, was übersetzt ist: `title`, `teaser`, `alt`, `facts`, `quote` und den Text.
 Alles andere kommt aus der deutschen Datei.
@@ -91,7 +129,9 @@ Supabase-Webhook ist dafür nicht mehr nötig.
 
 ## Datenbank
 
-Migration `supabase/migrations/20261009000000_news.sql` im SQL-Editor ausführen. Sie legt an:
+Migrationen `supabase/migrations/20261009000000_news.sql` und `20261015000000_news_bilder.sql` im SQL-Editor
+ausführen. Die zweite erlaubt längere Texte (bis 100.000 Zeichen) und speichert den Bildausschnitt des Titelfotos.
+Die erste legt an:
 
 - die Rolle `presse`,
 - die Tabelle `news_posts` (Lesen und Schreiben nur für die Redaktion),
@@ -103,10 +143,15 @@ Migration `supabase/migrations/20261009000000_news.sql` im SQL-Editor ausführen
 | Was | Wo |
 |---|---|
 | Zusammenführen, Datumsformate, Fristen | `src/lib/news.ts` |
-| Markdown sicher in HTML (ohne eigenes HTML, nur sichere Links) | `src/lib/markdown.ts` |
+| Markdown sicher in HTML (ohne eigenes HTML, nur sichere Links), Bilder- und Hinweis-Abschnitte | `src/lib/markdown.ts` |
+| Abschnitte ↔ Markdown (Format der Bilder-Abschnitte) | `src/lib/news-bloecke.ts` |
+| Fotos im Text beim Build optimieren | `bilderOptimieren()` in `src/lib/news.ts` |
+| Stile des Beitrags (Seite und Vorschau) | `src/styles/artikel.css`, Großansicht `src/scripts/lightbox.ts` |
+| Abschnitts-Editor, Fotos hochladen/drehen | `src/scripts/intern/news/` |
+| Vorschau | `src/pages/intern/news/vorschau/` |
 | Startseiten-Abschnitt | `src/components/sections/News.astro` |
 | Übersicht / Beitrag | `src/views/NewsView.astro`, `src/views/NewsArticleView.astro` |
-| Editor | `src/pages/intern/news/` |
+| Editor | `src/pages/intern/news/bearbeiten/` |
 | Countdown im Browser | `src/scripts/deadline.ts` |
 | Auftritt der Überschriften | `src/scripts/intro-text.ts` (`data-sweep`, `data-rise`) |
 

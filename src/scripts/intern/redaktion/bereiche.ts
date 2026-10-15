@@ -222,6 +222,7 @@ export const bereiche: Bereich[] = [
       { typ: 'datum', key: 'deadline', label: 'Bewerbungsfrist', hilfe: 'Macht den Beitrag zur Ausschreibung mit Countdown.' },
       { typ: 'bild', key: 'image', label: 'Foto', ordner: 'photos', form: 'relativ' },
       { typ: 'text', key: 'alt', label: 'Bildbeschreibung', en: true, hilfe: BILD_ALT },
+      { typ: 'text', key: 'imageFocus', label: 'Bildausschnitt', platzhalter: '50% 30%', muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30%'], hilfe: 'Optional. Welche Stelle im Foto sichtbar bleibt, wenn es zugeschnitten wird: waagerecht und senkrecht in Prozent.' },
       { typ: 'liste', key: 'facts', label: 'Auf einen Blick', en: true, neu: 'Zeile hinzufügen', titel: (v) => v.label ?? '', felder: [
         { typ: 'text', key: 'label', label: 'Was', pflicht: true, platzhalter: 'z. B. Wann' },
         { typ: 'text', key: 'value', label: 'Angabe', pflicht: true },

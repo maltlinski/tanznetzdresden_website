@@ -179,6 +179,29 @@ test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
   await expect(page.locator('.event')).toContainText(['POP UP']);
 });
 
+test('News: Galerie mit Großansicht und Hinweiskasten, Fotos werden optimiert ausgeliefert', async ({ page }) => {
+  await page.goto('/news/keep-up-herbst/');
+  await dismissConsent(page);
+  const g = page.locator('figure.nb--galerie');
+  await expect(g.locator('img')).toHaveCount(4);
+  await expect(g.locator('img').first()).toHaveAttribute('srcset', /\/_astro\/.+\.webp/);
+  await expect(g.locator('figcaption')).toContainText('Fotos: Archiv TanzNetzDresden');
+  await expect(page.locator('.ab__text .nh')).toContainText('Gut zu wissen');
+  await g.locator('a').nth(1).click();
+  const lb = page.getByRole('dialog', { name: 'Foto' });
+  await expect(lb).toBeVisible();
+  await expect(lb.locator('.lb__n')).toHaveText('2 von 4');
+  await expect(lb.locator('.lb__cap')).toContainText('Tänzer im Sprung');
+  await page.keyboard.press('ArrowRight');
+  await expect(lb.locator('.lb__n')).toHaveText('3 von 4');
+  await page.keyboard.press('Escape');
+  await expect(lb).toBeHidden();
+  // englische Fassung mit eigener Bildbeschreibung
+  await page.goto('/en/news/keep-up-herbst/');
+  await expect(page.locator('figure.nb--galerie img').first()).toHaveAttribute('alt', 'A dancer in blue light on stage');
+  await expect(page.locator('figure.nb--galerie figcaption')).toContainText('Photos:');
+});
+
 /** Tanzkalender mit festem Datum (Platzhalter-Termine Okt.–Dez. 2026) */
 async function openKalender(page: Page, path = '/termine/') {
   await page.clock.install({ time: new Date('2026-10-12T08:00:00+02:00') });

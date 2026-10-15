@@ -32,7 +32,7 @@ const link = (p: (typeof posts)[number]) => url(lang, 'news', `${p.id}/`);
         <a href={link(lead)} class="news__lead">
           {lead.image && (
             <div class="news__img">
-              <NewsImage src={lead.image} alt={lead.alt ?? ''} sizes="(min-width: 1000px) 760px, 100vw" />
+              <NewsImage src={lead.image} alt={lead.alt ?? ''} focus={lead.imageFocus} sizes="(min-width: 1000px) 760px, 100vw" />
               <span class="news__corner" aria-hidden="true"></span>
             </div>
           )}

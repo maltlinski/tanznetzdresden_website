@@ -54,6 +54,8 @@ export interface NewsRow {
   image_path: string | null;
   image_alt: string | null;
   image_credit: string | null;
+  /** Bildausschnitt des Titelfotos (Migration 20261015000000) */
+  image_focus: string | null;
   quote_text: string | null;
   quote_who: string | null;
   quote_role: string | null;

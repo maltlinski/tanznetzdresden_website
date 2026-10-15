@@ -11,9 +11,12 @@ interface Props {
   widths?: number[];
   sizes?: string;
   loading?: 'lazy' | 'eager';
+  /** Bildausschnitt, z. B. „50% 30%“ (wenn das Foto zugeschnitten wird) */
+  focus?: string;
 }
-const { src, alt, widths = [480, 800, 1200], sizes = '100vw', loading = 'lazy' } = Astro.props;
+const { src, alt, widths = [480, 800, 1200], sizes = '100vw', loading = 'lazy', focus } = Astro.props;
+const style = focus ? `object-position:${focus}` : undefined;
 ---
 {typeof src === 'string'
-  ? <Image src={src} alt={alt} inferSize widths={widths} sizes={sizes} loading={loading} />
-  : <Image src={src} alt={alt} widths={widths} sizes={sizes} loading={loading} />}
+  ? <Image src={src} alt={alt} inferSize widths={widths} sizes={sizes} loading={loading} style={style} />
+  : <Image src={src} alt={alt} widths={widths} sizes={sizes} loading={loading} style={style} />}
