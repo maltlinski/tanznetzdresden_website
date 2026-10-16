@@ -11,8 +11,8 @@ export type Sprungziel = { ziel: 'abschnitt'; i: number } | { ziel: 'titel' | 'k
 export interface Vorschau {
   /** neuen Stand schicken (gebündelt) */
   neu(): void;
-  /** Abschnitt i in der Vorschau zeigen */
-  zeigen(i: number): void;
+  /** Block i (oder Titel, Teaser, Titelbild) in der Vorschau zeigen und markieren */
+  zeigen(i: number | 'titel' | 'kurztext' | 'titelfoto'): void;
 }
 
 /** Breite, in der „Computer“ dargestellt und dann verkleinert wird */
@@ -96,9 +96,10 @@ export function vorschau(opt: {
       layout?.classList.toggle('mit-vorschau', zeigen);
       panel.hidden = !zeigen;
       if (schalter) {
-        schalter.hidden = !mq.matches;
-        schalter.textContent = zeigen ? 'Vorschau daneben ausblenden' : 'Vorschau daneben zeigen';
-        schalter.setAttribute('aria-pressed', String(zeigen));
+        // schmal: der Knopf öffnet die Vorschau groß
+        schalter.textContent = !mq.matches ? 'Vorschau' : zeigen ? 'Vorschau aus' : 'Vorschau an';
+        if (mq.matches) schalter.setAttribute('aria-pressed', String(zeigen));
+        else schalter.removeAttribute('aria-pressed');
       }
       if (zeigen) {
         laden(seite);
@@ -106,6 +107,7 @@ export function vorschau(opt: {
       }
     };
     schalter?.addEventListener('click', () => {
+      if (!mq.matches) return grossOeffnen();
       try {
         localStorage.setItem('tndd-news-vorschau', an() ? 'aus' : 'an');
       } catch {
@@ -118,15 +120,15 @@ export function vorschau(opt: {
   }
 
   // Vollbild
+  function grossOeffnen() {
+    if (!dlg || !gross) return;
+    dlg.showModal();
+    laden(gross);
+    senden(gross);
+  }
+  const gross = dlg ? einrichten(dlg, () => dlg.open) : null;
   if (dlg) {
-    const gross = einrichten(dlg, () => dlg.open);
-    document.querySelectorAll<HTMLButtonElement>('[data-preview-open]').forEach((b) =>
-      b.addEventListener('click', () => {
-        dlg.showModal();
-        laden(gross);
-        senden(gross);
-      }),
-    );
+    document.querySelectorAll<HTMLButtonElement>('[data-preview-open]').forEach((b) => b.addEventListener('click', grossOeffnen));
     dlg.querySelector('[data-vorschau-zu]')?.addEventListener('click', () => dlg.close());
   }
 
@@ -143,8 +145,8 @@ export function vorschau(opt: {
       window.clearTimeout(timer);
       timer = window.setTimeout(() => rahmen.forEach(senden), 250);
     },
-    zeigen(i: number) {
-      if (seite?.geladen && seite.sichtbar()) seite.frame.contentWindow?.postMessage({ typ: 'news-zeigen', i }, location.origin);
+    zeigen(i) {
+      if (seite?.geladen && seite.sichtbar()) seite.frame.contentWindow?.postMessage(typeof i === 'number' ? { typ: 'news-zeigen', i } : { typ: 'news-zeigen', ziel: i }, location.origin);
     },
   };
 }

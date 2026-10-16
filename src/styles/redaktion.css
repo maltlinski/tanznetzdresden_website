@@ -1,6 +1,6 @@
 /*
  * Redaktion im internen Bereich (src/pages/intern/redaktion/). Nur auf diesen Seiten geladen.
- * Formularfelder (.i-field, .i-check …) kommen aus src/layouts/Intern.astro.
+ * Formularfelder (.i-field, .i-check …) kommen aus src/styles/intern.css.
  */
 
 /* ---------- Kopf, Kacheln ---------- */

@@ -1,0 +1,141 @@
+---
+/**
+ * Rahmen der Redaktion (Presse, Vorstand, Admin): lila Seitenleiste mit Beiträgen, Medien,
+ * Website-Inhalten und Freigaben, rechts die Arbeitsfläche. Ohne Kopf und Fuß der Website.
+ * Anmeldung und Zustände wie im internen Bereich (scripts/intern/session.ts, data-state);
+ * jede Seite ruft in ihrem Skript initIntern() bzw. starten() auf.
+ */
+import Base from './Base.astro';
+import Logo from '../components/ui/Logo.astro';
+import { href } from '../lib/url';
+import '../styles/intern.css';
+
+interface Props {
+  title: string;
+  current: 'beitraege' | 'medien' | 'inhalte' | 'freigaben';
+  /** Arbeitsfläche ohne Innenabstand (Editor mit eigener Kopfleiste) */
+  voll?: boolean;
+}
+const { title, current, voll = false } = Astro.props;
+const nav = [
+  { id: 'beitraege', label: 'Beiträge', path: 'intern/news/', n: 'beitraege' },
+  { id: 'medien', label: 'Medien', path: 'intern/news/medien/', n: 'medien' },
+  { id: 'inhalte', label: 'Website-Inhalte', path: 'intern/redaktion/' },
+  { id: 'freigaben', label: 'Freigaben', path: 'intern/redaktion/freigaben/', n: 'freigaben' },
+];
+---
+<Base title={`${title} · Redaktion`} noindex>
+  <div class="intern rd" data-intern data-state="loading">
+    <aside class="rd-side">
+      <div class="rd-side__kopf">
+        <a href={href('intern/news/')} class="rd-side__logo" aria-label="Redaktion: Beiträge"><Logo part="mark" /></a>
+        <span class="rd-side__k">Redaktion</span>
+      </div>
+      <nav class="rd-nav" aria-label="Redaktion">
+        {nav.map((i) => (
+          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined}>
+            <span class="rd-nav__m" aria-hidden="true"></span>
+            <span class="rd-nav__l">{i.label}</span>
+            {i.n && <span class="rd-nav__n" data-nav-n={i.n}></span>}
+          </a>
+        ))}
+      </nav>
+      <a class="rd-side__zurueck" href={href('intern/')}>← Interner Bereich</a>
+      <div class="rd-side__fuss" data-when="ready">
+        <span class="rd-side__name" data-intern-name></span>
+        <span class="rd-side__rolle" data-intern-rolle></span>
+        <a class="rd-side__web" href={href('news/')} target="_blank" rel="noopener">Website ansehen →</a>
+        <button type="button" class="rd-side__aus" data-logout>Abmelden</button>
+      </div>
+    </aside>
+
+    <main id="inhalt" tabindex="-1" class:list={['rd-main', voll && 'rd-main--voll']}>
+      <p class="intern__status rd-status" data-when="loading" role="status">Einen Moment …</p>
+      <div class="i-card rd-status" data-when="setup">
+        <h1 class="i-h1">Noch nicht eingerichtet</h1>
+        <p>Der interne Bereich braucht ein Supabase-Projekt. Die Anleitung steht in <code>docs/intern.md</code> im Repository.</p>
+      </div>
+      <div data-when="ready"><slot /></div>
+    </main>
+  </div>
+</Base>
+
+<script>
+  import { bereit } from '../scripts/intern/session';
+  import { offeneFreigaben } from '../scripts/intern/freigaben';
+
+  // Zahlen in der Seitenleiste (fehlt eine Tabelle, bleibt das Feld leer)
+  const ctx = await bereit;
+  if (ctx.isRedaktion) {
+    const setzen = (n: string, v: number | null | undefined) => {
+      const el = document.querySelector<HTMLElement>(`[data-nav-n="${n}"]`);
+      if (el) el.textContent = v ? String(v) : '';
+    };
+    const zaehlen = async (tabelle: string) => (await ctx.sb.from(tabelle).select('*', { count: 'exact', head: true })).count;
+    void zaehlen('news_posts').then((n) => setzen('beitraege', n), () => {});
+    void zaehlen('news_medien').then((n) => setzen('medien', n), () => {});
+    void offeneFreigaben(ctx.sb).then((n) => setzen('freigaben', n), () => {});
+  }
+</script>
+
+<style>
+  :global(body:has(.rd)) { background: var(--tint-2); }
+  .rd { display: flex; min-height: 100vh; background: var(--tint-2); }
+  .rd-side {
+    flex: 0 0 220px; position: sticky; top: 0; align-self: flex-start; height: 100vh; overflow: auto; z-index: 20;
+    display: flex; flex-direction: column; gap: 28px; padding: 26px 14px 22px; background: var(--purple); color: #fff;
+  }
+  .rd-side__kopf { display: flex; flex-direction: column; gap: 14px; padding: 0 8px; }
+  .rd-side__logo { display: block; width: 76px; color: #fff; }
+  .rd-side__k, .rd-nav a, .rd-side__rolle, .rd-side__web, .rd-side__zurueck, .rd-side__aus {
+    font-family: var(--font-mono); font-weight: 600; text-transform: uppercase;
+  }
+  .rd-side__k { font-size: 11px; letter-spacing: 0.2em; color: var(--cyan); }
+  .rd-nav { display: flex; flex-direction: column; gap: 2px; }
+  .rd-nav a {
+    display: flex; align-items: center; gap: 12px; padding: 13px 10px; color: #fff; font-size: 12px; letter-spacing: 0.16em;
+    transition: background var(--dur-base);
+  }
+  .rd-nav a:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+  .rd-nav a[aria-current] { background: rgba(255, 255, 255, 0.1); }
+  .rd-nav__m { width: 8px; height: 8px; flex: none; background: rgba(255, 255, 255, 0.28); }
+  .rd-nav a[aria-current] .rd-nav__m { background: var(--magenta); }
+  .rd-nav__l { flex: 1; }
+  .rd-nav__n { color: rgba(255, 255, 255, 0.72); }
+  .rd-side__zurueck { padding: 0 8px; font-size: 10.5px; letter-spacing: 0.14em; color: rgba(255, 255, 255, 0.72); }
+  .rd-side__zurueck:hover { color: var(--cyan); }
+  .rd-side__fuss { margin-top: auto; flex-direction: column; gap: 6px; padding: 18px 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.16); }
+  .intern[data-state='ready'] .rd-side__fuss[data-when] { display: flex !important; }
+  .rd-side__name { font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: -0.01em; }
+  .rd-side__rolle { font-size: 10.5px; letter-spacing: 0.16em; color: rgba(255, 255, 255, 0.72); }
+  .rd-side__web { margin-top: 10px; font-size: 11px; letter-spacing: 0.16em; color: var(--cyan); }
+  .rd-side__web:hover { color: #fff; }
+  .rd-side__aus {
+    align-self: flex-start; margin-top: 6px; padding: 6px 0; border: 0; background: none; cursor: pointer;
+    font-size: 10.5px; letter-spacing: 0.14em; color: rgba(255, 255, 255, 0.72);
+  }
+  .rd-side__aus:hover { color: var(--cyan); }
+
+  .rd-main { flex: 1 1 0; min-width: 0; outline: none; }
+  @media (max-width: 900px) { .rd-main { width: 100%; } }
+  .rd-main:not(.rd-main--voll) > [data-when='ready'] { max-width: 1180px; padding: clamp(28px, 4vw, 52px) clamp(20px, 3.5vw, 48px) 80px; }
+  .rd-status { margin: clamp(28px, 4vw, 52px) clamp(20px, 3.5vw, 48px); max-width: 640px; color: var(--ink-soft); }
+
+  /* Schmale Bildschirme: Leiste oben */
+  @media (max-width: 900px) {
+    .rd { flex-direction: column; }
+    .rd-side {
+      position: static; height: auto; flex: none; width: 100%; min-width: 0; flex-direction: row; flex-wrap: wrap; align-items: center;
+      gap: 10px 18px; padding: 12px 16px;
+    }
+    .rd-side__kopf { flex-direction: row; align-items: center; padding: 0; }
+    .rd-side__logo { width: 52px; }
+    .rd-nav { order: 3; flex-direction: row; width: 100%; min-width: 0; overflow-x: auto; }
+    .rd-nav a { padding: 10px; white-space: nowrap; }
+    .rd-side__zurueck { padding: 0; }
+    .rd-side__fuss { margin: 0 0 0 auto; padding: 0; border: 0; flex-direction: row; align-items: center; gap: 14px; }
+    .intern[data-state='ready'] .rd-side__fuss[data-when] { display: flex !important; }
+    .rd-side__name, .rd-side__rolle, .rd-side__web { display: none; }
+    .rd-side__aus { margin: 0; }
+  }
+</style>

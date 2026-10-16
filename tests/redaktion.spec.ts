@@ -117,14 +117,14 @@ const aktuell = (p: string) => sha(readFileSync(p));
 test('Übersicht: alle Bereiche, Website-Status und Verlauf', async ({ page }) => {
   await redaktion(page);
   await page.goto('/intern/redaktion/');
-  await expect(page.getByRole('heading', { name: 'Redaktion', exact: true })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Website-Inhalte', exact: true })).toBeVisible();
   for (const name of ['News schreiben', 'Termine', 'Formate', 'Trainingsplan', 'Dozent:innen', 'Personen', 'Partner', 'Vereinsdaten', 'Textseiten']) {
     await expect(page.locator('[data-access]').getByRole('link', { name: new RegExp(`^${name}`) })).toBeVisible();
   }
   await expect(page.getByRole('status').filter({ hasText: 'Die Website ist aktuell' })).toBeVisible();
   await expect(page.getByText('Termin „POP UP“ geändert')).toBeVisible();
   // Menü im internen Bereich führt hierher
-  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Redaktion' })).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByRole('navigation', { name: 'Redaktion' }).getByRole('link', { name: 'Website-Inhalte' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('Ohne Rolle Presse/Vorstand kein Zugang', async ({ page }) => {

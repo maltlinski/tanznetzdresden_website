@@ -4,7 +4,7 @@
  * Läuft nur mit Supabase (Funktion public.freigabe, Migration 20261013000000_freigaben.sql), auch ohne
  * GitHub-Schlüssel. Nach einer Freigabe wird die Website neu gebaut, falls die Redaktion eingerichtet ist.
  */
-import Intern from '../../../../layouts/Intern.astro';
+import Redaktion from '../../../../layouts/Redaktion.astro';
 import { getPersonen } from '../../../../lib/content';
 import { href } from '../../../../lib/url';
 import '../../../../styles/redaktion.css';
@@ -12,7 +12,7 @@ import '../../../../styles/redaktion.css';
 // Personen, die schon auf der Website stehen: Ein Mitgliederprofil mit gleichem Kürzel ergänzt sie.
 const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, name: p.data.name }))).replace(/</g, '\\u003c');
 ---
-<Intern title="Freigaben" current="redaktion">
+<Redaktion title="Freigaben" current="freigaben">
   <a class="r-back" href={href('intern/redaktion/')}>← Redaktion</a>
   <h1 class="i-h1">Profile und Fotos freigeben</h1>
   <p class="i-lead">
@@ -39,7 +39,7 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
     </section>
   </div>
   <script type="application/json" data-personen set:html={personen} />
-</Intern>
+</Redaktion>
 
 <script>
   import { initIntern, errorText } from '../../../../scripts/intern/session';

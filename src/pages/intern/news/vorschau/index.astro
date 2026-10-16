@@ -179,12 +179,14 @@ import '../../../../styles/artikel.css';
     if (e.origin !== location.origin) return;
     if (e.data?.typ === 'news-vorschau') zeigen(e.data.beitrag as MitAbschnitten, e.data.lang === 'en' ? 'en' : 'de');
     if (e.data?.typ === 'news-zeigen') {
-      const teil = document.querySelector<HTMLElement>(`[data-abschnitt="${Number(e.data.i)}"]`);
-      const ziel = teil?.firstElementChild as HTMLElement | null;
-      if (!ziel) return;
+      // Block i oder Titel, Teaser, Titelbild: hinscrollen und markieren
+      const stellen: Record<string, string> = { titel: '.ah__title', kurztext: '.ah__teaser', titelfoto: '.ah__img' };
+      const teil = e.data.ziel ? document.querySelector<HTMLElement>(stellen[e.data.ziel] ?? '-') : document.querySelector<HTMLElement>(`[data-abschnitt="${Number(e.data.i)}"]`);
+      const ziel = (e.data.ziel ? teil : teil?.firstElementChild) as HTMLElement | null;
+      if (!teil || !ziel) return;
       ziel.scrollIntoView({ block: 'center', behavior: 'smooth' });
-      document.querySelectorAll('.vs-aktiv').forEach((x) => x.classList.remove('vs-aktiv'));
-      teil!.classList.add('vs-aktiv');
+      document.querySelectorAll('.vs-aktiv, .vs-aktiv-el').forEach((x) => x.classList.remove('vs-aktiv', 'vs-aktiv-el'));
+      teil.classList.add(e.data.ziel ? 'vs-aktiv-el' : 'vs-aktiv');
     }
   });
 
@@ -217,5 +219,9 @@ import '../../../../styles/artikel.css';
   :global(.vorschau-eingebettet .vs-teil > *),
   :global(.vorschau-eingebettet .ah__title), :global(.vorschau-eingebettet .ah__teaser), :global(.vorschau-eingebettet .ah__img),
   :global(.vorschau-eingebettet .ab__facts), :global(.vorschau-eingebettet .ab__call) { cursor: pointer; }
-  :global(.vorschau-eingebettet .vs-teil:hover > *), :global(.vorschau-eingebettet .vs-aktiv > *) { outline: 2px dashed var(--magenta); outline-offset: 6px; }
+  :global(.vorschau-eingebettet .vs-teil:hover > *), :global(.vorschau-eingebettet .vs-aktiv > *),
+  :global(.vorschau-eingebettet .vs-aktiv-el) { outline: 2px dashed var(--magenta); outline-offset: 6px; }
+  :global(.vorschau-eingebettet .ah__title:hover), :global(.vorschau-eingebettet .ah__teaser:hover), :global(.vorschau-eingebettet .ah__img:hover) { outline: 1.5px solid var(--cyan); outline-offset: 6px; }
+  /* im Editor ohne Band: dort steht „Live-Vorschau“ schon darüber */
+  :global(.vorschau-eingebettet .vb:not(.vb--fehler)) { display: none; }
 </style>

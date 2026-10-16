@@ -3,6 +3,10 @@
 Mit der Redaktion pflegen Presse und Vorstand die Website selbst, im Browser und ohne GitHub-Konto. Jede Änderung
 landet als Commit im Repository. Danach baut sich die Website neu und ist nach 2–3 Minuten online.
 
+Die Redaktion hat eine eigene Oberfläche mit lila Seitenleiste (`src/layouts/Redaktion.astro`): **Beiträge**
+(News schreiben), **Medien** (Mediathek für News-Fotos), **Website-Inhalte** (diese Übersicht) und **Freigaben**.
+„← Interner Bereich“ führt zurück zu Profil, Mitgliedern und Dokumenten. Beiträge und Medien beschreibt docs/news.md.
+
 ## Für die Redaktion
 
 ### Wer darf was?
@@ -19,7 +23,7 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 
 | Bereich | Was | Sortieren |
 |---|---|---|
-| **News schreiben** | neue Beiträge mit Foto, Frist oder Zitat (docs/news.md) | nach Datum |
+| **News schreiben** (= Beiträge) | neue Beiträge mit Titelbild, Blöcken, Frist oder Zitat (docs/news.md) | nach Datum |
 | **News-Bausteine** | wiederkehrende Texte wie Förderhinweise für den News-Editor | im Formular |
 | **Termine** | Tanzkalender, Startseite, eigene Terminseite | nach Datum, automatisch |
 | **Freigaben** | Profile und Fotos, die Mitglieder selbst pflegen (docs/profile.md) | – |

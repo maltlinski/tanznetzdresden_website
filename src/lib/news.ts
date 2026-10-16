@@ -12,7 +12,7 @@ import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
 import type { Lang } from './i18n';
 import { newsCategories } from '../content.config';
 import { renderMarkdown } from './markdown';
-import { ASSET } from './news-bloecke';
+import { ASSET, medienAnwenden, type MedienAngaben } from './news-bloecke';
 
 import type { NewsCategory } from './news-format';
 export * from './news-format';
@@ -113,6 +113,26 @@ interface RemoteNews {
   quote_role_en: string | null;
 }
 
+let medienCache: Promise<Map<string, MedienAngaben>> | undefined;
+/** Mediathek (Migration 20261016000000): Bildbeschreibung, Fotonachweis und Ausschnitt je Foto */
+function fetchMedien(): Promise<Map<string, MedienAngaben>> {
+  medienCache ??= (async () => {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return new Map();
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/news_medien?select=datei,alt,alt_en,credit,focus`, {
+        headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+        signal: AbortSignal.timeout(10_000),
+      });
+      if (!res.ok) return new Map();
+      const rows = (await res.json()) as (MedienAngaben & { datei: string })[];
+      return new Map(rows.map(({ datei, ...m }) => [datei, m]));
+    } catch {
+      return new Map();
+    }
+  })();
+  return medienCache;
+}
+
 let remoteCache: Promise<RemoteNews[]> | undefined;
 function fetchRemote(): Promise<RemoteNews[]> {
   remoteCache ??= (async () => {
@@ -145,10 +165,12 @@ function fetchRemote(): Promise<RemoteNews[]> {
   return remoteCache;
 }
 
-function fromRemote(r: RemoteNews, lang: Lang): Draft {
+function fromRemote(r: RemoteNews, lang: Lang, medien: Map<string, MedienAngaben>): Draft {
   const en = lang === 'en';
   const pick = <T,>(de: T, enV: T | null | undefined) => (en && filled(enV) ? enV : de);
-  const body = pick(r.body, r.body_en);
+  // Angaben der Mediathek gelten überall, wo das Foto steht
+  const body = medienAnwenden(pick(r.body, r.body_en), medien, lang);
+  const m = r.image_path ? medien.get(r.image_path) : undefined;
   const teaser = pick(r.teaser, r.teaser_en);
   const quote = r.quote_text ? { text: pick(r.quote_text, r.quote_text_en), who: r.quote_who ?? '', role: pick(r.quote_role ?? undefined, r.quote_role_en) } : undefined;
   const image = r.image_path ? `${SUPABASE_URL}/storage/v1/object/public/newsbilder/${r.image_path}` : undefined;
@@ -161,9 +183,9 @@ function fromRemote(r: RemoteNews, lang: Lang): Draft {
     facts: pick(r.facts ?? [], r.facts_en),
     quote,
     image,
-    alt: pick(r.image_alt ?? undefined, r.image_alt_en),
-    imageCredit: r.image_credit ?? undefined,
-    imageFocus: r.image_focus && /^\d{1,3}% \d{1,3}%$/.test(r.image_focus) ? r.image_focus : undefined,
+    alt: (en ? m?.alt_en : m?.alt) || pick(r.image_alt ?? undefined, r.image_alt_en),
+    imageCredit: m?.credit || r.image_credit || undefined,
+    imageFocus: [m?.focus, r.image_focus].find((f): f is string => !!f && /^\d{1,3}% \d{1,3}%$/.test(f)),
     date: r.date,
     category: r.category,
     author: r.author,
@@ -176,10 +198,11 @@ function fromRemote(r: RemoteNews, lang: Lang): Draft {
 
 /** Alle veröffentlichten Beiträge einer Sprache, neueste zuerst. */
 export async function getNews(lang: Lang): Promise<NewsPost[]> {
-  const [de, enAll, remote] = await Promise.all([
+  const [de, enAll, remote, medien] = await Promise.all([
     getCollection('news', ({ data }) => !data.draft),
     lang === 'en' ? getCollection('newsEn') : Promise.resolve([] as En[]),
     fetchRemote(),
+    fetchMedien(),
   ]);
   const en = new Map(enAll.map((e) => [e.id, e]));
   const posts: Draft[] = de.map((d) => fromFile(d, en.get(d.id), lang));
@@ -189,7 +212,7 @@ export async function getNews(lang: Lang): Promise<NewsPost[]> {
       console.warn(`[news] Adresse „${r.slug}“ gibt es schon als Datei – der Beitrag aus dem internen Bereich wird übersprungen.`);
       continue;
     }
-    posts.push(fromRemote(r, lang));
+    posts.push(fromRemote(r, lang, medien));
   }
   // Datum in der Zukunft = geplant: erscheint mit dem ersten Build an diesem Tag (nächtlich)
   const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());

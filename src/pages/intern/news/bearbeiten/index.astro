@@ -1,13 +1,16 @@
 ---
 /**
- * News-Editor für Presse, Vorstand und Admin.
- * Schritt für Schritt: Art des Beitrags (oder Vorlage) → Inhalt → (Titelfoto / Frist / Zitat) →
- * Auf einen Blick → Einordnung → Englisch → Speichern/Veröffentlichen. Daneben die Vorschau.
+ * News-Editor der Redaktion (Presse, Vorstand, Admin).
+ * Kopfleiste (Status, Speicherstand, Vorschau, Veröffentlichen) · links Rubrik, Titel, Teaser, Titelbild und
+ * Blöcke · rechts die Live-Vorschau. „Veröffentlichen“ öffnet ein Seitenpanel mit Checkliste, Zeitpunkt
+ * (sofort oder geplant), Newsletter, Story-Bild und der Ansicht in der Chronik.
  *
- * Der Text besteht aus Abschnitten (src/scripts/intern/news/abschnitte.ts); gespeichert wird Markdown
- * (src/lib/news-bloecke.ts). Ungespeichertes sichert der Browser laufend und bietet es beim nächsten Öffnen an.
+ * Entwürfe speichert der Editor selbst (ab einem Titel); Änderungen an Beiträgen, die online sind, gehen erst
+ * mit „Änderungen veröffentlichen“ raus. Ungespeichertes sichert der Browser zusätzlich auf dem Gerät.
+ * Der Text besteht aus Blöcken (src/scripts/intern/news/abschnitte.ts), gespeichert wird Markdown
+ * (src/lib/news-bloecke.ts). Fotos kommen aus der Mediathek (src/scripts/intern/news/medien.ts).
  */
-import Intern from '../../../../layouts/Intern.astro';
+import Redaktion from '../../../../layouts/Redaktion.astro';
 import { href } from '../../../../lib/url';
 import { newsCategories } from '../../../../content.config';
 import { url, type RouteKey } from '../../../../lib/i18n';
@@ -16,13 +19,7 @@ import { getTermine } from '../../../../lib/content';
 import { getNews } from '../../../../lib/news';
 import { newsBausteine } from '../../../../settings/news-bausteine';
 import '../../../../styles/news-editor.css';
-
-const kinds = [
-  { id: 'text', label: 'Meldung', text: 'Neuigkeit, Bericht, Ankündigung.', cat: 'Netzwerk' },
-  { id: 'photo', label: 'Mit Foto', text: 'Großes Titelfoto oben und in der Übersicht.', cat: 'Netzwerk' },
-  { id: 'call', label: 'Ausschreibung', text: 'Mit Bewerbungsfrist und Countdown.', cat: 'Ausschreibung' },
-  { id: 'quote', label: 'Stimme', text: 'Interview oder Porträt mit Zitat.', cat: 'Stimme' },
-];
+import '../../../../styles/mediathek.css';
 
 // Ziele für „Link einfügen“ (Adressen ohne Basis-Pfad, den ergänzt die Website selbst)
 const basis = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -40,230 +37,208 @@ const linkziele = [
 ];
 const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
 ---
-<Intern title="Beitrag bearbeiten" current="redaktion">
+<Redaktion title="Beitrag" current="beitraege" voll>
+  <div class="ne-top">
+    <a class="ne-top__zurueck" href={href('intern/news/')}>← Beiträge</a>
+    <span class="ne-top__trenner" aria-hidden="true"></span>
+    <span class="badge ne-st" data-status-badge data-status="entwurf">Entwurf</span>
+    <span class="ne-top__stand" data-sicher aria-live="polite"></span>
+    <div class="ne-top__rechts" data-editor-only hidden>
+      <button type="button" class="ne-top__knopf" data-vp-schalter>Vorschau</button>
+      <button type="button" class="btn btn--primary btn--marker btn--sm" data-pub-oeffnen>Veröffentlichen</button>
+    </div>
+  </div>
+
+  <div class="i-card ne-kein" data-no-access hidden>
+    <p>News schreiben dürfen Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
+  </div>
+
   <div class="ne-layout" data-layout>
     <div class="ne-haupt">
-      <a class="ne-back" href={href('intern/news/')}>← Alle Beiträge</a>
-      <div class="ne-head">
-        <h1 class="i-h1" data-heading>Neuer Beitrag</h1>
-        <span class="ne-status" data-status-badge>Entwurf</span>
-        <span class="ne-head__sicher" data-sicher aria-live="polite"></span>
+      <div class="ne-spalte">
+        <div class="ne-wieder" role="alert" data-wieder hidden>
+          <p data-wieder-text></p>
+          <button type="button" class="btn btn--primary btn--sm" data-wieder-ja>Wiederherstellen</button>
+          <button type="button" class="md-leise" data-wieder-nein>Verwerfen</button>
+        </div>
+
+        <div class="ne-vorlagen" data-vorlagen hidden>
+          <span class="ne-label">Mit einer Vorlage starten</span>
+          <div class="ne-vorlagen__liste" data-vorlagen-liste></div>
+        </div>
+
+        <form class="ne" data-form novalidate hidden>
+          <fieldset class="ne-feld">
+            <legend class="ne-label">Rubrik</legend>
+            <div class="ne-chips">
+              {newsCategories.map((c, i) => (
+                <label class="ne-chip"><input type="radio" name="category" value={c} checked={i === 0} />{c}</label>
+              ))}
             </div>
+          </fieldset>
 
-      <div class="i-card" data-no-access hidden>
-        <p>News schreiben dürfen Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
-      </div>
+          <div class="i-field ne-kurz" data-nur="Ausschreibung">
+            <label for="ne-deadline">Bewerbungsfrist</label>
+            <input id="ne-deadline" name="deadline" type="date" />
+            <span class="i-hint">Wird auf der Website als Countdown angezeigt.</span>
+          </div>
 
-      <div class="ne-wieder" role="alert" data-wieder hidden>
-        <p data-wieder-text></p>
-        <button type="button" class="btn btn--primary btn--sm" data-wieder-ja>Wiederherstellen</button>
-        <button type="button" class="i-linkbtn" data-wieder-nein>Verwerfen</button>
-      </div>
+          <fieldset class="ne-feld ne-zitat" data-nur="Stimme">
+            <legend class="ne-label">Zitat für die Übersicht <span class="ne-opt">optional</span></legend>
+            <div class="i-field">
+              <label for="ne-qtext" class="visually-hidden">Zitat</label>
+              <textarea id="ne-qtext" name="quote_text" rows="2" maxlength="400" placeholder="Ein Satz, der neugierig macht."></textarea>
+            </div>
+            <div class="ne-row">
+              <div class="i-field"><label for="ne-qwho">Wer sagt das?</label><input id="ne-qwho" name="quote_who" maxlength="120" /></div>
+              <div class="i-field"><label for="ne-qrole">Funktion</label><input id="ne-qrole" name="quote_role" maxlength="160" placeholder="z. B. Projektleitung KEEP UP" /></div>
+            </div>
+          </fieldset>
 
-      <form class="ne" data-form novalidate hidden>
-        <!-- 1 · Art -->
-        <fieldset class="ne-step">
-          <legend class="ne-step__h"><span>1</span> Was für ein Beitrag?</legend>
-          <div class="ne-kinds">
-            {kinds.map((k, i) => (
-              <label class="ne-kind">
-                <input type="radio" name="kind" value={k.id} data-cat={k.cat} checked={i === 0} />
-                <strong>{k.label}</strong>
-                <span>{k.text}</span>
-              </label>
-            ))}
+          <div class="ne-feld">
+            <label class="ne-label" for="ne-title">Titel</label>
+            <textarea id="ne-title" class="ne-titel" name="title" rows="1" maxlength="160" placeholder="Worum geht es?"></textarea>
           </div>
-          <div class="ne-vorlagen" data-vorlagen hidden>
-            <span class="ne-label">Oder schneller mit einer Vorlage starten</span>
-            <div class="ne-vorlagen__liste" data-vorlagen-liste></div>
-          </div>
-        </fieldset>
 
-        <!-- 2 · Inhalt -->
-        <fieldset class="ne-step">
-          <legend class="ne-step__h"><span>2</span> Inhalt</legend>
-          <div class="i-field">
-            <label for="ne-title">Titel</label>
-            <input id="ne-title" name="title" maxlength="160" required placeholder="z. B. 3 Jahre TANZPAKT in residence: Rückschau" />
+          <div class="ne-feld">
+            <div class="ne-feld__kopf">
+              <label class="ne-label" for="ne-teaser">Teaser</label>
+              <span class="ne-zahl" data-count="teaser">0 / 220</span>
+            </div>
+            <textarea id="ne-teaser" class="ne-teaser" name="teaser" rows="2" maxlength="400" placeholder="Zwei, drei Sätze: Was, wann, wo, mit wem?"></textarea>
+            <span class="i-hint">Erscheint in der Chronik, auf der Startseite und als Vorschau beim Teilen.</span>
           </div>
-          <div class="i-field">
-            <label for="ne-teaser">Kurztext</label>
-            <textarea id="ne-teaser" name="teaser" maxlength="400" rows="2" required
-              placeholder="Ein bis zwei Sätze für Übersicht, Startseite und beim Teilen."></textarea>
-            <span class="i-hint"><span data-count="teaser">0</span> / 400 Zeichen</span>
+
+          <div class="ne-feld" data-schritt="titelfoto">
+            <span class="ne-label" id="ne-cover-l">Titelbild</span>
+            <div class="ne-drop" data-cover-leer>
+              <span class="ne-drop__m" aria-hidden="true"></span>
+              <strong>Bild hierher ziehen</strong>
+              <span class="i-hint">JPG, PNG oder WebP. Große Fotos werden beim Hochladen verkleinert.</span>
+              <div class="ne-drop__knoepfe">
+                <button type="button" class="btn btn--primary btn--sm" data-cover-mediathek>Aus Mediathek</button>
+                <label class="md-knopf">Vom Computer<input type="file" accept="image/jpeg,image/png,image/webp" data-photo-input aria-labelledby="ne-cover-l" /></label>
+              </div>
+            </div>
+            <div class="ne-cover" data-cover-voll hidden>
+              <div data-cover-fokus></div>
+              <span class="i-hint">Ins Bild klicken setzt den Fokuspunkt. Alle Zuschnitte richten sich danach.</span>
+              <div data-cover-crops></div>
+              <div class="ne-row">
+                <div class="i-field">
+                  <label for="ne-alt">Bildbeschreibung (optional)</label>
+                  <input id="ne-alt" name="image_alt" maxlength="300" placeholder="Was ist zu sehen?" />
+                  <span class="i-hint">Hilft Menschen, die das Foto nicht sehen können.</span>
+                </div>
+                <div class="i-field">
+                  <label for="ne-credit">Fotonachweis</label>
+                  <input id="ne-credit" name="image_credit" maxlength="120" placeholder="Vorname Nachname" />
+                  <span class="i-hint">Gilt überall, wo das Bild verwendet wird.</span>
+                </div>
+              </div>
+              <div class="fb-knoepfe">
+                <button type="button" class="md-knopf" data-cover-mediathek>Anderes Bild</button>
+                <label class="md-knopf">Hochladen<input type="file" accept="image/jpeg,image/png,image/webp" data-photo-input aria-label="Anderes Titelbild hochladen" /></label>
+                <button type="button" class="md-leise" data-photo-remove>Entfernen</button>
+              </div>
+            </div>
+            <p class="i-msg" data-photo-msg hidden></p>
           </div>
-          <div class="ne-text">
-            <span class="ne-label" id="ne-body-l">Text</span>
-            <p class="i-hint">Text, Fotos und Hinweiskästen als Abschnitte. Neue mit „+ Abschnitt einfügen“, verschieben am Griff ⠿ oder mit ↑ ↓.</p>
+
+          <div class="ne-feld">
+            <div class="ne-feld__kopf">
+              <span class="ne-label" id="ne-body-l">Inhalt</span>
+              <span class="ne-feld__tipp">Klick in der Vorschau springt zum Block</span>
+            </div>
             <p class="i-msg" data-abschnitt-hinweis hidden></p>
             <div class="ne-abschnitte" data-abschnitte aria-labelledby="ne-body-l"></div>
           </div>
-        </fieldset>
 
-        <!-- 3 · je nach Art -->
-        <fieldset class="ne-step" data-for="photo" data-schritt="titelfoto">
-          <legend class="ne-step__h"><span>3</span> Titelfoto</legend>
-          <div class="ne-photo">
-            <div class="ne-photo__frame" data-photo-frame title="Klick ins Foto: Diese Stelle bleibt beim Zuschnitt sichtbar.">
-              <img alt="" data-photo-img hidden />
-              <span class="fb-fokus__punkt" data-photo-focus hidden aria-hidden="true"></span>
-              <span data-photo-empty>Noch kein Foto</span>
+          <details class="ne-mehr" data-fakten>
+            <summary>Auf einen Blick <span class="ne-opt">optional</span></summary>
+            <p class="i-hint">Kurze Fakten neben dem Text, z. B. „Wann · Do, 15. Oktober, 19:30 Uhr“ oder „Wo · Villa Wigman“.</p>
+            <div class="ne-facts" data-facts="facts"></div>
+            <button type="button" class="md-leise" data-add-fact="facts">+ Zeile hinzufügen</button>
+          </details>
+
+          <details class="ne-mehr ne-en" data-en>
+            <summary>Englische Fassung <span class="ne-opt" data-en-state></span></summary>
+            <p class="i-hint">Fehlt ein Feld, zeigt die englische Seite den deutschen Text. Die Blöcke übersetzt du direkt dort („Englisch“ aufklappen).</p>
+            <div class="i-field"><label for="ne-title-en">Title</label><input id="ne-title-en" name="title_en" maxlength="160" lang="en" /></div>
+            <div class="i-field"><label for="ne-teaser-en">Teaser (English)</label><textarea id="ne-teaser-en" name="teaser_en" maxlength="400" rows="2" lang="en"></textarea></div>
+            <div class="i-field" data-nur-bild><label for="ne-alt-en">Image description</label><input id="ne-alt-en" name="image_alt_en" maxlength="300" lang="en" /></div>
+            <div data-nur="Stimme">
+              <div class="i-field"><label for="ne-qtext-en">Quote</label><textarea id="ne-qtext-en" name="quote_text_en" rows="2" maxlength="400" lang="en"></textarea></div>
+              <div class="i-field"><label for="ne-qrole-en">Role</label><input id="ne-qrole-en" name="quote_role_en" maxlength="160" lang="en" /></div>
             </div>
-            <div class="ne-photo__side">
-              <label class="btn btn--secondary btn--sm ne-upload">
-                Foto auswählen
-                <input type="file" accept="image/jpeg,image/png,image/webp" data-photo-input />
-              </label>
-              <button type="button" class="i-linkbtn" data-photo-mediathek>Aus früheren Beiträgen</button>
-              <button type="button" class="i-linkbtn" data-photo-remove hidden>Foto entfernen</button>
-              <span class="i-hint" data-photo-focus-hint hidden>So wird das Foto oben im Beitrag zugeschnitten. Klick auf die Stelle, die sichtbar bleiben soll, z. B. Gesichter.</span>
-              <p class="i-msg" data-photo-msg hidden></p>
-            </div>
-          </div>
-          <div class="i-field">
-            <label for="ne-credit">Foto von <span class="ne-opt">optional</span></label>
-            <input id="ne-credit" name="image_credit" maxlength="120" placeholder="Name der Fotograf:in" />
-          </div>
-          <details class="ab-en fb-alt" data-cover-alt>
-            <summary>Bildbeschreibung <span class="ab-en__status">(optional)</span></summary>
-            <div class="i-field">
-              <label for="ne-alt" class="visually-hidden">Bildbeschreibung</label>
-              <input id="ne-alt" name="image_alt" maxlength="300" placeholder="Was ist zu sehen? z. B. Zwei Tänzerinnen im Gegenlicht" />
-              <span class="i-hint">Hilft Menschen, die das Foto nicht sehen können, und Suchmaschinen.</span>
+            <div class="ne-facts-en">
+              <span class="ne-label">At a glance</span>
+              <div class="ne-facts" data-facts="facts_en" data-mirror></div>
             </div>
           </details>
-        </fieldset>
 
-        <fieldset class="ne-step" data-for="call">
-          <legend class="ne-step__h"><span>3</span> Bewerbungsfrist</legend>
-          <div class="i-field ne-short">
-            <label for="ne-deadline">Frist (letzter Tag)</label>
-            <input id="ne-deadline" name="deadline" type="date" />
-            <span class="i-hint">Bis dahin zählt die Website die Tage herunter.</span>
-          </div>
-        </fieldset>
-
-        <fieldset class="ne-step" data-for="quote">
-          <legend class="ne-step__h"><span>3</span> Zitat für die Übersicht</legend>
-          <div class="i-field">
-            <label for="ne-qtext">Zitat</label>
-            <textarea id="ne-qtext" name="quote_text" rows="2" maxlength="400" placeholder="Ein Satz, der neugierig macht."></textarea>
-          </div>
-          <div class="ne-row">
-            <div class="i-field"><label for="ne-qwho">Wer sagt das?</label><input id="ne-qwho" name="quote_who" maxlength="120" /></div>
-            <div class="i-field"><label for="ne-qrole">Funktion <span class="ne-opt">optional</span></label><input id="ne-qrole" name="quote_role" maxlength="160" placeholder="z. B. Projektleitung KEEP UP" /></div>
-          </div>
-        </fieldset>
-
-        <!-- 4 · Auf einen Blick -->
-        <details class="ne-step" data-fakten>
-          <summary class="ne-step__h"><span data-stepnr="4">4</span> Auf einen Blick <em>optional</em></summary>
-          <p class="i-hint">Kurze Fakten neben dem Text, z. B. „Wann · Do, 15. Oktober, 19:30 Uhr“ oder „Wo · Villa Wigman“.</p>
-          <div class="ne-facts" data-facts="facts"></div>
-          <button type="button" class="i-linkbtn" data-add-fact="facts">+ Zeile hinzufügen</button>
-        </details>
-
-        <!-- 5 · Einordnung -->
-        <fieldset class="ne-step">
-          <legend class="ne-step__h"><span data-stepnr="5">5</span> Einordnung</legend>
-          <div class="ne-row">
-            <div class="i-field">
-              <label for="ne-cat">Kategorie</label>
-              <select id="ne-cat" name="category">{newsCategories.map((c) => <option value={c}>{c}</option>)}</select>
+          <details class="ne-mehr" data-weitere>
+            <summary>Weitere Angaben</summary>
+            <div class="ne-row">
+              <div class="i-field">
+                <label for="ne-author">Text von</label>
+                <input id="ne-author" name="author" maxlength="120" placeholder="Name oder AG" />
+              </div>
+              <div class="i-field">
+                <label for="ne-date">Datum</label>
+                <input id="ne-date" name="date" type="date" required />
+                <span class="i-hint">Planen geht beim Veröffentlichen.</span>
+              </div>
             </div>
+            <label class="i-check">
+              <input type="checkbox" name="featured" />
+              <span><strong>Titelthema:</strong> groß oben auf der News-Seite und auf der Startseite.</span>
+            </label>
             <div class="i-field">
-              <label for="ne-date">Datum</label>
-              <input id="ne-date" name="date" type="date" required aria-describedby="ne-date-hint" />
-              <span class="i-hint" id="ne-date-hint" data-date-hint>Ein Datum in der Zukunft plant den Beitrag: Er erscheint an diesem Tag morgens.</span>
+              <label for="ne-slug">Adresse</label>
+              <input id="ne-slug" name="slug" maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" />
+              <span class="i-hint">Wird aus dem Titel gebildet. Nach dem Veröffentlichen besser nicht mehr ändern.</span>
             </div>
-            <div class="i-field">
-              <label for="ne-author">Text von</label>
-              <input id="ne-author" name="author" maxlength="120" placeholder="Name oder AG" />
+            <div class="ne-weitere__knoepfe">
+              <a class="md-leise" data-view-live hidden target="_blank" rel="noopener">Auf der Website ansehen ↗</a>
+              <button type="button" class="md-leise" data-vorschau-link hidden>Vorschau-Link kopieren</button>
+              <button type="button" class="md-leise ne-danger" data-delete hidden>Beitrag löschen</button>
             </div>
-          </div>
-          <label class="i-check">
-            <input type="checkbox" name="featured" />
-            <span><strong>Titelthema:</strong> groß oben auf der News-Seite und auf der Startseite.</span>
-          </label>
-        </fieldset>
-
-        <!-- 6 · Englisch -->
-        <details class="ne-step ne-en" data-en>
-          <summary class="ne-step__h"><span data-stepnr="6">6</span> Englische Fassung <em>optional</em> <span class="ne-en__state" data-en-state></span></summary>
-          <p class="i-hint">Fehlt ein Feld, zeigt die englische Seite den deutschen Text. Den Text der Abschnitte übersetzt du direkt dort („Englisch“ aufklappen).</p>
-          <div class="i-field"><label for="ne-title-en">Title</label><input id="ne-title-en" name="title_en" maxlength="160" lang="en" /></div>
-          <div class="i-field"><label for="ne-teaser-en">Short text</label><textarea id="ne-teaser-en" name="teaser_en" maxlength="400" rows="2" lang="en"></textarea></div>
-          <div class="i-field" data-for="photo"><label for="ne-alt-en">Image description</label><input id="ne-alt-en" name="image_alt_en" maxlength="300" lang="en" /></div>
-          <div data-for="quote">
-            <div class="i-field"><label for="ne-qtext-en">Quote</label><textarea id="ne-qtext-en" name="quote_text_en" rows="2" maxlength="400" lang="en"></textarea></div>
-            <div class="i-field"><label for="ne-qrole-en">Role</label><input id="ne-qrole-en" name="quote_role_en" maxlength="160" lang="en" /></div>
-          </div>
-          <div class="ne-facts-en">
-            <span class="ne-label">At a glance</span>
-            <div class="ne-facts" data-facts="facts_en" data-mirror></div>
-          </div>
-        </details>
-
-        <!-- Adresse -->
-        <details class="ne-step ne-more">
-          <summary class="ne-step__h">Adresse des Beitrags</summary>
-          <div class="i-field">
-            <label for="ne-slug">Adresse</label>
-            <input id="ne-slug" name="slug" maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" />
-            <span class="i-hint">Wird aus dem Titel gebildet. Nach dem Veröffentlichen besser nicht mehr ändern.
-              Vorschau: <code data-slug-preview></code></span>
-          </div>
-        </details>
-
-        <!-- Aktionen -->
-        <div class="ne-bar">
-          <details class="ne-check" data-check>
-            <summary><span class="ne-check__ampel" aria-hidden="true"></span><span data-check-text></span></summary>
-            <ul data-check-liste></ul>
           </details>
-          <p class="i-msg" role="status" data-msg hidden></p>
-          <div class="ne-bar__btns">
-            <button type="button" class="btn btn--primary btn--marker" data-publish>Veröffentlichen</button>
-            <button type="button" class="btn btn--secondary" data-save>Als Entwurf speichern</button>
-            <button type="button" class="btn btn--secondary" data-preview-open>Vorschau</button>
-            <a class="i-linkbtn" data-view-live hidden target="_blank" rel="noopener">Auf der Website ansehen ↗</a>
-            <button type="button" class="i-linkbtn" data-vorschau-link hidden>Vorschau-Link kopieren</button>
-            <button type="button" class="i-linkbtn ne-danger" data-delete hidden>Löschen</button>
-          </div>
-          <span class="i-hint" data-saved-at></span>
-        </div>
-      </form>
+        </form>
+      </div>
     </div>
 
-    <!-- Vorschau neben dem Editor (große Bildschirme) -->
-    <aside class="ne-vp" data-vp data-geraet="computer" aria-label="Vorschau" hidden>
+    <!-- Live-Vorschau neben dem Editor (große Bildschirme) -->
+    <aside class="ne-vp" data-vp data-geraet="computer" aria-label="Live-Vorschau" hidden>
       <div class="ne-vp__bar">
-        <span class="ne-vp__h">Vorschau</span>
-        <div class="ne-vp__gruppe" role="group" aria-label="Bildschirm">
-          <button type="button" data-geraet="computer" aria-pressed="true">Computer</button>
-          <button type="button" data-geraet="handy" aria-pressed="false">Handy</button>
+        <span class="tag">Live-Vorschau</span>
+        <div class="ne-vp__gruppen">
+          <div class="ne-vp__gruppe" role="group" aria-label="Bildschirm">
+            <button type="button" data-geraet="computer" aria-pressed="true">Desktop</button>
+            <button type="button" data-geraet="handy" aria-pressed="false">Mobil</button>
+          </div>
+          <div class="ne-vp__gruppe" role="group" aria-label="Sprache">
+            <button type="button" data-sprache="de" aria-pressed="true">DE</button>
+            <button type="button" data-sprache="en" aria-pressed="false">EN</button>
+          </div>
+          <button type="button" class="ne-vp__gross" data-preview-open title="Vorschau groß zeigen">Groß</button>
         </div>
-        <div class="ne-vp__gruppe" role="group" aria-label="Sprache">
-          <button type="button" data-sprache="de" aria-pressed="true">DE</button>
-          <button type="button" data-sprache="en" aria-pressed="false">EN</button>
-        </div>
-        <button type="button" data-preview-open title="Vorschau groß zeigen">Groß</button>
       </div>
       <div class="ne-vp__buehne" data-geraet="computer">
         <iframe title="Vorschau des Beitrags (daneben)"></iframe>
       </div>
-      <p class="i-hint ne-vp__fuss">Klick in die Vorschau: Der Editor springt zur Stelle.</p>
+      <p class="ne-vp__fuss" data-vp-adresse></p>
     </aside>
   </div>
-  <button type="button" class="i-linkbtn ne-vp-schalter" data-vp-schalter hidden aria-pressed="true">Vorschau daneben ausblenden</button>
 
   <!-- Vorschau groß -->
   <dialog class="nv" data-vorschau data-geraet="computer" aria-labelledby="nv-h">
     <div class="nv__bar">
       <strong id="nv-h" class="nv__h">Vorschau</strong>
       <div class="nv__gruppe" role="group" aria-label="Bildschirm">
-        <button type="button" data-geraet="computer" aria-pressed="true">Computer</button>
-        <button type="button" data-geraet="handy" aria-pressed="false">Handy</button>
+        <button type="button" data-geraet="computer" aria-pressed="true">Desktop</button>
+        <button type="button" data-geraet="handy" aria-pressed="false">Mobil</button>
       </div>
       <div class="nv__gruppe" role="group" aria-label="Sprache">
         <button type="button" data-sprache="de" aria-pressed="true">Deutsch</button>
@@ -276,25 +251,85 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
     </div>
   </dialog>
 
+  <!-- Veröffentlichen: Seitenpanel -->
+  <dialog class="ne-pub" data-pub aria-labelledby="ne-pub-h">
+    <div class="ne-pub__kopf">
+      <div class="ne-pub__titel">
+        <span class="tag">Veröffentlichen</span>
+        <h2 id="ne-pub-h" data-pub-titel></h2>
+      </div>
+      <button type="button" class="md-leise" data-pub-zu>Schließen</button>
+    </div>
+
+    <section class="ne-pub__teil" aria-labelledby="ne-check-h">
+      <div class="ne-pub__zeile">
+        <h3 class="ne-pub__h" id="ne-check-h">Checkliste</h3>
+        <span class="ne-pub__summe" data-check-summe></span>
+      </div>
+      <ul class="ne-check" data-check-liste></ul>
+    </section>
+
+    <section class="ne-pub__teil" aria-labelledby="ne-zeit-h">
+      <h3 class="ne-pub__h" id="ne-zeit-h">Zeitpunkt</h3>
+      <div class="ne-modus" role="group" aria-labelledby="ne-zeit-h">
+        <button type="button" data-modus="sofort" aria-pressed="true">Sofort</button>
+        <button type="button" data-modus="planen" aria-pressed="false">Planen</button>
+      </div>
+      <div class="i-field" data-plan hidden>
+        <label for="ne-plan">Erscheint am</label>
+        <input id="ne-plan" type="date" data-plan-datum />
+        <span class="i-hint">Der Beitrag erscheint an diesem Tag morgens mit dem automatischen Update der Website.</span>
+      </div>
+    </section>
+
+    <section class="ne-pub__teil" aria-labelledby="ne-aus-h">
+      <h3 class="ne-pub__h" id="ne-aus-h">Ausspielen</h3>
+      <label class="ne-switch"><input type="checkbox" role="switch" checked disabled /><span class="ne-switch__bahn" aria-hidden="true"></span>Website · News und Chronik</label>
+      <label class="ne-switch"><input type="checkbox" role="switch" data-newsletter /><span class="ne-switch__bahn" aria-hidden="true"></span>Für den nächsten Newsletter vormerken</label>
+      <label class="ne-switch"><input type="checkbox" role="switch" data-story /><span class="ne-switch__bahn" aria-hidden="true"></span>Instagram-Story als Bild herunterladen</label>
+      <p class="i-hint ne-pub__hinweis" data-newsletter-hinweis hidden>Vormerken geht, sobald die Migration 20261016000000_mediathek.sql ausgeführt ist.</p>
+    </section>
+
+    <section class="ne-pub__teil" aria-labelledby="ne-chronik-h">
+      <h3 class="ne-pub__h" id="ne-chronik-h">So erscheint er in der Chronik</h3>
+      <div class="ne-chronik" data-chronik></div>
+    </section>
+
+    <div class="ne-pub__fuss">
+      <p class="ne-pub__block" data-pub-block hidden>Erst die Pflichtpunkte erledigen, dann geht der Beitrag online.</p>
+      <div class="ne-pub__knoepfe">
+        <button type="button" class="btn btn--primary btn--marker" data-publish>Jetzt veröffentlichen</button>
+        <button type="button" class="md-knopf" data-pub-zu>Weiter bearbeiten</button>
+      </div>
+      <button type="button" class="md-leise ne-danger" data-offline hidden>Offline nehmen</button>
+    </div>
+  </dialog>
+
+  <div class="ne-toast" role="status" aria-live="polite" data-msg hidden></div>
+
   <script type="application/json" data-bausteine set:html={json(newsBausteine)} />
   <script type="application/json" data-linkziele set:html={json(linkziele)} />
-</Intern>
+</Redaktion>
 
 <script>
-  import { initIntern, errorText, showMessage, internUrl } from '../../../../scripts/intern/session';
-  import { slugify, newsPhotoUrl, type NewsRow } from '../../../../lib/supabase';
+  import { initIntern, errorText, internUrl } from '../../../../scripts/intern/session';
+  import { slugify, newsPhotoUrl, type MedienRow, type NewsRow } from '../../../../lib/supabase';
   import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
-  import { abschnittEditor, type Baustein, type EBlock, type MediathekBild } from '../../../../scripts/intern/news/abschnitte';
-  import { BUCKET, drehen, fokusAusKlick, hochladen } from '../../../../scripts/intern/news/fotos';
+  import { abschnittEditor, type Baustein, type EBlock, type Gewaehlt } from '../../../../scripts/intern/news/abschnitte';
+  import { drehen } from '../../../../scripts/intern/news/fotos';
+  import { fokusFlaeche, medienHochladen, medienWaehlen, zuschnitte } from '../../../../scripts/intern/news/medien';
   import { vorschau, type Sprache, type Sprungziel } from '../../../../scripts/intern/news/vorschau';
   import { linkAuswahl, type Linkziel } from '../../../../scripts/intern/news/links';
   import { vorlagen } from '../../../../scripts/intern/news/vorlagen';
-  import { abschnitte, bilddateien, hatEnglisch, zuMarkdown, type Block } from '../../../../lib/news-bloecke';
+  import { storyBild } from '../../../../scripts/intern/news/story';
+  import { h } from '../../../../scripts/intern/news/dom';
+  import { abschnitte, hatEnglisch, zuMarkdown, type Block } from '../../../../lib/news-bloecke';
+  import { newsBadge } from '../../../../lib/news-format';
 
   type Fact = { label: string; value: string };
-  type Kind = 'text' | 'photo' | 'call' | 'quote';
   const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   const $ = <T extends Element = HTMLElement>(sel: string, root: ParentNode = document) => root.querySelector<T>(sel);
+  const $$ = <T extends Element = HTMLElement>(sel: string) => [...document.querySelectorAll<T>(sel)];
   const lesenJson = <T,>(sel: string, leer: T): T => {
     try {
       return JSON.parse($(sel)?.textContent ?? '') as T;
@@ -303,63 +338,90 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
     }
   };
   const heute = () => new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
+  const morgen = () => {
+    const d = new Date(`${heute()}T12:00:00`);
+    d.setDate(d.getDate() + 1);
+    return d.toISOString().slice(0, 10);
+  };
   const datumLang = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-DE', { day: 'numeric', month: 'long', year: 'numeric' });
+  const datumKurz = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' });
+  const uhrzeit = () => new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' });
+  const EMOJI = /\p{Extended_Pictographic}/u;
+
+  // Meldungen unten rechts
+  const toastEl = $('[data-msg]')!;
+  let toastTimer = 0;
+  const melden = (text: string, art: 'error' | 'ok' = 'error') => {
+    window.clearTimeout(toastTimer);
+    toastEl.textContent = text;
+    toastEl.dataset.kind = art;
+    toastEl.hidden = !text;
+    if (text && art === 'ok') toastTimer = window.setTimeout(() => (toastEl.hidden = true), 6000);
+  };
 
   const ctx = await initIntern(true);
   const form = $<HTMLFormElement>('[data-form]');
-  const msg = $('[data-msg]');
   const id0 = new URLSearchParams(location.search).get('id');
 
   if (ctx && form) {
     if (!ctx.isRedaktion) {
       $('[data-no-access]')!.hidden = false;
+      $('[data-layout]')!.hidden = true;
     } else {
       form.hidden = false;
+      $('[data-editor-only]')!.hidden = false;
       let row: Partial<NewsRow> = {};
       let imagePath: string | null = null;
       let imageFocus: string | null = null;
+      let newsletter = false;
       let dirty = false;
       let slugTouched = false;
-      /** in dieser Sitzung hochgeladen (nicht verwendete werden nach dem Speichern gelöscht) */
-      const hochgeladen = new Set<string>();
       const field = <T extends HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>(name: string) =>
         form.elements.namedItem(name) as T | null;
-      const val = (n: string) => field(n)?.value.trim() ?? '';
+      const val = (n: string) => {
+        const el = form.elements.namedItem(n);
+        if (el instanceof RadioNodeList) return el.value;
+        return (el as HTMLInputElement | null)?.value.trim() ?? '';
+      };
       const orNull = (v: string) => v || null;
 
       // ---------- Laden ----------
       if (id0) {
         const { data, error } = await ctx.sb.from('news_posts').select('*').eq('id', id0).maybeSingle<NewsRow>();
-        if (error || !data) showMessage(msg, error ? errorText(error) : 'Diesen Beitrag gibt es nicht (mehr).');
+        if (error || !data) melden(error ? errorText(error) : 'Diesen Beitrag gibt es nicht (mehr).');
         if (data) row = data;
       }
-      const kindOf = (r: Partial<NewsRow>): Kind => (r.deadline ? 'call' : r.quote_text ? 'quote' : r.image_path ? 'photo' : 'text');
-      const kind = () => (form.querySelector<HTMLInputElement>('input[name="kind"]:checked')?.value ?? 'text') as Kind;
       const set = (name: string, v: unknown) => {
-        const el = field(name);
+        const el = form.elements.namedItem(name);
         if (!el) return;
-        if (el instanceof HTMLInputElement && el.type === 'checkbox') el.checked = !!v;
-        else el.value = v == null ? '' : String(v);
+        if (el instanceof RadioNodeList) el.value = v == null ? '' : String(v);
+        else if (el instanceof HTMLInputElement && el.type === 'checkbox') el.checked = !!v;
+        else (el as HTMLInputElement).value = v == null ? '' : String(v);
       };
+
+      // ---------- Mediathek-Angaben der Fotos dieses Beitrags ----------
+      const medien = new Map<string, Gewaehlt>();
+      let medienOk = true;
+      {
+        const dateien = [...new Set([row.image_path, ...abschnitte(row.body ?? '').bloecke.flatMap((b) => (b.typ === 'bilder' ? b.bilder.map((x) => x.datei) : []))].filter((d): d is string => !!d))];
+        const { data, error } = await ctx.sb.from('news_medien').select('*').in('datei', dateien.length ? dateien : ['-']);
+        medienOk = !error;
+        for (const m of (data ?? []) as MedienRow[]) medien.set(m.datei, { datei: m.datei, alt: m.alt ?? '', alt_en: m.alt_en ?? '', credit: m.credit ?? '', focus: m.focus });
+      }
+      const newsletterOk = !!row.id ? 'newsletter' in row : medienOk;
+      if (!newsletterOk) {
+        $<HTMLInputElement>('[data-newsletter]')!.disabled = true;
+        $('[data-newsletter-hinweis]')!.hidden = false;
+      }
 
       // ---------- Auf einen Blick ----------
       const factBoxes = { facts: $('[data-facts="facts"]')!, facts_en: $('[data-facts="facts_en"]')! };
       const factRow = (box: HTMLElement, f: Fact, mirror?: Fact) => {
-        const div = document.createElement('div');
-        div.className = 'ne-fact';
-        const l = Object.assign(document.createElement('input'), { value: f.label, placeholder: mirror?.label || 'z. B. Wann', maxLength: 60 });
-        const v = Object.assign(document.createElement('input'), { value: f.value, placeholder: mirror?.value || 'z. B. Do · 15. Oktober · 19:30 Uhr', maxLength: 200 });
-        l.setAttribute('aria-label', 'Bezeichnung');
-        v.setAttribute('aria-label', 'Angabe');
-        div.append(l, v);
+        const div = h('div', { class: 'ne-fact' },
+          h('input', { value: f.label, placeholder: mirror?.label || 'z. B. Wann', maxLength: 60, 'aria-label': 'Bezeichnung' }),
+          h('input', { value: f.value, placeholder: mirror?.value || 'z. B. Do · 15. Oktober · 19:30 Uhr', maxLength: 200, 'aria-label': 'Angabe' }));
         if (!box.hasAttribute('data-mirror')) {
-          const del = Object.assign(document.createElement('button'), { type: 'button', className: 'i-linkbtn', textContent: 'Entfernen' });
-          del.addEventListener('click', () => {
-            div.remove();
-            syncMirror();
-            geaendert();
-          });
-          div.append(del);
+          div.append(h('button', { type: 'button', class: 'md-leise', text: 'Entfernen', onclick: () => { div.remove(); syncMirror(); geaendert(); } }));
         }
         box.append(div);
       };
@@ -390,56 +452,65 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       });
       factBoxes.facts.addEventListener('change', syncMirror);
 
-      // ---------- Art des Beitrags ----------
-      const applyKind = () => {
-        const k = kind();
-        form.querySelectorAll<HTMLElement>('[data-for]').forEach((el) => (el.hidden = el.dataset.for !== k));
-        const extra = k === 'text' ? 0 : 1;
-        form.querySelectorAll<HTMLElement>('[data-stepnr]').forEach((el) => (el.textContent = String(Number(el.dataset.stepnr) - 1 + extra)));
+      // ---------- Rubrik: Frist bei Ausschreibung, Zitat bei Stimme ----------
+      // sichtbar = Rubrik passt oder es steht schon etwas darin (dann lässt es sich auch leeren)
+      const sichtbar = (nur: string) => val('category') === nur || (nur === 'Ausschreibung' ? !!val('deadline') : !!val('quote_text'));
+      const rubrik = () => {
+        $$('[data-nur]').forEach((el) => (el.hidden = !sichtbar(el.dataset.nur!)));
+        $('[data-nur-bild]')!.hidden = !imagePath;
       };
-      const kindSetzen = (k: Kind) => {
-        const r = form.querySelector<HTMLInputElement>(`input[name="kind"][value="${k}"]`);
-        if (r) r.checked = true;
-        applyKind();
-      };
-      form.querySelectorAll<HTMLInputElement>('input[name="kind"]').forEach((r) =>
-        r.addEventListener('change', () => {
-          applyKind();
-          const cat = field<HTMLSelectElement>('category');
-          if (cat && r.dataset.cat && ['Netzwerk', 'Ausschreibung', 'Stimme'].includes(cat.value)) cat.value = r.dataset.cat;
-        }),
-      );
 
-      /** Formular aus einem gespeicherten Stand füllen (ohne Text-Abschnitte) */
+      /** Formular aus einem gespeicherten Stand füllen (ohne Blöcke) */
       const fuellen = (r: Partial<NewsRow>) => {
         for (const k of ['title', 'teaser', 'image_alt', 'image_credit', 'deadline', 'quote_text', 'quote_who', 'quote_role',
-          'category', 'date', 'author', 'featured', 'title_en', 'teaser_en', 'image_alt_en', 'quote_text_en', 'quote_role_en', 'slug']) {
+          'date', 'author', 'featured', 'title_en', 'teaser_en', 'image_alt_en', 'quote_text_en', 'quote_role_en', 'slug']) {
           set(k, (r as Record<string, unknown>)[k]);
         }
+        set('category', r.category ?? 'Netzwerk');
         if (!r.date) set('date', heute());
-        if (!r.category) set('category', 'Netzwerk');
         if (!r.author) set('author', ctx.profile?.display_name ?? '');
         slugTouched = !!r.slug;
         imagePath = r.image_path ?? null;
         imageFocus = r.image_focus ?? null;
-        kindSetzen(kindOf(r));
+        newsletter = !!r.newsletter;
+        // Angaben der Mediathek gelten überall
+        const m = imagePath ? medien.get(imagePath) : undefined;
+        if (m?.alt) set('image_alt', m.alt);
+        if (m?.alt_en) set('image_alt_en', m.alt_en);
+        if (m?.credit) set('image_credit', m.credit);
+        if (m?.focus) imageFocus = m.focus;
         faktenSetzen(r.facts ?? [], r.facts_en ?? []);
         if (r.title_en || r.body_en) $<HTMLDetailsElement>('[data-en]')!.open = true;
-        if (r.image_alt) $<HTMLDetailsElement>('[data-cover-alt]')!.open = true;
+        rubrik();
       };
       fuellen(row);
 
-      // ---------- Zähler, Adresse ----------
+      // ---------- Titel, Teaser, Adresse ----------
+      const titel = field<HTMLTextAreaElement>('title')!;
       const teaser = field<HTMLTextAreaElement>('teaser')!;
-      const counter = $('[data-count="teaser"]');
-      const count = () => counter && (counter.textContent = String(teaser.value.length));
+      const wachsen = (ta: HTMLTextAreaElement) => {
+        ta.style.height = 'auto';
+        ta.style.height = `${ta.scrollHeight + 2}px`;
+      };
+      titel.addEventListener('keydown', (e) => e.key === 'Enter' && e.preventDefault());
+      titel.addEventListener('input', () => {
+        if (titel.value.includes('\n')) titel.value = titel.value.replace(/\s*\n\s*/g, ' ');
+        wachsen(titel);
+      });
+      teaser.addEventListener('input', () => wachsen(teaser));
+      requestAnimationFrame(() => [titel, teaser].forEach(wachsen));
+      const zaehler = $('[data-count="teaser"]')!;
+      const count = () => {
+        zaehler.textContent = `${teaser.value.length} / 220`;
+        zaehler.classList.toggle('is-zu-lang', teaser.value.length > 220);
+      };
       teaser.addEventListener('input', count);
       count();
       const slug = field<HTMLInputElement>('slug')!;
-      const slugPreview = $('[data-slug-preview]');
-      const showSlug = () => slugPreview && (slugPreview.textContent = `${location.origin}${base}news/${slug.value || '…'}/`);
-      field<HTMLInputElement>('title')!.addEventListener('input', (e) => {
-        if (!slugTouched) slug.value = slugify((e.target as HTMLInputElement).value).slice(0, 80).replace(/-+$/, '');
+      const adresse = () => `${location.host}${base}news/${slug.value || '…'}/`;
+      const showSlug = () => ($('[data-vp-adresse]')!.textContent = adresse());
+      titel.addEventListener('input', () => {
+        if (!slugTouched) slug.value = slugify(titel.value).slice(0, 80).replace(/-+$/, '');
         showSlug();
       });
       slug.addEventListener('input', () => {
@@ -449,135 +520,110 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       });
       showSlug();
 
-      // ---------- Mediathek: Fotos aus früheren Beiträgen ----------
-      const mediathek = async (): Promise<MediathekBild[]> => {
-        const { data } = await ctx.sb.from('news_posts').select('title, body, image_path, image_alt').order('date', { ascending: false }).limit(200);
-        const out: MediathekBild[] = [];
-        const da = new Set<string>();
-        for (const r of (data ?? []) as Pick<NewsRow, 'title' | 'body' | 'image_path' | 'image_alt'>[]) {
-          if (r.image_path && !da.has(r.image_path)) {
-            da.add(r.image_path);
-            out.push({ datei: r.image_path, alt: r.image_alt ?? '', aus: r.title });
-          }
-          for (const b of abschnitte(r.body ?? '').bloecke) {
-            if (b.typ !== 'bilder') continue;
-            for (const x of b.bilder) {
-              if (da.has(x.datei) || /^(\/|https:|\.\.)/.test(x.datei)) continue;
-              da.add(x.datei);
-              out.push({ datei: x.datei, alt: x.alt, aus: r.title });
-            }
-          }
-        }
-        return out;
+      // ---------- Mediathek ----------
+      const mediathek = async (mehrere: boolean): Promise<Gewaehlt[]> => {
+        const l = await medienWaehlen(ctx.sb, { mehrere, slug: () => slug.value });
+        return l.map((m) => {
+          const g = { datei: m.datei, alt: m.alt, alt_en: m.alt_en, credit: m.credit, focus: m.focus };
+          medien.set(m.datei, g);
+          return g;
+        });
       };
+      const hochladen = (f: File) => medienHochladen(ctx.sb, f, slug.value);
 
-      // ---------- Text in Abschnitten ----------
+      // ---------- Text in Blöcken ----------
       const start = abschnitte(row.body ?? '', row.body_en);
       if (!start.passend) {
-        showMessage($('[data-abschnitt-hinweis]'), 'Der englische Text dieses Beitrags passt nicht zu den Abschnitten. Er steht jetzt komplett beim ersten Textabschnitt unter „Englisch“. Bitte dort aufteilen.');
+        const hinweis = $('[data-abschnitt-hinweis]')!;
+        hinweis.textContent = 'Der englische Text dieses Beitrags passt nicht zu den Blöcken. Er steht jetzt komplett beim ersten Absatz unter „Englisch“. Bitte dort aufteilen.';
+        hinweis.hidden = false;
       }
       const editor = abschnittEditor($('[data-abschnitte]')!, {
         start: start.bloecke,
-        hochladen: async (f) => {
-          const p = await hochladen(ctx.sb, f, slug.value);
-          hochgeladen.add(p);
-          return p;
-        },
-        drehen: async (d) => {
-          const p = await drehen(ctx.sb, d, slug.value);
-          hochgeladen.add(p);
-          return p;
-        },
+        hochladen,
+        drehen: (d) => drehen(ctx.sb, d, slug.value),
         linkWaehlen: linkAuswahl(lesenJson<Linkziel[]>('[data-linkziele]', [])),
         mediathek,
         bausteine: lesenJson<Baustein[]>('[data-bausteine]', []),
         geaendert: () => geaendert(),
         aktiv: (i) => vp.zeigen(i),
-        fehler: (t) => showMessage(msg, t),
+        fehler: (t) => melden(t),
       });
+      if (medien.size) editor.angabenSetzen(medien);
 
-      // ---------- Titelfoto ----------
-      const img = $<HTMLImageElement>('[data-photo-img]')!;
-      const frame = $('[data-photo-frame]')!;
-      const focusDot = $('[data-photo-focus]')!;
-      const removeBtn = $('[data-photo-remove]')!;
-      const photoMsg = $('[data-photo-msg]');
+      // ---------- Titelbild ----------
+      const leerEl = $('[data-cover-leer]')!;
+      const vollEl = $('[data-cover-voll]')!;
+      const photoMsg = $('[data-photo-msg]')!;
+      const zeigeFotoMeldung = (t: string) => {
+        photoMsg.textContent = t;
+        photoMsg.hidden = !t;
+      };
       const showPhoto = () => {
         const src = newsPhotoUrl(imagePath);
-        img.hidden = !src;
-        if (src) img.src = src;
-        img.style.objectPosition = imageFocus ?? '';
-        const [x, y] = (imageFocus ?? '50% 50%').split(' ');
-        focusDot.style.left = x;
-        focusDot.style.top = y;
-        focusDot.hidden = !src;
-        $('[data-photo-focus-hint]')!.hidden = !src;
-        $('[data-photo-empty]')!.hidden = !!src;
-        removeBtn.hidden = !src;
+        leerEl.hidden = !!src;
+        vollEl.hidden = !src;
+        rubrik();
+        if (!src) return;
+        let crops = zuschnitte(src, imageFocus);
+        $('[data-cover-crops]')!.replaceChildren(crops);
+        $('[data-cover-fokus]')!.replaceChildren(fokusFlaeche(src, imageFocus, (f) => {
+          imageFocus = f;
+          const neu = zuschnitte(src, f);
+          crops.replaceWith(neu);
+          crops = neu;
+          geaendert();
+        }));
+      };
+      const titelbildSetzen = (datei: string, m?: Gewaehlt) => {
+        imagePath = datei;
+        imageFocus = m?.focus ?? null;
+        if (m?.alt) set('image_alt', m.alt);
+        if (m?.alt_en) set('image_alt_en', m.alt_en);
+        if (m?.credit) set('image_credit', m.credit);
+        showPhoto();
+        geaendert();
       };
       showPhoto();
-      frame.addEventListener('click', (e) => {
-        if (!imagePath) return;
-        imageFocus = fokusAusKlick(e, frame);
-        showPhoto();
-        geaendert();
-      });
-      $<HTMLInputElement>('[data-photo-input]')!.addEventListener('change', async (e) => {
-        const input = e.target as HTMLInputElement;
-        const file = input.files?.[0];
-        if (!file) return;
-        showMessage(photoMsg, 'Foto wird hochgeladen …', 'ok');
+      const coverHoch = async (file: File) => {
+        zeigeFotoMeldung('');
+        leerEl.classList.add('is-laedt');
         try {
-          imagePath = await hochladen(ctx.sb, file, slug.value);
+          titelbildSetzen(await hochladen(file));
+          set('image_alt', '');
         } catch (err) {
-          return showMessage(photoMsg, (err as Error).message.startsWith('Bitte') ? (err as Error).message : errorText(err));
+          zeigeFotoMeldung((err as Error).message?.startsWith('Bitte') ? (err as Error).message : errorText(err));
         } finally {
+          leerEl.classList.remove('is-laedt');
+        }
+      };
+      $$<HTMLInputElement>('[data-photo-input]').forEach((input) =>
+        input.addEventListener('change', () => {
+          const file = input.files?.[0];
           input.value = '';
-        }
-        hochgeladen.add(imagePath);
-        imageFocus = null;
-        showPhoto();
-        showMessage(photoMsg, '');
-        geaendert();
+          if (file) void coverHoch(file);
+        }),
+      );
+      $$('[data-cover-mediathek]').forEach((b) =>
+        b.addEventListener('click', async () => {
+          const [m] = await mediathek(false);
+          if (m) titelbildSetzen(m.datei, m);
+        }),
+      );
+      const coverFeld = $('[data-schritt="titelfoto"]')!;
+      coverFeld.addEventListener('dragover', (e) => {
+        if (!e.dataTransfer?.types.includes('Files')) return;
+        e.preventDefault();
+        coverFeld.classList.add('is-drop');
       });
-      $('[data-photo-mediathek]')!.addEventListener('click', async () => {
-        const fotos = await mediathek();
-        if (!fotos.length) return showMessage(photoMsg, 'Noch keine Fotos in anderen Beiträgen.');
-        // dieselbe Auswahl wie im Bilder-Abschnitt, hier für ein Foto
-        const dlg = document.createElement('dialog');
-        dlg.className = 'fb-mt';
-        dlg.setAttribute('aria-label', 'Titelfoto aus früheren Beiträgen');
-        const liste = document.createElement('div');
-        liste.className = 'fb-mt__liste';
-        for (const f of fotos) {
-          const b = document.createElement('button');
-          b.type = 'button';
-          b.className = 'fb-mt__bild';
-          b.title = f.aus;
-          b.innerHTML = '<img alt="" loading="lazy"><span></span>';
-          b.querySelector('img')!.src = newsPhotoUrl(f.datei)!;
-          b.querySelector('span')!.textContent = f.aus;
-          b.setAttribute('aria-label', f.alt || `Foto aus „${f.aus}“`);
-          b.addEventListener('click', () => {
-            imagePath = f.datei;
-            imageFocus = null;
-            if (!val('image_alt') && f.alt) set('image_alt', f.alt);
-            showPhoto();
-            geaendert();
-            dlg.close();
-          });
-          liste.append(b);
-        }
-        const kopf = document.createElement('div');
-        kopf.className = 'fb-mt__kopf';
-        kopf.innerHTML = '<strong>Titelfoto aus früheren Beiträgen</strong><button type="button" class="i-linkbtn">Abbrechen</button>';
-        kopf.querySelector('button')!.addEventListener('click', () => dlg.close());
-        dlg.append(kopf, liste);
-        dlg.addEventListener('close', () => dlg.remove());
-        document.body.append(dlg);
-        dlg.showModal();
+      coverFeld.addEventListener('dragleave', (e) => !coverFeld.contains(e.relatedTarget as Node) && coverFeld.classList.remove('is-drop'));
+      coverFeld.addEventListener('drop', (e) => {
+        e.preventDefault();
+        coverFeld.classList.remove('is-drop');
+        const f = [...(e.dataTransfer?.files ?? [])].find((x) => x.type.startsWith('image/'));
+        if (f) void coverHoch(f);
       });
-      removeBtn.addEventListener('click', () => {
+      $('[data-photo-remove]')!.addEventListener('click', () => {
         imagePath = null;
         imageFocus = null;
         showPhoto();
@@ -585,16 +631,18 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       });
 
       // ---------- Daten zum Speichern ----------
+      const datumBeimVeroeffentlichen = { wert: '' };
       const daten = (status: 'entwurf' | 'veroeffentlicht') => {
-        const k = kind();
         const bloecke = editor.bloecke();
         const de = readFacts(factBoxes.facts).filter((f) => f.label || f.value);
         const en = readFacts(factBoxes.facts_en);
+        const frist = sichtbar('Ausschreibung');
+        const zitat = sichtbar('Stimme');
         return {
           slug: slug.value,
           status,
           category: val('category'),
-          date: val('date'),
+          date: datumBeimVeroeffentlichen.wert || val('date') || heute(),
           author: val('author'),
           featured: field<HTMLInputElement>('featured')!.checked,
           title: val('title'),
@@ -602,69 +650,85 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
           body: zuMarkdown(bloecke, 'de'),
           facts: de,
           facts_en: en.some((f) => f.label || f.value) ? en.slice(0, de.length) : [],
-          // Felder anderer Beitragsarten werden geleert, damit die Darstellung eindeutig ist
-          deadline: k === 'call' ? orNull(val('deadline')) : null,
-          image_path: k === 'photo' ? imagePath : null,
-          image_alt: k === 'photo' ? orNull(val('image_alt')) : null,
-          image_credit: k === 'photo' ? orNull(val('image_credit')) : null,
+          // Frist nur bei Ausschreibungen, Zitat nur bei Stimmen (oder wenn schon etwas darin steht)
+          deadline: frist ? orNull(val('deadline')) : null,
+          image_path: imagePath,
+          image_alt: imagePath ? orNull(val('image_alt')) : null,
+          image_credit: imagePath ? orNull(val('image_credit')) : null,
           // erst ab Migration 20261015000000 vorhanden: ohne sie nur mitschicken, wenn ein Ausschnitt gewählt ist
-          ...(imageFocus || 'image_focus' in row ? { image_focus: k === 'photo' && imagePath ? imageFocus : null } : {}),
-          image_alt_en: k === 'photo' ? orNull(val('image_alt_en')) : null,
-          quote_text: k === 'quote' ? orNull(val('quote_text')) : null,
-          quote_who: k === 'quote' ? orNull(val('quote_who')) : null,
-          quote_role: k === 'quote' ? orNull(val('quote_role')) : null,
-          quote_text_en: k === 'quote' ? orNull(val('quote_text_en')) : null,
-          quote_role_en: k === 'quote' ? orNull(val('quote_role_en')) : null,
+          ...(imageFocus || 'image_focus' in row ? { image_focus: imagePath ? imageFocus : null } : {}),
+          // erst ab Migration 20261016000000
+          ...(newsletterOk ? { newsletter } : {}),
+          image_alt_en: imagePath ? orNull(val('image_alt_en')) : null,
+          quote_text: zitat ? orNull(val('quote_text')) : null,
+          quote_who: zitat ? orNull(val('quote_who')) : null,
+          quote_role: zitat ? orNull(val('quote_role')) : null,
+          quote_text_en: zitat ? orNull(val('quote_text_en')) : null,
+          quote_role_en: zitat ? orNull(val('quote_role_en')) : null,
           title_en: orNull(val('title_en')),
           teaser_en: orNull(val('teaser_en')),
           body_en: hatEnglisch(bloecke) ? zuMarkdown(bloecke, 'en') : null,
         };
       };
-      /** für die Vorschau: dazu jeder Abschnitt einzeln (Klick springt dorthin) */
+      /** für die Vorschau: dazu jeder Block einzeln (Klick springt dorthin) */
       const vorschauDaten = (lang: Sprache) => {
         const bloecke = editor.bloecke();
         return { ...daten(row.status ?? 'entwurf'), image_focus: imageFocus, abschnitte: bloecke.map((b) => zuMarkdown([b], lang)) };
       };
 
       // ---------- Springen (aus der Vorschau oder der Checkliste) ----------
+      const pub = $<HTMLDialogElement>('[data-pub]')!;
       const hin = (el: HTMLElement | null, fokus?: HTMLElement | null) => {
+        if (pub.open) pub.close();
         el?.closest('details')?.setAttribute('open', '');
         el?.scrollIntoView({ block: 'center', behavior: 'smooth' });
         (fokus ?? el)?.focus({ preventScroll: true });
       };
       const springen = (z: Sprungziel) => {
+        if (pub.open) pub.close();
         if (z.ziel === 'abschnitt') return editor.springen(z.i);
-        if (z.ziel === 'titel') return hin(field('title') as HTMLElement);
-        if (z.ziel === 'kurztext') return hin(field('teaser') as HTMLElement);
+        if (z.ziel === 'titel') return hin(titel);
+        if (z.ziel === 'kurztext') return hin(teaser);
         if (z.ziel === 'frist') return hin(field('deadline') as HTMLElement);
-        if (z.ziel === 'titelfoto') return hin($('[data-schritt="titelfoto"]'), $('[data-photo-input]'));
+        if (z.ziel === 'titelfoto') return hin(coverFeld, imagePath ? field('image_alt') as HTMLElement : $('[data-cover-mediathek]'));
         if (z.ziel === 'fakten') {
           $<HTMLDetailsElement>('[data-fakten]')!.open = true;
           return hin($('[data-fakten]'), factBoxes.facts.querySelector('input') ?? $('[data-add-fact="facts"]'));
         }
       };
       const vp = vorschau({ url: `${internUrl('news/vorschau/')}?eingebettet=1`, daten: vorschauDaten, springen });
+      titel.addEventListener('focus', () => vp.zeigen('titel'));
+      teaser.addEventListener('focus', () => vp.zeigen('kurztext'));
+      coverFeld.addEventListener('focusin', () => vp.zeigen('titelfoto'));
 
       // ---------- Checkliste ----------
-      const checkEl = $<HTMLDetailsElement>('[data-check]')!;
       type Punkt = { text: string; ok: boolean; pflicht: boolean; ziel: () => void };
       const punkte = (): Punkt[] => {
-        const k = kind();
+        const kat = val('category');
         const p: Punkt[] = [];
-        if (editor.laedt()) p.push({ text: 'Fotos werden noch hochgeladen', ok: false, pflicht: true, ziel: () => {} });
-        p.push({ text: 'Titel', ok: val('title').length >= 3, pflicht: true, ziel: () => springen({ ziel: 'titel' }) });
-        p.push({ text: 'Kurztext', ok: !!val('teaser'), pflicht: true, ziel: () => springen({ ziel: 'kurztext' }) });
-        if (k === 'photo') p.push({ text: 'Titelfoto', ok: !!imagePath, pflicht: true, ziel: () => springen({ ziel: 'titelfoto' }) });
-        if (k === 'call') p.push({ text: 'Bewerbungsfrist', ok: !!val('deadline'), pflicht: true, ziel: () => springen({ ziel: 'frist' }) });
-        if (k === 'quote') p.push({ text: 'Zitat und Name', ok: !!val('quote_text') && !!val('quote_who'), pflicht: true, ziel: () => hin(field('quote_text') as HTMLElement) });
-        p.push({ text: 'Text', ok: editor.hatText(), pflicht: false, ziel: () => editor.springen(0) });
-        const ohne = editor.ohneBeschreibung() + (k === 'photo' && imagePath && !val('image_alt') ? 1 : 0);
-        p.push({ text: ohne ? `Bildbeschreibung bei ${ohne} ${ohne === 1 ? 'Foto' : 'Fotos'}` : 'Bildbeschreibungen', ok: !ohne, pflicht: false, ziel: () => {
-          const leer = k === 'photo' && imagePath && !val('image_alt');
-          if (leer) return hin(field('image_alt') as HTMLElement);
-          const i = [...document.querySelectorAll('.ab-block')].findIndex((b) => b.classList.contains('ab-block--bilder'));
+        const tz = val('teaser');
+        if (editor.laedt()) p.push({ text: 'Fotos sind hochgeladen', ok: false, pflicht: true, ziel: () => {} });
+        p.push({ text: 'Titel gesetzt', ok: val('title').length >= 3, pflicht: true, ziel: () => springen({ ziel: 'titel' }) });
+        p.push({ text: 'Teaser geschrieben, höchstens 220 Zeichen', ok: !!tz && tz.length <= 220, pflicht: !tz, ziel: () => springen({ ziel: 'kurztext' }) });
+        if (kat === 'Ausschreibung') p.push({ text: 'Bewerbungsfrist eingetragen', ok: !!val('deadline'), pflicht: true, ziel: () => springen({ ziel: 'frist' }) });
+        if (kat === 'Stimme') p.push({ text: 'Zitat für die Übersicht', ok: !!val('quote_text') && !!val('quote_who'), pflicht: false, ziel: () => hin(field('quote_text') as HTMLElement) });
+        p.push({ text: 'Titelbild gewählt', ok: !!imagePath, pflicht: false, ziel: () => springen({ ziel: 'titelfoto' }) });
+        const ohne = editor.ohneBeschreibung() + (imagePath && !val('image_alt') ? 1 : 0);
+        p.push({ text: ohne ? `Bildbeschreibung fehlt bei ${ohne} ${ohne === 1 ? 'Foto' : 'Fotos'}` : 'Bildbeschreibung für alle Bilder', ok: !ohne, pflicht: false, ziel: () => {
+          if (imagePath && !val('image_alt')) return hin(field('image_alt') as HTMLElement);
+          const i = $$('.ab-block').findIndex((b) => b.classList.contains('ab-block--bilder'));
           if (i >= 0) editor.springen(i);
         } });
+        const ohneNachweis = editor.ohneNachweis() + (imagePath && !val('image_credit') ? 1 : 0);
+        p.push({ text: 'Fotonachweis für alle Bilder', ok: !ohneNachweis, pflicht: false, ziel: () => {
+          if (imagePath && !val('image_credit')) return hin(field('image_credit') as HTMLElement);
+          const i = $$('.ab-block').findIndex((b) => b.classList.contains('ab-block--bilder'));
+          if (i >= 0) editor.springen(i);
+        } });
+        const leer = editor.leer();
+        p.push({ text: 'Keine leeren Blöcke', ok: leer < 0, pflicht: false, ziel: () => leer >= 0 && editor.springen(leer) });
+        const alles = JSON.stringify(daten('entwurf'));
+        p.push({ text: 'Keine Emoji (Gestaltungsregel)', ok: !EMOJI.test(alles), pflicht: true, ziel: () => springen({ ziel: 'titel' }) });
         p.push({ text: 'Englische Fassung', ok: !!val('title_en') || hatEnglisch(editor.bloecke()), pflicht: false, ziel: () => {
           $<HTMLDetailsElement>('[data-en]')!.open = true;
           hin(field('title_en') as HTMLElement);
@@ -672,60 +736,49 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
         return p;
       };
       const fehlend = () => punkte().filter((p) => p.pflicht && !p.ok);
-      const checkliste = () => {
-        const p = punkte();
-        const offen = p.filter((x) => x.pflicht && !x.ok).length;
-        checkEl.dataset.bereit = offen ? 'nein' : 'ja';
-        $('[data-check-text]')!.textContent = offen
-          ? `Noch ${offen} ${offen === 1 ? 'Punkt' : 'Punkte'} zum Veröffentlichen`
-          : 'Bereit zum Veröffentlichen';
-        $('[data-check-liste]')!.replaceChildren(...p.map((x) => {
-          const li = document.createElement('li');
-          const b = document.createElement('button');
-          b.type = 'button';
-          b.dataset.zustand = x.ok ? 'ok' : x.pflicht ? 'fehlt' : 'tipp';
-          b.innerHTML = '<span class="ne-check__i" aria-hidden="true"></span><span></span>';
-          b.querySelector('.ne-check__i')!.textContent = x.ok ? '✓' : x.pflicht ? '!' : '○';
-          b.querySelector('span:last-child')!.textContent = x.text;
-          if (!x.pflicht && !x.ok) {
-            const o = document.createElement('span');
-            o.className = 'ne-check__opt';
-            o.textContent = 'empfohlen';
-            b.append(o);
-          }
-          b.setAttribute('aria-label', `${x.text}: ${x.ok ? 'erledigt' : x.pflicht ? 'fehlt' : 'empfohlen'}`);
-          b.addEventListener('click', x.ziel);
-          li.append(b);
-          return li;
-        }));
-      };
-      let checkTimer = 0;
-      const checklisteBald = () => {
-        window.clearTimeout(checkTimer);
-        checkTimer = window.setTimeout(checkliste, 200);
-      };
 
       // ---------- Englisch-Status ----------
-      const enState = $('[data-en-state]');
+      const enState = $('[data-en-state]')!;
       const updateEn = () => {
-        if (!enState) return;
-        const has = ['title_en', 'teaser_en'].filter((n) => field(n)?.value.trim()).length + (hatEnglisch(editor.bloecke()) ? 1 : 0);
-        enState.textContent = has === 3 ? '· übersetzt' : has ? '· teilweise' : '· noch nicht übersetzt';
+        const has = ['title_en', 'teaser_en'].filter((n) => val(n)).length + (hatEnglisch(editor.bloecke()) ? 1 : 0);
+        enState.textContent = has === 3 ? 'übersetzt' : has ? 'teilweise' : 'optional';
       };
 
-      // ---------- Sicherung auf diesem Gerät ----------
-      interface Sicherung { zeit: number; basis: string | null; stand: string; kind: Kind; imagePath: string | null; imageFocus: string | null; daten: ReturnType<typeof daten>; bloecke: Block[] }
-      const schluessel = (id?: string | null) => `tndd-news-sicherung:${id ?? 'neu'}`;
+      // ---------- Status, Kopfleiste ----------
+      const online = () => row.status === 'veroeffentlicht';
+      const geplant = () => online() && (row.date ?? '') > heute();
+      const statusBadge = $('[data-status-badge]')!;
       const sicherEl = $('[data-sicher]')!;
-      const stand = () => JSON.stringify([daten('entwurf'), kind(), imagePath, imageFocus]);
+      const oeffnen = $<HTMLButtonElement>('[data-pub-oeffnen]')!;
+      const delBtn = $<HTMLButtonElement>('[data-delete]')!;
+      const live = $<HTMLAnchorElement>('[data-view-live]')!;
+      const linkBtn = $<HTMLButtonElement>('[data-vorschau-link]')!;
+      const renderStatus = () => {
+        const z = geplant() ? 'geplant' : online() ? 'online' : 'entwurf';
+        statusBadge.textContent = z === 'geplant' ? `Geplant · ${datumKurz(row.date!)}` : z === 'online' ? 'Online' : 'Entwurf';
+        statusBadge.dataset.status = z;
+        oeffnen.textContent = online() ? 'Aktualisieren' : 'Veröffentlichen';
+        delBtn.hidden = !row.id;
+        linkBtn.hidden = !row.id;
+        live.hidden = !online() || geplant();
+        live.href = `${base}news/${row.slug}/`;
+        document.title = `${row.title || 'Neuer Beitrag'} · Redaktion`;
+      };
+      const stand = (text: string) => (sicherEl.textContent = text);
+      renderStatus();
+      stand(row.updated_at ? `Gespeichert · ${new Date(row.updated_at).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}` : 'Noch nicht gespeichert');
+
+      // ---------- Sicherung auf diesem Gerät ----------
+      interface Sicherung { zeit: number; basis: string | null; stand: string; imagePath: string | null; imageFocus: string | null; daten: ReturnType<typeof daten>; bloecke: Block[] }
+      const schluessel = (id?: string | null) => `tndd-news-sicherung:${id ?? 'neu'}`;
+      const standJson = () => JSON.stringify([daten('entwurf'), imagePath, imageFocus, newsletter]);
       let gespeicherterStand = '';
-      let sicherTimer = 0;
       const sichern = () => {
         if (!dirty) return;
         try {
-          const s: Sicherung = { zeit: Date.now(), basis: row.updated_at ?? null, stand: stand(), kind: kind(), imagePath, imageFocus, daten: daten('entwurf'), bloecke: editor.bloecke() };
+          const s: Sicherung = { zeit: Date.now(), basis: row.updated_at ?? null, stand: standJson(), imagePath, imageFocus, daten: daten('entwurf'), bloecke: editor.bloecke() };
           localStorage.setItem(schluessel(row.id), JSON.stringify(s));
-          sicherEl.textContent = `Auf diesem Gerät gesichert · ${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
+          if (online()) stand(`Änderungen noch nicht online · auf diesem Gerät gesichert ${uhrzeit()}`);
         } catch {
           /* kein Speicher (privates Fenster): dann nur die Warnung beim Verlassen */
         }
@@ -737,120 +790,201 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
         } catch {
           /* egal */
         }
-        sicherEl.textContent = '';
+      };
+
+      // ---------- Speichern ----------
+      /** Angaben der Fotos in die Mediathek übernehmen (gelten dann überall) */
+      const medienUebernehmen = async () => {
+        if (!medienOk) return;
+        const mitNachweis: Omit<MedienRow, 'created_at' | 'updated_at'>[] = [];
+        const ohneNachweis: Omit<MedienRow, 'created_at' | 'updated_at' | 'credit'>[] = [];
+        const dazu = (x: { datei: string; alt: string; alt_en: string; focus: string | null; credit: string }) => {
+          const alt = { datei: x.datei, alt: x.alt.trim(), alt_en: x.alt_en.trim(), focus: x.focus };
+          if (x.credit.trim()) mitNachweis.push({ ...alt, credit: x.credit.trim() });
+          else ohneNachweis.push(alt);
+          medien.set(x.datei, { ...alt, credit: x.credit.trim() || medien.get(x.datei)?.credit || '' });
+        };
+        if (imagePath) dazu({ datei: imagePath, alt: val('image_alt'), alt_en: val('image_alt_en'), focus: imageFocus, credit: val('image_credit') });
+        editor.fotos().forEach(dazu);
+        if (mitNachweis.length) await ctx.sb.from('news_medien').upsert(mitNachweis);
+        if (ohneNachweis.length) await ctx.sb.from('news_medien').upsert(ohneNachweis);
+      };
+
+      let speichertGerade: Promise<boolean> | null = null;
+      const save = async (status: 'entwurf' | 'veroeffentlicht', auto = false): Promise<boolean> => {
+        if (speichertGerade) await speichertGerade;
+        const lauf = (async () => {
+          const payload = daten(status);
+          const vorher = standJson();
+          if (!auto) stand('Speichert …');
+          const q = row.id
+            ? ctx.sb.from('news_posts').update(payload).eq('id', row.id).select().single<NewsRow>()
+            : ctx.sb.from('news_posts').insert(payload).select().single<NewsRow>();
+          const { data, error } = await q;
+          if (error) {
+            stand('Nicht gespeichert');
+            const dup = /duplicate|unique/i.test(error.message);
+            if (/image_focus|news_image_alt/.test(error.message)) melden('Die Datenbank ist noch nicht auf dem neuen Stand: Bitte die Migration 20261015000000_news_bilder.sql im SQL-Editor ausführen.');
+            else if (/newsletter/.test(error.message)) melden('Bitte die Migration 20261016000000_mediathek.sql im SQL-Editor ausführen.');
+            else if (/body_check|body_en_check/.test(error.message)) melden('Der Text ist zu lang. Bitte die Migration 20261015000000_news_bilder.sql ausführen (erlaubt längere Texte) oder kürzen.');
+            else melden(dup ? 'Diese Adresse ist schon vergeben. Bitte unter „Weitere Angaben → Adresse“ eine andere wählen.' : errorText(error));
+            return false;
+          }
+          await medienUebernehmen();
+          const warOnline = online();
+          row = data;
+          // während des Speicherns weitergetippt? Dann bleibt es „ungespeichert“
+          if (standJson() === vorher) {
+            dirty = false;
+            sicherungLoeschen();
+          }
+          gespeicherterStand = standJson();
+          if (!id0 || id0 !== row.id) history.replaceState(null, '', `${internUrl('news/bearbeiten/')}?id=${row.id}`);
+          renderStatus();
+          stand(`Gespeichert · ${uhrzeit()}`);
+          if (auto) return true;
+          // Online-Stand geändert: Website neu bauen lassen (holt die News beim Build aus Supabase)
+          const baut = status === 'veroeffentlicht' || warOnline ? await neuBauenLassen(ctx.sb) : false;
+          const wann = baut ? 'in 2–3 Minuten' : 'mit dem nächsten Update, spätestens morgen früh';
+          melden(
+            status === 'veroeffentlicht'
+              ? geplant()
+                ? `Eingeplant. Der Beitrag erscheint am ${datumLang(row.date!)} morgens automatisch auf der Website.`
+                : `Veröffentlicht. Der Beitrag ist ${wann} online.`
+              : warOnline
+                ? `Offline genommen. Der Beitrag verschwindet ${wann} von der Website und ist wieder Entwurf.`
+                : 'Entwurf gespeichert. Nur die Redaktion sieht ihn.',
+            'ok',
+          );
+          return true;
+        })();
+        speichertGerade = lauf;
+        try {
+          return await lauf;
+        } finally {
+          if (speichertGerade === lauf) speichertGerade = null;
+        }
+      };
+
+      // Entwürfe speichert der Editor selbst (ab einem Titel); online bleibt alles bis „Aktualisieren“
+      let autoTimer = 0;
+      const autoSpeichern = () => {
+        window.clearTimeout(autoTimer);
+        if (online()) return;
+        autoTimer = window.setTimeout(() => {
+          if (!dirty || online() || val('title').length < 3 || editor.laedt()) {
+            if (dirty && val('title').length < 3) stand('Ab einem Titel speichert der Editor selbst');
+            return;
+          }
+          void save('entwurf', true);
+        }, 2500);
       };
 
       // ---------- Änderungen ----------
+      let sicherTimer = 0;
       function geaendert() {
         dirty = true;
         updateEn();
-        checklisteBald();
         vp.neu();
+        if (pub.open) pubZeichnen();
         window.clearTimeout(sicherTimer);
         sicherTimer = window.setTimeout(sichern, 1200);
-        $('[data-vorlagen]')!.hidden = !!id0 || vorlageGewaehlt || editor.hatText();
+        autoSpeichern();
+        if (!online()) stand('Ungespeicherte Änderungen');
+        $('[data-vorlagen]')!.hidden = !!id0 || !!row.id || vorlageGewaehlt || editor.hatText();
       }
       form.addEventListener('input', geaendert);
-      form.addEventListener('change', () => {
+      form.addEventListener('change', (e) => {
+        if ((e.target as HTMLInputElement).name === 'category') rubrik();
         geaendert();
-        datumHinweis();
       });
 
-      // ---------- Status, Speichern ----------
-      const statusBadge = $('[data-status-badge]')!;
+      // ---------- Veröffentlichen-Panel ----------
+      let modus: 'sofort' | 'planen' = 'sofort';
+      const planDatum = $<HTMLInputElement>('[data-plan-datum]')!;
       const publishBtn = $<HTMLButtonElement>('[data-publish]')!;
-      const saveBtn = $<HTMLButtonElement>('[data-save]')!;
-      const delBtn = $<HTMLButtonElement>('[data-delete]')!;
-      const live = $<HTMLAnchorElement>('[data-view-live]')!;
-      const linkBtn = $<HTMLButtonElement>('[data-vorschau-link]')!;
-      const savedAt = $('[data-saved-at]');
-      const geplant = () => val('date') > heute();
-      const datumHinweis = () => {
-        $('[data-date-hint]')!.textContent = geplant()
-          ? `Geplant: Der Beitrag erscheint am ${datumLang(val('date'))} morgens.`
-          : 'Ein Datum in der Zukunft plant den Beitrag: Er erscheint an diesem Tag morgens.';
+      const newsletterEl = $<HTMLInputElement>('[data-newsletter]')!;
+      const storyEl = $<HTMLInputElement>('[data-story]')!;
+      const modusSetzen = (m: typeof modus) => {
+        modus = m;
+        $$('[data-modus]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.modus === m)));
+        $('[data-plan]')!.hidden = m !== 'planen';
+        pubZeichnen();
       };
-      datumHinweis();
-      const renderStatus = () => {
-        const online = row.status === 'veroeffentlicht';
-        const spaeter = online && (row.date ?? '') > heute();
-        statusBadge.textContent = spaeter ? `Geplant · ${datumLang(row.date!)}` : online ? 'Online' : 'Entwurf';
-        statusBadge.dataset.status = spaeter ? 'geplant' : (row.status ?? 'entwurf');
-        $('[data-heading]')!.textContent = row.id ? 'Beitrag bearbeiten' : 'Neuer Beitrag';
-        publishBtn.textContent = online ? 'Änderungen veröffentlichen' : 'Veröffentlichen';
-        saveBtn.textContent = online ? 'Zurückziehen (wieder Entwurf)' : 'Als Entwurf speichern';
-        delBtn.hidden = !row.id;
-        linkBtn.hidden = !row.id;
-        live.hidden = !online || spaeter;
-        live.href = `${base}news/${row.slug}/`;
-        if (savedAt && row.updated_at) savedAt.textContent = `Zuletzt gespeichert: ${new Date(row.updated_at).toLocaleString('de-DE')}`;
-      };
-      renderStatus();
-
-      const save = async (status: 'entwurf' | 'veroeffentlicht') => {
-        const p = status === 'veroeffentlicht'
-          ? fehlend().map((x) => x.text)
-          : [...(val('title').length < 3 ? ['Titel'] : []), ...(editor.laedt() ? ['Fotos werden noch hochgeladen'] : [])];
-        if (p.length) {
-          checkEl.open = true;
-          checkliste();
-          return showMessage(msg, `Bitte noch ergänzen: ${p.join(', ')}.`);
+      function pubZeichnen() {
+        $('[data-pub-titel]')!.textContent = val('title') || 'Ohne Titel';
+        const p = punkte();
+        const ok = p.filter((x) => x.ok).length;
+        $('[data-check-summe]')!.textContent = `${ok} von ${p.length} erfüllt`;
+        $('[data-check-liste]')!.replaceChildren(...p.map((x) =>
+          h('li', { 'data-zustand': x.ok ? 'ok' : x.pflicht ? 'fehlt' : 'tipp' },
+            h('span', { class: 'ne-check__box', 'aria-hidden': 'true' }),
+            h('span', { class: 'ne-check__text', text: x.text }),
+            h('span', { class: 'visually-hidden', text: x.ok ? ': erledigt' : x.pflicht ? ': Pflicht, fehlt' : ': empfohlen' }),
+            x.ok ? null : h('span', { class: 'ne-check__art', 'aria-hidden': 'true', text: x.pflicht ? 'Pflicht' : 'Empfohlen' }),
+            x.ok ? null : h('button', { type: 'button', class: 'ne-check__fix', text: 'Beheben', 'aria-label': `${x.text}: beheben`, onclick: x.ziel }))));
+        const gesperrt = p.some((x) => x.pflicht && !x.ok) || (modus === 'planen' && !(planDatum.value > heute()));
+        $('[data-pub-block]')!.hidden = !p.some((x) => x.pflicht && !x.ok);
+        publishBtn.disabled = gesperrt;
+        publishBtn.textContent = modus === 'planen' ? 'Einplanen' : online() && !geplant() ? 'Änderungen veröffentlichen' : 'Jetzt veröffentlichen';
+        $('[data-offline]')!.hidden = !online();
+        // So erscheint er in der Chronik
+        const kat = val('category') as NewsRow['category'];
+        const datum = modus === 'planen' && planDatum.value ? planDatum.value : online() ? val('date') : heute();
+        const src = newsPhotoUrl(imagePath);
+        $('[data-chronik]')!.replaceChildren(
+          src ? h('div', { class: 'ne-chronik__bild' }, h('img', { src, alt: '', style: imageFocus ? `object-position:${imageFocus}` : undefined })) : '',
+          h('div', { class: 'ne-chronik__text' },
+            h('span', { class: 'ne-chronik__meta' }, h('span', { class: `badge${newsBadge[kat] === 'magenta' ? '' : ` badge--${newsBadge[kat]}`}`, text: kat }), ` ${datumKurz(datum)}`),
+            h('span', { class: 'ne-chronik__titel', text: val('title') || 'Titel des Beitrags' }),
+            h('span', { class: 'ne-chronik__teaser', text: val('teaser') })));
+      }
+      oeffnen.addEventListener('click', () => {
+        newsletterEl.checked = newsletter;
+        planDatum.min = morgen();
+        planDatum.value = geplant() ? row.date! : planDatum.value || morgen();
+        modusSetzen(geplant() ? 'planen' : 'sofort');
+        pub.showModal();
+      });
+      $$('[data-pub-zu]').forEach((b) => b.addEventListener('click', () => pub.close()));
+      pub.addEventListener('click', (e) => e.target === pub && pub.close());
+      $$('[data-modus]').forEach((b) => b.addEventListener('click', () => modusSetzen(b.dataset.modus as typeof modus)));
+      planDatum.addEventListener('input', pubZeichnen);
+      newsletterEl.addEventListener('change', () => {
+        newsletter = newsletterEl.checked;
+        geaendert();
+      });
+      publishBtn.addEventListener('click', async () => {
+        if (fehlend().length) return pubZeichnen();
+        // Sofort: erstes Veröffentlichen mit heutigem Datum, danach bleibt es; Planen: gewählter Tag
+        const d = val('date') || heute();
+        datumBeimVeroeffentlichen.wert = modus === 'planen' ? planDatum.value : !online() || d > heute() ? heute() : d;
+        publishBtn.disabled = true;
+        const ok = await save('veroeffentlicht');
+        datumBeimVeroeffentlichen.wert = '';
+        publishBtn.disabled = false;
+        if (!ok) return;
+        set('date', row.date);
+        pub.close();
+        if (storyEl.checked) {
+          try {
+            await storyBild({ titel: row.title ?? '', kategorie: row.category ?? 'Netzwerk', datum: row.date ?? heute(), bild: newsPhotoUrl(imagePath), fokus: imageFocus, datei: `story-${row.slug}.png` });
+          } catch {
+            melden('Das Story-Bild ließ sich nicht erstellen. Bitte erneut versuchen.');
+          }
         }
-        const payload = daten(status);
-        publishBtn.disabled = saveBtn.disabled = true;
-        const q = row.id
-          ? ctx.sb.from('news_posts').update(payload).eq('id', row.id).select().single<NewsRow>()
-          : ctx.sb.from('news_posts').insert(payload).select().single<NewsRow>();
-        const { data, error } = await q;
-        publishBtn.disabled = saveBtn.disabled = false;
-        if (error) {
-          const dup = /duplicate|unique/i.test(error.message);
-          if (/image_focus|news_image_alt/.test(error.message)) return showMessage(msg, 'Die Datenbank ist noch nicht auf dem neuen Stand (Bildausschnitt, Bildbeschreibung optional): Bitte die Migration 20261015000000_news_bilder.sql im SQL-Editor ausführen.');
-          if (/body_check|body_en_check/.test(error.message)) return showMessage(msg, 'Der Text ist zu lang. Bitte die Migration 20261015000000_news_bilder.sql ausführen (erlaubt längere Texte) oder kürzen.');
-          return showMessage(msg, dup ? 'Diese Adresse ist schon vergeben. Bitte unter „Adresse des Beitrags“ eine andere wählen.' : errorText(error));
-        }
-        // in dieser Sitzung hochgeladene, aber nicht verwendete Fotos löschen
-        const genutzt = bilddateien(payload.body, payload.body_en);
-        if (payload.image_path) genutzt.add(payload.image_path);
-        const weg = [...hochgeladen].filter((x) => !genutzt.has(x));
-        if (weg.length) await ctx.sb.storage.from(BUCKET).remove(weg);
-        weg.forEach((x) => hochgeladen.delete(x));
+      });
+      $('[data-offline]')!.addEventListener('click', async () => {
+        if (!confirm('Beitrag offline nehmen? Er verschwindet von der Website und wird wieder Entwurf.')) return;
+        if (await save('entwurf')) pub.close();
+      });
 
-        const wasOnline = row.status === 'veroeffentlicht';
-        sicherungLoeschen();
-        row = data;
-        dirty = false;
-        gespeicherterStand = stand();
-        if (!id0 || id0 !== row.id) history.replaceState(null, '', `${internUrl('news/bearbeiten/')}?id=${row.id}`);
-        renderStatus();
-        // Online-Stand geändert: Website neu bauen lassen (holt die News beim Build aus Supabase)
-        const baut = status === 'veroeffentlicht' || wasOnline ? await neuBauenLassen(ctx.sb) : false;
-        const wann = baut ? 'in 2–3 Minuten' : 'mit dem nächsten Update, spätestens morgen früh';
-        showMessage(
-          msg,
-          status === 'veroeffentlicht'
-            ? geplant()
-              ? `Geplant. Der Beitrag erscheint am ${datumLang(val('date'))} morgens automatisch auf der Website.`
-              : `Veröffentlicht. Der Beitrag ist ${wann} online.`
-            : wasOnline
-              ? `Zurückgezogen. Der Beitrag verschwindet ${wann} von der Website.`
-              : 'Entwurf gespeichert. Nur die Redaktion sieht ihn.',
-          'ok',
-        );
-      };
-      publishBtn.addEventListener('click', () => save('veroeffentlicht'));
-      saveBtn.addEventListener('click', () => save('entwurf'));
+      // ---------- Weitere Angaben: Löschen, Vorschau-Link ----------
       delBtn.addEventListener('click', async () => {
-        if (!row.id || !confirm(`„${row.title}“ wirklich löschen? Das lässt sich nicht rückgängig machen.`)) return;
+        if (!row.id || !confirm(`„${row.title}“ wirklich löschen? Das lässt sich nicht rückgängig machen. Die Fotos bleiben in der Mediathek.`)) return;
         const { error } = await ctx.sb.from('news_posts').delete().eq('id', row.id);
-        if (error) return showMessage(msg, errorText(error));
-        // Fotos löschen, die kein anderer Beitrag mehr verwendet (Mediathek)
-        const { data: andere } = await ctx.sb.from('news_posts').select('body, body_en, image_path');
-        const anderswo = bilddateien(...((andere ?? []) as Pick<NewsRow, 'body' | 'body_en'>[]).flatMap((a) => [a.body, a.body_en]));
-        for (const a of (andere ?? []) as Pick<NewsRow, 'image_path'>[]) if (a.image_path) anderswo.add(a.image_path);
-        const fotos = [...new Set([...bilddateien(row.body, row.body_en), ...hochgeladen, ...(row.image_path ? [row.image_path] : [])])].filter((f) => !anderswo.has(f));
-        if (fotos.length) await ctx.sb.storage.from(BUCKET).remove(fotos);
-        if (row.status === 'veroeffentlicht') await neuBauenLassen(ctx.sb);
+        if (error) return melden(errorText(error));
+        if (online()) await neuBauenLassen(ctx.sb);
         sicherungLoeschen();
         dirty = false;
         location.href = internUrl('news/');
@@ -876,28 +1010,23 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       let vorlageGewaehlt = false;
       const vorlagenBox = $('[data-vorlagen]')!;
       vorlagenBox.hidden = !!id0 || editor.hatText();
-      $('[data-vorlagen-liste]')!.replaceChildren(...vorlagen.map((v) => {
-        const b = document.createElement('button');
-        b.type = 'button';
-        b.className = 'ne-vorlage';
-        b.innerHTML = '<strong></strong><span></span>';
-        b.querySelector('strong')!.textContent = v.name;
-        b.querySelector('span')!.textContent = v.text;
-        b.addEventListener('click', () => {
-          kindSetzen(v.art);
-          set('category', v.kategorie);
-          if (v.fakten.length) faktenSetzen(v.fakten.map((label) => ({ label, value: '' })));
-          editor.setzen(v.bloecke() as EBlock[]);
-          vorlageGewaehlt = true;
-          vorlagenBox.hidden = true;
-          geaendert();
-          field<HTMLInputElement>('title')?.focus();
-        });
-        return b;
-      }));
+      $('[data-vorlagen-liste]')!.replaceChildren(...vorlagen.map((v) =>
+        h('button', {
+          type: 'button', class: 'ne-vorlage',
+          onclick: () => {
+            set('category', v.kategorie);
+            if (v.fakten.length) faktenSetzen(v.fakten.map((label) => ({ label, value: '' })));
+            editor.setzen(v.bloecke() as EBlock[]);
+            vorlageGewaehlt = true;
+            vorlagenBox.hidden = true;
+            rubrik();
+            geaendert();
+            titel.focus();
+          },
+        }, h('strong', { text: v.name }), h('span', { text: v.text }))));
 
       // ---------- Wiederherstellen ----------
-      gespeicherterStand = stand();
+      gespeicherterStand = standJson();
       let sicherung: Sicherung | null = null;
       try {
         sicherung = JSON.parse(localStorage.getItem(schluessel(id0)) ?? 'null') as Sicherung | null;
@@ -913,16 +1042,16 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
         $('[data-wieder-ja]')!.addEventListener('click', () => {
           const s = sicherung!;
           fuellen({ ...row, ...s.daten, image_path: s.imagePath, image_focus: s.imageFocus } as Partial<NewsRow>);
-          kindSetzen(s.kind);
           imagePath = s.imagePath;
           imageFocus = s.imageFocus;
           showPhoto();
           editor.setzen(s.bloecke as EBlock[]);
           count();
           showSlug();
+          [titel, teaser].forEach(wachsen);
           box.hidden = true;
           geaendert();
-          showMessage(msg, 'Wiederhergestellt. Zum Übernehmen bitte speichern oder veröffentlichen.', 'ok');
+          melden(online() ? 'Wiederhergestellt. Zum Übernehmen „Aktualisieren“ wählen.' : 'Wiederhergestellt.', 'ok');
         });
         $('[data-wieder-nein]')!.addEventListener('click', () => {
           sicherungLoeschen();
@@ -931,12 +1060,7 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       }
 
       updateEn();
-      checkliste();
+      if (!id0) titel.focus();
     }
   }
 </script>
-
-<style>
-  .ne-opt { color: var(--ink-muted); font-weight: 500; letter-spacing: 0.1em; margin-left: 6px; }
-  .ne-status[data-status='geplant'] { background: var(--magenta-tint); border-color: var(--magenta); }
-</style>

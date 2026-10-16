@@ -2,7 +2,7 @@
  * Link einfügen im News-Editor: Seiten, Personen aus dem Netzwerk, Termine und News suchen und wählen –
  * oder eine eigene Adresse eintragen. Die Ziele stehen beim Build in der Seite ([data-linkziele]).
  */
-import { h } from './abschnitte';
+import { h } from './dom';
 
 export interface Linkziel {
   /** Seite · Person · Termin · News */

@@ -5,12 +5,12 @@
  *   ?b=termine&neu=1[&kopie=<id>]             neu (optional als Kopie)
  *   ?b=verein                                 Einstellungen (eine Datei)
  */
-import Intern from '../../../../layouts/Intern.astro';
+import Redaktion from '../../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
 import { href } from '../../../../lib/url';
 import '../../../../styles/redaktion.css';
 ---
-<Intern title="Redaktion" current="redaktion">
+<Redaktion title="Redaktion" current="inhalte">
   <a class="r-back" href={href('intern/redaktion/')} data-zurueck>← Redaktion</a>
   <div class="r-head">
     <div>
@@ -53,7 +53,7 @@ import '../../../../styles/redaktion.css';
       </div>
     </form>
   </dialog>
-</Intern>
+</Redaktion>
 
 <script>
   import { bereich as bereichNach } from '../../../../scripts/intern/redaktion/bereiche';

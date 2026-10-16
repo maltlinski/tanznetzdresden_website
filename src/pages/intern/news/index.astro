@@ -1,18 +1,22 @@
 ---
-import Intern from '../../../layouts/Intern.astro';
+/**
+ * Beiträge der Redaktion: alle News aus dem internen Bereich mit Suche und Filter
+ * (Entwürfe, Geplant, Online). Ein Klick öffnet den Editor.
+ */
+import Redaktion from '../../../layouts/Redaktion.astro';
 import { href } from '../../../lib/url';
 ---
-<Intern title="News" current="redaktion">
-  <a class="nl-back" href={href('intern/redaktion/')}>← Redaktion</a>
-  <div class="nl-head">
-    <div>
-      <h1 class="i-h1">News schreiben</h1>
-      <p class="i-lead">
-        Hier entstehen die Beiträge für <a href={href('news/')}>Aus dem Netz</a>. Entwürfe sieht nur die Redaktion
-        (Presse, Vorstand, Admin). Was du veröffentlichst, steht wenige Minuten später auf der Website.
-      </p>
+<Redaktion title="Beiträge" current="beitraege">
+  <div class="bl-kopf">
+    <div class="bl-kopf__titel">
+      <span class="tag">Website · News</span>
+      <h1 class="i-h1">Beiträge</h1>
     </div>
-    <a class="btn btn--primary btn--marker" href={href('intern/news/bearbeiten/')} data-new>Neuer Beitrag</a>
+    <div class="bl-kopf__aktionen" data-access hidden>
+      <label class="visually-hidden" for="bl-suche">Beiträge durchsuchen</label>
+      <input id="bl-suche" class="bl-suche" type="search" placeholder="Beiträge durchsuchen" data-suche />
+      <a class="btn btn--primary btn--marker" href={href('intern/news/bearbeiten/')}>Neuer Beitrag</a>
+    </div>
   </div>
 
   <div class="i-card" data-no-access hidden>
@@ -21,108 +25,159 @@ import { href } from '../../../lib/url';
   </div>
 
   <div data-access hidden>
-    <div class="chips nl-tabs" role="group" aria-label="Beiträge filtern">
-      <button type="button" class="chip" data-tab="alle" aria-pressed="true">Alle <span class="chip__count" data-n="alle"></span></button>
-      <button type="button" class="chip" data-tab="entwurf" aria-pressed="false">Entwürfe <span class="chip__count" data-n="entwurf"></span></button>
-      <button type="button" class="chip" data-tab="veroeffentlicht" aria-pressed="false">Online <span class="chip__count" data-n="veroeffentlicht"></span></button>
+    <div class="bl-tabs" role="group" aria-label="Beiträge filtern">
+      <button type="button" data-tab="alle" aria-pressed="true">Alle <span data-n="alle"></span></button>
+      <button type="button" data-tab="entwurf" aria-pressed="false">Entwürfe <span data-n="entwurf"></span></button>
+      <button type="button" data-tab="geplant" aria-pressed="false">Geplant <span data-n="geplant"></span></button>
+      <button type="button" data-tab="online" aria-pressed="false">Online <span data-n="online"></span></button>
     </div>
     <p class="i-msg" role="alert" data-msg hidden></p>
-    <ul class="nl" data-list aria-live="polite"></ul>
-    <p class="nl-empty" data-empty hidden>Noch keine Beiträge. Leg mit „Neuer Beitrag“ los – du kannst jederzeit als Entwurf speichern.</p>
-    <p class="i-hint nl-foot">
-      Ältere Beiträge, die als Datei im Repository liegen, erscheinen hier nicht. Sie stehen in der Redaktion unter
-      <a href={href('intern/redaktion/liste/?b=news')}>News-Archiv</a>.
+    <ul class="bl" data-list aria-live="polite"></ul>
+    <p class="bl-leer" data-empty hidden></p>
+    <p class="i-hint bl-fuss">
+      Ältere Beiträge, die als Datei im Repository liegen, erscheinen hier nicht. Sie stehen unter
+      <a href={href('intern/redaktion/liste/?b=news')}>Website-Inhalte → News-Archiv</a>.
     </p>
   </div>
-  <template data-item>
-    <li class="nl__item">
-      <a class="nl__link">
-        <span class="nl__status"></span>
-        <span class="nl__title"></span>
-        <span class="nl__meta"></span>
-      </a>
-    </li>
-  </template>
-</Intern>
+</Redaktion>
 
 <script>
   import { initIntern, errorText, showMessage, internUrl } from '../../../scripts/intern/session';
-  import type { NewsRow } from '../../../lib/supabase';
+  import { newsPhotoUrl, type NewsRow } from '../../../lib/supabase';
+  import { newsBadge } from '../../../lib/news-format';
+  import { abschnitte } from '../../../lib/news-bloecke';
+  import { h } from '../../../scripts/intern/news/dom';
 
+  type Zustand = 'entwurf' | 'geplant' | 'online';
   const ctx = await initIntern(true);
-  const access = document.querySelector<HTMLElement>('[data-access]');
-  const noAccess = document.querySelector<HTMLElement>('[data-no-access]');
-  const newBtn = document.querySelector<HTMLElement>('[data-new]');
-  const msg = document.querySelector<HTMLElement>('[data-msg]');
-  const list = document.querySelector<HTMLUListElement>('[data-list]');
-  const tpl = document.querySelector<HTMLTemplateElement>('[data-item]');
-  const empty = document.querySelector<HTMLElement>('[data-empty]');
+  const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
+  const kurz = (iso: string) => new Date(`${iso.slice(0, 10)}T12:00:00`).toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' });
+  const STATUS: Record<Zustand, [string, string]> = { entwurf: ['Entwurf', 'bl-st--entwurf'], geplant: ['Geplant', 'badge--cyan'], online: ['Online', 'badge--purple'] };
 
-  const fmt = (iso: string) => new Date(`${iso}T12:00:00`).toLocaleDateString('de-DE', { day: '2-digit', month: 'short', year: 'numeric' });
+  if (ctx && !ctx.isRedaktion) $('[data-no-access]').hidden = false;
+  if (ctx?.isRedaktion) {
+    document.querySelectorAll<HTMLElement>('[data-access]').forEach((el) => (el.hidden = false));
+    const { data, error } = await ctx.sb.from('news_posts').select('*').order('date', { ascending: false });
+    if (error) showMessage($('[data-msg]'), errorText(error));
+    const rows = (data ?? []) as NewsRow[];
+    const zustand = (r: NewsRow): Zustand => (r.status !== 'veroeffentlicht' ? 'entwurf' : r.date > heute ? 'geplant' : 'online');
+    const eintraege = rows
+      .map((r) => {
+        const z = zustand(r);
+        const bilder = abschnitte(r.body ?? '').bloecke.flatMap((b) => (b.typ === 'bilder' ? b.bilder : []));
+        const thumb = r.image_path ?? bilder.find((b) => !/^(\/|https:|\.\.)/.test(b.datei))?.datei ?? null;
+        const ohneAlt = (r.image_path && !r.image_alt) || bilder.some((b) => !b.alt);
+        const wann = z === 'online' ? `Online seit ${kurz(r.date)}` : z === 'geplant' ? `Erscheint am ${kurz(r.date)}` : `Zuletzt ${kurz(r.updated_at)}`;
+        const li = h('li', {},
+          h('a', { class: 'bl__zeile', href: `${internUrl('news/bearbeiten/')}?id=${r.id}` },
+            h('div', { class: 'bl__bild' },
+              thumb
+                ? h('img', { src: newsPhotoUrl(thumb)!, alt: '', loading: 'lazy', style: r.image_path === thumb && r.image_focus ? `object-position:${r.image_focus}` : undefined })
+                : h('span', { text: 'Nur Text' })),
+            h('div', { class: 'bl__text' },
+              h('div', { class: 'bl__meta' },
+                h('span', { class: `badge${newsBadge[r.category] === 'magenta' ? '' : ` badge--${newsBadge[r.category]}`}`, text: r.category }),
+                r.newsletter ? h('span', { class: 'bl__hinweis', text: 'Newsletter' }) : null,
+                ohneAlt ? h('span', { class: 'bl__hinweis bl__hinweis--warn', text: 'Bildbeschreibung fehlt' }) : null),
+              h('h2', { class: 'bl__titel', text: r.title || 'Ohne Titel' }),
+              h('p', { class: 'bl__teaser', text: r.teaser || 'Noch kein Teaser' })),
+            h('div', { class: 'bl__status' },
+              h('span', { class: `badge ${STATUS[z][1]}`, text: STATUS[z][0] }),
+              h('span', { class: 'bl__wann', text: wann }),
+              h('span', { class: 'bl__autor', text: r.author })),
+            h('span', { class: 'bl__pfeil', 'aria-hidden': 'true', text: '→' })));
+        return { li, z, suche: `${r.title} ${r.teaser} ${r.author} ${r.category}`.toLowerCase() };
+      })
+      .sort((a, b) => Number(b.z === 'geplant') - Number(a.z === 'geplant'));
+    $('[data-list]').replaceChildren(...eintraege.map((e) => e.li));
 
-  if (ctx) {
-    if (newBtn) newBtn.hidden = !ctx.isRedaktion;
-    if (!ctx.isRedaktion) {
-      if (noAccess) noAccess.hidden = false;
-    } else if (access && list && tpl) {
-      access.hidden = false;
-      const { data, error } = await ctx.sb
-        .from('news_posts')
-        .select('id, slug, status, title, category, date, updated_at, title_en')
-        .order('date', { ascending: false });
-      if (error) showMessage(msg, errorText(error));
-      const rows = (data ?? []) as Pick<NewsRow, 'id' | 'slug' | 'status' | 'title' | 'category' | 'date' | 'updated_at' | 'title_en'>[];
-      const items = rows.map((r) => {
-        const li = tpl.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
-        const a = li.querySelector<HTMLAnchorElement>('.nl__link')!;
-        a.href = `${internUrl('news/bearbeiten/')}?id=${r.id}`;
-        const st = li.querySelector<HTMLElement>('.nl__status')!;
-        const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
-        const geplant = r.status === 'veroeffentlicht' && r.date > heute;
-        st.textContent = geplant ? `Geplant · ${fmt(r.date)}` : r.status === 'veroeffentlicht' ? 'Online' : 'Entwurf';
-        st.dataset.status = geplant ? 'geplant' : r.status;
-        li.querySelector('.nl__title')!.textContent = r.title;
-        li.querySelector('.nl__meta')!.textContent =
-          `${r.category} · ${fmt(r.date)}${r.title_en ? ' · DE/EN' : ' · nur DE'} · geändert ${new Date(r.updated_at).toLocaleDateString('de-DE')}`;
-        li.dataset.status = r.status;
-        return li;
-      });
-      list.replaceChildren(...items);
-      const count = (s: string) => (s === 'alle' ? rows.length : rows.filter((r) => r.status === s).length);
-      document.querySelectorAll<HTMLElement>('[data-n]').forEach((el) => (el.textContent = String(count(el.dataset.n!))));
-      if (empty) empty.hidden = rows.length > 0;
-      document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((b) =>
-        b.addEventListener('click', () => {
-          document.querySelectorAll('[data-tab]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-          items.forEach((li) => (li.hidden = b.dataset.tab !== 'alle' && li.dataset.status !== b.dataset.tab));
-        }),
-      );
-    }
+    let tab = 'alle';
+    const suche = $<HTMLInputElement>('[data-suche]');
+    const filtern = () => {
+      const q = suche.value.trim().toLowerCase();
+      let n = 0;
+      for (const e of eintraege) {
+        const sichtbar = (tab === 'alle' || e.z === tab) && (!q || e.suche.includes(q));
+        e.li.hidden = !sichtbar;
+        if (sichtbar) n++;
+      }
+      const leer = $('[data-empty]');
+      leer.hidden = n > 0;
+      leer.textContent = rows.length ? 'Keine Beiträge in dieser Ansicht.' : 'Noch keine Beiträge. Leg mit „Neuer Beitrag“ los – Entwürfe sieht nur die Redaktion.';
+    };
+    document.querySelectorAll<HTMLElement>('[data-n]').forEach((el) => {
+      el.textContent = String(el.dataset.n === 'alle' ? rows.length : eintraege.filter((e) => e.z === el.dataset.n).length);
+    });
+    document.querySelectorAll<HTMLButtonElement>('[data-tab]').forEach((b) =>
+      b.addEventListener('click', () => {
+        tab = b.dataset.tab!;
+        document.querySelectorAll('[data-tab]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        filtern();
+      }),
+    );
+    suche.addEventListener('input', filtern);
+    filtern();
   }
 </script>
 
 <style>
-  .nl-back { display: inline-block; margin-bottom: 18px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
-  .nl-back:hover { color: var(--magenta-2); }
-  .nl-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px 40px; margin-bottom: 28px; }
-  .nl-head .i-lead { margin-bottom: 0; }
-  .nl-head .i-lead a, .i-card a, .nl-foot a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
-  .nl-tabs { margin-bottom: 20px; }
-  .nl { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
-  :global(.nl__item[hidden]) { display: none; }
-  :global(.nl__link) {
-    display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 16px; align-items: baseline; padding: 18px 20px;
-    background: var(--paper); border-left: 4px solid var(--rule); color: var(--purple);
+  .bl-kopf { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 32px; margin-bottom: 28px; }
+  .bl-kopf__titel { display: flex; flex-direction: column; gap: 14px; }
+  .bl-kopf__titel .i-h1 { margin: 0; font-size: clamp(40px, 5vw, 60px); line-height: 0.95; letter-spacing: -0.035em; }
+  .bl-kopf__aktionen { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+  .bl-kopf__aktionen[hidden] { display: none; }
+  .bl-suche {
+    flex: 0 1 280px; min-width: 0; padding: 12px 14px; border: 1.5px solid var(--rule); border-radius: 0; background: var(--paper);
+    font: inherit; font-size: 15px; color: var(--ink); outline: none;
   }
-  :global(.nl__link:hover) { border-left-color: var(--magenta); }
-  :global(.nl__status) {
-    grid-row: span 2; align-self: center; font-family: var(--font-mono); font-size: 10px; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase; padding: 4px 8px; background: var(--tint); color: var(--purple);
+  .bl-suche:focus { border-color: var(--magenta); }
+  .bl-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 18px; }
+  .bl-tabs button {
+    display: flex; gap: 8px; align-items: center; padding: 10px 14px; border: 1.5px solid var(--purple); border-radius: 0;
+    background: transparent; color: var(--purple); cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
   }
-  :global(.nl__status[data-status='veroeffentlicht']) { background: var(--cyan); }
-  :global(.nl__status[data-status='geplant']) { background: var(--magenta-tint); }
-  :global(.nl__title) { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; }
-  :global(.nl__meta) { font-size: 13px; color: var(--ink-muted); }
-  .nl-empty { padding: 24px; background: var(--paper); color: var(--ink-soft); }
-  .nl-foot { margin-top: 28px; }
+  .bl-tabs button:hover { border-color: var(--magenta); }
+  .bl-tabs button[aria-pressed='true'] { background: var(--purple); color: #fff; }
+  .bl-tabs span { opacity: 0.7; }
+
+  .bl { list-style: none; margin: 0; padding: 0; border-top: 2px solid var(--purple); background: var(--paper); }
+  .bl :global(li[hidden]) { display: none; }
+  .bl :global(.bl__zeile) {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; padding: 16px 18px 16px 14px; border-bottom: 1px solid var(--rule);
+    color: inherit; transition: background var(--dur-base);
+  }
+  .bl :global(.bl__zeile:hover) { background: var(--tint); }
+  .bl :global(.bl__zeile:hover .bl__titel) { color: var(--magenta-2); }
+  .bl :global(.bl__bild) {
+    position: relative; flex: none; width: 112px; aspect-ratio: 4 / 3; background: var(--tint); overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bl :global(.bl__bild img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .bl :global(.bl__bild span), .bl :global(.bl__hinweis), .bl :global(.bl__wann), .bl :global(.bl__autor) {
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
+  }
+  .bl :global(.bl__text) { flex: 1 1 280px; min-width: 0; display: flex; flex-direction: column; gap: 8px; }
+  .bl :global(.bl__meta) { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; }
+  .bl :global(.bl__hinweis) { color: var(--ink-soft); }
+  .bl :global(.bl__hinweis--warn) { color: var(--magenta-2); }
+  .bl :global(.bl__titel) {
+    margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 21px; line-height: 1.15; letter-spacing: -0.015em;
+    color: var(--purple); text-wrap: balance; transition: color var(--dur-base);
+  }
+  .bl :global(.bl__teaser) { margin: 0; font-size: 14px; line-height: 1.5; color: var(--ink-soft); display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; }
+  .bl :global(.bl__status) { flex: 0 0 190px; display: flex; flex-direction: column; align-items: flex-start; gap: 7px; }
+  .bl :global(.bl__wann) { color: var(--ink-soft); }
+  .bl :global(.bl-st--entwurf) { background: var(--paper); color: var(--purple); outline: 1.5px solid var(--purple); outline-offset: -1.5px; }
+  .bl :global(.bl__pfeil) { font-family: var(--font-display); font-size: 22px; color: var(--purple); }
+  .bl-leer { padding: 48px 18px; margin: 0; background: var(--paper); font-size: 15px; color: var(--ink-soft); }
+  .bl-leer[hidden] { display: none; }
+  .bl-fuss { margin-top: 28px; }
+  .bl-fuss a, .i-card a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  @media (max-width: 640px) {
+    .bl :global(.bl__bild) { width: 84px; }
+    .bl :global(.bl__status) { flex: 1 1 100%; flex-direction: row; flex-wrap: wrap; align-items: center; }
+    .bl :global(.bl__pfeil) { display: none; }
+  }
 </style>

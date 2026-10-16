@@ -66,8 +66,21 @@ export interface NewsRow {
   image_alt_en: string | null;
   quote_text_en: string | null;
   quote_role_en: string | null;
+  /** für den nächsten Newsletter vorgemerkt (Migration 20261016000000) */
+  newsletter?: boolean;
   updated_at: string;
   published_at: string | null;
+}
+
+/** Foto der Mediathek (Migration 20261016000000_mediathek.sql) */
+export interface MedienRow {
+  datei: string;
+  alt: string;
+  alt_en: string;
+  credit: string;
+  focus: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 /** Öffentliche Adresse eines Fotos im Bucket „newsbilder“. */

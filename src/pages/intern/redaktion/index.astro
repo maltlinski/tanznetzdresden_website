@@ -3,7 +3,7 @@
  * Redaktion: Übersicht über alles, was Presse, Vorstand und Admin an der Website bearbeiten können.
  * Gespeichert wird über die Supabase-Funktion „inhalte“ direkt im Repository (docs/redaktion.md).
  */
-import Intern from '../../../layouts/Intern.astro';
+import Redaktion from '../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../components/intern/RedaktionStatus.astro';
 import { href } from '../../../lib/url';
 import { bereiche, gruppen } from '../../../scripts/intern/redaktion/bereiche';
@@ -11,10 +11,10 @@ import '../../../styles/redaktion.css';
 
 const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `intern/redaktion/eintrag/?b=${b.id}` : `intern/redaktion/liste/?b=${b.id}`);
 ---
-<Intern title="Redaktion" current="redaktion">
+<Redaktion title="Website-Inhalte" current="inhalte">
   <div class="r-head">
     <div>
-      <h1 class="i-h1">Redaktion</h1>
+      <h1 class="i-h1">Website-Inhalte</h1>
       <p class="i-lead">
         Hier pflegst du die Website: Termine, News, Formate, Profitraining, Personen, Partner und Texte und gibst
         Mitgliederprofile frei. Was du
@@ -74,7 +74,7 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
       </p>
     </section>
   </div>
-</Intern>
+</Redaktion>
 
 <script>
   import { $, starten, statusAnzeigen } from '../../../scripts/intern/redaktion/seite';

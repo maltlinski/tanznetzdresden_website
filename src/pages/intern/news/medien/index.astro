@@ -1,0 +1,216 @@
+---
+/**
+ * Mediathek der Redaktion: alle Fotos für News an einem Ort. Hochladen (auch mehrere per Ziehen),
+ * Bildbeschreibung, Fotonachweis und Ausschnitt pflegen – das gilt überall, wo das Foto verwendet wird.
+ * Logik: src/scripts/intern/news/medien.ts · Daten: Tabelle news_medien, Bucket newsbilder.
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import '../../../../styles/mediathek.css';
+---
+<Redaktion title="Mediathek" current="medien">
+  <div class="md-kopf">
+    <div class="md-kopf__titel">
+      <span class="tag">Website · Medien</span>
+      <h1 class="i-h1">Mediathek</h1>
+    </div>
+    <span class="md-kopf__stat" data-stat></span>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Mediathek ist für Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+
+  <div data-access hidden>
+    <p class="i-msg" data-migration hidden>
+      Bildbeschreibungen und Fotonachweise lassen sich hier erst speichern, wenn die Migration
+      <code>20261016000000_mediathek.sql</code> im Supabase-SQL-Editor ausgeführt ist.
+    </p>
+    <div class="md-drop" data-drop>
+      <div class="md-drop__text">
+        <span class="md-drop__m" aria-hidden="true"></span>
+        <div>
+          <strong>Bilder hierher ziehen</strong>
+          <span>Mehrere auf einmal möglich. Große Fotos werden beim Hochladen verkleinert.</span>
+        </div>
+      </div>
+      <label class="btn btn--primary btn--marker md-drop__btn">
+        Dateien wählen
+        <input type="file" accept="image/jpeg,image/png,image/webp" multiple data-upload />
+      </label>
+    </div>
+    <p class="i-hint" role="status" data-upload-status></p>
+
+    <div class="md-flaeche">
+      <div class="md-raster" data-raster aria-label="Fotos"></div>
+      <aside class="md-detail" data-detail hidden aria-label="Ausgewähltes Foto"></aside>
+    </div>
+  </div>
+</Redaktion>
+
+<script>
+  import { initIntern, errorText, showMessage } from '../../../../scripts/intern/session';
+  import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
+  import { newsPhotoUrl } from '../../../../lib/supabase';
+  import { h } from '../../../../scripts/intern/news/dom';
+  import { BUCKET } from '../../../../scripts/intern/news/fotos';
+  import { fokusFlaeche, medienHochladen, medienLaden, medienSpeichern, zuschnitte, type Medium } from '../../../../scripts/intern/news/medien';
+
+  const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  const ctx = await initIntern(true);
+
+  if (ctx && !ctx.isRedaktion) $('[data-no-access]').hidden = false;
+  if (ctx?.isRedaktion) {
+    const sb = ctx.sb;
+    $('[data-access]').hidden = false;
+    const msg = $('[data-msg]');
+    const raster = $('[data-raster]');
+    const detail = $('[data-detail]');
+    let liste: Medium[] = [];
+    let tabelle = true;
+    let auswahl: Medium | null = null;
+
+    const stat = () => {
+      const ohne = liste.filter((m) => !m.alt.trim()).length;
+      $('[data-stat]').textContent = `${liste.length} ${liste.length === 1 ? 'Bild' : 'Bilder'}${liste.length ? (ohne ? ` · ${ohne} ohne Bildbeschreibung` : ' · alle beschrieben') : ''}`;
+    };
+
+    // Website neu bauen, wenn sich Angaben eines Fotos in einem veröffentlichten Beitrag ändern (gebündelt)
+    let bauTimer = 0;
+    const bauenBald = () => {
+      window.clearTimeout(bauTimer);
+      bauTimer = window.setTimeout(() => void neuBauenLassen(ctx.sb), 8000);
+    };
+
+    const kachel = (m: Medium) =>
+      h('button', {
+        type: 'button', class: `md-kachel${m === auswahl ? ' is-sel' : ''}`, 'aria-pressed': String(m === auswahl),
+        'aria-label': m.alt || `Foto ${m.datei.split('/').pop()}`,
+        onclick: () => zeigen(m),
+      },
+        h('div', { class: 'md-kachel__bild' },
+          h('img', { src: newsPhotoUrl(m.datei)!, alt: '', loading: 'lazy', style: m.focus ? `object-position:${m.focus}` : undefined }),
+          m.alt.trim() ? null : h('span', { class: 'md-kachel__warn', text: 'Ohne Beschreibung' })),
+        h('span', { class: 'md-kachel__name', text: m.datei.split('/').pop()! }));
+
+    const zeichnen = () => {
+      raster.replaceChildren(...(liste.length ? liste.map(kachel) : [h('p', { class: 'md-leer', text: 'Noch keine Fotos. Zieh die ersten hierher.' })]));
+      stat();
+    };
+
+    let speicherTimer = 0;
+    const speichern = (m: Medium, sofort = false) => {
+      window.clearTimeout(speicherTimer);
+      const los = async () => {
+        const st = detail.querySelector<HTMLElement>('[data-gespeichert]');
+        if (!tabelle) return;
+        const err = await medienSpeichern(ctx.sb, m);
+        if (st) st.textContent = err ? 'Nicht gespeichert' : `Gespeichert · ${new Date().toLocaleTimeString('de-DE', { hour: '2-digit', minute: '2-digit' })}`;
+        if (err) return showMessage(msg, errorText(err));
+        if (m.verwendet.some((v) => v.online)) bauenBald();
+      };
+      if (sofort) void los();
+      else speicherTimer = window.setTimeout(los, 700);
+    };
+
+    function zeigen(m: Medium) {
+      auswahl = m;
+      zeichnen();
+      const src = newsPhotoUrl(m.datei)!;
+      let crops = zuschnitte(src, m.focus);
+      const fokus = fokusFlaeche(src, m.focus, (f) => {
+        m.focus = f;
+        const neu = zuschnitte(src, f);
+        crops.replaceWith(neu);
+        crops = neu;
+        raster.querySelector<HTMLImageElement>('.md-kachel.is-sel img')?.style.setProperty('object-position', f);
+        speichern(m, true);
+      });
+      const feld = (id: string, label: string, wert: string, setzen: (v: string) => void, extra: Record<string, unknown> = {}, hinweis?: string) =>
+        h('div', { class: 'i-field' },
+          h('label', { for: id, text: label }),
+          h('input', { id, value: wert, disabled: !tabelle, oninput: (e: Event) => { setzen((e.target as HTMLInputElement).value); speichern(m); }, ...extra }),
+          hinweis ? h('span', { class: 'i-hint', text: hinweis }) : null);
+      const unbenutzt = !m.verwendet.length;
+      detail.hidden = false;
+      detail.replaceChildren(
+        fokus,
+        crops,
+        feld('md-alt', 'Bildbeschreibung (optional)', m.alt, (v) => { m.alt = v; stat(); }, { maxLength: 300, placeholder: 'Was ist zu sehen?' }, 'Hilft Menschen, die das Foto nicht sehen können. Gilt überall, wo das Foto steht.'),
+        feld('md-alt-en', 'Englisch (optional)', m.alt_en, (v) => (m.alt_en = v), { maxLength: 300, lang: 'en', placeholder: 'Image description' }),
+        feld('md-credit', 'Fotonachweis', m.credit, (v) => (m.credit = v), { maxLength: 120, placeholder: 'Vorname Nachname' }),
+        h('span', { class: 'md-detail__stand', 'data-gespeichert': '', role: 'status' }),
+        h('div', { class: 'md-detail__verwendet' },
+          h('span', { class: 'md-detail__k', text: 'Verwendet in' }),
+          ...(unbenutzt
+            ? [h('span', { class: 'i-hint', text: 'Noch in keinem Beitrag.' })]
+            : m.verwendet.map((v) => h('a', { href: `${base}intern/news/bearbeiten/?id=${v.id}`, text: `${v.titel}${v.online ? '' : ' (Entwurf)'} →` })))),
+        unbenutzt
+          ? h('button', {
+              type: 'button', class: 'md-leise md-detail__loeschen', text: 'Foto löschen',
+              onclick: async () => {
+                if (!confirm('Dieses Foto endgültig löschen?')) return;
+                const { error } = await sb.storage.from(BUCKET).remove([m.datei]);
+                if (error) return showMessage(msg, errorText(error));
+                await sb.from('news_medien').delete().eq('datei', m.datei);
+                liste = liste.filter((x) => x !== m);
+                auswahl = null;
+                detail.hidden = true;
+                zeichnen();
+              },
+            })
+          : '',
+      );
+    }
+
+    const laden = async () => {
+      const r = await medienLaden(ctx.sb);
+      liste = r.liste;
+      tabelle = r.tabelle;
+      $('[data-migration]').hidden = tabelle;
+      zeichnen();
+      if (liste[0] && !auswahl) zeigen(liste[0]);
+    };
+
+    // Hochladen: Knopf oder Ziehen
+    const upStatus = $('[data-upload-status]');
+    const hoch = async (files: File[]) => {
+      const bilder = files.filter((f) => /^image\/(jpeg|png|webp)$/.test(f.type));
+      if (!bilder.length) return showMessage(msg, 'Bitte Fotos als JPG, PNG oder WebP wählen.');
+      upStatus.textContent = bilder.length === 1 ? 'Foto wird hochgeladen …' : `${bilder.length} Fotos werden hochgeladen …`;
+      const neu: string[] = [];
+      for (const f of bilder) {
+        try {
+          neu.push(await medienHochladen(ctx.sb, f));
+        } catch (e) {
+          showMessage(msg, `„${f.name}“: ${errorText(e)}`);
+        }
+      }
+      upStatus.textContent = neu.length ? (neu.length === 1 ? 'Hochgeladen. Jetzt noch kurz beschreiben, was zu sehen ist.' : `${neu.length} Fotos hochgeladen.`) : '';
+      auswahl = null;
+      await laden();
+      const erstes = liste.find((m) => m.datei === neu[0]);
+      if (erstes) zeigen(erstes);
+    };
+    const input = $<HTMLInputElement>('[data-upload]');
+    input.addEventListener('change', () => {
+      void hoch([...(input.files ?? [])]);
+      input.value = '';
+    });
+    const drop = $('[data-drop]');
+    drop.addEventListener('dragover', (e) => {
+      if (!e.dataTransfer?.types.includes('Files')) return;
+      e.preventDefault();
+      drop.classList.add('is-drop');
+    });
+    drop.addEventListener('dragleave', (e) => !drop.contains(e.relatedTarget as Node) && drop.classList.remove('is-drop'));
+    drop.addEventListener('drop', (e) => {
+      e.preventDefault();
+      drop.classList.remove('is-drop');
+      void hoch([...(e.dataTransfer?.files ?? [])]);
+    });
+
+    await laden();
+  }
+</script>

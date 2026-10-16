@@ -14,8 +14,9 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
    `supabase/migrations/20261008000000_oeffentliche_profile.sql` (öffentliche Profile mit Freigabe, Porträts) und
    `supabase/migrations/20261009000000_news.sql` (News-Redaktion, Rolle „Presse“, siehe docs/news.md),
    `supabase/migrations/20261010000000_rollen_im_dashboard.sql` (Rollen auch im Dashboard änderbar),
-   `supabase/migrations/20261013000000_freigaben.sql` (Presse gibt Profile frei, neue Fotos warten auf Freigabe) und
-   `supabase/migrations/20261015000000_news_bilder.sql` (News mit Bildausschnitt und längeren Texten).
+   `supabase/migrations/20261013000000_freigaben.sql` (Presse gibt Profile frei, neue Fotos warten auf Freigabe),
+   `supabase/migrations/20261015000000_news_bilder.sql` (News mit Bildausschnitt und längeren Texten) und
+   `supabase/migrations/20261016000000_mediathek.sql` (Mediathek der Redaktion, Newsletter-Vormerkung).
    Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
 
 ## 2. Login konfigurieren
@@ -50,6 +51,7 @@ mit denselben Namen überschreiben.
 | Table Editor oder SQL-Editor: „Nur der Vorstand kann Rollen ändern.“ | Fünfte Migration `20261013000000_freigaben.sql` (noch einmal) ausführen, dann erneut speichern. Im SQL-Editor oben rechts muss als Rolle `postgres` stehen, nicht ein angemeldetes Mitglied. |
 | Freigaben: „Die Datenbank kennt die Freigabe noch nicht“ | Fünfte Migration `20261013000000_freigaben.sql` ausführen. |
 | News: „Die Datenbank kennt den Bildausschnitt noch nicht“ oder „Der Text ist zu lang“ | Sechste Migration `20261015000000_news_bilder.sql` ausführen. |
+| Medien: „erst speichern, wenn die Migration … ausgeführt ist“, Newsletter-Schalter gesperrt | Siebte Migration `20261016000000_mediathek.sql` ausführen. |
 | Mein Profil: „Neue Fotos gibt die Redaktion frei.“ | Die Seite ist älter als die Datenbank. Seite neu laden. |
 | „Redaktion“ fehlt im Menü | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
 | Redaktion: „noch nicht eingerichtet“ | Supabase-Funktion `inhalte` und GitHub-Schlüssel fehlen, siehe [redaktion.md](redaktion.md#einrichten-einmalig-admin). |

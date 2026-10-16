@@ -2,12 +2,12 @@
 /**
  * Redaktion: Einträge eines Bereichs (?b=termine) – suchen, filtern, sortieren, anlegen, duplizieren, löschen.
  */
-import Intern from '../../../../layouts/Intern.astro';
+import Redaktion from '../../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
 import { href } from '../../../../lib/url';
 import '../../../../styles/redaktion.css';
 ---
-<Intern title="Redaktion" current="redaktion">
+<Redaktion title="Redaktion" current="inhalte">
   <a class="r-back" href={href('intern/redaktion/')}>← Redaktion</a>
   <div class="r-head">
     <div>
@@ -59,7 +59,7 @@ import '../../../../styles/redaktion.css';
       </div>
     </form>
   </dialog>
-</Intern>
+</Redaktion>
 
 <script>
   import { bereich as bereichNach } from '../../../../scripts/intern/redaktion/bereiche';

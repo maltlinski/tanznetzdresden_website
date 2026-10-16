@@ -20,6 +20,12 @@ export interface InternContext {
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 export const internUrl = (path = '') => `${base}intern/${path}`;
 
+let meldeBereit: (ctx: InternContext) => void = () => {};
+/** Erfüllt, sobald eine Seite initIntern() erfolgreich aufgerufen hat (z. B. für die Seitenleiste der Redaktion) */
+export const bereit = new Promise<InternContext>((r) => (meldeBereit = r));
+
+export const ROLLEN: Record<Profile['role'], string> = { mitglied: 'Mitglied', presse: 'Presse', vorstand: 'Vorstand', admin: 'Admin' };
+
 const root = () => document.querySelector<HTMLElement>('[data-intern]');
 export const setState = (state: 'loading' | 'setup' | 'login' | 'ready') => {
   const el = root();
@@ -71,6 +77,7 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
   const isRedaktion = isVorstand || profile?.role === 'presse';
 
   document.querySelectorAll<HTMLElement>('[data-intern-name]').forEach((el) => (el.textContent = profile?.display_name || user.email || ''));
+  document.querySelectorAll<HTMLElement>('[data-intern-rolle]').forEach((el) => (el.textContent = profile ? ROLLEN[profile.role] ?? '' : ''));
   document.querySelectorAll<HTMLElement>('[data-vorstand-only]').forEach((el) => (el.hidden = !isVorstand));
   document.querySelectorAll<HTMLElement>('[data-redaktion-only]').forEach((el) => (el.hidden = !isRedaktion));
   document.querySelectorAll<HTMLButtonElement>('[data-logout]').forEach((btn) =>
@@ -83,5 +90,7 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
     if (event === 'SIGNED_OUT') location.href = internUrl();
   });
   setState('ready');
-  return { sb, user, profile: profile ?? null, isVorstand, isRedaktion };
+  const ctx = { sb, user, profile: profile ?? null, isVorstand, isRedaktion };
+  meldeBereit(ctx);
+  return ctx;
 }
