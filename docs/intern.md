@@ -15,8 +15,9 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
    `supabase/migrations/20261009000000_news.sql` (News-Redaktion, Rolle „Presse“, siehe docs/news.md),
    `supabase/migrations/20261010000000_rollen_im_dashboard.sql` (Rollen auch im Dashboard änderbar),
    `supabase/migrations/20261013000000_freigaben.sql` (Presse gibt Profile frei, neue Fotos warten auf Freigabe),
-   `supabase/migrations/20261015000000_news_bilder.sql` (News mit Bildausschnitt und längeren Texten) und
-   `supabase/migrations/20261016000000_mediathek.sql` (Mediathek der Redaktion, Newsletter-Vormerkung).
+   `supabase/migrations/20261015000000_news_bilder.sql` (News mit Bildausschnitt und längeren Texten),
+   `supabase/migrations/20261016000000_mediathek.sql` (Mediathek der Redaktion, Newsletter-Vormerkung) und
+   `supabase/migrations/20261020000000_profil_seite.sql` (Profilseite mit Galerie, Arbeiten und Kontakt, siehe docs/profile.md).
    Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
 
 ## 2. Login konfigurieren
@@ -47,11 +48,12 @@ mit denselben Namen überschreiben.
 | `/intern/` zeigt „Noch nicht eingerichtet“ | Zugangsdaten fehlen in `src/settings/supabase.ts`, oder der Neubau läuft noch (*Actions*). |
 | Anmelden: „Für diese Adresse gibt es kein Konto“ | Person unter *Authentication → Users* einladen. Registrieren geht absichtlich nicht. |
 | Link aus der E-Mail führt auf `localhost` oder eine Fehlerseite | *Authentication → URL Configuration*: Site URL und Redirect URLs prüfen (Schritt 2). Bei GitHub Pages: `https://maltlinski.github.io/tanznetzdresden_website/intern/**`. |
-| Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle sechs Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
+| Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
 | Table Editor oder SQL-Editor: „Nur der Vorstand kann Rollen ändern.“ | Fünfte Migration `20261013000000_freigaben.sql` (noch einmal) ausführen, dann erneut speichern. Im SQL-Editor oben rechts muss als Rolle `postgres` stehen, nicht ein angemeldetes Mitglied. |
 | Freigaben: „Die Datenbank kennt die Freigabe noch nicht“ | Fünfte Migration `20261013000000_freigaben.sql` ausführen. |
 | News: „Die Datenbank kennt den Bildausschnitt noch nicht“ oder „Der Text ist zu lang“ | Sechste Migration `20261015000000_news_bilder.sql` ausführen. |
 | Medien: „erst speichern, wenn die Migration … ausgeführt ist“, Newsletter-Schalter gesperrt | Siebte Migration `20261016000000_mediathek.sql` ausführen. |
+| Mein Profil: „Galerie, Arbeiten und weitere Angaben kommen bald dazu“; Freigaben: „Die Datenbank kennt die Galerie noch nicht“ | Achte Migration `20261020000000_profil_seite.sql` ausführen. |
 | Mein Profil: „Neue Fotos gibt die Redaktion frei.“ | Die Seite ist älter als die Datenbank. Seite neu laden. |
 | „Redaktion“ fehlt im Menü | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
 | Redaktion: „noch nicht eingerichtet“ | Supabase-Funktion `inhalte` und GitHub-Schlüssel fehlen, siehe [redaktion.md](redaktion.md#einrichten-einmalig-admin). |

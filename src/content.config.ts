@@ -12,6 +12,7 @@ import { defineCollection, reference, type SchemaContext } from 'astro:content';
 import { glob, file } from 'astro/loaders';
 import { z } from 'astro/zod';
 import { routes, type RouteKey } from './lib/i18n';
+import { GALERIE_WERTE, OFFEN_WERTE } from './lib/profil-felder';
 
 const localDateTime = z
   .string()
@@ -118,6 +119,28 @@ const personen = defineCollection({
       vimeo: z.url().optional(),
       /** öffentliche Kontaktadresse (wird verschlüsselt ausgegeben) */
       email: z.email().optional(),
+      /** Tätigkeit, z. B. „Tänzerin und Choreografin“ */
+      profession: z.string().optional(),
+      profession_en: z.string().optional(),
+      /** Basis, z. B. „Dresden-Neustadt“ */
+      base: z.string().optional(),
+      /** ein Satz über die eigene Arbeit; was nach einem Doppelpunkt steht, wird hervorgehoben */
+      pitch: z.string().optional(),
+      pitch_en: z.string().optional(),
+      /** offen für (src/lib/profil-felder.ts) */
+      openFor: z.array(z.enum(OFFEN_WERTE)).default([]),
+      /** Stücke und Projekte */
+      works: z.array(z.object({ year: z.coerce.string(), title: z.string(), place: z.string().optional() })).default([]),
+      /** Angaben im Abschnitt „Über“ */
+      education: z.string().optional(),
+      techniques: z.string().optional(),
+      languages: z.string().optional(),
+      regions: z.string().optional(),
+      height: z.string().optional(),
+      available: z.string().optional(),
+      /** Galerie: Fotos in src/assets/personen/ */
+      gallery: z.array(z.object({ photo: image(), caption: z.string().optional(), caption_en: z.string().optional(), credit: z.string().optional() })).default([]),
+      galleryLayout: z.enum(GALERIE_WERTE).default('filmstreifen'),
       /** auf der Startseite zeigen */
       featured: z.boolean().default(true),
     }),

@@ -18,7 +18,7 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
   <p class="i-lead">
     Mitglieder pflegen ihr Profil selbst unter <a href={href('intern/profil/')}>Mein Profil</a>. Auf der Website (Netzwerk,
     Dozent:innen beim Profitraining) erscheint es erst, wenn du es hier freigibst. Neue Fotos brauchen jedes Mal eine
-    Freigabe, Textänderungen nicht.
+    Freigabe (Porträt und Galerie), Textänderungen nicht.
   </p>
 
   <div class="i-card" data-no-access hidden>
@@ -44,7 +44,7 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
 <script>
   import { initIntern, errorText } from '../../../../scripts/intern/session';
   import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
-  import { photoUrl, slugify } from '../../../../lib/supabase';
+  import { photoUrl, slugify, type GalerieEintrag } from '../../../../lib/supabase';
   import { meldung, websiteUrl } from '../../../../scripts/intern/redaktion/seite';
 
   interface Zeile {
@@ -58,8 +58,13 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
     verified: boolean;
     photo_path: string | null;
     photo_pending: string | null;
+    /** fehlt, solange Migration 20261020000000_profil_seite.sql nicht eingespielt ist */
+    gallery?: GalerieEintrag[];
   }
   type Aktion = 'profil' | 'foto' | 'foto_ablehnen' | 'foto_entfernen' | 'zurueckziehen';
+
+  const SPALTEN = 'id, display_name, pronouns, bio, tags, is_trainer, slug, verified, photo_path, photo_pending';
+  const wartend = (z: Zeile) => (z.gallery ?? []).filter((g) => !g.frei);
 
   const ctx = await initIntern(true);
   const personen = JSON.parse(document.querySelector('[data-personen]')?.textContent ?? '[]') as { id: string; name: string }[];
@@ -72,15 +77,14 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
   }
 
   async function laden() {
-    const { data, error } = await ctx!.sb
-      .from('profiles')
-      .select('id, display_name, pronouns, bio, tags, is_trainer, slug, verified, photo_path, photo_pending')
-      .eq('public_listing', true)
-      .not('slug', 'is', null)
-      .order('display_name');
+    const abfrage = (spalten: string) =>
+      ctx!.sb.from('profiles').select(spalten).eq('public_listing', true).not('slug', 'is', null).order('display_name');
+    let { data, error } = await abfrage(`${SPALTEN}, gallery`);
+    // ohne Galerie-Spalte (Migration fehlt) wie bisher
+    if (error && /gallery/.test(error.message)) ({ data, error } = await abfrage(SPALTEN));
     if (error) return meldung(errorText(error));
-    const zeilen = (data ?? []) as Zeile[];
-    const offen = zeilen.filter((z) => !z.verified || z.photo_pending);
+    const zeilen = (data ?? []) as unknown as Zeile[];
+    const offen = zeilen.filter((z) => !z.verified || z.photo_pending || wartend(z).length);
     const online = zeilen.filter((z) => z.verified);
     $('[data-offen]').replaceChildren(...offen.map((z) => karte(z, true)));
     $('[data-online]').replaceChildren(...online.map((z) => karte(z, false)));
@@ -139,7 +143,13 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
     const body = h('div', 'fg__body');
     const top = h('div', 'fg__top');
     top.append(h('strong', 'fg__name', z.display_name || 'Ohne Namen'));
-    const marken = [!z.verified ? 'Neues Profil' : '', offen && z.photo_pending ? 'Neues Foto' : '', z.is_trainer ? 'Training' : ''].filter(Boolean);
+    const neueGalerie = offen ? wartend(z) : [];
+    const marken = [
+      !z.verified ? 'Neues Profil' : '',
+      offen && z.photo_pending ? 'Neues Foto' : '',
+      neueGalerie.length ? `${neueGalerie.length} ${neueGalerie.length === 1 ? 'Galeriefoto' : 'Galeriefotos'}` : '',
+      z.is_trainer ? 'Training' : '',
+    ].filter(Boolean);
     for (const m of marken) top.append(h('span', `fg__marke${m === 'Training' ? ' fg__marke--hell' : ''}`, m));
     body.append(top);
 
@@ -167,9 +177,11 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
       btn.addEventListener('click', () => ausfuehren(z, aktion, btn, frage));
       knoepfe.append(btn);
     };
+    if (neueGalerie.length) body.append(galerieBlock(z, neueGalerie));
     if (offen) {
-      if (!z.verified) knopf(z.photo_pending ? 'Profil und Foto freigeben' : 'Profil freigeben', 'profil', true);
-      else knopf('Foto freigeben', 'foto', true);
+      const mitFotos = neueGalerie.length ? 'Profil und Fotos freigeben' : z.photo_pending ? 'Profil und Foto freigeben' : 'Profil freigeben';
+      if (!z.verified) knopf(mitFotos, 'profil', true);
+      else if (z.photo_pending) knopf('Foto freigeben', 'foto', true);
       if (z.photo_pending) knopf('Foto ablehnen', 'foto_ablehnen', false, `Das neue Foto von ${z.display_name} ablehnen? Sag der Person am besten kurz Bescheid, warum.`);
     } else {
       if (z.photo_path) knopf('Foto entfernen', 'foto_entfernen', false, `Das Foto von ${z.display_name} von der Website nehmen?`);
@@ -178,6 +190,72 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
     body.append(knoepfe);
     li.append(fotos, body);
     return li;
+  }
+
+  /** wartende Galeriefotos mit Freigeben/Ablehnen je Foto (und allen auf einmal) */
+  function galerieBlock(z: Zeile, fotos: GalerieEintrag[]) {
+    const box = h('div', 'fg__galerie');
+    box.append(h('p', 'fg__meta', 'Neue Galeriefotos'));
+    const liste = h('ul', 'fg__gliste');
+    for (const g of fotos) {
+      const li = h('li', 'fg__gfoto');
+      const img = h('img');
+      img.src = photoUrl(g.path) ?? '';
+      img.alt = g.caption ? `Vorschau: ${g.caption}` : 'Galeriefoto (Vorschau)';
+      img.loading = 'lazy';
+      li.append(img);
+      if (g.caption) li.append(h('span', 'fg__gcap', g.caption));
+      const ja = h('button', 'i-linkbtn', 'Freigeben');
+      ja.type = 'button';
+      ja.setAttribute('aria-label', `Galeriefoto${g.caption ? ` „${g.caption}“` : ''} freigeben`);
+      ja.addEventListener('click', () => galerie(z, g.path, true, ja));
+      const nein = h('button', 'i-linkbtn', 'Ablehnen');
+      nein.type = 'button';
+      nein.setAttribute('aria-label', `Galeriefoto${g.caption ? ` „${g.caption}“` : ''} ablehnen`);
+      nein.addEventListener('click', () => galerie(z, g.path, false, nein, `Dieses Galeriefoto von ${z.display_name} ablehnen? Es wird gelöscht.`));
+      li.append(h('span', 'fg__gknoepfe'));
+      li.lastElementChild!.append(ja, nein);
+      liste.append(li);
+    }
+    box.append(liste);
+    if (z.verified && fotos.length > 1) {
+      const alle = h('button', 'btn btn--primary btn--sm', 'Alle Galeriefotos freigeben');
+      alle.type = 'button';
+      alle.addEventListener('click', () => galerie(z, null, true, alle));
+      box.append(alle);
+    }
+    return box;
+  }
+
+  /** Galeriefoto(s) freigeben oder ablehnen; pfad = null: alle wartenden */
+  async function galerie(z: Zeile, pfad: string | null, ok: boolean, btn: HTMLButtonElement, frage?: string) {
+    if (frage && !confirm(frage)) return;
+    btn.disabled = true;
+    const fehler = await galerieRpc(z, pfad, ok);
+    btn.disabled = false;
+    if (fehler) return meldung(fehler);
+    let text = ok ? (pfad ? 'Galeriefoto freigegeben.' : 'Galeriefotos freigegeben.') : 'Galeriefoto abgelehnt.';
+    if (ok && z.verified) text += await neubauText();
+    meldung(text, 'ok');
+    await laden();
+  }
+
+  async function galerieRpc(z: Zeile, pfad: string | null, ok: boolean): Promise<string | null> {
+    const { data, error } = await ctx!.sb.rpc('galerie_freigabe', { person: z.id, pfad, ok });
+    if (error) {
+      return /galerie_freigabe|could not find the function/i.test(error.message)
+        ? 'Die Datenbank kennt die Galerie noch nicht: Bitte die Migration 20261020000000_profil_seite.sql im SQL-Editor ausführen.'
+        : errorText(error);
+    }
+    // abgelehnte Fotos aus dem Bucket löschen
+    if (Array.isArray(data) && data.length) await ctx!.sb.storage.from('profilbilder').remove(data as string[]);
+    return null;
+  }
+
+  async function neubauText() {
+    return (await neuBauenLassen(ctx!.sb))
+      ? ' Die Website wird gerade aktualisiert und ist in 2–3 Minuten auf dem neuen Stand.'
+      : ' Auf der Website erscheint es mit dem nächsten Update, spätestens morgen früh.';
   }
 
   const erledigt: Record<Aktion, string> = {
@@ -200,13 +278,14 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
     }
     // ersetztes oder abgelehntes Foto aufräumen
     if (typeof data === 'string' && data) await ctx!.sb.storage.from('profilbilder').remove([data]);
+    // ein neues Profil geht mit seinen Galeriefotos online
+    if (aktion === 'profil' && wartend(z).length) {
+      const fehler = await galerieRpc(z, null, true);
+      if (fehler) meldung(fehler);
+    }
     let text = erledigt[aktion];
     // ein abgelehntes Foto war nie auf der Website, alles andere ändert sie
-    if (aktion !== 'foto_ablehnen') {
-      text += (await neuBauenLassen(ctx!.sb))
-        ? ' Die Website wird gerade aktualisiert und ist in 2–3 Minuten auf dem neuen Stand.'
-        : ' Auf der Website erscheint es mit dem nächsten Update, spätestens morgen früh.';
-    }
+    if (aktion !== 'foto_ablehnen') text += await neubauText();
     meldung(text, 'ok');
     await laden();
   }
@@ -236,6 +315,12 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
   :global(.fg__hinweis--warn) { padding: 8px 12px; background: var(--magenta-tint); border-left: 4px solid var(--magenta); color: var(--purple); }
   :global(.fg__meta) { margin: 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
   :global(.fg__bio) { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); white-space: pre-line; max-width: 70ch; }
+  :global(.fg__galerie) { display: grid; gap: 10px; justify-items: start; }
+  :global(.fg__gliste) { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 14px; }
+  :global(.fg__gfoto) { width: 120px; display: grid; gap: 6px; }
+  :global(.fg__gfoto img) { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; display: block; background: var(--purple); }
+  :global(.fg__gcap) { font-size: 12.5px; color: var(--ink-soft); line-height: 1.4; }
+  :global(.fg__gknoepfe) { display: flex; flex-wrap: wrap; gap: 4px 12px; font-size: 13px; }
   :global(.fg__knoepfe) { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 20px; margin-top: 6px; }
   @media (max-width: 560px) {
     :global(.fg__karte) { grid-template-columns: minmax(0, 1fr); }

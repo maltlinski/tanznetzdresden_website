@@ -5,6 +5,7 @@
  */
 import { slugify } from '../../../lib/supabase';
 import { routes } from '../../../lib/i18n';
+import { ANGABEN, GALERIE_LAYOUTS, OFFEN_FUER } from '../../../lib/profil-felder';
 import type { Daten, Eintrag } from './daten';
 
 export interface Option {
@@ -351,14 +352,34 @@ export const bereiche: Bereich[] = [
       { typ: 'text', key: 'pronouns', label: 'Pronomen', platzhalter: 'z. B. sie/ihr' },
       { typ: 'mehrfach', key: 'roles', label: 'Im Netzwerk als', pflicht: true, min: 1, optionen: [{ wert: 'mitglied', label: 'Mitglied' }, { wert: 'trainer', label: 'Trainer:in' }] },
       { typ: 'text', key: 'vorstand', label: 'Funktion im Vorstand/Koordinationsteam', en: true, hilfe: 'Optional.' },
-      { typ: 'textlang', key: 'bio', label: 'Profiltext', en: true, zeilen: 5, hilfe: 'Absätze mit Leerzeile trennen.' },
+      { typ: 'text', key: 'profession', label: 'Tätigkeit', en: true, max: 80, platzhalter: 'z. B. Tänzerin und Choreografin' },
+      { typ: 'text', key: 'base', label: 'Basis', max: 60, platzhalter: 'z. B. Dresden-Neustadt' },
+      { typ: 'abschnitt', label: 'Text' },
+      { typ: 'textlang', key: 'pitch', label: 'In einem Satz', en: true, zeilen: 2, max: 200, hilfe: 'Groß oben auf dem Profil. Was nach einem Doppelpunkt steht, wird pink hervorgehoben.' },
+      { typ: 'textlang', key: 'bio', label: 'Profiltext', en: true, zeilen: 5, hilfe: 'Absätze mit Leerzeile trennen. Der erste Absatz erscheint größer.' },
       { typ: 'schlagworte', key: 'tags', label: 'Schwerpunkte', hilfe: 'Mit Komma trennen, z. B. Choreografie, Contemporary.' },
-      { typ: 'bild', key: 'photo', label: 'Porträt', ordner: 'personen', form: 'relativ' },
+      ...ANGABEN.map((a): Feld => ({ typ: 'text', key: a.key, label: a.de, max: a.max, platzhalter: a.platzhalter, hilfe: 'Optional.' })),
+      { typ: 'abschnitt', label: 'Fotos' },
+      { typ: 'bild', key: 'photo', label: 'Porträt', ordner: 'personen', form: 'relativ', hilfe: 'Groß oben auf dem Profil.' },
       { typ: 'text', key: 'photoCredit', label: 'Foto von' },
+      { typ: 'liste', key: 'gallery', label: 'Galerie', neu: 'Foto hinzufügen', titel: (v) => v.caption ?? '', felder: [
+        { typ: 'bild', key: 'photo', label: 'Foto', pflicht: true, ordner: 'personen', form: 'relativ' },
+        { typ: 'text', key: 'caption', label: 'Bildunterschrift', en: true, hilfe: 'Beschreibt das Foto auch für Menschen, die es nicht sehen.' },
+        { typ: 'text', key: 'credit', label: 'Foto von' },
+      ] },
+      { typ: 'auswahl', key: 'galleryLayout', label: 'Galerie zeigen als', optionen: Object.entries(GALERIE_LAYOUTS).map(([wert, l]) => ({ wert, label: `${l.de}: ${l.hilfe}` })) },
+      { typ: 'abschnitt', label: 'Arbeiten' },
+      { typ: 'liste', key: 'works', label: 'Stücke und Projekte', neu: 'Arbeit hinzufügen', titel: (v) => [v.year, v.title].filter(Boolean).join(' · '), felder: [
+        { typ: 'text', key: 'year', label: 'Jahr', pflicht: true, max: 9, platzhalter: '2026', muster: [/^\d{4}(–\d{4})?$/, 'Format: 2026 oder 2024–2026'] },
+        { typ: 'text', key: 'title', label: 'Titel', pflicht: true, max: 120 },
+        { typ: 'text', key: 'place', label: 'Wo', max: 120, platzhalter: 'z. B. Welttanztag · Societaetstheater' },
+      ] },
+      { typ: 'abschnitt', label: 'Kontakt' },
+      { typ: 'mehrfach', key: 'openFor', label: 'Offen für', optionen: Object.entries(OFFEN_FUER).map(([wert, l]) => ({ wert, label: l.de })) },
+      { typ: 'email', key: 'email', label: 'Öffentliche E-Mail-Adresse', hilfe: 'Optional. Wird auf der Website gegen Spam geschützt.' },
       { typ: 'url', key: 'website', label: 'Website', hilfe: URL_HILFE },
       { typ: 'text', key: 'instagram', label: 'Instagram', platzhalter: '@name' },
-      { typ: 'url', key: 'vimeo', label: 'Vimeo', hilfe: URL_HILFE },
-      { typ: 'email', key: 'email', label: 'Öffentliche E-Mail-Adresse', hilfe: 'Optional. Wird auf der Website gegen Spam geschützt.' },
+      { typ: 'url', key: 'vimeo', label: 'Video oder Showreel', hilfe: `Vimeo, YouTube oder eigene Seite. ${URL_HILFE}` },
       { typ: 'janein', key: 'featured', label: 'Auf der Startseite zeigen', standard: true },
     ],
   },

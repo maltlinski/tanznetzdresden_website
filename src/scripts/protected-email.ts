@@ -21,6 +21,23 @@ export async function reveal(el: HTMLElement): Promise<string | null> {
   return new TextDecoder().decode(plain);
 }
 
+function copyButton(email: string, label: string, done: string) {
+  const b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'protected-email__copy';
+  b.textContent = label;
+  b.addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(email);
+      b.textContent = done;
+      setTimeout(() => (b.textContent = label), 2000);
+    } catch {
+      /* ohne Zwischenablage bleibt die Adresse zum Markieren stehen */
+    }
+  });
+  return b;
+}
+
 export function initProtectedEmails(root: ParentNode = document): void {
   root.querySelectorAll<HTMLElement>('[data-protected-email]').forEach((el) => {
     const btn = el.querySelector<HTMLButtonElement>('button');
@@ -33,10 +50,15 @@ export function initProtectedEmails(root: ParentNode = document): void {
         const email = await reveal(el);
         if (!email) throw new Error('not found');
         const a = document.createElement('a');
-        a.href = `mailto:${email}${el.dataset.subject ? `?subject=${encodeURIComponent(el.dataset.subject)}` : ''}`;
+        const query = [['subject', el.dataset.subject], ['body', el.dataset.body]]
+          .filter(([, v]) => v)
+          .map(([k, v]) => `${k}=${encodeURIComponent(v!)}`)
+          .join('&');
+        a.href = `mailto:${email}${query ? `?${query}` : ''}`;
         a.textContent = email;
         a.className = btn.className.replace('protected-email__btn', 'protected-email__link');
         btn.replaceWith(a);
+        if (el.dataset.copy) a.after(copyButton(email, el.dataset.copy, el.dataset.copied ?? el.dataset.copy));
         a.focus();
         if (status) status.textContent = `${el.dataset.msgDone ?? ''} ${email}`;
       } catch {

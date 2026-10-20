@@ -1,0 +1,23 @@
+---
+/** Foto eines Profils: lokale Datei (personen.yaml) oder Adresse aus Supabase Storage. */
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  widths: number[];
+  sizes: string;
+  eager?: boolean;
+  class?: string;
+  /** Bildausschnitt (object-position) */
+  pos?: string;
+}
+const { src, alt, widths, sizes, eager = false, class: className, pos } = Astro.props;
+const style = pos ? `object-position: ${pos}` : undefined;
+const loading = eager ? 'eager' : 'lazy';
+---
+{typeof src === 'string' ? (
+  <Image src={src} alt={alt} inferSize widths={widths} sizes={sizes} loading={loading} class={className} style={style} />
+) : (
+  <Image src={src} alt={alt} widths={widths} sizes={sizes} loading={loading} class={className} style={style} />
+)}

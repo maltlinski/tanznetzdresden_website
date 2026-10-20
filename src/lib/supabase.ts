@@ -30,6 +30,32 @@ export interface Profile {
   photo_credit: string | null;
   vimeo: string | null;
   verified: boolean;
+  // Profilseite (Migration 20261020000000_profil_seite.sql); fehlen, solange sie nicht eingespielt ist
+  profession?: string | null;
+  profession_en?: string | null;
+  base?: string | null;
+  pitch?: string | null;
+  pitch_en?: string | null;
+  open_for?: string[];
+  works?: { year: string; title: string; place?: string }[];
+  education?: string | null;
+  techniques?: string | null;
+  languages?: string | null;
+  regions?: string | null;
+  height?: string | null;
+  available?: string | null;
+  public_email?: string | null;
+  gallery?: GalerieEintrag[];
+  gallery_layout?: string;
+}
+
+/** Galeriefoto eines Mitgliederprofils; frei setzt nur die Redaktion */
+export interface GalerieEintrag {
+  path: string;
+  caption?: string;
+  caption_en?: string;
+  credit?: string;
+  frei?: boolean;
 }
 
 export interface DirectoryEntry extends Pick<Profile, 'id' | 'display_name' | 'pronouns' | 'bio' | 'website' | 'instagram' | 'is_trainer' | 'ags' | 'role' | 'slug' | 'public_listing' | 'verified'> {

@@ -1,7 +1,9 @@
 # Personen im Netzwerk. Reihenfolge = Anzeige-Reihenfolge.
 # roles: mitglied | trainer · vorstand: Funktion im Koordinationsteam (optional)
 # Optionale Profilfelder: pronouns, bio, bio_en, tags, photo (../assets/personen/datei.jpg),
-# photoCredit, website, instagram, vimeo, email (wird verschlüsselt), featured (Startseite)
+# photoCredit, website, instagram, vimeo, email (wird verschlüsselt), featured (Startseite),
+# profession, base, pitch (+ _en), openFor, works, education, techniques, languages, regions,
+# height, available, gallery, galleryLayout – Beispiel in docs/profile.md
 # Mitglieder:innen können ihr Profil auch selbst im internen Bereich pflegen (docs/profile.md).
 - id: alba-t-alvarez
   name: "Alba T Álvarez"

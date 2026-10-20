@@ -39,6 +39,30 @@ const BIOS: Record<Lang, string[][]> = {
   ],
 };
 
+const PITCHES: Record<Lang, string[]> = {
+  de: [
+    'Beispielsatz: Ich bringe Tanz an Orte, an denen ihn niemand erwartet: Höfe, Haltestellen, leere Läden.',
+    'Beispielsatz: Ich arbeite mit dem, was zwischen zwei Körpern passiert: Gewicht, Vertrauen, Zufall.',
+    'Beispielsatz: Meine Stücke fragen, wie sich eine Stadt bewegt, wenn niemand hinsieht.',
+  ],
+  en: [
+    'Example: I bring dance to places where nobody expects it: courtyards, tram stops, empty shops.',
+    'Example: I work with what happens between two bodies: weight, trust, chance.',
+    'Example: My pieces ask how a city moves when nobody is watching.',
+  ],
+};
+
+const PROFESSIONS: Record<Lang, string[]> = {
+  de: ['Tänzerin und Choreografin', 'Tänzer und Tanzpädagoge', 'Performerin', 'Choreograf:in'],
+  en: ['Dancer and choreographer', 'Dancer and dance teacher', 'Performer', 'Choreographer'],
+};
+
+const WORKS = [
+  { year: '2026', title: 'Beispiel: Echo, draußen', place: 'Welttanztag · Öffentlicher Raum Dresden' },
+  { year: '2025', title: 'Beispiel: Bodenhaftung', place: 'vision:danceable · Societaetstheater' },
+  { year: '2024', title: 'Beispiel: Kreide', place: 'POP UP · TENZA' },
+];
+
 /** stabiler Index aus dem Kürzel, damit eine Person immer dasselbe Beispiel bekommt */
 const nr = (id: string) => [...id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 
@@ -49,5 +73,11 @@ export function demoFuer(p: PublicProfile, lang: Lang) {
     photo: p.photo ? undefined : fotos[i % fotos.length],
     bio: p.bio ? undefined : BIOS[lang][i % BIOS[lang].length],
     tags: p.tags.length ? undefined : TAGS[i % TAGS.length],
+    pitch: p.pitch ? undefined : PITCHES[lang][i % PITCHES[lang].length],
+    profession: p.profession ? undefined : PROFESSIONS[lang][i % PROFESSIONS[lang].length],
+    works: p.works.length ? undefined : WORKS,
+    /** vier Fotos ab einer stabilen Stelle, ohne das Beispielporträt */
+    gallery: p.gallery.length ? undefined : [1, 2, 3, 4].map((k) => fotos[(i + k) % fotos.length]),
+    openFor: p.openFor.length ? undefined : (['kooperationen', 'engagements', 'workshops'] as const),
   };
 }

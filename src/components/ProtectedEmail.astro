@@ -11,15 +11,19 @@ interface Props {
   /** Text auf dem Button, bevor die Adresse sichtbar ist */
   label?: string;
   subject?: string;
+  /** vorausgefüllter Text der E-Mail */
+  body?: string;
+  /** nach dem Anzeigen einen Knopf „Kopieren“ zeigen */
+  copy?: boolean;
   class?: string;
   /** als großer Button (Designsystem) statt als unterstrichener Link */
   button?: boolean;
 }
 const t = tr(getLang(Astro), {
-  de: { label: 'E-Mail-Adresse anzeigen', hint: 'Klick zeigt die Adresse', busy: 'Adresse wird entschlüsselt …', done: 'E-Mail-Adresse:', fail: 'Das hat nicht geklappt. Bitte erneut versuchen.' },
-  en: { label: 'Show email address', hint: 'click reveals the address', busy: 'Decrypting address …', done: 'Email address:', fail: 'That did not work. Please try again.' },
+  de: { label: 'E-Mail-Adresse anzeigen', hint: 'Klick zeigt die Adresse', busy: 'Adresse wird entschlüsselt …', done: 'E-Mail-Adresse:', fail: 'Das hat nicht geklappt. Bitte erneut versuchen.', copy: 'Kopieren', copied: 'Kopiert' },
+  en: { label: 'Show email address', hint: 'click reveals the address', busy: 'Decrypting address …', done: 'Email address:', fail: 'That did not work. Please try again.', copy: 'Copy', copied: 'Copied' },
 });
-const { email, label = t.label, subject, class: className, button = false } = Astro.props;
+const { email, label = t.label, subject, body, copy = false, class: className, button = false } = Astro.props;
 const p = await protectEmail(email);
 // Nur der Teil vor dem @ wird als Hinweis gezeigt – ohne Domain ist er für Bots wertlos.
 const hint = email.split('@')[0];
@@ -33,6 +37,9 @@ const hint = email.split('@')[0];
   data-iv={p.iv}
   data-data={p.data}
   data-subject={subject}
+  data-body={body}
+  data-copy={copy ? t.copy : undefined}
+  data-copied={copy ? t.copied : undefined}
   data-msg-busy={t.busy}
   data-msg-done={t.done}
   data-msg-fail={t.fail}
@@ -69,5 +76,10 @@ const hint = email.split('@')[0];
   .protected-email__btn--button .protected-email__icon { width: 6px; height: 6px; background: currentColor; }
   :global(.protected-email__link.protected-email__btn--button) { border-bottom: 1.5px solid transparent; padding: 16px 28px; color: #fff; word-break: normal; text-transform: none; letter-spacing: 0.02em; }
   :global(.protected-email__link.protected-email__btn--button:hover) { color: #fff; }
+  :global(.protected-email__copy) {
+    flex: none; margin-left: 12px; padding: 7px 10px; border: 1.5px solid currentColor; border-radius: 0; background: transparent;
+    color: inherit; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+  }
+  :global(.protected-email__copy:hover) { border-color: var(--magenta); }
   @keyframes tndd-pulse { to { opacity: 0.2; } }
 </style>

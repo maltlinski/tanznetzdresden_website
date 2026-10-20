@@ -3,12 +3,11 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { internUrl } from './session';
 
 export async function offeneFreigaben(sb: SupabaseClient): Promise<number> {
-  const { count, error } = await sb
-    .from('profiles')
-    .select('id', { count: 'exact', head: true })
-    .eq('public_listing', true)
-    .not('slug', 'is', null)
-    .or('verified.eq.false,photo_pending.not.is.null');
+  const zaehlen = (oder: string) =>
+    sb.from('profiles').select('id', { count: 'exact', head: true }).eq('public_listing', true).not('slug', 'is', null).or(oder);
+  // gallery_offen gibt es ab Migration 20261020000000_profil_seite.sql
+  let { count, error } = await zaehlen('verified.eq.false,photo_pending.not.is.null,gallery_offen.eq.true');
+  if (error) ({ count, error } = await zaehlen('verified.eq.false,photo_pending.not.is.null'));
   return error ? 0 : (count ?? 0);
 }
 

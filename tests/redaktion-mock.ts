@@ -1,6 +1,7 @@
 /**
- * Nachgebautes Supabase für die Redaktions-Tests (Beiträge, Editor, Mediathek):
- * Anmeldung als Pia (Presse), Tabellen news_posts und news_medien, Bucket newsbilder, Funktion „inhalte“.
+ * Nachgebautes Supabase für die Redaktions-Tests (Beiträge, Editor, Mediathek, Mein Profil, Freigaben):
+ * Anmeldung als Pia (Presse), Tabellen news_posts, news_medien und profiles, Buckets newsbilder und
+ * profilbilder, Funktionen „inhalte“ und galerie_freigabe.
  * Hochgeladene Fotos werden aus dem Speicher wieder ausgeliefert (echte Fotos aus src/assets/photos/).
  */
 import type { Page } from '@playwright/test';
@@ -18,6 +19,10 @@ export interface Mock {
   /** Tabelle news_medien (datei → Zeile) */
   medien: Map<string, Record<string, unknown>>;
   neubau: number;
+  /** jede Änderung am eigenen Profil (PATCH profiles) */
+  profilGespeichert: Record<string, unknown>[];
+  /** Aufrufe von rpc/galerie_freigabe */
+  galerieFreigaben: Record<string, unknown>[];
 }
 
 export interface MockOptionen {
@@ -29,11 +34,16 @@ export interface MockOptionen {
   medien?: Record<string, unknown>[];
   /** Tabelle news_medien fehlt (Migration nicht eingespielt) */
   ohneMediathek?: boolean;
+  /** Felder des eigenen Profils (Pia); ohne „gallery“ = Migration 20261020 fehlt */
+  profil?: Record<string, unknown>;
+  /** Mitgliederprofile für Redaktion → Freigaben */
+  freigaben?: Record<string, unknown>[];
 }
 
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
-  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0 };
+  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [] };
+  let profil: Record<string, unknown> = { id: 'u1', display_name: 'Pia Presse', role: 'presse', verified: false, public_listing: false, tags: [], ags: [], ...o.profil };
   const dateien = new Map<string, Buffer>();
   let zeile = o.zeile;
   const b64 = (x: object) => Buffer.from(JSON.stringify(x)).toString('base64url');
@@ -55,8 +65,27 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
     const einzeln = req.headers()['accept']?.includes('vnd.pgrst.object');
     if (req.method() === 'OPTIONS') return json({});
     if (url.pathname === '/rest/v1/profiles') {
-      const p = { id: 'u1', display_name: 'Pia Presse', role: 'presse' };
-      return json(einzeln ? p : [p]);
+      if (req.method() === 'HEAD') return route.fulfill({ status: 200, headers: { ...cors, 'Content-Range': '0-0/0' } });
+      if (req.method() === 'PATCH') {
+        const body = req.postDataJSON() as Record<string, unknown>;
+        if ('gallery' in body && !('gallery' in profil)) return json({ message: 'column "gallery" does not exist', code: '42703' }, 400);
+        m.profilGespeichert.push(body);
+        // wie der Trigger profiles_galerie: nur schon freigegebene Fotos bleiben frei
+        if (Array.isArray(body.gallery)) {
+          const frei = new Set(((profil.gallery ?? []) as { path: string; frei?: boolean }[]).filter((g) => g.frei).map((g) => g.path));
+          body.gallery = (body.gallery as { path: string }[]).map((g) => ({ ...g, frei: frei.has(g.path) }));
+        }
+        profil = { ...profil, ...body };
+        return json(einzeln ? profil : [profil]);
+      }
+      // eigenes Profil (id=eq.u1, auch per maybeSingle als Liste), sonst die Liste für die Freigaben
+      if (o.freigaben && url.searchParams.get('id') !== 'eq.u1') return json(o.freigaben);
+      return json(einzeln ? profil : [profil]);
+    }
+    if (url.pathname === '/rest/v1/rpc/galerie_freigabe') {
+      const body = req.postDataJSON() as Record<string, unknown>;
+      m.galerieFreigaben.push(body);
+      return json(body.ok ? [] : body.pfad ? [body.pfad] : []);
     }
     if (url.pathname === '/rest/v1/news_posts') {
       const alle = [...(zeile ? [zeile] : []), ...(o.andere ?? [])];
@@ -95,20 +124,20 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       if (!prefix) return json([...new Set(namen.map((n) => n.split('/')[0]))].map((name) => ({ name, id: null })));
       return json(namen.filter((n) => n.startsWith(`${prefix}/`)).map((n) => ({ name: n.slice(prefix.length + 1), id: n, created_at: '2026-10-15T10:00:00Z' })));
     }
-    if ((t = url.pathname.match(/^\/storage\/v1\/object\/newsbilder\/(.+)$/)) && req.method() === 'POST') {
-      const pfad = decodeURIComponent(t[1]);
+    if ((t = url.pathname.match(/^\/storage\/v1\/object\/(newsbilder|profilbilder)\/(.+)$/)) && req.method() === 'POST') {
+      const pfad = decodeURIComponent(t[2]);
       // supabase-js schickt das Foto als Formular; ausgeliefert wird einfach ein echtes Foto
       dateien.set(pfad, readFileSync(FOTOS[m.hochgeladen.length % FOTOS.length]));
       m.hochgeladen.push(pfad);
       return json({ Key: `newsbilder/${pfad}` });
     }
-    if (url.pathname === '/storage/v1/object/newsbilder' && req.method() === 'DELETE') {
+    if (/^\/storage\/v1\/object\/(newsbilder|profilbilder)$/.test(url.pathname) && req.method() === 'DELETE') {
       m.geloescht.push(req.postDataJSON().prefixes);
       return json([]);
     }
-    if ((t = url.pathname.match(/^\/storage\/v1\/object\/public\/newsbilder\/(.+)$/))) {
-      const pfad = decodeURIComponent(t[1]);
-      const inhalt = dateien.get(pfad) ?? (pfad.startsWith('vorhanden/') ? readFileSync(FOTOS[0]) : undefined);
+    if ((t = url.pathname.match(/^\/storage\/v1\/object\/public\/(newsbilder|profilbilder)\/(.+)$/))) {
+      const pfad = decodeURIComponent(t[2]);
+      const inhalt = dateien.get(pfad) ?? (/^(vorhanden|u1|m1)\//.test(pfad) ? readFileSync(FOTOS[0]) : undefined);
       if (!inhalt) return route.fulfill({ status: 404, headers: cors });
       return route.fulfill({ status: 200, contentType: 'image/jpeg', body: inhalt, headers: cors });
     }
