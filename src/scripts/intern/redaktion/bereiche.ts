@@ -472,13 +472,13 @@ export const bereiche: Bereich[] = [
   {
     id: 'haltung',
     art: 'einstellung',
-    label: 'Startseite: Haltung',
+    label: 'Über uns: Haltung',
     einzahl: 'Haltung',
     gruppe: 'Startseite & Verein',
-    beschreibung: 'Abschnitt „Haltung & Wirkung“: Überschrift, vier Säulen, Auszeichnungen, Foto.',
+    beschreibung: 'Abschnitt „Haltung & Wirkung“ auf der Seite „Über uns“: Überschrift, vier Säulen, Auszeichnungen, Foto.',
     datei: 'src/settings/haltung.json',
-    titel: () => 'Startseite: Haltung',
-    seite: () => '',
+    titel: () => 'Über uns: Haltung',
+    seite: () => 'verein/',
     felder: [
       { typ: 'text', key: 'de.kicker', label: 'Kicker', en: 'en.kicker', pflicht: true },
       { typ: 'text', key: 'de.l1', label: 'Überschrift, Zeile 1', en: 'en.l1', pflicht: true },
@@ -510,7 +510,7 @@ export const bereiche: Bereich[] = [
       { typ: 'zahl', key: 'founded', label: 'Gegründet', pflicht: true, min: 1990, max: 2100 },
       { typ: 'url', key: 'social.instagram', label: 'Instagram', hilfe: URL_HILFE },
       { typ: 'text', key: 'social.telegram', label: 'Telegram-Gruppe (Link)', hilfe: 'Für die Anmeldung zu KEEP UP-Workshops. Leer = Kontaktseite.' },
-      { typ: 'liste', key: 'stats', label: 'Zahlen', en: 'en.stats', neu: 'Zahl hinzufügen', titel: (v) => `${v.value ?? ''} ${v.label ?? ''}`, felder: [
+      { typ: 'liste', key: 'stats', label: 'Zahlen', en: 'en.stats', hilfe: 'Die erste Zahl steht auf der Startseite bei „Wer im Netz tanzt“ (z. B. 70+ Tanzschaffende).', neu: 'Zahl hinzufügen', titel: (v) => `${v.value ?? ''} ${v.label ?? ''}`, felder: [
         { typ: 'text', key: 'value', label: 'Zahl', pflicht: true, platzhalter: '70+' },
         { typ: 'text', key: 'label', label: 'Bedeutung', pflicht: true },
       ] },

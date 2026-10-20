@@ -14,8 +14,12 @@ interface Props {
   groupByMonth?: boolean;
   /** Id, über die der Filter (FilterChips) die Liste findet */
   id: string;
+  /** schmale Liste ohne Kurzbeschreibung (Startseite neben dem Journal) */
+  kompakt?: boolean;
+  /** höchstens so viele Termine zeigen (auch nach dem Filtern) */
+  max?: number;
 }
-const { events, groupByMonth = false, id } = Astro.props;
+const { events, groupByMonth = false, id, kompakt = false, max } = Astro.props;
 
 const lang = getLang(Astro);
 const t = tr(lang, { de: { empty: 'Gerade keine Termine in dieser Kategorie.' }, en: { empty: 'No events in this category right now.' } });
@@ -29,13 +33,13 @@ const rows = events.map((e) => ({
 }));
 let lastMonth = '';
 ---
-<ul class="events" id={id} data-event-list>
-  {rows.map((e) => {
+<ul class:list={['events', kompakt && 'events--kompakt']} id={id} data-event-list data-max={max}>
+  {rows.map((e, i) => {
     const heading = groupByMonth && e.monthLong !== lastMonth ? (lastMonth = e.monthLong) : null;
     return (
       <>
         {heading && <li class="events__month" data-month>{heading}</li>}
-        <li class="event" id={groupByMonth ? e.id : undefined} data-cat={e.category} data-end={(e.end ?? e.start).replace(' ', 'T')}>
+        <li class="event" id={groupByMonth ? e.id : undefined} data-cat={e.category} data-end={(e.end ?? e.start).replace(' ', 'T')} hidden={max !== undefined && i >= max}>
           <a href={url(lang, 'termine', `${e.id}/`)}>
             <time class="event__date" datetime={e.iso}>
               <span class="event__dow" aria-hidden="true">{e.dow}</span>
@@ -44,11 +48,11 @@ let lastMonth = '';
             </time>
             <div class="event__body">
               <h3 class="event__title">{e.title}</h3>
-              <p class="event__meta">{e.venue} · {e.timeLabel ?? e.time} · {e.teaser}</p>
+              <p class="event__meta">{e.venue} · {e.timeLabel ?? e.time}{!kompakt && ` · ${e.teaser}`}</p>
             </div>
             <div class="event__side">
               <Badge variant={badgeVariant[e.category]}>{categoryLabel[lang][e.category]}</Badge>
-              <span class="event__arrow" aria-hidden="true">→</span>
+              {!kompakt && <span class="event__arrow" aria-hidden="true">→</span>}
             </div>
           </a>
         </li>
@@ -60,6 +64,7 @@ let lastMonth = '';
 
 <script>
   import { gsap, ScrollTrigger, EASE, motionOk } from '../scripts/gsap';
+  import { begrenzen } from '../scripts/event-list';
 
   // Vergangene Termine ausblenden, auch wenn die Seite seit dem letzten Build nicht neu gebaut wurde.
   const now = Date.now();
@@ -67,6 +72,8 @@ let lastMonth = '';
     const end = Date.parse(li.dataset.end ?? '');
     if (end && end + 3 * 3600_000 < now) li.remove();
   });
+  // dann rücken spätere nach (Listen mit Höchstzahl)
+  document.querySelectorAll<HTMLElement>('[data-event-list][data-max]').forEach(begrenzen);
 
   // Termine laufen beim Scrollen gruppenweise von links ein, das Datum steigt kurz nach
   if (motionOk()) {
@@ -127,8 +134,13 @@ let lastMonth = '';
     font-family: var(--font-display); font-size: 22px; color: var(--purple);
     transition: transform var(--dur-slow) var(--ease-out), color var(--dur-base);
   }
+  .events--kompakt .event a { grid-template-columns: 76px minmax(0, 1fr) auto; gap: clamp(14px, 2.4vw, 28px); padding: 20px 10px; }
+  .events--kompakt .event__day { font-size: 38px; }
+  .events--kompakt .event__mo { font-size: 11px; letter-spacing: 0.18em; }
+  .events--kompakt .event__title { font-size: clamp(19px, 1.7vw, 23px); margin-bottom: 5px; }
+  .events--kompakt .event__meta { font-size: 14px; }
   @media (max-width: 560px) {
-    .event a { grid-template-columns: 72px minmax(0, 1fr); padding: 20px 4px; }
+    .event a, .events--kompakt .event a { grid-template-columns: 72px minmax(0, 1fr); padding: 20px 4px; }
     .event__side { grid-column: 2; }
     .event__arrow { display: none; }
   }

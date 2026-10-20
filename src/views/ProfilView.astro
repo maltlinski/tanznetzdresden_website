@@ -430,7 +430,8 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
 
 <style>
   .profil { counter-reset: abschnitt nav; }
-  .psec { scroll-margin-top: calc(var(--header-h) + 64px); }
+  /* html hat scroll-padding-top für den Seitenkopf; hier kommt die Abschnittsleiste dazu */
+  .psec { scroll-margin-top: 56px; }
 
   /* Abschnittskopf „01 —— Titel“ */
   .pk {

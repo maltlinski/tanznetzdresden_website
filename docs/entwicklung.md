@@ -74,7 +74,8 @@ Wo GSAP läuft:
 
 | Stelle | Datei | Was passiert |
 |---|---|---|
-| Formate (Startseite) | `sections/Formats.astro` | Zeilen laufen nacheinander ein, Bildrahmen öffnet sich als Keil, Foto mit leichter Parallaxe, neues Foto wischt über das alte, Beschreibung klappt auf |
+| Überschriften der Startseite | `scripts/split-text.ts` (SplitText) | `data-split`: Wörter gleiten nacheinander von links herein; „Eine Stadt. Ein Netz.“ steigt Wort für Wort aus einer Maske; „Tanz für …“ wechselt Buchstabe für Buchstabe |
+| Formate (Startseite) | `sections/Formats.astro` | Karten im Streifen laufen nacheinander ein; Pfeile blättern um eine Karte |
 | Terminlisten (Startseite, Terminseite, Tanzkalender ohne JavaScript) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
 | Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |
 | Kalender (Tanzkalender und Profitraining) | `Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Tagesansicht und Filter-Markierungen animiert |
@@ -85,11 +86,16 @@ Wo GSAP läuft:
 
 `src/scripts/hero-net.ts`, Einstellungen in `src/settings/hero.ts` (Wörter und Standzeit in `hero.json`): die drei Fotos (links hinten, Mitte vorn,
 rechts hinten; auf dem Handy nur die ersten beiden), die Wörter für „Tanz für …“, Standzeit pro Wort, Knotendichte und
-ob die Fotos beim Scrollen wegziehen. Die Fotos müssen einen dunklen Bühnenhintergrund haben, weil Schwarz ausgestanzt
-wird. Das Netz sammelt sich um den nächsten Termin („Upcoming“).
+ob die Fotos beim Scrollen wegziehen (seit Entwurf v5 aus: „ruhig“). Die Fotos müssen einen dunklen Bühnenhintergrund
+haben, weil Schwarz ausgestanzt wird. Das Netz sammelt sich um den nächsten Termin („Upcoming“).
 
-Der Abschnitt „Haltung & Wirkung“ liest seine Texte aus `src/settings/haltung.json`, die Partnerliste aus
-`src/settings/verein.json` (`partners`).
+Die Startseite (Entwurf v5, `src/views/HomeView.astro`): Hero mit drei Einstiegen, „Demnächst“ (Termine und Journal
+nebeneinander, `sections/Demnaechst.astro`), Formate als Streifen, „Eine Stadt. Ein Netz.“ mit den Namen aus dem Netz
+(`sections/Netz.astro`), Mitglied werden und Newsletter. Unter dem Kopf läuft ab dem Ende des Hero ein Fortschrittsbalken
+(`<Page fortschritt>`).
+
+Der Abschnitt „Haltung & Wirkung“ steht auf „Über uns“ (`/verein/`) und liest seine Texte aus
+`src/settings/haltung.json`, die Partnerliste aus `src/settings/verein.json` (`partners`).
 
 ## Ideen für die nächsten Schritte
 

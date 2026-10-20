@@ -3,6 +3,7 @@ import Page from '../layouts/Page.astro';
 import PageIntro from '../components/PageIntro.astro';
 import Tag from '../components/ui/Tag.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
+import Haltung from '../components/sections/Haltung.astro';
 import { getProfiles } from '../lib/profiles';
 import { getVerein } from '../lib/settings';
 import { getLang, tr, url } from '../lib/i18n';
@@ -35,6 +36,7 @@ const t = tr(lang, {
 ---
 <Page title={t.title} description={t.desc} route="verein">
   <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} />
+  <Haltung />
 
   <section class="section" id="vorstand" aria-labelledby="vorstand-h">
     <div class="wrap">

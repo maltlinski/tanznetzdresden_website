@@ -17,15 +17,17 @@ interface Props {
   /** Zusatz hinter der Route, z. B. Profil-Kürzel "alba-t-alvarez/" */
   rest?: string;
   ogImage?: ImageMetadata;
+  /** Fortschrittsbalken unter dem Kopf (Startseite) */
+  fortschritt?: boolean;
 }
-const { route, rest = '', ...props } = Astro.props;
+const { route, rest = '', fortschritt = false, ...props } = Astro.props;
 const alternates: Alternates = route
   ? { de: url('de', route, rest), en: routes[route].en === null ? null : url('en', route, rest) }
   : {};
 ---
 <Base {...props} alternates={alternates}>
   <slot name="head" slot="head" />
-  <Header alternates={alternates} />
+  <Header alternates={alternates} fortschritt={fortschritt} />
   <main id="inhalt" tabindex="-1">
     <slot />
   </main>

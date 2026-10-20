@@ -1,4 +1,8 @@
 ---
+/**
+ * Startseite (Entwurf v5): „Formate & Reihen“ als Streifen zum Wischen, mit Pfeilen zum Blättern.
+ * Formate mit eigener Seite (Feld `seite`, z. B. KEEP UP → Profitraining) sind ganz verlinkt.
+ */
 import { Image } from 'astro:assets';
 import Tag from '../ui/Tag.astro';
 import { getFormate } from '../../lib/content';
@@ -6,8 +10,8 @@ import { getLang, loc, tr, url } from '../../lib/i18n';
 
 const lang = getLang(Astro);
 const t = tr(lang, {
-  de: { kicker: 'Was wir machen', h: 'Formate & Reihen', intro: 'Getragen von Arbeitsgruppen aus dem Netzwerk. Jedes Format hat eine eigene AG, die es plant und weiterentwickelt.', more: 'Mehr zu' },
-  en: { kicker: 'What we do', h: 'Formats & series', intro: 'Run by working groups from the network. Each format has its own group that plans and develops it.', more: 'More on' },
+  de: { kicker: 'Was wir machen', h: 'Formate & Reihen', prev: 'Vorherige Formate', next: 'Weitere Formate', list: 'Formate' },
+  en: { kicker: 'What we do', h: 'Formats & series', prev: 'Previous formats', next: 'More formats', list: 'Formats' },
 });
 const items = (await getFormate()).map((f, i) => ({
   ...f.data,
@@ -16,215 +20,102 @@ const items = (await getFormate()).map((f, i) => ({
   title: loc(f.data, 'title', lang),
   since: loc(f.data, 'since', lang),
   summary: loc(f.data, 'summary', lang),
+  alt: loc(f.data, 'alt', lang),
   page: f.data.seite ? url(lang, f.data.seite) : undefined,
 }));
 ---
-<section id="formate" class="section formate surface-tint" aria-labelledby="formate-h">
-  <div class="wrap">
-    <div class="section-head">
-      <div data-reveal>
-        <Tag>{t.kicker}</Tag>
-        <h2 id="formate-h" class="h2">{t.h}</h2>
-      </div>
-      <p class="formate__intro">{t.intro}</p>
+<section id="formate" class="formate surface-tint" aria-labelledby="formate-h" data-formats>
+  <div class="wrap formate__kopf">
+    <div>
+      <Tag>{t.kicker}</Tag>
+      <h2 id="formate-h" class="h2" data-split>{t.h}</h2>
     </div>
-
-    <div class="formate__grid" data-formats>
-      <ul class="formats">
-        {items.map((f, i) => (
-          <li class:list={['format', i === 0 && 'is-active']} data-index={i}>
-            <span class="format__n">{f.n}</span>
-            <div class="format__body">
-              <button type="button" class="format__head" aria-expanded={i === 0 ? 'true' : 'false'} aria-controls={`format-d-${i}`}>
-                <span class="format__mk" aria-hidden="true"></span>
-                <h3 class="format__t">{f.title}</h3>
-              </button>
-              <div class="format__d" id={`format-d-${i}`}>
-                <p>{f.summary}</p>
-                {f.page && <a class="mono-link format__link" href={f.page}>{t.more} {f.title} →</a>}
-              </div>
-            </div>
-            <span class="format__since">{f.since}</span>
-          </li>
-        ))}
-      </ul>
-
-      <div class="format-photo" aria-hidden="true">
-        <div class="format-photo__frame" data-format-frame>
-          <div class="format-photo__track" data-format-track>
-          {items.map((f, i) => (
-            <Image
-              src={f.image}
-              alt=""
-              widths={[400, 640, 900, 1200]}
-              sizes="(min-width: 1000px) 560px, 100vw"
-              loading={i === 0 ? 'eager' : 'lazy'}
-              class:list={['format-photo__img', i === 0 && 'is-active']}
-              data-index={i}
-            />
-          ))}
-          </div>
-          <div class="format-photo__sq"></div>
-          <div class="format-photo__cap">
-            <span class="format-photo__meta" data-format-meta>{items[0].n} · {items[0].since}</span>
-            <span class="format-photo__t" data-format-title>{items[0].title}</span>
-          </div>
-        </div>
-      </div>
+    <div class="formate__pfeile">
+      <button type="button" class="formate__pfeil" aria-label={t.prev} aria-controls="formate-streifen" data-strip-prev>←</button>
+      <button type="button" class="formate__pfeil formate__pfeil--voll" aria-label={t.next} aria-controls="formate-streifen" data-strip-next>→</button>
     </div>
   </div>
+  <ul class="streifen" id="formate-streifen" aria-label={t.list} data-strip>
+    {items.map((f) => {
+      const El = f.page ? 'a' : 'article';
+      return (
+        <li class="streifen__el">
+          <El class:list={['karte', f.page && 'karte--link']} href={f.page} data-format={f.id}>
+            <span class="karte__bild">
+              <Image src={f.image} alt={f.alt} widths={[340, 520, 680]} sizes="(min-width: 1300px) 340px, (min-width: 1000px) 26vw, 280px" />
+            </span>
+            <span class="karte__text">
+              <span class="karte__meta">{f.n} · {f.since}</span>
+              <h3 class="karte__t">{f.title}{f.page && <span class="karte__pfeil" aria-hidden="true"> →</span>}</h3>
+              <span class="karte__d">{f.summary}</span>
+            </span>
+          </El>
+        </li>
+      );
+    })}
+  </ul>
 </section>
 
 <script>
   import { gsap, EASE, motionOk } from '../../scripts/gsap';
 
   const root = document.querySelector<HTMLElement>('[data-formats]');
-  if (root) {
-    const rows = [...root.querySelectorAll<HTMLElement>('.format')];
-    const imgs = [...root.querySelectorAll<HTMLElement>('.format-photo__img')];
-    const frame = root.querySelector<HTMLElement>('[data-format-frame]');
-    const track = root.querySelector<HTMLElement>('[data-format-track]');
-    const meta = root.querySelector<HTMLElement>('[data-format-meta]');
-    const title = root.querySelector<HTMLElement>('[data-format-title]');
-    const motion = motionOk();
-    let active = 0;
-
-    // Mit GSAP übernimmt das Skript den Bildwechsel (sonst: CSS-Übergang)
-    if (motion) root.classList.add('is-gsap');
-
-    const pick = (i: number) => {
-      if (i === active) return;
-      const prev = active;
-      active = i;
-      rows.forEach((row, j) => {
-        row.classList.toggle('is-active', j === i);
-        row.querySelector('.format__head')?.setAttribute('aria-expanded', String(j === i));
-      });
-      const row = rows[i];
-      if (meta) meta.textContent = `${row.querySelector('.format__n')?.textContent} · ${row.querySelector('.format__since')?.textContent}`;
-      if (title) title.textContent = row.querySelector('.format__t')?.textContent ?? '';
-
-      if (!motion) {
-        imgs.forEach((img, j) => img.classList.toggle('is-active', j === i));
-        return;
-      }
-      // Neues Foto wischt als Keil von links über das alte, das darunter stehen bleibt
-      const img = imgs[i];
-      gsap.killTweensOf(imgs);
-      imgs.forEach((el, j) => {
-        el.classList.toggle('is-active', j === i);
-        el.classList.toggle('is-prev', j === prev);
-      });
-      gsap.fromTo(
-        img,
-        { clipPath: 'polygon(0% 0%, 0% 0%, 0% 100%, 0% 100%)', scale: 1.14 },
-        {
-          clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)', scale: 1, duration: 0.85, ease: EASE,
-          onComplete: () => imgs[prev].classList.remove('is-prev'),
-        },
-      );
-      gsap.fromTo([meta, title], { y: 14, opacity: 0 }, { y: 0, opacity: 1, duration: 0.5, ease: EASE, stagger: 0.05, clearProps: 'transform,opacity' });
-      // Beschreibung klappt auf
-      const more = row.querySelector<HTMLElement>('.format__d');
-      if (more) gsap.from(more, { height: 0, opacity: 0, duration: 0.5, ease: EASE, clearProps: 'height,opacity' });
+  const strip = root?.querySelector<HTMLElement>('[data-strip]');
+  const prev = root?.querySelector<HTMLButtonElement>('[data-strip-prev]');
+  const next = root?.querySelector<HTMLButtonElement>('[data-strip-next]');
+  if (root && strip && prev && next) {
+    const schritt = () => (strip.querySelector('li')?.getBoundingClientRect().width ?? 320) + 20;
+    const ruhig = !motionOk();
+    prev.addEventListener('click', () => strip.scrollBy({ left: -schritt(), behavior: ruhig ? 'auto' : 'smooth' }));
+    next.addEventListener('click', () => strip.scrollBy({ left: schritt(), behavior: ruhig ? 'auto' : 'smooth' }));
+    // Pfeile am Anfang bzw. Ende sperren
+    const pruefen = () => {
+      prev.disabled = strip.scrollLeft < 4;
+      next.disabled = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
     };
+    strip.addEventListener('scroll', pruefen, { passive: true });
+    addEventListener('resize', pruefen);
+    pruefen();
 
-    const canHover = matchMedia('(hover: hover)').matches;
-    rows.forEach((row, i) => {
-      if (canHover) row.addEventListener('mouseenter', () => pick(i));
-      row.addEventListener('click', () => pick(i));
-      row.querySelector('.format__head')?.addEventListener('focus', () => pick(i));
-    });
-
-    if (motion) {
-      // Zeilen laufen nacheinander von links ein
-      gsap.from(rows, {
-        x: -56, opacity: 0, duration: 0.9, ease: EASE, stagger: 0.08, clearProps: 'transform,opacity',
-        scrollTrigger: { trigger: root, start: 'top 80%', once: true },
+    if (!ruhig) {
+      gsap.from(strip.querySelectorAll('.streifen__el'), {
+        x: -48, opacity: 0, duration: 0.9, ease: EASE, stagger: 0.08, clearProps: 'transform,opacity',
+        scrollTrigger: { trigger: strip, start: 'top 85%', once: true },
       });
-      // Bildrahmen öffnet sich als Keil
-      if (frame) {
-        gsap.from(frame, {
-          clipPath: 'polygon(0% 0%, 0% 0%, 0% 88%, 0% 100%, 0% 100%)', duration: 1.1, ease: EASE, clearProps: 'clipPath',
-          scrollTrigger: { trigger: frame, start: 'top 85%', once: true },
-        });
-      }
-      // Leichte Parallaxe: das Foto wandert langsamer als die Seite
-      if (track) {
-        gsap.fromTo(track, { yPercent: -5 }, {
-          yPercent: 5, ease: 'none',
-          scrollTrigger: { trigger: root, start: 'top bottom', end: 'bottom top', scrub: true },
-        });
-      }
     }
   }
 </script>
 
 <style>
-  .formate { background: var(--tint); }
-  .formate .section-head { gap: 20px 40px; margin-bottom: 40px; }
-  .formate__intro { max-width: 420px; margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
-  .formate__grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
-    gap: 40px clamp(32px, 5vw, 72px); align-items: start;
+  .formate { background: var(--tint); padding: clamp(64px, 8vw, 104px) 0; }
+  .formate__kopf { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px; margin-bottom: 32px; }
+  .formate__kopf :global(.tag) { margin-bottom: 14px; }
+  .formate .h2 { font-size: clamp(36px, 4.4vw, 56px); }
+  .formate__pfeile { display: flex; gap: 8px; }
+  .formate__pfeil {
+    width: 48px; height: 48px; border: 1.5px solid var(--purple); border-radius: 0; background: transparent; color: var(--purple);
+    font-family: var(--font-display); font-size: 22px; cursor: pointer; transition: background var(--dur-base), border-color var(--dur-base), color var(--dur-base);
   }
-  .formats { border-bottom: 1px solid var(--rule); list-style: none; margin: 0; padding: 0; }
-  .format {
-    display: grid; grid-template-columns: 44px minmax(0, 1fr) auto; gap: 16px; align-items: baseline;
-    padding: 22px 0; border-top: 1px solid var(--rule); cursor: pointer;
-  }
-  .format__n { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: var(--ink-muted); }
-  .format__body { min-width: 0; }
-  .format__head {
-    display: flex; align-items: center; gap: 14px; width: 100%; text-align: left;
-    background: none; border: 0; padding: 0; margin: 0; cursor: pointer; color: inherit;
-  }
-  .format__mk { flex: none; width: 0; height: 14px; margin-right: -14px; background: var(--magenta); transition: width 420ms var(--ease-out), margin 420ms var(--ease-out); }
-  .format__t {
-    font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 3.4vw, 46px);
-    line-height: 1; letter-spacing: -0.03em; margin: 0; color: var(--purple); transition: color 200ms;
-  }
-  .format__d { overflow: hidden; }
-  .format__d p { margin: 14px 0 4px; max-width: 480px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
-  .format__link { display: inline-block; margin-top: 10px; color: var(--magenta-2); }
-  .format__link:hover { color: var(--purple); }
-  .format__since {
-    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em;
-    text-transform: uppercase; color: var(--ink-soft); white-space: nowrap;
-  }
-  .format.is-active .format__mk { width: 14px; margin-right: 0; }
-  .format.is-active .format__t { color: var(--magenta); }
-  /* Without JS every description stays readable. */
-  :global(.js) .format:not(.is-active) .format__d { display: none; }
+  .formate__pfeil:hover:not(:disabled) { border-color: var(--magenta); color: var(--magenta-2); }
+  .formate__pfeil--voll { background: var(--purple); color: #fff; }
+  .formate__pfeil--voll:hover:not(:disabled) { background: var(--magenta); color: #fff; }
+  .formate__pfeil:disabled { opacity: 0.35; cursor: default; }
 
-  .format-photo { position: sticky; top: 96px; }
-  .format-photo__frame {
-    position: relative; aspect-ratio: 4 / 5; max-height: 72vh; width: 100%; background: var(--purple);
-    overflow: hidden; clip-path: var(--keil-corner);
+  .streifen {
+    --rand: max(var(--gutter), calc((100vw - var(--wrap)) / 2 + var(--gutter)));
+    display: flex; gap: 20px; overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-left: var(--rand);
+    margin: 0; padding: 0 var(--rand) 8px; list-style: none; scrollbar-width: none;
   }
-  .format-photo__frame :global(.format-photo__img) {
-    position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover;
-    clip-path: inset(0 100% 0 0);
-    transition: clip-path 620ms var(--ease-out);
-  }
-  .format-photo__frame :global(.format-photo__img.is-active) { clip-path: inset(0 0 0 0); z-index: 1; }
-  /* GSAP-Bildwechsel (Skript): leicht vergrößerte Spur für die Parallaxe, altes Foto bleibt darunter */
-  .format-photo__track { position: absolute; inset: -6% 0; }
-  .is-gsap .format-photo__frame :global(.format-photo__img) { transition: none; }
-  .is-gsap .format-photo__frame :global(.format-photo__img.is-prev) { clip-path: none; z-index: 0; }
-  .format-photo__sq { position: absolute; z-index: 2; top: 0; left: 0; width: 38px; height: 38px; background: var(--magenta); }
-  .format-photo__cap {
-    position: absolute; z-index: 2; left: 0; bottom: 0; right: 12%; background: color-mix(in srgb, var(--purple) 90%, transparent);
-    padding: 18px 22px; display: flex; flex-direction: column; gap: 6px;
-  }
-  .format-photo__meta {
-    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
-    text-transform: uppercase; color: var(--cyan);
-  }
-  .format-photo__t { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; color: #fff; }
-
-  @media (max-width: 960px) {
-    .format-photo { position: relative; top: 0; order: -1; }
-    .format-photo__frame { aspect-ratio: 3 / 2; }
-  }
+  .streifen::-webkit-scrollbar { display: none; }
+  .streifen__el { flex: 0 0 clamp(260px, 26vw, 340px); scroll-snap-align: start; display: flex; }
+  .karte { flex: 1; display: flex; flex-direction: column; background: #fff; border-top: 3px solid var(--magenta); color: var(--purple); }
+  .karte--link:hover { color: var(--magenta-2); }
+  .karte__bild { position: relative; display: block; aspect-ratio: 4 / 3; background: var(--purple); overflow: hidden; clip-path: polygon(0 0, 100% 0, 100% 84%, 88% 100%, 0 100%); }
+  .karte__bild :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 900ms var(--ease-out); }
+  .karte--link:hover .karte__bild :global(img) { transform: scale(1.04); }
+  .karte__text { display: flex; flex-direction: column; gap: 10px; padding: 20px 22px 24px; }
+  .karte__meta { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .karte__t { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.05; letter-spacing: -0.025em; color: inherit; transition: color var(--dur-base); }
+  .karte__pfeil { color: var(--magenta); }
+  .karte__d { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); text-wrap: pretty; }
 </style>

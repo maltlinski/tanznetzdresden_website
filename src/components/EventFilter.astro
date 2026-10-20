@@ -31,6 +31,7 @@ const filters: { value: 'Alle' | (typeof eventCategories)[number]; count: number
 <script>
   import { Flip } from 'gsap/Flip';
   import { gsap, ScrollTrigger, EASE, motionOk } from '../scripts/gsap';
+  import { begrenzen } from '../scripts/event-list';
 
   gsap.registerPlugin(Flip);
   const motion = motionOk();
@@ -48,12 +49,8 @@ const filters: { value: 'Alle' | (typeof eventCategories)[number]; count: number
       // Liste gleitet in die neue Ordnung (GSAP Flip): bleibende Termine rücken nach, neue laufen ein
       const items = [...list.querySelectorAll<HTMLElement>('.event, [data-month], [data-empty]')];
       const state = motion ? Flip.getState(items) : null;
-      let shown = 0;
-      list.querySelectorAll<HTMLElement>('.event').forEach((li) => {
-        const show = value === 'Alle' || li.dataset.cat === value;
-        li.hidden = !show;
-        if (show) shown++;
-      });
+      list.querySelectorAll<HTMLElement>('.event').forEach((li) => li.toggleAttribute('data-aus', value !== 'Alle' && li.dataset.cat !== value));
+      const shown = begrenzen(list);
       // Monatsüberschriften ohne sichtbare Termine ausblenden
       list.querySelectorAll<HTMLElement>('[data-month]').forEach((h) => {
         let n = h.nextElementSibling as HTMLElement | null;

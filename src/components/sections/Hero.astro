@@ -1,7 +1,7 @@
 ---
 /**
- * Hero der Startseite (Entwurf v2): nur Bild. Drei Bühnenfotos, das Netz, oben „Tanz für …“,
- * in der Mitte der nächste Termin. Die Überschrift der Seite steht im Intro darunter.
+ * Hero der Startseite (Entwurf v5): drei Bühnenfotos, das Netz, oben „Tanz für …“ (Überschrift der Seite),
+ * in der Mitte der nächste Termin, unten drei Einstiege (Tanz sehen, Mittrainieren, Teil des Netzes werden).
  * Einstellungen: src/settings/hero.ts
  */
 import { getImage } from 'astro:assets';
@@ -41,9 +41,20 @@ const next = (await getUpcoming(3)).map((e) => {
   };
 });
 const t = tr(lang, {
-  de: { replay: 'Netz neu knüpfen', next: 'Upcoming', nextLabel: 'Nächster Termin' },
-  en: { replay: 'Re-knot the net', next: 'Upcoming', nextLabel: 'Next event' },
+  de: {
+    replay: 'Netz neu knüpfen', next: 'Upcoming', nextLabel: 'Nächster Termin', wege: 'Einstiege',
+    sehen: ['Zuschauen', 'Tanz sehen'], trainieren: ['Trainieren', 'Mittrainieren'], mitmachen: ['Mitmachen', 'Teil des Netzes werden'],
+  },
+  en: {
+    replay: 'Re-knot the net', next: 'Upcoming', nextLabel: 'Next event', wege: 'Ways in',
+    sehen: ['Watch', 'See dance'], trainieren: ['Train', 'Train with us'], mitmachen: ['Join', 'Become part of the network'],
+  },
 });
+const wege = [
+  { href: url(lang, 'home', '#termine'), k: t.sehen[0], t: t.sehen[1] },
+  { href: url(lang, 'profitraining'), k: t.trainieren[0], t: t.trainieren[1] },
+  { href: url(lang, 'home', '#mitglied'), k: t.mitmachen[0], t: t.mitmachen[1] },
+];
 ---
 <section id="top" class="hero" aria-label={verein.name} data-hero>
   <canvas
@@ -57,12 +68,14 @@ const t = tr(lang, {
 
   <button type="button" class="replay" data-hero-replay>{t.replay}</button>
 
-  {words.length > 0 && (
-    <p class="claim" data-claim data-words={JSON.stringify(words)} data-pause={wortPause}>
-      <span class="visually-hidden">{claim[lang].lead} {words.join(', ')}</span>
+  {words.length > 0 ? (
+    <h1 class="claim" data-claim data-words={JSON.stringify(words)} data-pause={wortPause}>
+      <span class="visually-hidden">{verein.name}: {claim[lang].lead} {words.join(', ')}</span>
       <span class="claim__lead" aria-hidden="true" data-claim-lead>{claim[lang].lead}</span>
       <span class="claim__mask" aria-hidden="true"><span class="claim__word" data-claim-word>{words[0]}</span></span>
-    </p>
+    </h1>
+  ) : (
+    <h1 class="visually-hidden">{verein.name}</h1>
   )}
 
   {next.map((e, i) => (
@@ -86,19 +99,19 @@ const t = tr(lang, {
     </a>
   ))}
 
-  <div class="hero__floor" data-hero-floor>
-    <div class="hero__floor-inner">
-      {verein.stats.map((s) => (
-        <div class="stat"><span class="stat__n">{s.value}</span><span class="stat__l">{s.label}</span></div>
+  <nav class="hero__floor" aria-label={t.wege} data-hero-floor>
+    <ul class="hero__floor-inner">
+      {wege.map((w) => (
+        <li><a class="weg" href={w.href}><span class="weg__k">{w.k}</span><span class="weg__t">{w.t}<span class="weg__pfeil" aria-hidden="true">→</span></span></a></li>
       ))}
-      <span class="hero__word" aria-hidden="true">{verein.name}</span>
-    </div>
-  </div>
+    </ul>
+  </nav>
   <KeilBar class="hero__keil" />
 </section>
 
 <script>
   import { HeroNet, type HeroPhoto } from '../../scripts/hero-net';
+  import { zeichenHinein, zeichenHinaus } from '../../scripts/split-text';
 
   const EASE = 'cubic-bezier(0.16, 1, 0.3, 1)';
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -112,7 +125,7 @@ const t = tr(lang, {
   const up = ups.find((a) => new Date(a.dataset.end ?? '').getTime() >= now) ?? null;
   ups.forEach((a) => (a.hidden = a !== up));
 
-  // „Tanz für …“: Wörter wechseln, nach einer Runde bleibt das erste stehen.
+  // „Tanz für …“: Wörter wechseln Buchstabe für Buchstabe (SplitText), nach einer Runde bleibt das erste stehen.
   function runClaim(el: HTMLElement) {
     const word = el.querySelector<HTMLElement>('[data-claim-word]');
     const lead = el.querySelector<HTMLElement>('[data-claim-lead]');
@@ -120,21 +133,18 @@ const t = tr(lang, {
     const pause = Number(el.dataset.pause || 4) * 1000;
     if (!word || !canAnimate) return;
     lead?.animate([{ opacity: 0, transform: 'translateX(-64px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: 250, easing: EASE, fill: 'backwards' });
-    word.animate([{ transform: 'translateX(-105%)' }, { transform: 'none' }], { duration: 900, delay: 550, easing: EASE, fill: 'backwards' });
+    let split = zeichenHinein(word, 0.55);
     if (words.length < 2) return;
     let i = 0;
-    const tick = () => {
+    const tick = async () => {
       if (document.hidden) return void setTimeout(tick, 500);
-      word.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateX(48px)', opacity: 0 }], { duration: 260, easing: 'cubic-bezier(0.7, 0, 0.84, 0)', fill: 'forwards' })
-        .finished.then(() => {
-          i = (i + 1) % words.length;
-          word.textContent = words[i];
-          word.getAnimations().forEach((a) => a.cancel());
-          word.animate([{ transform: 'translateX(-105%)' }, { transform: 'none' }], { duration: 700, easing: EASE });
-          if (i !== 0) setTimeout(tick, 700 + pause);
-        });
+      await zeichenHinaus(split);
+      i = (i + 1) % words.length;
+      word.textContent = words[i];
+      split = zeichenHinein(word);
+      if (i !== 0) setTimeout(tick, 900 + pause);
     };
-    setTimeout(tick, 1250 + pause);
+    setTimeout(tick, 1400 + pause);
   }
 
   if (root && canvas) {
@@ -239,21 +249,20 @@ const t = tr(lang, {
   .up:focus-visible .up__text, .up:focus-visible .up__arrow { transform: translateX(6px); }
   .up:hover .up__bar, .up:focus-visible .up__bar { transform: scaleX(1); }
 
-  .hero__floor { position: relative; z-index: 1; border-top: 1px solid var(--on-dark-rule); }
+  .hero__floor { position: relative; z-index: 1; border-top: 1px solid var(--on-dark-rule); background: color-mix(in srgb, var(--purple) 90%, transparent); }
   .hero__floor-inner {
-    max-width: var(--wrap); margin: 0 auto; padding: 18px var(--gutter) 30px;
-    display: flex; flex-wrap: wrap; align-items: center; gap: 14px 44px;
+    max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); list-style: none;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); column-gap: 24px;
   }
-  .stat { display: flex; align-items: baseline; gap: 10px; }
-  .stat__n { font-family: var(--font-display); font-weight: 800; font-size: 26px; color: var(--cyan); letter-spacing: -0.02em; }
-  .stat__l {
-    font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
-    color: var(--on-dark-soft);
+  .weg { display: flex; flex-direction: column; gap: 6px; padding: 20px clamp(16px, 2vw, 28px) 26px 0; color: #fff; transition: color var(--dur-base); }
+  .weg:hover { color: var(--cyan); }
+  .weg__k { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+  .weg__t {
+    display: flex; align-items: baseline; gap: 12px; font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(20px, 1.9vw, 26px); line-height: 1.05; letter-spacing: -0.02em;
   }
-  .hero__word {
-    margin-left: auto; font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1;
-    letter-spacing: -0.02em; color: rgba(255, 255, 255, 0.7); white-space: nowrap;
-  }
+  .weg__pfeil { color: var(--magenta); transition: transform var(--dur-slow) var(--ease-out); }
+  .weg:hover .weg__pfeil, .weg:focus-visible .weg__pfeil { transform: translateX(6px); }
   .hero :global(.hero__keil) { position: absolute; left: 0; bottom: 0; width: 34%; z-index: 2; }
 
   @media (min-width: 640px) {
@@ -261,11 +270,12 @@ const t = tr(lang, {
   }
   @media (max-width: 639px) {
     /* kein Platz neben der Überschrift; ohne Maus ist das Netz ohnehin ruhig */
-    .replay, .hero__word { display: none; }
-    /* die Zahlen stehen direkt darunter im Intro; so bleibt den Fotos mehr Höhe */
-    .hero__floor-inner { padding: 0 var(--gutter) 28px; }
-    .stat { display: none; }
-    .up { left: var(--gutter); right: var(--gutter); top: auto; bottom: 64px; transform: none; max-width: none; }
+    .replay { display: none; }
+    /* Einstiege kompakt untereinander, der Termin steht direkt darüber */
+    .hero__floor-inner { padding-bottom: 18px; }
+    .weg { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--on-dark-rule); }
+    .weg__t { font-size: 19px; }
+    .up { position: relative; z-index: 3; left: auto; top: auto; transform: none; max-width: none; margin: 0 var(--gutter) 22px; }
     .up__row { gap: 16px; }
     .up__kicker { font-size: 13px; }
     .up__where { font-size: 12px; }

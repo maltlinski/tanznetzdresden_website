@@ -1,23 +1,21 @@
 ---
+/** Startseite (Entwurf v5): Hero, Demnächst (Termine + Journal), Formate, Netz, Mitglied werden. */
 import Page from '../layouts/Page.astro';
 import Hero from '../components/sections/Hero.astro';
-import Intro from '../components/sections/Intro.astro';
-import Haltung from '../components/sections/Haltung.astro';
-import Events from '../components/sections/Events.astro';
-import News from '../components/sections/News.astro';
+import Demnaechst from '../components/sections/Demnaechst.astro';
 import Formats from '../components/sections/Formats.astro';
-import Training from '../components/sections/Training.astro';
-import Network from '../components/sections/Network.astro';
+import Netz from '../components/sections/Netz.astro';
 import Join from '../components/sections/Join.astro';
 ---
-<Page route="home">
+<Page route="home" fortschritt>
   <Hero />
-  <Intro />
-  <Events />
-  <Haltung />
-  <News />
+  <Demnaechst />
   <Formats />
-  <Training />
-  <Network />
+  <Netz />
   <Join />
 </Page>
+
+<script>
+  import { ueberschriften } from '../scripts/split-text';
+  ueberschriften();
+</script>

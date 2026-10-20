@@ -39,7 +39,7 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 | Kooperationspartner: Gruppen und Partner | `src/content/kooperation/gruppen.yaml` | Reihenfolge = Anzeige |
 | Spenden: Bankverbindung, Beträge, Wirkung, Steuerbescheid | `src/settings/verein.json` → `donation`, `taxExemption` | GiroCode entsteht automatisch |
 | Arbeitsgruppen | `src/settings/arbeitsgruppen.json` | |
-| Startseite: „Tanz für …“, Haltung & Wirkung | `src/settings/hero.json`, `src/settings/haltung.json` | |
+| Startseite: „Tanz für …“; Über uns: Haltung & Wirkung | `src/settings/hero.json`, `src/settings/haltung.json` | |
 | Impressum-Zusatztext, Datenschutz, Transparenz … | `src/content/seiten/*.md` (englisch: `seiten/en/`) | |
 | Fotos | `src/assets/photos/` | werden automatisch verkleinert |
 | Fotos im Hero der Startseite | `src/settings/hero.ts` | Ausschnitt und Position je Foto, eines pro Besuch |

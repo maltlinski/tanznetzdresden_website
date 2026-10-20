@@ -309,7 +309,7 @@ test('News: Startseite zeigt Titelthema und offene Ausschreibung, Links führen 
   const news = page.locator('#news');
   await expect(news.getByRole('heading', { name: 'Aus dem Netz' })).toBeVisible();
   await expect(news.getByRole('link', { name: /Studio Round #9/ })).toHaveAttribute('href', /\/news\/studio-round-9\/$/);
-  await expect(news.getByText(/Frist · 15\. Nov 2026/)).toBeVisible();
+  await expect(news.getByText(/Frist 15\. Nov 2026/)).toBeVisible();
   await news.getByRole('link', { name: 'Alle Beiträge →' }).click();
   await expect(page).toHaveURL(/\/news\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Aus dem');
@@ -347,11 +347,17 @@ test('News: RSS-Feeds sind gültig und verlinken die Beiträge', async ({ reques
   }
 });
 
-test('Header: TNDD-Zeichen führt zur Startseite, News steht im Menü', async ({ page, isMobile }) => {
-  await page.goto('/news/');
+test('Header: TNDD-Zeichen führt zur Startseite, Journal und Über uns im Menü', async ({ page, isMobile }) => {
+  const nav = page.getByRole('navigation', { name: 'Hauptnavigation' });
+  // Profile gehören zu „Über uns“
+  await page.goto('/netzwerk/alina-lucifero/');
   await dismissConsent(page);
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
-  await expect(page.getByRole('navigation', { name: 'Hauptnavigation' }).getByRole('link', { name: 'News' })).toHaveAttribute('aria-current', 'page');
+  await expect(nav.getByRole('link')).toHaveText(['Kalender', 'Formate', 'Training', 'Journal', 'Über uns']);
+  await expect(nav.getByRole('link', { name: 'Über uns' })).toHaveAttribute('aria-current', 'page');
+  await page.goto('/news/');
+  if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
+  await expect(nav.getByRole('link', { name: 'Journal' })).toHaveAttribute('aria-current', 'page');
   await page.locator('[data-header]').getByRole('link', { name: 'TanzNetzDresden – zur Startseite' }).click();
   await expect(page).toHaveURL(/\/$/);
 });
@@ -359,10 +365,46 @@ test('Header: TNDD-Zeichen führt zur Startseite, News steht im Menü', async ({
 test('Startseite: Überschrift und Claim sind ohne Animation sofort lesbar', async ({ page }) => {
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/');
-  await page.locator('#intro').scrollIntoViewIfNeeded();
-  await expect(page.locator('[data-sweep-bar]')).toHaveCount(0);
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Eine Stadt\.\s*Ein Netz\./);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Tanz für Dresden, alle, Professionals');
   await expect(page.locator('[data-claim-word]')).toHaveText('Dresden');
+  await page.locator('#netz').scrollIntoViewIfNeeded();
+  await expect(page.locator('#netz-h')).toHaveText(/Eine Stadt\.\s*Ein Netz\./);
+  // ohne Bewegung keine Aufteilung in Wörter
+  await expect(page.locator('#netz-h .word, #termine-h div')).toHaveCount(0);
+});
+
+test('Startseite: Einstiege im Hero, Netz mit Profilen, Formate zum Blättern', async ({ page }) => {
+  await page.goto('/');
+  await dismissConsent(page);
+  const wege = page.getByRole('navigation', { name: 'Einstiege' });
+  await expect(wege.getByRole('link')).toHaveCount(3);
+  await expect(wege.getByRole('link', { name: /Mittrainieren/ })).toHaveAttribute('href', /\/profitraining\/$/);
+  await expect(wege.getByRole('link', { name: /Teil des Netzes werden/ })).toHaveAttribute('href', /#mitglied$/);
+
+  const netz = page.locator('#netz');
+  await expect(netz.getByText('70+ Tanzschaffende')).toBeVisible();
+  await expect(netz.locator('.netz__namen a')).toHaveCount(16);
+  await expect(netz.getByRole('link', { name: 'Alina Lucifero' })).toHaveAttribute('href', /\/netzwerk\/alina-lucifero\/$/);
+  await expect(netz.getByRole('link', { name: 'Alle 70+ Profile →' })).toHaveAttribute('href', /\/netzwerk\/$/);
+
+  const streifen = page.locator('#formate-streifen');
+  await streifen.scrollIntoViewIfNeeded();
+  await expect(page.getByRole('button', { name: 'Vorherige Formate' })).toBeDisabled();
+  const vorher = await streifen.evaluate((el) => el.scrollLeft);
+  await page.getByRole('button', { name: 'Weitere Formate' }).click();
+  await expect.poll(() => streifen.evaluate((el) => el.scrollLeft)).toBeGreaterThan(vorher);
+  await expect(page.getByRole('button', { name: 'Vorherige Formate' })).toBeEnabled();
+});
+
+test('Startseite: Fortschrittsbalken läuft erst nach dem Hero', async ({ page }) => {
+  await page.goto('/');
+  const balken = page.locator('[data-fortschritt]');
+  await expect(balken).toHaveCSS('transform', /matrix\(0, /);
+  await page.evaluate(() => scrollTo(0, document.documentElement.scrollHeight));
+  await expect.poll(() => balken.evaluate((el) => getComputedStyle(el).transform)).toMatch(/^matrix\(1, /);
+  // nur auf der Startseite
+  await page.goto('/verein/');
+  await expect(page.locator('[data-fortschritt]')).toHaveCount(0);
 });
 
 test('Hero: zeigt den nächsten Termin und verlinkt ihn', async ({ page }) => {
@@ -386,7 +428,7 @@ test('Startseite: Termine und News führen auf ihre eigene Seite', async ({ page
   await expect(page.getByRole('link', { name: 'In meinen Kalender (.ics)' })).toHaveAttribute('href', /\/termine\/[^/]+\.ics$/);
 
   await page.goto('/');
-  const lead = page.locator('#news .news__lead');
+  const lead = page.locator('#news .jl');
   const newsTitle = (await lead.locator('h3').textContent())!.trim();
   await lead.click();
   await expect(page).toHaveURL(/\/news\/[^/#]+\/$/);
@@ -404,8 +446,8 @@ test('Terminseite: Englisch, Kalenderdatei und passender Beitrag', async ({ page
   expect(body).toContain('SUMMARY:Studio Round #9');
 });
 
-test('Startseite: Haltung & Wirkung mit Partnern', async ({ page }) => {
-  await page.goto('/');
+test('Über uns: Haltung & Wirkung mit Partnern', async ({ page }) => {
+  await page.goto('/verein/');
   const s = page.locator('#haltung');
   await expect(s.getByRole('heading', { level: 2 })).toHaveText(/Tanz gehört\s*in die Stadt\./);
   await expect(s.getByRole('listitem')).toHaveCount(6); // 4 Säulen + 2 Auszeichnungen
@@ -417,7 +459,7 @@ test('Weiches Scrollen: Lenis aktiv, Sprungmarke landet unter dem Header; aus be
   await page.goto('/');
   await dismissConsent(page);
   await expect(page.locator('html')).toHaveClass(/\blenis\b/);
-  const link = page.locator('#intro a[href$="#termine"]').first();
+  const link = page.locator('[data-hero-floor] a[href$="#termine"]').first();
   await link.scrollIntoViewIfNeeded();
   await page.waitForTimeout(1200);
   await link.click();
@@ -563,7 +605,7 @@ test('Profitraining: englische Fassung und Verlinkung aus Menü und Formaten', a
 
   await page.goto('/');
   if (!isMobile) await expect(page.locator('.site-nav').getByRole('link', { name: 'Training' })).toHaveAttribute('href', /\/profitraining\/$/);
-  const keepUp = page.locator('#formate .format', { hasText: 'KEEP UP' });
-  await keepUp.locator('.format__head').focus();
-  await expect(keepUp.getByRole('link', { name: 'Mehr zu KEEP UP →' })).toHaveAttribute('href', /\/profitraining\/$/);
+  await expect(page.locator('#formate a[data-format="keep-up"]')).toHaveAttribute('href', /\/profitraining\/$/);
+  // Formate ohne eigene Seite sind keine Links
+  await expect(page.locator('#formate article[data-format="studio-round"]')).toHaveCount(1);
 });

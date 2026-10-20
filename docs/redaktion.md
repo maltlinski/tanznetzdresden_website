@@ -35,7 +35,7 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 | **Personen** | Mitglieder:innen und Trainer:innen mit Profil | von Hand = Anzeige |
 | **Orte auf der Karte**, **Partner** | Kooperationsseite | von Hand |
 | **Arbeitsgruppen** | Vereinsseite | im Formular |
-| **Startseite: Kopf**, **Startseite: Haltung** | „Tanz für …“, Säulen, Auszeichnungen, Foto | im Formular |
+| **Startseite: Kopf**, **Über uns: Haltung** | „Tanz für …“; Säulen, Auszeichnungen, Foto | im Formular |
 | **Vereinsdaten** | Claim, Zahlen, Training, Mitgliedschaft, Presse, Partner, Förderer, Spenden, Rechtliches | im Formular |
 | **Textseiten** | Transparenz, Barrierefreiheit, Leichte Sprache, Impressum, Datenschutz | – |
 

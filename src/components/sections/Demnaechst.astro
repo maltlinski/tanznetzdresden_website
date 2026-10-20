@@ -1,0 +1,121 @@
+---
+/**
+ * Startseite (Entwurf v5): „Demnächst“ – links die nächsten Termine mit Filter, rechts das Journal
+ * („Aus dem Netz“: Titelthema mit Foto, darunter offene Ausschreibungen und das Neueste).
+ */
+import Tag from '../ui/Tag.astro';
+import NewsImage from '../NewsImage.astro';
+import EventList from '../EventList.astro';
+import EventFilter from '../EventFilter.astro';
+import { getUpcoming } from '../../lib/content';
+import { getNews, leadPost, daysLeft, dateShort, newsCategoryLabel } from '../../lib/news';
+import { href } from '../../lib/url';
+import { getLang, tr, url } from '../../lib/i18n';
+
+const lang = getLang(Astro);
+const events = await getUpcoming(8);
+const posts = await getNews(lang);
+const lead = leadPost(posts);
+const rest = posts.filter((p) => p !== lead);
+const open = rest.filter((p) => p.deadline && daysLeft(p.deadline) >= 0);
+const side = [...open, ...rest.filter((p) => !open.includes(p))].slice(0, 2);
+const t = tr(lang, {
+  de: {
+    kicker: 'Tanzkalender', h: 'Termine', all: 'Ganzer Kalender →', ics: 'Abonnieren (.ics)', submit: 'Termin einreichen',
+    jKicker: 'Journal', jH: 'Aus dem Netz', jAll: 'Alle Beiträge →', deadline: 'Frist',
+  },
+  en: {
+    kicker: 'Dance calendar', h: 'Events', all: 'Full calendar →', ics: 'Subscribe (.ics)', submit: 'Submit an event',
+    jKicker: 'Journal', jH: 'From the network', jAll: 'All posts →', deadline: 'Deadline',
+  },
+});
+type Post = (typeof posts)[number];
+const meta = (p: Post) =>
+  p.deadline && daysLeft(p.deadline) >= 0
+    ? `${newsCategoryLabel[lang][p.category]} · ${t.deadline} ${dateShort(p.deadline, lang)}`
+    : `${newsCategoryLabel[lang][p.category]} · ${dateShort(p.date, lang)}`;
+const link = (p: Post) => url(lang, 'news', `${p.id}/`);
+---
+<section id="termine" class="demn" aria-labelledby="termine-h">
+  <div class="wrap demn__grid">
+    <div class="demn__termine">
+      <div class="demn__kopf">
+        <div>
+          <Tag>{t.kicker}</Tag>
+          <h2 id="termine-h" class="h2" data-split>{t.h}</h2>
+        </div>
+        <EventFilter events={events} target="home-events" />
+      </div>
+      <EventList events={events} id="home-events" kompakt max={4} />
+      <div class="demn__links">
+        <a class="mono-link" href={url(lang, 'termine')}>{t.all}</a>
+        <a class="mono-link" href={href('termine.ics')}>{t.ics}</a>
+        <a class="mono-link" href={url(lang, 'kontakt', '#termin-einreichen')}>{t.submit}</a>
+      </div>
+    </div>
+
+    {lead && (
+      <div id="news" class="demn__journal">
+        <div class="demn__kopf">
+          <div>
+            <Tag>{t.jKicker}</Tag>
+            <h2 id="news-h" class="h2" data-split>{t.jH}</h2>
+          </div>
+        </div>
+        <a href={link(lead)} class="jl">
+          {lead.image && (
+            <span class="jl__img">
+              <NewsImage src={lead.image} alt={lead.alt ?? ''} focus={lead.imageFocus} sizes="(min-width: 1000px) 480px, 100vw" />
+              <span class="jl__sq" aria-hidden="true"></span>
+            </span>
+          )}
+          <span class="jl__meta">{meta(lead)}</span>
+          <h3 class="jl__t">{lead.title}</h3>
+        </a>
+        <div class="ji-liste">
+          {side.map((p, i) => (
+            <a href={link(p)} class:list={['ji', i === 0 && 'ji--erst']}>
+              <span class:list={['jl__meta', p.deadline && daysLeft(p.deadline) >= 0 && 'jl__meta--frist']}>{meta(p)}</span>
+              <h3 class="ji__t">{p.title}</h3>
+            </a>
+          ))}
+        </div>
+        <a class="mono-link demn__alle" href={url(lang, 'news')}>{t.jAll}</a>
+      </div>
+    )}
+  </div>
+</section>
+
+<style>
+  .demn { padding: clamp(64px, 8vw, 112px) 0; }
+  .demn__grid { display: flex; flex-wrap: wrap; gap: 64px clamp(40px, 5vw, 80px); align-items: stretch; }
+  .demn__termine { flex: 1.5 1 560px; min-width: 0; display: flex; flex-direction: column; }
+  .demn__journal { flex: 1 1 340px; min-width: 0; display: flex; flex-direction: column; }
+  .demn__kopf { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px 24px; margin-bottom: 24px; }
+  .demn__kopf :global(.tag) { margin-bottom: 14px; }
+  .demn .h2 { font-size: clamp(36px, 4.4vw, 56px); }
+  .demn__termine :global(.events) { flex: 1; }
+  .demn__links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: auto; padding-top: 22px; }
+  .demn__links a { letter-spacing: 0.14em; color: var(--ink-soft); }
+  .demn__links a:hover { color: var(--magenta-2); }
+  .demn__links a:first-child, .demn__alle { color: var(--magenta-2); }
+  .demn__links a:first-child:hover, .demn__alle:hover { color: var(--purple); }
+  .demn__alle { align-self: flex-start; margin-top: auto; padding-top: 22px; letter-spacing: 0.14em; }
+
+  .jl { display: flex; flex-direction: column; gap: 10px; padding-bottom: 24px; color: var(--purple); }
+  .jl:hover, .ji:hover { color: var(--magenta-2); }
+  .jl__img {
+    position: relative; display: block; aspect-ratio: 16 / 9; background: var(--purple); overflow: hidden; margin-bottom: 6px;
+    clip-path: polygon(0 0, 100% 0, 100% 84%, 92% 100%, 0 100%);
+  }
+  .jl__img :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 900ms var(--ease-out); }
+  .jl:hover .jl__img :global(img) { transform: scale(1.04); }
+  .jl__sq { position: absolute; top: 0; left: 0; width: 26px; height: 26px; background: var(--magenta); }
+  .jl__meta { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .jl__meta--frist { color: var(--magenta-2); }
+  .jl__t { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(22px, 2vw, 28px); line-height: 1.05; letter-spacing: -0.025em; color: inherit; transition: color var(--dur-base); }
+  .ji { display: flex; flex-direction: column; gap: 8px; padding: 18px 0 20px; border-top: 1px solid var(--rule); color: var(--purple); }
+  .ji-liste { border-bottom: 1px solid var(--rule); }
+  .ji--erst { border-top: 3px solid var(--magenta); }
+  .ji__t { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.15; letter-spacing: -0.015em; color: inherit; transition: color var(--dur-base); }
+</style>

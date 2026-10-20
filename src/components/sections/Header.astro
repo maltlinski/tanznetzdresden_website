@@ -6,22 +6,25 @@ import { getLang, langNames, tr, url } from '../../lib/i18n';
 
 interface Props {
   alternates?: Alternates;
+  /** Fortschrittsbalken unter dem Kopf (Startseite: läuft ab dem Ende des Hero) */
+  fortschritt?: boolean;
 }
-const { alternates = {} } = Astro.props;
+const { alternates = {}, fortschritt = false } = Astro.props;
 const lang = getLang(Astro);
 const other = lang === 'de' ? 'en' : 'de';
 const otherUrl = alternates[other] ?? url(other, 'home');
 const t = tr(lang, {
-  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Intern', join: 'Mitglied werden', calendar: 'Kalender', news: 'News', formats: 'Formate', training: 'Training', network: 'Netzwerk', about: 'Über uns', switchTo: 'Switch to English' },
-  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Members', join: 'Become a member', calendar: 'Calendar', news: 'News', formats: 'Formats', training: 'Training', network: 'Network', about: 'About', switchTo: 'Auf Deutsch wechseln' },
+  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Intern', join: 'Mitglied werden', calendar: 'Kalender', news: 'Journal', formats: 'Formate', training: 'Training', about: 'Über uns', switchTo: 'Switch to English' },
+  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Members', join: 'Become a member', calendar: 'Calendar', news: 'Journal', formats: 'Formats', training: 'Training', about: 'About', switchTo: 'Auf Deutsch wechseln' },
 });
+// Reihenfolge wie im Entwurf Startseite v5; das Netzwerk steht unter „Über uns“ und auf der Startseite
 const nav = [
   { href: url(lang, 'home', '#termine'), label: t.calendar },
-  { href: url(lang, 'news'), label: t.news },
   { href: url(lang, 'home', '#formate'), label: t.formats },
   { href: url(lang, 'profitraining'), label: t.training },
-  { href: url(lang, 'netzwerk'), label: t.network },
-  { href: url(lang, 'verein'), label: t.about },
+  { href: url(lang, 'news'), label: t.news },
+  // Profile gehören zum Netzwerk und damit zu „Über uns“
+  { href: url(lang, 'verein'), label: t.about, auch: url(lang, 'netzwerk') },
 ];
 ---
 <header class="site-header" data-header>
@@ -36,7 +39,7 @@ const nav = [
     </button>
     <div class="site-header__right" id="site-menu" data-menu>
       <nav class="site-nav" aria-label={t.mainNav}>
-        {nav.map((item) => <a class="mono-link" href={item.href} data-nav-link>{item.label}</a>)}
+        {nav.map((item) => <a class="mono-link" href={item.href} data-nav-link data-nav-auch={item.auch}>{item.label}</a>)}
       </nav>
       <a class="mono-link site-header__login" href={url(lang, 'intern')} data-nav-link>
         <span class="site-header__login-dot" aria-hidden="true"></span>{t.intern}
@@ -47,6 +50,7 @@ const nav = [
       <Button href={url(lang, 'mitglied')} variant="secondary" size="sm" marker>{t.join}</Button>
     </div>
   </div>
+  {fortschritt && <span class="site-header__fortschritt" aria-hidden="true" data-fortschritt></span>}
 </header>
 
 <script>
@@ -80,10 +84,31 @@ const nav = [
   logo?.addEventListener('pointerenter', runRainbow);
   logo?.addEventListener('focus', runRainbow);
 
+  // Fortschritt (Startseite): läuft vom Ende des Hero bis zum Seitenende
+  const balken = header?.querySelector<HTMLElement>('[data-fortschritt]');
+  if (balken) {
+    let raf = 0;
+    const messen = () => {
+      raf = 0;
+      const hero = document.querySelector<HTMLElement>('[data-hero]');
+      const start = hero ? hero.offsetTop + hero.offsetHeight - (header?.offsetHeight ?? 0) : 0;
+      const weg = document.documentElement.scrollHeight - innerHeight - start;
+      const q = weg > 0 ? Math.max(0, Math.min(1, (scrollY - start) / weg)) : 0;
+      balken.style.transform = `scaleX(${q.toFixed(4)})`;
+    };
+    const planen = () => (raf ||= requestAnimationFrame(messen));
+    addEventListener('scroll', planen, { passive: true });
+    addEventListener('resize', planen);
+    messen();
+  }
+
   // Aktiven Menüpunkt markieren: Unterseiten per Pfad, Startseite per sichtbarem Abschnitt.
   const links = [...document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]')];
   links.forEach((a) => {
-    if (!a.hash && a.pathname.length > 1 && location.pathname.startsWith(a.pathname)) a.setAttribute('aria-current', 'page');
+    const auch = a.dataset.navAuch;
+    if (!a.hash && a.pathname.length > 1 && (location.pathname.startsWith(a.pathname) || (auch && location.pathname.startsWith(auch)))) {
+      a.setAttribute('aria-current', 'page');
+    }
   });
   const targets = links
     .filter((a) => a.hash && a.pathname === location.pathname)
@@ -107,6 +132,10 @@ const nav = [
   .site-header {
     position: sticky; top: 0; z-index: 30; background: var(--purple);
     border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+  .site-header__fortschritt {
+    position: absolute; left: 0; right: 0; bottom: -3px; height: 3px; background: var(--magenta);
+    transform: scaleX(0); transform-origin: 0 50%; pointer-events: none;
   }
   .site-header__inner {
     max-width: var(--wrap); margin: 0 auto; padding: 18px var(--gutter);

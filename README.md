@@ -10,7 +10,7 @@ zwei Bühnenfotos durch das Netz.
 
 | Bereich | Was | Wo |
 |---|---|---|
-| Startseite | Netz-Hero (wechselndes Bühnenfoto, Fotos in `src/settings/hero.ts`), Termine, News, Formate, Training, Netzwerk, Mitgliedschaft | `src/views/HomeView.astro` |
+| Startseite | Netz-Hero mit drei Einstiegen (Fotos in `src/settings/hero.ts`), Termine und Journal, Formate, Netz mit Mitgliedern, Mitgliedschaft | `src/views/HomeView.astro` |
 | **News** | „Aus dem Netz“: Titelthema, Ausschreibungen mit Countdown, Chronik mit Filter, Beitragsseiten, RSS; Presse schreibt im internen Bereich | `/news/`, docs/news.md |
 | **Zweisprachig** | Deutsch und Englisch (`/en/…`), Sprachumschalter, hreflang | `src/lib/i18n.ts` |
 | Tanzkalender | ein Monatskalender für alle Termine und das Profitraining, Filter nach Kategorie, **Kalender-Abo (.ics)**; derselbe Kalender auf `/profitraining/` | `/termine/`, `/termine.ics`, `src/components/Kalender.astro` |

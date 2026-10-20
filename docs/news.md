@@ -2,7 +2,7 @@
 
 Die News erscheinen an drei Stellen:
 
-- **Startseite:** Abschnitt „Aus dem Netz“ mit dem Titelthema und daneben offenen Ausschreibungen und dem Neuesten.
+- **Startseite:** „Aus dem Netz“ neben den Terminen: das Titelthema mit Foto, darunter offene Ausschreibungen und das Neueste.
 - **`/news/`:** Übersicht mit Titelthema, offenen Fristen und der Chronik nach Monaten mit Filter. Englisch unter `/en/news/`.
 - **`/news/<adresse>/`:** der einzelne Beitrag.
 
@@ -195,7 +195,7 @@ Die erste legt an:
 | Bausteine | `src/settings/news-bausteine.json` |
 | Stile des Editors und der Mediathek | `src/styles/news-editor.css`, `src/styles/mediathek.css` |
 | Vorschau | `src/pages/intern/news/vorschau/` |
-| Startseiten-Abschnitt | `src/components/sections/News.astro` |
+| Startseiten-Abschnitt | `src/components/sections/Demnaechst.astro` |
 | Übersicht / Beitrag | `src/views/NewsView.astro`, `src/views/NewsArticleView.astro` |
 | Editor | `src/pages/intern/news/bearbeiten/` |
 | Countdown im Browser | `src/scripts/deadline.ts` |

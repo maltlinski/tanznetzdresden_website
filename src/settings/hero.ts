@@ -1,5 +1,5 @@
 /**
- * Hero der Startseite (Entwurf v2): drei Bühnenfotos als Tiefenebenen, davor das Netz,
+ * Hero der Startseite (Entwurf v5): drei Bühnenfotos als Tiefenebenen, davor das Netz,
  * oben „Tanz für …“ mit wechselnden Wörtern, in der Mitte der nächste Termin („Upcoming“).
  *
  * Die Fotos liegen in src/assets/photos/. Sie brauchen schwarzen Bühnenhintergrund:
@@ -39,5 +39,5 @@ export const wortPause: number = data.wortPause;
 /** Knotendichte bei 1440 × 820 (wird mit der Fläche skaliert). */
 export const knoten = 100;
 
-/** Beim Scrollen ziehen die Fotos nach oben weg (vorderes am schnellsten). */
-export const scrollWegziehen = true;
+/** Beim Scrollen ziehen die Fotos nach oben weg (vorderes am schnellsten). v5: ruhig, die Fotos bleiben stehen. */
+export const scrollWegziehen = false;
