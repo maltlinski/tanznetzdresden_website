@@ -17,9 +17,16 @@
   --gutter: clamp(20px, 4vw, 48px);
   --section-y: clamp(64px, 9vw, 120px);
   --header-h: 70px;
+  /* Lila Kopf der Startseite und der Unterseiten: gleich hoch (Bildschirm minus Kopfleiste) */
+  --buehne-h: clamp(560px, calc(100vh - 72px), 940px);
+  /* Abstand vom oberen Rand des Kopfs zur ersten Zeile, wie der Claim auf der Startseite */
+  --buehne-oben: clamp(28px, 6vh, 72px);
   --on-dark-soft: rgba(255, 255, 255, 0.78);
   --on-dark-rule: rgba(255, 255, 255, 0.16);
   color-scheme: light;
+}
+@supports (height: 100svh) {
+  :root { --buehne-h: clamp(560px, calc(100svh - 72px), 940px); }
 }
 
 /* Flächen in Tint: Magenta für kleine Schrift eine Stufe dunkler (Kontrast). */

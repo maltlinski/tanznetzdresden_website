@@ -182,9 +182,10 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
 <style>
   /* ---------- Hero mit Netzkarte ---------- */
-  .khero { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  /* so hoch wie der Kopf der Startseite (--buehne-h) */
+  .khero { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
   .khero__grid {
-    padding-block: clamp(48px, 7vw, 96px) clamp(56px, 7vw, 96px);
+    flex: 1; width: 100%; padding-block: var(--buehne-oben) clamp(56px, 6vw, 72px);
     display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
     gap: 40px clamp(32px, 5vw, 72px); align-items: stretch;
   }
@@ -195,7 +196,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
     letter-spacing: -0.035em; margin: 0 0 26px; color: #fff; text-wrap: balance;
   }
   .khero__title em { font-style: normal; color: var(--magenta); }
-  .khero__lead { margin: 0 0 36px; max-width: 440px; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
+  .khero__lead { margin: 0 0 28px; max-width: 440px; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
   .khero__places-h {
     margin: 0 0 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
     text-transform: uppercase; color: rgba(255, 255, 255, 0.7);
@@ -203,7 +204,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .venues { list-style: none; margin: 0; padding: 0; max-width: 460px; border-top: 1px solid rgba(255, 255, 255, 0.18); }
   .venue {
     display: grid; grid-template-columns: 14px minmax(0, 1fr) auto; gap: 14px; align-items: baseline;
-    padding: 12px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+    padding: 8px 0; border-bottom: 1px solid rgba(255, 255, 255, 0.18);
   }
   .venue__mark { width: 10px; height: 10px; background: var(--cyan); align-self: center; transition: background 200ms; }
   .venue.is-seed .venue__mark, .venue.is-hot .venue__mark { background: var(--magenta); }

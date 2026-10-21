@@ -181,7 +181,7 @@ const wege = [
 <style>
   .hero {
     position: relative; background: var(--purple); color: #fff; overflow: hidden;
-    height: clamp(560px, calc(100vh - 72px), 940px); height: clamp(560px, calc(100svh - 72px), 940px);
+    height: var(--buehne-h);
     display: flex; flex-direction: column; justify-content: flex-end;
   }
   .hero__canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
@@ -198,7 +198,7 @@ const wege = [
   .replay:hover { border-color: var(--magenta); color: var(--cyan); }
 
   .claim {
-    position: absolute; z-index: 3; left: var(--gutter); right: var(--gutter); top: clamp(28px, 6vh, 72px);
+    position: absolute; z-index: 3; left: var(--gutter); right: var(--gutter); top: var(--buehne-oben);
     margin: 0; pointer-events: none; font-family: var(--font-display); font-weight: 800;
     font-size: clamp(40px, 7vw, 112px); line-height: 0.92; letter-spacing: -0.035em; color: #fff;
   }

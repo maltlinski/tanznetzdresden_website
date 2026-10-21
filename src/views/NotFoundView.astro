@@ -32,8 +32,9 @@ import KeilBar from '../components/ui/KeilBar.astro';
 </Page>
 
 <style>
-  .nf { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
-  .nf__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 56px clamp(32px, 6vw, 96px); padding-block: clamp(56px, 8vw, 112px); }
+  /* so hoch wie der Kopf der Startseite (--buehne-h) */
+  .nf { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
+  .nf__grid { flex: 1; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); align-content: center; gap: 56px clamp(32px, 6vw, 96px); padding-block: var(--buehne-oben) clamp(56px, 8vw, 112px); }
   .nf :global(.tag) { margin-bottom: 24px; }
   .nf__title { font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6vw, 88px); line-height: 0.92; letter-spacing: -0.035em; margin: 0 0 20px; }
   .nf__title em { font-style: normal; color: var(--magenta); }

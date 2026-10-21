@@ -34,6 +34,12 @@ Tokens (`var(--purple)`, `var(--space-4)` …) statt fester Werte schreiben, dan
 Bausteine: `Tag`, `Button`, `Badge`, `KeilBar`, `Logo` in `src/components/ui/`, `PageIntro` und `Prose` für
 Unterseiten.
 
+Der lila Kopf jeder Unterseite ist so hoch wie der Kopf der Startseite: `--buehne-h` (Bildschirm minus
+Kopfleiste, 560–940 px) in `src/styles/global.css`, erste Zeile im Abstand `--buehne-oben`. `PageIntro` nutzt
+das von selbst; eigene Köpfe (Kooperationen, Journal, Profitraining, Spenden, Profil, 404) setzen
+`min-height: var(--buehne-h)`. Rechtstexte bekommen `<PageIntro kompakt>`, Beiträge und Termine behalten
+ihren kurzen Kopf. Im Test „Lila Kopf der Unterseiten …“ (tests/site.spec.ts) wird die Höhe verglichen.
+
 Bewusste Abweichungen stehen gesammelt in `src/styles/overrides.css` (derzeit nur `--ink-muted`, dunkler für
 WCAG-Kontrast).
 

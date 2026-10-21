@@ -364,12 +364,29 @@ test('Header: TNDD-Zeichen führt zur Startseite, Journal und Über uns im Menü
   await dismissConsent(page);
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
   await expect(nav.getByRole('link')).toHaveText(['Kalender', 'Formate', 'Training', 'Journal', 'Über uns', 'Spenden']);
+  // „Kalender“ führt zum ganzen Tanzkalender, nicht zum Ausschnitt auf der Startseite
+  await expect(nav.getByRole('link', { name: 'Kalender' })).toHaveAttribute('href', /\/termine\/$/);
   await expect(nav.getByRole('link', { name: 'Über uns' })).toHaveAttribute('aria-current', 'page');
   await page.goto('/news/');
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
   await expect(nav.getByRole('link', { name: 'Journal' })).toHaveAttribute('aria-current', 'page');
   await page.locator('[data-header]').getByRole('link', { name: 'TanzNetzDresden – zur Startseite' }).click();
   await expect(page).toHaveURL(/\/$/);
+});
+
+test('Lila Kopf der Unterseiten ist so hoch wie auf der Startseite', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'auf dem Handy stehen Spalten untereinander, inhaltsreiche Köpfe werden länger');
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const hoehe = async (pfad: string) => {
+    await page.goto(pfad);
+    return page.locator('main section, main header').first().evaluate((el) => Math.round(el.getBoundingClientRect().height));
+  };
+  const start = await hoehe('/');
+  for (const pfad of ['/verein/', '/termine/', '/kontakt/', '/mitglied-werden/', '/netzwerk/', '/kooperationen/', '/profitraining/', '/spenden/', '/news/', '/en/news/']) {
+    expect(await hoehe(pfad), pfad).toBe(start);
+  }
+  // Rechtstexte bleiben kompakt
+  expect(await hoehe('/impressum/')).toBeLessThan(start / 2);
 });
 
 test('Startseite: Überschrift und Claim sind ohne Animation sofort lesbar', async ({ page }) => {

@@ -33,7 +33,7 @@ const dateFmt = lang === 'en' ? 'en-GB' : 'de-DE';
 const tocItems = [...tocExtra, ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text }))];
 ---
 <Page title={entry.data.title} description={entry.data.description} route={route}>
-  <PageIntro kicker={kicker} title={entry.data.title} />
+  <PageIntro kicker={kicker} title={entry.data.title} kompakt />
   <section class="section">
     <div class:list={['wrap', toc && 'tp-grid']}>
       {toc && (

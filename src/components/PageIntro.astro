@@ -1,5 +1,8 @@
 ---
-/** Kopfbereich für Unterseiten: lila Band, Kicker, große Headline, Keil. */
+/**
+ * Kopfbereich für Unterseiten: lila Fläche, Kicker, große Headline, Keil.
+ * So hoch wie der Kopf der Startseite (--buehne-h); `kompakt` für Rechtstexte und Ähnliches.
+ */
 import Tag from './ui/Tag.astro';
 import KeilBar from './ui/KeilBar.astro';
 
@@ -9,10 +12,12 @@ interface Props {
   /** zweite, magentafarbene Zeile */
   accent?: string;
   lead?: string;
+  /** nur so hoch wie der Inhalt (Impressum, Datenschutz …) */
+  kompakt?: boolean;
 }
-const { kicker, title, accent, lead } = Astro.props;
+const { kicker, title, accent, lead, kompakt = false } = Astro.props;
 ---
-<section class="intro">
+<section class:list={['intro', kompakt && 'intro--kompakt']}>
   <div class="wrap intro__inner">
     <Tag color="cyan">{kicker}</Tag>
     <h1 class="intro__title">{title}{accent && <><br /><em>{accent}</em></>}</h1>
@@ -23,8 +28,11 @@ const { kicker, title, accent, lead } = Astro.props;
 </section>
 
 <style>
-  .intro { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
-  .intro__inner { padding-block: clamp(56px, 8vw, 112px) clamp(48px, 6vw, 80px); }
+  .intro { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
+  /* Inhalt mittig in der Fläche, mindestens im Abstand des Startseiten-Claims */
+  .intro__inner { width: 100%; margin-block: auto; padding-block: var(--buehne-oben) clamp(64px, 8vw, 104px); }
+  .intro--kompakt { min-height: 0; }
+  .intro--kompakt .intro__inner { padding-block: clamp(56px, 8vw, 112px) clamp(48px, 6vw, 80px); }
   .intro :global(.tag) { margin-bottom: 24px; }
   .intro__title {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6.4vw, 96px);

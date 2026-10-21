@@ -183,22 +183,23 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
 </script>
 
 <style>
-  .ku-hero { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  /* so hoch wie der Kopf der Startseite (--buehne-h) */
+  .ku-hero { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
   .ku-hero__grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
-    gap: 48px clamp(32px, 6vw, 96px); align-items: end;
-    padding-block: clamp(56px, 8vw, 112px) clamp(56px, 7vw, 96px);
+    flex: 1; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    gap: 48px clamp(32px, 6vw, 96px); align-items: end; align-content: center;
+    padding-block: var(--buehne-oben) clamp(40px, 6vh, 72px);
   }
   .ku-hero :global(.tag) { margin-bottom: 24px; }
   .ku-hero__title {
-    font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, 8vw, 128px); line-height: 0.9;
-    letter-spacing: -0.035em; margin: 0 0 32px; color: #fff;
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, min(8vw, 14vh), 128px); line-height: 0.9;
+    letter-spacing: -0.035em; margin: 0 0 24px; color: #fff;
   }
   .ku-hero__title em { font-style: normal; color: var(--magenta); }
-  .ku-hero__lead { max-width: 500px; margin: 0 0 36px; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
+  .ku-hero__lead { max-width: 500px; margin: 0 0 32px; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
   .ku-hero__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
   .ku-hero__photo {
-    position: relative; aspect-ratio: 4 / 5; max-height: 620px; width: 100%; max-width: 520px; justify-self: end;
+    position: relative; aspect-ratio: 4 / 5; max-height: min(620px, 56vh); width: 100%; max-width: 520px; justify-self: end;
     clip-path: var(--keil-corner); background: var(--purple);
   }
   .ku-hero__photo :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }

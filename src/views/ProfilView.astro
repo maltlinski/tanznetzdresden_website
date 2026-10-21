@@ -451,7 +451,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   .pgross--hell span { color: var(--magenta); }
 
   /* Kopf mit großem Namen */
-  .ph { position: relative; background: var(--purple); color: #fff; overflow: hidden; min-height: calc(100svh - var(--header-h)); }
+  .ph { position: relative; background: var(--purple); color: #fff; overflow: hidden; min-height: var(--buehne-h); }
   .ph__bild { position: absolute; top: 0; right: 0; bottom: 0; width: min(54%, 760px); overflow: hidden; background: #000; clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%); }
   .ph__bild-in { position: absolute; inset: -6% 0; will-change: transform; }
   .ph__bild :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
@@ -465,7 +465,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
     font-size: clamp(160px, 30vw, 440px); line-height: 0.8; letter-spacing: -0.06em; color: var(--purple-2); pointer-events: none;
   }
   .ph__inhalt {
-    position: relative; z-index: 2; min-height: calc(100svh - var(--header-h)); display: flex; flex-direction: column;
+    position: relative; z-index: 2; min-height: var(--buehne-h); display: flex; flex-direction: column;
     justify-content: space-between; gap: 48px; padding-block: clamp(28px, 4vw, 48px) clamp(72px, 9vw, 112px); pointer-events: none;
   }
   .ph__inhalt a, .ph__inhalt :global(.tag) { pointer-events: auto; }
