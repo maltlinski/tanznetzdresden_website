@@ -18,9 +18,10 @@ Alle Stellen mit `[BITTE …]` suchen: `grep -rn "BITTE" src`
       Prüfen, ob alle Förderungen noch laufen (NEUSTART KULTUR endete 2023) und ob weitere Pflichttexte
       nötig sind (`funders[].notice`).
 - [ ] **Spenden** (`verein.json` → `donation`, `taxExemption`): IBAN/BIC eintragen (erst dann erscheinen
-      Bankverbindung und GiroCode), Wirkungs-Beispiele mit echten Kosten abgleichen, Freistellungsbescheid
+      Bankverbindung und GiroCode), Texte zu den Formaten prüfen (`donation.formate`), Freistellungsbescheid
       (Finanzamt, Steuernummer, Datum, Zeitraum) eintragen – ohne ihn ist der vereinfachte Spendennachweis
-      ungültig. Klären, ob die Satzung Fördermitglieder vorsieht. Online-Spende optional (z. B. betterplace).
+      ungültig, und der Hinweis „als gemeinnützig anerkannt (…)“ erscheint erst dann auf der Spendenseite.
+      Die Zusage „fließt vollständig dorthin“ (Spende für ein bestimmtes Format) mit dem Vorstand abstimmen. Klären, ob die Satzung Fördermitglieder vorsieht. Online-Spende optional (z. B. betterplace).
 - [ ] **Kooperationen** (`src/content/kooperation/`): Partnerliste und Rollen mit den Partnern abstimmen,
       Koordinaten der Orte prüfen, optional Website-Links (`url`) ergänzen.
 - [ ] **Transparenz-Seite** (`src/content/seiten/transparenz.md` + `en/`): Freistellungsbescheid, Tätigkeitsbericht,

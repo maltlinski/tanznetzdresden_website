@@ -501,6 +501,7 @@ export const bereiche: Bereich[] = [
     gruppe: 'Startseite & Verein',
     beschreibung: 'Claim, Zahlen, Training, Mitgliedschaft, Presse, Partner, Förderer, Spenden. Rechtliches nur Vorstand.',
     datei: 'src/settings/verein.json',
+    braucht: ['formate'],
     titel: () => 'Vereinsdaten',
     seite: () => 'verein/',
     felder: [
@@ -541,10 +542,10 @@ export const bereiche: Bereich[] = [
       { typ: 'textlang', key: 'fundingText', label: 'Allgemeiner Förderhinweis', en: 'en.fundingText' },
       { typ: 'abschnitt', label: 'Spenden' },
       { typ: 'text', key: 'donation.reference', label: 'Verwendungszweck', en: 'en.donation.reference', pflicht: true, max: 140 },
-      { typ: 'werte', key: 'donation.amounts', label: 'Vorgeschlagene Beträge (€)', art: 'zahl', neu: 'Betrag hinzufügen', max: 4 },
-      { typ: 'liste', key: 'donation.impact', label: 'Was eine Spende bewirkt', neu: 'Beispiel hinzufügen', titel: (v) => (v.amount ? `${v.amount} €` : ''), felder: [
-        { typ: 'zahl', key: 'amount', label: 'Betrag (€)', pflicht: true, min: 1 },
-        { typ: 'text', key: 'text', label: 'bewirkt', pflicht: true, en: true },
+      { typ: 'liste', key: 'donation.formate', label: 'Spenden: „Deine Spende wird Bewegung“', neu: 'Format hinzufügen', titel: (v) => v.format ?? '', hilfe: 'Bis zu sechs Formate mit Foto und Titel aus Formate.', felder: [
+        { typ: 'verweis', key: 'format', label: 'Format', pflicht: true, quelle: 'formate' },
+        { typ: 'text', key: 'meta', label: 'Zeile über dem Titel', pflicht: true, en: true, platzhalter: 'z. B. Seit 2022 · 3–5× pro Woche' },
+        { typ: 'textlang', key: 'text', label: 'Text', pflicht: true, en: true, zeilen: 2 },
       ] },
       { typ: 'abschnitt', label: 'Kontakt und Bankverbindung', nurVorstand: true, hilfe: 'Ändert nur der Vorstand.' },
       { typ: 'text', key: 'address.street', label: 'Straße', pflicht: true },

@@ -70,10 +70,10 @@ const schema = z.object({
     bic: z.string(),
     bank: z.string(),
     reference: z.string().max(140),
-    amounts: z.array(z.number().positive()).max(4),
     onlineUrl: z.string(),
     onlineProvider: z.string(),
-    impact: z.array(z.object({ amount: z.number().positive(), text: z.string(), text_en: z.string().optional() })),
+    /** „Deine Spende wird Bewegung“: Formate (Kürzel aus src/content/formate/) mit eigener Zeile und eigenem Text */
+    formate: z.array(z.object({ format: z.string(), meta: z.string(), meta_en: z.string().optional(), text: z.string(), text_en: z.string().optional() })).max(6),
     note: z.string().optional(),
   }),
   en: z
@@ -114,7 +114,7 @@ export function getVerein(lang: Lang): Verein {
     donation: {
       ...verein.donation,
       ...en.donation,
-      impact: verein.donation.impact.map((i) => ({ ...i, text: i.text_en || i.text })),
+      formate: verein.donation.formate.map((f) => ({ ...f, meta: f.meta_en || f.meta, text: f.text_en || f.text })),
     },
     taxExemption: { ...verein.taxExemption, purpose: verein.taxExemption.purpose_en },
   };

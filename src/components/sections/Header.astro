@@ -14,10 +14,10 @@ const lang = getLang(Astro);
 const other = lang === 'de' ? 'en' : 'de';
 const otherUrl = alternates[other] ?? url(other, 'home');
 const t = tr(lang, {
-  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Intern', join: 'Mitglied werden', calendar: 'Kalender', news: 'Journal', formats: 'Formate', training: 'Training', about: 'Über uns', switchTo: 'Switch to English' },
-  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Members', join: 'Become a member', calendar: 'Calendar', news: 'Journal', formats: 'Formats', training: 'Training', about: 'About', switchTo: 'Auf Deutsch wechseln' },
+  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Intern', join: 'Mitglied werden', calendar: 'Kalender', news: 'Journal', formats: 'Formate', training: 'Training', about: 'Über uns', donate: 'Spenden', switchTo: 'Switch to English' },
+  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Members', join: 'Become a member', calendar: 'Calendar', news: 'Journal', formats: 'Formats', training: 'Training', about: 'About', donate: 'Donate', switchTo: 'Auf Deutsch wechseln' },
 });
-// Reihenfolge wie im Entwurf Startseite v5; das Netzwerk steht unter „Über uns“ und auf der Startseite
+// Reihenfolge wie im Entwurf Startseite v5 (+ Spenden aus dem Spenden-Entwurf); das Netzwerk steht unter „Über uns“
 const nav = [
   { href: url(lang, 'home', '#termine'), label: t.calendar },
   { href: url(lang, 'home', '#formate'), label: t.formats },
@@ -25,6 +25,7 @@ const nav = [
   { href: url(lang, 'news'), label: t.news },
   // Profile gehören zum Netzwerk und damit zu „Über uns“
   { href: url(lang, 'verein'), label: t.about, auch: url(lang, 'netzwerk') },
+  { href: url(lang, 'spenden'), label: t.donate },
 ];
 ---
 <header class="site-header" data-header>

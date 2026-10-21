@@ -37,7 +37,7 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 | Vereinsdaten, Impressum-Angaben, Training, Newsletter | `src/settings/verein.json` | |
 | Kooperationspartner: Orte auf der Karte | `src/content/kooperation/orte.yaml` | Koordinaten + `verbunden` für die Linien |
 | Kooperationspartner: Gruppen und Partner | `src/content/kooperation/gruppen.yaml` | Reihenfolge = Anzeige |
-| Spenden: Bankverbindung, Beträge, Wirkung, Steuerbescheid | `src/settings/verein.json` → `donation`, `taxExemption` | GiroCode entsteht automatisch |
+| Spenden: Bankverbindung, Formate unter „Deine Spende wird Bewegung“, Steuerbescheid | `src/settings/verein.json` → `donation`, `taxExemption` | GiroCode entsteht automatisch |
 | Arbeitsgruppen | `src/settings/arbeitsgruppen.json` | |
 | Startseite: „Tanz für …“; Über uns: Haltung & Wirkung | `src/settings/hero.json`, `src/settings/haltung.json` | |
 | Impressum-Zusatztext, Datenschutz, Transparenz … | `src/content/seiten/*.md` (englisch: `seiten/en/`) | |

@@ -186,31 +186,31 @@
     "bic": "",
     "bank": "",
     "reference": "Spende TanzNetzDresden",
-    "amounts": [
-      25,
-      50,
-      100
-    ],
     "onlineUrl": "",
     "onlineProvider": "",
-    "impact": [
+    "formate": [
       {
-        "amount": 27,
-        "text": "drei Trainingseinheiten KEEP UP für Newcomer:innen, die gerade in Dresden ankommen",
-        "text_en": "three KEEP UP training sessions for newcomers who have just arrived in Dresden"
+        "format": "keep-up",
+        "meta": "Seit 2022 · 3–5× pro Woche",
+        "meta_en": "Since 2022 · 3–5 times a week",
+        "text": "Profitraining in der TENZA für Tänzer:innen der freien Szene, dazu Workshops mit Gästen.",
+        "text_en": "Professional training at TENZA for dancers of the independent scene, plus workshops with guests."
       },
       {
-        "amount": 80,
-        "text": "ein Probentag im Studio für eine neue Arbeit aus dem Netzwerk [BITTE PRÜFEN]",
-        "text_en": "one rehearsal day in the studio for a new piece from the network [PLEASE CHECK]"
+        "format": "studio-round",
+        "meta": "Dresden · Freiburg · Frankfurt",
+        "text": "Arbeiten im Prozess zeigen und danach gemeinsam darüber sprechen. Überregional mit Tanznetz Freiburg und ID Frankfurt.",
+        "text_en": "Showing work in progress and talking about it together afterwards. Beyond Dresden with Tanznetz Freiburg and ID Frankfurt."
       },
       {
-        "amount": 250,
-        "text": "ein faires Honorar für ein Showing bei der Studio Round [BITTE PRÜFEN]",
-        "text_en": "a fair fee for one showing at Studio Round [PLEASE CHECK]"
+        "format": "welttanztag",
+        "meta": "29. April · Öffentlicher Raum",
+        "meta_en": "29 April · Public space",
+        "text": "Einmal im Jahr holen wir Tanz auf Plätze und Straßen der Stadt, offen für alle.",
+        "text_en": "Once a year we bring dance to the squares and streets of the city, open to everyone."
       }
     ],
-    "note": "IBAN leer = Bankverbindung wird noch nicht angezeigt. onlineUrl: Spendenformular z. B. bei betterplace.org (nur als Link, kein eingebettetes Formular)."
+    "note": "IBAN leer = Bankverbindung wird noch nicht angezeigt. formate: Formate unter „Deine Spende wird Bewegung“ (Kürzel aus src/content/formate/). onlineUrl: Spendenformular z. B. bei betterplace.org (nur als Link, kein eingebettetes Formular)."
   },
   "funders_note": "Logos aus der Förderer-Grafik des Vereins ausgeschnitten (src/assets/foerderer/). Beste Qualität: offizielle Logodateien der Förderer (SVG/PDF) dort ablegen und Dateinamen hier tauschen."
 }

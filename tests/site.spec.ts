@@ -265,12 +265,22 @@ test('Demo-Ansicht: Beispielinhalte nur mit Schalter, Echtes bleibt', async ({ p
   await expect(page.getByRole('note')).toBeHidden();
 });
 
-test('Spendenseite: ohne IBAN kein GiroCode, dafür Kontaktweg', async ({ page }) => {
+test('Spendenseite: ohne IBAN kein GiroCode, dafür Kontaktweg; Formate, andere Wege, Fragen', async ({ page }) => {
   await page.goto('/spenden/');
   await dismissConsent(page);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Halte das Netz');
-  await expect(page.locator('.qr__code')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: /Bankverbindung anfragen/ })).toBeVisible();
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Tanz braucht\s*Rückhalt\./);
+  await expect(page.locator('.konto__code')).toHaveCount(0);
+  await expect(page.locator('#spende').getByRole('button', { name: /Bankverbindung anfragen/ })).toBeVisible();
+  await expect(page.locator('.bw__t')).toHaveText(['KEEP UP', 'Studio Round', 'Welttanztag']);
+  await expect(page.getByRole('link', { name: 'Mehr zu KEEP UP →' })).toHaveAttribute('href', /\/profitraining\/$/);
+  await expect(page.getByRole('link', { name: 'Zum Mitgliedsantrag →' })).toHaveAttribute('href', /\/mitglied-werden\/$/);
+  // Platzhalter des Freistellungsbescheids stehen nicht öffentlich auf der Seite
+  await expect(page.getByText('BITTE ERGÄNZEN')).toHaveCount(0);
+  // Fragen klappen auf und zu, die erste ist offen
+  const fragen = page.locator('.faq__el');
+  await expect(fragen.first()).toHaveAttribute('open', '');
+  await fragen.nth(1).locator('summary').click();
+  await expect(fragen.nth(1).getByText(/„Spende KEEP UP“/)).toBeVisible();
   await page.getByRole('link', { name: /Spendennachweis öffnen/ }).click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Vereinfachter Spendennachweis');
 });
@@ -353,7 +363,7 @@ test('Header: TNDD-Zeichen führt zur Startseite, Journal und Über uns im Menü
   await page.goto('/netzwerk/alina-lucifero/');
   await dismissConsent(page);
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
-  await expect(nav.getByRole('link')).toHaveText(['Kalender', 'Formate', 'Training', 'Journal', 'Über uns']);
+  await expect(nav.getByRole('link')).toHaveText(['Kalender', 'Formate', 'Training', 'Journal', 'Über uns', 'Spenden']);
   await expect(nav.getByRole('link', { name: 'Über uns' })).toHaveAttribute('aria-current', 'page');
   await page.goto('/news/');
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
