@@ -367,6 +367,13 @@ test('Header: TNDD-Zeichen führt zur Startseite, Journal und Über uns im Menü
   // „Kalender“ führt zum ganzen Tanzkalender, nicht zum Ausschnitt auf der Startseite
   await expect(nav.getByRole('link', { name: 'Kalender' })).toHaveAttribute('href', /\/termine\/$/);
   await expect(nav.getByRole('link', { name: 'Über uns' })).toHaveAttribute('aria-current', 'page');
+  // auch beim zweiten Klick bleibt man im Kalender, der Menüpunkt ist markiert
+  for (let i = 0; i < 2; i++) {
+    await nav.getByRole('link', { name: 'Kalender' }).click();
+    await expect(page).toHaveURL(/\/termine\/$/);
+    if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
+    await expect(nav.getByRole('link', { name: 'Kalender' })).toHaveAttribute('aria-current', 'page');
+  }
   await page.goto('/news/');
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
   await expect(nav.getByRole('link', { name: 'Journal' })).toHaveAttribute('aria-current', 'page');
