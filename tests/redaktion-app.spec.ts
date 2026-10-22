@@ -18,7 +18,7 @@ const zeilen = (page: import('@playwright/test').Page) => page.locator('.bl__zei
 test('Beitragsliste: Filter, Suche, Status und Hinweise', async ({ page }) => {
   await redaktion(page, { andere: beitraege });
   await page.goto('/intern/news/');
-  await expect(page.getByRole('navigation', { name: 'Redaktion' }).getByRole('link', { name: /Beiträge/ })).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: /Beiträge/ })).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('[data-nav-n="beitraege"]')).toHaveText('3');
   await expect(zeilen(page)).toHaveCount(3);
   // Geplantes steht oben

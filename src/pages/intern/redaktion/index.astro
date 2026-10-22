@@ -74,11 +74,35 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
       </p>
     </section>
   </div>
+
+  <section class="r-gruppe demo" data-redaktion-only hidden aria-labelledby="g-demo">
+    <h2 class="r-gruppe__h" id="g-demo">Ausprobieren</h2>
+    <label class="i-check"><input type="checkbox" data-demo-schalter />Demo-Ansicht</label>
+    <p class="i-hint">
+      Füllt leere Profile auf der Website mit Beispielfoto, -text und Schwerpunkten, damit sich Gestaltung und
+      Abläufe ausprobieren lassen. Gilt nur in diesem Browser, echte Angaben bleiben unverändert. Ein Band unten links
+      zeigt, dass sie an ist. Ohne Anmeldung: Adresse mit <code>?demo=1</code> öffnen, <code>?demo=0</code> schaltet aus.
+    </p>
+  </section>
 </Redaktion>
 
 <script>
   import { $, starten, statusAnzeigen } from '../../../scripts/intern/redaktion/seite';
   import { offeneFreigaben } from '../../../scripts/intern/freigaben';
+  import { DEMO_KEY } from '../../../lib/demo';
+
+  // Demo-Ansicht an/aus (src/lib/demo.ts)
+  const demo = document.querySelector<HTMLInputElement>('[data-demo-schalter]');
+  if (demo) {
+    demo.checked = document.documentElement.classList.contains('demo');
+    demo.addEventListener('change', () => {
+      try {
+        if (demo.checked) localStorage.setItem(DEMO_KEY, '1');
+        else localStorage.removeItem(DEMO_KEY);
+      } catch {}
+      document.documentElement.classList.toggle('demo', demo.checked);
+    });
+  }
 
   const r = await starten();
   if (r) {
@@ -95,3 +119,9 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
     });
   }
 </script>
+
+<style>
+  .demo { display: grid; gap: 6px; max-width: 70ch; }
+  .demo[hidden] { display: none; }
+  .demo .i-hint { margin: 0; }
+</style>

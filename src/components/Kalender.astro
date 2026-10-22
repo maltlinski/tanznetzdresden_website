@@ -298,7 +298,7 @@ const hId = `${id}-h`;
       allDays.forEach((x) => (x.tabIndex = x === to ? 0 : -1));
       to.focus();
     });
-    // z. B. „Termine im Kalender →“ auf einer Karte im Profitrainings-Stapel
+    // z. B. Klick auf eine Kachel im Dozent:innen-Mosaik (Profitraining)
     document.addEventListener('kalender:filter', (e) => setFilter((e as CustomEvent<string>).detail));
 
     // Kopfbereich der Seite (falls vorhanden): nächster Eintrag ab heute

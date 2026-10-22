@@ -14,4 +14,9 @@ export const supabase = {
   url: 'https://nfwbotgkvyysfemjwtem.supabase.co',
   anonKey:
     'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5md2JvdGdrdnl5c2ZlbWp3dGVtIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTE0Njc5MzIsImV4cCI6MjEwNzA0MzkzMn0.mCStH2bwMFjdfG_1sZzWThWF-HdGdeQPwwjizo7Bgus',
+  /**
+   * „Zu Google Wallet hinzufügen“ unter Intern → Mein Status zeigen. Erst auf true setzen, wenn die
+   * Supabase-Funktion „ausweis“ mit den Google-Schlüsseln eingerichtet ist (docs/intern.md, „Google Wallet“).
+   */
+  wallet: false,
 };

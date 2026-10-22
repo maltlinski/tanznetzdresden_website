@@ -1,7 +1,7 @@
 /**
  * Nachgebautes Supabase für die Redaktions-Tests (Beiträge, Editor, Mediathek, Mein Profil, Freigaben):
- * Anmeldung als Pia (Presse), Tabellen news_posts, news_medien und profiles, Buckets newsbilder und
- * profilbilder, Funktionen „inhalte“ und galerie_freigabe.
+ * Anmeldung als Pia (Presse), Tabellen news_posts, news_medien, profiles und mitgliedschaften, Buckets newsbilder
+ * und profilbilder, Funktionen „inhalte“, „ausweis“, galerie_freigabe und ausweis_pruefen.
  * Hochgeladene Fotos werden aus dem Speicher wieder ausgeliefert (echte Fotos aus src/assets/photos/).
  */
 import type { Page } from '@playwright/test';
@@ -23,6 +23,10 @@ export interface Mock {
   profilGespeichert: Record<string, unknown>[];
   /** Aufrufe von rpc/galerie_freigabe */
   galerieFreigaben: Record<string, unknown>[];
+  /** Speicherungen in mitgliedschaften (Vorstand) */
+  mitgliedschaftGespeichert: Record<string, unknown>[];
+  /** Aufrufe der Funktion „ausweis“ (Google Wallet) */
+  wallet: number;
 }
 
 export interface MockOptionen {
@@ -38,11 +42,18 @@ export interface MockOptionen {
   profil?: Record<string, unknown>;
   /** Mitgliederprofile für Redaktion → Freigaben */
   freigaben?: Record<string, unknown>[];
+  /** eigene Zeile in mitgliedschaften; null = noch nicht angelegt; undefined = Tabelle fehlt (Migration 20261022) */
+  mitgliedschaft?: Record<string, unknown> | null;
+  /** weitere Zeilen in mitgliedschaften (Vorstand sieht alle) */
+  mitgliedschaften?: Record<string, unknown>[];
+  /** Mitgliederliste (rpc/member_directory) */
+  verzeichnis?: Record<string, unknown>[];
 }
 
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
-  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [] };
+  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0 };
+  const mitglieder = new Map<string, Record<string, unknown>>([...(o.mitgliedschaft ? [o.mitgliedschaft] : []), ...(o.mitgliedschaften ?? [])].map((z) => [String(z.person), z]));
   let profil: Record<string, unknown> = { id: 'u1', display_name: 'Pia Presse', role: 'presse', verified: false, public_listing: false, tags: [], ags: [], ...o.profil };
   const dateien = new Map<string, Buffer>();
   let zeile = o.zeile;
@@ -144,6 +155,29 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
     if (url.pathname === '/functions/v1/inhalte') {
       m.neubau++;
       return json({ ok: true });
+    }
+    if (url.pathname === '/rest/v1/mitgliedschaften') {
+      if (o.mitgliedschaft === undefined && !o.mitgliedschaften) return json({ message: 'relation "public.mitgliedschaften" does not exist', code: '42P01' }, 404);
+      if (req.method() === 'GET') {
+        const nur = url.searchParams.get('person')?.replace(/^eq\./, '');
+        const zeilen = [...mitglieder.values()].filter((z) => !nur || z.person === nur);
+        return json(einzeln ? (zeilen[0] ?? null) : zeilen);
+      }
+      const body = req.postDataJSON() as Record<string, unknown>;
+      m.mitgliedschaftGespeichert.push(body);
+      const neu = { pruefcode: '6f1c2b3a-0000-4000-8000-000000000001', ...mitglieder.get(String(body.person)), ...body, nummer: body.nummer ?? 'TNDD-2026-001' };
+      mitglieder.set(String(body.person), neu);
+      return json(einzeln ? neu : [neu], 201);
+    }
+    if (url.pathname === '/rest/v1/rpc/ausweis_pruefen') {
+      const code = (req.postDataJSON() as { code: string }).code;
+      const z = [...mitglieder.values()].find((x) => x.pruefcode === code);
+      return json(z ? [{ name: profil.display_name, nummer: z.nummer, art: z.art, status: Number(z.bezahlt_bis) >= new Date().getFullYear() ? 'aktiv' : 'offen', gueltig_bis: `${z.bezahlt_bis}-12-31` }] : []);
+    }
+    if (url.pathname === '/rest/v1/rpc/member_directory') return json(o.verzeichnis ?? []);
+    if (url.pathname === '/functions/v1/ausweis') {
+      m.wallet++;
+      return json({ url: 'https://pay.google.com/gp/v/save/test-jwt' });
     }
     if (url.pathname === '/rest/v1/rpc/offene_freigaben' || url.pathname === '/rest/v1/profiles_pending') return json([]);
     return json({ message: 'nicht nachgebaut' }, 404);

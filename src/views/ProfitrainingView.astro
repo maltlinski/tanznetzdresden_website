@@ -1,7 +1,7 @@
 ---
 /**
  * KEEP UP · Profitraining (Entwurf design/entwuerfe/2026-10-profitraining/).
- * Kopf mit nächster Einheit, Monatskalender, Dozent:innen im Kartenstapel, Infos, Mitglieds-Band.
+ * Kopf mit nächster Einheit, Monatskalender, Dozent:innen als laufendes Foto-Mosaik, Infos, Mitglieds-Band.
  */
 import { Image } from 'astro:assets';
 import { getEntry } from 'astro:content';
@@ -10,7 +10,7 @@ import Tag from '../components/ui/Tag.astro';
 import Button from '../components/ui/Button.astro';
 import KeilBar from '../components/ui/KeilBar.astro';
 import Kalender from '../components/Kalender.astro';
-import Stapel from '../components/keep-up/Stapel.astro';
+import Mosaik from '../components/keep-up/Mosaik.astro';
 import { getVerein } from '../lib/settings';
 import { getKeepUp, todayKey, weekLabel } from '../lib/keep-up';
 import { dateLocale, getLang, loc, tr, url } from '../lib/i18n';
@@ -121,7 +121,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
     </Fragment>
   </Kalender>
 
-  <Stapel dozentinnen={dozentinnen} />
+  <Mosaik dozentinnen={dozentinnen} />
 
   <section id="infos" class="section ku-infos" aria-labelledby="infos-h">
     <div class="wrap">

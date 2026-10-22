@@ -17,5 +17,5 @@ export const keepUpFoto = data.foto;
  */
 export const platzhalterFotos = ['solo-blau.jpg', 'sprung.jpg', 'duo-rot.jpg', 'kopfstand.jpg', 'duo-orange-blue.jpg', 'duo-silhouette-stage.jpg'];
 
-/** Bewegung des Kartenstapels: 'stapel' = gerade übereinander, 'fächer' = leicht gedreht */
-export const stapelBewegung: 'stapel' | 'fächer' = 'fächer';
+/** Tempo des Dozent:innen-Mosaiks (läuft endlos nach rechts): 28, 48 oder 80 Pixel pro Sekunde */
+export const mosaikTempo: 'langsam' | 'mittel' | 'schnell' = 'mittel';

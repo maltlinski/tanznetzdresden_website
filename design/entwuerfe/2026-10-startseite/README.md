@@ -19,10 +19,15 @@ Abweichungen in der Umsetzung:
 - „Haltung & Wirkung“ steht jetzt auf „Über uns“ (`/verein/`), damit Säulen, Auszeichnungen und Partner sichtbar und in
   der Redaktion bearbeitbar bleiben.
 - „Über uns“ im Menü führt zur Vereinsseite (Entwurf: Sprung zum Netz-Block); auf Profilseiten ist „Über uns“ markiert.
-  Menü behält „Intern“ und den Sprachumschalter.
+  Menü behält den Sprachumschalter.
 - Überschrift der Seite (h1) ist „Tanz für …“ im Hero; „Eine Stadt. Ein Netz.“ ist eine Zwischenüberschrift.
 - „Tanz für …“ läuft eine Runde durch und bleibt dann beim ersten Wort stehen (WCAG 2.2.2). Bei „Bewegung reduzieren“
   steht alles sofort.
 - Formate ohne eigene Seite sind keine Links (Entwurf: Sprung zu den Terminen).
 - Auf dem Handy stehen die Einstiege kompakt untereinander, der nächste Termin direkt darüber.
 - Footer bleibt wie bisher (mit Förderhinweis und allen Seiten).
+
+Zweite Runde von v5 (22. Oktober 2026):
+- „Login“ im Kopf (vorher „Intern“). Ein Klick zieht eine Blende über die Seite (Magenta und Lila mit Keil, Logo und
+  „Interner Bereich“), im internen Bereich schrumpft sie auf die Seitenleiste (`src/scripts/blende.ts`, Entwurf
+  `../2026-10-intern/`). Bei „Bewegung reduzieren“ geht es ohne Blende direkt weiter.

@@ -1,0 +1,93 @@
+---
+/**
+ * Mitgliedsausweis prüfen: Ziel des QR-Codes auf der Rückseite des Ausweises (/mitglied/pruefen/?c=<Prüfcode>).
+ * Fragt die Datenbankfunktion ausweis_pruefen() ab (supabase/migrations/20261022000000_mitgliedschaft.sql):
+ * Name, Nummer, Art, Status und „gültig bis“ – nur mit dem zufälligen Prüfcode, ohne Anmeldung.
+ */
+import Page from '../../../layouts/Page.astro';
+import PageIntro from '../../../components/PageIntro.astro';
+import { url } from '../../../lib/i18n';
+---
+<Page title="Mitgliedsausweis prüfen" description="Prüft, ob ein Mitgliedsausweis von TanzNetzDresden e.V. gültig ist." route="ausweisPruefen" noindex>
+  <PageIntro kicker="Mitgliedsausweis" title="Ausweis prüfen" kompakt />
+  <section class="section">
+    <div class="wrap">
+      <div class="pr" data-pruefen data-ergebnis="laden" aria-live="polite">
+        <p class="pr__laden" data-zeige="laden">Einen Moment, wir prüfen den Ausweis …</p>
+        <div class="pr__karte" data-zeige="treffer">
+          <span class="pr__status" data-pr-status></span>
+          <h2 class="pr__name" data-pr-name></h2>
+          <dl class="pr__daten">
+            <div><dt>Mitgliedsnummer</dt><dd data-pr-nummer></dd></div>
+            <div><dt>Art</dt><dd data-pr-art></dd></div>
+            <div><dt>Gültig bis</dt><dd data-pr-bis></dd></div>
+          </dl>
+          <p class="pr__text" data-pr-text></p>
+        </div>
+        <div class="pr__karte pr__karte--leer" data-zeige="fehlt">
+          <span class="pr__status pr__status--nein">Nicht gefunden</span>
+          <p class="pr__text">Zu diesem Code gibt es keinen Mitgliedsausweis. Bitte scanne den Code auf der Rückseite des Ausweises erneut oder frag beim Vorstand nach.</p>
+        </div>
+        <div class="pr__karte pr__karte--leer" data-zeige="fehler">
+          <span class="pr__status pr__status--nein">Prüfung nicht möglich</span>
+          <p class="pr__text">Die Prüfung hat gerade nicht geklappt. Bitte versuch es gleich noch einmal.</p>
+        </div>
+        <a class="mono-link pr__weiter" href={url('de', 'mitglied')}>Selbst Mitglied werden →</a>
+      </div>
+    </div>
+  </section>
+</Page>
+
+<script>
+  import { getSupabase } from '../../../lib/supabase';
+  import { kurz } from '../../../lib/mitgliedschaft';
+
+  const root = document.querySelector<HTMLElement>('[data-pruefen]')!;
+  const setzen = (s: string, t: string) => (root.querySelector<HTMLElement>(s)!.textContent = t);
+  const code = new URLSearchParams(location.search).get('c') ?? '';
+  const sb = getSupabase();
+
+  if (!/^[0-9a-f-]{36}$/i.test(code)) root.dataset.ergebnis = 'fehlt';
+  else if (!sb) root.dataset.ergebnis = 'fehler';
+  else {
+    const { data, error } = await sb.rpc('ausweis_pruefen', { code });
+    const z = Array.isArray(data) ? (data[0] as { name: string; nummer: string; art: string; status: string; gueltig_bis: string | null } | undefined) : undefined;
+    if (error) root.dataset.ergebnis = 'fehler';
+    else if (!z) root.dataset.ergebnis = 'fehlt';
+    else {
+      const st = { aktiv: 'Gültig', offen: 'Beitrag offen', abgelaufen: 'Abgelaufen' }[z.status] ?? z.status;
+      setzen('[data-pr-status]', st);
+      root.querySelector('[data-pr-status]')!.classList.toggle('pr__status--nein', z.status !== 'aktiv');
+      setzen('[data-pr-name]', z.name);
+      setzen('[data-pr-nummer]', z.nummer);
+      setzen('[data-pr-art]', z.art);
+      setzen('[data-pr-bis]', z.gueltig_bis ? kurz(z.gueltig_bis) : '–');
+      setzen('[data-pr-text]', {
+        aktiv: `${z.name} ist Mitglied im TanzNetzDresden e.V. Der Beitrag für dieses Jahr ist bezahlt.`,
+        offen: `${z.name} ist Mitglied, der Beitrag für dieses Jahr ist aber noch offen. Der Ausweis gilt erst mit bezahltem Beitrag.`,
+        abgelaufen: `Die Mitgliedschaft von ${z.name} ist beendet.`,
+      }[z.status] ?? '');
+      root.dataset.ergebnis = 'treffer';
+    }
+  }
+</script>
+
+<style>
+  .pr { display: flex; flex-direction: column; align-items: flex-start; gap: 28px; max-width: 640px; }
+  .pr [data-zeige] { display: none; }
+  .pr[data-ergebnis='laden'] [data-zeige='laden'],
+  .pr[data-ergebnis='treffer'] [data-zeige='treffer'],
+  .pr[data-ergebnis='fehlt'] [data-zeige='fehlt'],
+  .pr[data-ergebnis='fehler'] [data-zeige='fehler'] { display: flex; }
+  .pr__laden { margin: 0; color: var(--ink-soft); }
+  .pr__karte { flex-direction: column; align-items: flex-start; gap: 16px; align-self: stretch; padding: clamp(22px, 3vw, 36px); background: var(--tint); border-top: 3px solid var(--magenta); }
+  .pr__status { padding: 6px 12px; background: var(--cyan); color: var(--purple); font-family: var(--font-mono); font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; }
+  .pr__status--nein { background: var(--magenta-2); color: #fff; }
+  .pr__name { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4vw, 44px); line-height: 1; letter-spacing: -0.03em; color: var(--purple); }
+  .pr__daten { margin: 0; align-self: stretch; display: flex; flex-direction: column; }
+  .pr__daten div { display: grid; grid-template-columns: minmax(120px, 160px) minmax(0, 1fr); gap: 16px; padding: 12px 0; border-top: 1px solid var(--rule); }
+  .pr__daten dt { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); padding-top: 3px; }
+  .pr__daten dd { margin: 0; font-size: 16px; color: var(--ink); }
+  .pr__text { margin: 0; font-size: 15.5px; line-height: 1.6; color: var(--ink-soft); }
+  .pr__weiter { color: var(--magenta-2); }
+</style>

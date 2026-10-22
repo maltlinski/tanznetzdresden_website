@@ -85,8 +85,9 @@ Wo GSAP läuft:
 | Terminlisten (Startseite, Terminseite, Tanzkalender ohne JavaScript) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
 | Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |
 | Kalender (Tanzkalender und Profitraining) | `Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Tagesansicht und Filter-Markierungen animiert |
-| Profitraining: Dozent:innen | `keep-up/Stapel.astro` | Kartenstapel zum Durchblättern (Pfeile, Punkte, Wischen, Pfeiltasten – nicht durch Scrollen): die nächste Karte kommt von rechts, die vorigen rücken nach links; Bewegung „stapel“/„fächer“ in `src/settings/keep-up.ts` |
+| Profitraining: Dozent:innen | `keep-up/Mosaik.astro` | Foto-Mosaik, das endlos nach rechts läuft (GSAP); hält bei Maus, Fokus oder Knopf „Anhalten“; Klick filtert den Kalender, „Zur Dozent:in →“ holt die Kachel ins Bild; Tempo in `src/settings/keep-up.ts`; bei „Bewegung reduzieren“ ein Streifen zum Wischen |
 | Profitraining: Kopf | `views/ProfitrainingView.astro` | Überschrift mit SplitText (Buchstaben aus einer Maske), Foto als Keil |
+| „Login“ → interner Bereich | `scripts/blende.ts` (Web Animations, ohne GSAP) | Blende aus Magenta und Lila wischt über die Website; im internen Bereich (`layouts/Intern.astro`) schrumpft sie auf die Seitenleiste, Logo und Schriftzug gleiten an ihren Platz; verbunden über `sessionStorage` |
 
 ## Netz-Animation
 

@@ -22,6 +22,21 @@ import Intern from '../../../layouts/Intern.astro';
       <p class="dir__bio"></p>
       <span class="dir__ags"></span>
       <div class="dir__links"></div>
+      <details class="dir__ms" hidden>
+        <summary><span>Mitgliedschaft</span><span class="dir__ms-status"></span></summary>
+        <form class="dir__ms-form">
+          <label>Nummer<input name="nummer" placeholder="wird vergeben" autocomplete="off" /></label>
+          <label>Art<input name="art" list="ms-arten" required /></label>
+          <label>Mitglied seit<input name="seit" type="date" /></label>
+          <label>Beitrag bezahlt bis (Jahr)<input name="bezahlt_bis" type="number" min="2000" max="2100" step="1" /></label>
+          <label>Bezahlt am<input name="bezahlt_am" type="date" /></label>
+          <label>Mitglied bis (Austritt)<input name="ende" type="date" /></label>
+          <div class="dir__ms-knoepfe">
+            <button type="button" class="dir__ms-bezahlt" data-ms-bezahlt></button>
+            <button type="submit" class="dir__ms-speichern">Speichern</button>
+          </div>
+        </form>
+      </details>
       <div class="dir__role" hidden>
         <label>Rolle</label>
         <select>
@@ -33,12 +48,19 @@ import Intern from '../../../layouts/Intern.astro';
       </div>
     </li>
   </template>
+  <datalist id="ms-arten">
+    <option value="Ordentliches Mitglied"></option>
+    <option value="Ordentliches Mitglied · Tanzschaffende"></option>
+    <option value="Fördermitglied"></option>
+    <option value="Ehrenmitglied"></option>
+  </datalist>
 </Intern>
 
 <script>
   import { initIntern, errorText, showMessage } from '../../../scripts/intern/session';
   import { freigabenHinweis } from '../../../scripts/intern/freigaben';
   import type { DirectoryEntry } from '../../../lib/supabase';
+  import { status, type Mitgliedschaft } from '../../../lib/mitgliedschaft';
 
   const ctx = await initIntern(true);
   const list = document.querySelector<HTMLUListElement>('[data-dir]');
@@ -55,10 +77,72 @@ import Intern from '../../../layouts/Intern.astro';
   };
   const safeUrl = (u: string) => (/^https?:\/\//i.test(u) ? u : `https://${u}`);
 
+  const ms = new Map<string, Mitgliedschaft>();
+  let msFehlt = false;
+  const STATUS_TEXT = { aktiv: 'aktiv', offen: 'Beitrag offen', abgelaufen: 'abgelaufen' } as const;
+
+  /** Bereich „Mitgliedschaft“ auf einer Karte (nur Vorstand) */
+  function mitgliedschaft(li: HTMLElement, person: string, name: string) {
+    if (!ctx) return;
+    const box = li.querySelector<HTMLDetailsElement>('.dir__ms')!;
+    const form = box.querySelector('form')!;
+    const anzeige = box.querySelector<HTMLElement>('.dir__ms-status')!;
+    const bezahlt = box.querySelector<HTMLButtonElement>('[data-ms-bezahlt]')!;
+    const feld = (n: string) => form.elements.namedItem(n) as HTMLInputElement;
+    const jahr = new Date().getFullYear();
+    bezahlt.textContent = `Beitrag ${jahr} bezahlt`;
+    form.querySelectorAll('input').forEach((i) => (i.id = `ms-${person}-${i.name}`));
+
+    const zeigen = () => {
+      const z = ms.get(person);
+      feld('nummer').value = z?.nummer ?? '';
+      feld('art').value = z?.art ?? 'Ordentliches Mitglied';
+      feld('seit').value = z?.seit ?? '';
+      feld('bezahlt_bis').value = z?.bezahlt_bis != null ? String(z.bezahlt_bis) : '';
+      feld('bezahlt_am').value = z?.bezahlt_am ?? '';
+      feld('ende').value = z?.ende ?? '';
+      anzeige.textContent = z ? `${z.nummer ?? ''} · ${STATUS_TEXT[status(z)]}` : 'noch nicht angelegt';
+      anzeige.dataset.status = z ? status(z) : '';
+      bezahlt.hidden = !!z && z.bezahlt_bis != null && z.bezahlt_bis >= jahr;
+    };
+    const speichern = async (extra: Partial<Mitgliedschaft> = {}) => {
+      const leer = (v: string) => v.trim() || null;
+      const zeile = {
+        person,
+        nummer: leer(feld('nummer').value)?.toUpperCase() ?? null,
+        art: feld('art').value.trim() || 'Ordentliches Mitglied',
+        seit: leer(feld('seit').value),
+        bezahlt_bis: feld('bezahlt_bis').value ? Number(feld('bezahlt_bis').value) : null,
+        bezahlt_am: leer(feld('bezahlt_am').value),
+        ende: leer(feld('ende').value),
+        ...extra,
+      };
+      const { data: neu, error: fehler } = await ctx.sb.from('mitgliedschaften').upsert(zeile).select().single<Mitgliedschaft>();
+      if (fehler) return showMessage(msg, /duplicate|unique/i.test(fehler.message) ? 'Diese Mitgliedsnummer ist schon vergeben.' : errorText(fehler));
+      ms.set(person, neu);
+      zeigen();
+      showMessage(msg, `${name || 'Mitgliedschaft'}: gespeichert (${neu.nummer}).`, 'ok');
+    };
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      void speichern();
+    });
+    bezahlt.addEventListener('click', () => void speichern({ bezahlt_bis: jahr, bezahlt_am: new Date().toISOString().slice(0, 10) }));
+    zeigen();
+    box.hidden = false;
+  }
+
   if (ctx && list && tpl) {
     const { data, error } = await ctx.sb.rpc('member_directory');
     if (error) showMessage(msg, errorText(error));
     const entries = (data ?? []) as DirectoryEntry[];
+    // Vorstand: Mitgliedschaften aller (fehlt die Tabelle, ist die Migration 20261022 noch nicht eingespielt)
+    if (ctx.isVorstand) {
+      const r = await ctx.sb.from('mitgliedschaften').select('*');
+      if (r.error) msFehlt = true;
+      else (r.data as Mitgliedschaft[]).forEach((z) => ms.set(z.person, z));
+      if (msFehlt) showMessage(msg, 'Mitgliedschaften lassen sich pflegen, sobald die Migration 20261022000000_mitgliedschaft.sql eingespielt ist (docs/intern.md).');
+    }
     const cards = entries.map((m) => {
       const li = tpl.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
       li.querySelector('.dir__name')!.textContent = m.display_name || 'Ohne Namen';
@@ -105,6 +189,8 @@ import Intern from '../../../layouts/Intern.astro';
         box.hidden = false;
       }
 
+      if (ctx.isVorstand && !msFehlt) mitgliedschaft(li, m.id, m.display_name);
+
       // öffentliches Profil: Link auf die Website (freigegeben wird unter Redaktion → Freigaben)
       if (m.public_listing && m.slug && m.verified) {
         li.querySelector('.dir__links')!.append(link(`${import.meta.env.BASE_URL.replace(/\/?$/, '/')}netzwerk/${m.slug}/`, 'Profil auf der Website'));
@@ -133,6 +219,21 @@ import Intern from '../../../layouts/Intern.astro';
   :global(.dir__bio) { margin: 0; font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
   :global(.dir__bio:empty), :global(.dir__pronouns:empty), :global(.dir__ags:empty) { display: none; }
   :global(.dir__links) { display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+  :global(.dir__ms) { margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--rule); font-size: 13px; }
+  :global(.dir__ms[hidden]) { display: none; }
+  :global(.dir__ms summary) { display: flex; justify-content: space-between; gap: 10px; cursor: pointer; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  :global(.dir__ms-status) { color: var(--purple); }
+  :global(.dir__ms-status[data-status='offen']), :global(.dir__ms-status[data-status='abgelaufen']) { color: var(--magenta-2); }
+  :global(.dir__ms-form) { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); gap: 10px; margin-top: 12px; }
+  :global(.dir__ms-form label) { display: flex; flex-direction: column; gap: 4px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+  :global(.dir__ms-form input) { width: 100%; font: inherit; font-family: var(--font-body); font-size: 14px; font-weight: 400; letter-spacing: 0; text-transform: none; padding: 6px 8px; border: 1.5px solid var(--rule); border-radius: 0; background: var(--paper); color: var(--ink); min-width: 0; }
+  :global(.dir__ms-form input:focus) { border-color: var(--magenta); outline: none; }
+  :global(.dir__ms-knoepfe) { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 8px; justify-content: flex-end; }
+  :global(.dir__ms-knoepfe button) { padding: 8px 12px; border: 1.5px solid var(--purple); border-radius: 0; cursor: pointer; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  :global(.dir__ms-bezahlt) { background: var(--paper); color: var(--purple); }
+  :global(.dir__ms-bezahlt[hidden]) { display: none; }
+  :global(.dir__ms-speichern) { background: var(--purple); color: #fff; }
+  :global(.dir__ms-knoepfe button:hover) { border-color: var(--magenta); }
   :global(.dir__role) { display: flex; align-items: center; gap: 10px; margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--rule); font-size: 13px; }
   :global(.dir__role[hidden]) { display: none; }
   :global(.dir__role label) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }

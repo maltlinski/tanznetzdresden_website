@@ -124,7 +124,7 @@ test('Übersicht: alle Bereiche, Website-Status und Verlauf', async ({ page }) =
   await expect(page.getByRole('status').filter({ hasText: 'Die Website ist aktuell' })).toBeVisible();
   await expect(page.getByText('Termin „POP UP“ geändert')).toBeVisible();
   // Menü im internen Bereich führt hierher
-  await expect(page.getByRole('navigation', { name: 'Redaktion' }).getByRole('link', { name: 'Website-Inhalte' })).toHaveAttribute('aria-current', 'page');
+  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Website-Inhalte' })).toHaveAttribute('aria-current', 'page');
 });
 
 test('Ohne Rolle Presse/Vorstand kein Zugang', async ({ page }) => {

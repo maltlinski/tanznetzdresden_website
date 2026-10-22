@@ -5,7 +5,7 @@ import { supabase } from '../src/settings/supabase';
 
 const pages = [
   '/', '/termine/', '/termine/2026-10-15-studio-round-9/', '/profitraining/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
-  '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/intern/',
+  '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/mitglied/pruefen/', '/intern/',
   '/intern/news/', '/intern/news/bearbeiten/', '/intern/redaktion/', '/intern/redaktion/liste/', '/intern/redaktion/eintrag/', '/intern/redaktion/freigaben/',
   '/en/', '/en/events/', '/en/events/2026-10-15-studio-round-9/', '/en/training/', '/en/news/', '/en/news/neues-koordinationsteam/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
   '/en/contact/', '/en/partners/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
@@ -554,82 +554,60 @@ test('Profitraining: Pfeiltasten wandern durch die Trainingstage', async ({ page
   await expect(cal.locator('[data-kcal-date]')).toHaveText('20. Oktober');
 });
 
-test('Profitraining: Kartenstapel zum Durchblättern, Wechsel zwischen Karte und Kalender', async ({ page }) => {
+test('Profitraining: Dozent:innen-Mosaik läuft, hält an und führt in den Kalender', async ({ page }) => {
   await openTraining(page);
-  const stack = page.locator('[data-stack]');
-  await expect(stack).toHaveClass(/is-deck/);
-  await expect(stack.locator('[data-card]')).toHaveCount(6);
-  await expect(page.locator('#dozentin-alexandre-may .card__range')).toHaveText('19.–23. Okt.');
-  const active = stack.locator('[data-card]:not([inert])');
-  await expect(active).toHaveCount(1);
-  await expect(active).toHaveId('dozentin-alexandre-may');
+  const mosaik = page.locator('[data-mosaik]');
+  await expect(mosaik).toHaveClass(/is-laufend/);
+  await expect(mosaik.locator('.mosaik__teil:not(.mosaik__teil--kopie) .kachel')).toHaveCount(6);
+  // die zweite Hälfte ist nur für die Endlosschleife da
+  await expect(mosaik.locator('.mosaik__teil--kopie')).toHaveAttribute('aria-hidden', 'true');
+  const spur = mosaik.locator('[data-mosaik-spur]');
+  const lage = () => spur.evaluate((e) => getComputedStyle(e).transform);
 
-  // Pfeil weiter: nächste Karte kommt von rechts
-  await stack.getByRole('button', { name: 'Nächste Dozent:in' }).click();
-  await expect(active).toHaveId('dozentin-aurora-fradella');
-  await expect(stack.locator('[data-deck-count]')).toHaveText('02 / 06');
-  await expect(stack.getByRole('button', { name: 'Aurora Fradella' })).toHaveAttribute('aria-current', 'true');
-  // Pfeiltaste und Punkt
-  await page.keyboard.press('ArrowRight');
-  await expect(active).toHaveId('dozentin-charles-washington');
-  await stack.getByRole('button', { name: 'Leon Börgens', exact: true }).click();
-  await expect(active).toHaveId('dozentin-leon-borgens');
-  await expect(stack.getByRole('button', { name: 'Nächste Dozent:in' })).toBeDisabled();
-  await stack.getByRole('button', { name: 'Vorherige Dozent:in' }).click();
-  await expect(active).toHaveId('dozentin-laura-gary');
+  // läuft …
+  const a = await lage();
+  await expect.poll(lage).not.toBe(a);
+  // … und hält auf Knopfdruck an
+  const pause = page.locator('[data-mosaik-pause]');
+  await expect(pause).toHaveText('Anhalten');
+  await pause.click();
+  await expect(pause).toHaveAttribute('aria-pressed', 'true');
+  await expect(pause).toHaveText('Weiterlaufen');
+  await page.waitForTimeout(700);
+  const b = await lage();
+  await page.waitForTimeout(500);
+  expect(await lage()).toBe(b);
 
-  // Scrollen allein blättert nicht
-  await page.mouse.wheel(0, 600);
-  await page.waitForTimeout(600);
-  await expect(active).toHaveId('dozentin-laura-gary');
-
-  // „Zur Dozent:in →“ im Kalender schlägt die Karte auf
-  await page.locator('#kalender [data-kcal-items] a', { hasText: 'Zur Dozent:in' }).click();
-  await expect(page).toHaveURL(/#dozentin-leon-borgens$/);
-  await expect(active).toHaveId('dozentin-leon-borgens');
-
-  // „Termine im Kalender →“ filtert den Kalender auf diese Dozent:in
-  await page.locator('#dozentin-leon-borgens').getByRole('link', { name: 'Termine im Kalender →' }).click();
+  // Kachel: Kalender auf diese Dozent:in filtern
+  await page.locator('#dozentin-leon-borgens').click();
+  await expect(page).toHaveURL(/#kalender$/);
   await expect(page.locator('#kalender').getByRole('button', { name: 'Leon Börgens', exact: true })).toHaveAttribute('aria-pressed', 'true');
   await expect(page.locator('#kalender [data-kcal-items]')).toContainText('Leon Börgens');
+
+  // „Zur Dozent:in →“ im Kalender hebt die Kachel hervor
+  await page.locator('#kalender [data-kcal-items] a', { hasText: 'Zur Dozent:in' }).click();
+  await expect(page.locator('#dozentin-leon-borgens')).toHaveClass(/is-hl/);
+  await expect(page.locator('#dozentin-leon-borgens')).toBeFocused();
+  await expect(page.locator('#dozentin-leon-borgens')).toBeInViewport();
 });
 
-test('Profitraining: Wischen nach links blättert weiter, nach rechts zurück', async ({ page }) => {
-  await openTraining(page);
-  const stage = page.locator('[data-stack] [data-stage]');
-  await stage.scrollIntoViewIfNeeded();
-  await page.waitForTimeout(1200);
-  const box = (await stage.boundingBox())!;
-  const swipe = async (dx: number) => {
-    const y = box.y + box.height * 0.3;
-    const x = box.x + box.width * 0.5;
-    await page.mouse.move(x, y);
-    await page.mouse.down();
-    await page.mouse.move(x + dx / 2, y, { steps: 4 });
-    await page.mouse.move(x + dx, y, { steps: 4 });
-    await page.mouse.up();
-  };
-  const active = page.locator('[data-stack] [data-card]:not([inert])');
-  await swipe(-160);
-  await expect(active).toHaveId('dozentin-aurora-fradella');
-  await swipe(160);
-  await expect(active).toHaveId('dozentin-alexandre-may');
-});
-
-test('Profitraining: ohne JavaScript stehen die Karten untereinander, bei „Bewegung reduzieren“ blättert der Stapel ohne Animation', async ({ browser, page }) => {
+test('Profitraining: ohne JavaScript und bei „Bewegung reduzieren“ ist das Mosaik ein Streifen zum Wischen', async ({ browser, page, isMobile }) => {
   const ctx = await browser.newContext({ javaScriptEnabled: false });
   const nojs = await ctx.newPage();
   await nojs.goto('/profitraining/');
-  const tops = await nojs.locator('[data-stack] [data-card]').evaluateAll((cards) => cards.map((c) => c.getBoundingClientRect().top));
-  for (let i = 1; i < tops.length; i++) expect(tops[i]).toBeGreaterThan(tops[i - 1] + 100);
-  await expect(nojs.locator('.deck__controls')).toBeHidden();
+  await expect(nojs.locator('.mosaik__teil--kopie')).toBeHidden();
+  await expect(nojs.locator('.mosaik__teil:not(.mosaik__teil--kopie) .kachel')).toHaveCount(6);
   await ctx.close();
 
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await openTraining(page);
   await expect(page.locator('#ku-h1')).toHaveText(/KEEP UP\s*Training\./);
-  await page.getByRole('button', { name: 'Nächste Dozent:in' }).click();
-  await expect(page.locator('[data-stack] [data-card]:not([inert])')).toHaveId('dozentin-aurora-fradella');
+  await expect(page.locator('[data-mosaik]')).not.toHaveClass(/is-laufend/);
+  await expect(page.getByRole('button', { name: 'Anhalten' })).toBeHidden();
+  // auf dem Handy breiter als der Bildschirm: zum Wischen
+  if (isMobile) expect(await page.locator('[data-mosaik]').evaluate((e) => e.scrollWidth > e.clientWidth)).toBe(true);
+  await page.locator('#dozentin-aurora-fradella').click();
+  await expect(page.locator('#kalender').getByRole('button', { name: 'Aurora Fradella', exact: true })).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('Profitraining: englische Fassung und Verlinkung aus Menü und Formaten', async ({ page, isMobile }) => {

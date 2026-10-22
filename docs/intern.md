@@ -17,7 +17,8 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
    `supabase/migrations/20261013000000_freigaben.sql` (Presse gibt Profile frei, neue Fotos warten auf Freigabe),
    `supabase/migrations/20261015000000_news_bilder.sql` (News mit Bildausschnitt und längeren Texten),
    `supabase/migrations/20261016000000_mediathek.sql` (Mediathek der Redaktion, Newsletter-Vormerkung) und
-   `supabase/migrations/20261020000000_profil_seite.sql` (Profilseite mit Galerie, Arbeiten und Kontakt, siehe docs/profile.md).
+   `supabase/migrations/20261020000000_profil_seite.sql` (Profilseite mit Galerie, Arbeiten und Kontakt, siehe docs/profile.md) und
+   `supabase/migrations/20261022000000_mitgliedschaft.sql` (Mitgliedschaft und Mitgliedsausweis, siehe unten „Mein Status“).
    Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
 
 ## 2. Login konfigurieren
@@ -55,6 +56,8 @@ mit denselben Namen überschreiben.
 | Medien: „erst speichern, wenn die Migration … ausgeführt ist“, Newsletter-Schalter gesperrt | Siebte Migration `20261016000000_mediathek.sql` ausführen. |
 | Mein Profil: „Galerie, Arbeiten und weitere Angaben kommen bald dazu“; Freigaben: „Die Datenbank kennt die Galerie noch nicht“ | Achte Migration `20261020000000_profil_seite.sql` ausführen. |
 | Mein Profil: „Neue Fotos gibt die Redaktion frei.“ | Die Seite ist älter als die Datenbank. Seite neu laden. |
+| Mein Status zeigt immer „In Vorbereitung“; Mitglieder: „Mitgliedschaften lassen sich pflegen, sobald …“ | Neunte Migration `20261022000000_mitgliedschaft.sql` ausführen, dann unter *Intern → Mitglieder* die Mitgliedschaft eintragen. |
+| Google Wallet: „noch nicht eingerichtet“ | Funktion `ausweis` und ihre Secrets fehlen, siehe „Google Wallet“ unten. |
 | „Redaktion“ fehlt im Menü | Rolle ist `mitglied`. Vorstand oder *Table Editor → profiles → role* auf `presse`, `vorstand` oder `admin` setzen. |
 | Redaktion: „noch nicht eingerichtet“ | Supabase-Funktion `inhalte` und GitHub-Schlüssel fehlen, siehe [redaktion.md](redaktion.md#einrichten-einmalig-admin). |
 | Veröffentlichte News oder freigegebene Profile erscheinen erst am nächsten Morgen | Die Redaktion (Funktion `inhalte` mit GitHub-Schlüssel) ist nicht eingerichtet; sie stößt den Neubau an. Siehe [redaktion.md](redaktion.md#einrichten-einmalig-admin). |
@@ -88,6 +91,47 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 | Dokumente (Bucket `intern`) | Lesen: alle Mitglieder:innen · Hochladen/Löschen: Vorstand |
 | Rolle | ändern kann nur der Vorstand |
 | News (`news_posts`, Bucket `newsbilder`) | Entwürfe: nur Presse/Vorstand/Admin · veröffentlicht: öffentlich über `public_news` |
+
+## Mein Status und Mitgliedsausweis
+
+Nach dem Login landen alle auf *Mein Status* (`/intern/`): Ausweis zum Umdrehen, Angaben zur Mitgliedschaft und der
+Ausweis als PDF (Druckdialog → „Als PDF speichern“). Der ganze interne Bereich hat denselben Rahmen mit Seitenleiste
+(`src/layouts/Intern.astro`); Presse, Vorstand und Admin sehen dort zusätzlich die Redaktion.
+
+**Pflegen (Vorstand):** *Intern → Mitglieder* → auf der Karte „Mitgliedschaft“ aufklappen. Nummer leer lassen, dann
+vergibt die Datenbank eine (`TNDD-<Eintrittsjahr>-<laufende Nummer>`). Wenn der Beitrag da ist: „Beitrag <Jahr> bezahlt“.
+Austritt: „Mitglied bis“ eintragen.
+
+| Status | wann | was das Mitglied sieht |
+|---|---|---|
+| aktiv | Beitrag für das laufende Jahr bezahlt | Ausweis, PDF (und Google Wallet) |
+| Beitrag offen | sonst | grauer Ausweis mit Stempel, Hinweis mit E-Mail „Zahlungsinfos anfragen“; fällig bis 31. März (`BEITRAG_FAELLIG` in `src/lib/mitgliedschaft.ts`) |
+| abgelaufen | „Mitglied bis“ liegt in der Vergangenheit | grauer Ausweis, Hinweis „Mitgliedschaft verlängern“ |
+
+**Prüfen:** Der QR-Code auf der Rückseite führt auf `/mitglied/pruefen/?c=<Prüfcode>`. Die Seite zeigt Name, Nummer,
+Art, Status und „gültig bis“, ohne Anmeldung, aber nur mit dem zufälligen Code. Ausweis verloren: im SQL-Editor
+`update public.mitgliedschaften set pruefcode = gen_random_uuid() where nummer = 'TNDD-…';` – der alte Code gilt dann
+nicht mehr.
+
+### Google Wallet (optional)
+
+„Zu Google Wallet hinzufügen“ erscheint erst, wenn `wallet: true` in `src/settings/supabase.ts` steht. Vorher einmal
+einrichten:
+
+1. In der [Google Pay & Wallet Console](https://pay.google.com/business/console) ein Ausstellerkonto für den Verein
+   anlegen und die **Issuer ID** notieren. Für den Livebetrieb dort „Publishing access“ beantragen (vorher sehen nur
+   Testkonten den Pass).
+2. In der Google Cloud Console die *Google Wallet API* aktivieren, ein **Dienstkonto** anlegen und einen Schlüssel
+   (JSON) erzeugen. Das Dienstkonto in der Wallet Console unter *Users* als Entwickler eintragen.
+3. Supabase: Funktion `supabase/functions/ausweis/index.ts` deployen (*Edge Functions → Deploy a new function → Via
+   Editor*, Name `ausweis`, Inhalt der Datei hineinkopieren) und unter *Edge Functions → Secrets* eintragen:
+   `WALLET_ISSUER_ID`, `WALLET_SA_EMAIL` (client_email aus der JSON-Datei), `WALLET_SA_KEY` (private_key aus der
+   JSON-Datei), `SITE_URL` (z. B. `https://tanznetzdresden.de/`), optional `WALLET_LOGO_URL` (PNG-Logo).
+   **Den Schlüssel nie ins Repository legen.**
+4. `wallet: true` in `src/settings/supabase.ts` setzen.
+
+An Google gehen Name, Mitgliedsnummer, „gültig bis“ und der Prüf-Link erst, wenn ein Mitglied selbst auf den Knopf
+drückt und den Pass speichert. Das gehört in die Datenschutzerklärung, bevor der Schalter an ist.
 
 ## Redaktion
 

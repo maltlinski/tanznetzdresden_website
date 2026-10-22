@@ -30,7 +30,7 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 | **Formate** | KEEP UP, POP UP … auf der Startseite | von Hand |
 | **News-Archiv** | ältere Beiträge, die als Datei vorliegen | nach Datum |
 | **Trainingsplan** | KEEP UP: wer wann unterrichtet (Kalender auf /profitraining/ und im Tanzkalender) | nach Datum, automatisch |
-| **Dozent:innen** | die Karten im Stapel auf /profitraining/ (Name und Foto aus dem Profil) | von Hand = Reihenfolge im Stapel |
+| **Dozent:innen** | die Kacheln im Foto-Mosaik auf /profitraining/ (Name und Foto aus dem Profil) | von Hand = Reihenfolge im Mosaik |
 | **Seite Profitraining** | Überschrift, Einleitung, Infos, Kopffoto | – |
 | **Personen** | Mitglieder:innen und Trainer:innen mit Profil | von Hand = Anzeige |
 | **Orte auf der Karte**, **Partner** | Kooperationsseite | von Hand |

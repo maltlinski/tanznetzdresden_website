@@ -12,7 +12,7 @@ export default defineConfig({
   site,
   base,
   trailingSlash: 'ignore',
-  integrations: [sitemap({ filter: (page) => !/\/(intern|admin)\//.test(page) && !page.endsWith('/404/') })],
+  integrations: [sitemap({ filter: (page) => !/\/(intern|admin|mitglied\/pruefen)\//.test(page) && !page.endsWith('/404/') })],
   prefetch: true,
   // Deutsch ohne Präfix (/termine/), Englisch unter /en/ (/en/events/)
   i18n: {

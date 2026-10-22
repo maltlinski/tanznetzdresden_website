@@ -47,6 +47,7 @@
         <a href="News.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Journal</a>
         <a href="#netz" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Über uns</a>
       </nav>
+      <a href="Mitgliedsstatus.dc.html" onClick="{{ goInternal }}" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Login</a>
       <a href="#mitglied" style="display:flex">
         <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="sm" marker="{{ true }}" hint-size="160px,32px">Mitglied werden</x-import>
       </a>
@@ -327,6 +328,18 @@
       </div>
     </div>
   </footer>
+  <div ref="{{ gateRef }}" aria-hidden="true" style="position:fixed;inset:0;z-index:200;pointer-events:none;visibility:hidden;overflow:hidden">
+    <div data-g-seam="" style="position:absolute;top:0;bottom:0;left:0;width:calc(100% + 14vw);background:var(--magenta);clip-path:polygon(0 0,100% 0,calc(100% - 14vw) 100%,0 100%)"></div>
+    <div data-g-panel="" style="position:absolute;top:0;bottom:0;left:0;width:calc(100% + 14vw);background:var(--purple);clip-path:polygon(0 0,100% 0,calc(100% - 14vw) 100%,0 100%)"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+      <div style="width:min(320px,50vw);display:flex;flex-direction:column;align-items:center;gap:22px">
+        <div data-g-logo="" style="width:100%">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="100%" hint-size="100%,120px"></x-import>
+        </div>
+        <span data-g-tag="" style="font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);white-space:nowrap">Interner Bereich</span>
+      </div>
+    </div>
+  </div>
 </div>
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;showClaim&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Claim „Tanz für …“&quot;,&quot;label&quot;:&quot;Anzeigen&quot;},&quot;heroWords&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Dresden, alle, Professionals, Newcomer:innen, die freie Szene, den Stadtraum&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Claim „Tanz für …“&quot;,&quot;label&quot;:&quot;Ergänzungen (Komma-getrennt)&quot;},&quot;heroWordPause&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:4,&quot;min&quot;:1,&quot;max&quot;:5,&quot;step&quot;:0.2,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Claim „Tanz für …“&quot;,&quot;label&quot;:&quot;Standzeit pro Wort&quot;},&quot;upStyle&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;frei&quot;,&quot;collage&quot;,&quot;knoten&quot;],&quot;default&quot;:&quot;frei&quot;,&quot;tsType&quot;:&quot;'frei' | 'collage' | 'knoten'&quot;,&quot;section&quot;:&quot;Upcoming&quot;,&quot;label&quot;:&quot;Darstellung&quot;},&quot;heroTint&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;marke&quot;,&quot;cyan&quot;,&quot;original&quot;],&quot;default&quot;:&quot;original&quot;,&quot;tsType&quot;:&quot;'marke' | 'cyan' | 'original'&quot;,&quot;section&quot;:&quot;Hero-Bilder&quot;,&quot;label&quot;:&quot;Einfärbung&quot;},&quot;scrollMotion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;ruhig&quot;,&quot;dimmen&quot;,&quot;tiefe&quot;,&quot;keil&quot;],&quot;default&quot;:&quot;ruhig&quot;,&quot;tsType&quot;:&quot;'ruhig' | 'dimmen' | 'tiefe' | 'keil'&quot;,&quot;section&quot;:&quot;Hero-Bilder&quot;,&quot;label&quot;:&quot;Beim Scrollen&quot;},&quot;nodeCount&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:100,&quot;min&quot;:40,&quot;max&quot;:200,&quot;step&quot;:10,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Netz-Animation&quot;,&quot;label&quot;:&quot;Knotendichte&quot;},&quot;interactive&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Netz-Animation&quot;,&quot;label&quot;:&quot;Cursor verknüpft sich&quot;},&quot;textIntro&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Netz-Animation&quot;,&quot;label&quot;:&quot;Text-Animation&quot;},&quot;textMotion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;aus&quot;,&quot;dezent&quot;,&quot;kräftig&quot;],&quot;default&quot;:&quot;dezent&quot;,&quot;tsType&quot;:&quot;'aus' | 'dezent' | 'kräftig'&quot;,&quot;section&quot;:&quot;Textanimation&quot;,&quot;label&quot;:&quot;SplitText&quot;}}">
@@ -392,6 +405,24 @@ class Component extends DCLogic {
   upRef = React.createRef();
   stripRef = React.createRef();
   progRef = React.createRef();
+  gateRef = React.createRef();
+  goInternal(e) {
+    const href = 'Mitgliedsstatus.dc.html', g = window.gsap, root = this.gateRef.current;
+    try { sessionStorage.setItem('tndd-gate', '1'); } catch (err) {}
+    if (!g || !root || this.reduced || (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches)) return;
+    e.preventDefault();
+    if (this._gating) return; this._gating = true;
+    const q = (s) => root.querySelector(s);
+    g.set(root, { visibility: 'visible', pointerEvents: 'auto' });
+    g.set([q('[data-g-seam]'), q('[data-g-panel]')], { xPercent: -100 });
+    g.set([q('[data-g-logo]'), q('[data-g-tag]')], { opacity: 0, x: -60 });
+    g.timeline({ onComplete: () => { window.location.href = href; } })
+      .to(q('[data-g-seam]'), { xPercent: 0, duration: 0.75, ease: 'expo.inOut' }, 0)
+      .to(q('[data-g-panel]'), { xPercent: 0, duration: 0.75, ease: 'expo.inOut' }, 0.09)
+      .to(q('[data-g-logo]'), { opacity: 1, x: 0, duration: 0.6, ease: 'expo.out' }, 0.55)
+      .to(q('[data-g-tag]'), { opacity: 1, x: 0, duration: 0.6, ease: 'expo.out' }, 0.65)
+      .to({}, { duration: 0.15 });
+  }
   prog() { this._pr = null; const el = this.progRef.current; if (!el) return; const hero = document.getElementById('top'); const s0 = hero ? hero.offsetTop + hero.offsetHeight - 72 : 0; const d = document.documentElement.scrollHeight - window.innerHeight - s0; el.style.width = (d > 0 ? Math.max(0, Math.min(100, ((window.scrollY - s0) / d) * 100)) : 0) + '%'; }
   strip(d) { const s = this.stripRef.current; if (!s) return; const c = s.querySelector("a"); const w = c ? c.getBoundingClientRect().width + 20 : 320; s.scrollBy({ left: d * w, behavior: "smooth" }); }
   mouse = null;
@@ -824,6 +855,7 @@ class Component extends DCLogic {
     const layout = this.props.formatsLayout ?? 'liste';
     return {
       logoRainbow: (e) => this.logoRainbow(e),
+      goInternal: (e) => this.goInternal(e), gateRef: this.gateRef,
       canvasRef: this.canvasRef, floorRef: this.floorRef, h1Ref: this.h1Ref,
       onHeroMove: (e) => { const c = this.canvasRef.current; if (!c) return; const r = c.getBoundingClientRect(); this.mouse = { x: e.clientX - r.left, y: e.clientY - r.top }; },
       onHeroLeave: () => { this.mouse = null; },

@@ -14,8 +14,8 @@ const lang = getLang(Astro);
 const other = lang === 'de' ? 'en' : 'de';
 const otherUrl = alternates[other] ?? url(other, 'home');
 const t = tr(lang, {
-  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Intern', join: 'Mitglied werden', calendar: 'Kalender', news: 'Journal', formats: 'Formate', training: 'Training', about: 'Über uns', donate: 'Spenden', switchTo: 'Switch to English' },
-  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Members', join: 'Become a member', calendar: 'Calendar', news: 'Journal', formats: 'Formats', training: 'Training', about: 'About', donate: 'Donate', switchTo: 'Auf Deutsch wechseln' },
+  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Login', internBereich: 'Interner Bereich', join: 'Mitglied werden', calendar: 'Kalender', news: 'Journal', formats: 'Formate', training: 'Training', about: 'Über uns', donate: 'Spenden', switchTo: 'Switch to English' },
+  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Login', internBereich: 'Members area', join: 'Become a member', calendar: 'Calendar', news: 'Journal', formats: 'Formats', training: 'Training', about: 'About', donate: 'Donate', switchTo: 'Auf Deutsch wechseln' },
 });
 // Reihenfolge wie im Entwurf Startseite v5 (+ Spenden aus dem Spenden-Entwurf); das Netzwerk steht unter „Über uns“
 const nav = [
@@ -42,9 +42,7 @@ const nav = [
       <nav class="site-nav" aria-label={t.mainNav}>
         {nav.map((item) => <a class="mono-link" href={item.href} data-nav-link data-nav-auch={item.auch}>{item.label}</a>)}
       </nav>
-      <a class="mono-link site-header__login" href={url(lang, 'intern')} data-nav-link>
-        <span class="site-header__login-dot" aria-hidden="true"></span>{t.intern}
-      </a>
+      <a class="mono-link site-header__login" href={url(lang, 'intern')} data-nav-link data-login>{t.intern}</a>
       <a class="mono-link site-header__lang" href={otherUrl} hreflang={other} lang={other} title={t.switchTo}>
         <span class="visually-hidden">{langNames[other]}</span><span aria-hidden="true">{other.toUpperCase()}</span>
       </a>
@@ -54,9 +52,34 @@ const nav = [
   {fortschritt && <span class="site-header__fortschritt" aria-hidden="true" data-fortschritt></span>}
 </header>
 
+<!-- Blende beim Klick auf „Login“ (scripts/blende.ts), im internen Bereich läuft sie weiter -->
+<div class="login-blende" aria-hidden="true" hidden data-login-blende>
+  <span class="login-blende__naht" data-blende-naht></span>
+  <span class="login-blende__flaeche" data-blende-flaeche></span>
+  <span class="login-blende__mitte">
+    <span class="login-blende__logo" data-blende-logo><Logo part="mark" /></span>
+    <span class="login-blende__tag" data-blende-tag>{t.internBereich}</span>
+  </span>
+</div>
+
 <script>
+  import { blendeEin } from '../../scripts/blende';
+
   const header = document.querySelector<HTMLElement>('[data-header]');
   const toggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  // „Login“: Blende zuziehen, dann in den internen Bereich (ohne Blende bei „Bewegung reduzieren“)
+  const blende = document.querySelector<HTMLElement>('[data-login-blende]');
+  header?.querySelector<HTMLAnchorElement>('[data-login]')?.addEventListener('click', (e) => {
+    if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || !blende) return;
+    if (blendeEin(blende, (e.currentTarget as HTMLAnchorElement).href)) e.preventDefault();
+  });
+  // Zurück aus dem internen Bereich (Seite aus dem Zwischenspeicher): Blende wieder weg
+  addEventListener('pageshow', (e) => {
+    if (!e.persisted || !blende) return;
+    blende.getAnimations({ subtree: true }).forEach((a) => a.cancel());
+    blende.hidden = true;
+  });
+
   const setOpen = (open: boolean) => {
     toggle?.setAttribute('aria-expanded', String(open));
     header?.classList.toggle('is-open', open);
@@ -161,8 +184,18 @@ const nav = [
   }
   .site-nav a:hover, .site-header__login:hover { color: var(--cyan); }
   .site-nav a[aria-current], .site-header__login[aria-current] { border-bottom-color: var(--magenta); }
-  .site-header__login { display: inline-flex; align-items: center; gap: 8px; color: rgba(255, 255, 255, 0.78); }
-  .site-header__login-dot { width: 7px; height: 7px; border: 1.5px solid currentColor; }
+
+  .login-blende { position: fixed; inset: 0; z-index: 200; overflow: hidden; pointer-events: auto; }
+  .login-blende[hidden] { display: none; }
+  .login-blende__naht, .login-blende__flaeche {
+    position: absolute; top: 0; bottom: 0; left: 0; width: calc(100% + 14vw); transform: translateX(-100%);
+    clip-path: polygon(0 0, 100% 0, calc(100% - 14vw) 100%, 0 100%);
+  }
+  .login-blende__naht { background: var(--magenta); }
+  .login-blende__flaeche { background: var(--purple); }
+  .login-blende__mitte { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; }
+  .login-blende__logo { display: block; width: min(320px, 50vw); color: #fff; opacity: 0; }
+  .login-blende__tag { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cyan); white-space: nowrap; opacity: 0; }
   .site-header__lang {
     color: #fff; padding: 5px 8px; border: 1.5px solid rgba(255, 255, 255, 0.4);
     transition: border-color var(--dur-base), color var(--dur-base);

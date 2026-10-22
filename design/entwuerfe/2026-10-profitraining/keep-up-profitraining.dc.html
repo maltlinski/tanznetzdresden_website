@@ -175,37 +175,25 @@
         <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" style="margin-bottom:16px" hint-size="200px,16px">Dozent:innen · Herbst 2026</x-import>
         <h2 data-split="" style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,5vw,64px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">Wer unterrichtet</h2>
       </div>
-      <p style="max-width:420px;margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">Jede Woche hat eine Dozent:in. Scroll durch den Stapel, um alle kennenzulernen.</p>
+      <p style="max-width:420px;margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">Jede Woche hat eine Dozent:in. Klick auf ein Profil zeigt die Termine im Kalender.</p>
     </div>
-    <div ref="{{ stackRef }}" style="position:relative;height:calc(100vh + 5 * 75vh)">
-      <div data-stage="" style="position:sticky;top:0;height:100vh;padding:96px clamp(20px,4vw,48px) 40px;overflow:hidden">
-        <div style="position:relative;max-width:1080px;height:100%;margin:0 auto">
-          <sc-for list="{{ trainers }}" as="t" hint-placeholder-count="6">
-            <article data-card="" id="card-{{ t.id }}" style="position:absolute;inset:0;transform-origin:50% 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));grid-auto-rows:minmax(0,1fr);background:{{ t.bg }};color:{{ t.fg }};overflow:hidden;will-change:transform">
-              <div style="position:relative;min-height:0;padding:clamp(14px,2vw,24px) 0 clamp(14px,2vw,24px) clamp(14px,2vw,24px)">
-                <img src="{{ t.img }}" alt="Porträt {{ t.name }}" style="width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block;clip-path:polygon(0 0,100% 0,100% 88%,88% 100%,0 100%)">
-              </div>
-              <div style="min-height:0;padding:clamp(20px,3vw,44px);display:flex;flex-direction:column;justify-content:space-between;gap:20px;overflow:hidden">
-                <div style="display:flex;align-items:center;justify-content:space-between;gap:16px">
-                  <span style="display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:{{ t.kicker }}"><span style="width:10px;height:10px;background:var(--magenta)"></span>{{ t.style }}</span>
-                  <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.18em;color:{{ t.kicker }}">{{ t.n }} / {{ t.total }}</span>
-                </div>
-                <div>
-                  <h3 style="font-family:var(--font-display);font-weight:800;font-size:clamp(34px,4.6vw,68px);line-height:0.94;letter-spacing:-0.035em;margin:0 0 20px;text-wrap:balance">{{ t.name }}</h3>
-                  <p style="margin:0;max-width:440px;font-size:clamp(14px,1.3vw,17px);line-height:1.6;color:{{ t.body }};text-wrap:pretty">{{ t.bio }}</p>
-                </div>
-                <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;padding-top:18px;border-top:1px solid {{ t.rule }}">
-                  <div style="display:flex;flex-direction:column;gap:4px">
-                    <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:{{ t.kicker }}">Nächste Woche</span>
-                    <span style="font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:-0.02em">{{ t.week }}</span>
-                  </div>
-                  <button onClick="{{ t.toCal }}" style="background:none;border:0;padding:0 0 3px;border-bottom:1.5px solid var(--magenta);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:inherit;cursor:pointer;border-radius:0" style-hover="color:var(--magenta)">Termine im Kalender →</button>
-                </div>
-              </div>
-              <span data-shade="" aria-hidden="true" style="position:absolute;inset:0;background:var(--purple);opacity:0;pointer-events:none"></span>
-            </article>
-          </sc-for>
-        </div>
+    <div ref="{{ wrapRef }}" onMouseEnter="{{ pauseHover }}" onMouseLeave="{{ resumeHover }}" style="overflow:hidden;padding:clamp(88px,9vw,120px) 0 clamp(112px,11vw,152px)">
+      <div ref="{{ trackRef }}" style="display:flex;gap:8px;width:max-content;will-change:transform">
+        <sc-for list="{{ loop }}" as="g" hint-placeholder-count="12">
+          <div aria-hidden="{{ g.hidden }}" style="display:flex;flex-direction:column;justify-content:center;gap:8px;transform:translateY({{ g.dy }})">
+            <sc-for list="{{ g.tiles }}" as="t" hint-placeholder-count="1">
+              <button onClick="{{ t.toCal }}" tabIndex="{{ t.tab }}" aria-label="{{ t.aria }}" style="position:relative;width:{{ t.w }};height:{{ t.h }};padding:0;border:0;border-radius:0;cursor:pointer;overflow:hidden;background:{{ t.bg }};color:{{ t.fg }};text-align:left;font:inherit;box-shadow:{{ t.ring }};flex:none" style-hover="outline:3px solid var(--magenta);outline-offset:-3px">
+                <sc-if value="{{ t.photo }}" hint-placeholder-val="{{ false }}">
+                  <img src="{{ t.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block">
+                  <span style="position:absolute;left:0;right:0;bottom:0;background:rgba(46,26,77,0.9);color:#fff;padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px">
+                    <span style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan)"><span style="width:8px;height:8px;background:var(--magenta);flex:none"></span>{{ t.style }}</span>
+                    <span style="font-family:var(--font-display);font-weight:800;font-size:{{ t.size }};line-height:1;letter-spacing:-0.025em;text-wrap:balance">{{ t.name }}</span>
+                  </span>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </sc-for>
       </div>
     </div>
   </section>
@@ -253,7 +241,7 @@
   </footer>
 </div>
 </x-dc>
-<script type="text/x-dc" data-dc-script data-props="{&quot;stackMotion&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;stapel&quot;,&quot;fächer&quot;],&quot;default&quot;:&quot;fächer&quot;,&quot;tsType&quot;:&quot;'stapel' | 'fächer'&quot;,&quot;section&quot;:&quot;Dozent:innen&quot;,&quot;label&quot;:&quot;Card Stack&quot;},&quot;splitText&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Textanimation&quot;,&quot;label&quot;:&quot;SplitText-Überschriften&quot;}}">
+<script type="text/x-dc" data-dc-script data-props="{&quot;mosaicSpeed&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;langsam&quot;,&quot;mittel&quot;,&quot;schnell&quot;],&quot;default&quot;:&quot;mittel&quot;,&quot;tsType&quot;:&quot;'langsam' | 'mittel' | 'schnell'&quot;,&quot;section&quot;:&quot;Dozent:innen&quot;,&quot;label&quot;:&quot;Mosaik-Tempo&quot;},&quot;splitText&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Textanimation&quot;,&quot;label&quot;:&quot;SplitText-Überschriften&quot;}}">
 const PH = 'uploads/0V3A5179.jpg';
 const TRAINERS = [
   { id: 'am', name: 'Alexandre May', style: 'Contemporary', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
@@ -262,7 +250,16 @@ const TRAINERS = [
   { id: 'bp', name: 'Beatrice Panero', style: 'Ballett für Zeitgenössische', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
   { id: 'lg', name: 'Laura Gary', style: 'Improvisation', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
   { id: 'lb', name: 'Leon Börgens', style: 'Partnering', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'aa', name: 'Amit Abend', style: 'Contact Improvisation', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'al', name: 'Aurélie Lafaye', style: 'Zeitgenössischer Tanz', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'pk', name: 'Bettina Paletta & Emre Kesim', short: 'Bettina & Emre', style: 'Duo-Arbeit', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
 ];
+const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const U = 'clamp(200px,21vw,280px)', U2 = 'calc(2 * ' + U + ' + 8px)';
+const SIZES = { sq: [U, U, 'clamp(19px,1.8vw,24px)'], big: [U2, U2, 'clamp(22px,2.2vw,30px)'], tall: [U, U2, '19px'], wide: [U2, U, '19px'] };
+const PATTERN = [['sq'], ['sq', 'sq'], ['sq'], ['sq', 'sq'], ['sq', 'sq'], ['sq']];
+const OFFS = ['-60px', '24px', '-16px', '70px', '-38px', '52px', '-72px', '10px', '44px', '-26px'];
+const SPEED = { langsam: 28, mittel: 48, schnell: 80 };
 const THEMES = [
   { bg: 'var(--purple)', fg: '#fff', kicker: 'var(--cyan)', body: 'rgba(255,255,255,0.86)', rule: 'rgba(255,255,255,0.2)' },
   { bg: '#fff', fg: 'var(--purple)', kicker: 'var(--ink-muted)', body: 'var(--ink-soft)', rule: 'var(--rule)' },
@@ -295,9 +292,11 @@ const { out: SESS, weeks: WEEKS } = buildSessions();
 const KEYS = Object.keys(SESS).sort();
 
 class Component extends DCLogic {
-  state = { y: 2026, m: 9, sel: null, filter: 'alle' };
+  state = { y: 2026, m: 9, sel: null, filter: 'alle', hl: null };
+  trackRef = React.createRef();
+  wrapRef = React.createRef();
+  order = shuffle(TRAINERS);
   calRef = React.createRef();
-  stackRef = React.createRef();
 
   matches(s) { return this.state.filter === 'alle' || s.tr === this.state.filter; }
   nextFrom(dateKey) { return KEYS.find((x) => x >= dateKey && SESS[x].some((s) => this.matches(s))); }
@@ -314,10 +313,12 @@ class Component extends DCLogic {
       else this.stackFallback();
     };
     ready();
+    this._onResize = () => { clearTimeout(this._rt); this._rt = setTimeout(() => this.initStack(), 200); };
+    window.addEventListener('resize', this._onResize);
   }
-  componentWillUnmount() { clearTimeout(this._wt); this.killSplits(); if (this._sctx) this._sctx.revert(); }
+  componentWillUnmount() { clearTimeout(this._wt); clearTimeout(this._rt); clearTimeout(this._ht); window.removeEventListener('resize', this._onResize); this.killSplits(); if (this._tw) this._tw.kill(); }
   componentDidUpdate(prev) {
-    if (prev.stackMotion !== this.props.stackMotion && this._sctx) this.initStack();
+    if (prev && prev.mosaicSpeed !== this.props.mosaicSpeed && this._tw) this.initStack();
     if (prev.splitText !== this.props.splitText && window.gsap) this.initSplits();
   }
 
@@ -345,45 +346,25 @@ class Component extends DCLogic {
   }
 
   stackFallback() {
-    const wrap = this.stackRef.current; if (!wrap) return;
-    const stage = wrap.querySelector('[data-stage]'), inner = stage && stage.firstElementChild;
-    wrap.style.height = 'auto';
-    if (stage) { stage.style.position = 'static'; stage.style.height = 'auto'; stage.style.paddingTop = '48px'; stage.style.paddingBottom = '96px'; }
-    if (inner) { inner.style.display = 'flex'; inner.style.flexDirection = 'column'; inner.style.gap = '24px'; }
-    wrap.querySelectorAll('[data-card]').forEach((c) => { c.style.position = 'relative'; c.style.height = 'min(600px,80vh)'; });
+    const w = this.wrapRef.current; if (w) w.style.overflowX = 'auto';
   }
   initStack() {
-    const wrap = this.stackRef.current; if (!wrap) return;
+    const tr = this.trackRef.current, g = window.gsap; if (!tr || !g) return;
     if (this.reduced) { this.stackFallback(); return; }
-    if (this._sctx) this._sctx.revert();
-    const g = window.gsap, cards = [...wrap.querySelectorAll('[data-card]')], fan = (this.props.stackMotion ?? 'stapel') === 'fächer';
-    this._sctx = g.context(() => {
-      cards.forEach((c, i) => g.set(c, { zIndex: i + 1 }));
-      g.set(cards.slice(1), { yPercent: 118, rotation: (i) => (fan ? (i % 2 ? 6 : -6) : 0) });
-      const tl = g.timeline({ scrollTrigger: { trigger: wrap, start: 'top top', end: 'bottom bottom', scrub: 0.6 } });
-      cards.forEach((c, i) => {
-        if (!i) return;
-        tl.to(c, { yPercent: 0, rotation: fan ? (i % 2 ? 1.5 : -1.5) : 0, duration: 1, ease: 'power3.out' }, i - 1);
-        cards.slice(0, i).forEach((p, j) => {
-          const d = i - j;
-          tl.to(p, { scale: 1 - 0.05 * d, yPercent: -3.2 * d, rotation: fan ? (j % 2 ? 1 : -1) * (1.5 + d * 1.2) : 0, duration: 1, ease: 'power3.out' }, i - 1);
-          tl.to(p.querySelector('[data-shade]'), { opacity: Math.min(0.2 * d, 0.6), duration: 1, ease: 'none' }, i - 1);
-        });
-      });
-      tl.to({}, { duration: 0.5 });
-    }, wrap);
-    window.ScrollTrigger.refresh();
+    const p = this._tw ? this._tw.progress() : 0;
+    if (this._tw) this._tw.kill();
+    const half = tr.scrollWidth / 2 + 4;
+    this._tw = g.fromTo(tr, { x: -half }, { x: 0, duration: half / (SPEED[this.props.mosaicSpeed] || SPEED.mittel), ease: 'none', repeat: -1 });
+    this._tw.progress(p);
+    if (this._hover) this._tw.timeScale(0);
   }
 
   scrollToEl(el, off) { if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (off || 72), behavior: 'smooth' }); }
   toCard(id) {
-    const wrap = this.stackRef.current, i = TRAINERS.findIndex((t) => t.id === id);
-    if (!wrap) return;
-    if (this._sctx) {
-      const st = window.ScrollTrigger.getAll().find((s) => s.trigger === wrap);
-      if (st) { const total = TRAINERS.length - 1 + 0.5; window.scrollTo({ top: st.start + (st.end - st.start) * Math.min(1, (i + 0.05) / total), behavior: 'smooth' }); return; }
-    }
-    this.scrollToEl(document.getElementById('card-' + id));
+    clearTimeout(this._ht);
+    this.setState({ hl: id });
+    this._ht = setTimeout(() => this.setState({ hl: null }), 3000);
+    this.scrollToEl(document.getElementById('dozentinnen'));
   }
   toCal(id) {
     const nx = KEYS.find((x) => x >= k(TODAY) && SESS[x].some((s) => s.tr === id));
@@ -405,6 +386,21 @@ class Component extends DCLogic {
   }
   fmtRange(a, b) { return a.getMonth() === b.getMonth() ? a.getDate() + '.–' + b.getDate() + '. ' + MOS[a.getMonth()] : a.getDate() + '. ' + MOS[a.getMonth()] + ' – ' + b.getDate() + '. ' + MOS[b.getMonth()]; }
 
+  mosaic(dup) {
+    const groups = []; let i = 0, p = 0, c = 0;
+    while (i < this.order.length) {
+      let pat = PATTERN[p++ % PATTERN.length];
+      if (pat.length > this.order.length - i) pat = ['sq'];
+      groups.push({ hidden: dup ? 'true' : 'false', dy: OFFS[(p - 1) % OFFS.length], tiles: pat.map((sz) => {
+        const t = this.order[i++], [w, h, size] = SIZES[sz], photo = true, th = THEMES[c++ % 3];
+        return { name: t.name, style: t.style, img: PH, w, h, size, photo, field: !photo, bg: photo ? 'var(--purple)' : th.bg, fg: th.fg, kicker: th.kicker,
+          ring: this.state.hl === t.id ? 'inset 0 0 0 3px var(--magenta)' : 'none', tab: dup ? -1 : 0,
+          aria: t.name + ', ' + t.style + ' – Termine im Kalender', toCal: () => this.toCal(t.id) };
+      }) });
+    }
+    return groups;
+  }
+
   renderVals() {
     const { y, m, sel, filter } = this.state, tk = k(TODAY);
     const first = new Date(y, m, 1), lead = (first.getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
@@ -415,7 +411,7 @@ class Component extends DCLogic {
       const past = key < tk, isSel = key === sel, dim = all.length && !ss.length;
       const tr = ss.find((s) => s.kind === 'training') || ss[0];
       cells.push({
-        blank: false, day: d, label: tr ? T[tr.tr].name.split(' ')[0] : '',
+        blank: false, day: d, label: tr ? (T[tr.tr].short || T[tr.tr].name.split(' ')[0]) : '',
         marks: ss.map((s) => (s.kind === 'workshop' ? 'var(--magenta)' : (isSel ? 'var(--cyan)' : 'var(--cyan)'))),
         bg: isSel ? 'var(--purple)' : '#fff', fg: isSel ? '#fff' : (past || !ss.length ? 'var(--ink-muted)' : 'var(--purple)'),
         op: past && !isSel ? 0.5 : (dim ? 0.55 : 1), ring: key === tk && !isSel ? 'inset 0 0 0 2px var(--magenta)' : 'none', cursor: 'pointer',
@@ -435,19 +431,19 @@ class Component extends DCLogic {
     };
 
     const nk = KEYS.find((x) => x >= tk), ns = SESS[nk][0], nd = parse(nk);
-    const chips = [{ id: 'alle', label: 'Alle' }].concat(TRAINERS.map((t) => ({ id: t.id, label: t.name.split(' ')[0] }))).map((c) => {
+    const chips = [{ id: 'alle', label: 'Alle' }].concat(TRAINERS.map((t) => ({ id: t.id, label: t.short || t.name.split(' ')[0] }))).map((c) => {
       const on = filter === c.id;
       return { label: c.label, pick: () => this.setFilter(c.id), bg: on ? 'var(--purple)' : '#fff', fg: on ? '#fff' : 'var(--purple)', border: on ? 'var(--purple)' : 'var(--rule)' };
     });
 
     return {
-      calRef: this.calRef, stackRef: this.stackRef, cells, sel: selV, chips,
+      calRef: this.calRef, cells, sel: selV, chips,
       monthLabel: MON[m] + ' ' + y, prevMonth: () => this.shift(-1), nextMonth: () => this.shift(1),
       next: { date: DS[nd.getDay()] + ' · ' + nd.getDate() + '. ' + MON[nd.getMonth()], time: ns.time, who: T[ns.tr].name, where: ns.where },
-      trainers: TRAINERS.map((t, i) => {
-        const wk = (WEEKS[t.id] || []).find(([, fr]) => k(fr) >= tk);
-        return Object.assign({}, t, THEMES[i % 3], { n: String(i + 1).padStart(2, '0'), total: String(TRAINERS.length).padStart(2, '0'), img: PH, week: wk ? this.fmtRange(wk[0], wk[1]) : 'folgt', toCal: () => this.toCal(t.id) });
-      }),
+      wrapRef: this.wrapRef, trackRef: this.trackRef,
+      pauseHover: () => { this._hover = true; if (this._tw) window.gsap.to(this._tw, { timeScale: 0, duration: 0.5, overwrite: true }); },
+      resumeHover: () => { this._hover = false; if (this._tw) window.gsap.to(this._tw, { timeScale: 1, duration: 0.5, overwrite: true }); },
+      loop: this.mosaic(false).concat(this.mosaic(true)),
     };
   }
 }

@@ -31,8 +31,8 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 | Termin | `src/content/termine/JJJJ-MM-TT-titel.md` | Pflichtfelder siehe unten |
 | Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge, `seite` verlinkt eine eigene Seite |
 | KEEP UP: Trainingsplan | `src/content/keep-up/wochen.yaml` | eine Zeile pro Woche, siehe unten |
-| KEEP UP: Dozent:innen im Kartenstapel | `src/content/keep-up/dozentinnen.yaml` | Reihenfolge = Stapel; Name und Foto aus dem Profil |
-| KEEP UP: Seitentexte, Kopf-Foto | `src/settings/keep-up.json` | Platzhalterfotos und Stapel-Bewegung in `keep-up.ts` |
+| KEEP UP: Dozent:innen im Foto-Mosaik | `src/content/keep-up/dozentinnen.yaml` | Reihenfolge = Mosaik; Name und Foto aus dem Profil |
+| KEEP UP: Seitentexte, Kopf-Foto | `src/settings/keep-up.json` | Platzhalterfotos und Tempo des Mosaiks in `keep-up.ts` |
 | Personen | `src/content/personen.yaml` | Reihenfolge = Anzeige |
 | Vereinsdaten, Impressum-Angaben, Training, Newsletter | `src/settings/verein.json` | |
 | Kooperationspartner: Orte auf der Karte | `src/content/kooperation/orte.yaml` | Koordinaten + `verbunden` für die Linien |

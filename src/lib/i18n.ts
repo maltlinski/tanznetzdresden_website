@@ -44,6 +44,8 @@ export const routes = {
   datenschutz: { de: 'datenschutz/', en: 'privacy/' },
   // interner Bereich bleibt vorerst deutsch
   intern: { de: 'intern/', en: null },
+  // Prüfseite für den Mitgliedsausweis (QR-Code auf der Rückseite)
+  ausweisPruefen: { de: 'mitglied/pruefen/', en: null },
 } as const satisfies Record<string, Record<Lang, string | null>>;
 export type RouteKey = keyof typeof routes;
 

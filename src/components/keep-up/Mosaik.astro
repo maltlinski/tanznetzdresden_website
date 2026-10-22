@@ -1,0 +1,228 @@
+---
+/**
+ * KEEP UP · Dozent:innen als Foto-Mosaik, das langsam endlos nach rechts läuft (Entwurf Profitraining, 2026-10).
+ * Kacheln einzeln oder zu zweit übereinander, jede Spalte leicht versetzt. Ein Klick filtert den Kalender auf
+ * diese Dozent:in und springt hin; „Zur Dozent:in →“ im Kalender hebt die Kachel hervor.
+ *
+ * Läuft nur mit JavaScript und ohne „Bewegung reduzieren“; sonst ist es ein Streifen zum Wischen.
+ * Anhalten: Maus darüber, Fokus darin oder Knopf „Anhalten“ (WCAG 2.2.2).
+ */
+import { Image } from 'astro:assets';
+import Tag from '../ui/Tag.astro';
+import { getLang, tr } from '../../lib/i18n';
+import type { Dozentin } from '../../lib/keep-up';
+import { keepUp, mosaikTempo } from '../../settings/keep-up';
+
+interface Props {
+  dozentinnen: Dozentin[];
+}
+const { dozentinnen } = Astro.props;
+const lang = getLang(Astro);
+const s = keepUp[lang];
+const t = tr(lang, {
+  de: { kicker: 'Dozent:innen', h: 'Wer unterrichtet', toCal: 'Termine im Kalender', pause: 'Anhalten', play: 'Weiterlaufen' },
+  en: { kicker: 'Teachers', h: 'Who teaches', toCal: 'dates in the calendar', pause: 'Pause', play: 'Play' },
+});
+
+// Spalten: eine oder zwei Kacheln übereinander, jede Spalte etwas versetzt (wie im Entwurf)
+const MUSTER = [1, 2, 1, 2, 2, 1];
+const VERSATZ = [-60, 24, -16, 70, -38, 52, -72, 10, 44, -26];
+const spalten: { dy: number; d: Dozentin[] }[] = [];
+for (let i = 0, p = 0; i < dozentinnen.length; p++) {
+  const n = Math.min(MUSTER[p % MUSTER.length], dozentinnen.length - i);
+  spalten.push({ dy: VERSATZ[p % VERSATZ.length], d: dozentinnen.slice(i, i + n) });
+  i += n;
+}
+const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
+---
+<section id="dozentinnen" class="dz surface-tint" aria-labelledby="dozentinnen-h">
+  <div class="wrap section-head dz__head">
+    <div data-reveal>
+      <Tag>{t.kicker} · {s.saison}</Tag>
+      <h2 id="dozentinnen-h" class="h2">{t.h}</h2>
+    </div>
+    <div class="dz__rechts">
+      <p class="dz__intro">{s.stapelText}</p>
+      <button type="button" class="dz__pause" aria-pressed="false" hidden data-mosaik-pause data-pause={t.pause} data-play={t.play}>
+        <span class="dz__pause-icon" aria-hidden="true"></span><span data-mosaik-pause-text>{t.pause}</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mosaik" data-mosaik data-tempo={TEMPO[mosaikTempo]}>
+    <div class="mosaik__spur" data-mosaik-spur>
+      {[0, 1].map((kopie) => (
+        <ul class:list={['mosaik__teil', kopie && 'mosaik__teil--kopie']} aria-label={kopie ? undefined : t.h} aria-hidden={kopie ? 'true' : undefined} inert={kopie ? true : undefined}>
+          {spalten.map((sp) => (
+            <li class="mosaik__spalte" style={`--dy: ${sp.dy}px`}>
+              {sp.d.map((d) => (
+                <a
+                  href="#kalender"
+                  class="kachel"
+                  id={kopie ? undefined : `dozentin-${d.id}`}
+                  data-cal-filter={d.id}
+                  data-kachel={d.id}
+                  aria-label={`${d.name}, ${d.stil}: ${t.toCal}`}
+                >
+                  {typeof d.photo === 'string'
+                    ? <Image src={d.photo} alt="" inferSize widths={[300, 560]} sizes="280px" />
+                    : <Image src={d.photo} alt="" widths={[300, 560]} sizes="280px" />}
+                  <span class="kachel__text">
+                    <span class="kachel__stil"><span class="kachel__sq" aria-hidden="true"></span>{d.stil}</span>
+                    <span class="kachel__name">{d.name}</span>
+                  </span>
+                </a>
+              ))}
+            </li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </div>
+</section>
+
+<script>
+  import { gsap, motionOk } from '../../scripts/gsap';
+  import { getLenis } from '../../scripts/smooth-scroll';
+
+  const root = document.querySelector<HTMLElement>('[data-mosaik]');
+  const spur = root?.querySelector<HTMLElement>('[data-mosaik-spur]');
+  const knopf = document.querySelector<HTMLButtonElement>('[data-mosaik-pause]');
+
+  if (root && spur) {
+    // Klick auf eine Kachel: Kalender auf diese Dozent:in filtern, das Hinscrollen übernimmt der Link (#kalender)
+    root.addEventListener('click', (e) => {
+      const a = (e.target as Element).closest<HTMLElement>('[data-cal-filter]');
+      if (a) document.dispatchEvent(new CustomEvent('kalender:filter', { detail: a.dataset.calFilter }));
+    });
+
+    let lauf: gsap.core.Tween | null = null;
+    const haelt = { maus: false, fokus: false, knopf: false, zeigen: false };
+    const tempo = () => (Object.values(haelt).some(Boolean) ? 0 : 1);
+    const anpassen = (sofort = false) => {
+      if (!lauf) return;
+      if (sofort) lauf.timeScale(tempo());
+      else gsap.to(lauf, { timeScale: tempo(), duration: 0.5, overwrite: true });
+    };
+
+    const starten = () => {
+      const p = lauf ? lauf.progress() : 0;
+      lauf?.kill();
+      const halb = spur.scrollWidth / 2;
+      lauf = gsap.fromTo(spur, { x: -halb }, { x: 0, duration: halb / Number(root.dataset.tempo || 48), ease: 'none', repeat: -1 });
+      lauf.progress(p);
+      anpassen(true);
+    };
+
+    if (motionOk() && spur.children.length) {
+      root.classList.add('is-laufend');
+      starten();
+      let rt = 0;
+      addEventListener('resize', () => {
+        clearTimeout(rt);
+        rt = window.setTimeout(starten, 200);
+      });
+      const setzen = (k: keyof typeof haelt, v: boolean) => {
+        haelt[k] = v;
+        anpassen();
+      };
+      root.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && setzen('maus', true));
+      root.addEventListener('pointerleave', () => setzen('maus', false));
+      root.addEventListener('focusin', () => setzen('fokus', true));
+      root.addEventListener('focusout', (e) => !root.contains(e.relatedTarget as Node) && setzen('fokus', false));
+      if (knopf) {
+        knopf.hidden = false;
+        knopf.addEventListener('click', () => {
+          haelt.knopf = !haelt.knopf;
+          knopf.setAttribute('aria-pressed', String(haelt.knopf));
+          knopf.querySelector('[data-mosaik-pause-text]')!.textContent = (haelt.knopf ? knopf.dataset.play : knopf.dataset.pause) ?? '';
+          anpassen();
+        });
+      }
+    }
+
+    // „Zur Dozent:in →“ im Kalender (#dozentin-…): zum Mosaik, Kachel ins Bild holen und kurz hervorheben
+    let hlZeit = 0;
+    const zeigen = (id: string) => {
+      const kachel = root.querySelector<HTMLElement>(`#dozentin-${CSS.escape(id)}`);
+      if (!kachel) return;
+      // senkrecht so scrollen, dass die Kachel mittig im Bild steht
+      const y = Math.max(0, kachel.getBoundingClientRect().top + scrollY - (innerHeight - kachel.offsetHeight) / 2);
+      const lenis = getLenis();
+      if (lenis) lenis.scrollTo(y);
+      else scrollTo({ top: y, behavior: motionOk() ? 'smooth' : 'auto' });
+      if (lauf) {
+        // Spur so stellen, dass die Kachel mittig steht (gleiche Lage in der Schleife)
+        const halb = spur.scrollWidth / 2;
+        let x = root.clientWidth / 2 - (kachel.offsetLeft + kachel.offsetWidth / 2);
+        while (x > 0) x -= halb;
+        while (x < -halb) x += halb;
+        gsap.to(lauf, { progress: (x + halb) / halb, duration: motionOk() ? 0.8 : 0, ease: 'expo.out' });
+      } else {
+        root.scrollTo({ left: kachel.offsetLeft - (root.clientWidth - kachel.offsetWidth) / 2, behavior: 'smooth' });
+      }
+      haelt.zeigen = true;
+      anpassen(true);
+      root.querySelectorAll(`[data-kachel="${CSS.escape(id)}"]`).forEach((k) => k.classList.add('is-hl'));
+      kachel.focus({ preventScroll: true });
+      clearTimeout(hlZeit);
+      hlZeit = window.setTimeout(() => {
+        root.querySelectorAll('.is-hl').forEach((k) => k.classList.remove('is-hl'));
+        haelt.zeigen = false;
+        anpassen();
+      }, 3000);
+    };
+    document.addEventListener('click', (e) => {
+      const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#dozentin-"]');
+      if (!a) return;
+      e.preventDefault();
+      zeigen(decodeURIComponent(a.hash.slice('#dozentin-'.length)));
+    }, true);
+    if (location.hash.startsWith('#dozentin-')) zeigen(decodeURIComponent(location.hash.slice('#dozentin-'.length)));
+  }
+</script>
+
+<style>
+  .dz { background: var(--tint); padding-top: var(--section-y); scroll-margin-top: var(--header-h); overflow: hidden; }
+  .dz__head { margin-bottom: 0; }
+  .dz__rechts { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; max-width: 420px; }
+  .dz__intro { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .dz__pause {
+    display: inline-flex; align-items: center; gap: 10px; padding: 0 0 3px; border: 0; border-bottom: 1.5px solid var(--magenta); border-radius: 0;
+    background: none; cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple);
+  }
+  .dz__pause[hidden] { display: none; }
+  .dz__pause:hover { color: var(--magenta-2); }
+  /* Pause: zwei Balken, Weiterlaufen: Dreieck */
+  .dz__pause-icon { width: 9px; height: 10px; border-left: 3px solid currentColor; border-right: 3px solid currentColor; }
+  .dz__pause[aria-pressed='true'] .dz__pause-icon { width: 0; height: 0; border-style: solid; border-width: 5px 0 5px 9px; border-color: transparent transparent transparent currentColor; }
+
+  /* Ohne Bewegung: Streifen zum Wischen, nur eine Kopie */
+  .mosaik {
+    --u: clamp(200px, 21vw, 280px);
+    overflow-x: auto; scroll-snap-type: x proximity; scrollbar-width: none;
+    padding: clamp(88px, 9vw, 120px) var(--gutter) clamp(112px, 11vw, 152px);
+  }
+  .mosaik::-webkit-scrollbar { display: none; }
+  .mosaik__spur { display: flex; gap: 8px; width: max-content; }
+  .mosaik__teil { display: flex; gap: 8px; margin: 0; padding: 0; list-style: none; }
+  .mosaik__teil--kopie { display: none; }
+  .mosaik__spalte { display: flex; flex-direction: column; justify-content: center; gap: 8px; transform: translateY(var(--dy)); scroll-snap-align: center; }
+  .mosaik.is-laufend { overflow: hidden; padding-inline: 0; }
+  .mosaik.is-laufend .mosaik__spur { will-change: transform; }
+  .mosaik.is-laufend .mosaik__teil--kopie { display: flex; }
+
+  .kachel { position: relative; display: block; flex: none; width: var(--u); height: var(--u); overflow: hidden; background: var(--purple); color: #fff; }
+  .kachel :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 22%; display: block; transition: transform 900ms var(--ease-out); }
+  .kachel:hover :global(img) { transform: scale(1.04); }
+  .kachel::after { content: ''; position: absolute; inset: 0; border: 3px solid var(--magenta); opacity: 0; transition: opacity var(--dur-base); pointer-events: none; }
+  .kachel:hover::after, .kachel:focus-visible::after, .kachel.is-hl::after { opacity: 1; }
+  .kachel:focus-visible { outline: none; }
+  .kachel__text {
+    position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 14px;
+    background: color-mix(in srgb, var(--purple) 90%, transparent);
+  }
+  .kachel__stil { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan); }
+  .kachel__sq { width: 8px; height: 8px; background: var(--magenta); flex: none; }
+  .kachel__name { font-family: var(--font-display); font-weight: 800; font-size: clamp(19px, 1.8vw, 24px); line-height: 1; letter-spacing: -0.025em; text-wrap: balance; }
+</style>

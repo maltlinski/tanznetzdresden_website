@@ -1,85 +1,244 @@
 ---
 /**
- * Rahmen für den internen Bereich. Inhalte im Slot erscheinen erst nach dem
- * Login (Zustand „ready“). Die Daten selbst schützt die Datenbank (RLS) –
- * diese Seite ist nur die Oberfläche.
+ * Rahmen des internen Bereichs (Entwurf „Mitgliedsstatus“, wie die Redaktion): lila Seitenleiste mit
+ * Logo, „Interner Bereich“, Menü und Person unten, rechts die Arbeitsfläche. Ohne Kopf und Fuß der Website.
+ *
+ * Inhalte im Slot erscheinen erst nach dem Login (data-state „ready“, scripts/intern/session.ts).
+ * Jede Seite ruft in ihrem Skript initIntern() auf. Die Daten selbst schützt die Datenbank (RLS).
+ *
+ * Kommt man über „Login“ im Kopf der Website, läuft die Blende weiter: die lila Fläche schrumpft auf die
+ * Seitenleiste, Logo und Schriftzug gleiten an ihren Platz (scripts/intern/blende.ts).
  */
-import Page from './Page.astro';
-import Tag from '../components/ui/Tag.astro';
+import Base from './Base.astro';
+import Logo from '../components/ui/Logo.astro';
 import { href } from '../lib/url';
 import '../styles/intern.css';
 
+type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'freigaben';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
-  current?: 'start' | 'profil' | 'mitglieder' | 'dokumente' | 'redaktion';
+  current?: Punkt;
   /** Index-Seite zeigt selbst das Login-Formular */
   loginPage?: boolean;
+  /** Arbeitsfläche ohne Innenabstand (Editor mit eigener Kopfleiste) */
+  voll?: boolean;
 }
-const { title, current = 'start', loginPage = false } = Astro.props;
-const items = [
-  { id: 'start', label: 'Übersicht', path: 'intern/' },
+const { title, current, loginPage = false, voll = false } = Astro.props;
+const mitglied: { id: Punkt; label: string; path: string }[] = [
+  { id: 'status', label: 'Mein Status', path: 'intern/' },
   { id: 'profil', label: 'Mein Profil', path: 'intern/profil/' },
   { id: 'mitglieder', label: 'Mitglieder', path: 'intern/mitglieder/' },
   { id: 'dokumente', label: 'Dokumente', path: 'intern/dokumente/' },
-  // nur für Presse, Vorstand und Admin sichtbar (News schreiben liegt in der Redaktion)
-  { id: 'redaktion', label: 'Redaktion', path: 'intern/redaktion/', redaktion: true },
+];
+// nur für Presse, Vorstand und Admin
+const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
+  { id: 'beitraege', label: 'Beiträge', path: 'intern/news/', n: 'beitraege' },
+  { id: 'medien', label: 'Medien', path: 'intern/news/medien/', n: 'medien' },
+  { id: 'inhalte', label: 'Website-Inhalte', path: 'intern/redaktion/' },
+  { id: 'freigaben', label: 'Freigaben', path: 'intern/redaktion/freigaben/', n: 'freigaben' },
 ];
 ---
-<Page title={`${title} · Intern`} noindex>
-  <div class="intern surface-tint" data-intern data-state="loading">
-    <div class="intern__bar">
-      <div class="wrap intern__bar-inner">
-        <Tag color="cyan">Interner Bereich</Tag>
-        <nav class="intern__nav" aria-label="Interner Bereich" data-when="ready">
-          {items.map((i) => (
-            <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined} data-redaktion-only={i.redaktion} hidden={i.redaktion}>{i.label}</a>
-          ))}
-        </nav>
-        <div class="intern__user" data-when="ready">
-          <span data-intern-name></span>
-          <button type="button" data-logout>Abmelden</button>
-        </div>
+<Base title={`${title} · Intern`} noindex>
+  <script is:inline slot="head">
+    // Blende von der Website (Header.astro): sofort zeigen, damit nichts aufblitzt
+    try {
+      if (sessionStorage.getItem('tndd-blende') === '1') {
+        sessionStorage.removeItem('tndd-blende');
+        if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('blende');
+      }
+    } catch {}
+  </script>
+
+  <div class="intern rd surface-tint" data-intern data-state="loading">
+    <aside class="rd-side" data-side>
+      <div class="rd-side__kopf">
+        <a href={href('intern/')} class="rd-side__logo" aria-label="Interner Bereich: Mein Status" data-blende-ziel="logo"><Logo part="mark" /></a>
+        <span class="rd-side__k" data-blende-ziel="tag">Interner Bereich</span>
       </div>
-    </div>
+      <nav class="rd-nav" aria-label="Interner Bereich" data-when="ready" data-side-teil>
+        {mitglied.map((i) => (
+          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined}>
+            <span class="rd-nav__m" aria-hidden="true"></span>
+            <span class="rd-nav__l">{i.label}</span>
+          </a>
+        ))}
+        <span class="rd-nav__gruppe" data-redaktion-only hidden>Redaktion</span>
+        {redaktion.map((i) => (
+          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined} data-redaktion-only hidden>
+            <span class="rd-nav__m" aria-hidden="true"></span>
+            <span class="rd-nav__l">{i.label}</span>
+            {i.n && <span class="rd-nav__n" data-nav-n={i.n}></span>}
+          </a>
+        ))}
+        <a href="https://supabase.com/dashboard" target="_blank" rel="noopener" data-vorstand-only hidden>
+          <span class="rd-nav__m" aria-hidden="true"></span>
+          <span class="rd-nav__l">Verwaltung ↗</span>
+        </a>
+      </nav>
+      <div class="rd-side__fuss" data-when="ready" data-side-teil>
+        <div class="rd-side__person">
+          <span class="rd-side__foto" aria-hidden="true"><img alt="" hidden data-intern-foto /><span data-intern-initialen></span></span>
+          <span class="rd-side__wer">
+            <span class="rd-side__name" data-intern-name></span>
+            <span class="rd-side__rolle" data-intern-unterzeile></span>
+          </span>
+        </div>
+        <a class="rd-side__web" href={href('')} target="_blank" rel="noopener">Website ansehen →</a>
+        <button type="button" class="rd-side__aus" data-logout>Abmelden</button>
+      </div>
+      <a class="rd-side__web rd-side__web--aussen" href={href('')} data-when="login">← Zur Website</a>
+    </aside>
 
-    <div class="wrap intern__body">
-      <p class="intern__status" data-when="loading" role="status">Einen Moment …</p>
-
-      <div class="intern__panel" data-when="setup">
-        <h1 class="intern__h">Noch nicht eingerichtet</h1>
+    <main id="inhalt" tabindex="-1" class:list={['rd-main', voll && 'rd-main--voll']} data-blende-inhalt>
+      <p class="intern__status rd-status" data-when="loading" role="status">Einen Moment …</p>
+      <div class="i-card rd-status" data-when="setup">
+        <h1 class="i-h1">Noch nicht eingerichtet</h1>
         <p>Der interne Bereich braucht ein Supabase-Projekt. Die Anleitung steht in <code>docs/intern.md</code> im Repository.</p>
       </div>
+      {loginPage ? <div class="rd-flaeche"><slot /></div> : <div class="rd-flaeche" data-when="ready"><slot /></div>}
+    </main>
+  </div>
 
-      {loginPage ? <slot /> : <div data-when="ready"><slot /></div>}
+  <!-- Blende beim Betreten (nur nach „Login“ auf der Website) -->
+  <div class="blende" aria-hidden="true" data-blende>
+    <div class="blende__flaeche" data-blende-flaeche><span class="blende__naht" data-blende-naht></span></div>
+    <div class="blende__mitte">
+      <span class="blende__logo" data-blende-logo><Logo part="mark" /></span>
+      <span class="blende__tag" data-blende-tag>Interner Bereich</span>
     </div>
   </div>
-</Page>
+</Base>
+
+<script>
+  import { bereit, ROLLEN } from '../scripts/intern/session';
+  import { offeneFreigaben } from '../scripts/intern/freigaben';
+  import { blendeAus } from '../scripts/blende';
+  import { photoUrl } from '../lib/supabase';
+
+  blendeAus();
+
+  const ctx = await bereit;
+
+  // Person unten in der Leiste: Foto oder Initialen, „Mitglied seit …“ und Rolle
+  const name = ctx.profile?.display_name || ctx.user.email || '';
+  const foto = document.querySelector<HTMLImageElement>('[data-intern-foto]');
+  const url = photoUrl(ctx.profile?.photo_path ?? null);
+  if (foto && url) {
+    foto.src = url;
+    foto.hidden = false;
+  }
+  const ini = document.querySelector<HTMLElement>('[data-intern-initialen]');
+  if (ini) ini.textContent = name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join('');
+  const unterzeile = document.querySelector<HTMLElement>('[data-intern-unterzeile]');
+  const rolle = ctx.profile && ctx.profile.role !== 'mitglied' ? ROLLEN[ctx.profile.role] : '';
+  if (unterzeile) unterzeile.textContent = rolle;
+  // Tabelle mitgliedschaften fehlt, solange die Migration nicht eingespielt ist: dann bleibt es bei der Rolle
+  void ctx.sb.from('mitgliedschaften').select('seit').eq('person', ctx.user.id).maybeSingle<{ seit: string | null }>().then(
+    ({ data }) => {
+      const jahr = data?.seit?.slice(0, 4);
+      if (unterzeile && jahr) unterzeile.textContent = [`Mitglied seit ${jahr}`, rolle].filter(Boolean).join(' · ');
+    },
+    () => {},
+  );
+
+  // Zahlen in der Seitenleiste (fehlt eine Tabelle, bleibt das Feld leer)
+  if (ctx.isRedaktion) {
+    const setzen = (n: string, v: number | null | undefined) => {
+      const el = document.querySelector<HTMLElement>(`[data-nav-n="${n}"]`);
+      if (el) el.textContent = v ? String(v) : '';
+    };
+    const zaehlen = async (tabelle: string) => (await ctx.sb.from(tabelle).select('*', { count: 'exact', head: true })).count;
+    void zaehlen('news_posts').then((n) => setzen('beitraege', n), () => {});
+    void zaehlen('news_medien').then((n) => setzen('medien', n), () => {});
+    void offeneFreigaben(ctx.sb).then((n) => setzen('freigaben', n), () => {});
+  }
+</script>
 
 <style>
-  .intern { min-height: 70vh; background: var(--tint); }
-  .intern[data-state='ready'] .intern__nav[data-when],
-  .intern[data-state='ready'] .intern__user[data-when] { display: flex !important; }
-
-  .intern__bar { background: var(--purple-2); color: #fff; }
-  .intern__bar-inner { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 36px; padding-block: 14px; }
-  .intern__nav { flex-wrap: wrap; gap: 4px 24px; }
-  .intern__nav a {
-    color: rgba(255, 255, 255, 0.8); font-family: var(--font-mono); font-size: 12px; font-weight: 600;
-    letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 0; border-bottom: 1.5px solid transparent;
+  :global(body:has(.rd)) { background: var(--tint-2); }
+  .rd { display: flex; min-height: 100vh; background: var(--tint-2); }
+  .rd-side {
+    flex: 0 0 220px; position: sticky; top: 0; align-self: flex-start; height: 100vh; overflow: auto; z-index: 20;
+    display: flex; flex-direction: column; gap: 32px; padding: 26px 14px 22px; background: var(--purple); color: #fff;
   }
-  .intern__nav a:hover { color: var(--cyan); }
-  .intern__nav a[aria-current] { color: #fff; border-bottom-color: var(--magenta); }
-  .intern__user { margin-left: auto; align-items: center; gap: 16px; font-size: 14px; color: rgba(255, 255, 255, 0.86); }
-  .intern__user button {
-    background: none; border: 1.5px solid rgba(255, 255, 255, 0.4); color: #fff; padding: 7px 12px; cursor: pointer;
-    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  .rd-side__kopf { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 0 8px; }
+  .rd-side__logo { display: block; width: 76px; color: #fff; }
+  .rd-side__k, .rd-nav a, .rd-nav__gruppe, .rd-side__rolle, .rd-side__web, .rd-side__aus {
+    font-family: var(--font-mono); font-weight: 600; text-transform: uppercase;
   }
-  .intern__user button:hover { border-color: var(--magenta); color: var(--cyan); }
-  .intern__body { padding-block: clamp(40px, 6vw, 80px); }
-  .intern__status { color: var(--ink-soft); }
-  .intern__panel { max-width: 640px; background: var(--paper); padding: 32px; border-top: 3px solid var(--magenta); }
-  .intern__h { font-family: var(--font-display); font-weight: 800; font-size: 32px; letter-spacing: -0.025em; color: var(--purple); margin: 0 0 12px; }
+  .rd-side__k { font-size: 11px; letter-spacing: 0.2em; color: var(--cyan); white-space: nowrap; }
+  .rd-nav { flex-direction: column; gap: 2px; }
+  .intern[data-state='ready'] .rd-nav[data-when] { display: flex !important; }
+  .rd-nav a {
+    display: flex; align-items: center; gap: 12px; padding: 13px 10px; color: #fff; font-size: 12px; letter-spacing: 0.16em;
+    transition: background var(--dur-base);
+  }
+  .rd-nav a[hidden], .rd-nav__gruppe[hidden] { display: none; }
+  .rd-nav a:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+  .rd-nav a[aria-current] { background: rgba(255, 255, 255, 0.1); }
+  .rd-nav__m { width: 8px; height: 8px; flex: none; background: rgba(255, 255, 255, 0.28); }
+  .rd-nav a[aria-current] .rd-nav__m { background: var(--magenta); }
+  .rd-nav__l { flex: 1; }
+  .rd-nav__n { color: rgba(255, 255, 255, 0.72); }
+  .rd-nav__gruppe { display: block; margin: 18px 10px 6px; font-size: 10px; letter-spacing: 0.2em; color: rgba(255, 255, 255, 0.6); }
+  .rd-side__fuss { margin-top: auto; flex-direction: column; gap: 14px; padding: 18px 8px 0; border-top: 1px solid rgba(255, 255, 255, 0.16); }
+  .intern[data-state='ready'] .rd-side__fuss[data-when] { display: flex !important; }
+  .rd-side__person { display: flex; align-items: center; gap: 12px; }
+  .rd-side__foto {
+    position: relative; flex: none; width: 40px; height: 40px; overflow: hidden; background: var(--purple-2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 800; font-size: 15px; color: var(--cyan);
+  }
+  .rd-side__foto img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .rd-side__wer { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .rd-side__name { font-family: var(--font-display); font-weight: 700; font-size: 16px; letter-spacing: -0.01em; overflow-wrap: anywhere; }
+  .rd-side__rolle { font-size: 10px; letter-spacing: 0.14em; color: rgba(255, 255, 255, 0.72); }
+  .rd-side__rolle:empty { display: none; }
+  .rd-side__web { align-self: flex-start; font-size: 11px; letter-spacing: 0.16em; color: var(--cyan); }
+  .rd-side__web:hover { color: #fff; }
+  .rd-side__web--aussen { margin-top: auto; padding: 0 8px; }
+  .intern[data-state='login'] .rd-side__web--aussen[data-when] { display: inline-block !important; }
+  .rd-side__aus {
+    align-self: flex-start; margin-top: -6px; padding: 4px 0; border: 0; background: none; cursor: pointer;
+    font-size: 11px; letter-spacing: 0.16em; color: rgba(255, 255, 255, 0.72);
+  }
+  .rd-side__aus:hover { color: #fff; }
 
+  .rd-main { flex: 1 1 0; min-width: 0; outline: none; }
+  .rd-main:not(.rd-main--voll) > .rd-flaeche { max-width: 1180px; padding: clamp(28px, 4vw, 52px) clamp(20px, 3.5vw, 48px) 80px; }
+  .rd-status { margin: clamp(28px, 4vw, 52px) clamp(20px, 3.5vw, 48px); max-width: 640px; color: var(--ink-soft); }
+
+  /* Schmale Bildschirme: Leiste oben */
+  @media (max-width: 900px) {
+    .rd { flex-direction: column; }
+    .rd-main { width: 100%; }
+    .rd-side {
+      position: static; height: auto; flex: none; width: 100%; min-width: 0; flex-direction: row; flex-wrap: wrap; align-items: center;
+      gap: 10px 18px; padding: 12px 16px;
+    }
+    .rd-side__kopf { flex-direction: row; align-items: center; padding: 0; }
+    .rd-side__logo { width: 52px; }
+    .rd-nav { order: 3; width: 100%; min-width: 0; overflow-x: auto; }
+    .intern[data-state='ready'] .rd-nav[data-when] { flex-direction: row; }
+    .rd-nav a { padding: 10px; white-space: nowrap; }
+    .rd-nav__gruppe { margin: 0 0 0 10px; align-self: center; white-space: nowrap; }
+    .rd-side__fuss { margin: 0 0 0 auto; padding: 0; border: 0; }
+    .intern[data-state='ready'] .rd-side__fuss[data-when] { flex-direction: row; align-items: center; gap: 14px; }
+    .rd-side__person, .rd-side__web { display: none; }
+    .rd-side__aus { margin: 0; }
+    .rd-side__web--aussen { margin: 0 0 0 auto; padding: 0; }
+  }
+
+  /* Blende */
+  .blende { display: none; position: fixed; inset: 0; z-index: 200; pointer-events: none; overflow: hidden; }
+  :global(html.blende) .blende { display: block; }
+  .blende__flaeche { position: absolute; left: 0; top: 0; width: 100%; height: 100%; background: var(--purple); }
+  .blende__naht { position: absolute; top: 0; bottom: 0; right: 0; width: 6px; background: var(--magenta); }
+  .blende__mitte { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .blende__mitte { flex-direction: column; gap: 22px; }
+  .blende__logo { display: block; width: min(320px, 50vw); color: #fff; }
+  .blende__tag { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--cyan); white-space: nowrap; }
+  /* Solange die Blende liegt, sind Logo und Schriftzug der Leiste noch nicht zu sehen */
+  :global(html.blende) [data-blende-ziel] { visibility: hidden; }
 </style>
-<!-- Jede interne Seite ruft in ihrem eigenen Skript initIntern() auf (scripts/intern/session.ts). -->

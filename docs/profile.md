@@ -88,7 +88,7 @@ Ein Profil, eine Person, überall gleich (Name, Foto, Profil-Link):
 | `/netzwerk/` und Startseite | Karte bzw. Name mit Foto, Schwerpunkten, Text |
 | `/netzwerk/<adresse>/` | ganze Profilseite mit den nächsten Terminen |
 | Termine | „Mit …“ auf der Terminseite, wenn die Person bei *Mitwirkende* eingetragen ist |
-| `/profitraining/` | Karte im Dozent:innen-Stapel (Foto aus dem Profil, ohne Foto ein Platzhalter) |
+| `/profitraining/` | Kachel im Dozent:innen-Mosaik (Foto aus dem Profil, ohne Foto ein Platzhalter) |
 
 In der Redaktion stehen freigegebene Mitgliederprofile bei *Mitwirkende* (Termine) und *Person* (Dozent:innen) mit
 zur Auswahl, gekennzeichnet als „(Mitgliederprofil)“. Nimmt jemand ein solches Profil später von der Website, bleibt

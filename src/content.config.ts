@@ -69,7 +69,7 @@ const formate = defineCollection({
 });
 
 /**
- * KEEP UP (Profitraining, /profitraining/): Dozent:innen im Kartenstapel und Trainingswochen im Kalender.
+ * KEEP UP (Profitraining, /profitraining/): Dozent:innen im Foto-Mosaik und Trainingswochen im Kalender.
  * Workshops sind normale Termine mit `format: keep-up`.
  */
 const keepUpDozentinnen = defineCollection({
