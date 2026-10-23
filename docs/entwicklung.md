@@ -36,7 +36,7 @@ Unterseiten.
 
 Der lila Kopf jeder Unterseite ist so hoch wie der Kopf der Startseite: `--buehne-h` (Bildschirm minus
 Kopfleiste, 560–940 px) in `src/styles/global.css`, erste Zeile im Abstand `--buehne-oben`. `PageIntro` nutzt
-das von selbst; eigene Köpfe (Kooperationen, Journal, Profitraining, Spenden, Profil, 404) setzen
+das von selbst; eigene Köpfe (Kooperationen, News, Profitraining, Spenden, Profil, 404) setzen
 `min-height: var(--buehne-h)`. Rechtstexte bekommen `<PageIntro kompakt>`, Beiträge und Termine behalten
 ihren kurzen Kopf. Im Test „Lila Kopf der Unterseiten …“ (tests/site.spec.ts) wird die Höhe verglichen.
 
@@ -86,8 +86,9 @@ Wo GSAP läuft:
 | Terminlisten (Startseite, Terminseite, Tanzkalender ohne JavaScript) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
 | Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |
 | Kalender (Tanzkalender und Profitraining) | `Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Tagesansicht und Filter-Markierungen animiert |
-| Profitraining: Dozent:innen | `keep-up/Mosaik.astro` | Foto-Mosaik, das endlos nach rechts läuft (GSAP); hält bei Maus, Fokus oder Knopf „Anhalten“; Klick filtert den Kalender, „Zur Dozent:in →“ holt die Kachel ins Bild; Tempo in `src/settings/keep-up.ts`; bei „Bewegung reduzieren“ ein Streifen zum Wischen |
+| Profitraining: Dozent:innen | `keep-up/Mosaik.astro` | Foto-Mosaik, das endlos nach rechts läuft (GSAP); läuft auch unter der Maus weiter, hält nur über den Knopf „Anhalten“ oder bei Tastatur-Fokus; Klick filtert den Kalender, „Zur Dozent:in →“ holt die Kachel ins Bild; Tempo in `src/settings/keep-up.ts`; bei „Bewegung reduzieren“ ein Streifen zum Wischen |
 | Profitraining: Kopf | `views/ProfitrainingView.astro` | Überschrift mit SplitText (Buchstaben aus einer Maske), Foto als Keil |
+| Menü im Kopf | `sections/Header.astro` (Web Animations, ohne GSAP) | Ein magentafarbener Strich unter dem aktiven Punkt gleitet beim Wechsel zum neuen Punkt, auch über den Seitenwechsel (Lage beim Klick in `sessionStorage`); im aufklappbaren Menü und bei „Bewegung reduzieren“ die einfache Unterstreichung |
 | „Login“ → interner Bereich | `scripts/blende.ts` (Web Animations, ohne GSAP) | Blende aus Magenta und Lila wischt über die Website; im internen Bereich (`layouts/Intern.astro`) schrumpft sie auf die Seitenleiste, Logo und Schriftzug gleiten an ihren Platz; verbunden über `sessionStorage` |
 
 ## Netz-Animation
@@ -97,7 +98,7 @@ rechts hinten; auf dem Handy nur die ersten beiden), die Wörter für „Tanz f�
 ob die Fotos beim Scrollen wegziehen (seit Entwurf v5 aus: „ruhig“). Die Fotos müssen einen dunklen Bühnenhintergrund
 haben, weil Schwarz ausgestanzt wird. Das Netz sammelt sich um den nächsten Termin („Upcoming“).
 
-Die Startseite (Entwurf v5, `src/views/HomeView.astro`): Hero mit drei Einstiegen, „Demnächst“ (Termine und Journal
+Die Startseite (Entwurf v5, `src/views/HomeView.astro`): Hero mit drei Einstiegen, „Demnächst“ (Termine und News
 nebeneinander, `sections/Demnaechst.astro`), Formate als Streifen, „Eine Stadt. Ein Netz.“ mit den Namen aus dem Netz
 (`sections/Netz.astro`), Mitglied werden und Newsletter. Unter dem Kopf läuft ab dem Ende des Hero ein Fortschrittsbalken
 (`<Page fortschritt>`).

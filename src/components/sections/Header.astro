@@ -14,8 +14,8 @@ const lang = getLang(Astro);
 const other = lang === 'de' ? 'en' : 'de';
 const otherUrl = alternates[other] ?? url(other, 'home');
 const t = tr(lang, {
-  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Login', internBereich: 'Interner Bereich', join: 'Mitglied werden', calendar: 'Kalender', news: 'Journal', formats: 'Formate', training: 'Training', about: 'Über uns', donate: 'Spenden', switchTo: 'Switch to English' },
-  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Login', internBereich: 'Members area', join: 'Become a member', calendar: 'Calendar', news: 'Journal', formats: 'Formats', training: 'Training', about: 'About', donate: 'Donate', switchTo: 'Auf Deutsch wechseln' },
+  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Login', internBereich: 'Interner Bereich', join: 'Mitglied werden', calendar: 'Kalender', news: 'News', formats: 'Formate', training: 'Training', about: 'Über uns', donate: 'Spenden', switchTo: 'Switch to English' },
+  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Login', internBereich: 'Members area', join: 'Become a member', calendar: 'Calendar', news: 'News', formats: 'Formats', training: 'Training', about: 'About', donate: 'Donate', switchTo: 'Auf Deutsch wechseln' },
 });
 // Reihenfolge wie im Entwurf Startseite v5 (+ Spenden aus dem Spenden-Entwurf); das Netzwerk steht unter „Über uns“
 const nav = [
@@ -41,6 +41,7 @@ const nav = [
     <div class="site-header__right" id="site-menu" data-menu>
       <nav class="site-nav" aria-label={t.mainNav}>
         {nav.map((item) => <a class="mono-link" href={item.href} data-nav-link data-nav-auch={item.auch}>{item.label}</a>)}
+        <span class="site-nav__strich" aria-hidden="true" data-nav-strich></span>
       </nav>
       <a class="mono-link site-header__login" href={url(lang, 'intern')} data-nav-link data-login>{t.intern}</a>
       <a class="mono-link site-header__lang" href={otherUrl} hreflang={other} lang={other} title={t.switchTo}>
@@ -134,6 +135,80 @@ const nav = [
       a.setAttribute('aria-current', 'page');
     }
   });
+
+  // Ein Strich unter dem aktiven Menüpunkt, der beim Wechsel hinübergleitet – auch über den Seitenwechsel:
+  // Beim Klick merken wir uns, wo er stand, und die neue Seite lässt ihn von dort aus weiterlaufen.
+  const navEl = header?.querySelector<HTMLElement>('.site-nav');
+  const strich = navEl?.querySelector<HTMLElement>('[data-nav-strich]');
+  const STRICH_KEY = 'tndd-strich';
+  type Lage = { x: number; w: number };
+  const navLinks = links.filter((a) => navEl?.contains(a));
+  const lageVon = (a: HTMLElement): Lage => ({ x: a.offsetLeft, w: a.offsetWidth });
+  const strichLage = (): Lage | null => (strich?.classList.contains('is-da') ? { x: Number(strich.dataset.x), w: Number(strich.dataset.w) } : null);
+  const zeichnen = (l: Lage) => {
+    if (!strich) return;
+    strich.dataset.x = String(l.x);
+    strich.dataset.w = String(l.w);
+    strich.style.transform = `translateX(${l.x}px)`;
+    strich.style.width = `${l.w}px`;
+  };
+  // Von einer Lage zur anderen; ohne Ausgangslage wächst er aus der Mitte des Ziels
+  const strichZu = (ziel: Lage | null, von: Lage | null) => {
+    if (!strich) return;
+    const ruhig = matchMedia('(prefers-reduced-motion: reduce), (max-width: 1100px)').matches || !strich.animate;
+    strich.getAnimations().forEach((a) => a.cancel());
+    const start = von ?? (ziel && { x: ziel.x + ziel.w / 2, w: 0 });
+    if (!ziel) {
+      strich.classList.remove('is-da');
+      if (von && !ruhig) {
+        strich.animate([{ transform: `translateX(${von.x}px)`, width: `${von.w}px`, opacity: 1 }, { transform: `translateX(${von.x + von.w / 2}px)`, width: '0px', opacity: 1 }], { duration: 450, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' });
+      }
+      return;
+    }
+    zeichnen(ziel);
+    strich.classList.add('is-da');
+    if (ruhig || !start || (start.x === ziel.x && start.w === ziel.w)) return;
+    strich.animate(
+      [{ transform: `translateX(${start.x}px)`, width: `${start.w}px` }, { transform: `translateX(${ziel.x}px)`, width: `${ziel.w}px` }],
+      { duration: 650, easing: 'cubic-bezier(0.16, 1, 0.3, 1)' },
+    );
+  };
+  const aktiverLink = () => navLinks.find((a) => a.hasAttribute('aria-current'));
+  const strichZumAktiven = (animiert: boolean) => {
+    const a = aktiverLink();
+    const ziel = a ? lageVon(a) : null;
+    if (animiert) strichZu(ziel, strichLage());
+    else if (ziel) zeichnen(ziel);
+  };
+
+  if (navEl && strich) {
+    navEl.classList.add('hat-strich');
+    // gemerkte Lage von der vorigen Seite (nur kurz gültig, damit „Zurück“ später nichts Altes abspielt)
+    let vorher: Lage | null = null;
+    try {
+      const roh = sessionStorage.getItem(STRICH_KEY);
+      sessionStorage.removeItem(STRICH_KEY);
+      const g = roh ? JSON.parse(roh) : null;
+      if (g && Date.now() - g.t < 10000) vorher = { x: g.x, w: g.w };
+    } catch {}
+    const loslegen = () => {
+      const a = aktiverLink();
+      strichZu(a ? lageVon(a) : null, vorher);
+    };
+    // erst messen, wenn die Schrift steht, sonst stimmen Breite und Lage nicht
+    (document.fonts?.ready ?? Promise.resolve()).then(loslegen);
+    // jeder Link im Kopf nimmt die Lage mit (auch Logo und „Mitglied werden“: dort zieht sich der Strich zurück)
+    header?.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) =>
+      a.addEventListener('click', () => {
+        const l = strichLage();
+        try {
+          if (l) sessionStorage.setItem(STRICH_KEY, JSON.stringify({ ...l, t: Date.now() }));
+        } catch {}
+      }),
+    );
+    addEventListener('resize', () => strichZumAktiven(false));
+  }
+
   const targets = links
     .filter((a) => a.hash && a.pathname === location.pathname)
     .map((a) => document.querySelector<HTMLElement>(a.hash))
@@ -144,6 +219,7 @@ const nav = [
         for (const e of entries) {
           if (!e.isIntersecting) continue;
           links.forEach((a) => a.hash && a.toggleAttribute('aria-current', a.hash === `#${e.target.id}`));
+          strichZumAktiven(true);
         }
       },
       { rootMargin: '-45% 0px -50% 0px' },
@@ -184,6 +260,16 @@ const nav = [
   }
   .site-nav a:hover, .site-header__login:hover { color: var(--cyan); }
   .site-nav a[aria-current], .site-header__login[aria-current] { border-bottom-color: var(--magenta); }
+  /* mit JavaScript übernimmt ein gleitender Strich die Unterstreichung (nur in der Zeile, nicht im Menü) */
+  .site-nav { position: relative; }
+  .site-nav__strich {
+    position: absolute; left: 0; bottom: 0; width: 0; height: 1.5px; background: var(--magenta);
+    opacity: 0; pointer-events: none;
+  }
+  @media (min-width: 1101px) {
+    .site-nav.hat-strich a[aria-current] { border-bottom-color: transparent; }
+    .site-nav__strich.is-da { opacity: 1; }
+  }
 
   .login-blende { position: fixed; inset: 0; z-index: 200; overflow: hidden; pointer-events: auto; }
   .login-blende[hidden] { display: none; }

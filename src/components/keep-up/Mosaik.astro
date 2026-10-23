@@ -5,7 +5,8 @@
  * diese Dozent:in und springt hin; „Zur Dozent:in →“ im Kalender hebt die Kachel hervor.
  *
  * Läuft nur mit JavaScript und ohne „Bewegung reduzieren“; sonst ist es ein Streifen zum Wischen.
- * Anhalten: Maus darüber, Fokus darin oder Knopf „Anhalten“ (WCAG 2.2.2).
+ * Läuft auch unter der Maus und beim Klick weiter. Anhalten nur über den Knopf „Anhalten“ (WCAG 2.2.2) und
+ * solange die Tastatur auf einer Kachel steht (sonst liefe sie unter dem Fokus davon).
  */
 import { Image } from 'astro:assets';
 import Tag from '../ui/Tag.astro';
@@ -97,7 +98,7 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
     });
 
     let lauf: gsap.core.Tween | null = null;
-    const haelt = { maus: false, fokus: false, knopf: false, zeigen: false };
+    const haelt = { fokus: false, knopf: false };
     const tempo = () => (Object.values(haelt).some(Boolean) ? 0 : 1);
     const anpassen = (sofort = false) => {
       if (!lauf) return;
@@ -126,9 +127,8 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
         haelt[k] = v;
         anpassen();
       };
-      root.addEventListener('pointerenter', (e) => e.pointerType === 'mouse' && setzen('maus', true));
-      root.addEventListener('pointerleave', () => setzen('maus', false));
-      root.addEventListener('focusin', () => setzen('fokus', true));
+      // nur Tastatur-Fokus hält an; ein Mausklick fokussiert die Kachel auch, soll aber nichts stoppen
+      root.addEventListener('focusin', (e) => setzen('fokus', (e.target as Element).matches(':focus-visible')));
       root.addEventListener('focusout', (e) => !root.contains(e.relatedTarget as Node) && setzen('fokus', false));
       if (knopf) {
         knopf.hidden = false;
@@ -161,16 +161,10 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
       } else {
         root.scrollTo({ left: kachel.offsetLeft - (root.clientWidth - kachel.offsetWidth) / 2, behavior: 'smooth' });
       }
-      haelt.zeigen = true;
-      anpassen(true);
       root.querySelectorAll(`[data-kachel="${CSS.escape(id)}"]`).forEach((k) => k.classList.add('is-hl'));
       kachel.focus({ preventScroll: true });
       clearTimeout(hlZeit);
-      hlZeit = window.setTimeout(() => {
-        root.querySelectorAll('.is-hl').forEach((k) => k.classList.remove('is-hl'));
-        haelt.zeigen = false;
-        anpassen();
-      }, 3000);
+      hlZeit = window.setTimeout(() => root.querySelectorAll('.is-hl').forEach((k) => k.classList.remove('is-hl')), 3000);
     };
     document.addEventListener('click', (e) => {
       const a = (e.target as Element).closest<HTMLAnchorElement>('a[href^="#dozentin-"]');

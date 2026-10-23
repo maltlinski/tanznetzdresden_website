@@ -1,6 +1,6 @@
 ---
 /**
- * Startseite (Entwurf v5): „Demnächst“ – links die nächsten Termine mit Filter, rechts das Journal
+ * Startseite (Entwurf v5): „Demnächst“ – links die nächsten Termine mit Filter, rechts die News
  * („Aus dem Netz“: Titelthema mit Foto, darunter offene Ausschreibungen und das Neueste).
  */
 import Tag from '../ui/Tag.astro';
@@ -22,11 +22,11 @@ const side = [...open, ...rest.filter((p) => !open.includes(p))].slice(0, 2);
 const t = tr(lang, {
   de: {
     kicker: 'Tanzkalender', h: 'Termine', all: 'Ganzer Kalender →', ics: 'Abonnieren (.ics)', submit: 'Termin einreichen',
-    jKicker: 'Journal', jH: 'Aus dem Netz', jAll: 'Alle Beiträge →', deadline: 'Frist',
+    jKicker: 'News', jH: 'Aus dem Netz', jAll: 'Alle Beiträge →', deadline: 'Frist',
   },
   en: {
     kicker: 'Dance calendar', h: 'Events', all: 'Full calendar →', ics: 'Subscribe (.ics)', submit: 'Submit an event',
-    jKicker: 'Journal', jH: 'From the network', jAll: 'All posts →', deadline: 'Deadline',
+    jKicker: 'News', jH: 'From the network', jAll: 'All posts →', deadline: 'Deadline',
   },
 });
 type Post = (typeof posts)[number];

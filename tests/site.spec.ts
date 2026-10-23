@@ -357,13 +357,13 @@ test('News: RSS-Feeds sind gültig und verlinken die Beiträge', async ({ reques
   }
 });
 
-test('Header: TNDD-Zeichen führt zur Startseite, Journal und Über uns im Menü', async ({ page, isMobile }) => {
+test('Header: TNDD-Zeichen führt zur Startseite, News und Über uns im Menü', async ({ page, isMobile }) => {
   const nav = page.getByRole('navigation', { name: 'Hauptnavigation' });
   // Profile gehören zu „Über uns“
   await page.goto('/netzwerk/alina-lucifero/');
   await dismissConsent(page);
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
-  await expect(nav.getByRole('link')).toHaveText(['Kalender', 'Formate', 'Training', 'Journal', 'Über uns', 'Spenden']);
+  await expect(nav.getByRole('link')).toHaveText(['Kalender', 'Formate', 'Training', 'News', 'Über uns', 'Spenden']);
   // „Kalender“ führt zum ganzen Tanzkalender, nicht zum Ausschnitt auf der Startseite
   await expect(nav.getByRole('link', { name: 'Kalender' })).toHaveAttribute('href', /\/termine\/$/);
   await expect(nav.getByRole('link', { name: 'Über uns' })).toHaveAttribute('aria-current', 'page');
@@ -376,9 +376,42 @@ test('Header: TNDD-Zeichen führt zur Startseite, Journal und Über uns im Menü
   }
   await page.goto('/news/');
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
-  await expect(nav.getByRole('link', { name: 'Journal' })).toHaveAttribute('aria-current', 'page');
+  await expect(nav.getByRole('link', { name: 'News' })).toHaveAttribute('aria-current', 'page');
   await page.locator('[data-header]').getByRole('link', { name: 'TanzNetzDresden – zur Startseite' }).click();
   await expect(page).toHaveURL(/\/$/);
+});
+
+test('Header: Unterstreichung gleitet beim Wechsel im Menü zum neuen Punkt', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'im aufklappbaren Menü bleibt die einfache Unterstreichung');
+  // Animationen des Strichs mitschreiben
+  await page.addInitScript(() => {
+    const orig = Element.prototype.animate;
+    (window as any).__strich = [];
+    Element.prototype.animate = function (k: any, o: any) {
+      if (this instanceof HTMLElement && this.matches('[data-nav-strich]')) (window as any).__strich.push(k);
+      return orig.call(this, k, o);
+    };
+  });
+  const nav = page.getByRole('navigation', { name: 'Hauptnavigation' });
+  const strich = nav.locator('[data-nav-strich]');
+  const lage = (name: string) => nav.getByRole('link', { name }).evaluate((a: HTMLElement) => ({ x: a.offsetLeft, w: a.offsetWidth }));
+  await page.goto('/termine/');
+  await dismissConsent(page);
+  // der Strich ersetzt die Unterstreichung des aktiven Punkts
+  await expect(strich).toHaveCSS('opacity', '1');
+  await expect(nav.getByRole('link', { name: 'Kalender' })).toHaveCSS('border-bottom-color', 'rgba(0, 0, 0, 0)');
+  const kalender = await lage('Kalender');
+  await expect.poll(() => strich.evaluate((e: HTMLElement) => e.offsetWidth)).toBe(kalender.w);
+
+  await nav.getByRole('link', { name: 'Training' }).click();
+  await expect(page).toHaveURL(/\/profitraining\/$/);
+  const training = await lage('Training');
+  // startet unter „Kalender“ und endet unter „Training“
+  await expect.poll(() => page.evaluate(() => (window as any).__strich.length)).toBe(1);
+  const [von, bis] = await page.evaluate(() => (window as any).__strich[0]);
+  expect(von).toMatchObject({ transform: `translateX(${kalender.x}px)`, width: `${kalender.w}px` });
+  expect(bis).toMatchObject({ transform: `translateX(${training.x}px)`, width: `${training.w}px` });
+  await expect.poll(() => strich.evaluate((e: HTMLElement) => [e.offsetLeft + new DOMMatrix(getComputedStyle(e).transform).m41, e.offsetWidth])).toEqual([training.x, training.w]);
 });
 
 test('Lila Kopf der Unterseiten ist so hoch wie auf der Startseite', async ({ page, isMobile }) => {
@@ -581,6 +614,13 @@ test('Profitraining: Dozent:innen-Mosaik läuft, hält an und führt in den Kale
   // läuft …
   const a = await lage();
   await expect.poll(lage).not.toBe(a);
+  // … auch unter der Maus weiter …
+  // (die Kacheln laufen, daher die Maus einfach in die Mitte des Mosaiks)
+  const box = (await mosaik.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.waitForTimeout(700);
+  const h = await lage();
+  await expect.poll(lage).not.toBe(h);
   // … und hält auf Knopfdruck an
   const pause = page.locator('[data-mosaik-pause]');
   await expect(pause).toHaveText('Anhalten');
