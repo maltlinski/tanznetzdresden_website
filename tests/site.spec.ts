@@ -405,6 +405,20 @@ test('Startseite: Überschrift und Claim sind ohne Animation sofort lesbar', asy
   await expect(page.locator('#netz-h')).toHaveText(/Eine Stadt\.\s*Ein Netz\./);
   // ohne Bewegung keine Aufteilung in Wörter
   await expect(page.locator('#netz-h .word, #termine-h div')).toHaveCount(0);
+  await expect.poll(() => page.locator('.netz__namen [data-name]').first().evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
+});
+
+test('Startseite: Namen bei „Wer im Netz tanzt“ blenden beim Scrollen ein', async ({ page }) => {
+  await page.goto('/');
+  await dismissConsent(page);
+  const erster = page.locator('.netz__namen [data-name]').first();
+  // vor dem Scrollen noch ausgeblendet
+  await expect.poll(() => erster.evaluate((el) => getComputedStyle(el).opacity)).toBe('0');
+  await page.locator('.netz__namen').scrollIntoViewIfNeeded();
+  const letzter = page.locator('.netz__namen [data-name]').last();
+  await expect.poll(() => letzter.evaluate((el) => getComputedStyle(el).opacity)).toBe('1');
+  await expect.poll(() => letzter.evaluate((el) => el.style.transform)).toBe('');
+  await expect(page.locator('.netz__punkt').last()).toBeVisible();
 });
 
 test('Startseite: Einstiege im Hero, Netz mit Profilen, Formate zum Blättern', async ({ page }) => {

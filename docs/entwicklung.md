@@ -73,7 +73,7 @@ if (motionOk()) {
 
 Regeln: `EASE` (= `--ease-out`, schnell, kein Federn), nichts bei „Bewegung reduzieren“, Inhalte müssen ohne
 JavaScript sichtbar bleiben (`gsap.from` statt Elemente per CSS zu verstecken). Die bestehenden Auftritte
-(`intro-text.ts`, `reveal.ts`) und die Netz-Animationen laufen ohne GSAP. Weitere Plugins (Flip, SplitText …)
+(`intro-text.ts`, `reveal.ts`) und der Text links im Netz-Abschnitt laufen ohne GSAP. Weitere Plugins (Flip, SplitText …)
 direkt aus `gsap/…` importieren und dort registrieren, wo sie gebraucht werden.
 
 Wo GSAP läuft:
@@ -81,6 +81,7 @@ Wo GSAP läuft:
 | Stelle | Datei | Was passiert |
 |---|---|---|
 | Überschriften der Startseite | `scripts/split-text.ts` (SplitText) | `data-split`: Wörter gleiten nacheinander von links herein; „Eine Stadt. Ein Netz.“ steigt Wort für Wort aus einer Maske; „Tanz für …“ wechselt Buchstabe für Buchstabe |
+| „Wer im Netz tanzt“ (Startseite) | `sections/Netz.astro` | Namen gleiten Reihe für Reihe von links herein, das magentafarbene Quadrat dahinter setzt kurz danach ein |
 | Formate (Startseite) | `sections/Formats.astro` | Karten im Streifen laufen nacheinander ein; Pfeile blättern um eine Karte |
 | Terminlisten (Startseite, Terminseite, Tanzkalender ohne JavaScript) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
 | Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |

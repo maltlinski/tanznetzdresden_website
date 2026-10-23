@@ -52,7 +52,9 @@ for (let i = 0; i < people.length; i += 2) reihen.push(people.slice(i, i + 2));
       <ul class="netz__namen">
         {reihen.map((r, i) => (
           <li style={`--versatz: ${VERSATZ[i % VERSATZ.length]}px`}>
-            {r.map((p) => <a href={url(lang, 'netzwerk', `${p.id}/`)}>{p.name}</a>)}
+            {r.map((p) => (
+              <a href={url(lang, 'netzwerk', `${p.id}/`)}><span data-name>{p.name}</span><span class="netz__punkt" aria-hidden="true" /></a>
+            ))}
           </li>
         ))}
       </ul>
@@ -63,7 +65,7 @@ for (let i = 0; i < people.length; i += 2) reihen.push(people.slice(i, i + 2));
 
 <script>
   import { aufstieg } from '../../scripts/split-text';
-  import { motionOk } from '../../scripts/gsap';
+  import { gsap, EASE, motionOk } from '../../scripts/gsap';
 
   const root = document.querySelector<HTMLElement>('[data-netz]');
   if (root) {
@@ -81,6 +83,15 @@ for (let i = 0; i < people.length; i += 2) reihen.push(people.slice(i, i + 2));
         );
       }, { threshold: 0.2 });
       io.observe(root);
+    }
+
+    // Namen Reihe für Reihe einblenden, das Quadrat dahinter setzt kurz danach ein
+    const namen = root.querySelector<HTMLElement>('.netz__namen');
+    if (namen && motionOk()) {
+      gsap
+        .timeline({ scrollTrigger: { trigger: namen, start: 'top 85%', once: true }, defaults: { ease: EASE } })
+        .from(namen.querySelectorAll('[data-name]'), { x: -40, opacity: 0, duration: 0.8, stagger: 0.06, clearProps: 'transform,opacity' })
+        .from(namen.querySelectorAll('.netz__punkt'), { scale: 0, duration: 0.5, stagger: 0.06, clearProps: 'transform' }, 0.25);
     }
   }
 </script>
@@ -112,7 +123,8 @@ for (let i = 0; i < people.length; i += 2) reihen.push(people.slice(i, i + 2));
     display: flex; align-items: center; gap: 18px; font-family: var(--font-display); font-weight: 700; font-size: clamp(20px, 2vw, 27px);
     line-height: 1.25; letter-spacing: -0.02em; color: #fff; white-space: nowrap; transition: color var(--dur-base);
   }
-  .netz__namen a::after { content: ''; width: 7px; height: 7px; background: var(--magenta); flex: none; }
+  .netz__namen [data-name] { display: inline-block; }
+  .netz__punkt { width: 7px; height: 7px; background: var(--magenta); flex: none; }
   .netz__namen a:hover { color: var(--cyan); }
   .netz__alle { display: inline-block; margin-top: 24px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--cyan); }
   .netz__alle:hover { color: #fff; }
