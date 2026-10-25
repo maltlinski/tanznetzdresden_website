@@ -1,6 +1,6 @@
 /**
- * Profilseite (src/views/ProfilView.astro): Abschnittsleiste mit Fortschritt, Vollbild der Galerie
- * und Bewegung (Intro des Namens, Wörter des Pitch, Filmstreifen, Parallaxe).
+ * Profilseite (src/views/ProfilView.astro): Abschnittsleiste mit Fortschritt, Vollbild der Galerie,
+ * Name über dem Porträt und Bewegung (Intro des Namens, Wörter des Pitch, Filmstreifen, Parallaxe).
  * Bei „Bewegung reduzieren“ bleibt alles still und der Filmstreifen ist eine wischbare Reihe.
  */
 interface VollbildFoto {
@@ -19,6 +19,7 @@ export function initProfil() {
   const ruhig = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   kopfHoehe();
+  nameUeberBild(root);
   root.querySelectorAll<HTMLElement>('[data-galerie]').forEach(vollbild);
   if (!ruhig) intro(root);
 
@@ -68,6 +69,47 @@ function kopfHoehe() {
   const setzen = () => document.documentElement.style.setProperty('--header-h', `${kopf.offsetHeight}px`);
   setzen();
   new ResizeObserver(setzen).observe(kopf);
+}
+
+/**
+ * Der große Name darf über das Porträt laufen. Links vom schrägen Bildrand steht er voll, über dem Foto
+ * durchscheinend: Die volle Ebene wird dort abgeschnitten, die durchscheinende Kopie (data-name-licht) beginnt dort.
+ * Ohne Skript, auf dem Handy (Foto über dem Namen) und ohne Foto steht der Name einfach voll.
+ */
+function nameUeberBild(root: HTMLElement) {
+  const box = root.querySelector<HTMLElement>('[data-name]');
+  const voll = box?.querySelector<HTMLElement>('[data-name-voll]');
+  const licht = box?.querySelector<HTMLElement>('[data-name-licht]');
+  const bild = root.querySelector<HTMLElement>('[data-ph-bild]');
+  if (!box || !voll || !licht) return;
+  const px = (n: number) => `${n.toFixed(1)}px`;
+  const setzen = () => {
+    const B = box.getBoundingClientRect();
+    const R = bild && bild.offsetWidth && getComputedStyle(bild).position === 'absolute' ? bild.getBoundingClientRect() : null;
+    if (!R || R.left > B.right || R.bottom < B.top || R.top > B.bottom) {
+      voll.style.clipPath = '';
+      licht.style.clipPath = '';
+      licht.style.visibility = '';
+      return;
+    }
+    // Bildrand wie clip-path der Bildbox: oben bei 18 % der Breite, unten ganz links
+    const ax = R.left + 0.18 * R.width - B.left;
+    const ay = R.top - B.top;
+    const dx = R.left - B.left;
+    const dy = R.bottom - B.top;
+    const xBei = (y: number) => ax + ((dx - ax) * (y - ay)) / (dy - ay);
+    const oben = -400;
+    const unten = B.height + 400;
+    voll.style.clipPath = `polygon(-400px ${px(oben)}, ${px(xBei(oben))} ${px(oben)}, ${px(xBei(unten))} ${px(unten)}, -400px ${px(unten)})`;
+    licht.style.visibility = 'visible';
+    licht.style.clipPath = `polygon(${px(xBei(oben))} ${px(oben)}, ${px(B.width + 400)} ${px(oben)}, ${px(B.width + 400)} ${px(unten)}, ${px(xBei(unten))} ${px(unten)})`;
+  };
+  setzen();
+  const ro = new ResizeObserver(setzen);
+  ro.observe(box);
+  if (bild) ro.observe(bild);
+  addEventListener('resize', setzen);
+  document.fonts?.ready.then(setzen);
 }
 
 /** Name wischt mit einem Farbbalken herein, Zeilen gleiten von links, das Foto öffnet sich */

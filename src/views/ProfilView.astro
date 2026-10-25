@@ -57,9 +57,9 @@ const pad = (n: number) => String(n).padStart(2, '0');
 const woerter = p.name.trim().split(/\s+/).filter(Boolean);
 const vorname = woerter[0] ?? p.name;
 const nachname = woerter.slice(1).join(' ');
-// Schriftgröße passt sich dem längsten Wort an (lange Namen sprengen sonst die Zeile)
+// Schriftgröße passt sich dem längsten Wort an (lange Namen sprengen sonst die Zeile, auch auf breiten Bildschirmen)
 const laengstes = Math.max(...woerter.map((w) => w.length), 4);
-const nameFit = `--fit: ${(150 / laengstes).toFixed(2)}vw`;
+const nameFit = `--fit: min(${(150 / laengstes).toFixed(2)}vw, ${Math.round(2000 / laengstes)}px)`;
 
 const rollen = [p.roles.includes('mitglied') ? t.member : null, p.roles.includes('trainer') ? t.trainer : null].filter(Boolean).join(' · ');
 const vorstand = lang === 'en' ? p.vorstand_en ?? p.vorstand : p.vorstand;
@@ -137,6 +137,7 @@ const links = [
   p.vimeo && { k: t.video, v: linkText(p.vimeo), href: p.vimeo },
 ].filter(Boolean) as { k: string; v: string; href: string }[];
 
+const hatAngaben = angaben.length > 0 || links.length > 0 || (!pitch && p.tags.length > 0);
 const arbeiten = [...p.works].filter((w) => w.title).sort((a, b) => String(b.year).localeCompare(String(a.year)));
 const offen = p.openFor.map((o) => OFFEN_FUER[o][lang]);
 const insta = p.instagram?.replace(/^@/, '');
@@ -161,7 +162,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   <div class="profil" data-profil>
     <section class="ph" data-ph>
       {(heroEcht || heroDemo) && (
-        <div class:list={['ph__bild', !heroEcht && 'demo-an']} data-wipe>
+        <div class:list={['ph__bild', !heroEcht && 'demo-an']} data-wipe data-ph-bild>
           <div class="ph__bild-in" data-parallax>
             <Bild src={(heroEcht ?? heroDemo)!.src} alt={(heroEcht ?? heroDemo)!.alt} widths={[640, 960, 1280, 1600]} sizes="(min-width: 860px) 54vw, 100vw" eager pos={(heroEcht ?? heroDemo)!.pos} />
           </div>
@@ -176,10 +177,18 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
           <Tag color="cyan">{t.kicker}{rollen && ` · ${rollen}`}</Tag>
         </div>
         <div class="ph__unten">
-          <h1 class="ph__name" style={nameFit}>
-            <span class="ph__vor" data-sweep="0.3" data-bar="var(--cyan)">{vorname}</span>
-            {nachname && <>{' '}<br /><span class="ph__nach" data-sweep="0.55" data-bar="var(--magenta)">{nachname}</span></>}
-          </h1>
+          <div class="ph__namebox" style={nameFit} data-name>
+            <h1 class="ph__name" data-name-voll>
+              <span class="ph__vor" data-sweep="0.3" data-bar="var(--cyan)">{vorname}</span>
+              {nachname && <>{' '}<br /><span class="ph__nach" data-sweep="0.55" data-bar="var(--magenta)">{nachname}</span></>}
+            </h1>
+            {/* gleicher Name noch einmal, durchscheinend: sichtbar nur, wo er über dem Porträt liegt (scripts/profil.ts).
+                Text per CSS (data-text), damit er nicht doppelt vorgelesen oder als Text geprüft wird */}
+            <div class="ph__name ph__name--licht" aria-hidden="true" data-name-licht>
+              <span class="ph__vor" data-sweep="0.3" data-bar="var(--cyan)" data-text={vorname}></span>
+              {nachname && <>{' '}<br /><span class="ph__nach" data-sweep="0.55" data-bar="var(--magenta)" data-text={nachname}></span></>}
+            </div>
+          </div>
           {meta(beruf) && <p class="ph__meta" data-rise="0.9">{meta(beruf)}</p>}
           {!beruf && demo.profession && <p class="ph__meta demo-an">{meta(demo.profession)}</p>}
           {vorstand && <p class="ph__vorstand" data-rise="0.9"><span>{t.board}</span> {vorstand}</p>}
@@ -307,14 +316,6 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
 
     <section id="ueber" class="psec pueber" aria-labelledby="ueber-h">
       <div class="wrap pueber__grid">
-        {gEcht && gEcht.fotos.length >= 2 && (
-          <div class="pueber__seite">
-            <div class="pueber__bild" data-reveal>
-              <Bild src={gEcht.fotos.at(-1)!.src} alt={gEcht.fotos.at(-1)!.alt} widths={[480, 720, 960]} sizes="(min-width: 860px) 480px, 100vw" pos={gEcht.fotos.at(-1)!.pos} />
-              <span class="pueber__sq" aria-hidden="true"></span>
-            </div>
-          </div>
-        )}
         <div class="pueber__text">
           <h2 class="pk" id="ueber-h"><span class="pk__nr" aria-hidden="true"></span><span class="pk__strich" aria-hidden="true"></span>{t.about} {vorname}</h2>
           {bio.length > 0 ? (
@@ -325,16 +326,23 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
               {demo.bio && <div class="pueber__bio demo-an">{demo.bio.map((para) => <p>{para}</p>)}</div>}
             </>
           )}
-          {(angaben.length > 0 || links.length > 0 || (!pitch && p.tags.length > 0)) && (
-            <dl class="pfakten">
+        </div>
+        {(hatAngaben || demo.angaben) && (
+          <div class="pueber__seite">
+            {demo.angaben && (
+              <dl class="pfakten pfakten--demo demo-an">
+                {demo.angaben.map((a) => <div class="pfakten__z"><dt>{a.k}</dt><dd>{a.v}</dd></div>)}
+              </dl>
+            )}
+            {hatAngaben && <dl class="pfakten">
               {!pitch && p.tags.length > 0 && <div class="pfakten__z demo-aus"><dt>{t.focus}</dt><dd>{p.tags.join(' · ')}</dd></div>}
               {angaben.map((a) => <div class="pfakten__z"><dt>{a.k}</dt><dd>{a.v}</dd></div>)}
               {links.map((l) => (
                 <div class="pfakten__z pfakten__z--link"><dt>{l.k}</dt><dd><a href={l.href} target="_blank" rel="noopener me">{l.v}<span aria-hidden="true"> →</span></a></dd></div>
               ))}
-            </dl>
-          )}
-        </div>
+            </dl>}
+          </div>
+        )}
       </div>
     </section>
 
@@ -473,12 +481,18 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   .ph__zurueck, .ph__scroll { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: #fff; }
   .ph__zurueck:hover, .ph__scroll:hover { color: var(--cyan); }
   .ph__unten { display: flex; flex-direction: column; gap: clamp(20px, 2.6vw, 32px); }
+  .ph__namebox { position: relative; }
   .ph__name {
-    margin: 0; font-family: var(--font-display); font-weight: 800; line-height: 0.84; letter-spacing: -0.055em;
-    font-size: clamp(40px, min(13.4vw, var(--fit)), 232px); hyphens: none; overflow-wrap: anywhere;
+    margin: 0; font-family: var(--font-display); font-weight: 800; line-height: 0.86; letter-spacing: -0.05em;
+    font-size: clamp(40px, min(10vw, var(--fit)), 176px); hyphens: none; overflow-wrap: anywhere;
   }
   .ph__vor, .ph__nach { display: inline-block; position: relative; }
   .ph__nach { color: var(--magenta); }
+  /* über dem Porträt: Name durchscheinend; die Grenze (schräger Bildrand) setzt das Skript */
+  .ph__name--licht { position: absolute; inset: 0; clip-path: inset(0 0 0 100%); visibility: hidden; pointer-events: none; }
+  .ph__name--licht span::before { content: attr(data-text); }
+  .ph__name--licht .ph__vor { color: rgba(255, 255, 255, 0.35); }
+  .ph__name--licht .ph__nach { color: color-mix(in srgb, var(--magenta) 45%, transparent); }
   .ph__meta { margin: 0; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan); }
   .ph__vorstand { margin: 0; max-width: 60ch; color: rgba(255, 255, 255, 0.86); line-height: 1.6; }
   .ph__vorstand span {
@@ -576,7 +590,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   }
   .pstrip__bild--keil-a { clip-path: polygon(0 0, 100% 0, 100% 90%, 86% 100%, 0 100%); }
   .pstrip__bild--keil-b { clip-path: polygon(0 0, 100% 0, 100% 100%, 12% 100%, 0 88%); }
-  .pstrip__bild :global(img), .pgrid__el :global(img), .pueber__bild :global(img) {
+  .pstrip__bild :global(img), .pgrid__el :global(img) {
     position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 900ms var(--ease-out);
   }
   .pstrip__el:hover :global(img), .pgrid__el:hover :global(img) { transform: scale(1.04); }
@@ -643,11 +657,10 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
 
   /* Über */
   .pueber { padding-block: clamp(80px, 10vw, 144px); }
-  .pueber__grid { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 56px clamp(40px, 6vw, 104px); }
-  .pueber__seite { flex: 1 1 340px; max-width: 480px; position: sticky; top: calc(var(--header-h) + 80px); }
-  .pueber__bild { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: var(--purple); clip-path: polygon(0 0, 100% 0, 100% 88%, 86% 100%, 0 100%); }
-  .pueber__sq { position: absolute; top: 0; left: 0; width: 36px; height: 36px; background: var(--magenta); }
-  .pueber__text { flex: 1 1 520px; min-width: 0; max-width: 700px; display: flex; flex-direction: column; gap: clamp(28px, 3vw, 40px); }
+  /* Text links, Angaben rechts (klebt beim Scrollen) */
+  .pueber__grid { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 48px clamp(40px, 6vw, 104px); }
+  .pueber__text { flex: 1 1 520px; min-width: 0; max-width: 720px; display: flex; flex-direction: column; gap: clamp(28px, 3vw, 40px); }
+  .pueber__seite { flex: 1 1 340px; min-width: 0; max-width: 440px; position: sticky; top: calc(var(--header-h) + 80px); }
   .pueber__bio p { margin: 0 0 1.2em; font-size: 18px; line-height: 1.75; text-wrap: pretty; }
   .pueber__bio p:first-child {
     margin-bottom: 1em; font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 2.2vw, 30px); line-height: 1.3;
@@ -656,7 +669,8 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   .pueber__bio p:last-child { margin-bottom: 0; }
   .pueber__bald { margin: 0; color: var(--ink-soft); font-size: 17px; }
   .pfakten { margin: 0; display: flex; flex-direction: column; border-top: 3px solid var(--magenta); }
-  .pfakten__z { display: grid; grid-template-columns: minmax(120px, 180px) minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
+  :global(html.demo) .pfakten--demo + .pfakten { border-top: 0; }
+  .pfakten__z { display: grid; grid-template-columns: minmax(110px, 150px) minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
   .pfakten dt { padding-top: 3px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
   .pfakten dd { margin: 0; font-size: 15.5px; line-height: 1.5; font-weight: 600; color: var(--purple); overflow-wrap: anywhere; }
   .pfakten a { color: var(--purple); }
@@ -722,7 +736,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
     .ph__bild { position: relative; width: 100%; aspect-ratio: 4 / 5; max-height: 58svh; clip-path: polygon(0 0, 100% 0, 100% 90%, 84% 100%, 0 100%); }
     .ph__inhalt { gap: 32px; }
     .ph__credit { right: auto; left: 0; }
-    .pueber__seite { display: none; }
+    .pueber__seite { position: static; max-width: none; }
     .pgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .pgrid__el--gross, .pgrid__el--ganz { grid-column: span 2; grid-row: auto; aspect-ratio: 4 / 3; }
     .pgrid__el--klein, .pgrid__el--halb, .pgrid__el--raster { grid-column: span 1; aspect-ratio: 4 / 5; }

@@ -1,15 +1,15 @@
 # Öffentliche Profile der Künstler:innen
 
 Unter `/netzwerk/` (englisch `/en/network/`) hat jede Person aus dem Netzwerk eine eigene Seite. Aufbau (Entwurf
-„Profil v2“), jeder Abschnitt erscheint nur, wenn er gefüllt ist:
+„Profil v2“, Stand 25.10.2026, `design/entwuerfe/2026-10-profil/`), jeder Abschnitt erscheint nur, wenn er gefüllt ist:
 
 | Abschnitt | Inhalt |
 |---|---|
-| Kopf | großer Name, Porträt rechts, Pronomen · Tätigkeit · Basis, Vorstandsfunktion, „Anfrage senden“, „Showreel“ |
+| Kopf | großer Name, Porträt rechts mit schrägem Rand; ein langer Name läuft über das Foto und ist dort durchscheinend. Pronomen · Tätigkeit · Basis, Vorstandsfunktion, „Anfrage senden“, „Showreel“ |
 | Leiste | klebt beim Scrollen unter dem Seitenkopf: Name, Abschnitte (aktueller markiert), „Anfrage“, Fortschritt |
 | 01 Pitch | „In einem Satz“: Wörter leuchten beim Scrollen auf, Teil nach dem Doppelpunkt pink; Schwerpunkte darunter |
 | 02 Galerie | Filmstreifen (zieht beim Scrollen seitlich vorbei, auf dem Handy zum Wischen), Mosaik oder Raster; Vollbild mit Pfeiltasten |
-| 03 Über | Profiltext (erster Absatz groß), Angaben (Ausbildung, Techniken, Sprachen, Arbeitsorte, Basis, Körpergröße, Verfügbar), Links |
+| 03 Über | Profiltext links (erster Absatz groß), rechts klebend die Angaben (Ausbildung, Techniken, Sprachen, Arbeitsorte, Basis, Körpergröße, Verfügbar) und Links |
 | 04 Arbeiten | Stücke und Projekte mit Jahr und Ort, neueste oben |
 | 05 Termine | nächste Termine, an denen die Person mitwirkt |
 | 06 Kontakt | „Mit … arbeiten.“, offen für (Kooperationen, Engagements …), E-Mail (geschützt, mit Vorlage und „Kopieren“), Instagram-Nachricht |

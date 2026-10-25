@@ -63,6 +63,21 @@ const WORKS = [
   { year: '2024', title: 'Beispiel: Kreide', place: 'POP UP · TENZA' },
 ];
 
+const ANGABEN: Record<Lang, { k: string; v: string }[]> = {
+  de: [
+    { k: 'Ausbildung', v: 'Beispiel: Palucca Hochschule für Tanz Dresden, BA Tanz' },
+    { k: 'Techniken', v: 'Release, Contact Improvisation, Floorwork' },
+    { k: 'Sprachen', v: 'Deutsch, Englisch' },
+    { k: 'Arbeitsorte', v: 'Dresden, Leipzig, Berlin · reisebereit' },
+  ],
+  en: [
+    { k: 'Training', v: 'Example: Palucca University of Dance Dresden, BA Dance' },
+    { k: 'Techniques', v: 'Release, contact improvisation, floorwork' },
+    { k: 'Languages', v: 'German, English' },
+    { k: 'Works in', v: 'Dresden, Leipzig, Berlin · willing to travel' },
+  ],
+};
+
 /** stabiler Index aus dem Kürzel, damit eine Person immer dasselbe Beispiel bekommt */
 const nr = (id: string) => [...id].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7);
 
@@ -79,5 +94,7 @@ export function demoFuer(p: PublicProfile, lang: Lang) {
     /** vier Fotos ab einer stabilen Stelle, ohne das Beispielporträt */
     gallery: p.gallery.length ? undefined : [1, 2, 3, 4].map((k) => fotos[(i + k) % fotos.length]),
     openFor: p.openFor.length ? undefined : (['kooperationen', 'engagements', 'workshops'] as const),
+    /** Angaben neben „Über“, nur wenn keine einzige echte da ist */
+    angaben: p.education || p.techniques || p.languages || p.regions || p.height || p.available ? undefined : ANGABEN[lang],
   };
 }

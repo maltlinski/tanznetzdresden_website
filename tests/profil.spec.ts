@@ -51,6 +51,22 @@ test.describe('öffentliche Profilseite', () => {
     await expect(zweites).toBeFocused();
   });
 
+  test('Name über dem Porträt: voll links vom Bildrand, durchscheinend darüber; Angaben neben „Über“', async ({ page, isMobile }) => {
+    await ohneBanner(page);
+    await page.goto('/netzwerk/alina-lucifero/?demo=1');
+    await expect(page.getByRole('heading', { level: 1 })).toHaveText(/^\s*Alina\s*Lucifero\s*$/);
+    await expect(page.locator('[data-name-licht]')).toHaveAttribute('aria-hidden', 'true');
+    const clip = () => page.evaluate(() => ['[data-name-voll]', '[data-name-licht]'].map((s) => document.querySelector<HTMLElement>(s)!.style.clipPath));
+    if (isMobile) {
+      // Foto steht über dem Namen: nichts abschneiden
+      expect(await clip()).toEqual(['', '']);
+    } else {
+      await expect.poll(async () => (await clip()).every((c) => c.startsWith('polygon('))).toBe(true);
+    }
+    const seite = page.locator('#ueber .pueber__seite');
+    await expect(seite.getByText('Ausbildung')).toBeVisible();
+  });
+
   test('Abschnittsleiste markiert den aktuellen Abschnitt', async ({ page }) => {
     await ohneBanner(page);
     await page.goto('/netzwerk/alina-lucifero/?demo=1');
