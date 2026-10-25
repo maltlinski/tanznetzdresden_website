@@ -1,7 +1,8 @@
 /**
  * Nachgebautes Supabase für die Redaktions-Tests (Beiträge, Editor, Mediathek, Mein Profil, Freigaben):
- * Anmeldung als Pia (Presse), Tabellen news_posts, news_medien, profiles und mitgliedschaften, Buckets newsbilder
- * und profilbilder, Funktionen „inhalte“, „ausweis“, galerie_freigabe und ausweis_pruefen.
+ * Anmeldung als Pia (Presse), Tabellen news_posts, news_medien, profiles, mitgliedschaften und keepup_termine,
+ * Buckets newsbilder, profilbilder und keepup, Funktionen „inhalte“, „ausweis“, galerie_freigabe, ausweis_pruefen,
+ * keepup_ich und keepup_kontakte.
  * Hochgeladene Fotos werden aus dem Speicher wieder ausgeliefert (echte Fotos aus src/assets/photos/).
  */
 import type { Page } from '@playwright/test';
@@ -27,6 +28,9 @@ export interface Mock {
   mitgliedschaftGespeichert: Record<string, unknown>[];
   /** Aufrufe der Funktion „ausweis“ (Google Wallet) */
   wallet: number;
+  /** Tabelle keepup_termine (aktueller Stand) und jede Änderung daran */
+  keepup: Record<string, unknown>[];
+  keepupAenderungen: { methode: string; body: Record<string, unknown> | null }[];
 }
 
 export interface MockOptionen {
@@ -48,11 +52,24 @@ export interface MockOptionen {
   mitgliedschaften?: Record<string, unknown>[];
   /** Mitgliederliste (rpc/member_directory) */
   verzeichnis?: Record<string, unknown>[];
+  /** Zeilen in keepup_termine; undefined = Tabelle fehlt (Migration 20261025) */
+  keepup?: Record<string, unknown>[];
+  /** Kürzel der angemeldeten Person (rpc/keepup_ich), null = keine Dozent:in */
+  keepupIch?: string | null;
+  /** rpc/keepup_kontakte (nur Vorstand) */
+  keepupKontakte?: Record<string, unknown>[];
 }
+
+/** Neue Einplanung mit den Standardwerten der Tabelle */
+export const keepupZeile = (z: Record<string, unknown>): Record<string, unknown> => ({
+  id: `k${Math.random().toString(36).slice(2, 8)}`, art: 'training', zeit: '10:00–11:30', ort: '', notiz: '', titel: '', kurz: '', text: '',
+  schwerpunkte: [], mitbringen: '', bild: null, bild_alt: '', veroeffentlicht: null, veroeffentlicht_am: null, erinnert_am: null, ...z,
+});
+const INHALT = ['titel', 'kurz', 'text', 'schwerpunkte', 'mitbringen', 'bild', 'bild_alt'];
 
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
-  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0 };
+  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [] };
   const mitglieder = new Map<string, Record<string, unknown>>([...(o.mitgliedschaft ? [o.mitgliedschaft] : []), ...(o.mitgliedschaften ?? [])].map((z) => [String(z.person), z]));
   let profil: Record<string, unknown> = { id: 'u1', display_name: 'Pia Presse', role: 'presse', verified: false, public_listing: false, tags: [], ags: [], ...o.profil };
   const dateien = new Map<string, Buffer>();
@@ -135,7 +152,7 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       if (!prefix) return json([...new Set(namen.map((n) => n.split('/')[0]))].map((name) => ({ name, id: null })));
       return json(namen.filter((n) => n.startsWith(`${prefix}/`)).map((n) => ({ name: n.slice(prefix.length + 1), id: n, created_at: '2026-10-15T10:00:00Z' })));
     }
-    if ((t = url.pathname.match(/^\/storage\/v1\/object\/(newsbilder|profilbilder)\/(.+)$/)) && req.method() === 'POST') {
+    if ((t = url.pathname.match(/^\/storage\/v1\/object\/(newsbilder|profilbilder|keepup)\/(.+)$/)) && req.method() === 'POST') {
       const pfad = decodeURIComponent(t[2]);
       // supabase-js schickt das Foto als Formular; ausgeliefert wird einfach ein echtes Foto
       dateien.set(pfad, readFileSync(FOTOS[m.hochgeladen.length % FOTOS.length]));
@@ -146,7 +163,7 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       m.geloescht.push(req.postDataJSON().prefixes);
       return json([]);
     }
-    if ((t = url.pathname.match(/^\/storage\/v1\/object\/public\/(newsbilder|profilbilder)\/(.+)$/))) {
+    if ((t = url.pathname.match(/^\/storage\/v1\/object\/public\/(newsbilder|profilbilder|keepup)\/(.+)$/))) {
       const pfad = decodeURIComponent(t[2]);
       const inhalt = dateien.get(pfad) ?? (/^(vorhanden|u1|m1)\//.test(pfad) ? readFileSync(FOTOS[0]) : undefined);
       if (!inhalt) return route.fulfill({ status: 404, headers: cors });
@@ -175,6 +192,54 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       return json(z ? [{ name: profil.display_name, nummer: z.nummer, art: z.art, status: Number(z.bezahlt_bis) >= new Date().getFullYear() ? 'aktiv' : 'offen', gueltig_bis: `${z.bezahlt_bis}-12-31` }] : []);
     }
     if (url.pathname === '/rest/v1/rpc/member_directory') return json(o.verzeichnis ?? []);
+    if (url.pathname === '/rest/v1/rpc/keepup_ich') return o.keepup ? json(o.keepupIch ?? null) : json({ message: 'function keepup_ich does not exist', code: 'PGRST202' }, 404);
+    if (url.pathname === '/rest/v1/rpc/keepup_kontakte') return json(o.keepupKontakte ?? []);
+    if (url.pathname === '/rest/v1/keepup_termine') {
+      if (!o.keepup) return json({ message: 'relation "public.keepup_termine" does not exist', code: '42P01' }, 404);
+      // einfache PostgREST-Filter: id=eq./neq./in.(…), dozent=eq.
+      const filter = (z: Record<string, unknown>) => [...url.searchParams].every(([k, v]) => {
+        if (!['id', 'dozent'].includes(k)) return true;
+        const [op, wert] = [v.slice(0, v.indexOf('.')), v.slice(v.indexOf('.') + 1)];
+        if (op === 'eq') return String(z[k]) === wert;
+        if (op === 'neq') return String(z[k]) !== wert;
+        if (op === 'in') return wert.replace(/^\(|\)$/g, '').split(',').map((x) => x.replace(/^"|"$/g, '')).includes(String(z[k]));
+        return true;
+      });
+      const body = ['POST', 'PATCH'].includes(req.method()) ? (req.postDataJSON() as Record<string, unknown>) : null;
+      if (req.method() !== 'GET') m.keepupAenderungen.push({ methode: req.method(), body });
+      if (req.method() === 'GET') {
+        const zeilen = m.keepup.filter(filter);
+        return json(einzeln ? (zeilen[0] ?? null) : zeilen);
+      }
+      if (req.method() === 'DELETE') {
+        m.keepup = m.keepup.filter((z) => !filter(z));
+        return json([]);
+      }
+      // wie der Trigger keepup_before_write: Veröffentlichen übernimmt den gespeicherten Text
+      const schreiben = (alt: Record<string, unknown>) => {
+        const neu = { ...alt, ...body };
+        if (body && 'veroeffentlicht' in body) {
+          if (body.veroeffentlicht === null) neu.veroeffentlicht = null;
+          else {
+            if (!String(neu.titel ?? '').trim() || !String(neu.kurz ?? '').trim()) throw new Error('Zum Veröffentlichen braucht es einen Titel und eine Kurzbeschreibung.');
+            neu.veroeffentlicht = Object.fromEntries(INHALT.map((k) => [k, neu[k]]));
+          }
+        }
+        return neu;
+      };
+      try {
+        if (req.method() === 'POST') {
+          const neu = schreiben(keepupZeile({}));
+          m.keepup.push(neu);
+          return json(einzeln ? neu : [neu], 201);
+        }
+        const neu = m.keepup.filter(filter).map(schreiben);
+        m.keepup = m.keepup.map((z) => neu.find((n) => n.id === z.id) ?? z);
+        return json(einzeln ? (neu[0] ?? null) : neu);
+      } catch (e) {
+        return json({ message: (e as Error).message, code: 'P0001' }, 400);
+      }
+    }
     if (url.pathname === '/functions/v1/ausweis') {
       m.wallet++;
       return json({ url: 'https://pay.google.com/gp/v/save/test-jwt' });

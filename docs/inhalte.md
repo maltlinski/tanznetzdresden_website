@@ -30,7 +30,7 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 | News | am einfachsten im internen Bereich: *Intern → Redaktion → News schreiben* | als Datei: `src/content/news/de/` + `en/`, siehe docs/news.md |
 | Termin | `src/content/termine/JJJJ-MM-TT-titel.md` | Pflichtfelder siehe unten |
 | Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge, `seite` verlinkt eine eigene Seite |
-| KEEP UP: Trainingsplan | `src/content/keep-up/wochen.yaml` | eine Zeile pro Woche, siehe unten |
+| KEEP UP: Trainingsplan | *Intern → KEEP UP → Planung* (früher `src/content/keep-up/wochen.yaml`) | siehe unten und [keep-up.md](keep-up.md) |
 | KEEP UP: Dozent:innen im Foto-Mosaik | `src/content/keep-up/dozentinnen.yaml` | Reihenfolge = Mosaik; Name und Foto aus dem Profil |
 | KEEP UP: Seitentexte, Kopf-Foto | `src/settings/keep-up.json` | Platzhalterfotos und Tempo des Mosaiks in `keep-up.ts` |
 | Personen | `src/content/personen.yaml` | Reihenfolge = Anzeige |
@@ -75,7 +75,12 @@ Termine (mit `format: keep-up`) und erscheinen in beiden Kalendern.
 
 ### KEEP UP · Profitraining (`/profitraining/`)
 
-Der Kalender auf der Seite entsteht aus drei Quellen:
+Der Kalender auf der Seite entsteht aus diesen Quellen:
+
+- **Intern → KEEP UP** (empfohlen): Der Vorstand plant, die Dozent:innen beschreiben ihr Training, die Beschreibung
+  erscheint in der Tagesansicht. Siehe [keep-up.md](keep-up.md).
+- **`wochen.yaml`** (der ältere Weg, weiter möglich): Eine Woche, die im internen Bereich schon ein Training hat,
+  ersetzt dieselbe Woche aus der Datei.
 
 ```yaml
 # src/content/keep-up/wochen.yaml – eine Zeile pro Woche (id = Montag der Woche)

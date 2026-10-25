@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>KEEP UP · Intern · TanzNetzDresden</title>
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/base.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/styles.css">
+  <script src="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/_ds_bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+  <script src="keepup-store.js"></script>
+  <style>
+    body{margin:0;background:var(--tint-2);color:var(--ink);font-family:var(--font-body);hyphens:auto}
+    *{box-sizing:border-box}
+    a{color:var(--magenta);text-decoration:none}
+    a:hover{color:var(--purple)}
+    textarea,input,button,select{font:inherit;color:inherit}
+    ::placeholder{color:var(--ink-muted);opacity:1}
+    button:focus-visible,select:focus-visible,label:focus-within{outline:2px solid var(--magenta);outline-offset:2px}
+    ::selection{background:var(--magenta);color:#fff}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;display:flex">
+
+  <aside style="flex:0 0 228px;position:sticky;top:0;align-self:flex-start;height:100vh;overflow:auto;background:var(--purple);color:#fff;display:flex;flex-direction:column;gap:28px;padding:26px 14px 22px;z-index:20">
+    <div style="display:flex;flex-direction:column;gap:14px;padding:0 8px">
+      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="76px" hint-size="76px,29px"></x-import>
+      <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan)">KEEP UP · Intern</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:10px;padding:0 8px">
+      <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:rgba(255,255,255,0.7)">Angemeldet als</span>
+      <div style="display:grid;grid-template-columns:1fr 1fr;border:1.5px solid rgba(255,255,255,0.3)">
+        <button onClick="{{ asBoard }}" style="padding:9px 6px;border:0;border-radius:0;background:{{ roleBoardBg }};color:{{ roleBoardFg }};font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">Vorstand</button>
+        <button onClick="{{ asTrainer }}" style="padding:9px 6px;border:0;border-radius:0;background:{{ roleTrBg }};color:{{ roleTrFg }};font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer">Dozent:in</button>
+      </div>
+      <sc-if value="{{ isTrainer }}" hint-placeholder-val="{{ false }}">
+        <select value="{{ me }}" onChange="{{ onMe }}" aria-label="Dozent:in wählen" style="width:100%;padding:9px 10px;border:1.5px solid rgba(255,255,255,0.3);border-radius:0;background:var(--purple-2);color:#fff;font-size:13px;cursor:pointer">
+          <sc-for list="{{ trainerOpts }}" as="o" hint-placeholder-count="9">
+            <option value="{{ o.id }}">{{ o.name }}</option>
+          </sc-for>
+        </select>
+      </sc-if>
+    </div>
+
+    <nav style="display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="1">
+        <button onClick="{{ n.go }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:13px 10px;border:0;border-radius:0;background:{{ n.bg }};color:#fff;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;text-align:left" style-hover="background:rgba(255,255,255,0.08)">
+          <span style="width:8px;height:8px;flex:none;background:{{ n.mk }}"></span>
+          <span style="flex:1">{{ n.label }}</span>
+          <span style="color:var(--cyan)">{{ n.count }}</span>
+        </button>
+      </sc-for>
+    </nav>
+
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:14px;padding:18px 8px 0;border-top:1px solid rgba(255,255,255,0.16)">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="flex:none;width:40px;height:40px;background:var(--cyan);color:var(--purple);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:15px;letter-spacing:-0.02em">{{ user.ini }}</span>
+        <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:15px;letter-spacing:-0.01em;line-height:1.15">{{ user.name }}</span>
+          <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.72)">{{ user.role }}</span>
+        </span>
+      </div>
+      <a href="KEEP UP Profitraining.dc.html#kalender" target="_blank" style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan)" style-hover="color:#fff">Website ansehen →</a>
+      <button onClick="{{ resetDemo }}" style="align-self:flex-start;padding:0;border:0;background:none;color:rgba(255,255,255,0.6);font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="color:#fff">Demo zurücksetzen</button>
+    </div>
+  </aside>
+
+  <main style="flex:1 1 0;min-width:0">
+
+    <!-- VORSTAND · KALENDER -->
+    <sc-if value="{{ isPlan }}" hint-placeholder-val="{{ true }}">
+      <section data-screen-label="Vorstand · Kalender" style="max-width:1200px;padding:clamp(28px,4vw,52px) clamp(20px,3.5vw,48px) 96px">
+        <div data-enter="" style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 32px;margin-bottom:28px">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="200px,14px">KEEP UP · Planung</x-import>
+            <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(40px,5vw,60px);line-height:0.95;letter-spacing:-0.035em;color:var(--purple);margin:0">Kalender</h1>
+          </div>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" marker="{{ true }}" onClick="{{ newBlock }}" hint-size="210px,42px">Training einplanen</x-import>
+        </div>
+
+        <sc-if value="{{ alert.show }}" hint-placeholder-val="{{ false }}">
+          <div data-enter="" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:16px 28px;padding:20px 22px;margin-bottom:28px;background:var(--purple);color:#fff">
+            <div style="display:flex;align-items:flex-start;gap:14px;min-width:0;flex:1 1 360px">
+              <span style="flex:none;width:12px;height:12px;margin-top:6px;background:var(--magenta)"></span>
+              <div style="display:flex;flex-direction:column;gap:6px;min-width:0">
+                <span style="font-family:var(--font-display);font-weight:700;font-size:19px;line-height:1.2;letter-spacing:-0.01em">{{ alert.title }}</span>
+                <span style="font-size:14px;line-height:1.5;color:rgba(255,255,255,0.86)">{{ alert.names }}</span>
+              </div>
+            </div>
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="sm" onClick="{{ alert.remind }}" hint-size="150px,32px">{{ alert.cta }}</x-import>
+          </div>
+        </sc-if>
+
+        <div data-enter="" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px;margin-bottom:14px">
+          <div style="display:flex;flex-wrap:wrap;gap:8px">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4">
+              <button onClick="{{ f.pick }}" style="display:flex;gap:8px;align-items:center;padding:9px 13px;border:1.5px solid var(--purple);border-radius:0;background:{{ f.bg }};color:{{ f.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta)">{{ f.label }}<span style="opacity:0.65">{{ f.count }}</span></button>
+            </sc-for>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button onClick="{{ prevMonth }}" aria-label="Vorheriger Monat" style="width:40px;height:40px;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-display);font-size:18px;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">←</button>
+            <span style="min-width:170px;text-align:center;font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:-0.02em;color:var(--purple)">{{ monthLabel }}</span>
+            <button onClick="{{ nextMonth }}" aria-label="Nächster Monat" style="width:40px;height:40px;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-display);font-size:18px;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">→</button>
+          </div>
+        </div>
+
+        <div style="border-top:2px solid var(--purple);background:#fff">
+          <sc-for list="{{ weeks }}" as="w" hint-placeholder-count="5">
+            <div data-enter="" style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;padding:14px 16px;border-bottom:1px solid var(--rule)">
+              <div style="flex:1 1 430px;min-width:0;display:grid;grid-template-columns:86px repeat(7,minmax(0,1fr));gap:4px">
+                <div style="display:flex;flex-direction:column;justify-content:center;gap:4px">
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple)">KW {{ w.kw }}</span>
+                  <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--ink-muted)">{{ w.range }}</span>
+                </div>
+                <sc-for list="{{ w.cells }}" as="c" hint-placeholder-count="7">
+                  <button onClick="{{ c.pick }}" aria-label="{{ c.aria }}" style="height:54px;min-width:0;padding:6px 7px;border:0;border-radius:0;display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start;background:{{ c.bg }};color:{{ c.fg }};box-shadow:{{ c.ring }};opacity:{{ c.op }};cursor:pointer;text-align:left" style-hover="outline:2px solid var(--magenta);outline-offset:-2px">
+                    <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">{{ c.dow }}</span>
+                    <span style="font-family:var(--font-display);font-weight:800;font-size:18px;line-height:1;letter-spacing:-0.02em">{{ c.day }}</span>
+                  </button>
+                </sc-for>
+              </div>
+              <div style="flex:1 1 290px;min-width:0;display:flex;flex-direction:column;gap:6px">
+                <sc-for list="{{ w.blocks }}" as="b" hint-placeholder-count="1">
+                  <button onClick="{{ b.open }}" style="display:flex;align-items:center;gap:12px;padding:8px 10px 8px 8px;border:1px solid var(--rule);border-radius:0;background:#fff;text-align:left;cursor:pointer;opacity:{{ b.op }};width:100%" style-hover="border-color:var(--magenta)">
+                    <span style="flex:none;width:36px;height:36px;background:{{ b.avBg }};color:{{ b.avFg }};display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:13px">{{ b.ini }}</span>
+                    <span style="flex:1;min-width:0;display:flex;flex-direction:column;gap:4px">
+                      <span style="font-family:var(--font-display);font-weight:700;font-size:16px;line-height:1.15;letter-spacing:-0.01em;color:var(--purple);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ b.name }}</span>
+                      <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:{{ b.metaColor }}">{{ b.meta }}</span>
+                    </span>
+                    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ b.stVar }}" size="sm" hint-size="90px,20px">{{ b.st }}</x-import>
+                  </button>
+                </sc-for>
+                <sc-if value="{{ w.empty }}" hint-placeholder-val="{{ false }}">
+                  <button onClick="{{ w.add }}" style="display:flex;align-items:center;gap:10px;padding:14px 12px;border:1.5px dashed var(--rule);border-radius:0;background:var(--tint-2);color:var(--ink-soft);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;width:100%" style-hover="border-color:var(--magenta);color:var(--magenta)">+ Training einplanen</button>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:16px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)">
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;background:var(--cyan)"></span>Profitraining</span>
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;background:var(--magenta-tint);box-shadow:inset 0 -4px 0 var(--magenta)"></span>Workshop</span>
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:14px;height:14px;box-shadow:inset 0 0 0 2px var(--purple)"></span>Heute</span>
+          <span style="display:flex;align-items:center;gap:8px;color:var(--ink-muted)">Leeren Tag anklicken zum Einplanen</span>
+        </div>
+      </section>
+    </sc-if>
+
+    <!-- DOZENT:IN · MEINE TRAININGS -->
+    <sc-if value="{{ isMine }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Dozent:in · Meine Trainings" style="max-width:1200px;padding:clamp(28px,4vw,52px) clamp(20px,3.5vw,48px) 96px">
+        <div data-enter="" style="display:flex;flex-direction:column;gap:14px;margin-bottom:28px;max-width:680px">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="200px,14px">KEEP UP · Dozent:in</x-import>
+          <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(40px,5vw,60px);line-height:0.95;letter-spacing:-0.035em;color:var(--purple);margin:0">Hallo {{ mine.first }}.</h1>
+          <p style="margin:0;font-size:16px;line-height:1.6;color:var(--ink-soft);text-wrap:pretty">Der Vorstand hat dich für diese Termine eingeplant. Beschreib dein Training, füge bei Bedarf ein Bild hinzu und veröffentliche es. Auf der Website erscheint die Beschreibung neben dem Kalender, sobald jemand den Tag anklickt.</p>
+        </div>
+
+        <sc-if value="{{ mine.hasTodo }}" hint-placeholder-val="{{ false }}">
+          <div data-enter="" style="display:flex;align-items:center;gap:14px;padding:16px 20px;margin-bottom:24px;background:var(--purple);color:#fff">
+            <span style="flex:none;width:12px;height:12px;background:var(--magenta)"></span>
+            <span style="font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-0.01em">{{ mine.todoText }}</span>
+          </div>
+        </sc-if>
+
+        <span data-enter="" style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:12px">Anstehend</span>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,330px),1fr));gap:16px">
+          <sc-for list="{{ mine.cards }}" as="c" hint-placeholder-count="2">
+            <div data-enter="" style="background:#fff;border-top:3px solid {{ c.edge }};padding:22px 22px 20px;display:flex;flex-direction:column;gap:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ c.kindVar }}" size="sm" hint-size="80px,20px">{{ c.kind }}</x-import>
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ c.stVar }}" size="sm" hint-size="110px,20px">{{ c.st }}</x-import>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:6px">
+                <span style="font-family:var(--font-display);font-weight:800;font-size:32px;line-height:1;letter-spacing:-0.03em;color:var(--purple)">{{ c.range }}</span>
+                <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft)">{{ c.meta }}</span>
+              </div>
+              <span style="font-family:var(--font-display);font-weight:700;font-size:19px;line-height:1.2;letter-spacing:-0.01em;color:{{ c.titleColor }}">{{ c.title }}</span>
+              <sc-if value="{{ c.hasNote }}" hint-placeholder-val="{{ false }}">
+                <div style="background:var(--tint);padding:12px 14px;display:flex;flex-direction:column;gap:6px">
+                  <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Notiz vom Vorstand</span>
+                  <span style="font-size:14px;line-height:1.5;color:var(--ink)">{{ c.note }}</span>
+                </div>
+              </sc-if>
+              <div style="display:flex;flex-wrap:wrap;gap:6px 14px">
+                <sc-for list="{{ c.checks }}" as="k" hint-placeholder-count="3">
+                  <span style="display:flex;align-items:center;gap:7px;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:{{ k.fg }}"><span style="width:9px;height:9px;background:{{ k.bg }};box-shadow:inset 0 0 0 1.5px {{ k.ring }}"></span>{{ k.label }}</span>
+                </sc-for>
+              </div>
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="{{ c.ctaVar }}" marker="{{ c.ctaMarker }}" onClick="{{ c.open }}" style="margin-top:auto;align-self:flex-start" hint-size="180px,42px">{{ c.cta }}</x-import>
+            </div>
+          </sc-for>
+        </div>
+        <sc-if value="{{ mine.noCards }}" hint-placeholder-val="{{ false }}">
+          <p style="margin:0;padding:28px 0;font-size:15px;color:var(--ink-soft)">Aktuell bist du für keine Termine eingeplant.</p>
+        </sc-if>
+
+        <sc-if value="{{ mine.hasPast }}" hint-placeholder-val="{{ false }}">
+          <span data-enter="" style="display:block;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);margin:44px 0 12px">Vergangen</span>
+          <div style="border-top:2px solid var(--purple);background:#fff">
+            <sc-for list="{{ mine.past }}" as="p" hint-placeholder-count="1">
+              <button data-enter="" onClick="{{ p.open }}" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 20px;width:100%;padding:14px 16px;border:0;border-bottom:1px solid var(--rule);border-radius:0;background:#fff;text-align:left;cursor:pointer" style-hover="background:var(--tint)">
+                <span style="flex:0 0 120px;font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-0.02em;color:var(--purple)">{{ p.range }}</span>
+                <span style="flex:1 1 200px;font-size:15px;color:var(--ink-soft)">{{ p.title }}</span>
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ p.stVar }}" size="sm" hint-size="90px,20px">{{ p.st }}</x-import>
+                <span style="font-family:var(--font-display);font-size:20px;color:var(--purple)">→</span>
+              </button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </section>
+    </sc-if>
+
+    <!-- EDITOR -->
+    <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Training beschreiben">
+        <div style="position:sticky;top:0;z-index:15;background:#fff;border-bottom:1px solid var(--rule)">
+          <div style="max-width:1260px;padding:14px clamp(20px,3.5vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px">
+            <button onClick="{{ ed.back }}" style="padding:6px 0;border:0;border-radius:0;background:none;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple)" style-hover="color:var(--magenta)">← {{ ed.backLabel }}</button>
+            <div style="display:flex;align-items:center;gap:12px;min-width:0;flex:1 1 280px">
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ ed.kindVar }}" size="sm" hint-size="80px,20px">{{ ed.kind }}</x-import>
+              <span style="display:flex;flex-direction:column;gap:3px;min-width:0">
+                <span style="font-family:var(--font-display);font-weight:700;font-size:17px;line-height:1.15;letter-spacing:-0.01em;color:var(--purple);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ ed.name }} · {{ ed.range }}</span>
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-muted)">{{ ed.meta }}</span>
+              </span>
+            </div>
+            <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px">
+              <sc-if value="{{ ed.asBoard }}" hint-placeholder-val="{{ false }}">
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)">Bearbeitung als Vorstand</span>
+              </sc-if>
+              <span style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft)"><span style="width:8px;height:8px;background:{{ ed.saveMk }}"></span>{{ ed.saveLabel }}</span>
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ ed.stVar }}" size="sm" hint-size="100px,20px">{{ ed.st }}</x-import>
+              <sc-if value="{{ ed.canUnpublish }}" hint-placeholder-val="{{ false }}">
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="ghost" size="sm" onClick="{{ ed.unpublish }}" hint-size="130px,32px">Offline nehmen</x-import>
+              </sc-if>
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" marker="{{ true }}" disabled="{{ ed.pubDisabled }}" onClick="{{ ed.publish }}" hint-size="190px,42px">{{ ed.pubLabel }}</x-import>
+            </div>
+          </div>
+          <span ref="{{ pubBarRef }}" style="position:absolute;left:0;right:0;bottom:-1px;height:3px;background:var(--magenta);transform:scaleX(0);transform-origin:0 50%"></span>
+        </div>
+
+        <div style="max-width:1260px;padding:clamp(24px,3.5vw,44px) clamp(20px,3.5vw,48px) 120px;display:flex;flex-wrap:wrap;align-items:flex-start;gap:40px clamp(28px,4vw,56px)">
+
+          <div style="flex:1 1 420px;min-width:0;max-width:640px;display:flex;flex-direction:column;gap:30px">
+            <sc-if value="{{ ed.hasNote }}" hint-placeholder-val="{{ false }}">
+              <div data-enter="" style="background:#fff;border-top:3px solid var(--magenta);padding:16px 18px;display:flex;flex-direction:column;gap:6px">
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Notiz vom Vorstand</span>
+                <span style="font-size:15px;line-height:1.55;color:var(--ink)">{{ ed.note }}</span>
+              </div>
+            </sc-if>
+
+            <sc-if value="{{ ed.hasCopy }}" hint-placeholder-val="{{ false }}">
+              <div data-enter="" style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                <span style="font-size:14px;color:var(--ink-soft)">Von einem früheren Training übernehmen:</span>
+                <sc-for list="{{ ed.copy }}" as="cp" hint-placeholder-count="1">
+                  <button onClick="{{ cp.go }}" style="padding:7px 11px;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">{{ cp.label }}</button>
+                </sc-for>
+              </div>
+            </sc-if>
+
+            <label data-enter="" style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Titel</span>
+              <input value="{{ ed.title }}" onChange="{{ ed.onTitle }}" placeholder="Worum geht es in dieser Woche?" maxlength="60" style="width:100%;padding:12px 0 10px;border:0;border-bottom:2px solid var(--purple);border-radius:0;background:transparent;font-family:var(--font-display);font-weight:800;font-size:clamp(24px,2.6vw,32px);letter-spacing:-0.025em;color:var(--purple);outline:none" style-focus="border-bottom-color:var(--magenta)">
+            </label>
+
+            <label data-enter="" style="display:flex;flex-direction:column;gap:10px">
+              <span style="display:flex;justify-content:space-between;gap:12px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Kurzbeschreibung<span style="color:{{ ed.teaserColor }};letter-spacing:0.08em">{{ ed.teaserCount }}</span></span>
+              <textarea value="{{ ed.teaser }}" onChange="{{ ed.onTeaser }}" rows="3" placeholder="Zwei, drei Sätze. Was passiert, für wen, mit welchem Schwerpunkt." style="width:100%;padding:12px 14px;border:1.5px solid var(--rule);border-radius:0;background:#fff;font-size:16px;line-height:1.55;resize:vertical;outline:none" style-focus="border-color:var(--magenta)"></textarea>
+              <span style="font-size:13px;color:var(--ink-muted)">Steht direkt unter dem Titel.</span>
+            </label>
+
+            <label data-enter="" style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Ausführliche Beschreibung</span>
+              <textarea value="{{ ed.body }}" onChange="{{ ed.onBody }}" rows="7" placeholder="Ablauf, Musik, Bezüge, was du dir von der Gruppe wünschst." style="width:100%;padding:12px 14px;border:1.5px solid var(--rule);border-radius:0;background:#fff;font-size:16px;line-height:1.6;resize:vertical;outline:none" style-focus="border-color:var(--magenta)"></textarea>
+              <span style="font-size:13px;color:var(--ink-muted)">Optional. Leerzeile = neuer Absatz.</span>
+            </label>
+
+            <div data-enter="" style="display:flex;flex-direction:column;gap:12px">
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Schwerpunkte</span>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                <sc-for list="{{ ed.chips }}" as="ch" hint-placeholder-count="8">
+                  <button onClick="{{ ch.toggle }}" aria-pressed="{{ ch.on }}" style="padding:8px 12px;border:1.5px solid {{ ch.border }};border-radius:0;background:{{ ch.bg }};color:{{ ch.fg }};font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta)">{{ ch.label }}</button>
+                </sc-for>
+                <input value="{{ ed.focusDraft }}" onChange="{{ ed.onFocusDraft }}" onKeyDown="{{ ed.onFocusKey }}" placeholder="+ Eigener, Enter" style="width:150px;padding:8px 10px;border:1.5px dashed var(--rule);border-radius:0;background:#fff;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;outline:none" style-focus="border-color:var(--magenta);border-style:solid">
+              </div>
+            </div>
+
+            <label data-enter="" style="display:flex;flex-direction:column;gap:10px">
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Bitte mitbringen</span>
+              <input value="{{ ed.bring }}" onChange="{{ ed.onBring }}" placeholder="z. B. Knieschoner, lange Kleidung" style="width:100%;padding:12px 14px;border:1.5px solid var(--rule);border-radius:0;background:#fff;font-size:15px;outline:none" style-focus="border-color:var(--magenta)">
+            </label>
+
+            <div data-enter="" style="display:flex;flex-direction:column;gap:12px">
+              <span style="display:flex;justify-content:space-between;gap:12px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Bild<span style="color:var(--ink-muted);letter-spacing:0.08em">{{ ed.imgCount }}</span></span>
+              <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:12px">
+                <sc-for list="{{ ed.imgs }}" as="im" hint-placeholder-count="1">
+                  <div data-flip-id="{{ im.id }}" draggable="true" onDragStart="{{ im.dragStart }}" onDragOver="{{ im.dragOver }}" onDrop="{{ im.drop }}" onDragEnd="{{ im.dragEnd }}" style="display:flex;flex-direction:column;gap:6px;opacity:{{ im.op }}">
+                    <div data-wipe="{{ im.id }}" style="position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--tint);cursor:grab;box-shadow:{{ im.ring }}">
+                      <img src="{{ im.src }}" alt="" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+                      <sc-if value="{{ im.isCover }}" hint-placeholder-val="{{ false }}">
+                        <span style="position:absolute;left:0;top:0;padding:5px 8px;background:var(--purple);color:#fff;font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase">Titelbild</span>
+                      </sc-if>
+                      <div style="position:absolute;top:6px;right:6px;display:flex;gap:4px">
+                        <sc-if value="{{ im.notCover }}" hint-placeholder-val="{{ false }}">
+                          <button onClick="{{ im.makeCover }}" style="height:28px;padding:0 8px;border:0;border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="color:var(--magenta)">Als Titelbild</button>
+                        </sc-if>
+                        <button onClick="{{ im.remove }}" aria-label="Bild entfernen" style="width:28px;height:28px;padding:0;border:0;border-radius:0;background:var(--purple);color:#fff;font-size:16px;line-height:1;cursor:pointer" style-hover="background:var(--magenta)">×</button>
+                      </div>
+                    </div>
+                    <input value="{{ im.alt }}" onChange="{{ im.onAlt }}" placeholder="Was ist zu sehen?" aria-label="Bildbeschreibung" style="width:100%;padding:7px 9px;border:1px solid var(--rule);border-radius:0;background:#fff;font-size:13px;outline:none" style-focus="border-color:var(--magenta)">
+                  </div>
+                </sc-for>
+                <sc-if value="{{ ed.canAddImg }}" hint-placeholder-val="{{ true }}">
+                  <div onDragOver="{{ dz.over }}" onDragLeave="{{ dz.leave }}" onDrop="{{ dz.drop }}" style="aspect-ratio:4/3;border:2px dashed {{ dz.border }};background:{{ dz.bg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:12px;text-align:center">
+                    <span style="font-size:13.5px;line-height:1.4;color:var(--ink-soft)">Bild hierher ziehen</span>
+                    <label style="padding:8px 12px;background:var(--purple);color:#fff;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="background:var(--magenta)">Hochladen<input type="file" accept="image/*" multiple="" onChange="{{ dz.pick }}" style="display:none"></label>
+                    <button onClick="{{ openMedia }}" style="padding:2px 0;border:0;border-bottom:1.5px solid var(--magenta);border-radius:0;background:none;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="color:var(--magenta)">Aus Mediathek</button>
+                  </div>
+                </sc-if>
+              </div>
+              <span style="font-size:13px;color:var(--ink-muted)">Optional, ein Bild. Ohne Bild steht der Text auf der Website in voller Breite.</span>
+            </div>
+          </div>
+
+          <aside style="flex:1 1 440px;min-width:0;max-width:620px;position:sticky;top:96px;display:flex;flex-direction:column;gap:16px">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="150px,14px">Vorschau · Website</x-import>
+            <div style="background:#fff;padding:22px 22px 20px;border-top:3px solid var(--magenta)">
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ pv.dow }}</span>
+              <div style="font-family:var(--font-display);font-weight:800;font-size:clamp(28px,2.6vw,36px);line-height:1;letter-spacing:-0.03em;color:var(--purple);margin:8px 0 18px">{{ pv.date }}</div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:18px 20px;align-items:stretch">
+                <div style="min-width:0;padding-top:16px;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:9px">
+                  <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                    <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.12em;color:var(--purple)">{{ pv.time }} · {{ pv.where }}</span>
+                    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ pv.badge }}" size="sm" hint-size="90px,22px">{{ pv.kind }}</x-import>
+                  </div>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ pv.who }} · {{ pv.style }}</span>
+                  <sc-if value="{{ pv.hasText }}" hint-placeholder-val="{{ false }}">
+                    <span style="display:flex;align-items:baseline;gap:9px;font-family:var(--font-display);font-weight:700;font-size:19px;line-height:1.2;letter-spacing:-0.01em;color:var(--purple)"><span style="flex:none;width:8px;height:8px;background:var(--magenta);transform:translateY(-2px)"></span>{{ pv.title }}</span>
+                    <p style="margin:0;font-size:15px;line-height:1.55;color:var(--ink);text-wrap:pretty">{{ pv.teaser }}</p>
+                  </sc-if>
+                  <sc-for list="{{ pv.paras }}" as="p" hint-placeholder-count="0">
+                    <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);text-wrap:pretty">{{ p }}</p>
+                  </sc-for>
+                  <sc-if value="{{ pv.empty }}" hint-placeholder-val="{{ true }}">
+                    <span style="font-family:var(--font-display);font-weight:700;font-size:19px;line-height:1.2;letter-spacing:-0.01em;color:var(--purple)">{{ pv.who }}</span>
+                    <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-muted)">Die Beschreibung zu diesem Training folgt.</p>
+                  </sc-if>
+                  <sc-if value="{{ pv.hasFocus }}" hint-placeholder-val="{{ false }}">
+                    <div style="display:flex;flex-wrap:wrap;gap:5px">
+                      <sc-for list="{{ pv.focus }}" as="f" hint-placeholder-count="2">
+                        <span style="padding:4px 7px;background:var(--tint);color:var(--purple);font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">{{ f }}</span>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ pv.hasBring }}" hint-placeholder-val="{{ false }}">
+                    <p style="margin:0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)"><span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);margin-right:8px">Mitbringen</span>{{ pv.bring }}</p>
+                  </sc-if>
+                  <span style="align-self:flex-start;margin-top:2px;padding:0 0 3px;border-bottom:1.5px solid var(--magenta);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple)">Zur Dozent:in →</span>
+                </div>
+                <sc-if value="{{ pv.hasCover }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;min-height:260px;overflow:hidden;clip-path:polygon(0 0,100% 0,100% 86%,86% 100%,0 100%);background:var(--tint)">
+                    <img src="{{ pv.cover }}" alt="{{ pv.coverAlt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+                  </div>
+                </sc-if>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:9px;padding:4px 2px">
+              <sc-for list="{{ ed.checks }}" as="k" hint-placeholder-count="3">
+                <span style="display:flex;align-items:center;gap:10px;font-size:13.5px;color:{{ k.fg }}"><span style="flex:none;width:10px;height:10px;background:{{ k.bg }};box-shadow:inset 0 0 0 1.5px {{ k.ring }}"></span>{{ k.label }}</span>
+              </sc-for>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </sc-if>
+  </main>
+</div>
+
+<!-- DRAWER: EINPLANEN -->
+<sc-if value="{{ drOpen }}" hint-placeholder-val="{{ false }}">
+  <div ref="{{ ovRef }}" onClick="{{ closeDrawer }}" style="position:fixed;inset:0;z-index:50;background:rgba(46,26,77,0.55);display:flex;justify-content:flex-end">
+    <div ref="{{ panelRef }}" onClick="{{ stop }}" role="dialog" aria-label="{{ dr.title }}" data-screen-label="Einplanen" style="width:min(520px,100%);height:100%;overflow:auto;background:#fff;border-left:3px solid var(--magenta);display:flex;flex-direction:column">
+      <div style="padding:28px 28px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="160px,14px">{{ dr.tag }}</x-import>
+          <h2 style="margin:0;font-family:var(--font-display);font-weight:800;font-size:28px;line-height:1.05;letter-spacing:-0.025em;color:var(--purple)">{{ dr.title }}</h2>
+        </div>
+        <button onClick="{{ closeDrawer }}" aria-label="Schließen" style="width:40px;height:40px;flex:none;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-size:20px;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">×</button>
+      </div>
+
+      <div style="padding:24px 28px 28px;display:flex;flex-direction:column;gap:26px;flex:1">
+        <div data-dr="" style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Art</span>
+          <div style="display:grid;grid-template-columns:1fr 1fr;border:1.5px solid var(--purple)">
+            <sc-for list="{{ dr.kinds }}" as="kd" hint-placeholder-count="2">
+              <button onClick="{{ kd.pick }}" style="padding:11px;border:0;border-radius:0;background:{{ kd.bg }};color:{{ kd.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer">{{ kd.label }}</button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div data-dr="" style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Dozent:in</span>
+          <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:6px">
+            <sc-for list="{{ dr.trainers }}" as="t" hint-placeholder-count="9">
+              <button onClick="{{ t.pick }}" aria-pressed="{{ t.on }}" style="display:flex;align-items:center;gap:10px;padding:6px 10px 6px 6px;border:1.5px solid {{ t.border }};border-radius:0;background:{{ t.bg }};color:{{ t.fg }};text-align:left;cursor:pointer" style-hover="border-color:var(--magenta)">
+                <span style="flex:none;width:30px;height:30px;background:{{ t.avBg }};color:{{ t.avFg }};display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-weight:800;font-size:12px">{{ t.ini }}</span>
+                <span style="display:flex;flex-direction:column;gap:2px;min-width:0">
+                  <span style="font-family:var(--font-display);font-weight:700;font-size:14px;line-height:1.15;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.name }}</span>
+                  <span style="font-family:var(--font-mono);font-size:9.5px;letter-spacing:0.1em;text-transform:uppercase;opacity:0.75;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ t.style }}</span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+        </div>
+
+        <div data-dr="" style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Woche</span>
+          <div style="display:flex;align-items:center;gap:8px">
+            <button onClick="{{ dr.prevWeek }}" aria-label="Woche zurück" style="width:40px;height:40px;flex:none;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-display);font-size:18px;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">←</button>
+            <span style="flex:1;text-align:center;font-family:var(--font-display);font-weight:800;font-size:19px;letter-spacing:-0.015em;color:var(--purple)">{{ dr.weekLabel }}</span>
+            <button onClick="{{ dr.nextWeek }}" aria-label="Woche vor" style="width:40px;height:40px;flex:none;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-display);font-size:18px;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">→</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px">
+            <sc-for list="{{ dr.days }}" as="d" hint-placeholder-count="7">
+              <button onClick="{{ d.toggle }}" aria-pressed="{{ d.on }}" style="height:56px;padding:6px;border:1.5px solid {{ d.border }};border-radius:0;background:{{ d.bg }};color:{{ d.fg }};display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;cursor:pointer" style-hover="border-color:var(--magenta)">
+                <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">{{ d.dow }}</span>
+                <span style="font-family:var(--font-display);font-weight:800;font-size:18px;line-height:1">{{ d.day }}</span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{ dr.hasConflict }}" hint-placeholder-val="{{ false }}">
+            <span style="display:flex;align-items:flex-start;gap:9px;font-size:13.5px;line-height:1.45;color:var(--magenta)"><span style="flex:none;width:8px;height:8px;margin-top:5px;background:var(--magenta)"></span>{{ dr.conflict }}</span>
+          </sc-if>
+        </div>
+
+        <div data-dr="" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px">
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Uhrzeit</span>
+            <input value="{{ dr.time }}" onChange="{{ dr.onTime }}" style="padding:11px 12px;border:1.5px solid var(--rule);border-radius:0;font-size:15px;outline:none" style-focus="border-color:var(--magenta)">
+          </label>
+          <label style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Ort</span>
+            <input value="{{ dr.where }}" onChange="{{ dr.onWhere }}" style="padding:11px 12px;border:1.5px solid var(--rule);border-radius:0;font-size:15px;outline:none" style-focus="border-color:var(--magenta)">
+          </label>
+        </div>
+
+        <label data-dr="" style="display:flex;flex-direction:column;gap:8px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Notiz an die Dozent:in</span>
+          <textarea value="{{ dr.note }}" onChange="{{ dr.onNote }}" rows="3" placeholder="Nur intern sichtbar, z. B. Frist oder Raumhinweis" style="padding:11px 12px;border:1.5px solid var(--rule);border-radius:0;font-size:15px;line-height:1.5;resize:vertical;outline:none" style-focus="border-color:var(--magenta)"></textarea>
+        </label>
+
+        <sc-if value="{{ dr.existing }}" hint-placeholder-val="{{ false }}">
+          <div data-dr="" style="background:var(--tint);padding:18px;display:flex;flex-direction:column;gap:12px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Beschreibung</span>
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ dr.stVar }}" size="sm" hint-size="110px,20px">{{ dr.st }}</x-import>
+            </div>
+            <span style="font-size:14.5px;line-height:1.5;color:var(--ink)">{{ dr.descText }}</span>
+            <div style="display:flex;flex-wrap:wrap;gap:8px 18px">
+              <button onClick="{{ dr.remind }}" style="padding:0 0 3px;border:0;border-bottom:1.5px solid var(--magenta);border-radius:0;background:none;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="color:var(--magenta)">{{ dr.remindLabel }}</button>
+              <button onClick="{{ dr.edit }}" style="padding:0 0 3px;border:0;border-bottom:1.5px solid var(--magenta);border-radius:0;background:none;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="color:var(--magenta)">Beschreibung öffnen →</button>
+            </div>
+          </div>
+        </sc-if>
+      </div>
+
+      <div style="position:sticky;bottom:0;background:#fff;border-top:1px solid var(--rule);padding:16px 28px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" marker="{{ true }}" disabled="{{ dr.invalid }}" onClick="{{ dr.save }}" hint-size="160px,42px">{{ dr.saveLabel }}</x-import>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="ghost" onClick="{{ closeDrawer }}" hint-size="120px,42px">Abbrechen</x-import>
+        <sc-if value="{{ dr.existing }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ dr.del }}" style="margin-left:auto;padding:0 0 3px;border:0;border-bottom:1.5px solid {{ dr.delLine }};border-radius:0;background:none;color:var(--magenta);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer">{{ dr.delLabel }}</button>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- MEDIATHEK -->
+<sc-if value="{{ mediaOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closeMedia }}" style="position:fixed;inset:0;z-index:55;background:rgba(46,26,77,0.55);display:flex;align-items:center;justify-content:center;padding:24px">
+    <div onClick="{{ stop }}" role="dialog" aria-label="Mediathek" data-screen-label="Mediathek" style="width:min(880px,100%);max-height:88vh;overflow:auto;background:#fff;border-top:3px solid var(--magenta);padding:26px;display:flex;flex-direction:column;gap:20px">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="120px,14px">Mediathek</x-import>
+          <h2 style="margin:0;font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:-0.025em;color:var(--purple)">Bild wählen</h2>
+        </div>
+        <button onClick="{{ closeMedia }}" aria-label="Schließen" style="width:40px;height:40px;flex:none;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-size:20px;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">×</button>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:10px">
+        <sc-for list="{{ media }}" as="md" hint-placeholder-count="8">
+          <button onClick="{{ md.pick }}" disabled="{{ md.used }}" style="position:relative;aspect-ratio:4/3;padding:0;border:0;border-radius:0;overflow:hidden;background:var(--tint);cursor:{{ md.cursor }};opacity:{{ md.op }}" style-hover="outline:3px solid var(--magenta);outline-offset:-3px">
+            <img src="{{ md.src }}" alt="" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+            <sc-if value="{{ md.used }}" hint-placeholder-val="{{ false }}">
+              <span style="position:absolute;left:0;top:0;padding:5px 8px;background:var(--purple);color:#fff;font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase">Verwendet</span>
+            </sc-if>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<!-- TOAST -->
+<sc-if value="{{ hasToast }}" hint-placeholder-val="{{ false }}">
+  <div ref="{{ toastRef }}" role="status" style="position:fixed;left:252px;bottom:24px;z-index:70;max-width:min(560px,calc(100vw - 48px));background:var(--purple);color:#fff;padding:14px 16px 14px 18px;display:flex;align-items:center;gap:16px">
+    <span style="flex:none;width:10px;height:10px;background:var(--magenta)"></span>
+    <span style="font-size:14.5px;line-height:1.45">{{ toast.text }}</span>
+    <sc-if value="{{ toast.hasAction }}" hint-placeholder-val="{{ false }}">
+      <button onClick="{{ toast.action }}" style="flex:none;padding:0 0 3px;border:0;border-bottom:1.5px solid var(--magenta);border-radius:0;background:none;color:var(--cyan);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="color:#fff">{{ toast.actionLabel }}</button>
+    </sc-if>
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;GSAP-Animationen&quot;},&quot;teaserMax&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:240,&quot;min&quot;:120,&quot;max&quot;:400,&quot;step&quot;:10,&quot;tsType&quot;:&quot;number&quot;,&quot;label&quot;:&quot;Max. Zeichen Kurzbeschreibung&quot;}}">
+const TODAY = new Date(2026, 9, 25);
+const MON = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const MOS = ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const DOWL = ['Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag', 'Sonntag'];
+const DS = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const FOCUS = ['Floorwork', 'Release', 'Improvisation', 'Contact Improvisation', 'Partnering', 'Technik', 'Kraft', 'Komposition', 'Phrasenarbeit', 'Ballett-Basis'];
+const PHOTOS = ['solo-blau', 'sprung', 'duo-orange-blue', 'duo-rot', 'headstand-solo', 'kopfstand', 'duo-silhouette-stage', 'ensemble-curtain-call'].map((n) => 'assets/photos/' + n + '.jpg')
+  .concat(['uploads/20260429AW301M.JPG', 'uploads/20260429AW401M.JPG', 'uploads/20260429AW501M.JPG', 'uploads/20260429AW506M.JPG']);
+const ST = { offen: ['Ohne Beschreibung', 'outline'], entwurf: ['Entwurf', 'purple'], online: ['Online', 'cyan'], geaendert: ['Änderungen offen', 'magenta'] };
+const MAXIMG = 1;
+const uid = () => 'i' + Math.random().toString(36).slice(2, 9);
+const ini = (n) => n.split(/[\s&]+/).filter(Boolean).map((s) => s[0]).slice(0, 2).join('').toUpperCase();
+function isoWeek(d) {
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())), dn = t.getUTCDay() || 7;
+  t.setUTCDate(t.getUTCDate() + 4 - dn);
+  return Math.ceil(((t - new Date(Date.UTC(t.getUTCFullYear(), 0, 1))) / 86400000 + 1) / 7);
+}
+function downscale(file) {
+  return new Promise((res) => {
+    const r = new FileReader();
+    r.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        const s = Math.min(1, 1400 / Math.max(img.width, img.height)), c = document.createElement('canvas');
+        c.width = Math.round(img.width * s); c.height = Math.round(img.height * s);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        res(c.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = () => res(null);
+      img.src = r.result;
+    };
+    r.onerror = () => res(null);
+    r.readAsDataURL(file);
+  });
+}
+
+class Component extends DCLogic {
+  state = { ready: false, blocks: [], role: 'vorstand', me: 'af', view: 'plan', editId: null, back: 'plan', y: 2026, m: 9, filter: 'alle',
+    dr: null, drDel: false, pvOpen: null, saveState: 'saved', toast: null, mediaOpen: false, dragId: null, dzOn: false, focusDraft: '' };
+  panelRef = React.createRef(); ovRef = React.createRef(); pvBodyRef = React.createRef(); toastRef = React.createRef(); pubBarRef = React.createRef();
+
+  get S() { return window.KeepUpStore; }
+  get motion() { return this.props.motion !== false && !this.reduced && !!window.gsap; }
+  T(id) { return this.S.TRAINERS.find((t) => t.id === id) || { name: '—', style: '' }; }
+  short(id) { const t = this.T(id); return t.short || t.name; }
+
+  componentDidMount() {
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let n = 0;
+    const boot = () => { if (window.KeepUpStore) this.setState({ ready: true, blocks: window.KeepUpStore.load() }); else if (n++ < 80) this._bt = setTimeout(boot, 60); };
+    boot();
+    let g = 0;
+    const gw = () => { if (window.gsap && window.Flip) { window.gsap.registerPlugin(window.Flip); this.enter(); } else if (g++ < 80) this._gt = setTimeout(gw, 100); };
+    gw();
+  }
+  componentWillUnmount() { [this._bt, this._gt, this._st, this._tt].forEach(clearTimeout); }
+  componentDidUpdate(pp, ps) {
+    const s = this.state;
+    if ((!ps.ready && s.ready) || ps.view !== s.view || ps.editId !== s.editId || ps.m !== s.m || ps.role !== s.role || ps.me !== s.me) this.enter();
+    if (!ps.dr && s.dr) this.drawerIn();
+    if (s.toast && (!ps.toast || ps.toast.id !== s.toast.id)) this.toastIn();
+    const el = this.pvBodyRef.current;
+    if (el && !this._pvAnim) {
+      const open = this.isPvOpen();
+      if (open && el.style.height !== 'auto') el.style.height = 'auto';
+      if (!open && el.style.height !== '0px') el.style.height = '0px';
+    }
+  }
+
+  // ---------- motion ----------
+  enter() {
+    if (!this.motion) return;
+    requestAnimationFrame(() => {
+      const els = document.querySelectorAll('main [data-enter]');
+      if (els.length) window.gsap.fromTo(els, { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'expo.out', stagger: 0.03, overwrite: true, clearProps: 'transform' });
+    });
+  }
+  drawerIn() {
+    if (!this.motion) return;
+    const g = window.gsap, p = this.panelRef.current, o = this.ovRef.current;
+    if (o) g.fromTo(o, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: 'power2.out' });
+    if (p) {
+      g.fromTo(p, { xPercent: 100 }, { xPercent: 0, duration: 0.6, ease: 'expo.out' });
+      g.fromTo(p.querySelectorAll('[data-dr]'), { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: 'expo.out', stagger: 0.04, delay: 0.08 });
+    }
+  }
+  closeDrawer() {
+    const done = () => this.setState({ dr: null, drDel: false });
+    if (!this.motion || !this.panelRef.current) return done();
+    window.gsap.to(this.panelRef.current, { xPercent: 100, duration: 0.3, ease: 'power3.in' });
+    window.gsap.to(this.ovRef.current, { opacity: 0, duration: 0.3, ease: 'power2.in', onComplete: done });
+  }
+  toastIn() {
+    clearTimeout(this._tt);
+    const el = this.toastRef.current;
+    if (el && this.motion) window.gsap.fromTo(el, { x: -48, opacity: 0 }, { x: 0, opacity: 1, duration: 0.55, ease: 'expo.out' });
+    this._tt = setTimeout(() => this.hideToast(), 5200);
+  }
+  hideToast() {
+    const el = this.toastRef.current, done = () => this.setState({ toast: null });
+    if (el && this.motion) window.gsap.to(el, { x: -24, opacity: 0, duration: 0.25, ease: 'power2.in', onComplete: done }); else done();
+  }
+  flash(text, actionLabel, action) { this.setState({ toast: { id: Date.now(), text, actionLabel, action } }); }
+  wipeIn(ids) {
+    if (!this.motion) return;
+    requestAnimationFrame(() => ids.forEach((id, i) => {
+      const el = document.querySelector('[data-wipe="' + id + '"]');
+      if (el) window.gsap.fromTo(el, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.8, ease: 'expo.out', delay: i * 0.08, clearProps: 'clipPath' });
+    }));
+  }
+  flip(mutate) {
+    const st = this.motion && window.Flip ? window.Flip.getState('[data-flip-id]') : null;
+    mutate(() => { if (st) requestAnimationFrame(() => window.Flip.from(st, { duration: 0.55, ease: 'expo.out' })); });
+  }
+  isPvOpen() { return this.state.pvOpen == null ? this.props.previewDefault === 'aufgeklappt' : this.state.pvOpen; }
+  setPv(open) {
+    if (open === this.isPvOpen()) return;
+    this.setState({ pvOpen: open });
+    const el = this.pvBodyRef.current;
+    if (!el) return;
+    if (!this.motion) { el.style.height = open ? 'auto' : '0px'; return; }
+    const g = window.gsap; this._pvAnim = true;
+    if (open) {
+      g.fromTo(el, { height: el.offsetHeight }, { height: 'auto', duration: 0.65, ease: 'expo.out', onComplete: () => { el.style.height = 'auto'; this._pvAnim = false; } });
+      if (el.firstElementChild) g.fromTo(el.firstElementChild.children, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: 'expo.out', stagger: 0.05, clearProps: 'transform,opacity' });
+    } else {
+      g.to(el, { height: 0, duration: 0.4, ease: 'power3.inOut', onComplete: () => { this._pvAnim = false; } });
+    }
+  }
+
+  // ---------- data ----------
+  persist() {
+    clearTimeout(this._st);
+    if (this.state.saveState !== 'saving') this.setState({ saveState: 'saving' });
+    this._st = setTimeout(() => this.setState({ saveState: this.S.save(this.state.blocks) ? 'saved' : 'error' }), 550);
+  }
+  setBlocks(fn, cb) { this.setState((s) => ({ blocks: fn(s.blocks) }), () => { this.persist(); if (cb) cb(); }); }
+  upd(id, patch, cb) { this.setBlocks((bs) => bs.map((b) => (b.id === id ? Object.assign({}, b, typeof patch === 'function' ? patch(b) : patch) : b)), cb); }
+  status(b) { return this.S.status(b); }
+  lastDay(b) { return this.S.dayDate(b, Math.max.apply(null, b.days)); }
+  firstDay(b) { return this.S.dayDate(b, Math.min.apply(null, b.days)); }
+  range(b) {
+    const a = this.firstDay(b), z = this.lastDay(b);
+    if (+a === +z) return DS[(a.getDay() + 6) % 7] + ' · ' + a.getDate() + '. ' + MOS[a.getMonth()];
+    return a.getMonth() === z.getMonth() ? a.getDate() + '.–' + z.getDate() + '. ' + MOS[a.getMonth()] : a.getDate() + '. ' + MOS[a.getMonth()] + ' – ' + z.getDate() + '. ' + MOS[z.getMonth()];
+  }
+  daysTxt(b) { return b.days.slice().sort().map((d) => DS[d - 1]).join(' '); }
+  weekLabel(wk) {
+    const S = this.S, mo = S.parse(wk), su = S.addDays(mo, 6);
+    const r = mo.getMonth() === su.getMonth() ? mo.getDate() + '.–' + su.getDate() + '. ' + MOS[mo.getMonth()] : mo.getDate() + '. ' + MOS[mo.getMonth()] + ' – ' + su.getDate() + '. ' + MOS[su.getMonth()];
+    return 'KW ' + isoWeek(mo) + ' · ' + r;
+  }
+  daysUntil(b) { return Math.round((this.firstDay(b) - TODAY) / 86400000); }
+  isPast(b) { return this.lastDay(b) < TODAY; }
+
+  // ---------- Vorstand ----------
+  newBlock(week, day) {
+    const wk = week || this.S.k(this.S.mondayOf(new Date(this.state.y, this.state.m, Math.max(1, this.state.m === TODAY.getMonth() ? TODAY.getDate() : 1))));
+    this.setState({ dr: { id: null, kind: day === 6 || day === 7 ? 'workshop' : 'training', tr: null, week: wk, days: day ? [day] : [1, 2, 3, 4, 5], time: day === 6 || day === 7 ? '11:00–15:00' : '10:00–11:30', where: 'TENZA Schmiede', note: '' }, drDel: false });
+  }
+  openBlock(b) { this.setState({ dr: { id: b.id, kind: b.kind, tr: b.tr, week: b.week, days: b.days.slice(), time: b.time, where: b.where, note: b.note || '' }, drDel: false }); }
+  drSet(p) { this.setState((s) => ({ dr: Object.assign({}, s.dr, p), drDel: false })); }
+  saveDrawer() {
+    const d = this.state.dr; if (!d || !d.tr || !d.days.length) return;
+    const fields = { kind: d.kind, tr: d.tr, week: d.week, days: d.days.slice().sort(), time: d.time, where: d.where, note: d.note };
+    const name = this.short(d.tr), isNew = !d.id;
+    if (d.id) this.upd(d.id, fields);
+    else this.setBlocks((bs) => bs.concat([Object.assign({ id: 'n' + Date.now(), title: '', teaser: '', body: '', focus: [], bring: '', images: [], pub: null, reminded: null }, fields)]));
+    const mo = this.S.parse(d.week);
+    if (mo.getMonth() !== this.state.m && this.S.addDays(mo, 6).getMonth() !== this.state.m) this.setState({ y: mo.getFullYear(), m: mo.getMonth() });
+    this.closeDrawer();
+    this.flash(isNew ? 'Eingeplant. ' + name + ' sieht den Termin jetzt und kann ihn beschreiben.' : 'Änderungen gespeichert.');
+  }
+  deleteBlock() {
+    if (!this.state.drDel) return this.setState({ drDel: true });
+    const id = this.state.dr.id, removed = this.state.blocks.find((b) => b.id === id), idx = this.state.blocks.indexOf(removed);
+    this.setBlocks((bs) => bs.filter((b) => b.id !== id));
+    this.closeDrawer();
+    this.flash('Termin gelöscht.', 'Rückgängig', () => { this.setBlocks((bs) => { const c = bs.slice(); c.splice(idx, 0, removed); return c; }); this.hideToast(); });
+  }
+  remind(ids) {
+    const when = TODAY.getDate() + '. ' + MOS[TODAY.getMonth()];
+    this.setBlocks((bs) => bs.map((b) => (ids.includes(b.id) ? Object.assign({}, b, { reminded: when }) : b)));
+    const names = Array.from(new Set(this.state.blocks.filter((b) => ids.includes(b.id)).map((b) => this.short(b.tr))));
+    this.flash(names.length === 1 ? 'Erinnerung an ' + names[0] + ' gesendet.' : names.length + ' Erinnerungen gesendet.');
+  }
+  shift(dir) { this.setState((s) => { let m = s.m + dir, y = s.y; if (m < 0) { m = 11; y--; } if (m > 11) { m = 0; y++; } return { m, y }; }); }
+
+  // ---------- Editor ----------
+  openEditor(id) {
+    const back = this.state.view === 'edit' ? this.state.back : this.state.view;
+    this.setState({ view: 'edit', editId: id, back, pvOpen: null, focusDraft: '', dr: null });
+    window.scrollTo(0, 0);
+  }
+  cur() { return this.state.blocks.find((b) => b.id === this.state.editId); }
+  edUpd(p, cb) { const b = this.cur(); if (b) this.upd(b.id, p, cb); }
+  addImages(srcs) {
+    const b = this.cur(); if (!b) return;
+    const free = MAXIMG - (b.images || []).length, add = srcs.filter(Boolean).slice(0, free).map((src) => ({ id: uid(), src, alt: '' }));
+    if (!add.length) return;
+    this.edUpd((x) => ({ images: (x.images || []).concat(add) }), () => this.wipeIn(add.map((a) => a.id)));
+    if (srcs.length > free) this.flash('Es ist nur ein Bild möglich. Entferne das aktuelle, um es zu ersetzen.');
+  }
+  addFiles(list) {
+    const files = Array.from(list || []).filter((f) => /^image\//.test(f.type));
+    if (!files.length) return;
+    Promise.all(files.map(downscale)).then((srcs) => this.addImages(srcs));
+  }
+  moveImg(fromId, toId) {
+    this.flip((done) => this.edUpd((x) => {
+      const a = x.images.slice(), fi = a.findIndex((i) => i.id === fromId), ti = toId === 0 ? 0 : a.findIndex((i) => i.id === toId);
+      if (fi < 0 || ti < 0) return {};
+      const [it] = a.splice(fi, 1); a.splice(ti, 0, it); return { images: a };
+    }, done));
+  }
+  removeImg(id) {
+    const el = document.querySelector('[data-flip-id="' + id + '"]');
+    const go = () => this.flip((done) => this.edUpd((x) => ({ images: x.images.filter((i) => i.id !== id) }), done));
+    if (el && this.motion) window.gsap.to(el, { scale: 0.92, opacity: 0, duration: 0.22, ease: 'power2.in', onComplete: () => { window.gsap.set(el, { clearProps: 'all' }); go(); } });
+    else go();
+  }
+  copyFrom(src) {
+    const b = this.cur(); if (!b) return;
+    const prev = this.S.content(b), c = this.S.content(src);
+    c.images = c.images.map((i) => Object.assign({}, i, { id: uid() }));
+    this.edUpd(c, () => this.wipeIn(c.images.map((i) => i.id)));
+    this.flash('Beschreibung vom ' + this.range(src) + ' übernommen.', 'Rückgängig', () => { this.edUpd(prev); this.hideToast(); });
+  }
+  publish() {
+    const b = this.cur(); if (!b) return;
+    const max = this.props.teaserMax || 240;
+    if (!b.title.trim() || !b.teaser.trim() || b.teaser.length > max) return;
+    const first = !b.pub;
+    this.edUpd({ pub: this.S.content(b) });
+    const bar = this.pubBarRef.current;
+    if (bar && this.motion) window.gsap.timeline().fromTo(bar, { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.8, ease: 'expo.out' }).to(bar, { opacity: 0, duration: 0.4, delay: 0.3 }).set(bar, { scaleX: 0, opacity: 1 });
+    this.flash(first ? 'Online. Die Beschreibung steht jetzt im Kalender auf der Website.' : 'Änderungen sind online.', 'Website ansehen', () => window.open('KEEP UP Profitraining.dc.html#kalender', '_blank'));
+  }
+  unpublish() { this.edUpd({ pub: null }); this.flash('Offline genommen. Die Beschreibung ist wieder ein Entwurf.'); }
+  toggleFocus(f) { this.edUpd((x) => ({ focus: x.focus.includes(f) ? x.focus.filter((y) => y !== f) : x.focus.concat([f]) })); }
+
+  // ---------- render ----------
+  checks(b) {
+    const max = this.props.teaserMax || 240, tl = (b.teaser || '').length;
+    return [
+      { label: 'Titel', on: !!(b.title || '').trim() },
+      { label: tl > max ? 'Kurzbeschreibung zu lang' : 'Kurzbeschreibung', on: !!(b.teaser || '').trim() && tl <= max },
+      { label: 'Bild (optional)', on: (b.images || []).length > 0, soft: true },
+    ].map((c) => ({ label: c.label, on: c.on, bg: c.on ? 'var(--magenta)' : 'transparent', ring: c.on ? 'var(--magenta)' : 'var(--ink-muted)', fg: c.on ? 'var(--purple)' : 'var(--ink-muted)' }));
+  }
+
+  planVals() {
+    const S = this.S, { y, m, blocks, filter } = this.state, tk = S.k(TODAY);
+    const first = new Date(y, m, 1), last = new Date(y, m + 1, 0);
+    const match = (b) => { const st = this.status(b); return filter === 'alle' || (filter === 'online' ? st === 'online' || st === 'geaendert' : st === filter); };
+    const weeks = []; let mo = S.mondayOf(first);
+    const inView = [];
+    while (mo <= last) {
+      const wk = S.k(mo), wb = blocks.filter((b) => b.week === wk).sort((a, b) => (a.kind === b.kind ? 0 : a.kind === 'training' ? -1 : 1));
+      inView.push(...wb);
+      const cells = DS.map((ds, i) => {
+        const d = S.addDays(mo, i), key = S.k(d), dw = i + 1, bl = wb.filter((b) => b.days.includes(dw));
+        const tr = bl.find((b) => b.kind === 'training'), ws = bl.find((b) => b.kind === 'workshop');
+        const ring = [ws ? 'inset 0 -4px 0 var(--magenta)' : '', key === tk ? 'inset 0 0 0 2px var(--purple)' : ''].filter(Boolean).join(',') || 'none';
+        return { dow: ds, day: d.getDate(), bg: tr ? 'var(--cyan)' : ws ? 'var(--magenta-tint)' : 'var(--tint-2)', fg: tr || ws ? 'var(--purple)' : 'var(--ink-muted)', ring,
+          op: d.getMonth() !== m ? 0.35 : key < tk ? 0.6 : 1,
+          aria: DOWL[i] + ', ' + d.getDate() + '. ' + MON[d.getMonth()] + (bl.length ? ', ' + this.short(bl[0].tr) : ', frei'),
+          pick: () => (bl.length ? this.openBlock(bl[0]) : this.newBlock(wk, dw)) };
+      });
+      weeks.push({
+        kw: isoWeek(mo), range: mo.getDate() + '. ' + MOS[mo.getMonth()] + ' –' + S.addDays(mo, 6).getDate() + '.', cells,
+        empty: !wb.length, add: () => this.newBlock(wk),
+        blocks: wb.map((b) => {
+          const st = this.status(b), du = this.daysUntil(b), soon = !this.isPast(b) && du <= 14 && st !== 'online' && st !== 'geaendert';
+          return { name: this.T(b.tr).name, ini: ini(this.short(b.tr)), avBg: b.kind === 'workshop' ? 'var(--magenta)' : 'var(--purple)', avFg: b.kind === 'workshop' ? '#fff' : 'var(--cyan)',
+            meta: (b.kind === 'workshop' ? 'Workshop' : 'Training') + ' · ' + this.daysTxt(b) + ' · ' + b.time + (soon ? (du <= 0 ? ' · läuft' : ' · in ' + du + ' Tagen') : ''),
+            metaColor: soon ? 'var(--magenta)' : 'var(--ink-muted)', st: ST[st][0], stVar: ST[st][1], op: match(b) ? 1 : 0.32, open: () => this.openBlock(b) };
+        }),
+      });
+      mo = S.addDays(mo, 7);
+    }
+    const cnt = (f) => inView.filter((b) => { const st = this.status(b); return f === 'alle' || (f === 'online' ? st === 'online' || st === 'geaendert' : st === f); }).length;
+    const filters = [['alle', 'Alle'], ['offen', 'Ohne Beschreibung'], ['entwurf', 'Entwurf'], ['online', 'Online']].map(([id, label]) => ({
+      label, count: cnt(id), pick: () => this.setState({ filter: id }), bg: filter === id ? 'var(--purple)' : '#fff', fg: filter === id ? '#fff' : 'var(--purple)' }));
+    const horizon = S.addDays(TODAY, 21);
+    const due = blocks.filter((b) => !this.isPast(b) && this.firstDay(b) <= horizon && !b.pub).sort((a, b) => this.firstDay(a) - this.firstDay(b));
+    const allReminded = due.length && due.every((b) => b.reminded);
+    const alert = {
+      show: due.length > 0,
+      title: due.length + (due.length === 1 ? ' Termin' : ' Termine') + ' bis ' + horizon.getDate() + '. ' + MOS[horizon.getMonth()] + ' ohne veröffentlichte Beschreibung',
+      names: due.map((b) => this.short(b.tr) + ' (' + this.range(b) + ')').join(' · '),
+      cta: allReminded ? 'Erneut erinnern' : 'Alle erinnern', remind: () => this.remind(due.map((b) => b.id)),
+    };
+    return { weeks, filters, alert, monthLabel: MON[m] + ' ' + y };
+  }
+
+  drawerVals() {
+    const S = this.S, d = this.state.dr;
+    if (!d) return { drOpen: false, dr: { kinds: [], trainers: [], days: [] } };
+    const mo = S.parse(d.week), b = d.id ? this.state.blocks.find((x) => x.id === d.id) : null;
+    const others = this.state.blocks.filter((x) => x.id !== d.id && x.week === d.week && x.kind === d.kind);
+    const clash = others.map((x) => ({ x, ds: x.days.filter((dd) => d.days.includes(dd)) })).filter((c) => c.ds.length);
+    const st = b ? this.status(b) : 'offen';
+    const descText = !b ? '' : st === 'offen' ? 'Noch nichts geschrieben.' + (b.reminded ? ' Erinnert am ' + b.reminded + '.' : '') : (b.title || 'Ohne Titel') + (b.reminded && !b.pub ? ' · erinnert am ' + b.reminded : '');
+    return {
+      drOpen: true,
+      dr: {
+        tag: d.id ? 'Einplanung bearbeiten' : 'Neu einplanen', title: d.tr ? this.short(d.tr) : 'Wer unterrichtet?',
+        kinds: [['training', 'Profitraining'], ['workshop', 'Workshop']].map(([id, label]) => ({ label, bg: d.kind === id ? 'var(--purple)' : '#fff', fg: d.kind === id ? '#fff' : 'var(--purple)',
+          pick: () => this.drSet(id === d.kind ? {} : id === 'workshop' ? { kind: id, days: [6], time: '11:00–15:00' } : { kind: id, days: [1, 2, 3, 4, 5], time: '10:00–11:30' }) })),
+        trainers: S.TRAINERS.map((t) => { const on = d.tr === t.id; return { name: t.short || t.name, style: t.style, ini: ini(t.short || t.name), on: on ? 'true' : 'false',
+          bg: on ? 'var(--purple)' : '#fff', fg: on ? '#fff' : 'var(--purple)', border: on ? 'var(--purple)' : 'var(--rule)', avBg: on ? 'var(--cyan)' : 'var(--tint)', avFg: 'var(--purple)', pick: () => this.drSet({ tr: t.id }) }; }),
+        weekLabel: this.weekLabel(d.week),
+        prevWeek: () => this.drSet({ week: S.k(S.addDays(mo, -7)) }), nextWeek: () => this.drSet({ week: S.k(S.addDays(mo, 7)) }),
+        days: DS.map((ds, i) => { const on = d.days.includes(i + 1); return { dow: ds, day: S.addDays(mo, i).getDate(), on: on ? 'true' : 'false',
+          bg: on ? (d.kind === 'workshop' ? 'var(--magenta)' : 'var(--cyan)') : '#fff', fg: on && d.kind === 'workshop' ? '#fff' : 'var(--purple)', border: on ? 'transparent' : 'var(--rule)',
+          toggle: () => this.drSet({ days: on ? d.days.filter((x) => x !== i + 1) : d.days.concat([i + 1]).sort() }) }; }),
+        hasConflict: clash.length > 0,
+        conflict: clash.map((c) => 'Überschneidung: ' + this.short(c.x.tr) + ' ist am ' + c.ds.map((x) => DS[x - 1]).join(', ') + ' schon eingeplant.').join(' '),
+        time: d.time, where: d.where, note: d.note,
+        onTime: (e) => this.drSet({ time: e.target.value }), onWhere: (e) => this.drSet({ where: e.target.value }), onNote: (e) => this.drSet({ note: e.target.value }),
+        existing: !!b, st: ST[st][0], stVar: ST[st][1], descText,
+        remindLabel: b && b.reminded ? 'Erneut erinnern' : 'Erinnerung senden', remind: () => b && this.remind([b.id]),
+        edit: () => b && this.openEditor(b.id),
+        invalid: !d.tr || !d.days.length, saveLabel: d.id ? 'Speichern' : 'Einplanen', save: () => this.saveDrawer(),
+        delLabel: this.state.drDel ? 'Wirklich löschen?' : 'Termin löschen', delLine: this.state.drDel ? 'var(--magenta)' : 'transparent', del: () => this.deleteBlock(),
+      },
+    };
+  }
+
+  mineVals() {
+    const me = this.state.me, mine = this.state.blocks.filter((b) => b.tr === me).sort((a, b) => this.firstDay(a) - this.firstDay(b));
+    const up = mine.filter((b) => !this.isPast(b)), past = mine.filter((b) => this.isPast(b)).reverse();
+    const todo = up.filter((b) => { const s = this.status(b); return s === 'offen' || s === 'entwurf'; }).length;
+    const cards = up.map((b) => {
+      const st = this.status(b), done = st === 'online';
+      return { kind: b.kind === 'workshop' ? 'Workshop' : 'Training', kindVar: b.kind === 'workshop' ? 'magenta' : 'cyan', st: ST[st][0], stVar: ST[st][1],
+        range: this.range(b), meta: this.daysTxt(b) + ' · ' + b.time + ' · ' + b.where, title: b.title || 'Noch ohne Titel', titleColor: b.title ? 'var(--purple)' : 'var(--ink-muted)',
+        hasNote: !!b.note, note: b.note, checks: this.checks(b), edge: done ? 'var(--rule)' : 'var(--magenta)',
+        cta: st === 'offen' ? 'Beschreiben' : st === 'entwurf' ? 'Weiter schreiben' : st === 'geaendert' ? 'Änderungen prüfen' : 'Bearbeiten',
+        ctaVar: done ? 'ghost' : 'primary', ctaMarker: !done, open: () => this.openEditor(b.id) };
+    });
+    return { first: this.T(me).name.split(' ')[0], hasTodo: todo > 0, todoText: todo === 1 ? 'Ein Termin braucht noch eine Beschreibung.' : todo + ' Termine brauchen noch eine Beschreibung.',
+      cards, noCards: !cards.length, hasPast: past.length > 0,
+      past: past.map((b) => { const st = this.status(b); return { range: this.range(b), title: b.title || 'Ohne Beschreibung', st: ST[st][0], stVar: ST[st][1], open: () => this.openEditor(b.id) }; }) };
+  }
+
+  editorVals() {
+    const b = this.cur(), max = this.props.teaserMax || 240;
+    if (!b) return { ed: { imgs: [], chips: [], checks: [], copy: [] }, pv: { thumbs: [], paras: [], focus: [] }, dz: {} };
+    const st = this.status(b), t = this.T(b.tr), fd = this.firstDay(b), tl = (b.teaser || '').length;
+    const ok = !!b.title.trim() && !!b.teaser.trim() && tl <= max;
+    const srcs = this.state.blocks.filter((x) => x.tr === b.tr && x.id !== b.id && (x.title || x.teaser)).sort((a, c) => this.firstDay(c) - this.firstDay(a)).slice(0, 3);
+    const chipSet = FOCUS.concat(b.focus.filter((f) => !FOCUS.includes(f)));
+    const imgs = (b.images || []).map((im, i) => ({
+      id: im.id, src: im.src, alt: im.alt, isCover: i === 0, notCover: i > 0, op: this.state.dragId === im.id ? 0.35 : 1,
+      ring: i === 0 ? 'inset 0 0 0 3px var(--purple)' : 'none',
+      makeCover: (e) => { e.stopPropagation(); this.moveImg(im.id, 0); },
+      remove: (e) => { e.stopPropagation(); this.removeImg(im.id); },
+      onAlt: (e) => { const v = e.target.value; this.edUpd((x) => ({ images: x.images.map((y) => (y.id === im.id ? Object.assign({}, y, { alt: v }) : y)) })); },
+      dragStart: (e) => { e.dataTransfer.effectAllowed = 'move'; try { e.dataTransfer.setData('text/plain', im.id); } catch (er) {} this.setState({ dragId: im.id }); },
+      dragOver: (e) => e.preventDefault(),
+      drop: (e) => { e.preventDefault(); if (e.dataTransfer.files && e.dataTransfer.files.length) return this.addFiles(e.dataTransfer.files); const from = this.state.dragId; if (from && from !== im.id) this.moveImg(from, im.id); this.setState({ dragId: null }); },
+      dragEnd: () => this.setState({ dragId: null }),
+    }));
+    const paras = (b.body || '').split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+    const open = this.isPvOpen(), hasText = !!(b.title || b.teaser);
+    const pubLabel = st === 'online' ? 'Online' : st === 'geaendert' ? 'Änderungen veröffentlichen' : 'Veröffentlichen';
+    const ed = {
+      name: t.short || t.name, range: this.range(b), meta: (b.kind === 'workshop' ? 'Workshop' : 'Training') + ' · ' + this.daysTxt(b) + ' · ' + b.time + ' · ' + b.where,
+      kind: b.kind === 'workshop' ? 'Workshop' : 'Training', kindVar: b.kind === 'workshop' ? 'magenta' : 'cyan', st: ST[st][0], stVar: ST[st][1],
+      asBoard: this.state.role === 'vorstand', backLabel: this.state.back === 'plan' ? 'Kalender' : 'Meine Trainings', back: () => this.setState({ view: this.state.back }),
+      saveLabel: { saving: 'Speichert …', saved: 'Gespeichert', error: 'Speichern fehlgeschlagen' }[this.state.saveState], saveMk: this.state.saveState === 'saved' ? 'var(--cyan)' : 'var(--magenta)',
+      pubLabel, pubDisabled: st === 'online' || !ok, publish: () => this.publish(), canUnpublish: !!b.pub, unpublish: () => this.unpublish(),
+      hasNote: !!b.note, note: b.note,
+      hasCopy: srcs.length > 0 && !b.pub, copy: srcs.map((x) => ({ label: this.range(x) + (x.title ? ' · ' + x.title : ''), go: () => this.copyFrom(x) })),
+      title: b.title, teaser: b.teaser, body: b.body, bring: b.bring, focusDraft: this.state.focusDraft,
+      onTitle: (e) => this.edUpd({ title: e.target.value }), onTeaser: (e) => this.edUpd({ teaser: e.target.value }),
+      onBody: (e) => this.edUpd({ body: e.target.value }), onBring: (e) => this.edUpd({ bring: e.target.value }),
+      teaserCount: tl + ' / ' + max, teaserColor: tl > max ? 'var(--magenta)' : 'var(--ink-muted)',
+      chips: chipSet.map((f) => { const on = b.focus.includes(f); return { label: f, on: on ? 'true' : 'false', bg: on ? 'var(--purple)' : '#fff', fg: on ? '#fff' : 'var(--purple)', border: on ? 'var(--purple)' : 'var(--rule)', toggle: () => this.toggleFocus(f) }; }),
+      onFocusDraft: (e) => this.setState({ focusDraft: e.target.value }),
+      onFocusKey: (e) => { if (e.key !== 'Enter') return; e.preventDefault(); const v = this.state.focusDraft.trim(); if (v && !b.focus.includes(v)) this.edUpd((x) => ({ focus: x.focus.concat([v]) })); this.setState({ focusDraft: '' }); },
+      imgs, canAddImg: imgs.length < MAXIMG, imgCount: imgs.length + ' / ' + MAXIMG,
+      checks: this.checks(b),
+    };
+    const pv = {
+      dow: DOWL[(fd.getDay() + 6) % 7], date: fd.getDate() + '. ' + MON[fd.getMonth()], time: b.time, kind: b.kind === 'workshop' ? 'Workshop' : 'Training', badge: b.kind === 'workshop' ? 'magenta' : 'cyan',
+      who: t.name, style: t.style, where: b.where, hasText, empty: !hasText, title: b.title || 'Titel fehlt', teaser: b.teaser,
+      hasMore: !!(paras.length || imgs.length || b.focus.length || b.bring), expanded: open ? 'true' : 'false', more: open ? 'Weniger ↑' : 'Mehr lesen ↓', toggle: () => this.setPv(!open),
+      open: () => this.setPv(true), close: () => this.setPv(false),
+      segA: open ? '#fff' : 'var(--purple)', segAfg: open ? 'var(--purple)' : '#fff', segB: open ? 'var(--purple)' : '#fff', segBfg: open ? '#fff' : 'var(--purple)',
+      hasCover: imgs.length > 0, cover: imgs[0] ? imgs[0].src : '', coverAlt: imgs[0] ? imgs[0].alt : '',
+      hasThumbs: false, thumbs: imgs.slice(1, 1).map((i) => ({ src: i.src, alt: i.alt })), paras,
+      hasFocus: b.focus.length > 0, focus: b.focus, hasBring: !!b.bring, bring: b.bring,
+    };
+    const dz = {
+      border: this.state.dzOn ? 'var(--magenta)' : 'var(--rule)', bg: this.state.dzOn ? 'var(--magenta-tint)' : '#fff',
+      over: (e) => { e.preventDefault(); if (!this.state.dzOn && !this.state.dragId) this.setState({ dzOn: true }); },
+      leave: () => this.setState({ dzOn: false }),
+      drop: (e) => { e.preventDefault(); this.setState({ dzOn: false }); if (e.dataTransfer.files) this.addFiles(e.dataTransfer.files); },
+      pick: (e) => { this.addFiles(e.target.files); e.target.value = ''; },
+    };
+    const used = (b.images || []).map((i) => i.src);
+    const media = PHOTOS.map((src) => { const u = used.includes(src); return { src, used: u, op: u ? 0.45 : 1, cursor: u ? 'default' : 'pointer', pick: () => { this.setState({ mediaOpen: false }); this.addImages([src]); } }; });
+    return { ed, pv, dz, media };
+  }
+
+  renderVals() {
+    const s = this.state, empty = { weeks: [], filters: [], alert: {}, mine: { cards: [], past: [] }, nav: [], trainerOpts: [], ed: { imgs: [], chips: [], checks: [], copy: [] }, pv: { thumbs: [], paras: [], focus: [] }, dz: {}, media: [], dr: { kinds: [], trainers: [], days: [] }, user: {} };
+    if (!s.ready || !this.S) return Object.assign({ isPlan: true }, empty);
+    const isTr = s.role === 'trainer', me = this.T(s.me);
+    const mineTodo = s.blocks.filter((b) => b.tr === s.me && !this.isPast(b) && !b.pub).length;
+    const openCount = s.blocks.filter((b) => !this.isPast(b) && !b.pub).length;
+    const nav = (isTr ? [{ label: 'Meine Trainings', view: 'mine', count: mineTodo || '' }] : [{ label: 'Kalender', view: 'plan', count: openCount || '' }]).map((n) => {
+      const on = s.view === n.view || (s.view === 'edit' && s.back === n.view);
+      return Object.assign(n, { bg: on ? 'rgba(255,255,255,0.1)' : 'transparent', mk: on ? 'var(--magenta)' : 'rgba(255,255,255,0.3)', go: () => this.setState({ view: n.view }) });
+    });
+    const out = Object.assign({}, empty, {
+      isPlan: s.view === 'plan', isMine: s.view === 'mine', isEdit: s.view === 'edit',
+      isTrainer: isTr, me: s.me, trainerOpts: this.S.TRAINERS.map((t) => ({ id: t.id, name: t.short || t.name })),
+      onMe: (e) => this.setState({ me: e.target.value, view: 'mine' }),
+      roleBoardBg: isTr ? 'transparent' : '#fff', roleBoardFg: isTr ? '#fff' : 'var(--purple)', roleTrBg: isTr ? '#fff' : 'transparent', roleTrFg: isTr ? 'var(--purple)' : '#fff',
+      asBoard: () => this.setState({ role: 'vorstand', view: 'plan' }), asTrainer: () => this.setState({ role: 'trainer', view: 'mine' }),
+      nav, user: isTr ? { name: me.short || me.name, ini: ini(me.short || me.name), role: 'Dozent:in' } : { name: 'Rika Yotsumoto', ini: 'RY', role: 'Vorstand · KEEP UP' },
+      resetDemo: () => { const b = this.S.reset(); this.setState({ blocks: b, view: s.role === 'trainer' ? 'mine' : 'plan', dr: null }); this.flash('Demo-Daten zurückgesetzt.'); },
+      newBlock: () => this.newBlock(), prevMonth: () => this.shift(-1), nextMonth: () => this.shift(1),
+      closeDrawer: () => this.closeDrawer(), stop: (e) => e.stopPropagation(),
+      openMedia: () => this.setState({ mediaOpen: true }), closeMedia: () => this.setState({ mediaOpen: false }),
+      panelRef: this.panelRef, ovRef: this.ovRef, pvBodyRef: this.pvBodyRef, toastRef: this.toastRef, pubBarRef: this.pubBarRef,
+      mediaOpen: s.mediaOpen,
+      hasToast: !!s.toast, toast: s.toast ? { text: s.toast.text, hasAction: !!s.toast.action, actionLabel: s.toast.actionLabel, action: s.toast.action } : {},
+    });
+    if (s.view === 'plan') Object.assign(out, this.planVals());
+    if (s.view === 'mine') out.mine = this.mineVals();
+    if (s.view === 'edit') Object.assign(out, this.editorVals());
+    Object.assign(out, this.drawerVals());
+    return out;
+  }
+}
+</script>
+</body>
+</html>

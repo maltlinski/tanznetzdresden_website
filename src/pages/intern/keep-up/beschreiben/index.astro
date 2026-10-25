@@ -1,0 +1,520 @@
+---
+/**
+ * Intern → KEEP UP → Training beschreiben (?id=<Einplanung>): Titel, Kurzbeschreibung, ausführlicher Text,
+ * Schwerpunkte, „Bitte mitbringen“ und ein Bild. Rechts die Vorschau, wie die Website den Tag im Kalender zeigt.
+ * Speichert von selbst; „Veröffentlichen“ übernimmt den Stand auf die Website (die baut danach neu).
+ */
+import Intern from '../../../../layouts/Intern.astro';
+import KeepUpDaten from '../../../../components/intern/KeepUpDaten.astro';
+---
+<Intern title="KEEP UP · Training beschreiben" current="keepup-meine" voll>
+  <KeepUpDaten />
+  <p class="i-msg ed-fehler" role="alert" data-fehler hidden></p>
+
+  <div data-editor hidden>
+    <div class="ed-leiste">
+      <div class="ed-leiste__innen">
+        <a class="ed-zurueck" data-zurueck>← Meine Trainings</a>
+        <div class="ed-was">
+          <span data-art-badge></span>
+          <span class="ed-was__text">
+            <span class="ed-was__name" data-was-name></span>
+            <span class="ed-was__meta" data-was-meta></span>
+          </span>
+        </div>
+        <div class="ed-aktionen">
+          <span class="ed-als" data-als-vorstand hidden>Bearbeitung als Vorstand</span>
+          <span class="ed-speicher" aria-live="polite"><span class="ed-speicher__mk" data-speicher-mk></span><span data-speicher>Gespeichert</span></span>
+          <span data-status-badge></span>
+          <button type="button" class="ku-ghost ku-ghost--sm" data-offline hidden>Offline nehmen</button>
+          <button type="button" class="btn btn--primary btn--marker" data-veroeffentlichen>Veröffentlichen</button>
+        </div>
+      </div>
+      <span class="ed-balken" aria-hidden="true" data-balken></span>
+    </div>
+
+    <div class="ed-flaeche">
+      <div class="ed-form">
+        <div class="ed-notiz" data-notiz-box hidden>
+          <span class="ed-notiz__k">Notiz vom Vorstand</span>
+          <span data-notiz></span>
+        </div>
+
+        <div class="ed-kopie" data-kopie hidden>
+          <span>Von einem früheren Training übernehmen:</span>
+        </div>
+
+        <label class="ed-feld">
+          <span class="ed-feld__l">Titel</span>
+          <input class="ed-titel" maxlength="60" placeholder="Worum geht es in dieser Woche?" data-f="titel" />
+        </label>
+
+        <label class="ed-feld">
+          <span class="ed-feld__l">Kurzbeschreibung <span class="ed-zahl" data-kurz-zahl></span></span>
+          <textarea rows="3" maxlength="400" placeholder="Zwei, drei Sätze. Was passiert, für wen, mit welchem Schwerpunkt." data-f="kurz"></textarea>
+          <span class="i-hint">Steht direkt unter dem Titel.</span>
+        </label>
+
+        <label class="ed-feld">
+          <span class="ed-feld__l">Ausführliche Beschreibung</span>
+          <textarea rows="7" maxlength="6000" placeholder="Ablauf, Musik, Bezüge, was du dir von der Gruppe wünschst." data-f="text"></textarea>
+          <span class="i-hint">Optional. Leerzeile = neuer Absatz.</span>
+        </label>
+
+        <div class="ed-feld" role="group" aria-labelledby="ed-sp">
+          <span class="ed-feld__l" id="ed-sp">Schwerpunkte</span>
+          <div class="ed-chips" data-chips>
+            <input class="ed-chip-neu" placeholder="+ Eigener, Enter" aria-label="Eigenen Schwerpunkt hinzufügen" maxlength="40" data-chip-neu />
+          </div>
+        </div>
+
+        <label class="ed-feld">
+          <span class="ed-feld__l">Bitte mitbringen</span>
+          <input maxlength="200" placeholder="z. B. Knieschoner, lange Kleidung" data-f="mitbringen" />
+        </label>
+
+        <div class="ed-feld">
+          <span class="ed-feld__l">Bild <span class="ed-zahl" data-bild-zahl>0 / 1</span></span>
+          <div class="ed-bild" data-bild hidden>
+            <div class="ed-bild__rahmen"><img alt="" data-bild-img /><button type="button" class="ed-bild__weg" aria-label="Bild entfernen" data-bild-weg>×</button></div>
+            <input placeholder="Was ist zu sehen?" aria-label="Bildbeschreibung" maxlength="300" data-f="bild_alt" />
+          </div>
+          <div class="ed-drop" data-drop>
+            <span>Bild hierher ziehen</span>
+            <label class="ed-drop__hoch">Hochladen<input type="file" accept="image/jpeg,image/png,image/webp" class="visually-hidden" data-datei /></label>
+            <button type="button" class="ku-linie" data-mediathek>Aus Mediathek</button>
+          </div>
+          <span class="i-hint">Optional, ein Bild. Ohne Bild steht der Text auf der Website in voller Breite.</span>
+        </div>
+      </div>
+
+      <aside class="ed-vorschau" aria-label="Vorschau auf der Website">
+        <span class="tag">Vorschau · Website</span>
+        <div class="pv">
+          <span class="pv__dow" data-pv-dow></span>
+          <p class="pv__datum" data-pv-datum></p>
+          <div class="pv__inhalt">
+            <div class="pv__item">
+              <div class="pv__top"><span class="pv__zeit" data-pv-zeit></span><span data-pv-badge></span></div>
+              <span class="pv__wer" data-pv-wer></span>
+              <div class="pv__text" data-pv-text></div>
+              <span class="pv__link">Zur Dozent:in →</span>
+            </div>
+            <div class="pv__bild" data-pv-bild hidden><img alt="" data-pv-img /></div>
+          </div>
+        </div>
+        <div class="ed-pruef" data-pruef></div>
+      </aside>
+    </div>
+  </div>
+
+  <dialog class="ed-medien" aria-labelledby="ed-medien-h" data-medien>
+    <div class="ed-medien__kopf">
+      <div><span class="tag">Mediathek</span><h2 id="ed-medien-h" class="ed-medien__h">Bild wählen</h2></div>
+      <button type="button" class="pl-zu" aria-label="Schließen" data-medien-zu>×</button>
+    </div>
+    <div class="ed-medien__raster" data-medien-raster></div>
+  </dialog>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage } from '../../../../scripts/intern/session';
+  import { gsap, EASE, motionOk } from '../../../../scripts/gsap';
+  import { h } from '../../../../scripts/intern/news/dom';
+  import { verkleinern } from '../../../../scripts/intern/news/fotos';
+  import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
+  import { daten, ich, zeitraum, tageText, artText, badge, toast, DOWL, tagLang, wochentag, FEHLT, tabelleFehlt, SPALTEN } from '../../../../scripts/intern/keep-up';
+  import {
+    STATUS, status, inhalt, bereit, absaetze, ersterTag, bucketUrl, istWebsiteFoto, KURZ_MAX, SCHWERPUNKTE, type KeepUpTermin, type Beschreibung,
+  } from '../../../../lib/keep-up-plan';
+  import { SUPABASE_URL } from '../../../../lib/supabase-config';
+  import { href } from '../../../../lib/url';
+
+  const ctx = await initIntern(true);
+  const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const { dozentinnen, fotos, ort: standardOrt, website } = daten();
+  const bewegung = motionOk();
+  const params = new URLSearchParams(location.search);
+  const vonPlan = params.get('von') === 'plan';
+
+  let t: KeepUpTermin;
+  let fruehere: KeepUpTermin[] = [];
+  let ungespeichert = false;
+  let speichernZeit = 0;
+  let speichernLaeuft: Promise<void> = Promise.resolve();
+
+
+  const person = () => dozentinnen.find((d) => d.id === t.dozent);
+  const bildSrc = (bild: string | null) => (!bild ? '' : istWebsiteFoto(bild) ? fotos.find((f) => f.bild === bild)?.src ?? '' : bucketUrl(SUPABASE_URL, bild));
+  const feld = <T extends HTMLInputElement | HTMLTextAreaElement>(name: keyof Beschreibung) => $<T>(`[data-f="${name}"]`);
+
+  function aufbauen() {
+    const zurueck = $<HTMLAnchorElement>('[data-zurueck]');
+    zurueck.href = href(vonPlan ? 'intern/keep-up/' : 'intern/keep-up/meine/');
+    zurueck.textContent = vonPlan ? '← Kalender' : '← Meine Trainings';
+    if (vonPlan) document.querySelector('[data-keepup="vorstand"]')?.setAttribute('aria-current', 'page');
+    $('[data-art-badge]').replaceChildren(badge(artText(t), t.art === 'workshop' ? 'magenta' : 'cyan'));
+    $('[data-was-name]').textContent = `${person()?.name ?? t.dozent} · ${zeitraum(t)}`;
+    $('[data-was-meta]').textContent = [artText(t), tageText(t), t.zeit, t.ort || standardOrt].join(' · ');
+    $('[data-notiz-box]').hidden = !t.notiz;
+    $('[data-notiz]').textContent = t.notiz;
+    (['titel', 'kurz', 'text', 'mitbringen', 'bild_alt'] as const).forEach((k) => (feld(k).value = t[k] ?? ''));
+    $('[data-editor]').hidden = false;
+    aktualisieren();
+    if (bewegung) gsap.from('.ed-form > *, .ed-vorschau', { y: 18, opacity: 0, duration: 0.6, ease: EASE, stagger: 0.03, clearProps: 'transform,opacity' });
+  }
+
+  /** Alles, was vom Stand abhängt: Chips, Bild, Kopie, Vorschau, Prüfliste, Knöpfe */
+  function aktualisieren() {
+    const st = status(t);
+    $('[data-status-badge]').replaceChildren(badge(STATUS[st].label, STATUS[st].badge));
+    const pub = $<HTMLButtonElement>('[data-veroeffentlichen]');
+    pub.textContent = st === 'online' ? 'Online' : st === 'geaendert' ? 'Änderungen veröffentlichen' : 'Veröffentlichen';
+    pub.disabled = st === 'online' || !bereit(t);
+    $('[data-offline]').hidden = !t.veroeffentlicht;
+
+    const zahl = $('[data-kurz-zahl]');
+    zahl.textContent = `${t.kurz.length} / ${KURZ_MAX}`;
+    zahl.classList.toggle('is-zuviel', t.kurz.length > KURZ_MAX);
+
+    // Schwerpunkte: Vorschläge und eigene
+    const neu = $('[data-chip-neu]');
+    const alle = [...SCHWERPUNKTE, ...t.schwerpunkte.filter((s) => !SCHWERPUNKTE.includes(s))];
+    $('[data-chips]').replaceChildren(
+      ...alle.map((s) => h('button', { type: 'button', class: 'ed-chip', 'aria-pressed': String(t.schwerpunkte.includes(s)), onclick: () => {
+        t.schwerpunkte = t.schwerpunkte.includes(s) ? t.schwerpunkte.filter((x) => x !== s) : [...t.schwerpunkte, s];
+        aendern();
+      } }, s)),
+      neu,
+    );
+
+    // Bild
+    const src = bildSrc(t.bild);
+    $('[data-bild]').hidden = !t.bild;
+    $('[data-drop]').hidden = !!t.bild;
+    $('[data-bild-zahl]').textContent = `${t.bild ? 1 : 0} / 1`;
+    const img = $<HTMLImageElement>('[data-bild-img]');
+    if (img.getAttribute('src') !== src) img.src = src;
+
+    // Von einem früheren Training übernehmen (nur solange noch nichts veröffentlicht ist)
+    const kopie = $('[data-kopie]');
+    kopie.hidden = !fruehere.length || !!t.veroeffentlicht;
+    kopie.replaceChildren(
+      h('span', { text: 'Von einem früheren Training übernehmen:' }),
+      ...fruehere.map((x) => h('button', { type: 'button', class: 'ed-kopie__knopf', onclick: () => uebernehmen(x) }, `${zeitraum(x)}${x.titel ? ` · ${x.titel}` : ''}`)),
+    );
+
+    vorschau(src);
+    const pruef = [
+      { label: 'Titel', ok: !!t.titel.trim() },
+      { label: t.kurz.length > KURZ_MAX ? 'Kurzbeschreibung zu lang' : 'Kurzbeschreibung', ok: !!t.kurz.trim() && t.kurz.length <= KURZ_MAX },
+      { label: 'Bild (optional)', ok: !!t.bild },
+    ];
+    $('[data-pruef]').replaceChildren(...pruef.map((p) => h('span', { class: `ku-check ed-pruef__p${p.ok ? ' is-ok' : ''}`, text: p.label })));
+  }
+
+  function vorschau(src: string) {
+    const tag = ersterTag(t);
+    $('[data-pv-dow]').textContent = DOWL[wochentag(tag)];
+    $('[data-pv-datum]').textContent = tagLang(tag);
+    $('[data-pv-zeit]').textContent = `${t.zeit} · ${t.ort || standardOrt}`;
+    $('[data-pv-badge]').replaceChildren(badge(artText(t), t.art === 'workshop' ? 'magenta' : 'cyan'));
+    $('[data-pv-wer]').textContent = [person()?.name ?? t.dozent, person()?.stil].filter(Boolean).join(' · ');
+    const text = $('[data-pv-text]');
+    const teile: (Node | null)[] = [];
+    if (t.titel || t.kurz) {
+      teile.push(h('span', { class: 'pv__titel' }, h('span', { class: 'pv__sq', 'aria-hidden': 'true' }), t.titel || 'Titel fehlt'), h('p', { class: 'pv__kurz', text: t.kurz }));
+      for (const p of absaetze(t.text)) teile.push(h('p', { class: 'pv__absatz', text: p }));
+    } else {
+      teile.push(h('span', { class: 'pv__titel', text: person()?.name ?? t.dozent }), h('p', { class: 'pv__folgt', text: 'Die Beschreibung zu diesem Training folgt.' }));
+    }
+    if (t.schwerpunkte.length) teile.push(h('div', { class: 'pv__fokus' }, ...t.schwerpunkte.map((s) => h('span', { text: s }))));
+    if (t.mitbringen) teile.push(h('p', { class: 'pv__bring' }, h('span', { class: 'pv__bring-k', text: 'Mitbringen' }), t.mitbringen));
+    text.replaceChildren(...teile.filter((x): x is Node => !!x));
+    const pb = $('[data-pv-bild]');
+    pb.hidden = !src;
+    const pi = $<HTMLImageElement>('[data-pv-img]');
+    if (pi.getAttribute('src') !== src) pi.src = src;
+    pi.alt = t.bild_alt;
+  }
+
+  // ---------- Speichern (von selbst, kurz nach der letzten Änderung) ----------
+  function speicherZustand(z: 'speichert' | 'gespeichert' | 'fehler') {
+    $('[data-speicher]').textContent = { speichert: 'Speichert …', gespeichert: 'Gespeichert', fehler: 'Speichern fehlgeschlagen' }[z];
+    $('[data-speicher-mk]').classList.toggle('is-ok', z === 'gespeichert');
+  }
+  function aendern() {
+    ungespeichert = true;
+    speicherZustand('speichert');
+    aktualisieren();
+    clearTimeout(speichernZeit);
+    speichernZeit = window.setTimeout(() => void speichern(), 650);
+  }
+  async function speichern() {
+    clearTimeout(speichernZeit);
+    if (!ctx || !ungespeichert) return speichernLaeuft;
+    ungespeichert = false;
+    speichernLaeuft = speichernLaeuft.then(async () => {
+      const { error } = await ctx.sb.from('keepup_termine').update(inhalt(t)).eq('id', t.id);
+      if (error) {
+        ungespeichert = true;
+        speicherZustand('fehler');
+        toast(errorText(error));
+      } else if (!ungespeichert) speicherZustand('gespeichert');
+    });
+    return speichernLaeuft;
+  }
+  addEventListener('beforeunload', (e) => { if (ungespeichert) e.preventDefault(); });
+
+  (['titel', 'kurz', 'text', 'mitbringen', 'bild_alt'] as const).forEach((k) =>
+    feld(k).addEventListener('input', () => {
+      t[k] = feld(k).value;
+      aendern();
+    }),
+  );
+  $<HTMLInputElement>('[data-chip-neu]').addEventListener('keydown', (e) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const el = e.currentTarget as HTMLInputElement;
+    const v = el.value.trim();
+    el.value = '';
+    if (v && !t.schwerpunkte.includes(v)) {
+      t.schwerpunkte = [...t.schwerpunkte, v];
+      aendern();
+      $<HTMLInputElement>('[data-chip-neu]').focus();
+    }
+  });
+
+  function uebernehmen(x: KeepUpTermin) {
+    const vorher = inhalt(t);
+    Object.assign(t, inhalt(x));
+    (['titel', 'kurz', 'text', 'mitbringen', 'bild_alt'] as const).forEach((k) => (feld(k).value = t[k]));
+    aendern();
+    toast(`Beschreibung vom ${zeitraum(x)} übernommen.`, {
+      text: 'Rückgängig',
+      klick: () => {
+        Object.assign(t, vorher);
+        (['titel', 'kurz', 'text', 'mitbringen', 'bild_alt'] as const).forEach((k) => (feld(k).value = t[k]));
+        aendern();
+      },
+    });
+  }
+
+  // ---------- Bild ----------
+  async function hochladen(file: File) {
+    if (!ctx) return;
+    if (!/^image\/(jpeg|png|webp)$/.test(file.type)) return toast('Bitte ein Foto als JPG, PNG oder WebP wählen.');
+    const drop = $('[data-drop]');
+    drop.classList.add('is-laedt');
+    try {
+      const blob = await verkleinern(file);
+      const typ = blob.type || 'image/jpeg';
+      const pfad = `${t.dozent}/${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}.${typ === 'image/png' ? 'png' : typ === 'image/webp' ? 'webp' : 'jpg'}`;
+      const { error } = await ctx.sb.storage.from('keepup').upload(pfad, blob, { contentType: typ, upsert: false });
+      if (error) throw error;
+      bildSetzen(pfad);
+    } catch (e) {
+      toast(errorText(e));
+    } finally {
+      drop.classList.remove('is-laedt');
+    }
+  }
+  function bildSetzen(bild: string | null) {
+    t.bild = bild;
+    if (!bild) {
+      t.bild_alt = '';
+      feld('bild_alt').value = '';
+    }
+    aendern();
+    const rahmen = document.querySelector<HTMLElement>('.ed-bild__rahmen');
+    if (bild && bewegung && rahmen) gsap.fromTo(rahmen, { clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0% 0 0)', duration: 0.8, ease: EASE, clearProps: 'clipPath' });
+  }
+  $<HTMLInputElement>('[data-datei]').addEventListener('change', (e) => {
+    const f = (e.currentTarget as HTMLInputElement).files?.[0];
+    (e.currentTarget as HTMLInputElement).value = '';
+    if (f) void hochladen(f);
+  });
+  const drop = $('[data-drop]');
+  drop.addEventListener('dragover', (e) => { e.preventDefault(); drop.classList.add('is-ueber'); });
+  drop.addEventListener('dragleave', () => drop.classList.remove('is-ueber'));
+  drop.addEventListener('drop', (e) => {
+    e.preventDefault();
+    drop.classList.remove('is-ueber');
+    const f = e.dataTransfer?.files?.[0];
+    if (f) void hochladen(f);
+  });
+  $('[data-bild-weg]').addEventListener('click', () => bildSetzen(null));
+
+  const medien = $<HTMLDialogElement>('[data-medien]');
+  $('[data-mediathek]').addEventListener('click', () => {
+    $('[data-medien-raster]').replaceChildren(
+      ...fotos.map((f) => h('button', { type: 'button', class: 'ed-medien__foto', 'aria-label': `Foto ${f.bild.split('/').pop()} wählen`, onclick: () => { medien.close(); bildSetzen(f.bild); } },
+        h('img', { src: f.src, alt: '', loading: 'lazy' }))),
+    );
+    medien.showModal();
+  });
+  $('[data-medien-zu]').addEventListener('click', () => medien.close());
+  medien.addEventListener('click', (e) => { if (e.target === medien) medien.close(); });
+
+  // ---------- Veröffentlichen ----------
+  async function veroeffentlichen(an: boolean) {
+    if (!ctx) return;
+    await speichern();
+    const knopf = $<HTMLButtonElement>('[data-veroeffentlichen]');
+    knopf.disabled = true;
+    const erstes = !t.veroeffentlicht;
+    const { data, error } = await ctx.sb.from('keepup_termine').update({ veroeffentlicht: an ? {} : null }).eq('id', t.id).select(SPALTEN).single();
+    if (error) {
+      aktualisieren();
+      return toast(errorText(error));
+    }
+    t = data as KeepUpTermin;
+    aktualisieren();
+    const laeuft = await neuBauenLassen(ctx.sb);
+    const spaeter = laeuft ? ' Die Website zeigt das in wenigen Minuten.' : ' Die Website zeigt das nach dem nächsten Update.';
+    if (an) {
+      const balken = $('[data-balken]');
+      if (bewegung) gsap.timeline().fromTo(balken, { scaleX: 0, opacity: 1 }, { scaleX: 1, duration: 0.8, ease: EASE }).to(balken, { opacity: 0, duration: 0.4, delay: 0.3 }).set(balken, { scaleX: 0, opacity: 1 });
+      toast(`${erstes ? 'Online. Die Beschreibung steht jetzt im Kalender auf der Website.' : 'Änderungen sind online.'}${spaeter}`, { text: 'Website ansehen', klick: () => window.open(website, '_blank', 'noopener') });
+    } else {
+      toast(`Offline genommen. Die Beschreibung ist wieder ein Entwurf.${spaeter}`);
+    }
+  }
+  $('[data-veroeffentlichen]').addEventListener('click', () => void veroeffentlichen(true));
+  $('[data-offline]').addEventListener('click', () => void veroeffentlichen(false));
+
+  // ---------- Laden ----------
+  if (ctx) {
+    try {
+      const { data, error } = await ctx.sb.from('keepup_termine').select(SPALTEN).eq('id', params.get('id') ?? '').maybeSingle();
+      if (error) throw error;
+      if (!data) {
+        showMessage($('[data-fehler]'), 'Diese Einplanung gibt es nicht (mehr), oder sie gehört zu einer anderen Dozent:in.');
+      } else {
+        t = data as KeepUpTermin;
+        const { data: andere } = await ctx.sb.from('keepup_termine').select(SPALTEN).eq('dozent', t.dozent).neq('id', t.id);
+        fruehere = ((andere ?? []) as KeepUpTermin[]).filter((x) => x.titel || x.kurz).sort((a, b) => ersterTag(b).localeCompare(ersterTag(a))).slice(0, 3);
+        const eigen = (await ich(ctx.sb)) === t.dozent;
+        $('[data-als-vorstand]').hidden = !(ctx.isVorstand && !eigen);
+        aufbauen();
+      }
+    } catch (e) {
+      showMessage($('[data-fehler]'), tabelleFehlt(e) ? FEHLT : errorText(e));
+    }
+  }
+</script>
+
+<style>
+  .ed-fehler { margin: clamp(28px, 4vw, 52px) clamp(20px, 3.5vw, 48px); max-width: 640px; }
+  .ed-leiste { position: sticky; top: 0; z-index: 15; background: var(--paper); border-bottom: 1px solid var(--rule); }
+  .ed-leiste__innen { max-width: 1260px; padding: 14px clamp(20px, 3.5vw, 48px); display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+  .ed-zurueck { padding: 6px 0; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
+  .ed-zurueck:hover { color: var(--magenta-2); }
+  .ed-was { display: flex; align-items: center; gap: 12px; min-width: 0; flex: 1 1 280px; }
+  .ed-was__text { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .ed-was__name { font-family: var(--font-display); font-weight: 700; font-size: 17px; line-height: 1.15; letter-spacing: -0.01em; color: var(--purple); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .ed-was__meta { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+  .ed-aktionen { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+  .ed-aktionen [hidden] { display: none; }
+  .ed-als { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--magenta-2); }
+  .ed-speicher { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft); }
+  .ed-speicher__mk { width: 8px; height: 8px; background: var(--magenta); }
+  .ed-speicher__mk.is-ok { background: var(--cyan); }
+  .ed-aktionen .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .ed-balken { position: absolute; left: 0; right: 0; bottom: -1px; height: 3px; background: var(--magenta); transform: scaleX(0); transform-origin: 0 50%; }
+
+  .ed-flaeche { max-width: 1260px; padding: clamp(24px, 3.5vw, 44px) clamp(20px, 3.5vw, 48px) 120px; display: flex; flex-wrap: wrap; align-items: flex-start; gap: 40px clamp(28px, 4vw, 56px); }
+  .ed-form { flex: 1 1 420px; min-width: 0; max-width: 640px; display: flex; flex-direction: column; gap: 30px; }
+  .ed-notiz { background: var(--paper); border-top: 3px solid var(--magenta); padding: 16px 18px; display: flex; flex-direction: column; gap: 6px; font-size: 15px; line-height: 1.55; }
+  .ed-notiz[hidden], .ed-kopie[hidden], .ed-bild[hidden], .ed-drop[hidden] { display: none; }
+  .ed-notiz__k { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2); }
+  .ed-kopie { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-size: 14px; color: var(--ink-soft); }
+  .ed-kopie :global(.ed-kopie__knopf) {
+    padding: 7px 11px; border: 1.5px solid var(--purple); background: var(--paper); color: var(--purple); cursor: pointer;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .ed-kopie :global(.ed-kopie__knopf:hover) { border-color: var(--magenta); color: var(--magenta-2); }
+  .ed-feld { display: flex; flex-direction: column; gap: 10px; }
+  .ed-feld__l { display: flex; justify-content: space-between; gap: 12px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple); }
+  .ed-zahl { color: var(--ink-muted); letter-spacing: 0.08em; }
+  .ed-zahl.is-zuviel { color: var(--magenta-2); }
+  .ed-feld input, .ed-feld textarea {
+    width: 100%; padding: 12px 14px; border: 1.5px solid var(--rule); background: var(--paper); font: inherit; font-size: 16px; line-height: 1.55; color: var(--ink); outline: none;
+  }
+  .ed-feld textarea { resize: vertical; }
+  .ed-feld input:focus, .ed-feld textarea:focus { border-color: var(--magenta); }
+  .ed-feld .ed-titel {
+    padding: 12px 0 10px; border: 0; border-bottom: 2px solid var(--purple); background: transparent;
+    font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -0.025em; color: var(--purple);
+  }
+  .ed-feld .ed-titel:focus { border-bottom-color: var(--magenta); }
+  .ed-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .ed-chips :global(.ed-chip) {
+    padding: 8px 12px; border: 1.5px solid var(--rule); background: var(--paper); color: var(--purple); cursor: pointer;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .ed-chips :global(.ed-chip:hover) { border-color: var(--magenta); }
+  .ed-chips :global(.ed-chip[aria-pressed='true']) { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .ed-feld .ed-chip-neu {
+    width: 160px; padding: 8px 10px; border: 1.5px dashed var(--rule); font-family: var(--font-mono); font-size: 10.5px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; line-height: 1.2;
+  }
+  .ed-feld .ed-chip-neu:focus { border-style: solid; }
+  .ed-bild { display: flex; flex-direction: column; gap: 6px; max-width: 320px; }
+  .ed-bild__rahmen { position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: var(--tint); }
+  .ed-bild__rahmen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ed-bild__weg { position: absolute; top: 6px; right: 6px; width: 28px; height: 28px; padding: 0; border: 0; background: var(--purple); color: #fff; font-size: 16px; line-height: 1; cursor: pointer; }
+  .ed-bild__weg:hover { background: var(--magenta); }
+  .ed-feld .ed-bild input { padding: 7px 9px; font-size: 13px; }
+  .ed-drop {
+    max-width: 320px; aspect-ratio: 4 / 3; border: 2px dashed var(--rule); background: var(--paper);
+    display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 12px; text-align: center; font-size: 13.5px; color: var(--ink-soft);
+  }
+  .ed-drop.is-ueber { border-color: var(--magenta); background: var(--magenta-tint); }
+  .ed-drop.is-laedt { opacity: 0.5; pointer-events: none; }
+  .ed-drop__hoch {
+    position: relative; overflow: hidden;
+    padding: 8px 12px; background: var(--purple); color: #fff; cursor: pointer;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .ed-drop__hoch:hover, .ed-drop__hoch:focus-within { background: var(--magenta); }
+
+  .ed-vorschau { flex: 1 1 440px; min-width: 0; max-width: 620px; position: sticky; top: 96px; display: flex; flex-direction: column; gap: 16px; }
+  .pv { background: var(--paper); padding: 22px 22px 20px; border-top: 3px solid var(--magenta); }
+  .pv__dow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .pv__datum { margin: 8px 0 18px; font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 2.6vw, 36px); line-height: 1; letter-spacing: -0.03em; color: var(--purple); }
+  .pv__inhalt { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 18px 20px; align-items: stretch; }
+  .pv__item { min-width: 0; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 9px; }
+  .pv__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .pv__zeit { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; color: var(--purple); }
+  .pv__wer { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+  .pv__text { display: flex; flex-direction: column; gap: 9px; }
+  .pv__text :global(.pv__titel) { display: flex; align-items: baseline; gap: 9px; font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.2; letter-spacing: -0.01em; color: var(--purple); }
+  .pv__text :global(.pv__sq) { flex: none; width: 8px; height: 8px; background: var(--magenta); transform: translateY(-2px); }
+  .pv__text :global(p) { margin: 0; text-wrap: pretty; }
+  .pv__text :global(.pv__kurz) { font-size: 15px; line-height: 1.55; color: var(--ink); }
+  .pv__text :global(.pv__absatz) { font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+  .pv__text :global(.pv__folgt) { font-size: 14px; line-height: 1.6; color: var(--ink-muted); }
+  .pv__text :global(.pv__fokus) { display: flex; flex-wrap: wrap; gap: 5px; }
+  .pv__text :global(.pv__fokus span) { padding: 4px 7px; background: var(--tint); color: var(--purple); font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  .pv__text :global(.pv__bring) { font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+  .pv__text :global(.pv__bring-k) { margin-right: 8px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--magenta-2); }
+  .pv__link { align-self: flex-start; margin-top: 2px; padding-bottom: 3px; border-bottom: 1.5px solid var(--magenta); font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
+  .pv__bild { position: relative; min-height: 260px; overflow: hidden; clip-path: var(--keil-corner); background: var(--tint); }
+  .pv__bild[hidden] { display: none; }
+  .pv__bild img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ed-pruef { display: flex; flex-direction: column; gap: 9px; padding: 4px 2px; }
+
+  .ed-medien { width: min(880px, calc(100% - 32px)); max-height: 88vh; padding: 26px; border: 0; border-top: 3px solid var(--magenta); background: var(--paper); }
+  .ed-medien::backdrop { background: rgba(46, 26, 77, 0.55); }
+  .ed-medien__kopf { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; margin-bottom: 20px; }
+  .ed-medien__kopf > div { display: flex; flex-direction: column; gap: 12px; }
+  .ed-medien__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -0.025em; color: var(--purple); }
+  .ed-medien .pl-zu { width: 40px; height: 40px; flex: none; border: 1.5px solid var(--purple); background: var(--paper); color: var(--purple); font-size: 20px; cursor: pointer; }
+  .ed-medien__raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+  .ed-medien__raster :global(.ed-medien__foto) { position: relative; aspect-ratio: 4 / 3; padding: 0; border: 0; overflow: hidden; background: var(--tint); cursor: pointer; }
+  .ed-medien__raster :global(.ed-medien__foto img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .ed-medien__raster :global(.ed-medien__foto:hover), .ed-medien__raster :global(.ed-medien__foto:focus-visible) { outline: 3px solid var(--magenta); outline-offset: -3px; }
+
+  @media (max-width: 900px) { .ed-vorschau { position: static; } }
+</style>

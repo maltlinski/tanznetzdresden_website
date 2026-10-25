@@ -1,0 +1,578 @@
+---
+/**
+ * Intern → KEEP UP → Planung (Entwurf design/entwuerfe/2026-10-keep-up-intern/): der Vorstand plant die
+ * Trainingswochen und Workshops. Pro Woche eine Zeile mit den Tagen und den Einplanungen; ein Klick auf einen
+ * freien Tag plant ein, ein Klick auf eine Einplanung öffnet sie. Die Dozent:in beschreibt ihr Training selbst
+ * (Intern → KEEP UP → Meine Trainings), der Vorstand kann sie erinnern.
+ */
+import Intern from '../../../layouts/Intern.astro';
+import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
+---
+<Intern title="KEEP UP · Planung" current="keepup">
+  <KeepUpDaten />
+  <div class="ku-kopf">
+    <div class="ku-kopf__titel">
+      <span class="tag">KEEP UP · Planung</span>
+      <h1 class="i-h1">Kalender</h1>
+    </div>
+    <button type="button" class="btn btn--primary btn--marker" data-neu hidden>Training einplanen</button>
+  </div>
+
+  <p class="i-msg" role="alert" data-msg hidden></p>
+
+  <div class="ku-hinweis" data-erinnern-box hidden>
+    <div class="ku-hinweis__text">
+      <span class="ku-hinweis__sq" aria-hidden="true"></span>
+      <span>
+        <span class="ku-hinweis__titel" data-erinnern-titel></span>
+        <span class="ku-hinweis__namen" data-erinnern-namen></span>
+      </span>
+    </div>
+    <button type="button" class="btn btn--secondary btn--sm" data-erinnern-alle></button>
+  </div>
+
+  <div data-plan hidden>
+    <div class="pl-leiste">
+      <div class="pl-filter" role="group" aria-label="Einplanungen filtern" data-filter></div>
+      <div class="pl-monat">
+        <button type="button" class="pl-pfeil" aria-label="Vorheriger Monat" data-monat="-1">←</button>
+        <span class="pl-monat__name" aria-live="polite" data-monat-name></span>
+        <button type="button" class="pl-pfeil" aria-label="Nächster Monat" data-monat="1">→</button>
+      </div>
+    </div>
+    <div class="pl-wochen" data-wochen></div>
+    <div class="pl-legende" aria-hidden="true">
+      <span><span class="pl-legende__mk pl-legende__mk--training"></span>Profitraining</span>
+      <span><span class="pl-legende__mk pl-legende__mk--workshop"></span>Workshop</span>
+      <span><span class="pl-legende__mk pl-legende__mk--heute"></span>Heute</span>
+      <span class="pl-legende__tipp">Leeren Tag anklicken zum Einplanen</span>
+    </div>
+  </div>
+
+  <dialog class="pl-schublade" aria-labelledby="pl-titel" data-schublade>
+    <form method="dialog" class="pl-schublade__form" data-form>
+      <div class="pl-schublade__kopf">
+        <div>
+          <span class="tag" data-s-tag></span>
+          <h2 id="pl-titel" class="pl-schublade__h" data-s-titel></h2>
+        </div>
+        <button type="button" class="pl-zu" aria-label="Schließen" data-zu>×</button>
+      </div>
+      <div class="pl-schublade__inhalt">
+        <fieldset class="pl-feld" data-s-teil>
+          <legend class="pl-feld__l">Art</legend>
+          <div class="pl-seg" data-s-art>
+            <button type="button" data-art="training" aria-pressed="true">Profitraining</button>
+            <button type="button" data-art="workshop" aria-pressed="false">Workshop</button>
+          </div>
+        </fieldset>
+        <fieldset class="pl-feld" data-s-teil>
+          <legend class="pl-feld__l">Dozent:in</legend>
+          <div class="pl-personen" data-s-personen></div>
+        </fieldset>
+        <fieldset class="pl-feld" data-s-teil>
+          <legend class="pl-feld__l">Woche</legend>
+          <div class="pl-woche">
+            <button type="button" class="pl-pfeil" aria-label="Woche zurück" data-s-woche="-7">←</button>
+            <span class="pl-woche__name" aria-live="polite" data-s-woche-name></span>
+            <button type="button" class="pl-pfeil" aria-label="Woche vor" data-s-woche="7">→</button>
+          </div>
+          <div class="pl-tage" data-s-tage></div>
+          <p class="pl-konflikt" data-s-konflikt hidden></p>
+        </fieldset>
+        <div class="pl-zwei" data-s-teil>
+          <div class="i-field">
+            <label for="pl-zeit">Uhrzeit</label>
+            <input id="pl-zeit" maxlength="40" required data-s-zeit />
+          </div>
+          <div class="i-field">
+            <label for="pl-ort">Ort</label>
+            <input id="pl-ort" maxlength="120" data-s-ort />
+          </div>
+        </div>
+        <div class="i-field" data-s-teil>
+          <label for="pl-notiz">Notiz an die Dozent:in</label>
+          <textarea id="pl-notiz" rows="3" maxlength="1000" placeholder="Nur intern sichtbar, z. B. Frist oder Raumhinweis" data-s-notiz></textarea>
+        </div>
+        <div class="pl-beschreibung" data-s-teil data-s-beschreibung hidden>
+          <div class="pl-beschreibung__kopf"><span class="pl-feld__l">Beschreibung</span><span data-s-status></span></div>
+          <p data-s-text></p>
+          <div class="pl-beschreibung__aktionen">
+            <button type="button" class="ku-linie" data-s-erinnern></button>
+            <a class="ku-linie" data-s-oeffnen>Beschreibung öffnen →</a>
+          </div>
+        </div>
+        <p class="i-msg" role="alert" data-s-msg hidden></p>
+      </div>
+      <div class="pl-schublade__fuss">
+        <button type="submit" class="btn btn--primary btn--marker" data-s-speichern>Einplanen</button>
+        <button type="button" class="ku-ghost" data-zu>Abbrechen</button>
+        <button type="button" class="pl-loeschen" data-s-loeschen hidden>Termin löschen</button>
+      </div>
+    </form>
+  </dialog>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage } from '../../../scripts/intern/session';
+  import { gsap, EASE, motionOk } from '../../../scripts/gsap';
+  import { h } from '../../../scripts/intern/news/dom';
+  import {
+    daten, ladeTermine, heute, monatName, tagKurz, tagLang, zeitraum, tageText, wocheText, istVorbei, tageBis, artText, initialen,
+    badge, toast, DS, DOWL, FEHLT, tabelleFehlt, SPALTEN,
+  } from '../../../scripts/intern/keep-up';
+  import { STANDARD, STATUS, status, plusTage, montag, tagDatum, ersterTag, kalenderwoche, zeitNorm, type KeepUpTermin, type Status } from '../../../lib/keep-up-plan';
+  import { href } from '../../../lib/url';
+
+  const ctx = await initIntern(true);
+  const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const msg = $('[data-msg]');
+  const { dozentinnen, ort: standardOrt } = daten();
+  const person = new Map(dozentinnen.map((d) => [d.id, d]));
+  const nameVon = (id: string) => person.get(id)?.name ?? id;
+  const bewegung = motionOk();
+  const h0 = heute();
+
+  let termine: KeepUpTermin[] = [];
+  let filter: 'alle' | Status | 'online' = 'alle';
+  let [jahr, monat] = h0.split('-').map(Number) as [number, number];
+  monat -= 1;
+
+
+  // ---------- Übersicht ----------
+  const passt = (t: KeepUpTermin) => {
+    const st = status(t);
+    return filter === 'alle' || (filter === 'online' ? st === 'online' || st === 'geaendert' : st === filter);
+  };
+
+  function zeichnen(auftritt = false) {
+    const erster = `${jahr}-${String(monat + 1).padStart(2, '0')}-01`;
+    const letzter = new Date(Date.UTC(jahr, monat + 1, 0)).toISOString().slice(0, 10);
+    $('[data-monat-name]').textContent = monatName(jahr, monat);
+    const wochen: string[] = [];
+    for (let mo = montag(erster); mo <= letzter; mo = plusTage(mo, 7)) wochen.push(mo);
+    const imBild = termine.filter((t) => wochen.includes(t.woche));
+
+    // Filter mit Zahlen (im sichtbaren Monat)
+    const anzahl = (f: typeof filter) => imBild.filter((t) => { const st = status(t); return f === 'alle' || (f === 'online' ? st === 'online' || st === 'geaendert' : st === f); }).length;
+    $('[data-filter]').replaceChildren(
+      ...([['alle', 'Alle'], ['offen', 'Ohne Beschreibung'], ['entwurf', 'Entwurf'], ['online', 'Online']] as const).map(([id, label]) =>
+        h('button', { type: 'button', class: 'pl-chip', 'aria-pressed': String(filter === id), onclick: () => { filter = id; zeichnen(); } }, label, h('span', { text: String(anzahl(id)) })),
+      ),
+    );
+
+    $('[data-wochen]').replaceChildren(
+      ...wochen.map((mo) => {
+        const wb = termine.filter((t) => t.woche === mo).sort((a, b) => (a.art === b.art ? 0 : a.art === 'training' ? -1 : 1));
+        const zellen = DS.map((ds, i) => {
+          const tag = i + 1;
+          const datum = plusTage(mo, i);
+          const hier = wb.filter((t) => t.tage.includes(tag));
+          const tr = hier.find((t) => t.art === 'training');
+          const ws = hier.find((t) => t.art === 'workshop');
+          const cls = ['pl-tag', tr && 'pl-tag--training', ws && 'pl-tag--workshop', datum === h0 && 'is-heute', datum < h0 && 'is-vorbei', Number(datum.slice(5, 7)) !== monat + 1 && 'is-fremd'].filter(Boolean).join(' ');
+          return h('button', {
+            type: 'button', class: cls,
+            'aria-label': `${DOWL[i]}, ${tagLang(datum)}${hier.length ? `, ${hier.map((t) => nameVon(t.dozent)).join(', ')}` : ', frei – einplanen'}`,
+            onclick: () => (hier.length ? oeffnen(hier[0]) : neu(mo, tag)),
+          }, h('span', { class: 'pl-tag__dow', text: ds }), h('span', { class: 'pl-tag__nr', text: String(Number(datum.slice(8))) }));
+        });
+        const bloecke = wb.map((t) => {
+          const st = status(t);
+          const bald = !istVorbei(t, h0) && tageBis(t, h0) <= 14 && st !== 'online' && st !== 'geaendert';
+          const d = tageBis(t, h0);
+          return h('button', { type: 'button', class: `pl-block${passt(t) ? '' : ' is-blass'}`, onclick: () => oeffnen(t) },
+            avatar(t.dozent, t.art),
+            h('span', { class: 'pl-block__text' },
+              h('span', { class: 'pl-block__name', text: nameVon(t.dozent) }),
+              h('span', { class: `pl-block__meta${bald ? ' is-bald' : ''}`, text: [artText(t), tageText(t), t.zeit, bald ? (d <= 0 ? 'läuft' : d === 1 ? 'morgen' : `in ${d} Tagen`) : ''].filter(Boolean).join(' · ') }),
+            ),
+            badge(STATUS[st].label, STATUS[st].badge),
+          );
+        });
+        return h('div', { class: 'pl-woche-zeile', 'data-woche': mo },
+          h('div', { class: 'pl-raster' },
+            h('div', { class: 'pl-kw' }, h('span', { class: 'pl-kw__nr', text: `KW ${kalenderwoche(mo)}` }), h('span', { class: 'pl-kw__tage', text: `${tagKurz(mo)} – ${Number(plusTage(mo, 6).slice(8))}.` })),
+            ...zellen,
+          ),
+          h('div', { class: 'pl-bloecke' }, ...(bloecke.length ? bloecke : [h('button', { type: 'button', class: 'pl-leer', onclick: () => neu(mo) }, '+ Training einplanen')])),
+        );
+      }),
+    );
+    erinnernBox();
+    if (auftritt && bewegung) gsap.from('[data-wochen] > *', { y: 18, opacity: 0, duration: 0.6, ease: EASE, stagger: 0.03, clearProps: 'transform,opacity' });
+  }
+
+  function avatar(id: string, art: KeepUpTermin['art']) {
+    const p = person.get(id);
+    const el = h('span', { class: `ku-avatar${art === 'workshop' ? ' ku-avatar--workshop' : ''}`, 'aria-hidden': 'true', text: initialen(nameVon(id)) });
+    if (p?.foto && art === 'training') el.append(h('img', { src: p.foto, alt: '' }));
+    return el;
+  }
+
+  // Hinweis: Termine in den nächsten 3 Wochen ohne veröffentlichte Beschreibung
+  function erinnernBox() {
+    const grenze = plusTage(h0, 21);
+    const faellig = termine.filter((t) => !istVorbei(t, h0) && ersterTag(t) <= grenze && !t.veroeffentlicht).sort((a, b) => ersterTag(a).localeCompare(ersterTag(b)));
+    const box = $('[data-erinnern-box]');
+    box.hidden = !faellig.length;
+    if (!faellig.length) return;
+    $('[data-erinnern-titel]').textContent = `${faellig.length} ${faellig.length === 1 ? 'Termin' : 'Termine'} bis ${tagLang(grenze)} ohne veröffentlichte Beschreibung`;
+    $('[data-erinnern-namen]').textContent = faellig.map((t) => `${nameVon(t.dozent)} (${zeitraum(t)})`).join(' · ');
+    const knopf = $<HTMLButtonElement>('[data-erinnern-alle]');
+    knopf.textContent = faellig.every((t) => t.erinnert_am) ? 'Erneut erinnern' : 'Alle erinnern';
+    knopf.onclick = () => erinnern(faellig);
+  }
+
+  /**
+   * Erinnern: öffnet eine Mail im eigenen Mailprogramm (an alle Dozent:innen mit Konto) und merkt sich das Datum.
+   * Die Adressen kommen aus keepup_kontakte() (nur Vorstand).
+   */
+  async function erinnern(liste: KeepUpTermin[]) {
+    if (!ctx) return;
+    const { data: kontakte } = await ctx.sb.rpc('keepup_kontakte');
+    const mails = new Map(((kontakte ?? []) as { dozent: string; email: string | null }[]).filter((k) => k.email).map((k) => [k.dozent, k.email!]));
+    const an = [...new Set(liste.map((t) => mails.get(t.dozent)).filter((m): m is string => !!m))];
+    const ohne = [...new Set(liste.filter((t) => !mails.has(t.dozent)).map((t) => nameVon(t.dozent)))];
+    if (an.length) {
+      const link = new URL(href('intern/keep-up/meine/'), location.origin).href;
+      const zeilen = liste.map((t) => `– ${zeitraum(t)}: ${artText(t)} (${nameVon(t.dozent)})`).join('\n');
+      const text = `Hallo,\n\nfür diese KEEP UP-Termine fehlt noch die Beschreibung für die Website:\n\n${zeilen}\n\nDu kannst sie im internen Bereich unter KEEP UP → Meine Trainings schreiben und veröffentlichen:\n${link}\n\nDanke!`;
+      location.href = `mailto:?bcc=${an.map(encodeURIComponent).join(',')}&subject=${encodeURIComponent('KEEP UP: Bitte beschreib dein Training')}&body=${encodeURIComponent(text)}`;
+    }
+    const ids = liste.filter((t) => mails.has(t.dozent)).map((t) => t.id);
+    if (ids.length) {
+      const datum = h0;
+      const { error } = await ctx.sb.from('keepup_termine').update({ erinnert_am: datum }).in('id', ids);
+      if (!error) termine.forEach((t) => ids.includes(t.id) && (t.erinnert_am = datum));
+    }
+    zeichnen();
+    if (ohne.length) toast(`Ohne Konto, bitte direkt erinnern: ${ohne.join(', ')}.`);
+    else toast(an.length === 1 ? 'Die Mail ist vorbereitet.' : `Die Mail an ${an.length} Dozent:innen ist vorbereitet.`);
+  }
+
+  document.querySelectorAll<HTMLButtonElement>('[data-monat]').forEach((b) =>
+    b.addEventListener('click', () => {
+      monat += Number(b.dataset.monat);
+      if (monat < 0) { monat = 11; jahr--; }
+      if (monat > 11) { monat = 0; jahr++; }
+      zeichnen(true);
+    }),
+  );
+  $('[data-neu]').addEventListener('click', () => neu());
+
+  // ---------- Schublade: einplanen / bearbeiten ----------
+  interface Entwurf { id: string | null; art: KeepUpTermin['art']; dozent: string | null; woche: string; tage: number[]; zeit: string; ort: string; notiz: string }
+  const dlg = $<HTMLDialogElement>('[data-schublade]');
+  const panel = dlg.querySelector<HTMLElement>('[data-form]')!;
+  const sMsg = $('[data-s-msg]');
+  let e: Entwurf;
+  let loeschenBestaetigt = false;
+
+  function neu(woche?: string, tag?: number) {
+    const sichtbar = `${jahr}-${String(monat + 1).padStart(2, '0')}-01`;
+    // ohne Woche: diese Woche, wenn der heutige Monat zu sehen ist, sonst die erste Woche des Monats
+    const mo = woche ?? montag(h0.startsWith(sichtbar.slice(0, 7)) ? h0 : sichtbar);
+    const art = tag === 6 || tag === 7 ? 'workshop' : 'training';
+    e = { id: null, art, dozent: null, woche: mo, tage: tag ? [tag] : [...STANDARD[art].tage], zeit: STANDARD[art].zeit, ort: standardOrt, notiz: '' };
+    oeffneSchublade();
+  }
+  function oeffnen(t: KeepUpTermin) {
+    e = { id: t.id, art: t.art, dozent: t.dozent, woche: t.woche, tage: [...t.tage], zeit: t.zeit, ort: t.ort, notiz: t.notiz };
+    oeffneSchublade();
+  }
+
+  function oeffneSchublade() {
+    loeschenBestaetigt = false;
+    showMessage(sMsg, '');
+    ($('[data-s-zeit]') as HTMLInputElement).value = e.zeit;
+    ($('[data-s-ort]') as HTMLInputElement).value = e.ort;
+    ($('[data-s-notiz]') as HTMLTextAreaElement).value = e.notiz;
+    schublade();
+    dlg.showModal();
+    if (bewegung) {
+      gsap.fromTo(panel, { xPercent: 100 }, { xPercent: 0, duration: 0.6, ease: EASE });
+      gsap.fromTo(dlg.querySelectorAll('[data-s-teil]'), { x: 40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.6, ease: EASE, stagger: 0.04, delay: 0.08, clearProps: 'transform,opacity' });
+    }
+  }
+  function schliessen() {
+    if (!dlg.open) return;
+    if (!bewegung) return dlg.close();
+    gsap.to(panel, { xPercent: 100, duration: 0.3, ease: 'power3.in', onComplete: () => { dlg.close(); gsap.set(panel, { clearProps: 'transform' }); } });
+  }
+  dlg.querySelectorAll('[data-zu]').forEach((b) => b.addEventListener('click', schliessen));
+  dlg.addEventListener('cancel', (ev) => { ev.preventDefault(); schliessen(); });
+  dlg.addEventListener('click', (ev) => { if (ev.target === dlg) schliessen(); });
+
+  function schublade() {
+    const t = e.id ? termine.find((x) => x.id === e.id) : undefined;
+    $('[data-s-tag]').textContent = e.id ? 'Einplanung bearbeiten' : 'Neu einplanen';
+    $('[data-s-titel]').textContent = e.dozent ? nameVon(e.dozent) : 'Wer unterrichtet?';
+    dlg.querySelectorAll<HTMLButtonElement>('[data-art]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.art === e.art)));
+    $('[data-s-personen]').replaceChildren(
+      ...dozentinnen.map((d) =>
+        h('button', { type: 'button', class: 'pl-person', 'aria-pressed': String(e.dozent === d.id), onclick: () => { e.dozent = d.id; schublade(); } },
+          avatar(d.id, 'training'),
+          h('span', { class: 'pl-person__text' }, h('span', { class: 'pl-person__name', text: d.name }), h('span', { class: 'pl-person__stil', text: d.stil })),
+        ),
+      ),
+    );
+    $('[data-s-woche-name]').textContent = wocheText(e.woche);
+    $('[data-s-tage]').replaceChildren(
+      ...DS.map((ds, i) => {
+        const tag = i + 1;
+        const an = e.tage.includes(tag);
+        return h('button', {
+          type: 'button', class: `pl-tagwahl${an ? ` is-an is-${e.art}` : ''}`, 'aria-pressed': String(an), 'aria-label': `${DOWL[i]}, ${tagLang(tagDatum(e.woche, tag))}`,
+          onclick: () => { e.tage = an ? e.tage.filter((x) => x !== tag) : [...e.tage, tag].sort(); schublade(); },
+        }, h('span', { class: 'pl-tag__dow', text: ds }), h('span', { class: 'pl-tag__nr', text: String(Number(tagDatum(e.woche, tag).slice(8))) }));
+      }),
+    );
+    // Überschneidung mit einer anderen Einplanung gleicher Art in derselben Woche
+    const konflikt = termine
+      .filter((x) => x.id !== e.id && x.woche === e.woche && x.art === e.art)
+      .map((x) => ({ x, tage: x.tage.filter((d) => e.tage.includes(d)) }))
+      .filter((k) => k.tage.length);
+    const k = $('[data-s-konflikt]');
+    k.hidden = !konflikt.length;
+    k.textContent = konflikt.map((c) => `Überschneidung: ${nameVon(c.x.dozent)} ist am ${c.tage.map((d) => DS[d - 1]).join(', ')} schon eingeplant.`).join(' ');
+
+    const b = $('[data-s-beschreibung]');
+    b.hidden = !t;
+    if (t) {
+      const st = status(t);
+      $('[data-s-status]').replaceChildren(badge(STATUS[st].label, STATUS[st].badge));
+      $('[data-s-text]').textContent = st === 'offen'
+        ? `Noch nichts geschrieben.${t.erinnert_am ? ` Erinnert am ${tagLang(t.erinnert_am)}.` : ''}`
+        : `${t.titel || 'Ohne Titel'}${t.erinnert_am && !t.veroeffentlicht ? ` · erinnert am ${tagLang(t.erinnert_am)}` : ''}`;
+      const er = $<HTMLButtonElement>('[data-s-erinnern]');
+      er.textContent = t.erinnert_am ? 'Erneut erinnern' : 'Erinnerung senden';
+      er.hidden = !!t.veroeffentlicht;
+      er.onclick = () => erinnern([t]);
+      ($('[data-s-oeffnen]') as HTMLAnchorElement).href = `${href('intern/keep-up/beschreiben/')}?id=${t.id}&von=plan`;
+    }
+    $('[data-s-speichern]').textContent = e.id ? 'Speichern' : 'Einplanen';
+    ($('[data-s-speichern]') as HTMLButtonElement).disabled = !e.dozent || !e.tage.length;
+    const del = $('[data-s-loeschen]');
+    del.hidden = !e.id;
+    del.textContent = loeschenBestaetigt ? 'Wirklich löschen?' : 'Termin löschen';
+    del.classList.toggle('is-scharf', loeschenBestaetigt);
+  }
+
+  dlg.querySelectorAll<HTMLButtonElement>('[data-art]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const art = b.dataset.art as KeepUpTermin['art'];
+      if (art === e.art) return;
+      e.art = art;
+      e.tage = [...STANDARD[art].tage];
+      e.zeit = STANDARD[art].zeit;
+      ($('[data-s-zeit]') as HTMLInputElement).value = e.zeit;
+      schublade();
+    }),
+  );
+  dlg.querySelectorAll<HTMLButtonElement>('[data-s-woche]').forEach((b) =>
+    b.addEventListener('click', () => { e.woche = plusTage(e.woche, Number(b.dataset.sWoche)); schublade(); }),
+  );
+
+  $('[data-form]').addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    if (!ctx || !e.dozent || !e.tage.length) return;
+    const felder = {
+      art: e.art, dozent: e.dozent, woche: e.woche, tage: [...e.tage].sort(),
+      zeit: zeitNorm(($('[data-s-zeit]') as HTMLInputElement).value) || STANDARD[e.art].zeit,
+      ort: ($('[data-s-ort]') as HTMLInputElement).value.trim(),
+      notiz: ($('[data-s-notiz]') as HTMLTextAreaElement).value.trim(),
+    };
+    const knopf = $<HTMLButtonElement>('[data-s-speichern]');
+    knopf.disabled = true;
+    const neuAngelegt = !e.id;
+    const res = e.id
+      ? await ctx.sb.from('keepup_termine').update(felder).eq('id', e.id).select(SPALTEN).single()
+      : await ctx.sb.from('keepup_termine').insert(felder).select(SPALTEN).single();
+    knopf.disabled = false;
+    if (res.error) return showMessage(sMsg, tabelleFehlt(res.error) ? FEHLT : errorText(res.error));
+    const t = res.data as KeepUpTermin;
+    termine = termine.filter((x) => x.id !== t.id).concat(t);
+    // Monat mitnehmen, falls die Woche woanders liegt
+    if (!e.woche.startsWith(`${jahr}-${String(monat + 1).padStart(2, '0')}`) && !plusTage(e.woche, 6).startsWith(`${jahr}-${String(monat + 1).padStart(2, '0')}`)) {
+      [jahr, monat] = [Number(e.woche.slice(0, 4)), Number(e.woche.slice(5, 7)) - 1];
+    }
+    schliessen();
+    zeichnen();
+    toast(neuAngelegt ? `Eingeplant. ${nameVon(t.dozent)} sieht den Termin jetzt und kann ihn beschreiben.` : 'Änderungen gespeichert.');
+  });
+
+  $('[data-s-loeschen]').addEventListener('click', async () => {
+    if (!ctx || !e.id) return;
+    if (!loeschenBestaetigt) {
+      loeschenBestaetigt = true;
+      return schublade();
+    }
+    const weg = termine.find((x) => x.id === e.id)!;
+    const { error } = await ctx.sb.from('keepup_termine').delete().eq('id', e.id);
+    if (error) return showMessage(sMsg, errorText(error));
+    termine = termine.filter((x) => x.id !== weg.id);
+    schliessen();
+    zeichnen();
+    toast('Termin gelöscht.', {
+      text: 'Rückgängig',
+      klick: async () => {
+        const { veroeffentlicht_am: _a, ...zeile } = weg;
+        const { data, error: f } = await ctx.sb.from('keepup_termine').insert({ ...zeile, veroeffentlicht: weg.veroeffentlicht ? {} : null }).select(SPALTEN).single();
+        if (f) return toast(errorText(f));
+        termine.push(data as KeepUpTermin);
+        zeichnen();
+      },
+    });
+  });
+
+  // ---------- Laden (am Ende, damit alle Funktionen oben schon stehen) ----------
+  if (ctx && !ctx.isVorstand) {
+    showMessage(msg, 'Die Planung ist für den Vorstand. Deine eigenen Trainings findest du unter „Meine Trainings“, sobald du eingeplant bist.');
+  } else if (ctx) {
+    try {
+      termine = await ladeTermine(ctx.sb);
+      $('[data-plan]').hidden = false;
+      $('[data-neu]').hidden = false;
+      zeichnen(true);
+    } catch (e) {
+      showMessage(msg, tabelleFehlt(e) ? FEHLT : errorText(e));
+    }
+  }
+</script>
+
+<style>
+  .pl-leiste { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 24px; margin-bottom: 14px; }
+  .pl-filter { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pl-filter :global(.pl-chip) {
+    display: flex; gap: 8px; align-items: center; padding: 9px 13px; border: 1.5px solid var(--purple); background: var(--paper); color: var(--purple);
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+  }
+  .pl-filter :global(.pl-chip span) { opacity: 0.65; }
+  .pl-filter :global(.pl-chip[aria-pressed='true']) { background: var(--purple); color: #fff; }
+  .pl-filter :global(.pl-chip:hover) { border-color: var(--magenta); }
+  .pl-monat, .pl-woche { display: flex; align-items: center; gap: 8px; }
+  .pl-monat__name { min-width: 170px; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; color: var(--purple); }
+  .pl-pfeil {
+    width: 40px; height: 40px; flex: none; border: 1.5px solid var(--purple); background: var(--paper); color: var(--purple);
+    font-family: var(--font-display); font-size: 18px; cursor: pointer;
+  }
+  .pl-pfeil:hover { border-color: var(--magenta); color: var(--magenta-2); }
+
+  .pl-wochen { border-top: 2px solid var(--purple); background: var(--paper); }
+  .pl-wochen :global(.pl-woche-zeile) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; padding: 14px 16px; border-bottom: 1px solid var(--rule); }
+  .pl-wochen :global(.pl-raster) { flex: 1 1 430px; min-width: 0; display: grid; grid-template-columns: 86px repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .pl-wochen :global(.pl-kw) { display: flex; flex-direction: column; justify-content: center; gap: 4px; }
+  .pl-wochen :global(.pl-kw__nr) { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.14em; color: var(--purple); }
+  .pl-wochen :global(.pl-kw__tage) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.06em; color: var(--ink-soft); }
+  :global(.pl-tag), :global(.pl-tagwahl) {
+    height: 54px; min-width: 0; padding: 6px 7px; border: 0; display: flex; flex-direction: column; justify-content: space-between; align-items: flex-start;
+    background: var(--tint-2); color: var(--ink-soft); cursor: pointer; text-align: left; font: inherit;
+  }
+  :global(.pl-tag:hover), :global(.pl-tagwahl:hover) { outline: 2px solid var(--magenta); outline-offset: -2px; }
+  :global(.pl-tag__dow) { font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; }
+  :global(.pl-tag__nr) { font-family: var(--font-display); font-weight: 800; font-size: 18px; line-height: 1; letter-spacing: -0.02em; }
+  :global(.pl-tag--training) { background: var(--cyan); color: var(--purple); }
+  :global(.pl-tag--workshop) { border-bottom: 4px solid var(--magenta); color: var(--purple); }
+  :global(.pl-tag--workshop:not(.pl-tag--training)) { background: var(--magenta-tint); }
+  :global(.pl-tag.is-heute) { outline: 2px solid var(--purple); outline-offset: -2px; }
+  /* Vergangenes und Nachbarmonat heller, aber mit lesbarem Kontrast (keine Deckkraft) */
+  :global(.pl-tag.is-vorbei), :global(.pl-tag.is-fremd) { color: var(--ink-soft); }
+  :global(.pl-tag.is-fremd) { background: transparent; }
+  :global(.pl-tag--training:is(.is-vorbei, .is-fremd)) { background: var(--cyan-tint); }
+  :global(.pl-tag--workshop.is-fremd:not(.pl-tag--training)) { background: var(--magenta-tint); }
+  .pl-wochen :global(.pl-bloecke) { flex: 1 1 290px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
+  .pl-wochen :global(.pl-block) {
+    display: flex; align-items: center; gap: 12px; width: 100%; padding: 8px 10px 8px 8px; border: 1px solid var(--rule);
+    background: var(--paper); text-align: left; cursor: pointer; font: inherit;
+  }
+  .pl-wochen :global(.pl-block:hover) { border-color: var(--magenta); }
+  .pl-wochen :global(.pl-block.is-blass) { opacity: 0.32; }
+  .pl-wochen :global(.pl-block__text) { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 4px; }
+  .pl-wochen :global(.pl-block__name) {
+    font-family: var(--font-display); font-weight: 700; font-size: 16px; line-height: 1.15; letter-spacing: -0.01em; color: var(--purple);
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .pl-wochen :global(.pl-block__meta) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-muted); }
+  .pl-wochen :global(.pl-block__meta.is-bald) { color: var(--magenta-2); }
+  .pl-wochen :global(.pl-leer) {
+    display: flex; align-items: center; gap: 10px; width: 100%; padding: 14px 12px; border: 1.5px dashed var(--rule); background: var(--tint-2);
+    color: var(--ink-soft); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; cursor: pointer;
+  }
+  .pl-wochen :global(.pl-leer:hover) { border-color: var(--magenta); color: var(--magenta-2); }
+  .pl-legende { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 16px; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .pl-legende > span { display: flex; align-items: center; gap: 8px; }
+  .pl-legende__mk { width: 14px; height: 14px; }
+  .pl-legende__mk--training { background: var(--cyan); }
+  .pl-legende__mk--workshop { background: var(--magenta-tint); border-bottom: 4px solid var(--magenta); }
+  .pl-legende__mk--heute { outline: 2px solid var(--purple); outline-offset: -2px; }
+  .pl-legende__tipp { color: var(--ink-muted); }
+
+  /* Schublade */
+  .pl-schublade {
+    margin: 0 0 0 auto; padding: 0; border: 0; width: min(520px, 100%); max-width: 100%; height: 100%; max-height: 100%;
+    background: transparent; overflow: visible;
+  }
+  .pl-schublade::backdrop { background: rgba(46, 26, 77, 0.55); }
+  .pl-schublade__form { height: 100%; overflow: auto; background: var(--paper); border-left: 3px solid var(--magenta); display: flex; flex-direction: column; }
+  .pl-schublade__kopf { padding: 28px 28px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+  .pl-schublade__kopf > div { display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+  .pl-schublade__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 28px; line-height: 1.05; letter-spacing: -0.025em; color: var(--purple); }
+  .pl-zu { width: 40px; height: 40px; flex: none; border: 1.5px solid var(--purple); background: var(--paper); color: var(--purple); font-size: 20px; cursor: pointer; }
+  .pl-zu:hover { border-color: var(--magenta); color: var(--magenta-2); }
+  .pl-schublade__inhalt { padding: 24px 28px 28px; display: flex; flex-direction: column; gap: 26px; flex: 1; }
+  .pl-feld { margin: 0; padding: 0; border: 0; display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+  .pl-feld__l { padding: 0; margin-bottom: 10px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple); }
+  .pl-seg { display: grid; grid-template-columns: 1fr 1fr; border: 1.5px solid var(--purple); }
+  .pl-seg button {
+    padding: 11px; border: 0; background: var(--paper); color: var(--purple); cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .pl-seg button[aria-pressed='true'] { background: var(--purple); color: #fff; }
+  .pl-personen { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 6px; }
+  .pl-personen :global(.pl-person) {
+    display: flex; align-items: center; gap: 10px; padding: 6px 10px 6px 6px; border: 1.5px solid var(--rule); background: var(--paper);
+    color: var(--purple); text-align: left; cursor: pointer; font: inherit; min-width: 0;
+  }
+  .pl-personen :global(.pl-person:hover) { border-color: var(--magenta); }
+  .pl-personen :global(.pl-person[aria-pressed='true']) { background: var(--purple); border-color: var(--purple); color: #fff; }
+  .pl-personen :global(.ku-avatar) { width: 30px; height: 30px; font-size: 12px; background: var(--tint); color: var(--purple); }
+  .pl-personen :global(.pl-person[aria-pressed='true'] .ku-avatar) { background: var(--cyan); }
+  .pl-personen :global(.pl-person__text) { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+  .pl-personen :global(.pl-person__name) { font-family: var(--font-display); font-weight: 700; font-size: 14px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pl-personen :global(.pl-person__stil) { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .pl-woche__name { flex: 1; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: -0.015em; color: var(--purple); }
+  .pl-tage { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+  .pl-tage :global(.pl-tagwahl) { height: 56px; padding: 6px; border: 1.5px solid var(--rule); background: var(--paper); color: var(--purple); }
+  .pl-tage :global(.pl-tagwahl.is-an) { border-color: transparent; background: var(--cyan); }
+  .pl-tage :global(.pl-tagwahl.is-an.is-workshop) { background: var(--magenta); color: #fff; }
+  .pl-konflikt { display: flex; gap: 9px; margin: 0; font-size: 13.5px; line-height: 1.45; color: var(--magenta-2); }
+  .pl-konflikt::before { content: ''; flex: none; width: 8px; height: 8px; margin-top: 5px; background: var(--magenta); }
+  .pl-konflikt[hidden] { display: none; }
+  .pl-zwei { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; }
+  .pl-beschreibung { background: var(--tint); padding: 18px; display: flex; flex-direction: column; gap: 12px; }
+  .pl-beschreibung[hidden] { display: none; }
+  .pl-beschreibung__kopf { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+  .pl-beschreibung__kopf .pl-feld__l { margin: 0; }
+  .pl-beschreibung p { margin: 0; font-size: 14.5px; line-height: 1.5; }
+  .pl-beschreibung__aktionen { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  .pl-beschreibung__aktionen :global([hidden]) { display: none; }
+  .pl-schublade__fuss { position: sticky; bottom: 0; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; padding: 16px 28px; background: var(--paper); border-top: 1px solid var(--rule); }
+  .pl-schublade__fuss .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .pl-loeschen {
+    margin-left: auto; padding: 0 0 3px; border: 0; border-bottom: 1.5px solid transparent; background: none; cursor: pointer; color: var(--magenta-2);
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  }
+  .pl-loeschen.is-scharf, .pl-loeschen:hover { border-bottom-color: var(--magenta); }
+  .pl-loeschen[hidden] { display: none; }
+
+  @media (max-width: 560px) {
+    .pl-wochen :global(.pl-woche-zeile) { padding: 12px 8px; }
+    .pl-wochen :global(.pl-raster) { grid-template-columns: repeat(7, minmax(0, 1fr)); }
+    .pl-wochen :global(.pl-kw) { grid-column: 1 / -1; flex-direction: row; justify-content: flex-start; align-items: baseline; gap: 10px; }
+    :global(.pl-tag) { height: 48px; padding: 5px; }
+    .pl-monat__name { min-width: 0; font-size: 19px; }
+    .pl-schublade__kopf, .pl-schublade__inhalt { padding-inline: 18px; }
+    .pl-schublade__fuss { padding: 14px 18px; }
+  }
+</style>

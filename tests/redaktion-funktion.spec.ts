@@ -12,7 +12,7 @@ const enc = (s: string) => Buffer.from(s, 'utf8').toString('base64');
 const dec = (s: string) => Buffer.from(s, 'base64').toString('utf8');
 
 /** Minimales Git im Speicher: Blobs, Bäume (flach: Pfad → Blob), Commits, ein Branch. */
-function fakeGitHub(start: Record<string, string>, rolle = 'presse') {
+function fakeGitHub(start: Record<string, string>, rolle = 'presse', keepup: unknown[] = []) {
   let n = 0;
   const id = (p: string) => `${p}${(++n).toString(16).padStart(6, '0')}`;
   const blobs = new Map<string, string>();
@@ -42,6 +42,8 @@ function fakeGitHub(start: Record<string, string>, rolle = 'presse') {
       if (auth !== 'Bearer gut') return res({ msg: 'invalid' }, 401);
       if (url.pathname === '/auth/v1/user') return res({ id: 'u1' });
       if (url.pathname === '/rest/v1/profiles') return res([{ role: rolle, display_name: 'Pia Presse' }]);
+      // eigene KEEP UP-Einplanungen (RLS)
+      if (url.pathname === '/rest/v1/keepup_termine') return res(keepup);
     }
     expect(auth).toBe('Bearer gh-test');
     const p = url.pathname.replace('/repos/tnd/website', '');
@@ -224,7 +226,7 @@ test('Rechtliches nur für den Vorstand', async () => {
   expect(vereinPruefen('{"register":{"number":"1"}}', '{"register":{"number":"2"}}')).toMatch(/register/);
 });
 
-test('neu_bauen stößt den Deploy-Workflow an (repository_dispatch), nur für die Redaktion', async () => {
+test('neu_bauen stößt den Deploy-Workflow an (repository_dispatch), nur für Redaktion und Dozent:innen', async () => {
   const gh = fakeGitHub({});
   const r = await call(gh, { aktion: 'neu_bauen' });
   expect(r.status).toBe(200);
@@ -234,4 +236,10 @@ test('neu_bauen stößt den Deploy-Workflow an (repository_dispatch), nur für d
   const mitglied = fakeGitHub({}, 'mitglied');
   expect((await call(mitglied, { aktion: 'neu_bauen' })).status).toBe(403);
   expect(mitglied.log).toEqual([]);
+
+  // Dozent:in mit eigener KEEP UP-Einplanung: darf neu bauen lassen, aber sonst nichts
+  const dozentin = fakeGitHub({}, 'mitglied', [{ id: 'k1' }]);
+  expect((await call(dozentin, { aktion: 'neu_bauen' })).status).toBe(200);
+  expect(dozentin.log).toEqual(['POST /dispatches']);
+  expect((await call(dozentin, { aktion: 'stand' })).status).toBe(403);
 });

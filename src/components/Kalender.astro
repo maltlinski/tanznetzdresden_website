@@ -23,12 +23,14 @@ interface Props {
   legende: { color: Farbe; label: string }[];
   /** id der Section (Sprungziel) */
   id?: string;
+  /** Tagesansicht so breit wie das Raster (Profitraining: Platz für Beschreibung und Bild) */
+  breit?: boolean;
 }
-const { days, months, kicker, title, filter, legende, id = 'kalender' } = Astro.props;
+const { days, months, kicker, title, filter, legende, id = 'kalender', breit = false } = Astro.props;
 const lang = getLang(Astro);
 const t = tr(lang, {
-  de: { all: 'Alle', prev: 'Vorheriger Monat', next: 'Nächster Monat', today: 'Heute', none: 'Gerade sind keine Termine geplant.' },
-  en: { all: 'All', prev: 'Previous month', next: 'Next month', today: 'Today', none: 'Nothing scheduled right now.' },
+  de: { all: 'Alle', prev: 'Vorheriger Monat', next: 'Nächster Monat', today: 'Heute', none: 'Gerade sind keine Termine geplant.', prevE: 'Vorheriger Termin', nextE: 'Nächster Termin', free: 'An diesem Tag ist nichts geplant.' },
+  en: { all: 'All', prev: 'Previous month', next: 'Next month', today: 'Today', none: 'Nothing scheduled right now.', prevE: 'Previous date', nextE: 'Next date', free: 'Nothing planned on this day.' },
 });
 
 const locale = dateLocale[lang];
@@ -46,7 +48,7 @@ const shown = nextKey ? Math.max(0, months.findIndex((m) => nextKey.startsWith(m
 const json = JSON.stringify({ days }).replace(/</g, '\\u003c');
 const hId = `${id}-h`;
 ---
-<section id={id} class="kcal section" aria-labelledby={hId} data-kcal data-locale={locale} data-none={t.none}>
+<section id={id} class:list={['kcal section', breit && 'kcal--breit']} aria-labelledby={hId} data-kcal data-locale={locale} data-none={t.none} data-free={t.free} data-today={t.today} data-text-lang={lang === 'en' ? 'de' : undefined}>
   <div class="wrap">
     <div class="section-head">
       <div data-reveal>
@@ -114,10 +116,19 @@ const hId = `${id}-h`;
         </div>
 
         <aside class="kcal__panel">
-          <div aria-live="polite" data-kcal-panel>
-            <span class="kcal__dow" data-kcal-dow></span>
-            <p class="kcal__date" data-kcal-date></p>
+          <div class="kcal__kopf">
+            <div aria-live="polite" data-kcal-panel>
+              <span class="kcal__dow" data-kcal-dow></span>
+              <p class="kcal__date"><span data-kcal-date></span></p>
+            </div>
+            <div class="kcal__schritt">
+              <button type="button" class="kcal__arrow kcal__arrow--klein" aria-label={t.prevE} data-kcal-vor>←</button>
+              <button type="button" class="kcal__arrow kcal__arrow--klein" aria-label={t.nextE} data-kcal-nach>→</button>
+            </div>
+          </div>
+          <div class="kcal__inhalt">
             <div class="kcal__items" data-kcal-items></div>
+            <div class="kcal__bild" data-kcal-bild hidden></div>
           </div>
           {Astro.slots.has('notiz') && <div class="kcal__note"><slot name="notiz" /></div>}
         </aside>
@@ -215,8 +226,51 @@ const hId = `${id}-h`;
       return n;
     }
 
+    const bildEl = $('[data-kcal-bild]');
+    const vor = $<HTMLButtonElement>('[data-kcal-vor]');
+    const nach = $<HTMLButtonElement>('[data-kcal-nach]');
+    const textLang = root.dataset.textLang;
+
+    /** Eintrag mit Beschreibung (KEEP UP): Ort, „Name · Stil“, Titel, Text, Schwerpunkte, Mitbringen */
+    function keepUpItem(e: KalenderEintrag, item: HTMLElement) {
+      const b = e.beschreibung!;
+      const top = el('div', 'kcal__item-top');
+      top.append(el('span', 'kcal__time', [e.time, e.ort].filter(Boolean).join(' · ')), el('span', `badge${e.color === 'magenta' ? '' : ` badge--${e.color}`}`, e.badge));
+      item.append(top, el('span', 'kcal__wer', e.wer ?? ''));
+      const text = el('div', 'kcal__text');
+      if (textLang) text.lang = textLang;
+      if (b.titel) {
+        const h = el('span', 'kcal__titel');
+        h.append(el('span', 'kcal__sq'), document.createTextNode(b.titel));
+        text.append(h, el('p', 'kcal__kurz', b.kurz));
+        for (const p of b.absaetze) text.append(el('p', 'kcal__absatz', p));
+      } else {
+        text.append(el('span', 'kcal__who', e.title));
+        if (b.folgt) text.append(el('p', 'kcal__folgt', b.folgt));
+      }
+      if (b.schwerpunkte.length) {
+        const chips = el('div', 'kcal__fokus');
+        for (const f of b.schwerpunkte) chips.append(el('span', '', f));
+        text.append(chips);
+      }
+      if (b.mitbringen) {
+        const p = el('p', 'kcal__bring');
+        p.append(el('span', 'kcal__bring-k', b.bringLabel), document.createTextNode(b.mitbringen));
+        text.append(p);
+      }
+      item.append(text);
+    }
+
+    /** Vorheriger bzw. nächster Tag mit (passendem) Termin */
+    const davor = (d: string) => [...keys].reverse().find((k) => k < d && dayMatches(k));
+    const danach = (d: string) => keys.find((k) => k > d && dayMatches(k));
+
     function render(animate: boolean) {
       itemsEl.replaceChildren();
+      bildEl.replaceChildren();
+      bildEl.hidden = true;
+      vor.disabled = !selected || !davor(selected);
+      nach.disabled = selected ? !danach(selected) : !nextFrom(today);
       if (!selected) {
         dowEl.textContent = '';
         dateEl.textContent = '—';
@@ -224,14 +278,18 @@ const hId = `${id}-h`;
         return;
       }
       const d = utc(selected);
-      dowEl.textContent = fmt({ weekday: 'long' }).format(d);
+      dowEl.textContent = fmt({ weekday: 'long' }).format(d) + (selected === today ? ` · ${root.dataset.today}` : '');
       dateEl.textContent = fmt({ day: 'numeric', month: 'long' }).format(d);
-      for (const e of (days[selected] ?? []).filter(matches)) {
+      const list = (days[selected] ?? []).filter(matches);
+      for (const e of list) {
         const item = el('div', 'kcal__item');
-        const top = el('div', 'kcal__item-top');
-        top.append(el('span', 'kcal__time', e.time), el('span', `badge${e.color === 'magenta' ? '' : ` badge--${e.color}`}`, e.badge));
-        item.append(top, el('span', 'kcal__who', e.title));
-        if (e.sub) item.append(el('span', 'kcal__what', e.sub));
+        if (e.beschreibung) keepUpItem(e, item);
+        else {
+          const top = el('div', 'kcal__item-top');
+          top.append(el('span', 'kcal__time', e.time), el('span', `badge${e.color === 'magenta' ? '' : ` badge--${e.color}`}`, e.badge));
+          item.append(top, el('span', 'kcal__who', e.title));
+          if (e.sub) item.append(el('span', 'kcal__what', e.sub));
+        }
         if (e.links.length) {
           const links = el('div', 'kcal__links');
           for (const l of e.links) {
@@ -243,9 +301,21 @@ const hId = `${id}-h`;
         }
         itemsEl.append(item);
       }
+      if (!list.length) itemsEl.append(el('p', 'kcal__none', root.dataset.free ?? ''));
+      // Bild der (ersten) Beschreibung, mit Keil wie im Entwurf
+      const bild = list.find((e) => e.beschreibung?.bild)?.beschreibung?.bild;
+      if (bild) {
+        const img = el('img', '');
+        img.src = bild.src;
+        img.alt = bild.alt;
+        img.decoding = 'async';
+        bildEl.append(img);
+        bildEl.hidden = false;
+      }
       if (motion && animate) {
-        gsap.from(itemsEl.children, { x: -24, opacity: 0, duration: 0.5, ease: EASE, stagger: 0.07, clearProps: 'transform,opacity' });
-        gsap.from(dateEl, { yPercent: 40, opacity: 0, duration: 0.45, ease: EASE, clearProps: 'transform,opacity' });
+        gsap.fromTo(dateEl, { yPercent: 105 }, { yPercent: 0, duration: 0.9, ease: EASE, clearProps: 'transform' });
+        gsap.from(itemsEl.querySelectorAll('.kcal__item > *, .kcal__text > *, .kcal__none'), { y: 20, opacity: 0, duration: 0.7, ease: EASE, stagger: 0.04, delay: 0.15, clearProps: 'transform,opacity' });
+        if (bild) gsap.fromTo(bildEl.firstElementChild, { scale: 1.2, opacity: 0.3 }, { scale: 1, opacity: 1, duration: 1.1, ease: EASE, clearProps: 'transform,opacity' });
       }
     }
 
@@ -255,6 +325,15 @@ const hId = `${id}-h`;
       render(animate);
       roving();
     }
+
+    /** zum vorherigen/nächsten Termin springen, Monat mitnehmen */
+    function schritt(d: string | undefined) {
+      if (!d) return;
+      showMonthOf(d);
+      select(d);
+    }
+    vor.addEventListener('click', () => schritt(selected ? davor(selected) : undefined));
+    nach.addEventListener('click', () => schritt(selected ? danach(selected) : nextFrom(today)));
 
     function setFilter(key: string, animate = true) {
       filter = key;
@@ -316,8 +395,8 @@ const hId = `${id}-h`;
 
     // #kategorie-training o. ä. in der Adresse wählt einen Filter vor
     const norm = (s: string) => s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const vor = location.hash.match(/^#kategorie-([\w-]+)/)?.[1];
-    const chip = vor ? chips.find((c) => c.dataset.key && norm(c.dataset.key) === norm(vor)) : undefined;
+    const vorwahl = location.hash.match(/^#kategorie-([\w-]+)/)?.[1];
+    const chip = vorwahl ? chips.find((c) => c.dataset.key && norm(c.dataset.key) === norm(vorwahl)) : undefined;
     setFilter(chip?.dataset.key ?? '', false);
 
     // Auftritt: Tage laufen ein, sobald der Kalender ins Bild kommt
@@ -396,15 +475,30 @@ const hId = `${id}-h`;
   .kcal__legend > span { display: flex; align-items: center; gap: 8px; }
   .kcal__today-mk { width: 12px; height: 12px; outline: 2px solid var(--magenta); outline-offset: -2px; }
 
-  .kcal__panel { border-top: 3px solid var(--magenta); padding-top: 22px; min-width: 0; }
+  /* Profitraining: Raster und Tagesansicht gleich breit, daneben Platz für das Bild */
+  .kcal--breit .kcal__layout { grid-template-columns: repeat(auto-fit, minmax(min(100%, 460px), 1fr)); }
+
+  .kcal__panel { border-top: 3px solid var(--magenta); padding-top: 22px; min-width: 0; scroll-margin-top: calc(var(--header-h) + 16px); }
+  .kcal__kopf { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+  .kcal__kopf > div:first-child { min-width: 0; }
+  .kcal__schritt { display: flex; gap: 6px; flex: none; }
+  .kcal__arrow--klein { width: 34px; height: 34px; padding: 0; font-size: 15px; }
+  .kcal__inhalt { display: grid; gap: 20px 24px; align-items: stretch; }
+  .kcal--breit .kcal__inhalt { grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); }
+  .kcal__items { min-width: 0; }
+  .kcal__bild { position: relative; min-height: clamp(320px, 30vw, 460px); overflow: hidden; clip-path: var(--keil-corner); background: var(--tint); }
+  .kcal__bild[hidden] { display: none; }
+  .kcal__bild :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .kcal__dow {
     font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
     text-transform: uppercase; color: var(--ink-muted);
   }
   .kcal__date {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 3vw, 42px); line-height: 1;
-    letter-spacing: -0.03em; color: var(--purple); margin: 8px 0 24px;
+    letter-spacing: -0.03em; color: var(--purple); margin: 8px 0 18px; overflow: hidden; padding-bottom: 3px;
   }
+  .kcal__date span { display: inline-block; }
+  .kcal--breit .kcal__date { font-size: clamp(28px, 2.6vw, 36px); }
   .kcal__items :global(.kcal__item) { padding: 18px 0; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 8px; }
   .kcal__items :global(.kcal__item-top) { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .kcal__items :global(.kcal__time) { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--purple); }
@@ -416,6 +510,34 @@ const hId = `${id}-h`;
     font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple);
   }
   .kcal__items :global(.kcal__link:hover) { color: var(--magenta-2); }
+  /* KEEP UP: Beschreibung der Dozent:in */
+  .kcal__items :global(.kcal__item:has(.kcal__text)) { padding: 16px 0; gap: 9px; }
+  .kcal__items :global(.kcal__item:has(.kcal__text) .kcal__time) { font-size: 12px; }
+  .kcal__items :global(.kcal__wer) {
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted);
+  }
+  .kcal__items :global(.kcal__text) { display: flex; flex-direction: column; gap: 9px; }
+  .kcal__items :global(.kcal__titel) {
+    display: flex; align-items: baseline; gap: 9px; font-family: var(--font-display); font-weight: 700; font-size: 19px;
+    line-height: 1.2; letter-spacing: -0.01em; color: var(--purple);
+  }
+  .kcal__items :global(.kcal__sq) { flex: none; width: 8px; height: 8px; background: var(--magenta); transform: translateY(-2px); }
+  .kcal__items :global(.kcal__text p) { margin: 0; text-wrap: pretty; }
+  .kcal__items :global(.kcal__kurz) { font-size: 15px; line-height: 1.55; color: var(--ink); }
+  .kcal__items :global(.kcal__absatz) { font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+  .kcal__items :global(.kcal__text .kcal__who) { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
+  .kcal__items :global(.kcal__folgt) { font-size: 14px; line-height: 1.6; color: var(--ink-muted); }
+  .kcal__items :global(.kcal__fokus) { display: flex; flex-wrap: wrap; gap: 5px; }
+  .kcal__items :global(.kcal__fokus span) {
+    padding: 4px 7px; background: var(--tint); color: var(--purple); font-family: var(--font-mono); font-size: 9.5px;
+    font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .kcal__items :global(.kcal__bring) { font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+  .kcal__items :global(.kcal__bring-k) {
+    margin-right: 8px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--magenta-2);
+  }
+  .kcal__items :global(.kcal__item:has(.kcal__text) .kcal__link) { font-size: 10.5px; }
   .kcal__items :global(.kcal__none) { margin: 0; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
 
   .kcal__note { margin-top: 32px; padding: 20px; background: var(--tint); display: flex; flex-direction: column; gap: 10px; }

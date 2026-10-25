@@ -27,6 +27,25 @@ export interface KalenderEintrag {
   links: { href: string; text: string }[];
   /** läuft nebenher (Training im Tanzkalender): in der Zelle steht dann der andere Eintrag */
   nebenbei?: boolean;
+  /** KEEP UP: Ort (oben neben der Uhrzeit) */
+  ort?: string;
+  /** KEEP UP: „Name · Stil“ über dem Titel */
+  wer?: string;
+  /** KEEP UP: Beschreibung der Dozent:in (Intern → KEEP UP); ohne Titel steht der Name da, ggf. mit Hinweis `folgt` */
+  beschreibung?: Beschreibung;
+}
+
+export interface Beschreibung {
+  titel: string;
+  kurz: string;
+  absaetze: string[];
+  schwerpunkte: string[];
+  mitbringen: string;
+  bild?: { src: string; alt: string };
+  /** „Die Beschreibung zu diesem Training folgt.“ (leer = kein Hinweis) */
+  folgt: string;
+  /** Beschriftung „Mitbringen“ */
+  bringLabel: string;
 }
 
 export type Tage = Record<string, KalenderEintrag[]>;
@@ -109,9 +128,9 @@ export async function getTanzkalender(lang: Lang) {
   for (const e of trainings) {
     add(e.date, {
       time: e.time,
-      title: `KEEP UP · ${e.dozentin.name}`,
-      sub: [e.dozentin.stil, e.where].join(' · '),
-      badge: categoryLabel[lang].Training,
+      title: `KEEP UP · ${e.titel ?? e.dozentin.name}`,
+      sub: [e.titel ? e.dozentin.name : '', e.dozentin.stil, e.where].filter(Boolean).join(' · '),
+      badge: e.art === 'workshop' ? 'Workshop' : categoryLabel[lang].Training,
       color: 'cyan',
       short: 'KEEP UP',
       keys: ['Training'],

@@ -11,7 +11,8 @@
  *   - Nur Vorstand/Admin: Impressum, Datenschutz und die rechtlichen Angaben in verein.json
  *     (Anschrift, E-Mail-Adressen, Register, Steuer, Bankverbindung).
  *   - Code, Workflows und alles andere: niemand. Eigenes HTML in Texten wird abgelehnt.
- *   - Website neu bauen (nach einer Freigabe oder neuen News aus Supabase): Presse, Vorstand, Admin.
+ *   - Website neu bauen (nach einer Freigabe oder neuen News aus Supabase): Presse, Vorstand, Admin,
+ *     außerdem Dozent:innen mit einer KEEP UP-Einplanung (nach dem Veröffentlichen ihrer Beschreibung).
  *
  * Einrichtung: docs/redaktion.md (Abschnitt „Einrichten“). Secrets: GITHUB_TOKEN, GITHUB_REPO,
  * optional GITHUB_BRANCH (Standard main). SUPABASE_URL und SUPABASE_ANON_KEY setzt Supabase selbst.
@@ -165,7 +166,7 @@ function github(env: Env, f: typeof fetch) {
   };
 }
 
-async function person(req: Request, env: Env, f: typeof fetch): Promise<Person> {
+async function person(req: Request, env: Env, f: typeof fetch, aktion?: string): Promise<Person> {
   const auth = req.headers.get('Authorization') ?? '';
   if (!/^Bearer\s+\S+/.test(auth)) throw new Fehler(401, 'Bitte melde dich an.');
   const h = { apikey: env.anonKey, Authorization: auth };
@@ -174,6 +175,12 @@ async function person(req: Request, env: Env, f: typeof fetch): Promise<Person> 
   const { id } = (await u.json()) as { id: string };
   const p = await f(`${env.supabaseUrl}/rest/v1/profiles?select=role,display_name&id=eq.${encodeURIComponent(id)}`, { headers: h });
   const [row] = p.ok ? ((await p.json()) as { role: Rolle; display_name: string }[]) : [];
+  if (row && aktion === 'neu_bauen' && !['presse', 'vorstand', 'admin'].includes(row.role)) {
+    // Dozent:in: sieht (RLS) nur die eigenen KEEP UP-Einplanungen – hat sie eine, darf sie neu bauen lassen
+    const k = await f(`${env.supabaseUrl}/rest/v1/keepup_termine?select=id&limit=1`, { headers: h });
+    const eigene = k.ok ? ((await k.json()) as unknown[]) : [];
+    if (eigene.length) return { rolle: row.role, name: row.display_name || 'Dozent:in' };
+  }
   if (!row || !['presse', 'vorstand', 'admin'].includes(row.role)) {
     throw new Fehler(403, 'Die Redaktion ist für Mitglieder mit der Rolle Presse, Vorstand oder Admin.');
   }
@@ -308,8 +315,8 @@ export async function handle(req: Request, env: Env, f: typeof fetch = fetch): P
   if (req.method !== 'POST') return json({ fehler: 'Nur POST.' }, 405);
   try {
     if (!env.githubToken || !env.repo) throw new Fehler(503, 'Die Redaktion ist noch nicht eingerichtet: GITHUB_TOKEN oder GITHUB_REPO fehlt (docs/redaktion.md).');
-    const wer = await person(req, env, f);
     const body = (await req.json().catch(() => ({}))) as Record<string, any>;
+    const wer = await person(req, env, f, body.aktion);
     const gh = github(env, f);
 
     switch (body.aktion) {

@@ -108,6 +108,15 @@ test('Kalender-Feed ist gültiges iCalendar', async ({ request }) => {
   // wie der Tanzkalender: auch die Trainingstage von KEEP UP
   expect(body).toMatch(/UID:keep-up-2026-10-12-1000@/);
   expect(body).toContain('SUMMARY:KEEP UP · Profitraining mit Leon Börgens');
+  // Kommas und Strichpunkte sind maskiert (RFC 5545)
+  expect(body).not.toMatch(/^(SUMMARY|DESCRIPTION|LOCATION):.*[^\\][,;]/m);
+
+  // nur KEEP UP, z. B. für Google Kalender
+  const ku = await (await request.get('/profitraining.ics')).text();
+  expect(ku).toContain('X-WR-CALNAME:TanzNetzDresden · KEEP UP · Profitraining');
+  expect(ku).toContain('SUMMARY:KEEP UP · Profitraining mit Leon Börgens');
+  expect(ku).toContain('/termine/2026-11-14-keep-up-workshop/');
+  expect(ku).not.toContain('Studio Round');
 });
 
 test('Interner Bereich zeigt Anmeldung (oder ohne Supabase den Einrichtungshinweis)', async ({ page }) => {

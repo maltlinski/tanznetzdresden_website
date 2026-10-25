@@ -85,7 +85,8 @@ Wo GSAP läuft:
 | Formate (Startseite) | `sections/Formats.astro` | Karten im Streifen laufen nacheinander ein; Pfeile blättern um eine Karte |
 | Terminlisten (Startseite, Terminseite, Tanzkalender ohne JavaScript) | `EventList.astro` | Termine laufen gruppenweise beim Scrollen ein (`ScrollTrigger.batch`), das Datum steigt nach |
 | Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |
-| Kalender (Tanzkalender und Profitraining) | `Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Tagesansicht und Filter-Markierungen animiert |
+| Kalender (Tanzkalender und Profitraining) | `Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Filter-Markierungen animiert; in der Tagesansicht steigt das Datum aus einer Maske, Texte folgen, das Bild der KEEP UP-Beschreibung zoomt hinein |
+| Intern → KEEP UP | `pages/intern/keep-up/` | Wochen und Karten laufen ein, Schublade zum Einplanen gleitet von rechts, Bild im Editor wischt auf, Balken beim Veröffentlichen |
 | Profitraining: Dozent:innen | `keep-up/Mosaik.astro` | Foto-Mosaik, das endlos nach rechts läuft (GSAP); läuft auch unter der Maus weiter, hält nur über den Knopf „Anhalten“ oder bei Tastatur-Fokus; Klick filtert den Kalender, „Zur Dozent:in →“ holt die Kachel ins Bild; Tempo in `src/settings/keep-up.ts`; bei „Bewegung reduzieren“ ein Streifen zum Wischen |
 | Profitraining: Kopf | `views/ProfitrainingView.astro` | Überschrift mit SplitText (Buchstaben aus einer Maske), Foto als Keil |
 | Menü im Kopf | `sections/Header.astro` (Web Animations, ohne GSAP) | Ein magentafarbener Strich unter dem aktiven Punkt gleitet beim Wechsel zum neuen Punkt, auch über den Seitenwechsel (Lage beim Klick in `sessionStorage`); im aufklappbaren Menü und bei „Bewegung reduzieren“ die einfache Unterstreichung |

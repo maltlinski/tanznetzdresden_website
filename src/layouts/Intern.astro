@@ -14,7 +14,7 @@ import Logo from '../components/ui/Logo.astro';
 import { href } from '../lib/url';
 import '../styles/intern.css';
 
-type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'freigaben';
+type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'freigaben' | 'keepup' | 'keepup-meine';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
@@ -30,6 +30,11 @@ const mitglied: { id: Punkt; label: string; path: string }[] = [
   { id: 'profil', label: 'Mein Profil', path: 'intern/profil/' },
   { id: 'mitglieder', label: 'Mitglieder', path: 'intern/mitglieder/' },
   { id: 'dokumente', label: 'Dokumente', path: 'intern/dokumente/' },
+];
+// KEEP UP: Planung für den Vorstand, „Meine Trainings“ für eingeplante Dozent:innen
+const keepup: { id: Punkt; label: string; path: string; n: string; nur: 'vorstand' | 'dozent' }[] = [
+  { id: 'keepup', label: 'Planung', path: 'intern/keep-up/', n: 'keepup', nur: 'vorstand' },
+  { id: 'keepup-meine', label: 'Meine Trainings', path: 'intern/keep-up/meine/', n: 'keepup-meine', nur: 'dozent' },
 ];
 // nur für Presse, Vorstand und Admin
 const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
@@ -61,6 +66,14 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
           <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined}>
             <span class="rd-nav__m" aria-hidden="true"></span>
             <span class="rd-nav__l">{i.label}</span>
+          </a>
+        ))}
+        <span class="rd-nav__gruppe" data-keepup-gruppe hidden>KEEP UP</span>
+        {keepup.map((i) => (
+          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined} data-keepup={i.nur} hidden>
+            <span class="rd-nav__m" aria-hidden="true"></span>
+            <span class="rd-nav__l">{i.label}</span>
+            <span class="rd-nav__n" data-nav-n={i.n}></span>
           </a>
         ))}
         <span class="rd-nav__gruppe" data-redaktion-only hidden>Redaktion</span>
@@ -143,11 +156,38 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
   );
 
   // Zahlen in der Seitenleiste (fehlt eine Tabelle, bleibt das Feld leer)
-  if (ctx.isRedaktion) {
-    const setzen = (n: string, v: number | null | undefined) => {
-      const el = document.querySelector<HTMLElement>(`[data-nav-n="${n}"]`);
-      if (el) el.textContent = v ? String(v) : '';
+  const setzen = (n: string, v: number | null | undefined) => {
+    const el = document.querySelector<HTMLElement>(`[data-nav-n="${n}"]`);
+    if (el) el.textContent = v ? String(v) : '';
+  };
+
+  // KEEP UP: Vorstand plant, Dozent:innen mit Einplanung beschreiben (Zahl = anstehend ohne Veröffentlichung)
+  void (async () => {
+    const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
+    const ab = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
+    const offen = (rows: { veroeffentlicht: unknown; woche: string; tage: number[] }[]) =>
+      rows.filter((r) => !r.veroeffentlicht && new Date(Date.parse(`${r.woche}T00:00:00Z`) + (Math.max(...r.tage) - 1) * 86400000).toISOString().slice(0, 10) >= heute).length;
+    const zeigen = (nur: string) => {
+      document.querySelectorAll<HTMLElement>(`[data-keepup="${nur}"]`).forEach((el) => (el.hidden = false));
+      document.querySelectorAll<HTMLElement>('[data-keepup-gruppe]').forEach((el) => (el.hidden = false));
     };
+    const { data: ich, error } = await ctx.sb.rpc('keepup_ich');
+    if (error && !ctx.isVorstand) return;
+    if (ctx.isVorstand) {
+      zeigen('vorstand');
+      const { data } = await ctx.sb.from('keepup_termine').select('veroeffentlicht,woche,tage').gte('woche', ab);
+      if (data) setzen('keepup', offen(data));
+    }
+    if (typeof ich === 'string' && ich) {
+      const { data } = await ctx.sb.from('keepup_termine').select('veroeffentlicht,woche,tage').eq('dozent', ich);
+      if (data?.length) {
+        zeigen('dozent');
+        setzen('keepup-meine', offen(data));
+      }
+    }
+  })().catch(() => {});
+
+  if (ctx.isRedaktion) {
     const zaehlen = async (tabelle: string) => (await ctx.sb.from(tabelle).select('*', { count: 'exact', head: true })).count;
     void zaehlen('news_posts').then((n) => setzen('beitraege', n), () => {});
     void zaehlen('news_medien').then((n) => setzen('medien', n), () => {});

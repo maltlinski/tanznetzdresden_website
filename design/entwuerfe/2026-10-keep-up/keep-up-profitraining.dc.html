@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>KEEP UP · Profitraining · TanzNetzDresden</title>
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/base.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/styles.css">
+  <script src="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/_ds_bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+  <script src="keepup-store.js"></script>
+  <style>
+    html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+    body{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);hyphens:auto}
+    a{color:var(--magenta);text-decoration:none}
+    a:hover{color:var(--purple)}
+    *{box-sizing:border-box}
+    ::selection{background:var(--magenta);color:#fff}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:#fff">
+
+  <header style="position:sticky;top:0;z-index:30;background:var(--purple);border-bottom:1px solid rgba(255,255,255,0.12)">
+    <div style="max-width:1320px;margin:0 auto;padding:18px clamp(20px,4vw,48px);display:flex;align-items:center;flex-wrap:wrap;gap:16px 40px">
+      <a href="TanzNetzDresden Website v3.dc.html" style="display:flex;align-items:center;gap:16px;color:#fff">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="76px" hint-size="76px,36px"></x-import>
+        <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);border-left:1px solid rgba(255,255,255,0.24);padding-left:16px">KEEP UP</span>
+      </a>
+      <div style="margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:12px clamp(16px,2.4vw,36px)">
+        <nav style="display:flex;flex-wrap:wrap;gap:6px clamp(14px,2vw,28px)">
+          <a href="#kalender" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Kalender</a>
+          <a href="#dozentinnen" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Dozent:innen</a>
+          <a href="#infos" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Infos</a>
+          <a href="TanzNetzDresden Website v3.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Zur Startseite</a>
+        </nav>
+        <a href="TanzNetzDresden Website v3.dc.html#mitglied" style="display:flex">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="sm" marker="{{ true }}" hint-size="160px,32px">Mitglied werden</x-import>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section data-screen-label="Hero" style="position:relative;background:var(--purple);color:#fff;overflow:hidden">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(20px,4vw,48px) clamp(64px,8vw,104px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:48px clamp(32px,6vw,96px);align-items:end">
+      <div>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" style="margin-bottom:24px" hint-size="240px,16px">Profitraining · seit 2022</x-import>
+        <h1 data-split="" style="font-family:var(--font-display);font-weight:800;font-size:clamp(56px,8vw,128px);line-height:0.9;letter-spacing:-0.035em;margin:0 0 32px;color:#fff">KEEP UP<br><span style="color:var(--magenta)">Training.</span></h1>
+        <p style="max-width:500px;margin:0 0 36px;font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:rgba(255,255,255,0.88);text-wrap:pretty">Drei- bis fünfmal pro Woche trainieren professionelle Tänzer:innen der freien Szene gemeinsam in der TENZA. Jede Woche unterrichtet eine andere Dozent:in aus Dresden oder von außerhalb. Dazu kommen Workshops am Wochenende.</p>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 28px">
+          <a href="#kalender" style="display:flex">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="lg" marker="{{ true }}" hint-size="200px,46px">Zum Kalender</x-import>
+          </a>
+          <a href="#dozentinnen" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;border-bottom:1.5px solid var(--magenta);padding-bottom:4px" style-hover="color:var(--cyan)">Wer unterrichtet →</a>
+        </div>
+      </div>
+      <div style="position:relative;aspect-ratio:4/5;max-height:620px;width:100%;justify-self:end;max-width:520px">
+        <img src="assets/photos/headstand-solo.jpg" alt="Tänzerin im Kopfstand" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;clip-path:polygon(0 0,100% 0,100% 88%,88% 100%,0 100%);display:block">
+      </div>
+    </div>
+    <div style="position:relative;border-top:1px solid rgba(255,255,255,0.16)">
+      <div style="max-width:1320px;margin:0 auto;padding:20px clamp(20px,4vw,48px) 32px;display:flex;flex-wrap:wrap;align-items:center;gap:12px 36px">
+        <span style="display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#fff"><span style="width:10px;height:10px;background:var(--magenta)"></span>Nächste Einheit</span>
+        <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(20px,2vw,26px);letter-spacing:-0.02em;color:var(--cyan)">{{ next.date }}</span>
+        <span style="font-family:var(--font-mono);font-size:12px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.86)">{{ next.time }} · {{ next.who }} · {{ next.where }}</span>
+      </div>
+    </div>
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 12 }}" style="position:absolute;left:0;bottom:0;width:34%" hint-size="34%,12px"></x-import>
+  </section>
+
+  <!-- KALENDER -->
+  <section id="kalender" ref="{{ calRef }}" data-screen-label="Kalender" style="scroll-margin-top:70px;padding:clamp(72px,9vw,120px) 0">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 40px;margin-bottom:36px">
+        <div>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" style="margin-bottom:16px" hint-size="160px,16px">Kalender</x-import>
+          <h2 data-split="" style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,5vw,64px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">Wann wir trainieren</h2>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;gap:8px">
+          <sc-for list="{{ chips }}" as="ch" hint-placeholder-count="5">
+            <button onClick="{{ ch.pick }}" style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;padding:9px 14px;border-radius:0;cursor:pointer;border:1.5px solid {{ ch.border }};background:{{ ch.bg }};color:{{ ch.fg }}" style-hover="border-color:var(--magenta)">{{ ch.label }}</button>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,460px),1fr));gap:40px clamp(28px,4vw,56px);align-items:start">
+        <div style="min-width:0;max-width:100%">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 0 16px;border-bottom:2px solid var(--purple)">
+            <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(24px,2.6vw,34px);letter-spacing:-0.025em;color:var(--purple)">{{ monthLabel }}</span>
+            <div style="display:flex;gap:8px">
+              <button onClick="{{ prevMonth }}" aria-label="Vorheriger Monat" style="width:44px;height:44px;border:1.5px solid var(--purple);background:#fff;color:var(--purple);font-family:var(--font-display);font-size:20px;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta);color:var(--magenta)">←</button>
+              <button onClick="{{ nextMonth }}" aria-label="Nächster Monat" style="width:44px;height:44px;border:1.5px solid var(--purple);background:#fff;color:var(--purple);font-family:var(--font-display);font-size:20px;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta);color:var(--magenta)">→</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));padding:12px 0 8px">
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);padding-left:8px">Mo</span>
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);padding-left:8px">Di</span>
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);padding-left:8px">Mi</span>
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);padding-left:8px">Do</span>
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);padding-left:8px">Fr</span>
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);padding-left:8px">Sa</span>
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);padding-left:8px">So</span>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule)">
+            <sc-for list="{{ cells }}" as="c" hint-placeholder-count="35">
+              <button onClick="{{ c.pick }}" disabled="{{ c.blank }}" aria-label="{{ c.aria }}" style="position:relative;min-height:clamp(58px,7.4vw,96px);padding:8px;display:flex;flex-direction:column;align-items:flex-start;justify-content:space-between;gap:6px;text-align:left;border:0;border-radius:0;cursor:{{ c.cursor }};background:{{ c.bg }};color:{{ c.fg }};opacity:{{ c.op }};box-shadow:{{ c.ring }};font:inherit;min-width:0" style-hover="outline:2px solid var(--magenta);outline-offset:-2px;z-index:1">
+                <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(15px,1.6vw,22px);line-height:1;letter-spacing:-0.02em">{{ c.day }}</span>
+                <span style="display:flex;flex-direction:column;gap:4px;width:100%;min-width:0">
+                  <span style="font-family:var(--font-mono);font-size:9px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%">{{ c.label }}</span>
+                  <span style="display:flex;gap:3px">
+                    <sc-for list="{{ c.marks }}" as="mk" hint-placeholder-count="0">
+                      <span style="width:16px;height:4px;background:{{ mk }}"></span>
+                    </sc-for>
+                  </span>
+                </span>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:16px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)">
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:4px;background:var(--cyan)"></span>Profitraining</span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:16px;height:4px;background:var(--magenta)"></span>Workshop</span>
+            <span style="display:flex;align-items:center;gap:8px"><span style="width:12px;height:12px;box-shadow:inset 0 0 0 2px var(--magenta)"></span>Heute</span>
+          </div>
+        </div>
+
+        <aside ref="{{ detRef }}" data-screen-label="Termin-Details" style="border-top:3px solid var(--magenta);padding-top:22px;min-width:0;scroll-margin-top:80px">
+          <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:12px">
+            <div style="min-width:0">
+              <span data-det-txt="" style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ det.kicker }}</span>
+              <div style="overflow:hidden;margin:8px 0 18px;padding-bottom:3px">
+                <div data-det-date="" style="font-family:var(--font-display);font-weight:800;font-size:clamp(28px,2.6vw,36px);line-height:1;letter-spacing:-0.03em;color:var(--purple)">{{ sel.date }}</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:6px;flex:none">
+              <button onClick="{{ det.prev }}" disabled="{{ det.noPrev }}" aria-label="Vorheriger Termin" style="width:34px;height:34px;padding:0;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-display);font-size:15px;cursor:pointer;opacity:{{ det.prevOp }}" style-hover="border-color:var(--magenta);color:var(--magenta)">←</button>
+              <button onClick="{{ det.next }}" disabled="{{ det.noNext }}" aria-label="Nächster Termin" style="width:34px;height:34px;padding:0;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-display);font-size:15px;cursor:pointer;opacity:{{ det.nextOp }}" style-hover="border-color:var(--magenta);color:var(--magenta)">→</button>
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:20px 24px;align-items:stretch">
+            <div style="min-width:0">
+          <sc-if value="{{ sel.has }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;flex-direction:column">
+              <sc-for list="{{ sel.items }}" as="it" hint-placeholder-count="1">
+                <div style="padding:16px 0;border-top:1px solid var(--rule);display:flex;flex-direction:column;gap:9px">
+                  <div data-det-txt="" style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                    <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.12em;color:var(--purple)">{{ it.time }} · {{ it.where }}</span>
+                    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ it.badge }}" size="sm" hint-size="90px,22px">{{ it.kind }}</x-import>
+                  </div>
+                  <span data-det-txt="" style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ it.who }} · {{ it.style }}</span>
+                  <sc-if value="{{ it.hasPub }}" hint-placeholder-val="{{ false }}">
+                    <span data-det-txt="" style="display:flex;align-items:baseline;gap:9px;font-family:var(--font-display);font-weight:700;font-size:19px;line-height:1.2;letter-spacing:-0.01em;color:var(--purple)"><span style="flex:none;width:8px;height:8px;background:var(--magenta);transform:translateY(-2px)"></span>{{ it.title }}</span>
+                    <p data-det-txt="" style="margin:0;font-size:15px;line-height:1.55;color:var(--ink);text-wrap:pretty">{{ it.teaser }}</p>
+                  </sc-if>
+                  <sc-for list="{{ it.paras }}" as="p" hint-placeholder-count="0">
+                    <p data-det-txt="" style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft);text-wrap:pretty">{{ p }}</p>
+                  </sc-for>
+                  <sc-if value="{{ it.noPub }}" hint-placeholder-val="{{ false }}">
+                    <span data-det-txt="" style="font-family:var(--font-display);font-weight:700;font-size:19px;line-height:1.2;letter-spacing:-0.01em;color:var(--purple)">{{ it.who }}</span>
+                    <p data-det-txt="" style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-muted)">Die Beschreibung zu diesem Training folgt.</p>
+                  </sc-if>
+                  <sc-if value="{{ it.hasFocus }}" hint-placeholder-val="{{ false }}">
+                    <div data-det-txt="" style="display:flex;flex-wrap:wrap;gap:5px">
+                      <sc-for list="{{ it.focus }}" as="f" hint-placeholder-count="2">
+                        <span style="padding:4px 7px;background:var(--tint);color:var(--purple);font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">{{ f }}</span>
+                      </sc-for>
+                    </div>
+                  </sc-if>
+                  <sc-if value="{{ it.hasBring }}" hint-placeholder-val="{{ false }}">
+                    <p data-det-txt="" style="margin:0;font-size:13.5px;line-height:1.5;color:var(--ink-soft)"><span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);margin-right:8px">Mitbringen</span>{{ it.bring }}</p>
+                  </sc-if>
+                  <button data-det-txt="" onClick="{{ it.toCard }}" style="align-self:flex-start;margin-top:2px;background:none;border:0;padding:0 0 3px;border-bottom:1.5px solid var(--magenta);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);cursor:pointer;border-radius:0" style-hover="color:var(--magenta)">Zur Dozent:in →</button>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ sel.none }}" hint-placeholder-val="{{ false }}">
+            <p data-det-txt="" style="margin:0 0 16px;padding-top:16px;border-top:1px solid var(--rule);font-size:15px;line-height:1.6;color:var(--ink-soft)">An diesem Tag findet kein Training statt.</p>
+            <sc-if value="{{ sel.hasNext }}" hint-placeholder-val="{{ true }}">
+              <button onClick="{{ sel.goNext }}" style="background:none;border:0;padding:0 0 3px;border-bottom:1.5px solid var(--magenta);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple);cursor:pointer;border-radius:0" style-hover="color:var(--magenta)">Nächster Termin: {{ sel.nextLabel }} →</button>
+            </sc-if>
+          </sc-if>
+            </div>
+            <sc-if value="{{ det.hasTiles }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(6,minmax(0,1fr));gap:5px;min-height:clamp(320px,30vw,460px);height:100%">
+            <sc-for list="{{ det.tiles }}" as="t" hint-placeholder-count="4">
+              <button data-mo="" data-flip-id="{{ t.fid }}" onClick="{{ t.pick }}" aria-label="{{ t.aria }}" tabIndex="{{ t.tab }}" style="grid-column:{{ t.gc }};grid-row:{{ t.gr }};position:relative;overflow:hidden;padding:0;border:0;border-radius:0;background:{{ t.bg }};color:{{ t.fg }};cursor:{{ t.cursor }};text-align:left;min-height:0;clip-path:{{ t.clip }}" style-hover="outline:{{ t.hover }};outline-offset:-3px">
+                <sc-if value="{{ t.isImg }}" hint-placeholder-val="{{ false }}">
+                  <img data-mo-img="" src="{{ t.src }}" alt="{{ t.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+            </sc-if>
+          </div>
+          <div style="margin-top:32px;padding:20px;background:var(--tint);display:flex;flex-direction:column;gap:10px">
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Anmeldung</span>
+            <p style="margin:0;font-size:14px;line-height:1.6;color:var(--ink-soft)">Training ohne Anmeldung. Für Workshops meldest du dich in der Telegram-Gruppe an, dort stehen auch kurzfristige Änderungen.</p>
+            <a href="#" style="align-self:flex-start;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)" style-hover="color:var(--purple)">Telegram-Gruppe →</a>
+          </div>
+        </aside>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- DOZENT:INNEN · CARD STACK -->
+  <section id="dozentinnen" data-screen-label="Dozent:innen" style="scroll-margin-top:70px;background:var(--tint);padding-top:clamp(72px,9vw,120px)">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 40px">
+      <div>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" style="margin-bottom:16px" hint-size="200px,16px">Dozent:innen · Herbst 2026</x-import>
+        <h2 data-split="" style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,5vw,64px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">Wer unterrichtet</h2>
+      </div>
+      <p style="max-width:420px;margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">Jede Woche hat eine Dozent:in. Klick auf ein Profil zeigt die Termine im Kalender.</p>
+    </div>
+    <div ref="{{ wrapRef }}" onMouseEnter="{{ pauseHover }}" onMouseLeave="{{ resumeHover }}" style="overflow:hidden;padding:clamp(88px,9vw,120px) 0 clamp(112px,11vw,152px)">
+      <div ref="{{ trackRef }}" style="display:flex;gap:8px;width:max-content;will-change:transform">
+        <sc-for list="{{ loop }}" as="g" hint-placeholder-count="12">
+          <div aria-hidden="{{ g.hidden }}" style="display:flex;flex-direction:column;justify-content:center;gap:8px;transform:translateY({{ g.dy }})">
+            <sc-for list="{{ g.tiles }}" as="t" hint-placeholder-count="1">
+              <button onClick="{{ t.toCal }}" tabIndex="{{ t.tab }}" aria-label="{{ t.aria }}" style="position:relative;width:{{ t.w }};height:{{ t.h }};padding:0;border:0;border-radius:0;cursor:pointer;overflow:hidden;background:{{ t.bg }};color:{{ t.fg }};text-align:left;font:inherit;box-shadow:{{ t.ring }};flex:none" style-hover="outline:3px solid var(--magenta);outline-offset:-3px">
+                <sc-if value="{{ t.photo }}" hint-placeholder-val="{{ false }}">
+                  <img src="{{ t.img }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 22%;display:block">
+                  <span style="position:absolute;left:0;right:0;bottom:0;background:rgba(46,26,77,0.9);color:#fff;padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px">
+                    <span style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan)"><span style="width:8px;height:8px;background:var(--magenta);flex:none"></span>{{ t.style }}</span>
+                    <span style="font-family:var(--font-display);font-weight:800;font-size:{{ t.size }};line-height:1;letter-spacing:-0.025em;text-wrap:balance">{{ t.name }}</span>
+                  </span>
+                </sc-if>
+              </button>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- INFOS -->
+  <section id="infos" data-screen-label="Infos" style="scroll-margin-top:70px;padding:clamp(72px,9vw,120px) 0">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" style="margin-bottom:16px" hint-size="160px,16px">Infos</x-import>
+      <h2 data-split="" style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,5vw,64px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0 0 48px">So läuft das Training</h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:0 clamp(28px,4vw,56px)">
+        <div style="padding:24px 0;border-top:3px solid var(--magenta)">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">Wann</span>
+          <div style="font-family:var(--font-display);font-weight:800;font-size:28px;line-height:1.05;letter-spacing:-0.025em;color:var(--purple);margin:10px 0 12px">Mo–Fr · 10:00–11:30</div>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">Drei bis fünf Einheiten pro Woche. Der Kalender zeigt, an welchen Tagen trainiert wird.</p>
+        </div>
+        <div style="padding:24px 0;border-top:3px solid var(--magenta)">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">Wo</span>
+          <div style="font-family:var(--font-display);font-weight:800;font-size:28px;line-height:1.05;letter-spacing:-0.025em;color:var(--purple);margin:10px 0 12px">TENZA Schmiede</div>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">Dresden. Workshops finden je nach Format auch in Partnerräumen statt.</p>
+        </div>
+        <div style="padding:24px 0;border-top:3px solid var(--magenta)">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">Für wen</span>
+          <div style="font-family:var(--font-display);font-weight:800;font-size:28px;line-height:1.05;letter-spacing:-0.025em;color:var(--purple);margin:10px 0 12px">Professionelle Tänzer:innen</div>
+          <p style="margin:0;font-size:15px;line-height:1.6;color:var(--ink-soft)">Offen für Tanzschaffende der freien Szene. Mitglieder:innen trainieren günstiger.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="position:relative;background:var(--cyan);color:var(--purple)">
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--purple)" height="{{ 14 }}" flip="{{ true }}" style="position:absolute;right:0;top:0;width:42%" hint-size="42%,14px"></x-import>
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(64px,8vw,104px) clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:32px 56px">
+      <h2 data-split="" style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,4.6vw,60px);line-height:0.98;letter-spacing:-0.03em;margin:0">Günstiger trainieren<br>als Mitglied.</h2>
+      <a href="TanzNetzDresden Website v3.dc.html#mitglied" style="display:flex">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" size="lg" marker="{{ true }}" hint-size="220px,46px">Mitgliedsantrag</x-import>
+      </a>
+    </div>
+  </section>
+
+  <footer style="background:var(--purple);color:#fff">
+    <div style="max-width:1320px;margin:0 auto;padding:40px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:24px">
+      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="full" color="#ffffff" width="200px" hint-size="200px,66px"></x-import>
+      <span style="font-family:var(--font-mono);font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.78)">Pfotenhauer Straße 59 HH · 01307 Dresden · kontakt@tanznetzdresden.de</span>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;mosaicSpeed&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;langsam&quot;,&quot;mittel&quot;,&quot;schnell&quot;],&quot;default&quot;:&quot;mittel&quot;,&quot;tsType&quot;:&quot;'langsam' | 'mittel' | 'schnell'&quot;,&quot;section&quot;:&quot;Dozent:innen&quot;,&quot;label&quot;:&quot;Mosaik-Tempo&quot;},&quot;splitText&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Textanimation&quot;,&quot;label&quot;:&quot;SplitText-Überschriften&quot;}}">
+const PH = 'uploads/0V3A5179.jpg';
+const TRAINERS = [
+  { id: 'am', name: 'Alexandre May', style: 'Contemporary', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'af', name: 'Aurora Fradella', style: 'Floorwork', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'cw', name: 'Charles Washington', style: 'Release-Technik', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'bp', name: 'Beatrice Panero', style: 'Ballett für Zeitgenössische', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'lg', name: 'Laura Gary', style: 'Improvisation', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'lb', name: 'Leon Börgens', style: 'Partnering', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'aa', name: 'Amit Abend', style: 'Contact Improvisation', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'al', name: 'Aurélie Lafaye', style: 'Zeitgenössischer Tanz', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+  { id: 'pk', name: 'Bettina Paletta & Emre Kesim', short: 'Bettina & Emre', style: 'Duo-Arbeit', bio: 'Platzhaltertext. Kurzbiografie folgt: Ausbildung, Stationen und Schwerpunkt im Unterricht in zwei bis drei Sätzen.' },
+];
+const KEIL = 'polygon(0 0,100% 0,100% 86%,86% 100%,0 100%)';
+const PATS = {
+  1: [['1 / 7', '1 / 7']],
+  2: [['1 / 5', '1 / 7'], ['5 / 7', '1 / 7']],
+  3: [['1 / 5', '1 / 5'], ['5 / 7', '1 / 5'], ['1 / 7', '5 / 7']],
+  4: [['1 / 5', '1 / 5'], ['5 / 7', '1 / 3'], ['5 / 7', '3 / 5'], ['1 / 7', '5 / 7']],
+};
+const mirror = (gc) => { const [a, b] = gc.split(' / ').map(Number); return (8 - b) + ' / ' + (8 - a); };
+const shuffle = (a) => { a = a.slice(); for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; };
+const U = 'clamp(200px,21vw,280px)', U2 = 'calc(2 * ' + U + ' + 8px)';
+const SIZES = { sq: [U, U, 'clamp(19px,1.8vw,24px)'], big: [U2, U2, 'clamp(22px,2.2vw,30px)'], tall: [U, U2, '19px'], wide: [U2, U, '19px'] };
+const PATTERN = [['sq'], ['sq', 'sq'], ['sq'], ['sq', 'sq'], ['sq', 'sq'], ['sq']];
+const OFFS = ['-60px', '24px', '-16px', '70px', '-38px', '52px', '-72px', '10px', '44px', '-26px'];
+const SPEED = { langsam: 28, mittel: 48, schnell: 80 };
+const THEMES = [
+  { bg: 'var(--purple)', fg: '#fff', kicker: 'var(--cyan)', body: 'rgba(255,255,255,0.86)', rule: 'rgba(255,255,255,0.2)' },
+  { bg: '#fff', fg: 'var(--purple)', kicker: 'var(--ink-muted)', body: 'var(--ink-soft)', rule: 'var(--rule)' },
+  { bg: 'var(--cyan)', fg: 'var(--purple)', kicker: 'var(--purple)', body: 'var(--purple)', rule: 'rgba(46,26,77,0.25)' },
+];
+const MON = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const MOS = ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const DOW = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+const DS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const TODAY = new Date(2026, 9, 11);
+const k = (d) => d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+const parse = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const T = Object.fromEntries(TRAINERS.map((t) => [t.id, t]));
+
+function buildSessions() {
+  const out = {}, add = (d, s) => { (out[k(d)] = out[k(d)] || []).push(s); };
+  const start = new Date(2026, 8, 7), pats = [[1, 2, 3, 4, 5], [1, 3, 5], [1, 2, 4, 5], [1, 2, 3, 4, 5], [2, 3, 4], [1, 2, 3, 5]];
+  const weeks = {};
+  for (let w = 0; w < 16; w++) {
+    const t = TRAINERS[w % TRAINERS.length], pat = pats[w % pats.length];
+    pat.forEach((dw) => { const d = new Date(start); d.setDate(start.getDate() + w * 7 + dw - 1); add(d, { kind: 'training', time: '10:00–11:30', tr: t.id, where: 'TENZA Schmiede' }); });
+    const mo = new Date(start); mo.setDate(start.getDate() + w * 7); const fr = new Date(mo); fr.setDate(mo.getDate() + 4);
+    (weeks[t.id] = weeks[t.id] || []).push([mo, fr]);
+  }
+  add(new Date(2026, 10, 14), { kind: 'workshop', time: '11:00–15:00', tr: 'af', where: 'TENZA Schmiede' });
+  add(new Date(2026, 11, 12), { kind: 'workshop', time: '11:00–15:00', tr: 'cw', where: 'TENZA Schmiede' });
+  return { out, weeks };
+}
+let SESS, KEYS, BLK = {};
+function loadData() {
+  const st = window.KeepUpStore;
+  if (st) { const bl = st.load(); BLK = Object.fromEntries(bl.map((b) => [b.id, b])); SESS = st.sessions(bl); }
+  else { BLK = {}; SESS = buildSessions().out; }
+  KEYS = Object.keys(SESS).sort();
+}
+loadData();
+
+class Component extends DCLogic {
+  state = { y: 2026, m: 9, sel: null, filter: 'alle', hl: null };
+  trackRef = React.createRef();
+  wrapRef = React.createRef();
+  order = shuffle(TRAINERS);
+  calRef = React.createRef();
+  detRef = React.createRef();
+
+  matches(s) { return this.state.filter === 'alle' || s.tr === this.state.filter; }
+  nextFrom(dateKey) { return KEYS.find((x) => x >= dateKey && SESS[x].some((s) => this.matches(s))); }
+
+  componentDidMount() {
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!window.KeepUpStore) { let n = 0; const w = () => { if (window.KeepUpStore) { loadData(); this.setState({ sel: this.nextFrom(k(TODAY)) }); } else if (n++ < 40) this._kt = setTimeout(w, 80); }; w(); }
+    this._onStorage = (e) => { if (window.KeepUpStore && e.key === window.KeepUpStore.KEY) { loadData(); this.collapseAll(); this.forceUpdate(); } };
+    window.addEventListener('storage', this._onStorage);
+    this.setState({ sel: this.nextFrom(k(TODAY)) });
+    let n = 0;
+    const ready = () => {
+      if (window.gsap && window.ScrollTrigger && window.SplitText) {
+        window.gsap.registerPlugin(window.ScrollTrigger, window.SplitText); if (window.Flip) window.gsap.registerPlugin(window.Flip);
+        (document.fonts ? document.fonts.ready : Promise.resolve()).then(() => { this.initSplits(); this.initStack(); });
+      } else if (n++ < 50) this._wt = setTimeout(ready, 100);
+      else this.stackFallback();
+    };
+    ready();
+    this._onResize = () => { clearTimeout(this._rt); this._rt = setTimeout(() => this.initStack(), 200); };
+    window.addEventListener('resize', this._onResize);
+  }
+  collapseAll() {
+    this.setState({ open: {}, cover: {}, hero: 0 });
+    document.querySelectorAll('[data-exp]').forEach((el) => { if (window.gsap) window.gsap.killTweensOf(el); el.style.height = '0px'; });
+  }
+  toggleExp(bid) {
+    const open = !(this.state.open || {})[bid];
+    this.setState((s) => ({ open: Object.assign({}, s.open, { [bid]: open }) }));
+    const el = document.querySelector('[data-exp="' + bid + '"]'), g = window.gsap;
+    if (!el) return;
+    if (!g || this.reduced) { el.style.height = open ? 'auto' : '0px'; return; }
+    if (open) {
+      g.fromTo(el, { height: el.offsetHeight }, { height: 'auto', duration: 0.65, ease: 'expo.out', onComplete: () => { el.style.height = 'auto'; } });
+      if (el.firstElementChild) g.fromTo(el.firstElementChild.children, { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, ease: 'expo.out', stagger: 0.05, clearProps: 'transform,opacity' });
+    } else g.to(el, { height: 0, duration: 0.4, ease: 'power3.inOut' });
+  }
+  componentWillUnmount() { clearTimeout(this._kt); window.removeEventListener('storage', this._onStorage); clearTimeout(this._wt); clearTimeout(this._rt); clearTimeout(this._ht); window.removeEventListener('resize', this._onResize); this.killSplits(); if (this._tw) this._tw.kill(); }
+  componentDidUpdate(prev) {
+    if (prev && prev.mosaicSpeed !== this.props.mosaicSpeed && this._tw) this.initStack();
+    if (prev.splitText !== this.props.splitText && window.gsap) this.initSplits();
+  }
+
+  killSplits() {
+    if (this._ctx) { this._ctx.revert(); this._ctx = null; }
+    document.querySelectorAll('[data-split]').forEach((el) => { if (el._orig != null) el.innerHTML = el._orig; });
+  }
+  initSplits() {
+    this.killSplits();
+    if (this.reduced || this.props.splitText === false) return;
+    const g = window.gsap, S = window.SplitText;
+    this._ctx = g.context(() => {
+      document.querySelectorAll('[data-split]').forEach((el, i) => {
+        if (el._orig == null) el._orig = el.innerHTML; else el.innerHTML = el._orig;
+        if (el.tagName === 'H1') {
+          const s = S.create(el, { type: 'words,chars', mask: 'chars' });
+          g.from(s.chars, { yPercent: 115, duration: 1, ease: 'expo.out', stagger: 0.03, delay: 0.15 });
+        } else {
+          const s = S.create(el, { type: 'words' });
+          g.from(s.words, { x: -60, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06, scrollTrigger: { trigger: el, start: 'top 85%', once: true } });
+        }
+      });
+    });
+    window.ScrollTrigger.refresh();
+  }
+
+  stackFallback() {
+    const w = this.wrapRef.current; if (w) w.style.overflowX = 'auto';
+  }
+  initStack() {
+    const tr = this.trackRef.current, g = window.gsap; if (!tr || !g) return;
+    if (this.reduced) { this.stackFallback(); return; }
+    const p = this._tw ? this._tw.progress() : 0;
+    if (this._tw) this._tw.kill();
+    const half = tr.scrollWidth / 2 + 4;
+    this._tw = g.fromTo(tr, { x: -half }, { x: 0, duration: half / (SPEED[this.props.mosaicSpeed] || SPEED.mittel), ease: 'none', repeat: -1 });
+    this._tw.progress(p);
+    if (this._hover) this._tw.timeScale(0);
+  }
+
+  scrollToEl(el, off) { if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (off || 72), behavior: 'smooth' }); }
+  toCard(id) {
+    clearTimeout(this._ht);
+    this.setState({ hl: id });
+    this._ht = setTimeout(() => this.setState({ hl: null }), 3000);
+    this.scrollToEl(document.getElementById('dozentinnen'));
+  }
+  toCal(id) {
+    const nx = KEYS.find((x) => x >= k(TODAY) && SESS[x].some((s) => s.tr === id));
+    const d = nx ? parse(nx) : TODAY;
+    this.collapseAll();
+    this.setState({ filter: id, sel: nx || null, y: d.getFullYear(), m: d.getMonth() });
+    this.scrollToEl(this.calRef.current);
+  }
+  grabFlip() {
+    const r = this.detRef.current;
+    return r && window.Flip && !this.reduced ? window.Flip.getState(r.querySelectorAll('[data-mo]')) : null;
+  }
+  setHero(i) {
+    this.setState({ hero: i }, () => {
+      const el = this.detRef.current && this.detRef.current.querySelector('[data-flip-id="s0"] img');
+      if (el && window.gsap && !this.reduced) window.gsap.fromTo(el, { clipPath: 'inset(0 100% 0 0)', scale: 1.12 }, { clipPath: 'inset(0 0% 0 0)', scale: 1, duration: 0.9, ease: 'expo.out', clearProps: 'clipPath' });
+    });
+  }
+  revealDetail(scroll, fs) {
+    requestAnimationFrame(() => {
+      const root = this.detRef.current; if (!root) return;
+      if (scroll) { const t = root.getBoundingClientRect().top; if (t > window.innerHeight * 0.75 || t < 0) window.scrollTo({ top: t + window.scrollY - 76, behavior: this.reduced ? 'auto' : 'smooth' }); }
+      const g = window.gsap; if (!g || this.reduced) return;
+      const q = (s) => Array.from(root.querySelectorAll(s));
+      const date = root.querySelector('[data-det-date]');
+      g.killTweensOf([date].concat(q('[data-det-txt]'), q('[data-mo-img]')));
+      if (fs && window.Flip) window.Flip.from(fs, { duration: 0.95, ease: 'expo.out', stagger: 0.05, absolute: true });
+      g.fromTo(q('[data-mo-img]'), { scale: 1.2, opacity: 0.3 }, { scale: 1, opacity: 1, duration: 1.1, ease: 'expo.out', stagger: 0.06 });
+      const tl = g.timeline({ defaults: { ease: 'expo.out' } });
+      tl.fromTo(date, { yPercent: 105 }, { yPercent: 0, duration: 0.9 }, 0.05)
+        .fromTo(q('[data-det-none]'), { x: -40, opacity: 0 }, { x: 0, opacity: 1, duration: 0.7, stagger: 0.06, clearProps: 'transform,opacity' }, 0.22);
+      const txt = q('[data-det-txt]');
+      if (txt.length) tl.fromTo(txt, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7, stagger: 0.04, clearProps: 'transform,opacity' }, 0.2);
+    });
+  }
+  pickDay(key) {
+    const fs = this.grabFlip();
+    if (key !== this.state.sel) this.collapseAll();
+    this.setState({ sel: key }, () => this.revealDetail(true, fs));
+  }
+  setFilter(f) {
+    const nx = KEYS.find((x) => x >= k(TODAY) && SESS[x].some((s) => f === 'alle' || s.tr === f));
+    this.collapseAll();
+    const patch = { filter: f };
+    if (nx) { const d = parse(nx); patch.sel = nx; patch.y = d.getFullYear(); patch.m = d.getMonth(); }
+    this.setState(patch);
+  }
+  shift(dir) {
+    this.setState((s) => { let m = s.m + dir, y = s.y; if (m < 0) { m = 11; y--; } if (m > 11) { m = 0; y++; } return { m, y }; });
+  }
+  fmtRange(a, b) { return a.getMonth() === b.getMonth() ? a.getDate() + '.–' + b.getDate() + '. ' + MOS[a.getMonth()] : a.getDate() + '. ' + MOS[a.getMonth()] + ' – ' + b.getDate() + '. ' + MOS[b.getMonth()]; }
+
+  mosaic(dup) {
+    const groups = []; let i = 0, p = 0, c = 0;
+    while (i < this.order.length) {
+      let pat = PATTERN[p++ % PATTERN.length];
+      if (pat.length > this.order.length - i) pat = ['sq'];
+      groups.push({ hidden: dup ? 'true' : 'false', dy: OFFS[(p - 1) % OFFS.length], tiles: pat.map((sz) => {
+        const t = this.order[i++], [w, h, size] = SIZES[sz], photo = true, th = THEMES[c++ % 3];
+        return { name: t.name, style: t.style, img: PH, w, h, size, photo, field: !photo, bg: photo ? 'var(--purple)' : th.bg, fg: th.fg, kicker: th.kicker,
+          ring: this.state.hl === t.id ? 'inset 0 0 0 3px var(--magenta)' : 'none', tab: dup ? -1 : 0,
+          aria: t.name + ', ' + t.style + ' – Termine im Kalender', toCal: () => this.toCal(t.id) };
+      }) });
+    }
+    return groups;
+  }
+
+  renderVals() {
+    const { y, m, sel, filter } = this.state, tk = k(TODAY);
+    const first = new Date(y, m, 1), lead = (first.getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
+    const cells = [];
+    for (let i = 0; i < lead; i++) cells.push({ blank: true, day: '', label: '', marks: [], bg: 'var(--tint)', fg: 'transparent', op: 1, ring: 'none', cursor: 'default', aria: '', pick: () => {} });
+    for (let d = 1; d <= days; d++) {
+      const dt = new Date(y, m, d), key = k(dt), all = SESS[key] || [], ss = all.filter((s) => this.matches(s));
+      const past = key < tk, isSel = key === sel, dim = all.length && !ss.length;
+      const tr = ss.find((s) => s.kind === 'training') || ss[0];
+      cells.push({
+        blank: false, day: d, label: tr ? (T[tr.tr].short || T[tr.tr].name.split(' ')[0]) : '',
+        marks: ss.map((s) => (s.kind === 'workshop' ? 'var(--magenta)' : (isSel ? 'var(--cyan)' : 'var(--cyan)'))),
+        bg: isSel ? 'var(--purple)' : '#fff', fg: isSel ? '#fff' : (past || !ss.length ? 'var(--ink-muted)' : 'var(--purple)'),
+        op: past && !isSel ? 0.5 : (dim ? 0.55 : 1), ring: key === tk && !isSel ? 'inset 0 0 0 2px var(--magenta)' : 'none', cursor: 'pointer',
+        aria: d + '. ' + MON[m] + (ss.length ? ', ' + ss.length + ' Termin' : ''), pick: () => this.pickDay(key),
+      });
+    }
+    while (cells.length % 7) cells.push({ blank: true, day: '', label: '', marks: [], bg: 'var(--tint)', fg: 'transparent', op: 1, ring: 'none', cursor: 'default', aria: '', pick: () => {} });
+
+    const sd = sel ? parse(sel) : null, items = sel ? (SESS[sel] || []).filter((s) => this.matches(s)) : [];
+    const after = sd ? KEYS.find((x) => x > sel && SESS[x].some((s) => this.matches(s))) : this.nextFrom(tk);
+    const selV = {
+      dow: sd ? DOW[sd.getDay()] : 'Tag wählen', date: sd ? sd.getDate() + '. ' + MON[sd.getMonth()] : '—',
+      has: items.length > 0, none: !items.length,
+      items: items.map((s) => {
+        const p = (BLK[s.bid] || {}).pub, op = !!(this.state.open || {})[s.bid];
+        const base = { time: s.time, kind: s.kind === 'workshop' ? 'Workshop' : 'Training', badge: s.kind === 'workshop' ? 'magenta' : 'cyan', who: T[s.tr].name, style: T[s.tr].style, where: s.where, toCard: () => this.toCard(s.tr), bid: s.bid || '', hasPub: !!(p && (p.title || p.teaser)),
+          dTitle: T[s.tr].name, dSub: T[s.tr].style, paras: [], thumbs: [], focus: [], hasCover: false, hasThumbs: false, hasFocus: false, hasBring: false };
+        base.noPub = !base.hasPub;
+        if (!base.hasPub) return base;
+        base.dTitle = p.title || T[s.tr].name; base.dSub = T[s.tr].name + ' · ' + T[s.tr].style;
+        const ci = Math.min(((this.state.cover || {})[s.bid]) || 0, Math.max(0, p.images.length - 1)), imgs = p.images, paras = (p.body || '').split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
+        return Object.assign(base, { title: p.title, teaser: p.teaser, paras, focus: p.focus, hasFocus: p.focus.length > 0, bring: p.bring, hasBring: !!p.bring,
+          hasMore: !!(paras.length || imgs.length || p.focus.length || p.bring), expanded: op ? 'true' : 'false', more: op ? 'Weniger ↑' : 'Mehr lesen ↓', toggle: () => this.toggleExp(s.bid),
+          hasCover: imgs.length > 0, cover: imgs.length ? imgs[ci].src : '', coverAlt: imgs.length ? imgs[ci].alt : '', hasThumbs: imgs.length > 1,
+          thumbs: imgs.map((im, i) => ({ src: im.src, alt: im.alt, i })).filter((x) => x.i !== ci).map((x) => ({ src: x.src, alt: x.alt, pick: () => this.setState((st) => ({ cover: Object.assign({}, st.cover, { [s.bid]: x.i }) })) })) });
+      }),
+      hasNext: !!after, nextLabel: after ? DS[parse(after).getDay()] + ' ' + parse(after).getDate() + '. ' + MOS[parse(after).getMonth()] : '',
+      goNext: () => { if (!after) return; const d = parse(after), fs = this.grabFlip(); this.collapseAll(); this.setState({ sel: after, y: d.getFullYear(), m: d.getMonth() }, () => this.revealDetail(true, fs)); },
+    };
+    const before = sel ? KEYS.slice().reverse().find((x) => x < sel && SESS[x].some((s) => this.matches(s))) : null;
+    const jump = (key) => { if (!key) return; const d = parse(key), fs = this.grabFlip(); this.collapseAll(); this.setState({ sel: key, y: d.getFullYear(), m: d.getMonth() }, () => this.revealDetail(false, fs)); };
+    const pool = [];
+    items.forEach((s) => { const p = (BLK[s.bid] || {}).pub; if (p && (p.title || p.teaser)) p.images.forEach((im) => pool.push({ src: im.src, alt: im.alt })); });
+    const hero = Math.min(this.state.hero || 0, Math.max(0, pool.length - 1)), ordered = pool.length ? [pool[0]] : [];
+    const idxOf = (im) => pool.indexOf(im);
+    const fillers = [
+      { bg: 'var(--cyan)', fg: 'var(--purple)', label: items.length ? T[items[0].tr].style : 'Freier Tag', font: 'var(--font-mono)', weight: 700, size: '11px', track: '0.16em' },
+      { bg: 'var(--purple)', fg: 'var(--cyan)', label: 'KEEP UP', font: 'var(--font-display)', weight: 800, size: 'clamp(14px,1.4vw,20px)', track: '-0.02em' },
+      { bg: 'var(--tint)', fg: 'var(--purple)', label: items.length ? items[0].time : 'TENZA', font: 'var(--font-mono)', weight: 700, size: '11px', track: '0.14em' },
+    ];
+    const pat = PATS[ordered.length] || [], flipX = sd ? sd.getDate() % 2 === 1 : false;
+    const tiles = ordered.map((im, slot) => {
+      const gc = flipX ? mirror(pat[slot][0]) : pat[slot][0], g = { fid: 's' + slot, gc, gr: pat[slot][1], clip: slot === 0 ? KEIL : 'none' };
+      return Object.assign(g, { isImg: true, src: im.src, alt: im.alt, bg: 'var(--tint)', fg: '#fff', cursor: slot ? 'pointer' : 'default', hover: slot ? '3px solid var(--magenta)' : 'none', tab: slot ? 0 : -1, aria: slot ? 'Bild groß zeigen' : (im.alt || 'Bild'), pick: slot ? () => this.setHero(idxOf(im)) : () => {} });
+    });
+    const det = {
+      kicker: sd ? DOW[sd.getDay()] + (sel === tk ? ' · Heute' : '') : 'Tag wählen',
+      date: sd ? sd.getDate() + '. ' + MON[sd.getMonth()] : '—', year: sd ? String(sd.getFullYear()) : '',
+      sub: items.length ? items.map((s) => s.time).join(' · ') + ' · ' + items[0].where : 'Kein Training',
+      items: selV.items, none: !items.length, tiles, hasTiles: tiles.length > 0,
+      prev: () => jump(before), next: () => jump(after), noPrev: !before, noNext: !after, prevOp: before ? 1 : 0.35, nextOp: after ? 1 : 0.35,
+      toCal: () => this.scrollToEl(this.calRef.current),
+    };
+
+    const nk = KEYS.find((x) => x >= tk) || KEYS[KEYS.length - 1] || tk, ns = (SESS[nk] || [{ time: '', tr: TRAINERS[0].id, where: '' }])[0], nd = parse(nk);
+    const chips = [{ id: 'alle', label: 'Alle' }].concat(TRAINERS.map((t) => ({ id: t.id, label: t.short || t.name.split(' ')[0] }))).map((c) => {
+      const on = filter === c.id;
+      return { label: c.label, pick: () => this.setFilter(c.id), bg: on ? 'var(--purple)' : '#fff', fg: on ? '#fff' : 'var(--purple)', border: on ? 'var(--purple)' : 'var(--rule)' };
+    });
+
+    return {
+      calRef: this.calRef, detRef: this.detRef, det, cells, sel: selV, chips,
+      toDetail: () => this.revealDetail(true),
+      monthLabel: MON[m] + ' ' + y, prevMonth: () => this.shift(-1), nextMonth: () => this.shift(1),
+      next: { date: DS[nd.getDay()] + ' · ' + nd.getDate() + '. ' + MON[nd.getMonth()], time: ns.time, who: T[ns.tr].name, where: ns.where },
+      wrapRef: this.wrapRef, trackRef: this.trackRef,
+      pauseHover: () => { this._hover = true; if (this._tw) window.gsap.to(this._tw, { timeScale: 0, duration: 0.5, overwrite: true }); },
+      resumeHover: () => { this._hover = false; if (this._tw) window.gsap.to(this._tw, { timeScale: 1, duration: 0.5, overwrite: true }); },
+      loop: this.mosaic(false).concat(this.mosaic(true)),
+    };
+  }
+}
+</script>
+</body>
+</html>

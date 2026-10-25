@@ -14,6 +14,7 @@ import Mosaik from '../components/keep-up/Mosaik.astro';
 import { getVerein } from '../lib/settings';
 import { getKeepUp, todayKey, weekLabel } from '../lib/keep-up';
 import { dateLocale, getLang, loc, tr, url } from '../lib/i18n';
+import { href } from '../lib/url';
 import { keepUp, keepUpFoto } from '../settings/keep-up';
 
 const lang = getLang(Astro);
@@ -32,14 +33,14 @@ const t = tr(lang, {
     title: 'KEEP UP · Profitraining', desc: 'Profitraining für Tänzer:innen der freien Szene in Dresden: Kalender, Dozent:innen, Ort und Beitrag.',
     toCal: 'Zum Kalender', who: 'Wer unterrichtet →', next: 'Nächste Einheit',
     calKicker: 'Kalender', calH: 'Wann wir trainieren', filter: 'Nach Dozent:in filtern', training: 'Profitraining', workshop: 'Workshop',
-    signup: 'Anmeldung', telegram: 'Telegram-Gruppe →', contact: 'Kontakt →', weeks: 'Trainingswochen', workshops: 'Workshops',
+    signup: 'Anmeldung', telegram: 'Telegram-Gruppe →', contact: 'Kontakt →', abo: 'Kalender abonnieren (.ics)', weeks: 'Trainingswochen', workshops: 'Workshops',
     infos: 'Infos', infosH: 'So läuft das Training', when: 'Wann', where: 'Wo', forWhom: 'Für wen', fee: 'Beitrag', join: 'Mitglied werden',
   },
   en: {
     title: 'KEEP UP · Professional training', desc: "Professional training for dancers of Dresden's independent scene: calendar, teachers, venue and fee.",
     toCal: 'To the calendar', who: 'Who teaches →', next: 'Next class',
     calKicker: 'Calendar', calH: 'When we train', filter: 'Filter by teacher', training: 'Professional training', workshop: 'Workshop',
-    signup: 'Registration', telegram: 'Telegram group →', contact: 'Contact →', weeks: 'Training weeks', workshops: 'Workshops',
+    signup: 'Registration', telegram: 'Telegram group →', contact: 'Contact →', abo: 'Subscribe to the calendar (.ics)', weeks: 'Training weeks', workshops: 'Workshops',
     infos: 'Info', infosH: 'How training works', when: 'When', where: 'Where', forWhom: 'For whom', fee: 'Fee', join: 'Become a member',
   },
 });
@@ -93,6 +94,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
   <Kalender
     days={days}
     months={months}
+    breit
     kicker={t.calKicker}
     title={t.calH}
     filter={{ label: t.filter, chips: dozentinnen.map((d) => ({ key: d.id, label: d.first, name: d.name })) }}
@@ -104,6 +106,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
       {verein.social.telegram
         ? <a class="mono-link" href={verein.social.telegram} rel="noopener">{t.telegram}</a>
         : <a class="mono-link" href={url(lang, 'kontakt')}>{t.contact}</a>}
+      <a class="mono-link" href={href('profitraining.ics')}>{t.abo}</a>
     </Fragment>
     <Fragment slot="liste">
       <h3 class="ku-list__h">{t.weeks}</h3>

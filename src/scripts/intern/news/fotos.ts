@@ -7,7 +7,7 @@ import { newsPhotoUrl } from '../../../lib/supabase';
 export const BUCKET = 'newsbilder';
 
 /** Große Fotos im Browser verkleinern (max. 2400 px), damit der Upload schnell geht. */
-async function verkleinern(file: Blob, drehen = 0): Promise<Blob> {
+export async function verkleinern(file: Blob, drehen = 0): Promise<Blob> {
   const bmp = await createImageBitmap(file).catch(() => null);
   if (!bmp) return file;
   const scale = Math.min(1, 2400 / Math.max(bmp.width, bmp.height));
