@@ -1,11 +1,12 @@
 /**
- * Intern → KEEP UP: gemeinsame Helfer für Planung (Vorstand), „Meine Trainings“ und den Editor.
+ * Intern → KEEP UP: gemeinsame Helfer für die Planung (Intern → Kalender), „Meine Trainings“ und den Editor.
  * Daten: Tabelle keepup_termine (supabase/migrations/20261025000000_keepup.sql), Logik in src/lib/keep-up-plan.ts.
  * Dozent:innen und Fotos der Website stehen beim Build als JSON in der Seite (components/intern/KeepUpDaten.astro).
  */
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { ersterTag, letzterTag, montag, plusTage, kalenderwoche, status, type KeepUpTermin } from '../../lib/keep-up-plan';
 import { h } from './news/dom';
+import type { KalenderTermin } from '../../lib/kalender-intern';
 
 export interface Dozentin {
   id: string;
@@ -27,6 +28,19 @@ export interface KeepUpDaten {
   ort: string;
   /** Adresse des Kalenders auf der Website */
   website: string;
+  /** nur auf Intern → Kalender (components/intern/KeepUpDaten.astro mit `kalender`) */
+  kalender?: KalenderDaten;
+}
+export interface KalenderDaten {
+  /** Termine aus den Dateien (src/content/termine/), zum Anzeigen und Übernehmen */
+  dateiTermine: (Omit<KalenderTermin, 'id' | 'sichtbar'> & { datei: true })[];
+  formate: { id: string; titel: string }[];
+  /** Profile für „Mitwirkende“ */
+  personen: { id: string; name: string }[];
+  /** Vorschläge für den Ort */
+  orte: string[];
+  /** Kalender-Abo (/termine.ics) als volle Adresse */
+  abo: string;
 }
 
 export const daten = (): KeepUpDaten =>

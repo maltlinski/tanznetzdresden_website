@@ -31,6 +31,9 @@ export interface Mock {
   /** Tabelle keepup_termine (aktueller Stand) und jede Änderung daran */
   keepup: Record<string, unknown>[];
   keepupAenderungen: { methode: string; body: Record<string, unknown> | null }[];
+  /** Tabelle kalender_termine (Intern → Kalender) und jede Änderung daran */
+  kalender: Record<string, unknown>[];
+  kalenderAenderungen: { methode: string; body: Record<string, unknown> | null }[];
 }
 
 export interface MockOptionen {
@@ -58,6 +61,8 @@ export interface MockOptionen {
   keepupIch?: string | null;
   /** rpc/keepup_kontakte (nur Vorstand) */
   keepupKontakte?: Record<string, unknown>[];
+  /** Zeilen in kalender_termine; undefined = Tabelle fehlt (Migration 20261026) */
+  kalender?: Record<string, unknown>[];
 }
 
 /** Neue Einplanung mit den Standardwerten der Tabelle */
@@ -69,7 +74,7 @@ const INHALT = ['titel', 'kurz', 'text', 'schwerpunkte', 'mitbringen', 'bild', '
 
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
-  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [] };
+  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [] };
   const mitglieder = new Map<string, Record<string, unknown>>([...(o.mitgliedschaft ? [o.mitgliedschaft] : []), ...(o.mitgliedschaften ?? [])].map((z) => [String(z.person), z]));
   let profil: Record<string, unknown> = { id: 'u1', display_name: 'Pia Presse', role: 'presse', verified: false, public_listing: false, tags: [], ags: [], ...o.profil };
   const dateien = new Map<string, Buffer>();
@@ -194,6 +199,25 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
     if (url.pathname === '/rest/v1/rpc/member_directory') return json(o.verzeichnis ?? []);
     if (url.pathname === '/rest/v1/rpc/keepup_ich') return o.keepup ? json(o.keepupIch ?? null) : json({ message: 'function keepup_ich does not exist', code: 'PGRST202' }, 404);
     if (url.pathname === '/rest/v1/rpc/keepup_kontakte') return json(o.keepupKontakte ?? []);
+    if (url.pathname === '/rest/v1/kalender_termine') {
+      if (!o.kalender) return json({ message: 'relation "public.kalender_termine" does not exist', code: '42P01' }, 404);
+      const id = url.searchParams.get('id')?.replace(/^eq\./, '');
+      const body = ['POST', 'PATCH'].includes(req.method()) ? (req.postDataJSON() as Record<string, unknown>) : null;
+      if (req.method() !== 'GET') m.kalenderAenderungen.push({ methode: req.method(), body });
+      if (req.method() === 'GET') return json(m.kalender.filter((z) => !id || z.id === id));
+      if (req.method() === 'DELETE') {
+        m.kalender = m.kalender.filter((z) => z.id !== id);
+        return json([]);
+      }
+      if (req.method() === 'POST') {
+        const neu = { id: `t${m.kalender.length + 1}`, titel_en: '', zeit_text: '', kurz_en: '', text: '', link: '', format: '', personen: [], news: '', sichtbar: true, ...body };
+        m.kalender.push(neu);
+        return json(einzeln ? neu : [neu], 201);
+      }
+      m.kalender = m.kalender.map((z) => (z.id === id ? { ...z, ...body } : z));
+      const neu = m.kalender.find((z) => z.id === id);
+      return json(einzeln ? neu : [neu]);
+    }
     if (url.pathname === '/rest/v1/keepup_termine') {
       if (!o.keepup) return json({ message: 'relation "public.keepup_termine" does not exist', code: '42P01' }, 404);
       // einfache PostgREST-Filter: id=eq./neq./in.(…), dozent=eq.

@@ -1,5 +1,5 @@
 /**
- * KEEP UP (Entwurf „KEEP UP Intern“ und „KEEP UP Profitraining“): Planung durch den Vorstand, „Meine Trainings“
+ * KEEP UP (Entwurf „KEEP UP Intern“ und „KEEP UP Profitraining“): Planung im Kalender (Redaktion, Vorstand), „Meine Trainings“
  * und Editor für Dozent:innen, Beschreibung in der Tagesansicht der Profitrainings-Seite.
  * Supabase ist nachgebaut (tests/redaktion-mock.ts). Die Daten liegen in dieser Woche, damit sie immer zu sehen sind.
  */
@@ -24,23 +24,26 @@ const nav = (page: Page) => page.getByRole('navigation', { name: 'Interner Berei
 
 test('Planung: Wochen mit Einplanungen, Hinweis auf fehlende Beschreibungen, Filter', async ({ page }) => {
   const m = await redaktion(page, { profil: vorstand, keepup: zeilen(), keepupKontakte: [{ dozent: 'aurora-fradella', name: 'Aurora Fradella', email: 'aurora@example.org' }] });
+  // die alte Adresse der Planung führt in den Kalender
   await page.goto('/intern/keep-up/');
-  await expect(nav(page).getByRole('link', { name: /^Planung/ })).toHaveAttribute('aria-current', 'page');
-  await expect(nav(page).getByRole('link', { name: /^Planung/ })).toContainText('2');
+  await expect(page).toHaveURL(/\/intern\/kalender\/$/);
+  await expect(nav(page).getByRole('link', { name: /^Kalender/ })).toHaveAttribute('aria-current', 'page');
+  await expect(nav(page).getByRole('link', { name: /^Kalender/ })).toContainText('2');
   await expect(nav(page).getByRole('link', { name: /Meine Trainings/ })).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Kalender');
 
   // diese Woche: Aurora (ohne Beschreibung) und Charles (Entwurf)
   const woche = page.locator(`[data-woche="${mo}"]`);
   await expect(woche.locator('.pl-kw__nr')).toHaveText(`KW ${kalenderwoche(mo)}`);
-  await expect(woche.locator('.pl-block')).toHaveCount(2);
-  await expect(woche.locator('.pl-block').first()).toContainText('Aurora Fradella');
-  await expect(woche.locator('.pl-block').first()).toContainText('Ohne Beschreibung');
-  await expect(woche.locator('.pl-block').nth(1)).toContainText('Entwurf');
+  const ku = woche.locator('.pl-block:not(.pl-block--termin)');
+  await expect(ku).toHaveCount(2);
+  await expect(ku.first()).toContainText('Aurora Fradella');
+  await expect(ku.first()).toContainText('Ohne Beschreibung');
+  await expect(ku.nth(1)).toContainText('Entwurf');
   await expect(woche.locator('.pl-tag.is-heute')).toHaveCount(1);
 
   // Hinweis: zwei Termine ohne veröffentlichte Beschreibung; erinnern merkt sich das Datum
-  await expect(page.locator('[data-erinnern-titel]')).toContainText('2 Termine bis');
+  await expect(page.locator('[data-erinnern-titel]')).toContainText('KEEP UP: 2 Trainings bis');
   await expect(page.locator('[data-erinnern-namen]')).toContainText('Aurora Fradella');
   await page.getByRole('button', { name: 'Alle erinnern' }).click();
   await expect(page.locator('[data-ku-toast]')).toContainText('Ohne Konto, bitte direkt erinnern: Charles Washington.');
@@ -48,15 +51,15 @@ test('Planung: Wochen mit Einplanungen, Hinweis auf fehlende Beschreibungen, Fil
   await expect(page.getByRole('button', { name: 'Erneut erinnern' })).toHaveCount(0);
 
   // Filter: nur Entwürfe, die anderen werden blass
-  await page.getByRole('button', { name: /^Entwurf/ }).click();
-  await expect(woche.locator('.pl-block').first()).toHaveClass(/is-blass/);
-  await expect(woche.locator('.pl-block').nth(1)).not.toHaveClass(/is-blass/);
+  await page.locator('.pl-chip', { hasText: 'Entwürfe' }).click();
+  await expect(ku.first()).toHaveClass(/is-blass/);
+  await expect(ku.nth(1)).not.toHaveClass(/is-blass/);
 });
 
 test('Planung: einplanen, Überschneidung, bearbeiten, löschen und rückgängig', async ({ page }) => {
   const m = await redaktion(page, { profil: vorstand, keepup: zeilen() });
-  await page.goto('/intern/keep-up/');
-  await page.locator('[data-neu]').click();
+  await page.goto('/intern/kalender/');
+  await page.getByRole('button', { name: 'KEEP UP einplanen' }).click();
   // der Name des Dialogs ist die gewählte Person
   await expect(page.getByRole('dialog', { name: 'Wer unterrichtet?' })).toBeVisible();
   const dlg = page.locator('[data-schublade]');
@@ -75,37 +78,40 @@ test('Planung: einplanen, Überschneidung, bearbeiten, löschen und rückgängig
   expect(neu).toEqual({ art: 'training', dozent: 'laura-gary', woche: plusTage(mo, 7), tage: [1, 2, 3, 4, 5], zeit: '10:00–11:30', ort: 'TENZA Schmiede', notiz: 'Raum 2' });
 
   // bestehende Einplanung: Workshop-Umschalter setzt Samstag und andere Zeit; dann löschen mit Rückfrage
-  await page.locator(`[data-woche="${mo}"] .pl-block`).first().click();
+  const ku = page.locator(`[data-woche="${mo}"] .pl-block:not(.pl-block--termin)`);
+  await ku.first().click();
   const bearb = page.getByRole('dialog', { name: 'Aurora Fradella' });
-  await expect(bearb.locator('[data-s-tag]')).toHaveText('Einplanung bearbeiten');
+  await expect(bearb.locator('[data-s-tag]')).toHaveText('KEEP UP bearbeiten');
   await expect(bearb.locator('[data-s-text]')).toHaveText('Noch nichts geschrieben.');
   await expect(bearb.getByRole('link', { name: 'Beschreibung öffnen →' })).toHaveAttribute('href', /beschreiben\/\?id=k1&von=plan$/);
-  await bearb.getByRole('button', { name: 'Termin löschen' }).click();
+  await bearb.getByRole('button', { name: 'Löschen' }).click();
   await bearb.getByRole('button', { name: 'Wirklich löschen?' }).click();
   await expect(bearb).toBeHidden();
-  await expect(page.locator(`[data-woche="${mo}"] .pl-block`)).toHaveCount(1);
+  await expect(ku).toHaveCount(1);
   await page.locator('[data-ku-toast]').getByRole('button', { name: 'Rückgängig' }).click();
-  await expect(page.locator(`[data-woche="${mo}"] .pl-block`)).toHaveCount(2);
+  await expect(ku).toHaveCount(2);
   expect(m.keepupAenderungen.map((a) => a.methode)).toEqual(['POST', 'DELETE', 'POST']);
 });
 
-test('Planung: nur für den Vorstand, Hinweis ohne Migration', async ({ page }) => {
+test('Planung: nur für Redaktion und Vorstand, Hinweis ohne Migration', async ({ page }) => {
   await redaktion(page, { profil: aurora, keepup: zeilen(), keepupIch: 'aurora-fradella' });
-  await page.goto('/intern/keep-up/');
-  await expect(page.locator('[data-msg]')).toContainText('Die Planung ist für den Vorstand.');
+  await page.goto('/intern/kalender/');
+  await expect(page.locator('[data-msg]')).toContainText('Den Kalender pflegen Presse, Vorstand und Admin.');
   await expect(page.locator('[data-plan]')).toBeHidden();
 
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await redaktion(page, { profil: vorstand });
-  await page.goto('/intern/keep-up/');
+  await page.goto('/intern/kalender/');
   await expect(page.locator('[data-msg]')).toContainText('20261025000000_keepup.sql');
+  await expect(page.locator('[data-msg]')).toContainText('20261026000000_kalender.sql');
+  await expect(page.getByRole('button', { name: 'Termin eintragen', exact: true })).toBeDisabled();
 });
 
 test('Meine Trainings: anstehend mit Notiz und Prüfliste, vergangen, ohne Zuordnung', async ({ page }) => {
   await redaktion(page, { profil: aurora, keepup: zeilen(), keepupIch: 'aurora-fradella' });
   await page.goto('/intern/keep-up/meine/');
   await expect(nav(page).getByRole('link', { name: /Meine Trainings/ })).toHaveAttribute('aria-current', 'page');
-  await expect(nav(page).getByRole('link', { name: /^Planung/ })).toBeHidden();
+  await expect(nav(page).getByRole('link', { name: /^Kalender/ })).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Hallo Aurora.');
   await expect(page.locator('[data-todo-text]')).toHaveText('Ein Termin braucht noch eine Beschreibung.');
   const karten = page.locator('.mt-karte');
@@ -197,7 +203,7 @@ test('Editor: Vorstand bearbeitet fremde Beschreibung, unbekannte Einplanung', a
   await redaktion(page, { profil: vorstand, keepup: zeilen() });
   await page.goto('/intern/keep-up/beschreiben/?id=k2&von=plan');
   await expect(page.locator('[data-als-vorstand]')).toBeVisible();
-  await expect(page.getByRole('link', { name: '← Kalender' })).toHaveAttribute('href', /\/intern\/keep-up\/$/);
+  await expect(page.getByRole('link', { name: '← Kalender' })).toHaveAttribute('href', /\/intern\/kalender\/$/);
   await expect(page.locator('[data-status-badge]')).toHaveText('Entwurf');
 
   await page.goto('/intern/keep-up/beschreiben/?id=gibtsnicht');
@@ -250,11 +256,11 @@ test('Barrierefreiheit: Planung mit Schublade, Meine Trainings, Editor', async (
     return r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(', ')}`);
   };
   await redaktion(page, { profil: { ...aurora, role: 'vorstand' }, keepup: zeilen(), keepupIch: 'aurora-fradella' });
-  await page.goto('/intern/keep-up/');
+  await page.goto('/intern/kalender/');
   await expect(page.locator('.pl-block').first()).toBeVisible();
   await page.waitForTimeout(1200);
   expect(await pruefen()).toEqual([]);
-  await page.locator('.pl-block').first().click();
+  await page.locator('.pl-block:not(.pl-block--termin)').first().click();
   await expect(page.locator('[data-schublade]')).toBeVisible();
   await page.waitForTimeout(800);
   expect(await pruefen()).toEqual([]);

@@ -2,14 +2,14 @@
 
 Entwürfe: `design/entwuerfe/2026-10-keep-up/` (Intern und Website).
 
-Der Vorstand plant im internen Bereich, wer wann unterrichtet. Die Dozent:innen beschreiben ihr Training selbst und
+Presse, Vorstand und Admin planen im internen Kalender (*Intern → Kalender*, [kalender.md](kalender.md)), wer wann unterrichtet. Die Dozent:innen beschreiben ihr Training selbst und
 veröffentlichen es. Auf `/profitraining/` steht die Beschreibung dann in der Tagesansicht des Kalenders, mit
 Schwerpunkten, „Mitbringen“ und einem Bild.
 
 | Wer | Wo | Was |
 |---|---|---|
-| Vorstand, Admin | *Intern → KEEP UP → Planung* | Trainingswochen und Workshops einplanen, ändern, löschen; an fehlende Beschreibungen erinnern; jede Beschreibung bearbeiten |
-| Dozent:in | *Intern → KEEP UP → Meine Trainings* | eigene Einplanungen sehen, beschreiben, ein Bild hinzufügen, veröffentlichen oder offline nehmen |
+| Presse, Vorstand, Admin | *Intern → Kalender* (Knopf „KEEP UP einplanen“) | Trainingswochen und Workshops einplanen, ändern, löschen; an fehlende Beschreibungen erinnern; jede Beschreibung bearbeiten |
+| Dozent:in | *Intern → Meine Trainings* (Gruppe KEEP UP) | eigene Einplanungen sehen, beschreiben, ein Bild hinzufügen, veröffentlichen oder offline nehmen |
 | alle | `/profitraining/`, Tanzkalender, Kalender-Abo | Trainingstage und veröffentlichte Beschreibungen |
 
 ## Einrichten (einmalig)
@@ -26,7 +26,10 @@ Schwerpunkten, „Mitbringen“ und einem Bild.
 Ohne die Migration zeigen Planung und „Meine Trainings“ einen Hinweis, und die Website nimmt weiter den Plan aus
 `src/content/keep-up/wochen.yaml`.
 
-## Planung (Vorstand)
+## Planung (im Kalender)
+
+Seit Migration `20261026000000_kalender.sql` dürfen Presse, Vorstand und Admin planen; die Planung ist Teil von
+*Intern → Kalender*, neben den übrigen Terminen.
 
 - Pro Woche eine Zeile mit den sieben Tagen (cyan = Profitraining, magenta = Workshop, Rahmen = heute) und rechts den
   Einplanungen mit Status: **Ohne Beschreibung**, **Entwurf**, **Online**, **Änderungen offen**.
@@ -72,17 +75,12 @@ Ohne die Migration zeigen Planung und „Meine Trainings“ einen Hinweis, und d
 So steht alles, was im internen Bereich geplant wird, nach dem nächsten Website-Update auch im Google Kalender des
 Vereins. Google holt Abos selbst nur alle paar Stunden neu; in Google bearbeiten lassen sich abonnierte Termine nicht.
 
-**Später (echte Synchronisierung):** Die Tabelle hat dafür schon die Spalte `google_event_id`. Geplant ist eine
-Supabase-Funktion `kalender`, die mit einem Google-Dienstkonto (Schlüssel nur als Supabase-Secret, wie bei Google Wallet)
-in den Vereinskalender schreibt: neue oder geänderte Einplanung → Termin in Google anlegen bzw. ändern, gelöscht →
-entfernen. Vorher zu klären:
+Entschieden (Oktober 2026): Der interne Kalender führt, Google abonniert ihn. Anleitung in [kalender.md](kalender.md).
 
-1. Welcher Kalender führt? Website/interner Bereich (Vorschlag: ja, Google bekommt eine Kopie) oder Google (dann
-   holt die Website beim Build die Termine von dort).
-2. Welcher Google-Kalender (Adresse) und wer gibt dem Dienstkonto Schreibrechte?
-3. Datenschutz: Die Termine sind öffentlich; Notizen und Entwürfe gehen nicht an Google. Ein Absatz zu Google als
-   Empfänger gehört trotzdem in die Datenschutzerklärung. Ein eingebettetes Google-Kalender-Fenster auf der Website
-   bräuchte eine Einwilligung (`src/settings/consent.ts`) und ist nicht geplant.
+**Falls später nötig (echte Synchronisierung):** Die Tabelle hat dafür schon die Spalte `google_event_id`. Eine
+Supabase-Funktion könnte mit einem Google-Dienstkonto (Schlüssel nur als Supabase-Secret) direkt in den Vereinskalender
+schreiben; dann wären Änderungen sofort in Google statt nach ein paar Stunden. Dafür bräuchte es ein Dienstkonto mit
+Schreibrechten und einen Absatz zu Google in der Datenschutzerklärung.
 
 ## Dateien
 
@@ -91,7 +89,7 @@ entfernen. Vorher zu klären:
 | `supabase/migrations/20261025000000_keepup.sql` | Tabelle, Rechte (RLS), Trigger fürs Veröffentlichen, `keepup_ich()`, `keepup_kontakte()`, Ansicht, Bucket |
 | `src/lib/keep-up-plan.ts` | Typen, Status, Datums-Helfer (Website und interner Bereich) |
 | `src/lib/keep-up.ts` | Build: Supabase + `wochen.yaml` + Workshops → Kalendertage |
-| `src/pages/intern/keep-up/` | Planung, `meine/`, `beschreiben/` |
+| `src/pages/intern/kalender/`, `src/pages/intern/keep-up/` | Planung im Kalender; `meine/`, `beschreiben/` |
 | `src/scripts/intern/keep-up.ts`, `src/components/intern/KeepUpDaten.astro` | gemeinsame Helfer, Daten aus dem Build, Meldung |
 | `src/pages/profitraining.ics.ts`, `src/lib/ics.ts` | Kalender-Abo |
 | `tests/keep-up.spec.ts` | Tests mit nachgebautem Supabase |

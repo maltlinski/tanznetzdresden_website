@@ -28,9 +28,9 @@ Alternativ geht der Login auch mit einem persönlichen GitHub-Token (Option „S
 | Was | Datei | Hinweis |
 |---|---|---|
 | News | am einfachsten im internen Bereich: *Intern → Redaktion → News schreiben* | als Datei: `src/content/news/de/` + `en/`, siehe docs/news.md |
-| Termin | `src/content/termine/JJJJ-MM-TT-titel.md` | Pflichtfelder siehe unten |
+| Termin | am einfachsten im internen Bereich: *Intern → Kalender* ([kalender.md](kalender.md)) | als Datei: `src/content/termine/JJJJ-MM-TT-titel.md`, Pflichtfelder siehe unten |
 | Format | `src/content/formate/name.md` | `order` bestimmt die Reihenfolge, `seite` verlinkt eine eigene Seite |
-| KEEP UP: Trainingsplan | *Intern → KEEP UP → Planung* (früher `src/content/keep-up/wochen.yaml`) | siehe unten und [keep-up.md](keep-up.md) |
+| KEEP UP: Trainingsplan | *Intern → Kalender* (früher `src/content/keep-up/wochen.yaml`) | siehe unten und [keep-up.md](keep-up.md) |
 | KEEP UP: Dozent:innen im Foto-Mosaik | `src/content/keep-up/dozentinnen.yaml` | Reihenfolge = Mosaik; Name und Foto aus dem Profil |
 | KEEP UP: Seitentexte, Kopf-Foto | `src/settings/keep-up.json` | Platzhalterfotos und Tempo des Mosaiks in `keep-up.ts` |
 | Personen | `src/content/personen.yaml` | Reihenfolge = Anzeige |
@@ -66,7 +66,7 @@ draft: false                     # true = noch nicht anzeigen
 Der Tanzkalender (`/termine/`) und das Profitraining (`/profitraining/`) nutzen denselben Monatskalender
 (`src/components/Kalender.astro`, Daten aus `src/lib/kalender.ts`):
 
-- **Tanzkalender:** alle Termine aus `src/content/termine/` und jeder Trainingstag von KEEP UP, Filter nach Kategorie
+- **Tanzkalender:** alle Termine aus *Intern → Kalender* und aus `src/content/termine/` und jeder Trainingstag von KEEP UP, Filter nach Kategorie
   (Bühne, Training, Diskurs). Auch das Kalender-Abo (`/termine.ics`) enthält die Trainingstage.
 - **Profitraining:** nur Trainingstage und KEEP UP-Workshops, Filter nach Dozent:in.
 

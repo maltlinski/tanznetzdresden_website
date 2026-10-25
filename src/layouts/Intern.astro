@@ -14,7 +14,7 @@ import Logo from '../components/ui/Logo.astro';
 import { href } from '../lib/url';
 import '../styles/intern.css';
 
-type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'freigaben' | 'keepup' | 'keepup-meine';
+type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'freigaben' | 'kalender' | 'keepup-meine';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
@@ -31,13 +31,13 @@ const mitglied: { id: Punkt; label: string; path: string }[] = [
   { id: 'mitglieder', label: 'Mitglieder', path: 'intern/mitglieder/' },
   { id: 'dokumente', label: 'Dokumente', path: 'intern/dokumente/' },
 ];
-// KEEP UP: Planung für den Vorstand, „Meine Trainings“ für eingeplante Dozent:innen
-const keepup: { id: Punkt; label: string; path: string; n: string; nur: 'vorstand' | 'dozent' }[] = [
-  { id: 'keepup', label: 'Planung', path: 'intern/keep-up/', n: 'keepup', nur: 'vorstand' },
-  { id: 'keepup-meine', label: 'Meine Trainings', path: 'intern/keep-up/meine/', n: 'keepup-meine', nur: 'dozent' },
+// KEEP UP: „Meine Trainings“ für eingeplante Dozent:innen (geplant wird im Kalender)
+const keepup: { id: Punkt; label: string; path: string; n: string }[] = [
+  { id: 'keepup-meine', label: 'Meine Trainings', path: 'intern/keep-up/meine/', n: 'keepup-meine' },
 ];
 // nur für Presse, Vorstand und Admin
 const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
+  { id: 'kalender', label: 'Kalender', path: 'intern/kalender/', n: 'kalender' },
   { id: 'beitraege', label: 'Beiträge', path: 'intern/news/', n: 'beitraege' },
   { id: 'medien', label: 'Medien', path: 'intern/news/medien/', n: 'medien' },
   { id: 'inhalte', label: 'Website-Inhalte', path: 'intern/redaktion/' },
@@ -70,7 +70,7 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
         ))}
         <span class="rd-nav__gruppe" data-keepup-gruppe hidden>KEEP UP</span>
         {keepup.map((i) => (
-          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined} data-keepup={i.nur} hidden>
+          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined} data-keepup="dozent" hidden>
             <span class="rd-nav__m" aria-hidden="true"></span>
             <span class="rd-nav__l">{i.label}</span>
             <span class="rd-nav__n" data-nav-n={i.n}></span>
@@ -161,7 +161,7 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
     if (el) el.textContent = v ? String(v) : '';
   };
 
-  // KEEP UP: Vorstand plant, Dozent:innen mit Einplanung beschreiben (Zahl = anstehend ohne Veröffentlichung)
+  // Kalender (Redaktion) und KEEP UP für Dozent:innen mit Einplanung (Zahl = anstehende KEEP UP-Trainings ohne Beschreibung)
   void (async () => {
     const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
     const ab = new Date(Date.now() - 7 * 86400000).toISOString().slice(0, 10);
@@ -171,13 +171,12 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
       document.querySelectorAll<HTMLElement>(`[data-keepup="${nur}"]`).forEach((el) => (el.hidden = false));
       document.querySelectorAll<HTMLElement>('[data-keepup-gruppe]').forEach((el) => (el.hidden = false));
     };
-    const { data: ich, error } = await ctx.sb.rpc('keepup_ich');
-    if (error && !ctx.isVorstand) return;
-    if (ctx.isVorstand) {
-      zeigen('vorstand');
+    if (ctx.isRedaktion) {
       const { data } = await ctx.sb.from('keepup_termine').select('veroeffentlicht,woche,tage').gte('woche', ab);
-      if (data) setzen('keepup', offen(data));
+      if (data) setzen('kalender', offen(data));
     }
+    const { data: ich, error } = await ctx.sb.rpc('keepup_ich');
+    if (error) return;
     if (typeof ich === 'string' && ich) {
       const { data } = await ctx.sb.from('keepup_termine').select('veroeffentlicht,woche,tage').eq('dozent', ich);
       if (data?.length) {

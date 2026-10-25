@@ -1,13 +1,23 @@
 ---
 /**
- * Intern → KEEP UP: Daten aus dem Build für die Seiten im Browser (Dozent:innen, Fotos der Website für
- * „Aus Mediathek“, Standardort) und die gemeinsame Meldung unten links. Gemeinsame Stile der KEEP UP-Seiten.
+ * Intern → KEEP UP und Kalender: Daten aus dem Build für die Seiten im Browser (Dozent:innen, Fotos der Website
+ * für „Aus Mediathek“, Standardort; mit `kalender` auch Termine aus Dateien, Formate, Personen, Orte und die
+ * Abo-Adresse) und die gemeinsame Meldung unten links. Gemeinsame Stile der KEEP UP-Seiten.
  */
 import { getImage } from 'astro:assets';
 import { getKeepUp } from '../../lib/keep-up';
 import { getVerein } from '../../lib/settings';
+import { getDateiTermine, getFormate, getOrte } from '../../lib/content';
+import { getProfiles } from '../../lib/profiles';
 import { url } from '../../lib/i18n';
-import type { KeepUpDaten } from '../../scripts/intern/keep-up';
+import { href } from '../../lib/url';
+import type { KalenderDaten, KeepUpDaten } from '../../scripts/intern/keep-up';
+
+interface Props {
+  /** zusätzlich die Daten für Intern → Kalender */
+  kalender?: boolean;
+}
+const { kalender = false } = Astro.props;
 
 const { dozentinnen } = await getKeepUp('de');
 const verein = getVerein('de');
@@ -26,6 +36,25 @@ const daten: KeepUpDaten = {
   ort: verein.training.place,
   website: url('de', 'profitraining', '#kalender'),
 };
+
+if (kalender) {
+  const dateiTermine = (await getDateiTermine()).map((t) => {
+    const [datum, von] = t.data.start.split(' ');
+    return {
+      datei: true as const, slug: t.id, titel: t.data.title, titel_en: t.data.title_en ?? '', datum, von, bis: t.data.end?.split(' ')[1] ?? null,
+      zeit_text: t.data.timeLabel ?? '', ort: t.data.venue, kategorie: t.data.category, kurz: t.data.teaser, kurz_en: t.data.teaser_en ?? '',
+      text: t.body?.trim() ?? '', link: t.data.link ?? '', format: t.data.format?.id ?? '', personen: t.data.people, news: t.data.news ?? '',
+    };
+  });
+  const k: KalenderDaten = {
+    dateiTermine,
+    formate: (await getFormate()).map((f) => ({ id: f.id, titel: f.data.title })),
+    personen: (await getProfiles()).map((p) => ({ id: p.id, name: p.name })).sort((a, b) => a.name.localeCompare(b.name, 'de')),
+    orte: [...new Set([verein.training.place, ...dateiTermine.map((t) => t.ort), ...(await getOrte()).map((o) => o.data.name)])].filter(Boolean),
+    abo: new URL(href('termine.ics'), Astro.site ?? 'https://tanznetzdresden.de').href,
+  };
+  daten.kalender = k;
+}
 const json = JSON.stringify(daten).replace(/</g, '\\u003c');
 ---
 <script type="application/json" data-ku-daten set:html={json} />

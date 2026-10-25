@@ -19,7 +19,8 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
    `supabase/migrations/20261016000000_mediathek.sql` (Mediathek der Redaktion, Newsletter-Vormerkung) und
    `supabase/migrations/20261020000000_profil_seite.sql` (Profilseite mit Galerie, Arbeiten und Kontakt, siehe docs/profile.md) und
    `supabase/migrations/20261022000000_mitgliedschaft.sql` (Mitgliedschaft und Mitgliedsausweis, siehe unten „Mein Status“) und
-   `supabase/migrations/20261025000000_keepup.sql` (KEEP UP planen und beschreiben, siehe [keep-up.md](keep-up.md)).
+   `supabase/migrations/20261025000000_keepup.sql` (KEEP UP planen und beschreiben, siehe [keep-up.md](keep-up.md)) und
+   `supabase/migrations/20261026000000_kalender.sql` (Termine im internen Kalender eintragen, siehe [kalender.md](kalender.md)).
    Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
 
 ## 2. Login konfigurieren
@@ -58,6 +59,7 @@ mit denselben Namen überschreiben.
 | Mein Profil: „Galerie, Arbeiten und weitere Angaben kommen bald dazu“; Freigaben: „Die Datenbank kennt die Galerie noch nicht“ | Achte Migration `20261020000000_profil_seite.sql` ausführen. |
 | Mein Profil: „Neue Fotos gibt die Redaktion frei.“ | Die Seite ist älter als die Datenbank. Seite neu laden. |
 | Mein Status zeigt immer „In Vorbereitung“; Mitglieder: „Mitgliedschaften lassen sich pflegen, sobald …“ | Neunte Migration `20261022000000_mitgliedschaft.sql` ausführen, dann unter *Intern → Mitglieder* die Mitgliedschaft eintragen. |
+| Kalender: „Termine eintragen geht, sobald die Migration … ausgeführt ist“ | Elfte Migration `20261026000000_kalender.sql` ausführen. |
 | KEEP UP: „Die Tabelle für KEEP UP fehlt noch“ | Zehnte Migration `20261025000000_keepup.sql` ausführen. |
 | Dozent:in sieht „Meine Trainings“ nicht | Profiladresse muss genau dem Kürzel in `keep-up/dozentinnen.yaml` entsprechen und das Profil freigegeben sein; und der Vorstand muss sie eingeplant haben ([keep-up.md](keep-up.md)). |
 | Google Wallet: „noch nicht eingerichtet“ | Funktion `ausweis` und ihre Secrets fehlen, siehe „Google Wallet“ unten. |
@@ -136,10 +138,11 @@ einrichten:
 An Google gehen Name, Mitgliedsnummer, „gültig bis“ und der Prüf-Link erst, wenn ein Mitglied selbst auf den Knopf
 drückt und den Pass speichert. Das gehört in die Datenschutzerklärung, bevor der Schalter an ist.
 
-## KEEP UP
+## Kalender und KEEP UP
 
-Unter *Intern → KEEP UP* plant der Vorstand das Profitraining (*Planung*), die Dozent:innen beschreiben ihre Trainings
-(*Meine Trainings*). Alles dazu in [keep-up.md](keep-up.md).
+Unter *Intern → Kalender* tragen Presse, Vorstand und Admin Termine ein und planen KEEP UP ([kalender.md](kalender.md)),
+auch wie der Google Kalender des Vereins das abonniert. Die Dozent:innen beschreiben ihre Trainings unter
+*Meine Trainings* ([keep-up.md](keep-up.md)).
 
 ## Redaktion
 

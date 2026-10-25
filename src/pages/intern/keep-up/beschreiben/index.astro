@@ -150,9 +150,12 @@ import KeepUpDaten from '../../../../components/intern/KeepUpDaten.astro';
 
   function aufbauen() {
     const zurueck = $<HTMLAnchorElement>('[data-zurueck]');
-    zurueck.href = href(vonPlan ? 'intern/keep-up/' : 'intern/keep-up/meine/');
+    zurueck.href = href(vonPlan ? 'intern/kalender/' : 'intern/keep-up/meine/');
     zurueck.textContent = vonPlan ? '← Kalender' : '← Meine Trainings';
-    if (vonPlan) document.querySelector('[data-keepup="vorstand"]')?.setAttribute('aria-current', 'page');
+    if (vonPlan) {
+      document.querySelector('[data-keepup="dozent"]')?.removeAttribute('aria-current');
+      document.querySelector(`.rd-nav a[href="${href('intern/kalender/')}"]`)?.setAttribute('aria-current', 'page');
+    }
     $('[data-art-badge]').replaceChildren(badge(artText(t), t.art === 'workshop' ? 'magenta' : 'cyan'));
     $('[data-was-name]').textContent = `${person()?.name ?? t.dozent} · ${zeitraum(t)}`;
     $('[data-was-meta]').textContent = [artText(t), tageText(t), t.zeit, t.ort || standardOrt].join(' · ');

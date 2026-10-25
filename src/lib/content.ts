@@ -1,5 +1,7 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { sortKey } from './dates';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
+import { alsTerminDaten, type OeffentlicherKalenderTermin } from './kalender-intern';
 import personenRaw from '../content/personen.yaml?raw';
 import orteRaw from '../content/kooperation/orte.yaml?raw';
 import gruppenRaw from '../content/kooperation/gruppen.yaml?raw';
@@ -32,10 +34,38 @@ export const categoryLabel: Record<'de' | 'en', Record<EventCategory | 'Alle', s
   en: { Alle: 'All', Bühne: 'Stage', Training: 'Training', Diskurs: 'Discourse' },
 };
 
-/** Alle veröffentlichten Termine, chronologisch. */
+let kalenderCache: Promise<OeffentlicherKalenderTermin[]> | undefined;
+/** Termine aus Intern → Kalender (leer, wenn Supabase fehlt oder die Migration 20261026 noch nicht eingespielt ist) */
+function fetchKalender(): Promise<OeffentlicherKalenderTermin[]> {
+  kalenderCache ??= (async () => {
+    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/public_kalender?select=*&order=datum`, {
+        headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+        signal: AbortSignal.timeout(10_000),
+      });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return (await res.json()) as OeffentlicherKalenderTermin[];
+    } catch (err) {
+      console.warn(`[termine] Termine aus dem internen Kalender nicht geladen (${String(err)}) – nur Dateien werden verwendet.`);
+      return [];
+    }
+  })();
+  return kalenderCache;
+}
+
+/** Termine aus den Dateien in src/content/termine/ (ohne Entwürfe) */
+export const getDateiTermine = () => getCollection('termine', ({ data }) => !data.draft);
+
+/**
+ * Alle veröffentlichten Termine, chronologisch: Dateien und Termine aus Intern → Kalender.
+ * Hat ein Termin aus dem Kalender dieselbe Adresse wie eine Datei, gilt der aus dem Kalender.
+ */
 export async function getTermine(): Promise<Termin[]> {
-  const all = await getCollection('termine', ({ data }) => !data.draft);
-  return all.sort((a, b) => sortKey(a.data.start) - sortKey(b.data.start));
+  const [dateien, kalender] = await Promise.all([getDateiTermine(), fetchKalender()]);
+  const aus = kalender.map((r) => ({ id: r.slug, collection: 'termine', data: alsTerminDaten(r), body: r.text }) as Termin);
+  const ids = new Set(aus.map((t) => t.id));
+  return [...dateien.filter((t) => !ids.has(t.id)), ...aus].sort((a, b) => sortKey(a.data.start) - sortKey(b.data.start));
 }
 
 /** Kommende Termine ab Build-Zeitpunkt (der Browser blendet danach Vergangenes zusätzlich aus). */

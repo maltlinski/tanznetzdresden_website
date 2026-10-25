@@ -25,11 +25,11 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 |---|---|---|
 | **News schreiben** (= Beiträge) | neue Beiträge mit Titelbild, Blöcken, Frist oder Zitat (docs/news.md) | nach Datum |
 | **News-Bausteine** | wiederkehrende Texte wie Förderhinweise für den News-Editor | im Formular |
-| **Termine** | Tanzkalender, Startseite, eigene Terminseite | nach Datum, automatisch |
+| **Termine** | Tanzkalender, Startseite, eigene Terminseite; neue Termine besser unter *Intern → Kalender* (docs/kalender.md) | nach Datum, automatisch |
 | **Freigaben** | Profile und Fotos, die Mitglieder selbst pflegen (docs/profile.md) | – |
 | **Formate** | KEEP UP, POP UP … auf der Startseite | von Hand |
 | **News-Archiv** | ältere Beiträge, die als Datei vorliegen | nach Datum |
-| **Trainingsplan** | KEEP UP: wer wann unterrichtet, älterer Weg; besser *Intern → KEEP UP → Planung* (docs/keep-up.md) | nach Datum, automatisch |
+| **Trainingsplan** | KEEP UP: wer wann unterrichtet, älterer Weg; besser *Intern → Kalender* (docs/keep-up.md) | nach Datum, automatisch |
 | **Dozent:innen** | die Kacheln im Foto-Mosaik auf /profitraining/ (Name und Foto aus dem Profil) | von Hand = Reihenfolge im Mosaik |
 | **Seite Profitraining** | Überschrift, Einleitung, Infos, Kopffoto | – |
 | **Personen** | Mitglieder:innen und Trainer:innen mit Profil | von Hand = Anzeige |
