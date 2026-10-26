@@ -8,7 +8,8 @@ Verknüpfung über `hreflang`.
 
 | Was | Wo | Fehlt die Übersetzung … |
 |---|---|---|
-| Texte der Oberfläche (Buttons, Überschriften …) | direkt in der Komponente: `tr(lang, { de: {…}, en: {…} })` | erscheint Deutsch |
+| Feste Texte (Überschriften, Knöpfe, Hinweise) | `src/settings/texte.json`, Feld `en` (Redaktion → Texte, [texte.md](texte.md)) | erscheint Deutsch |
+| Texte noch nicht umgezogener Seiten, Screenreader-Beschriftungen | direkt in der Komponente: `tr(lang, { de: {…}, en: {…} })` | erscheint Deutsch |
 | Termine | `title_en`, `teaser_en`, `timeLabel_en` in der Termin-Datei | erscheint Deutsch |
 | News | Datei `src/content/news/en/<name>.md` oder im Editor „Englische Fassung“ | erscheint Deutsch, beim Text mit Hinweis |
 | Formate | `title_en`, `since_en`, `summary_en`, `alt_en` | erscheint Deutsch |

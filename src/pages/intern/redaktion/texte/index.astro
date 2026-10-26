@@ -1,0 +1,354 @@
+---
+/**
+ * Redaktion → Texte: die festen Texte der Website (src/settings/texte.json) für die Pressestelle.
+ * Links die Seiten, rechts deren Texte in der Reihenfolge wie auf der Seite, Deutsch und Englisch nebeneinander.
+ * Regeln (Platzhalter, Zeilen, Länge) in src/lib/texte-regeln.ts; Anleitung docs/texte.md.
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
+import { href } from '../../../../lib/url';
+import '../../../../styles/redaktion.css';
+---
+<Redaktion title="Texte" current="texte">
+  <div class="r-head">
+    <div>
+      <h1 class="i-h1">Texte</h1>
+      <p class="i-lead">
+        Überschriften, Knöpfe und Hinweise der Website. Ändere, was du möchtest, und speichere unten einmal für alles.
+        Nach 2–3 Minuten ist es online. Den ursprünglichen Text kannst du jederzeit zurückholen.
+      </p>
+      <a class="mono-link" href={href('intern/redaktion/texte/textbuch/')}>Alle Texte zum Durchlesen (Textbuch) →</a>
+    </div>
+    <div class="r-head__side">
+      <RedaktionStatus />
+    </div>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Redaktion ist für Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <p class="i-hint" data-loading hidden>Texte werden geladen …</p>
+
+  <div data-access hidden>
+    <div class="r-tools tx-tools">
+      <div class="r-suche">
+        <label class="visually-hidden" for="tx-suche">Texte durchsuchen</label>
+        <input id="tx-suche" type="search" placeholder="Suchen, z. B. „Anfrage“" autocomplete="off" data-suche />
+      </div>
+      <div class="tx-filter" role="group" aria-label="Anzeigen">
+        <button type="button" class="tx-chip" aria-pressed="true" data-filter="alle">Alle</button>
+        <button type="button" class="tx-chip" aria-pressed="false" data-filter="englisch">Englisch prüfen <span data-n="englisch"></span></button>
+        <button type="button" class="tx-chip" aria-pressed="false" data-filter="geaendert">Von der Redaktion geändert <span data-n="geaendert"></span></button>
+      </div>
+    </div>
+
+    <div class="tx">
+      <nav class="tx-seiten" aria-label="Seiten der Website">
+        <ul data-seiten></ul>
+      </nav>
+      <div class="tx-inhalt" data-inhalt></div>
+    </div>
+
+    <div class="r-bar tx-bar" data-bar hidden>
+      <span class="tx-bar__n" role="status" data-bar-n></span>
+      <div class="r-bar__btns">
+        <button type="button" class="btn btn--primary btn--marker" data-speichern>Speichern</button>
+        <button type="button" class="i-linkbtn" data-verwerfen>Änderungen verwerfen</button>
+      </div>
+    </div>
+  </div>
+</Redaktion>
+
+<script>
+  import { h } from '../../../../scripts/intern/news/dom';
+  import { $, meldung, starten, statusAnzeigen, websiteUrl } from '../../../../scripts/intern/redaktion/seite';
+  import { alleTexte, dateiText, platzhalter, textId, textPruefen, uebernehmen, type TextEintrag } from '../../../../lib/texte-regeln';
+
+  const PFAD = 'src/settings/texte.json';
+  type Filter = 'alle' | 'englisch' | 'geaendert';
+  interface Feld { id: string; e: TextEintrag; seite: string; de: HTMLTextAreaElement; en: HTMLTextAreaElement; karte: HTMLElement; englischPasst: boolean }
+
+  const r = await starten();
+  if (r) {
+    statusAnzeigen(r, $('[data-website-status]'));
+    let sha: string | null = null;
+    let datei: Record<string, unknown> = {};
+    let felder: Feld[] = [];
+    let seite = new URLSearchParams(location.search).get('seite') ?? '';
+    let filter: Filter = 'alle';
+    const inhalt = $('[data-inhalt]')!;
+    const seitenListe = $('[data-seiten]')!;
+    const suche = $<HTMLInputElement>('[data-suche]')!;
+    const bar = $('[data-bar]')!;
+    const speichernBtn = $<HTMLButtonElement>('[data-speichern]')!;
+
+    const laden = async () => {
+      const g = await r.a.lesen([PFAD]);
+      const d = g.dateien[PFAD];
+      if (!d) throw new Error('Die Datei mit den Texten gibt es im Repository noch nicht (src/settings/texte.json).');
+      sha = d.sha;
+      datei = JSON.parse(d.text) as Record<string, unknown>;
+    };
+
+    const seiten = () => Object.entries(datei).filter(([k]) => !k.startsWith('_')) as [string, { titel: string; pfad: string }][];
+    const geaendert = (f: Feld) => f.de.value !== f.e.de || f.en.value !== f.e.en || (f.englischPasst && !!f.e.enPruefen);
+    const offen = () => felder.filter(geaendert);
+
+    /** Zähler, Fehler und Markierungen einer Karte */
+    function pruefeFeld(f: Feld): boolean {
+      let ok = true;
+      for (const [ta, sprache, vorlage] of [[f.de, 'de', f.e.de], [f.en, 'en', f.e.en || f.e.de]] as const) {
+        const fehler = textPruefen(f.e, ta.value, vorlage, sprache);
+        const box = ta.closest('.tx-feld')!;
+        box.querySelector('[data-fehler]')!.textContent = fehler ?? '';
+        ta.setAttribute('aria-invalid', fehler ? 'true' : 'false');
+        if (f.e.max) box.querySelector('[data-zahl]')!.textContent = `${ta.value.length} / ${f.e.max}`;
+        if (fehler) ok = false;
+      }
+      f.karte.classList.toggle('is-geaendert', geaendert(f));
+      return ok;
+    }
+
+    function leiste() {
+      const n = offen().length;
+      bar.hidden = n === 0;
+      $('[data-bar-n]')!.textContent = n === 1 ? '1 Text geändert, noch nicht gespeichert' : `${n} Texte geändert, noch nicht gespeichert`;
+      const zaehlen = (fn: (e: TextEintrag) => boolean) => felder.filter((f) => fn(f.e)).length;
+      const nE = zaehlen((e) => !!e.enPruefen);
+      const nG = zaehlen((e) => !!e.ursprung);
+      $('[data-n="englisch"]')!.textContent = nE ? `(${nE})` : '';
+      $('[data-n="geaendert"]')!.textContent = nG ? `(${nG})` : '';
+    }
+
+    const zeilenZahl = (e: TextEintrag, text: string) => Math.max(e.zeilen ?? 1, Math.min(8, Math.ceil(text.length / 60) + (text.match(/\n/g)?.length ?? 0)));
+
+    function karte(seiteId: string, abschnitt: string, key: string, e: TextEintrag): Feld {
+      const id = textId(seiteId, abschnitt, key);
+      const ph = platzhalter(e.de);
+      const feld = (sprache: 'de' | 'en') => {
+        const ta = h('textarea', {
+          id: `${id}-${sprache}`, rows: zeilenZahl(e, e[sprache] || e.de), value: e[sprache], lang: sprache, spellcheck: true,
+          placeholder: sprache === 'en' ? 'leer = Deutsch wird gezeigt' : undefined, 'data-sprache': sprache,
+        });
+        return h('div', { class: `tx-feld i-field${sprache === 'en' ? ' rf-feld--en' : ''}` },
+          h('label', { for: ta.id }, sprache === 'de' ? 'Deutsch' : 'Englisch'),
+          ta,
+          h('div', { class: 'tx-feld__fuss' }, h('span', { class: 'rf-fehler', 'data-fehler': true, 'aria-live': 'polite' }), e.max ? h('span', { class: 'rf-anzahl', 'data-zahl': true }) : null),
+        );
+      };
+      const de = feld('de');
+      const en = feld('en');
+      const k = h('article', { class: 'tx-karte', 'data-text': id, 'data-seite': seiteId },
+        h('p', { class: 'tx-karte__wo' }, e.wo),
+        e.zeilen || ph.length
+          ? h('p', { class: 'tx-karte__regel' }, [
+            e.zeilen ? `${e.zeilen} Zeilen: neue Zeile mit der Eingabetaste.` : '',
+            ph.length ? `${ph.map((p) => `{${p}}`).join(', ')} bitte stehen lassen, wird auf der Website ersetzt.` : '',
+          ].filter(Boolean).join(' '))
+          : null,
+        h('div', { class: 'tx-paar' }, de, en),
+        h('div', { class: 'tx-karte__aktionen', 'data-aktionen': true }),
+      );
+      const f: Feld = { id, e, seite: seiteId, de: de.querySelector('textarea')!, en: en.querySelector('textarea')!, karte: k, englischPasst: false };
+      aktionen(f);
+      for (const ta of [f.de, f.en]) ta.addEventListener('input', () => { pruefeFeld(f); leiste(); });
+      pruefeFeld(f);
+      return f;
+    }
+
+    /** Hinweise und Knöpfe unter einem Text: Englisch prüfen, ursprünglicher Text */
+    function aktionen(f: Feld) {
+      const box = f.karte.querySelector('[data-aktionen]')!;
+      box.replaceChildren();
+      if (f.e.enPruefen && !f.englischPasst) {
+        box.append(h('span', { class: 'tx-hinweis' }, 'Deutsch wurde geändert: Englisch prüfen.'),
+          h('button', { type: 'button', class: 'i-linkbtn', onclick: () => { f.englischPasst = true; aktionen(f); pruefeFeld(f); leiste(); } }, 'Englisch passt so'));
+      }
+      if (f.e.ursprung) {
+        const u = f.e.ursprung;
+        box.append(h('button', {
+          type: 'button', class: 'i-linkbtn', title: `Deutsch: ${u.de}\nEnglisch: ${u.en}`,
+          onclick: () => { f.de.value = u.de; f.en.value = u.en; pruefeFeld(f); leiste(); f.de.focus(); },
+        }, 'Ursprünglichen Text zurückholen'));
+      }
+    }
+
+    function aufbauen() {
+      felder = [];
+      inhalt.replaceChildren();
+      seitenListe.replaceChildren();
+      const liste = seiten();
+      if (!liste.some(([id]) => id === seite)) seite = liste[0]?.[0] ?? '';
+      for (const [id, s] of liste) {
+        const n = alleTexte(datei).filter((x) => x.seite === id).length;
+        seitenListe.append(h('li', {}, h('button', { type: 'button', 'data-seite-wahl': id, onclick: () => waehlen(id) }, h('span', {}, s.titel), h('span', { class: 'tx-seiten__n' }, String(n)))));
+      }
+      let letzteSeite = '';
+      let letzterAbschnitt = '';
+      for (const x of alleTexte(datei)) {
+        if (x.seite !== letzteSeite) {
+          letzteSeite = x.seite;
+          letzterAbschnitt = '';
+          inhalt.append(h('header', { class: 'tx-seite', 'data-seite': x.seite },
+            h('h2', { class: 'tx-seite__h' }, x.s.titel),
+            h('a', { class: 'mono-link', href: websiteUrl(x.s.pfad), target: '_blank', rel: 'noopener' }, 'Auf der Website ansehen →')));
+        }
+        if (x.abschnitt !== letzterAbschnitt) {
+          letzterAbschnitt = x.abschnitt;
+          inhalt.append(h('h3', { class: 'tx-abschnitt', 'data-seite': x.seite }, x.a.titel));
+        }
+        const f = karte(x.seite, x.abschnitt, x.key, x.e);
+        felder.push(f);
+        inhalt.append(f.karte);
+      }
+      zeigen();
+      leiste();
+    }
+
+    function waehlen(id: string) {
+      seite = id;
+      suche.value = '';
+      const u = new URL(location.href);
+      u.searchParams.set('seite', id);
+      history.replaceState(null, '', u);
+      zeigen();
+      inhalt.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    }
+
+    /** Sichtbarkeit nach Seite, Suche und Filter. Mit Suche oder Filter: über alle Seiten. */
+    function zeigen() {
+      const q = suche.value.trim().toLowerCase();
+      const alleSeiten = !!q || filter !== 'alle';
+      const passt = (f: Feld) =>
+        (alleSeiten || f.seite === seite) &&
+        (!q || [f.e.wo, f.de.value, f.en.value].some((t) => t.toLowerCase().includes(q))) &&
+        (filter !== 'englisch' || !!f.e.enPruefen) &&
+        (filter !== 'geaendert' || !!f.e.ursprung || geaendert(f));
+      const sichtbar = new Set(felder.filter(passt).map((f) => f.id));
+      felder.forEach((f) => (f.karte.hidden = !sichtbar.has(f.id)));
+      // Überschriften nur, wenn darunter etwas sichtbar ist
+      inhalt.querySelectorAll<HTMLElement>('.tx-seite, .tx-abschnitt').forEach((el) => {
+        let n = el.nextElementSibling as HTMLElement | null;
+        let da = false;
+        while (n && !n.matches(el.matches('.tx-seite') ? '.tx-seite' : '.tx-seite, .tx-abschnitt')) {
+          if (n.matches('.tx-karte') && !n.hidden) { da = true; break; }
+          n = n.nextElementSibling as HTMLElement | null;
+        }
+        el.hidden = !da;
+      });
+      seitenListe.querySelectorAll<HTMLButtonElement>('[data-seite-wahl]').forEach((b) =>
+        b.dataset.seiteWahl === seite && !alleSeiten ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
+      inhalt.querySelector('.tx-leer')?.remove();
+      if (!sichtbar.size) inhalt.append(h('p', { class: 'r-leer tx-leer' }, q ? `Kein Text mit „${suche.value.trim()}“.` : 'Hier gibt es gerade nichts.'));
+    }
+
+    suche.addEventListener('input', zeigen);
+    document.querySelectorAll<HTMLButtonElement>('[data-filter]').forEach((b) =>
+      b.addEventListener('click', () => {
+        filter = b.dataset.filter as Filter;
+        document.querySelectorAll('[data-filter]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        zeigen();
+      }));
+
+    $('[data-verwerfen]')!.addEventListener('click', () => {
+      for (const f of offen()) { f.de.value = f.e.de; f.en.value = f.e.en; f.englischPasst = false; aktionen(f); pruefeFeld(f); }
+      leiste();
+      meldung('');
+    });
+
+    speichernBtn.addEventListener('click', async () => {
+      const liste = offen();
+      const falsch = liste.find((f) => !pruefeFeld(f));
+      if (falsch) {
+        if (falsch.karte.hidden) { seite = falsch.seite; suche.value = ''; filter = 'alle'; zeigen(); }
+        falsch.karte.scrollIntoView({ block: 'center' });
+        (falsch.de.getAttribute('aria-invalid') === 'true' ? falsch.de : falsch.en).focus();
+        meldung('Bitte zuerst den markierten Text korrigieren.');
+        return;
+      }
+      const kopie = structuredClone(datei);
+      const n = uebernehmen(kopie, new Map(liste.map((f) => [f.id, { de: f.de.value, en: f.en.value, englischPasst: f.englischPasst }])));
+      if (!n) return leiste();
+      const namen = [...new Set(liste.map((f) => (datei[f.seite] as { titel: string }).titel))].join(', ');
+      speichernBtn.disabled = true;
+      try {
+        await r.a.speichern(`Texte: ${namen} (${n} ${n === 1 ? 'Text' : 'Texte'})`, [{ pfad: PFAD, text: dateiText(kopie), alt: sha }]);
+        await laden();
+        aufbauen();
+        meldung(`Gespeichert: ${n} ${n === 1 ? 'Text' : 'Texte'}. Die Website zeigt das in 2–3 Minuten.`, 'ok');
+      } catch (e) {
+        meldung((e as Error).message);
+      } finally {
+        speichernBtn.disabled = false;
+      }
+    });
+
+    addEventListener('beforeunload', (e) => {
+      if (offen().length) e.preventDefault();
+    });
+
+    try {
+      await laden();
+      aufbauen();
+    } catch (e) {
+      meldung((e as Error).message);
+    }
+  }
+</script>
+
+<style is:global>
+  /* global, weil das Skript die Karten erzeugt; alle Klassen mit Präfix tx- */
+  .tx-tools { align-items: flex-start; }
+  .tx-filter { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tx-chip {
+    padding: 7px 12px; border: 1.5px solid var(--rule); border-radius: 0; background: var(--paper); color: var(--purple); cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .tx-chip:hover { border-color: var(--magenta); }
+  .tx-chip[aria-pressed='true'] { background: var(--purple); border-color: var(--purple); color: #fff; }
+
+  .tx { display: grid; grid-template-columns: minmax(180px, 220px) minmax(0, 1fr); gap: 24px clamp(20px, 3vw, 40px); align-items: start; }
+  .tx-seiten { position: sticky; top: 16px; }
+  .tx-seiten ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
+  .tx-seiten button {
+    width: 100%; display: flex; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 0; border-left: 4px solid var(--rule);
+    border-radius: 0; background: var(--paper); color: var(--purple); font: inherit; font-weight: 600; text-align: left; cursor: pointer;
+  }
+  .tx-seiten button:hover { border-left-color: var(--magenta); }
+  .tx-seiten button[aria-current] { border-left-color: var(--magenta); background: var(--purple); color: #fff; }
+  .tx-seiten__n { font-family: var(--font-mono); font-size: 11px; font-weight: 600; opacity: 0.75; }
+
+  .tx-inhalt { display: flex; flex-direction: column; gap: 10px; min-width: 0; scroll-margin-top: 16px; }
+  .tx-seite { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 20px; margin-top: 18px; }
+  .tx-seite:first-child { margin-top: 0; }
+  .tx-seite__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -0.02em; color: var(--purple); }
+  .tx-abschnitt {
+    margin: 14px 0 0; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .tx-seite[hidden], .tx-abschnitt[hidden], .tx-karte[hidden] { display: none; }
+
+  .tx-karte { display: flex; flex-direction: column; gap: 10px; padding: 16px clamp(14px, 2vw, 20px); background: var(--paper); border-left: 4px solid var(--rule); }
+  .tx-karte:focus-within { border-left-color: var(--purple); }
+  .tx-karte.is-geaendert { border-left-color: var(--magenta); }
+  .tx-karte__wo { margin: 0; font-weight: 600; color: var(--purple); }
+  .tx-karte__regel { margin: -4px 0 0; font-size: 13px; color: var(--ink-soft); }
+  .tx-paar { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px 16px; }
+  .intern .tx-karte .tx-feld textarea { min-height: 0; resize: vertical; }
+  .tx-feld > label { font-size: 10.5px; }
+  .tx-feld__fuss { display: flex; justify-content: space-between; gap: 12px; min-height: 0; }
+  .tx-feld__fuss .rf-anzahl { margin: 0 0 0 auto; }
+  .tx-karte__aktionen { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 18px; }
+  .tx-karte__aktionen:empty { display: none; }
+  .tx-hinweis { font-size: 13.5px; font-weight: 600; color: var(--purple); padding: 2px 8px; background: var(--cyan-tint); }
+
+  .tx-bar__n { font-weight: 600; color: var(--purple); }
+
+  @media (max-width: 860px) {
+    .tx { grid-template-columns: minmax(0, 1fr); }
+    .tx-seiten { position: static; }
+    .tx-seiten ul { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
+    .tx-seiten li { flex: none; }
+    .tx-seiten button { width: auto; }
+  }
+</style>

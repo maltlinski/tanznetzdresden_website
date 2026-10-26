@@ -17,40 +17,38 @@ import { ANGABEN, OFFEN_FUER, type GalerieLayout } from '../lib/profil-felder';
 import { demoFuer } from '../lib/demo';
 import { getTermineFor } from '../lib/content';
 import { getLang, tr, url } from '../lib/i18n';
+import { fuellen, texte, zeilen } from '../lib/texte';
 
 interface Props {
   profile: PublicProfile;
 }
 const { profile: p } = Astro.props;
 const lang = getLang(Astro);
-const t = tr(lang, {
-  de: {
-    kicker: 'Tanzschaffende · Dresden', member: 'Mitglied', trainer: 'Training', board: 'Vorstand', back: '← Alle Tanzschaffenden',
-    request: 'Anfrage senden', requestShort: 'Anfrage', showreel: 'Showreel', scroll: 'Scrollen ↓', sections: 'Abschnitte',
-    pitch: 'In einem Satz', pitchNav: 'Pitch', gallery: 'Galerie', galleryH: ['Bilder aus', 'der Arbeit.'], photos: 'Bilder',
-    full: 'Vollbild', allFull: 'Alle Bilder im Vollbild →', about: 'Über', aboutNav: 'Über', focus: 'Schwerpunkte', base: 'Basis',
-    works: 'Arbeiten', worksH: ['Stücke und', 'Projekte.'], entries: 'Einträge', events: 'Termine', eventsH: 'Nächste Termine',
-    contact: 'Kontakt', contactH: (n: string) => ['Mit ' + n, 'arbeiten.'], email: 'E-Mail', showEmail: 'Adresse anzeigen',
-    subject: 'Anfrage über TanzNetzDresden', body: (n: string) => `Hallo ${n},\n\nProjekt:\nZeitraum:\nOrt:\n\nViele Grüße\n`,
-    website: 'Website', video: 'Video', soon: 'Dieses Profil wird gerade aufgebaut.', photo: 'Foto',
-    edit: 'Ist das dein Profil?', editCta: 'Im internen Bereich ergänzen →', open: 'Offen für',
-    zoom: (nr: string) => `Foto ${nr} vergrößern`, close: 'Schließen', prev: 'Vorheriges Foto', next: 'Nächstes Foto', lightbox: 'Fotos',
-    portrait: (n: string) => `Porträt von ${n}`, ofN: 'von',
-  },
-  en: {
-    kicker: 'Dance artists · Dresden', member: 'Member', trainer: 'Training', board: 'Board', back: '← All dance artists',
-    request: 'Send a request', requestShort: 'Request', showreel: 'Showreel', scroll: 'Scroll ↓', sections: 'Sections',
-    pitch: 'In one sentence', pitchNav: 'Pitch', gallery: 'Gallery', galleryH: ['Pictures from', 'the work.'], photos: 'pictures',
-    full: 'Full screen', allFull: 'All pictures full screen →', about: 'About', aboutNav: 'About', focus: 'Focus', base: 'Based in',
-    works: 'Work', worksH: ['Pieces and', 'projects.'], entries: 'entries', events: 'Dates', eventsH: 'Upcoming events',
-    contact: 'Contact', contactH: (n: string) => ['Work with', n + '.'], email: 'Email', showEmail: 'Show address',
-    subject: 'Request via TanzNetzDresden', body: (n: string) => `Hello ${n},\n\nProject:\nDates:\nPlace:\n\nBest wishes\n`,
-    website: 'Website', video: 'Video', soon: 'This profile is being set up.', photo: 'Photo',
-    edit: 'Is this your profile?', editCta: 'Complete it in the members area →', open: 'Open to',
-    zoom: (nr: string) => `Enlarge photo ${nr}`, close: 'Close', prev: 'Previous photo', next: 'Next photo', lightbox: 'Photos',
-    portrait: (n: string) => `Portrait of ${n}`, ofN: 'of',
-  },
-});
+// Texte: Redaktion → Texte (settings/texte.json); hier nur Beschriftungen für Screenreader
+const kopf = texte(lang, 'profil', 'kopf');
+const leiste = texte(lang, 'profil', 'leiste');
+const inhalt = texte(lang, 'profil', 'inhalt');
+const kontakt = texte(lang, 'profil', 'kontakt');
+const t = {
+  kicker: kopf.kicker, member: kopf.mitglied, trainer: kopf.training, board: kopf.vorstand, back: kopf.zurueck,
+  request: kopf.anfrage, requestShort: leiste.anfrage, showreel: kopf.showreel, scroll: kopf.scrollen, photo: kopf.foto,
+  pitchNav: leiste.pitch, gallery: leiste.galerie, aboutNav: leiste.ueber, works: leiste.arbeiten, events: leiste.termine, contact: leiste.kontakt,
+  pitch: inhalt.pitch, galleryH: zeilen(inhalt.galerie), photos: inhalt.bilder, full: inhalt.vollbild, allFull: inhalt.alleVollbild,
+  about: (n: string) => fuellen(inhalt.ueber, { name: n }), soon: inhalt.bald, focus: inhalt.schwerpunkte, base: inhalt.basis,
+  website: inhalt.website, video: inhalt.video, worksH: zeilen(inhalt.arbeiten), entries: inhalt.eintraege, eventsH: inhalt.termine,
+  contactH: (n: string) => zeilen(fuellen(kontakt.titel, { name: n })), email: kontakt.email, showEmail: kontakt.zeigen,
+  subject: kontakt.betreff, body: (n: string) => fuellen(kontakt.mail, { name: n }), edit: kontakt.eigenes, editCta: kontakt.eigenesLink,
+  ...tr(lang, {
+    de: {
+      sections: 'Abschnitte', open: 'Offen für', lightbox: 'Fotos', close: 'Schließen', prev: 'Vorheriges Foto', next: 'Nächstes Foto',
+      zoom: (nr: string) => `Foto ${nr} vergrößern`, portrait: (n: string) => `Porträt von ${n}`,
+    },
+    en: {
+      sections: 'Sections', open: 'Open to', lightbox: 'Photos', close: 'Close', prev: 'Previous photo', next: 'Next photo',
+      zoom: (nr: string) => `Enlarge photo ${nr}`, portrait: (n: string) => `Portrait of ${n}`,
+    },
+  }),
+};
 
 const demo = demoFuer(p, lang);
 const pad = (n: number) => String(n).padStart(2, '0');
@@ -317,7 +315,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
     <section id="ueber" class="psec pueber" aria-labelledby="ueber-h">
       <div class="wrap pueber__grid">
         <div class="pueber__text">
-          <h2 class="pk" id="ueber-h"><span class="pk__nr" aria-hidden="true"></span><span class="pk__strich" aria-hidden="true"></span>{t.about} {vorname}</h2>
+          <h2 class="pk" id="ueber-h"><span class="pk__nr" aria-hidden="true"></span><span class="pk__strich" aria-hidden="true"></span>{t.about(vorname)}</h2>
           {bio.length > 0 ? (
             <div class="pueber__bio">{bio.map((para) => <p>{para}</p>)}</div>
           ) : (

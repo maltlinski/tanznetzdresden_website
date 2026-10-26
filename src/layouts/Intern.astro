@@ -14,7 +14,7 @@ import Logo from '../components/ui/Logo.astro';
 import { href } from '../lib/url';
 import '../styles/intern.css';
 
-type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'freigaben' | 'kalender' | 'keepup-meine';
+type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
@@ -41,6 +41,7 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
   { id: 'beitraege', label: 'Beiträge', path: 'intern/news/', n: 'beitraege' },
   { id: 'medien', label: 'Medien', path: 'intern/news/medien/', n: 'medien' },
   { id: 'inhalte', label: 'Website-Inhalte', path: 'intern/redaktion/' },
+  { id: 'texte', label: 'Texte', path: 'intern/redaktion/texte/' },
   { id: 'freigaben', label: 'Freigaben', path: 'intern/redaktion/freigaben/', n: 'freigaben' },
 ];
 ---

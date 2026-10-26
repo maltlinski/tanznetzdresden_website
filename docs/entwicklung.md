@@ -10,7 +10,11 @@
   in der jeweiligen Komponente).
 - **Links zu Seiten immer über `url(lang, 'route')`** aus `src/lib/i18n.ts` (kennt beide Sprachen und den
   Unterpfad), zu Dateien über `href()` aus `src/lib/url.ts`.
-- **Texte immer zweisprachig** mit `tr(lang, { de, en })`, siehe [mehrsprachigkeit.md](mehrsprachigkeit.md).
+- **Feste Texte (Überschriften, Knöpfe, Hinweise) in `src/settings/texte.json`**, gelesen mit `texte(lang, seite, abschnitt)`
+  aus `src/lib/texte.ts`. Die Pressestelle ändert sie unter *Intern → Redaktion → Texte* ([texte.md](texte.md)).
+  Bisher umgezogen: Startseite, Netzwerk, Profil; die übrigen Seiten nutzen noch `tr()` und folgen nach und nach.
+- **Texte immer zweisprachig**: in `texte.json` mit `de`/`en`; nur Beschriftungen für Screenreader und der interne
+  Bereich bleiben mit `tr(lang, { de, en })` im Code, siehe [mehrsprachigkeit.md](mehrsprachigkeit.md).
 - **Keine Drittanbieter ohne Einwilligung.** Neue externe Dienste in `src/settings/consent.ts` eintragen, über
   `ConsentEmbed` oder `<script type="text/plain" data-consent="…">` einbinden und in der Datenschutzerklärung
   beschreiben.

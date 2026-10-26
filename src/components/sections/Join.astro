@@ -3,21 +3,13 @@ import Tag from '../ui/Tag.astro';
 import Button from '../ui/Button.astro';
 import KeilBar from '../ui/KeilBar.astro';
 import NewsletterForm from '../NewsletterForm.astro';
-import { getLang, tr, url } from '../../lib/i18n';
+import { getLang, url } from '../../lib/i18n';
+import { texte, zeilen } from '../../lib/texte';
 
 const lang = getLang(Astro);
-const t = tr(lang, {
-  de: {
-    kicker: 'Mitglied werden', l1: 'Werde Teil', l2: 'des Netzes.',
-    lead: 'Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.',
-    cta: 'Mitgliedsantrag', donate: 'Oder mit einer Spende helfen →', nlLead: 'Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.',
-  },
-  en: {
-    kicker: 'Become a member', l1: 'Become part', l2: 'of the network.',
-    lead: 'As a member you train at a reduced rate, join working groups and shape the formats of the association. For professional dance artists in and around Dresden.',
-    cta: 'How to join', donate: 'Or help with a donation →', nlLead: 'Once a month: events, open calls and news from the independent scene (in German).',
-  },
-});
+const tx = texte(lang, 'startseite', 'mitglied');
+const [l1, l2] = zeilen(tx.titel);
+const t = { kicker: tx.kicker, l1, l2, lead: tx.lead, cta: tx.antrag, donate: tx.spende, nlLead: tx.newsletter };
 ---
 <section id="mitglied" class="join" aria-labelledby="join-h">
   <KeilBar color="var(--purple)" height={14} flip class="join__keil" />

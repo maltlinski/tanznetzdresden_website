@@ -5,27 +5,20 @@ import ProfilePhoto from '../components/ProfilePhoto.astro';
 import { bioParagraphs, getProfiles } from '../lib/profiles';
 import { demoFuer } from '../lib/demo';
 import { getLang, tr, url } from '../lib/i18n';
+import { texte, zeilen } from '../lib/texte';
 
 const lang = getLang(Astro);
 const profiles = (await getProfiles()).sort((a, b) => a.name.localeCompare(b.name, 'de'));
-const t = tr(lang, {
-  de: {
-    title: 'Netzwerk', desc: 'Die Tanzschaffenden im TanzNetzDresden: Profile von Mitglieder:innen und Trainer:innen.',
-    kicker: 'Netzwerk', h1: 'Wer im Netz', accent: 'tanzt.',
-    lead: 'Tänzer:innen, Choreograf:innen und Dozent:innen der freien Szene in Dresden. Finde Menschen für dein nächstes Projekt, dein Training oder einen Austausch.',
-    group: 'Profile filtern', all: 'Alle', m: 'Mitglieder:innen', tr: 'Trainer:innen', search: 'Suchen', placeholder: 'Name oder Schwerpunkt',
-    member: 'Mitglied', trainer: 'Training', board: 'Vorstand', none: 'Keine Profile gefunden.', shown: 'Profile angezeigt',
-    own: 'Du bist Mitglied und möchtest hier ein ausführliches Profil mit Foto? Pflege es im internen Bereich.', ownCta: 'Zum internen Bereich →',
-  },
-  en: {
-    title: 'Network', desc: 'The dance artists of TanzNetzDresden: profiles of members and teachers.',
-    kicker: 'Network', h1: 'Who dances', accent: 'in the network.',
-    lead: "Dancers, choreographers and teachers of Dresden's independent scene. Find people for your next project, your training or an exchange.",
-    group: 'Filter profiles', all: 'All', m: 'Members', tr: 'Teachers', search: 'Search', placeholder: 'Name or focus',
-    member: 'Member', trainer: 'Training', board: 'Board', none: 'No profiles found.', shown: 'profiles shown',
-    own: 'Are you a member and would like a full profile with photo here? Edit it in the members area (German).', ownCta: 'Go to members area →',
-  },
-});
+const k = texte(lang, 'netzwerk', 'kopf');
+const l = texte(lang, 'netzwerk', 'liste');
+const [h1, accent] = zeilen(k.titel);
+const t = {
+  title: k.seitentitel, desc: k.beschreibung, kicker: k.kicker, h1, accent, lead: k.lead,
+  all: l.alle, m: l.mitglieder, tr: l.trainerinnen, search: l.suchen, placeholder: l.suchhilfe,
+  member: l.mitglied, trainer: l.training, board: l.vorstand, none: l.keine, own: l.eigenes, ownCta: l.eigenesLink,
+  // nur für Screenreader
+  ...tr(lang, { de: { group: 'Profile filtern', shown: 'Profile angezeigt' }, en: { group: 'Filter profiles', shown: 'profiles shown' } }),
+};
 ---
 <Page title={t.title} description={t.desc} route="netzwerk">
   <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} />

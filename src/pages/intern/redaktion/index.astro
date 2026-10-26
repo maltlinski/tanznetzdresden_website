@@ -45,6 +45,14 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
               </a>
             </li>
           )}
+          {g === 'Startseite & Verein' && (
+            <li>
+              <a href={href('intern/redaktion/texte/')}>
+                <strong>Texte</strong>
+                <span>Überschriften, Knöpfe und Hinweise der Website, Deutsch und Englisch.</span>
+              </a>
+            </li>
+          )}
           {g === 'Programm' && (
             <li>
               <a href={href('intern/news/')}>

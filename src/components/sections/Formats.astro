@@ -7,12 +7,14 @@ import { Image } from 'astro:assets';
 import Tag from '../ui/Tag.astro';
 import { getFormate } from '../../lib/content';
 import { getLang, loc, tr, url } from '../../lib/i18n';
+import { texte } from '../../lib/texte';
 
 const lang = getLang(Astro);
-const t = tr(lang, {
-  de: { kicker: 'Was wir machen', h: 'Formate & Reihen', prev: 'Vorherige Formate', next: 'Weitere Formate', list: 'Formate' },
-  en: { kicker: 'What we do', h: 'Formats & series', prev: 'Previous formats', next: 'More formats', list: 'Formats' },
-});
+const tx = texte(lang, 'startseite', 'formate');
+const t = {
+  kicker: tx.kicker, h: tx.titel,
+  ...tr(lang, { de: { prev: 'Vorherige Formate', next: 'Weitere Formate', list: 'Formate' }, en: { prev: 'Previous formats', next: 'More formats', list: 'Formats' } }),
+};
 const items = (await getFormate()).map((f, i) => ({
   ...f.data,
   id: f.id,

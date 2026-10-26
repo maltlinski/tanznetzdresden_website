@@ -10,6 +10,7 @@ import { getVerein } from '../../lib/settings';
 import { getUpcoming } from '../../lib/content';
 import { dateParts } from '../../lib/dates';
 import { getLang, loc, tr, url } from '../../lib/i18n';
+import { texte, zeilen } from '../../lib/texte';
 import { heroFotos, claim, wortPause, knoten, scrollWegziehen } from '../../settings/hero';
 import type { HeroPhoto } from '../../scripts/hero-net';
 
@@ -40,16 +41,12 @@ const next = (await getUpcoming(3)).map((e) => {
     where: `${e.data.venue} · ${loc(e.data, 'timeLabel', lang) ?? d.time}`,
   };
 });
-const t = tr(lang, {
-  de: {
-    replay: 'Netz neu knüpfen', next: 'Upcoming', nextLabel: 'Nächster Termin', wege: 'Einstiege',
-    sehen: ['Zuschauen', 'Tanz sehen'], trainieren: ['Trainieren', 'Mittrainieren'], mitmachen: ['Mitmachen', 'Teil des Netzes werden'],
-  },
-  en: {
-    replay: 'Re-knot the net', next: 'Upcoming', nextLabel: 'Next event', wege: 'Ways in',
-    sehen: ['Watch', 'See dance'], trainieren: ['Train', 'Train with us'], mitmachen: ['Join', 'Become part of the network'],
-  },
-});
+// Texte: Redaktion → Texte (settings/texte.json); hier nur Beschriftungen für Screenreader
+const tx = texte(lang, 'startseite', 'kopf');
+const t = {
+  ...tr(lang, { de: { nextLabel: 'Nächster Termin', wege: 'Einstiege' }, en: { nextLabel: 'Next event', wege: 'Ways in' } }),
+  replay: tx.neuKnuepfen, next: tx.naechster, sehen: zeilen(tx.sehen), trainieren: zeilen(tx.trainieren), mitmachen: zeilen(tx.mitmachen),
+};
 const wege = [
   { href: url(lang, 'home', '#termine'), k: t.sehen[0], t: t.sehen[1] },
   { href: url(lang, 'profitraining'), k: t.trainieren[0], t: t.trainieren[1] },

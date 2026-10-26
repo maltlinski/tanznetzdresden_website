@@ -1,0 +1,158 @@
+{
+  "_hinweis": "Feste Texte der Website, nach Seiten und Abschnitten in der Reihenfolge wie auf der Seite. Bearbeiten unter Intern → Redaktion → Texte (docs/texte.md). Platzhalter in {geschweiften Klammern} bleiben stehen. Bei „zeilen“ steht jede Zeile auf einer eigenen Zeile (\\n).",
+  "startseite": {
+    "titel": "Startseite",
+    "pfad": "",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "texte": {
+          "naechster": { "wo": "Kleine Zeile über dem nächsten Termin", "de": "Upcoming", "en": "Upcoming", "max": 24 },
+          "sehen": { "wo": "Einstieg 1 (zu den Terminen): kleine Zeile, darunter groß", "zeilen": 2, "de": "Zuschauen\nTanz sehen", "en": "Watch\nSee dance", "max": 50 },
+          "trainieren": { "wo": "Einstieg 2 (zum Profitraining): kleine Zeile, darunter groß", "zeilen": 2, "de": "Trainieren\nMittrainieren", "en": "Train\nTrain with us", "max": 50 },
+          "mitmachen": { "wo": "Einstieg 3 (Mitglied werden): kleine Zeile, darunter groß", "zeilen": 2, "de": "Mitmachen\nTeil des Netzes werden", "en": "Join\nBecome part of the network", "max": 50 },
+          "neuKnuepfen": { "wo": "Knopf, der die Animation des Netzes neu startet", "de": "Netz neu knüpfen", "en": "Re-knot the net", "max": 30 }
+        }
+      },
+      "termine": {
+        "titel": "Termine und News",
+        "texte": {
+          "kicker": { "wo": "Termine: kleine Zeile über der Überschrift", "de": "Tanzkalender", "en": "Dance calendar", "max": 40 },
+          "titel": { "wo": "Termine: Überschrift", "de": "Termine", "en": "Events", "max": 30 },
+          "alle": { "wo": "Termine: Link zum ganzen Kalender", "de": "Ganzer Kalender →", "en": "Full calendar →", "max": 40 },
+          "abo": { "wo": "Termine: Link zum Kalender-Abo", "de": "Abonnieren (.ics)", "en": "Subscribe (.ics)", "max": 40 },
+          "einreichen": { "wo": "Termine: Link „Termin einreichen“", "de": "Termin einreichen", "en": "Submit an event", "max": 40 },
+          "newsKicker": { "wo": "News: kleine Zeile über der Überschrift", "de": "News", "en": "News", "max": 40 },
+          "newsTitel": { "wo": "News: Überschrift", "de": "Aus dem Netz", "en": "From the network", "max": 30 },
+          "newsAlle": { "wo": "News: Link zu allen Beiträgen", "de": "Alle Beiträge →", "en": "All posts →", "max": 40 },
+          "frist": { "wo": "News: Wort vor dem Datum einer Ausschreibung", "de": "Frist", "en": "Deadline", "max": 20 }
+        }
+      },
+      "formate": {
+        "titel": "Formate",
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Was wir machen", "en": "What we do", "max": 40 },
+          "titel": { "wo": "Überschrift", "de": "Formate & Reihen", "en": "Formats & series", "max": 40 }
+        }
+      },
+      "netz": {
+        "titel": "Eine Stadt. Ein Netz.",
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift ({jahr} = Gründungsjahr aus den Vereinsdaten)", "de": "Freie Tanzszene · Dresden · seit {jahr}", "en": "Independent dance · Dresden · since {jahr}", "max": 60 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Eine Stadt.\nEin Netz.", "en": "One city.\nOne network.", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene. Wir organisieren Training, Bühnenformate, Diskurs und Residenzen und machen den zeitgenössischen Tanz in Dresden sichtbar.", "en": "TanzNetzDresden connects more than 70 dance artists of the independent scene. We organise training, stage formats, discourse and residencies and make contemporary dance in Dresden visible.", "max": 400 },
+          "vorstand": { "wo": "Link zu Vorstand und Arbeitsgruppen", "de": "Vorstand & AGs →", "en": "Board & working groups →", "max": 40 },
+          "partner": { "wo": "Link zu den Partnern", "de": "Partner →", "en": "Partners →", "max": 40 },
+          "wer": { "wo": "Überschrift über den Namen", "de": "Wer im Netz tanzt", "en": "Who dances in the network", "max": 40 },
+          "alle": { "wo": "Link zu allen Profilen ({zahl} = erste Zahl unter Vereinsdaten → Zahlen)", "de": "Alle {zahl} Profile →", "en": "All {zahl} profiles →", "max": 40 }
+        }
+      },
+      "mitglied": {
+        "titel": "Mitglied werden",
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitglied werden", "en": "Become a member", "max": 40 },
+          "titel": { "wo": "Überschrift in zwei Zeilen", "zeilen": 2, "de": "Werde Teil\ndes Netzes.", "en": "Become part\nof the network.", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.", "en": "As a member you train at a reduced rate, join working groups and shape the formats of the association. For professional dance artists in and around Dresden.", "max": 400 },
+          "antrag": { "wo": "Großer Knopf", "de": "Mitgliedsantrag", "en": "How to join", "max": 30 },
+          "spende": { "wo": "Link neben dem Knopf", "de": "Oder mit einer Spende helfen →", "en": "Or help with a donation →", "max": 50 },
+          "newsletter": { "wo": "Text beim Newsletter", "de": "Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.", "en": "Once a month: events, open calls and news from the independent scene (in German).", "max": 200 }
+        }
+      }
+    }
+  },
+  "netzwerk": {
+    "titel": "Netzwerk",
+    "pfad": "netzwerk/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "texte": {
+          "seitentitel": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Netzwerk", "en": "Network", "max": 60 },
+          "beschreibung": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Die Tanzschaffenden im TanzNetzDresden: Profile von Mitglieder:innen und Trainer:innen.", "en": "The dance artists of TanzNetzDresden: profiles of members and teachers.", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Netzwerk", "en": "Network", "max": 40 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Wer im Netz\ntanzt.", "en": "Who dances\nin the network.", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Tänzer:innen, Choreograf:innen und Dozent:innen der freien Szene in Dresden. Finde Menschen für dein nächstes Projekt, dein Training oder einen Austausch.", "en": "Dancers, choreographers and teachers of Dresden's independent scene. Find people for your next project, your training or an exchange.", "max": 400 }
+        }
+      },
+      "liste": {
+        "titel": "Profile",
+        "texte": {
+          "alle": { "wo": "Filter: alle Profile", "de": "Alle", "en": "All", "max": 20 },
+          "mitglieder": { "wo": "Filter: nur Mitglieder", "de": "Mitglieder:innen", "en": "Members", "max": 24 },
+          "trainerinnen": { "wo": "Filter: nur Trainer:innen", "de": "Trainer:innen", "en": "Teachers", "max": 24 },
+          "suchen": { "wo": "Beschriftung des Suchfelds", "de": "Suchen", "en": "Search", "max": 20 },
+          "suchhilfe": { "wo": "Grauer Text im leeren Suchfeld", "de": "Name oder Schwerpunkt", "en": "Name or focus", "max": 40 },
+          "vorstand": { "wo": "Kennzeichen auf einer Karte", "de": "Vorstand", "en": "Board", "max": 20 },
+          "mitglied": { "wo": "Kennzeichen auf einer Karte", "de": "Mitglied", "en": "Member", "max": 20 },
+          "training": { "wo": "Kennzeichen auf einer Karte", "de": "Training", "en": "Training", "max": 20 },
+          "keine": { "wo": "Wenn die Suche nichts findet", "de": "Keine Profile gefunden.", "en": "No profiles found.", "max": 80 },
+          "eigenes": { "wo": "Hinweis unter der Liste", "de": "Du bist Mitglied und möchtest hier ein ausführliches Profil mit Foto? Pflege es im internen Bereich.", "en": "Are you a member and would like a full profile with photo here? Edit it in the members area (German).", "max": 200 },
+          "eigenesLink": { "wo": "Link unter dem Hinweis", "de": "Zum internen Bereich →", "en": "Go to members area →", "max": 40 }
+        }
+      }
+    }
+  },
+  "profil": {
+    "titel": "Profil einer Person",
+    "pfad": "netzwerk/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "texte": {
+          "zurueck": { "wo": "Link oben links (auch ganz unten auf der Seite)", "de": "← Alle Tanzschaffenden", "en": "← All dance artists", "max": 40 },
+          "kicker": { "wo": "Kleine Zeile oben", "de": "Tanzschaffende · Dresden", "en": "Dance artists · Dresden", "max": 40 },
+          "mitglied": { "wo": "Kleine Zeile oben, angehängt bei Mitgliedern", "de": "Mitglied", "en": "Member", "max": 20 },
+          "training": { "wo": "Kleine Zeile oben, angehängt bei Trainer:innen", "de": "Training", "en": "Training", "max": 20 },
+          "vorstand": { "wo": "Kennzeichen vor der Vorstandsfunktion", "de": "Vorstand", "en": "Board", "max": 20 },
+          "anfrage": { "wo": "Knopf unter dem Namen", "de": "Anfrage senden", "en": "Send a request", "max": 30 },
+          "showreel": { "wo": "Knopf zum Video", "de": "Showreel", "en": "Showreel", "max": 20 },
+          "scrollen": { "wo": "Link neben den Knöpfen", "de": "Scrollen ↓", "en": "Scroll ↓", "max": 20 },
+          "foto": { "wo": "Vor dem Namen der Fotograf:in", "de": "Foto", "en": "Photo", "max": 20 }
+        }
+      },
+      "leiste": {
+        "titel": "Leiste mit den Abschnitten",
+        "texte": {
+          "pitch": { "wo": "Abschnitt 1", "de": "Pitch", "en": "Pitch", "max": 16 },
+          "galerie": { "wo": "Abschnitt 2", "de": "Galerie", "en": "Gallery", "max": 16 },
+          "ueber": { "wo": "Abschnitt 3", "de": "Über", "en": "About", "max": 16 },
+          "arbeiten": { "wo": "Abschnitt 4", "de": "Arbeiten", "en": "Work", "max": 16 },
+          "termine": { "wo": "Abschnitt 5", "de": "Termine", "en": "Dates", "max": 16 },
+          "kontakt": { "wo": "Abschnitt 6", "de": "Kontakt", "en": "Contact", "max": 16 },
+          "anfrage": { "wo": "Kleiner Knopf rechts", "de": "Anfrage", "en": "Request", "max": 16 }
+        }
+      },
+      "inhalt": {
+        "titel": "Pitch, Galerie, Über, Arbeiten",
+        "texte": {
+          "pitch": { "wo": "Pitch: kleine Zeile", "de": "In einem Satz", "en": "In one sentence", "max": 30 },
+          "galerie": { "wo": "Galerie: Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Bilder aus\nder Arbeit.", "en": "Pictures from\nthe work.", "max": 40 },
+          "bilder": { "wo": "Galerie: nach der Anzahl der Fotos", "de": "Bilder", "en": "pictures", "max": 20 },
+          "vollbild": { "wo": "Galerie: Knopf", "de": "Vollbild", "en": "Full screen", "max": 20 },
+          "alleVollbild": { "wo": "Galerie: letztes Feld im Filmstreifen", "de": "Alle Bilder im Vollbild →", "en": "All pictures full screen →", "max": 40 },
+          "ueber": { "wo": "Über: kleine Zeile ({name} = Vorname)", "de": "Über {name}", "en": "About {name}", "max": 30 },
+          "bald": { "wo": "Über: wenn es noch keinen Text gibt", "de": "Dieses Profil wird gerade aufgebaut.", "en": "This profile is being set up.", "max": 80 },
+          "schwerpunkte": { "wo": "Über: Angabe, wenn es keinen Pitch gibt", "de": "Schwerpunkte", "en": "Focus", "max": 20 },
+          "basis": { "wo": "Über: Angabe zum Wohnort", "de": "Basis", "en": "Based in", "max": 20 },
+          "website": { "wo": "Über und Kontakt: Link zur Website", "de": "Website", "en": "Website", "max": 20 },
+          "video": { "wo": "Über: Link zum Video", "de": "Video", "en": "Video", "max": 20 },
+          "arbeiten": { "wo": "Arbeiten: Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Stücke und\nProjekte.", "en": "Pieces and\nprojects.", "max": 40 },
+          "eintraege": { "wo": "Arbeiten: nach der Anzahl", "de": "Einträge", "en": "entries", "max": 20 },
+          "termine": { "wo": "Termine: Überschrift", "de": "Nächste Termine", "en": "Upcoming events", "max": 40 }
+        }
+      },
+      "kontakt": {
+        "titel": "Kontakt",
+        "texte": {
+          "titel": { "wo": "Überschrift in zwei Zeilen ({name} = Vorname)", "zeilen": 2, "de": "Mit {name}\narbeiten.", "en": "Work with\n{name}.", "max": 40 },
+          "email": { "wo": "Beschriftung der E-Mail-Zeile", "de": "E-Mail", "en": "Email", "max": 20 },
+          "zeigen": { "wo": "Knopf, der die E-Mail-Adresse anzeigt", "de": "Adresse anzeigen", "en": "Show address", "max": 30 },
+          "betreff": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Anfrage über TanzNetzDresden", "en": "Request via TanzNetzDresden", "max": 80 },
+          "mail": { "wo": "Text der vorbereiteten E-Mail ({name} = Vorname)", "de": "Hallo {name},\n\nProjekt:\nZeitraum:\nOrt:\n\nViele Grüße\n", "en": "Hello {name},\n\nProject:\nDates:\nPlace:\n\nBest wishes\n", "max": 400 },
+          "eigenes": { "wo": "Ganz unten, bei Profilen ohne eigenes Konto", "de": "Ist das dein Profil?", "en": "Is this your profile?", "max": 60 },
+          "eigenesLink": { "wo": "Link daneben", "de": "Im internen Bereich ergänzen →", "en": "Complete it in the members area →", "max": 50 }
+        }
+      }
+    }
+  }
+}

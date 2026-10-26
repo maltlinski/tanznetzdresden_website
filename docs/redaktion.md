@@ -38,6 +38,7 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 | **Startseite: Kopf**, **Über uns: Haltung** | „Tanz für …“; Säulen, Auszeichnungen, Foto | im Formular |
 | **Vereinsdaten** | Claim, Zahlen, Training, Mitgliedschaft, Presse, Partner, Förderer, Spenden, Rechtliches | im Formular |
 | **Textseiten** | Transparenz, Barrierefreiheit, Leichte Sprache, Impressum, Datenschutz | – |
+| **Texte** (eigener Menüpunkt) | Überschriften, Knöpfe und Hinweise der Seiten, Deutsch und Englisch; dazu das Textbuch zum Durchlesen ([texte.md](texte.md)) | wie auf der Seite |
 
 ### So geht's
 

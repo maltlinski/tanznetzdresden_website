@@ -1,0 +1,108 @@
+---
+/**
+ * Redaktion → Texte → Textbuch: alle festen Texte der Website am Stück zum Durchlesen, Abstimmen und Drucken
+ * (als PDF speichern über den Druckdialog). Stand: wie die Website gerade gebaut ist (src/settings/texte.json).
+ * Geändert wird auf der Seite „Texte“.
+ */
+import Redaktion from '../../../../../layouts/Redaktion.astro';
+import { href } from '../../../../../lib/url';
+import { alleTexte, platzhalter, type TextAbschnitt, type TextEintrag, type TextSeite } from '../../../../../lib/texte-regeln';
+import daten from '../../../../../settings/texte.json';
+import '../../../../../styles/redaktion.css';
+
+const datei = daten as unknown as Record<string, unknown>;
+const seiten = Object.entries(datei).filter(([k]) => !k.startsWith('_')) as [string, TextSeite][];
+const anzahl = alleTexte(datei).length;
+const stand = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeZone: 'Europe/Berlin' }).format(new Date());
+const absaetze = (t: string) => t.split('\n');
+const eintraege = (a: TextAbschnitt) => Object.entries(a.texte) as [string, TextEintrag][];
+---
+<Redaktion title="Textbuch" current="texte">
+  <a class="r-back tb-weg" href={href('intern/redaktion/texte/')}>← Texte</a>
+  <div class="r-head">
+    <div>
+      <h1 class="i-h1">Textbuch</h1>
+      <p class="i-lead">
+        Alle {anzahl} festen Texte der Website am Stück, Seite für Seite, Deutsch und Englisch. Zum Durchlesen, Abstimmen
+        und Ausdrucken. Ändern kannst du sie unter <a href={href('intern/redaktion/texte/')}>Texte</a>.
+      </p>
+      <p class="tb-stand">Stand der Website: {stand}</p>
+    </div>
+    <div class="r-head__side tb-weg" data-access-kopf hidden>
+      <button type="button" class="btn btn--primary btn--marker" data-drucken>Drucken oder als PDF speichern</button>
+    </div>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Redaktion ist für Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
+  </div>
+
+  <div data-access hidden>
+  <nav class="tb-inhalt tb-weg" aria-label="Inhalt des Textbuchs">
+    <ol>{seiten.map(([id, s]) => <li><a href={`#tb-${id}`}>{s.titel}</a></li>)}</ol>
+  </nav>
+
+  <div class="tb">
+    {seiten.map(([id, s]) => (
+      <section class="tb-seite" id={`tb-${id}`} aria-labelledby={`tb-${id}-h`}>
+        <h2 class="tb-seite__h" id={`tb-${id}-h`}>{s.titel}</h2>
+        {Object.entries(s.abschnitte).map(([aid, a]) => (
+          <section class="tb-abschnitt" aria-labelledby={`tb-${id}-${aid}`}>
+            <h3 class="tb-abschnitt__h" id={`tb-${id}-${aid}`}>{a.titel}</h3>
+            <dl class="tb-liste">
+              {eintraege(a).map(([, e]) => (
+                <div class="tb-text">
+                  <dt>{e.wo}{platzhalter(e.de).length > 0 && <span class="tb-ph"> · Platzhalter: {platzhalter(e.de).map((p) => `{${p}}`).join(', ')}</span>}</dt>
+                  <dd lang="de">{absaetze(e.de).map((z, i) => <>{i > 0 && <br />}{z}</>)}</dd>
+                  <dd lang="en" class="tb-en">
+                    <span class="tb-sprache">EN</span>
+                    {e.en ? absaetze(e.en).map((z, i) => <>{i > 0 && <br />}{z}</>) : <em>wie Deutsch</em>}
+                    {e.enPruefen && <span class="tb-pruefen">Englisch prüfen</span>}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        ))}
+      </section>
+    ))}
+  </div>
+  </div>
+</Redaktion>
+
+<script>
+  import { initIntern } from '../../../../../scripts/intern/session';
+  const ctx = await initIntern(true);
+  if (ctx) document.querySelectorAll<HTMLElement>(ctx.isRedaktion ? '[data-access], [data-access-kopf]' : '[data-no-access]').forEach((el) => (el.hidden = false));
+  document.querySelector('[data-drucken]')?.addEventListener('click', () => print());
+</script>
+
+<style>
+  .i-lead a { text-decoration: underline; text-underline-offset: 3px; }
+  .tb-stand { margin: -12px 0 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
+  .tb-inhalt { margin: 8px 0 28px; }
+  .tb-inhalt ol { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; padding: 0; list-style: none; }
+  .tb-inhalt a { font-weight: 600; }
+  .tb { display: flex; flex-direction: column; gap: 40px; max-width: 900px; }
+  .tb-seite { background: var(--paper); padding: clamp(20px, 3vw, 36px); border-top: 3px solid var(--magenta); scroll-margin-top: 16px; }
+  .tb-seite__h { margin: 0 0 6px; font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; color: var(--purple); }
+  .tb-abschnitt__h {
+    margin: 26px 0 8px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .tb-liste { margin: 0; }
+  .tb-text { padding: 12px 0; border-bottom: 1px solid var(--rule); break-inside: avoid; }
+  .tb-text dt { font-size: 13px; color: var(--ink-soft); }
+  .tb-ph { color: var(--ink-muted); }
+  .tb-text dd { margin: 4px 0 0; font-size: 17px; line-height: 1.5; color: var(--ink); }
+  .tb-en { font-size: 15px !important; color: var(--ink-soft) !important; }
+  .tb-sprache { margin-right: 8px; padding: 1px 5px; background: var(--cyan-tint); font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.1em; color: var(--purple); }
+  .tb-pruefen { margin-left: 8px; padding: 1px 6px; background: var(--magenta-tint); font-size: 12px; font-weight: 600; color: var(--purple); }
+
+  @media print {
+    :global(.rd-side), .tb-weg, .tb-inhalt { display: none !important; }
+    :global(.intern) { display: block !important; background: #fff !important; }
+    .tb-seite { padding: 0; border: 0; break-before: page; }
+    .tb-seite:first-child { break-before: auto; }
+    .tb { max-width: none; }
+  }
+</style>

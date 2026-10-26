@@ -361,7 +361,124 @@ test('Freigaben: ohne Rolle Presse/Vorstand kein Zugang', async ({ page }) => {
   await expect(page.locator('[data-access]')).toBeHidden();
 });
 
-for (const pfad of ['/intern/redaktion/freigaben/', '/intern/redaktion/', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9', '/intern/redaktion/eintrag/?b=verein']) {
+test('Texte: ändern, Englisch prüfen, Regeln, ursprünglicher Text', async ({ page }) => {
+  const gespeichert = await redaktion(page);
+  const PFAD = 'src/settings/texte.json';
+  await page.goto('/intern/redaktion/texte/');
+  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Texte' })).toHaveAttribute('aria-current', 'page');
+  const seiten = page.getByRole('navigation', { name: 'Seiten der Website' });
+  await expect(seiten.getByRole('button')).toHaveText([/^Startseite/, /^Netzwerk/, /^Profil einer Person/]);
+  await expect(seiten.getByRole('button', { name: /^Startseite/ })).toHaveAttribute('aria-current', 'page');
+
+  // Überschrift „Werde Teil / des Netzes.“: zwei Zeilen, nur Deutsch ändern
+  const karte = page.locator('[data-text="startseite.mitglied.titel"]');
+  await expect(karte).toContainText('Überschrift in zwei Zeilen');
+  const de = karte.getByLabel('Deutsch');
+  await expect(de).toHaveValue('Werde Teil\ndes Netzes.');
+  await de.fill('Werde Teil des Netzes.');
+  await expect(karte.locator('[data-fehler]').first()).toHaveText('Deutsch: Bitte genau 2 Zeilen (neue Zeile mit der Eingabetaste).');
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect(page.locator('[data-msg]')).toHaveText('Bitte zuerst den markierten Text korrigieren.');
+  expect(gespeichert).toHaveLength(0);
+  await de.fill('Mach mit\nim Netz.');
+  await expect(karte.locator('[data-fehler]').first()).toHaveText('');
+  await expect(page.locator('[data-bar-n]')).toHaveText('1 Text geändert, noch nicht gespeichert');
+
+  // Platzhalter muss bleiben (Suche über alle Seiten)
+  await page.getByPlaceholder(/Suchen/).fill('Profile →');
+  const alle = page.locator('[data-text="startseite.netz.alle"]');
+  await expect(alle).toBeVisible();
+  await expect(page.locator('[data-text="startseite.mitglied.titel"]')).toBeHidden();
+  await alle.getByLabel('Englisch').fill('All profiles →');
+  await expect(alle.locator('[data-fehler]').nth(1)).toContainText('{zahl} muss im Text bleiben');
+  await alle.getByLabel('Englisch').fill('All {zahl} profiles →');
+  await page.getByPlaceholder(/Suchen/).fill('');
+
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect(page.locator('[data-msg]')).toHaveText('Gespeichert: 1 Text. Die Website zeigt das in 2–3 Minuten.');
+  expect(gespeichert).toHaveLength(1);
+  expect(gespeichert[0].nachricht).toBe('Texte: Startseite (1 Text)');
+  expect(gespeichert[0].aenderungen[0]).toMatchObject({ pfad: PFAD, alt: aktuell(PFAD) });
+  const neu = JSON.parse(gespeichert[0].aenderungen[0].text!);
+  expect(neu.startseite.abschnitte.mitglied.texte.titel).toEqual({
+    wo: 'Überschrift in zwei Zeilen', zeilen: 2, de: 'Mach mit\nim Netz.', en: 'Become part\nof the network.', max: 40,
+    ursprung: { de: 'Werde Teil\ndes Netzes.', en: 'Become part\nof the network.' }, enPruefen: true,
+  });
+  // sonst unverändert und im selben Format: nur diese eine Zeile ist anders
+  const vorher = readFileSync(PFAD, 'utf8').split('\n');
+  const nachher = gespeichert[0].aenderungen[0].text!.split('\n');
+  expect(nachher).toHaveLength(vorher.length);
+  expect(nachher.filter((z, i) => z !== vorher[i])).toHaveLength(1);
+});
+
+test('Texte: Englisch prüfen, ursprünglichen Text zurückholen, Filter, Textbuch', async ({ page }) => {
+  const gespeichert = await redaktion(page);
+  // Stand wie nach einer früheren Änderung: Datei der nachgebauten Funktion austauschen
+  const PFAD = 'src/settings/texte.json';
+  const datei = JSON.parse(readFileSync(PFAD, 'utf8'));
+  Object.assign(datei.profil.abschnitte.kopf.texte.anfrage, { de: 'Anfragen', ursprung: { de: 'Anfrage senden', en: 'Send a request' }, enPruefen: true });
+  const text = JSON.stringify(datei);
+  await page.route(`${SB}/functions/v1/inhalte`, async (route) => {
+    const body = route.request().postDataJSON();
+    if (body.aktion !== 'lesen') return route.fallback();
+    return route.fulfill({ status: 200, contentType: 'application/json', headers: { 'Access-Control-Allow-Origin': '*' }, body: JSON.stringify({ head: 'h1', dateien: { [PFAD]: { sha: 'x1', text } } }) });
+  });
+  await page.goto('/intern/redaktion/texte/');
+  await page.getByRole('button', { name: /^Englisch prüfen/ }).click();
+  await expect(page.getByRole('button', { name: /^Englisch prüfen/ })).toContainText('(1)');
+  const karte = page.locator('[data-text="profil.kopf.anfrage"]');
+  await expect(karte).toBeVisible();
+  await expect(page.locator('.tx-karte:visible')).toHaveCount(1);
+  await expect(karte).toContainText('Deutsch wurde geändert: Englisch prüfen.');
+  await karte.getByRole('button', { name: 'Englisch passt so' }).click();
+  await expect(page.locator('[data-bar-n]')).toHaveText('1 Text geändert, noch nicht gespeichert');
+  await page.getByRole('button', { name: 'Änderungen verwerfen' }).click();
+  await expect(page.locator('[data-bar]')).toBeHidden();
+
+  // ursprünglichen Text zurückholen: danach ohne Merker gespeichert
+  await karte.getByRole('button', { name: 'Ursprünglichen Text zurückholen' }).click();
+  await expect(karte.getByLabel('Deutsch')).toHaveValue('Anfrage senden');
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect(page.locator('[data-msg]')).toContainText('Gespeichert');
+  const neu = JSON.parse(gespeichert[0].aenderungen[0].text!);
+  expect(neu.profil.abschnitte.kopf.texte.anfrage).toEqual({ wo: 'Knopf unter dem Namen', de: 'Anfrage senden', en: 'Send a request', max: 30 });
+  expect(gespeichert[0].aenderungen[0].alt).toBe('x1');
+
+  // Textbuch
+  await page.goto('/intern/redaktion/texte/textbuch/');
+  await expect(page.getByRole('heading', { name: 'Textbuch' })).toBeVisible();
+  await expect(page.getByRole('region', { name: 'Startseite' })).toContainText('Werde Teil');
+  await expect(page.getByRole('button', { name: 'Drucken oder als PDF speichern' })).toBeVisible();
+});
+
+test('Texte: Regeln (Platzhalter, Zeilen, Format der Datei)', async ({}, info) => {
+  test.skip(info.project.name !== 'desktop', 'ohne Browser, einmal reicht');
+  const { fuellen, textPruefen, dateiText, uebernehmen, alleTexte } = await import('../src/lib/texte-regeln');
+  expect(fuellen('Alle {zahl} Profile →', { zahl: 72 })).toBe('Alle 72 Profile →');
+  expect(fuellen('Alle {zahl} Profile →', {})).toBe('Alle Profile →');
+  expect(fuellen('{name} arbeitet', {})).toBe('arbeitet');
+  expect(textPruefen({ max: 10 }, 'x'.repeat(11), 'x', 'de')).toBe('Deutsch: 11 Zeichen, erlaubt sind 10.');
+  expect(textPruefen({}, '', 'x', 'en')).toBeNull();
+  expect(textPruefen({}, 'Hallo {vorname}', 'Hallo {name}', 'de')).toContain('{name} muss im Text bleiben');
+  expect(textPruefen({}, '<b>x</b>', 'x', 'de')).toContain('kein HTML');
+  const roh = readFileSync('src/settings/texte.json', 'utf8');
+  const datei = JSON.parse(roh);
+  expect(dateiText(datei)).toBe(roh);
+  // jeder Text: Deutsch da, Platzhalter in beiden Sprachen gleich, Regeln eingehalten
+  for (const { seite, abschnitt, key, e } of alleTexte(datei)) {
+    const wo = `${seite}.${abschnitt}.${key}`;
+    expect(e.wo, wo).toBeTruthy();
+    expect(textPruefen(e, e.de, e.de, 'de'), wo).toBeNull();
+    expect(textPruefen(e, e.en, e.de, 'en'), wo).toBeNull();
+  }
+  // nur Englisch angepasst: kein Merker „Englisch prüfen“, ursprung bleibt
+  const n = uebernehmen(datei, new Map([['startseite.formate.titel', { de: 'Formate & Reihen', en: 'Formats and series' }]]));
+  expect(n).toBe(1);
+  expect(datei.startseite.abschnitte.formate.texte.titel).toMatchObject({ en: 'Formats and series', ursprung: { en: 'Formats & series' } });
+  expect(datei.startseite.abschnitte.formate.texte.titel.enPruefen).toBeUndefined();
+});
+
+for (const pfad of ['/intern/redaktion/texte/', '/intern/redaktion/texte/textbuch/', '/intern/redaktion/freigaben/', '/intern/redaktion/', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9', '/intern/redaktion/eintrag/?b=verein']) {
   test(`${pfad} ist barrierearm (axe)`, async ({ page }) => {
     await redaktion(page);
     await page.emulateMedia({ reducedMotion: 'reduce' });

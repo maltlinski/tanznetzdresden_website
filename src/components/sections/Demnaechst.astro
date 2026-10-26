@@ -10,7 +10,8 @@ import EventFilter from '../EventFilter.astro';
 import { getUpcoming } from '../../lib/content';
 import { getNews, leadPost, daysLeft, dateShort, newsCategoryLabel } from '../../lib/news';
 import { href } from '../../lib/url';
-import { getLang, tr, url } from '../../lib/i18n';
+import { getLang, url } from '../../lib/i18n';
+import { texte } from '../../lib/texte';
 
 const lang = getLang(Astro);
 const events = await getUpcoming(8);
@@ -19,16 +20,11 @@ const lead = leadPost(posts);
 const rest = posts.filter((p) => p !== lead);
 const open = rest.filter((p) => p.deadline && daysLeft(p.deadline) >= 0);
 const side = [...open, ...rest.filter((p) => !open.includes(p))].slice(0, 2);
-const t = tr(lang, {
-  de: {
-    kicker: 'Tanzkalender', h: 'Termine', all: 'Ganzer Kalender →', ics: 'Abonnieren (.ics)', submit: 'Termin einreichen',
-    jKicker: 'News', jH: 'Aus dem Netz', jAll: 'Alle Beiträge →', deadline: 'Frist',
-  },
-  en: {
-    kicker: 'Dance calendar', h: 'Events', all: 'Full calendar →', ics: 'Subscribe (.ics)', submit: 'Submit an event',
-    jKicker: 'News', jH: 'From the network', jAll: 'All posts →', deadline: 'Deadline',
-  },
-});
+const tx = texte(lang, 'startseite', 'termine');
+const t = {
+  kicker: tx.kicker, h: tx.titel, all: tx.alle, ics: tx.abo, submit: tx.einreichen,
+  jKicker: tx.newsKicker, jH: tx.newsTitel, jAll: tx.newsAlle, deadline: tx.frist,
+};
 type Post = (typeof posts)[number];
 const meta = (p: Post) =>
   p.deadline && daysLeft(p.deadline) >= 0
