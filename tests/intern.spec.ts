@@ -20,7 +20,7 @@ test('Rahmen: Seitenleiste für Mitglieder, Redaktion nur mit Rolle', async ({ p
   await redaktion(page, { profil: lea, mitgliedschaft: ms() });
   await page.goto('/intern/');
   const nav = page.getByRole('navigation', { name: 'Interner Bereich' });
-  await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', 'Mitglieder', 'Dokumente']);
+  await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', /^Open Calls/, 'Mitglieder', 'Dokumente']);
   await expect(nav.getByRole('link', { name: 'Mein Status' })).toHaveAttribute('aria-current', 'page');
   if (!isMobile) {
     await expect(page.locator('[data-intern-name]').first()).toHaveText('Lea Sommer');
@@ -31,7 +31,7 @@ test('Rahmen: Seitenleiste für Mitglieder, Redaktion nur mit Rolle', async ({ p
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await redaktion(page, { profil: { display_name: 'Pia Presse' }, mitgliedschaft: ms({ seit: '2021-05-01' }) });
   await page.goto('/intern/news/');
-  await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', 'Mitglieder', 'Dokumente', /^Kalender/, /^Beiträge/, /^Medien/, 'Website-Inhalte', 'Texte', /^Freigaben/]);
+  await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', /^Open Calls/, 'Mitglieder', 'Dokumente', /^Kalender/, /^Beiträge/, /^Medien/, 'Website-Inhalte', 'Texte', /^Freigaben/]);
   await expect(nav.getByRole('link', { name: /^Beiträge/ })).toHaveAttribute('aria-current', 'page');
   if (!isMobile) await expect(page.locator('[data-intern-unterzeile]')).toHaveText('Mitglied seit 2021 · Presse');
 });

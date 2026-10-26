@@ -25,6 +25,7 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
     <p>Freigeben dürfen Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.</p>
   </div>
   <p class="i-msg" role="status" data-msg hidden></p>
+  <p class="fg-calls" data-calls hidden></p>
 
   <div data-access hidden>
     <section class="r-gruppe" aria-labelledby="fg-offen">
@@ -46,6 +47,7 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
   import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
   import { photoUrl, slugify, type GalerieEintrag } from '../../../../lib/supabase';
   import { meldung, websiteUrl } from '../../../../scripts/intern/redaktion/seite';
+  import { href } from '../../../../lib/url';
 
   interface Zeile {
     id: string;
@@ -74,6 +76,15 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
   if (ctx?.isRedaktion) {
     $('[data-access]').hidden = false;
     await laden();
+    // gemeldete Open Calls prüft die Redaktion auf der Seite selbst (Tabelle fehlt bis Migration 20261027000000)
+    const { count } = await ctx.sb.from('open_calls').select('id', { count: 'exact', head: true }).eq('status', 'pruefung');
+    if (count) {
+      const a = document.createElement('a');
+      a.href = href('intern/open-calls/');
+      a.textContent = `${count} ${count === 1 ? 'gemeldeter Open Call wartet' : 'gemeldete Open Calls warten'} auf Prüfung →`;
+      $('[data-calls]').replaceChildren(a);
+      $('[data-calls]').hidden = false;
+    }
   }
 
   async function laden() {
@@ -294,6 +305,9 @@ const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, na
 <style>
   .i-lead a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
   .i-lead a:hover { color: var(--magenta-2); }
+  .fg-calls { margin: 0 0 24px; padding: 12px 16px; background: var(--cyan-tint); border-left: 4px solid var(--cyan-2); font-size: 14.5px; }
+  .fg-calls[hidden] { display: none; }
+  .fg-calls a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
   .fg { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
   :global(.fg__karte) { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 20px; padding: 20px; background: var(--paper); border-top: 3px solid var(--magenta); }
   .fg--kurz :global(.fg__karte) { border-top-color: var(--cyan-2); padding: 14px 20px; }

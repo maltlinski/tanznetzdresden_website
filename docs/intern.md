@@ -20,7 +20,8 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
    `supabase/migrations/20261020000000_profil_seite.sql` (Profilseite mit Galerie, Arbeiten und Kontakt, siehe docs/profile.md) und
    `supabase/migrations/20261022000000_mitgliedschaft.sql` (Mitgliedschaft und Mitgliedsausweis, siehe unten „Mein Status“) und
    `supabase/migrations/20261025000000_keepup.sql` (KEEP UP planen und beschreiben, siehe [keep-up.md](keep-up.md)) und
-   `supabase/migrations/20261026000000_kalender.sql` (Termine im internen Kalender eintragen, siehe [kalender.md](kalender.md)).
+   `supabase/migrations/20261026000000_kalender.sql` (Termine im internen Kalender eintragen, siehe [kalender.md](kalender.md)) und
+   `supabase/migrations/20261027000000_open_calls.sql` (Open Calls, siehe [open-calls.md](open-calls.md)).
    Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
 
 ## 2. Login konfigurieren
@@ -61,6 +62,7 @@ mit denselben Namen überschreiben.
 | Mein Profil: „Neue Fotos gibt die Redaktion frei.“ | Die Seite ist älter als die Datenbank. Seite neu laden. |
 | Mein Status zeigt immer „In Vorbereitung“; Mitglieder: „Mitgliedschaften lassen sich pflegen, sobald …“ | Neunte Migration `20261022000000_mitgliedschaft.sql` ausführen, dann unter *Intern → Mitglieder* die Mitgliedschaft eintragen. |
 | Kalender: „Termine eintragen geht, sobald die Migration … ausgeführt ist“ | Elfte Migration `20261026000000_kalender.sql` ausführen. |
+| Open Calls: „Open Calls gibt es, sobald die Migration … ausgeführt ist“ | Zwölfte Migration `20261027000000_open_calls.sql` ausführen. |
 | KEEP UP: „Die Tabelle für KEEP UP fehlt noch“ | Zehnte Migration `20261025000000_keepup.sql` ausführen. |
 | Dozent:in sieht „Meine Trainings“ nicht | Profiladresse muss genau dem Kürzel in `keep-up/dozentinnen.yaml` entsprechen und das Profil freigegeben sein; und der Vorstand muss sie eingeplant haben ([keep-up.md](keep-up.md)). |
 | Google Wallet: „noch nicht eingerichtet“ | Funktion `ausweis` und ihre Secrets fehlen, siehe „Google Wallet“ unten. |
@@ -110,8 +112,8 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 
 | Rolle | darf |
 |---|---|
-| Mitglied | eigenes Profil, Mitgliederliste, Dokumente lesen |
-| Presse | zusätzlich die Redaktion: News, Termine, Formate, Profitraining, Personen, Partner, Texte, Profile und Fotos freigeben (docs/redaktion.md) |
+| Mitglied | eigenes Profil, Mitgliederliste, Dokumente lesen, Open Calls merken und melden |
+| Presse | zusätzlich die Redaktion: News, Open Calls prüfen und eintragen, Termine, Formate, Profitraining, Personen, Partner, Texte, Profile und Fotos freigeben (docs/redaktion.md) |
 | Vorstand | zusätzlich Rollen vergeben, Dokumente hochladen, Redaktion inkl. Impressum, Datenschutz und rechtlicher Vereinsdaten |
 | Admin | wie Vorstand (Admin vergeben nur Admins) |
 
@@ -120,7 +122,7 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 ## Auf Englisch
 
 Die Seiten für Mitglieder gibt es auch auf Englisch unter `/en/intern/`: Anmelden, Mein Status mit Ausweis, Passwort,
-Mein Profil und KEEP UP (Meine Trainings, Training beschreiben). Wer auf der englischen Website auf „Login“ klickt,
+Mein Profil, Open Calls und KEEP UP (Meine Trainings, Training beschreiben). Wer auf der englischen Website auf „Login“ klickt,
 landet dort. Oben in der Seitenleiste schaltet **DE | EN** um; der interne Bereich merkt sich die Wahl im Browser und
 öffnet beim nächsten Mal in dieser Sprache.
 
@@ -183,6 +185,11 @@ einrichten:
 
 An Google gehen Name, Mitgliedsnummer, „gültig bis“ und der Prüf-Link erst, wenn ein Mitglied selbst auf den Knopf
 drückt und den Pass speichert. Das gehört in die Datenschutzerklärung, bevor der Schalter an ist.
+
+## Open Calls
+
+Ausschreibungen merken, Bewerbungen verfolgen, Calls melden; die Redaktion prüft und trägt ein. Anleitung und
+Erinnerungen per Mail: [open-calls.md](open-calls.md).
 
 ## Kalender und KEEP UP
 

@@ -11,7 +11,8 @@ Vieles lässt sich ohne Code ändern: *Intern → Redaktion → Website-Inhalte*
       verantwortliche Person nach § 18 MStV. Im Text `src/content/seiten/impressum.md`: Fotonachweis je Bild.
 - [ ] **Datenschutzerklärung** (`src/content/seiten/datenschutz.md` + `en/`): Der Text ist ein Muster. Ergänzen:
       Hoster und Löschfrist der Logfiles, Newsletter-Dienst, ggf. Statistik. Neu seit dem Muster und zu erwähnen:
-      Supabase (interner Bereich, Profile, Fotos, Mitgliedschaften, E-Mail-Versand der Einladungen), GitHub Pages,
+      Supabase (interner Bereich, Profile, Fotos, Mitgliedschaften, Open Calls, E-Mail-Versand der Einladungen und
+      Erinnerungen), GitHub Pages,
       optional Google Wallet (nur wenn eingeschaltet). Bitte prüfen lassen, z. B. über den Dachverband oder eine
       Datenschutzberatung für Vereine.
 - [ ] **Auftragsverarbeitungsverträge** (Art. 28 DSGVO) mit Hoster, Supabase (DPA im Dashboard bei den
@@ -83,8 +84,8 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 
 **Supabase** (docs/intern.md)
 
-- [ ] Alle **elf Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
-      (bis `20261026000000_kalender.sql`).
+- [ ] Alle **zwölf Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
+      (bis `20261027000000_open_calls.sql`).
 - [ ] *Authentication*: Selbst-Registrierung aus, Site URL gesetzt, **Redirect URLs** `…/intern/**` und
       `…/en/intern/**`.
 - [ ] **E-Mails** (*Authentication → Emails*): Vorlagen für Einladung, Login-Link und Passwort auf Deutsch (und
@@ -94,6 +95,8 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
         Nach jeder Änderung an `supabase/functions/inhalte/index.ts` neu einspielen (zuletzt: Schutz der
         Rechtstexte für Nicht-Vorstand).
   - [ ] `einladen` – Mitglieder einladen (`SITE_URL`; docs/intern.md → „Mitglieder einladen“).
+  - [ ] optional `erinnerungen` – Fristen der Open Calls per Mail (SMTP-Secrets, täglicher Cron, dann
+        `erinnerungen: true` in `src/settings/supabase.ts`; docs/open-calls.md).
   - [ ] optional `ausweis` – Google Wallet (Google-Schlüssel, dann `wallet: true` in `src/settings/supabase.ts`).
 - [ ] Ersten Vorstand im *Table Editor → profiles* ernennen, danach alles unter *Intern → Mitglieder*.
 
@@ -104,6 +107,7 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 - [ ] Profil mit Foto ausfüllen, öffentlich schalten, unter *Redaktion → Freigaben* freigeben, erscheint unter Netzwerk.
 - [ ] News: Rolle „Presse“ vergeben, Testbeitrag schreiben, veröffentlichen, zurückziehen (Website baut neu).
 - [ ] Texte: einen Text ändern und zurückholen; mit Rolle Presse darf „Rechtliches“ nicht änderbar sein.
+- [ ] Open Calls: als Mitglied einen Call melden, als Presse prüfen und freigeben, merken, Kalenderdatei öffnen.
 - [ ] KEEP UP: Dozent:in einplanen, Beschreibung schreiben und veröffentlichen, im Kalender auf `/profitraining/` sehen.
 
 ## Offene Platzhalter `[BITTE …]` (Stand dieser Liste)

@@ -47,7 +47,7 @@ test('Mein Status auf Englisch: Leiste, Ausweis, Angaben', async ({ page }) => {
   await redaktion(page, { profil: lea, mitgliedschaft: ms });
   await page.goto('/en/intern/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('My status');
-  await expect(nav(page).getByRole('link')).toHaveText(['My status', 'My profile', 'Members', 'Documents']);
+  await expect(nav(page).getByRole('link')).toHaveText(['My status', 'My profile', /^Open Calls/, 'Members', 'Documents']);
   // Mitgliederseiten auf Englisch, die übrigen bleiben deutsch
   await expect(nav(page).getByRole('link', { name: 'My profile' })).toHaveAttribute('href', '/en/intern/profil/');
   await expect(nav(page).getByRole('link', { name: 'Members' })).toHaveAttribute('href', '/intern/mitglieder/');

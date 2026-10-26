@@ -3,7 +3,7 @@
  * Redaktion, Kalender, Mitglieder und Dokumente bleiben deutsch.
  * Ohne Imports, damit Build und Browser (scripts/intern/session.ts) dieselbe Liste nutzen.
  */
-export const INTERN_EN = ['', 'passwort/', 'profil/', 'keep-up/meine/', 'keep-up/beschreiben/'] as const;
+export const INTERN_EN = ['', 'passwort/', 'profil/', 'open-calls/', 'keep-up/meine/', 'keep-up/beschreiben/'] as const;
 
 /** Gemerkte Sprache (Umschalter in der Seitenleiste) */
 export const SPRACHE_KEY = 'tndd-intern-sprache';

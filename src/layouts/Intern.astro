@@ -16,7 +16,7 @@ import { getLang, tr, url } from '../lib/i18n';
 import { gegenstueck, internPfad, SPRACHE_KEY } from '../lib/intern-sprache';
 import '../styles/intern.css';
 
-type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine';
+type Punkt = 'status' | 'profil' | 'opencalls' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
@@ -45,9 +45,10 @@ const t = tr(lang, {
     zurWebsite: '← To the website', moment: 'One moment …', setupH: 'Not set up yet', sprache: 'Language',
   },
 });
-const mitglied: { id: Punkt; label: string; path: string }[] = [
+const mitglied: { id: Punkt; label: string; path: string; n?: string }[] = [
   { id: 'status', label: t.status, path: '' },
   { id: 'profil', label: t.profil, path: 'profil/' },
+  { id: 'opencalls', label: 'Open Calls', path: 'open-calls/', n: 'opencalls' },
   { id: 'mitglieder', label: t.mitglieder, path: 'mitglieder/' },
   { id: 'dokumente', label: t.dokumente, path: 'dokumente/' },
 ];
@@ -109,6 +110,7 @@ const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : nu
           <a href={ziel(i.path)} aria-current={i.id === current ? 'page' : undefined}>
             <span class="rd-nav__m" aria-hidden="true"></span>
             <span class="rd-nav__l">{i.label}</span>
+            {i.n && <span class="rd-nav__n" data-nav-n={i.n}></span>}
           </a>
         ))}
         <span class="rd-nav__gruppe" data-keepup-gruppe hidden>KEEP UP</span>
@@ -244,6 +246,11 @@ const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : nu
       }
     }
   })().catch(() => {});
+
+  // Open Calls: laufende Calls (Tabelle fehlt, solange Migration 20261027000000_open_calls.sql nicht eingespielt ist)
+  void ctx.sb.from('open_calls').select('id', { count: 'exact', head: true }).eq('status', 'frei')
+    .gte('frist', new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date()))
+    .then(({ count }) => setzen('opencalls', count), () => {});
 
   if (ctx.isRedaktion) {
     const zaehlen = async (tabelle: string) => (await ctx.sb.from(tabelle).select('*', { count: 'exact', head: true })).count;

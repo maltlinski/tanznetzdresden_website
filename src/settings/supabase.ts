@@ -19,4 +19,10 @@ export const supabase = {
    * Supabase-Funktion „ausweis“ mit den Google-Schlüsseln eingerichtet ist (docs/intern.md, „Google Wallet“).
    */
   wallet: false,
+  /**
+   * „Erinnere mich per Mail“ bei Intern → Open Calls zeigen. Erst auf true setzen, wenn die Supabase-Funktion
+   * „erinnerungen“ mit dem Mailserver und dem täglichen Aufruf eingerichtet ist (docs/open-calls.md).
+   * Bis dahin gibt es die Erinnerung über die Kalenderdatei („In Kalender“).
+   */
+  erinnerungen: false,
 };

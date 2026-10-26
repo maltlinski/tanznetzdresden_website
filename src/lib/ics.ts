@@ -7,34 +7,13 @@ import type { Termin } from './content';
 import type { Training } from './keep-up';
 import { parseLocal } from './dates';
 import { verein } from './settings';
+import { escapeIcs as escape, foldIcs as fold, VTIMEZONE } from './ics-text';
 
 const pad = (n: number) => String(n).padStart(2, '0');
 const local = (s: string) => {
   const p = parseLocal(s);
   return `${p.y}${pad(p.m)}${pad(p.d)}T${pad(p.hh)}${pad(p.mm)}00`;
 };
-const escape = (s: string) => s.replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
-/** Zeilen über 75 Oktette falten (RFC 5545 §3.1) */
-const fold = (line: string) => {
-  const out: string[] = [];
-  let cur = '';
-  for (const ch of line) {
-    if (Buffer.byteLength(cur + ch) > 74) {
-      out.push(cur);
-      cur = ' ';
-    }
-    cur += ch;
-  }
-  out.push(cur);
-  return out.join('\r\n');
-};
-
-const VTIMEZONE = [
-  'BEGIN:VTIMEZONE', 'TZID:Europe/Berlin',
-  'BEGIN:DAYLIGHT', 'TZOFFSETFROM:+0100', 'TZOFFSETTO:+0200', 'TZNAME:CEST', 'DTSTART:19700329T020000', 'RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU', 'END:DAYLIGHT',
-  'BEGIN:STANDARD', 'TZOFFSETFROM:+0200', 'TZOFFSETTO:+0100', 'TZNAME:CET', 'DTSTART:19701025T030000', 'RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU', 'END:STANDARD',
-  'END:VTIMEZONE',
-];
 
 interface Options {
   site?: URL;

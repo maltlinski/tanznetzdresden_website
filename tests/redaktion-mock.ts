@@ -2,7 +2,7 @@
  * Nachgebautes Supabase für die Redaktions-Tests (Beiträge, Editor, Mediathek, Mein Profil, Freigaben):
  * Anmeldung als Pia (Presse), Tabellen news_posts, news_medien, profiles, mitgliedschaften und keepup_termine,
  * Buckets newsbilder, profilbilder und keepup, Funktionen „inhalte“, „ausweis“, galerie_freigabe, ausweis_pruefen,
- * keepup_ich und keepup_kontakte.
+ * keepup_ich und keepup_kontakte, Open Calls (open_calls, open_call_stand, open_call_netz).
  * Hochgeladene Fotos werden aus dem Speicher wieder ausgeliefert (echte Fotos aus src/assets/photos/).
  */
 import type { Page } from '@playwright/test';
@@ -36,6 +36,11 @@ export interface Mock {
   /** Tabelle kalender_termine (Intern → Kalender) und jede Änderung daran */
   kalender: Record<string, unknown>[];
   kalenderAenderungen: { methode: string; body: Record<string, unknown> | null }[];
+  /** Tabellen open_calls, open_call_stand, open_call_netz (aktueller Stand) und jede Änderung daran */
+  openCalls: Record<string, unknown>[];
+  ocStand: Record<string, unknown>[];
+  ocNetz: Record<string, unknown>[];
+  ocAenderungen: { tabelle: string; methode: string; body: Record<string, unknown> | null; query: string }[];
 }
 
 export interface MockOptionen {
@@ -67,7 +72,22 @@ export interface MockOptionen {
   kalender?: Record<string, unknown>[];
   /** offene Einladungen (Funktion „einladen“); undefined = Funktion nicht angelegt */
   einladungen?: Record<string, unknown>[];
+  /** Zeilen in open_calls (Intern → Open Calls); undefined = Tabelle fehlt (Migration 20261027) */
+  openCalls?: Record<string, unknown>[];
+  /** eigener Stand (open_call_stand) und Netzwerk (open_call_netz) */
+  ocStand?: Record<string, unknown>[];
+  ocNetz?: Record<string, unknown>[];
+  /** andere Profile (profiles?id=in.(…)), z. B. für Namen bei Open Calls */
+  personen?: Record<string, unknown>[];
 }
+
+/** Open Call mit den Standardwerten der Tabelle */
+export const openCallZeile = (z: Record<string, unknown>): Record<string, unknown> => ({
+  id: `oc${Math.random().toString(36).slice(2, 8)}`, art: 'residenz', reichweite: 'dd', ort: '', uhrzeit: '23:59:00', start: null, link: '', leistung: '',
+  honoriert: false, englisch: false, zeitraum: '', zielgruppe: '', sprache: '', wiederkehrend: '', beschreibung: '', unterlagen: [], hinweis: '',
+  gemeinsam: false, vom_netzwerk: false, nur_mitglieder: false, quelle: '', status: 'frei', gemeldet_von: null, geprueft_am: null,
+  created_at: '2026-10-01T10:00:00Z', ...z,
+});
 
 /** Neue Einplanung mit den Standardwerten der Tabelle */
 export const keepupZeile = (z: Record<string, unknown>): Record<string, unknown> => ({
@@ -78,7 +98,8 @@ const INHALT = ['titel', 'kurz', 'text', 'schwerpunkte', 'mitbringen', 'bild', '
 
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
-  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, einladen: [], keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [] };
+  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, einladen: [], keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [],
+    openCalls: (o.openCalls ?? []).map(openCallZeile), ocStand: [...(o.ocStand ?? [])], ocNetz: [...(o.ocNetz ?? [])], ocAenderungen: [] };
   const mitglieder = new Map<string, Record<string, unknown>>([...(o.mitgliedschaft ? [o.mitgliedschaft] : []), ...(o.mitgliedschaften ?? [])].map((z) => [String(z.person), z]));
   let profil: Record<string, unknown> = { id: 'u1', display_name: 'Pia Presse', role: 'presse', verified: false, public_listing: false, tags: [], ags: [], ...o.profil };
   const dateien = new Map<string, Buffer>();
@@ -121,6 +142,8 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
         profil = { ...profil, ...body };
         return json(einzeln ? profil : [profil]);
       }
+      const ids = url.searchParams.get('id')?.match(/^in\.\((.*)\)$/)?.[1].split(',');
+      if (ids) return json([profil, ...(o.personen ?? [])].filter((p) => ids.includes(String(p.id))));
       // eigenes Profil (id=eq.u1, auch per maybeSingle als Liste), sonst die Liste für die Freigaben
       if (o.freigaben && url.searchParams.get('id') !== 'eq.u1') return json(o.freigaben);
       return json(einzeln ? profil : [profil]);
@@ -286,6 +309,45 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       }
       if (body.aktion === 'zuruecknehmen') o.einladungen.splice(o.einladungen.findIndex((x) => x.id === body.id), 1);
       return json({ ok: true });
+    }
+    if (['/rest/v1/open_calls', '/rest/v1/open_call_stand', '/rest/v1/open_call_netz'].includes(url.pathname)) {
+      const tabelle = url.pathname.slice('/rest/v1/'.length);
+      if (!o.openCalls) return json({ message: `relation "public.${tabelle}" does not exist`, code: '42P01' }, 404);
+      const zeilen = { open_calls: m.openCalls, open_call_stand: m.ocStand, open_call_netz: m.ocNetz }[tabelle]!;
+      // einfache PostgREST-Filter: spalte=eq.wert
+      const filter = (z: Record<string, unknown>) => [...url.searchParams].every(([k, v]) => !v.startsWith('eq.') || ['select', 'on_conflict'].includes(k) || String(z[k]) === v.slice(3));
+      const body = ['POST', 'PATCH'].includes(req.method()) ? (req.postDataJSON() as Record<string, unknown>) : null;
+      if (!['GET', 'HEAD'].includes(req.method())) m.ocAenderungen.push({ tabelle, methode: req.method(), body, query: url.search });
+      if (req.method() === 'HEAD') {
+        const heute = url.searchParams.get('frist')?.replace(/^gte\./, '') ?? '';
+        const n = zeilen.filter((z) => filter(z) && String(z.frist) >= heute).length;
+        return route.fulfill({ status: 200, headers: { ...cors, 'Content-Range': `0-0/${n}` } });
+      }
+      if (req.method() === 'GET') return json(zeilen.filter(filter));
+      if (req.method() === 'DELETE') {
+        const weg = zeilen.filter(filter);
+        weg.forEach((z) => zeilen.splice(zeilen.indexOf(z), 1));
+        return json([]);
+      }
+      if (tabelle === 'open_calls') {
+        if (req.method() === 'POST') {
+          // wie der Trigger: Mitglieder melden nur zur Prüfung
+          const redaktion = ['presse', 'vorstand', 'admin'].includes(String(profil.role));
+          const neu = openCallZeile({ ...body, created_at: '2026-10-26T11:00:00Z', ...(redaktion ? {} : { status: 'pruefung', gemeldet_von: 'u1', hinweis: '', gemeinsam: false, vom_netzwerk: false }) });
+          if (neu.status === 'frei') neu.geprueft_am = '2026-10-26';
+          zeilen.push(neu);
+          return json(einzeln ? neu : [neu], 201);
+        }
+        const z = zeilen.find(filter);
+        if (z) Object.assign(z, body, body?.status === 'frei' ? { geprueft_am: z.geprueft_am ?? '2026-10-26' } : {});
+        return json(einzeln ? (z ?? null) : z ? [z] : []);
+      }
+      // open_call_stand (upsert) und open_call_netz (insert)
+      const schluessel = tabelle === 'open_call_stand' ? ['person', 'call_id'] : ['call_id', 'person', 'art'];
+      const alt = zeilen.find((z) => schluessel.every((k) => z[k] === body?.[k]));
+      if (alt) Object.assign(alt, body);
+      else zeilen.push({ erinnert: [], ...body });
+      return json(einzeln ? body : [body], 201);
     }
     if (url.pathname === '/functions/v1/ausweis') {
       m.wallet++;
