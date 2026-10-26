@@ -11,6 +11,7 @@ import '../styles/global.css';
 import { getImage } from 'astro:assets';
 import { getVerein } from '../lib/settings';
 import { getLang, htmlLang, tr, type Lang } from '../lib/i18n';
+import { texte } from '../lib/texte';
 import { CONSENT_VERSION } from '../settings/consent';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import DemoBand from '../components/DemoBand.astro';
@@ -35,7 +36,11 @@ interface Props {
 const lang = getLang(Astro);
 const site = getVerein(lang);
 const { title: pageTitle, description = site.description, noindex = false, alternates = {}, ogImage } = Astro.props;
-const t = tr(lang, { de: { tagline: 'Freie Tanzszene Dresden', skip: 'Zum Inhalt springen', cal: 'Tanzkalender' }, en: { tagline: 'Independent dance scene Dresden', skip: 'Skip to content', cal: 'Dance calendar' } });
+const t = {
+  tagline: texte(lang, 'allgemein', 'browser').tagline,
+  // für Screenreader und Kalender-Apps
+  ...tr(lang, { de: { skip: 'Zum Inhalt springen', cal: 'Tanzkalender' }, en: { skip: 'Skip to content', cal: 'Dance calendar' } }),
+};
 const title = pageTitle ? `${pageTitle} · ${site.name}` : `${site.name} · ${t.tagline}`;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 const og = await getImage({ src: ogImage ?? ogSource, width: 1200, height: 630, fit: 'cover', format: 'jpg' });

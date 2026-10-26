@@ -12,6 +12,7 @@ import KeilBar from '../components/ui/KeilBar.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
 import { getVerein } from '../lib/settings';
 import { getLang, loc, tr } from '../lib/i18n';
+import { texte, zeilen } from '../lib/texte';
 
 const lang = getLang(Astro);
 const v = getVerein(lang);
@@ -30,30 +31,15 @@ for (const [i, o] of orte.entries()) {
 }
 const venues = orte.map((o) => ({ name: o.data.name, label: o.data.kurz ?? o.data.name, lat: o.data.lat, lon: o.data.lon, seed: o.data.sitz }));
 
-const t = tr(lang, {
-  de: {
-    title: 'Kooperationspartner', desc: 'Mit wem TanzNetzDresden arbeitet: Spielorte, Hochschulen, Förderer und Netzwerke in Dresden und darüber hinaus.',
-    kicker: 'Kooperationspartner', h1: 'Ein Netz', accent: 'aus Orten.',
-    lead: 'Unsere Formate entstehen mit Spielorten, Hochschulen, Förderern und Netzwerken in Dresden und darüber hinaus. Hier zeigen wir, mit wem wir arbeiten.',
-    places: 'Orte in Dresden', mapLabel: 'Karte: Partnerorte in Dresden, als Netz verbunden',
-    tilesBtn: 'Stadtkarte einblenden', tilesHint: 'Kartenbilder von OpenStreetMap – dabei wird deine IP-Adresse übertragen.', tilesAlways: 'Immer erlauben',
-    allKicker: 'Alle Partner', allH: 'Mit wem wir arbeiten', allIntro: 'Von der Probebühne bis zur bundesweiten Förderung. Sortiert danach, was wir gemeinsam machen.',
-    coopKicker: 'Kooperation', coopL1: 'Ihr wollt mit uns', coopL2: 'arbeiten?',
-    coopP: 'Spielorte, Festivals, Netzwerke und Initiativen: Schreibt uns, wir melden uns mit einem Vorschlag für ein erstes Gespräch.',
-    coopBtn: 'E-Mail schreiben', coopSubject: 'Kooperationsanfrage', funders: 'Unsere Förderer stehen unten auf jeder Seite.',
-  },
-  en: {
-    title: 'Partners', desc: 'Who TanzNetzDresden works with: venues, universities, funders and networks in Dresden and beyond.',
-    kicker: 'Partners', h1: 'A network', accent: 'of places.',
-    lead: 'Our formats are created together with venues, universities, funders and networks in Dresden and beyond. Here is who we work with.',
-    places: 'Places in Dresden', mapLabel: 'Map: partner venues in Dresden, connected as a network',
-    tilesBtn: 'Show city map', tilesHint: 'Map images from OpenStreetMap – this transmits your IP address.', tilesAlways: 'Always allow',
-    allKicker: 'All partners', allH: 'Who we work with', allIntro: 'From rehearsal stages to national funding. Grouped by what we do together.',
-    coopKicker: 'Cooperation', coopL1: 'Want to work', coopL2: 'with us?',
-    coopP: 'Venues, festivals, networks and initiatives: write to us and we will get back to you with a suggestion for a first conversation.',
-    coopBtn: 'Send an email', coopSubject: 'Cooperation enquiry', funders: 'Our funders are listed at the bottom of every page.',
-  },
-});
+const kopf = texte(lang, 'kooperationen', 'kopf');
+const anfrage = texte(lang, 'kooperationen', 'anfrage');
+const [h1, accent] = zeilen(kopf.titel);
+const [coopL1, coopL2] = zeilen(anfrage.coopTitel);
+const t = {
+  ...kopf, h1, accent, ...texte(lang, 'kooperationen', 'partner'), ...anfrage, coopL1, coopL2,
+  // nur für Screenreader
+  ...tr(lang, { de: { mapLabel: 'Karte: Partnerorte in Dresden, als Netz verbunden' }, en: { mapLabel: 'Map: partner venues in Dresden, connected as a network' } }),
+};
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 <Page title={t.title} description={t.desc} route="kooperationen">

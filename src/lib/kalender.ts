@@ -5,7 +5,8 @@
  */
 import { badgeVariant, categoryLabel, getTermine, type Termin } from './content';
 import { getKeepUp, todayKey } from './keep-up';
-import { dateLocale, loc, tr, url, type Lang } from './i18n';
+import { dateLocale, loc, url, type Lang } from './i18n';
+import { texte } from './texte';
 
 export type Farbe = 'cyan' | 'magenta' | 'purple';
 
@@ -101,10 +102,7 @@ const terminZeit = (t: Termin, lang: Lang) => {
 
 /** Tanzkalender: alle Termine und die Trainingstage von KEEP UP */
 export async function getTanzkalender(lang: Lang) {
-  const t = tr(lang, {
-    de: { toEvent: 'Zum Termin →', toTraining: 'Zum Profitraining →', training: 'Profitraining' },
-    en: { toEvent: 'About the event →', toTraining: 'Professional training →', training: 'Professional training' },
-  });
+  const t = texte(lang, 'termine', 'kalender');
   const days: Tage = {};
   const add = (date: string, e: KalenderEintrag) => (days[date] ??= []).push(e);
 

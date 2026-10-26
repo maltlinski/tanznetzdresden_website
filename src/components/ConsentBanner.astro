@@ -5,21 +5,11 @@
  * Über jeden Button mit [data-consent-open] (z. B. im Footer) wieder aufrufbar.
  */
 import { consentCategories, CONSENT_VERSION } from '../settings/consent';
-import { getLang, tr, url } from '../lib/i18n';
+import { getLang, url } from '../lib/i18n';
+import { texte } from '../lib/texte';
 
 const lang = getLang(Astro);
-const t = tr(lang, {
-  de: {
-    h: 'Deine Privatsphäre',
-    text: 'Wir verwenden keine Tracking-Cookies. Für Karten, Videos und Social-Media-Beiträge brauchen wir aber deine Zustimmung, weil dabei Daten an andere Anbieter gehen. Du kannst sie jederzeit im Footer unter „Cookie-Einstellungen“ ändern. Mehr dazu in der',
-    privacy: 'Datenschutzerklärung', always: ' (immer aktiv)', all: 'Alle akzeptieren', necessary: 'Nur notwendige', settings: 'Einstellungen', save: 'Auswahl speichern',
-  },
-  en: {
-    h: 'Your privacy',
-    text: 'We do not use tracking cookies. For maps, videos and social media posts we need your consent, because data is sent to other providers. You can change your choice at any time under “Cookie settings” in the footer. More in our',
-    privacy: 'privacy policy', always: ' (always on)', all: 'Accept all', necessary: 'Necessary only', settings: 'Settings', save: 'Save selection',
-  },
-});
+const t = texte(lang, 'allgemein', 'einwilligung');
 const categories = consentCategories.filter((c) => c.enabled).map((c) => ({
   ...c,
   label: lang === 'en' ? c.label_en : c.label,
@@ -37,7 +27,7 @@ const optional = categories.filter((c) => !c.required);
           <input type="checkbox" name={c.id} checked={c.required} disabled={c.required} />
           <span class="consent__box" aria-hidden="true"></span>
           <span>
-            <strong>{c.label}</strong>{c.required && t.always}
+            <strong>{c.label}</strong>{c.required && ` ${t.always}`}
             <span class="consent__desc">{c.description}</span>
             {c.services.length > 0 && <span class="consent__svc">{c.services.join(' · ')}</span>}
           </span>

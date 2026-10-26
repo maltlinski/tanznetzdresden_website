@@ -15,6 +15,7 @@ import { newsCategories } from '../content.config';
 import { getVerein } from '../lib/settings';
 import { href } from '../lib/url';
 import { getLang, tr, url } from '../lib/i18n';
+import { texte, zeilen } from '../lib/texte';
 
 const lang = getLang(Astro);
 const verein = getVerein(lang);
@@ -22,26 +23,9 @@ const posts = await getNews(lang);
 const lead = leadPost(posts);
 const open = posts.filter((p) => p.deadline && daysLeft(p.deadline) >= 0);
 const year = new Date().getFullYear();
-const t = tr(lang, {
-  de: {
-    title: 'News', description: 'Neues aus der freien Tanzszene in Dresden: Ausschreibungen, Formate, Stimmen und Neuigkeiten aus dem Verein.',
-    kicker: 'News · Neues aus der freien Szene', l1: 'Aus dem', l2: 'Netz.', featured: 'Titelthema', read: 'Beitrag lesen',
-    openCall: 'Offene Frist', all: 'Alle Beiträge', chronicle: 'Chronik', filter: 'Nach Kategorie filtern',
-    post: 'Beitrag', posts: 'Beiträge', readShort: 'Lesen', min: 'Min', deadline: 'Frist', until: 'bis', toTalk: 'Zum Gespräch',
-    empty: 'In dieser Kategorie gibt es noch keine Beiträge.', none: 'Noch keine Beiträge.',
-    stayH: 'Nichts verpassen', stayP: 'Einmal im Monat im Postfach: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.',
-    newsletter: 'Newsletter abonnieren', submit: 'Meldung einreichen', rss: 'RSS-Feed',
-  },
-  en: {
-    title: 'News', description: "News from Dresden's independent dance scene: open calls, formats, voices and updates from the association.",
-    kicker: 'News · News from the independent scene', l1: 'From the', l2: 'network.', featured: 'Featured', read: 'Read the post',
-    openCall: 'Open call', all: 'All posts', chronicle: 'Chronicle', filter: 'Filter by category',
-    post: 'post', posts: 'posts', readShort: 'Read', min: 'min', deadline: 'Deadline', until: 'until', toTalk: 'Read the conversation',
-    empty: 'No posts in this category yet.', none: 'No posts yet.',
-    stayH: 'Stay in the loop', stayP: 'Once a month in your inbox: events, open calls and news from the independent scene.',
-    newsletter: 'Subscribe to the newsletter', submit: 'Send us news', rss: 'RSS feed',
-  },
-});
+const u = texte(lang, 'news', 'uebersicht');
+const [l1, l2] = zeilen(u.titel);
+const t = { ...u, l1, l2, ...tr(lang, { de: { filter: 'Nach Kategorie filtern' }, en: { filter: 'Filter by category' } }) };
 const link = (p: NewsPost) => url(lang, 'news', `${p.id}/`);
 const count = (n: number) => `${n} ${n === 1 ? t.post : t.posts}`;
 

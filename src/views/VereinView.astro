@@ -6,33 +6,23 @@ import ProtectedEmail from '../components/ProtectedEmail.astro';
 import Haltung from '../components/sections/Haltung.astro';
 import { getProfiles } from '../lib/profiles';
 import { getVerein } from '../lib/settings';
-import { getLang, tr, url } from '../lib/i18n';
+import { getLang, url } from '../lib/i18n';
+import { fuellen, texte, zeilen } from '../lib/texte';
 import { arbeitsgruppen } from '../settings/arbeitsgruppen';
 
 const lang = getLang(Astro);
 const verein = getVerein(lang);
 const profiles = await getProfiles();
 const vorstand = profiles.filter((p) => p.vorstand);
-const t = tr(lang, {
-  de: {
-    title: 'Über uns', desc: 'TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.',
-    kicker: `Über uns · seit ${verein.founded}`, h1: 'Dezentrale Kulturinstitution.', accent: 'Und Bildungsort.',
-    lead: `Seit ${verein.founded} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.`,
-    boardKicker: 'Koordinationsteam · gewählt 2026', boardH: 'Vorstand & Team', reach: 'Den Vorstand erreichen', boardMail: 'E-Mail an den Vorstand', boardSubject: 'Anfrage an den Vorstand',
-    agKicker: `${arbeitsgruppen.length} Arbeitsgruppen`, agH: 'Wer die Arbeit trägt', agIntro: 'Jedes Format hat eine eigene AG. Mitglieder:innen können jederzeit einsteigen.',
-    netKicker: 'Mitglieder:innen & Trainer:innen', netH: 'Das Netz', member: 'Mitglied', trainer: 'Training', allProfiles: 'Alle Profile ansehen →',
-    transparency: 'Wie wir arbeiten und uns finanzieren, steht auf unserer Transparenz-Seite.', transparencyCta: 'Transparenz →',
-  },
-  en: {
-    title: 'About us', desc: "TanzNetzDresden e.V.: self-organised network of Dresden's independent dance scene. Board, working groups and members.",
-    kicker: `About us · since ${verein.founded}`, h1: 'A decentralised cultural institution.', accent: 'And a place of learning.',
-    lead: `Since ${verein.founded}, dance artists of Dresden's independent scene have been building this network, since 2020 as a registered non-profit association. We organise formats, training, discourse and residencies and advocate for better working conditions in dance.`,
-    boardKicker: 'Coordination team · elected 2026', boardH: 'Board & team', reach: 'Contact the board', boardMail: 'Email the board', boardSubject: 'Enquiry to the board',
-    agKicker: `${arbeitsgruppen.length} working groups`, agH: 'Who carries the work', agIntro: 'Each format has its own working group. Members can join at any time.',
-    netKicker: 'Members & teachers', netH: 'The network', member: 'Member', trainer: 'Training', allProfiles: 'See all profiles →',
-    transparency: 'How we work and how we are funded is on our transparency page.', transparencyCta: 'Transparency →',
-  },
-});
+const kopf = texte(lang, 'verein', 'kopf');
+const [h1, accent] = zeilen(kopf.titel);
+const ags = texte(lang, 'verein', 'ags');
+const t = {
+  ...kopf, h1, accent, kicker: fuellen(kopf.kicker, { jahr: verein.founded }), lead: fuellen(kopf.lead, { jahr: verein.founded }),
+  ...texte(lang, 'verein', 'vorstand'),
+  ...ags, agKicker: fuellen(ags.agKicker, { anzahl: arbeitsgruppen.length }),
+  ...texte(lang, 'verein', 'netz'),
+};
 ---
 <Page title={t.title} description={t.desc} route="verein">
   <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} />

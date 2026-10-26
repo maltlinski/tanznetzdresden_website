@@ -5,27 +5,18 @@ import Funding from '../Funding.astro';
 import { getVerein } from '../../lib/settings';
 import { href } from '../../lib/url';
 import { getLang, tr, url } from '../../lib/i18n';
+import { fuellen, texte } from '../../lib/texte';
 
 const lang = getLang(Astro);
 const v = getVerein(lang);
 const year = new Date().getFullYear();
 const a = v.address;
-const t = tr(lang, {
-  de: {
-    home: 'TanzNetzDresden – zur Startseite', blurb: `Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit ${v.founded}, seit 2020 als gemeinnütziger Verein.`,
-    news: 'News', rss: 'News als RSS-Feed', contact: 'Kontakt', writeMail: 'E-Mail schreiben', club: 'Verein', about: 'Über uns', board: 'Vorstand & Team', ags: 'Arbeitsgruppen', network: 'Netzwerk & Profile',
-    join: 'Mitglied werden', donate: 'Spenden', coop: 'Kooperationen', contactPress: 'Kontakt & Presse', transparency: 'Transparenz', intern: 'Interner Bereich', follow: 'Folgen', newsletter: 'Newsletter',
-    ics: 'Kalender abonnieren (.ics)', legal: 'Rechtliches', imprint: 'Impressum', privacy: 'Datenschutz', a11y: 'Barrierefreiheit',
-    easy: 'Leichte Sprache', cookies: 'Cookie-Einstellungen',
-  },
-  en: {
-    home: 'TanzNetzDresden – home', blurb: `Self-organised network of Dresden's independent dance scene. Since ${v.founded}, a registered non-profit association since 2020.`,
-    news: 'News', rss: 'News as RSS feed', contact: 'Contact', writeMail: 'Send an email', club: 'Association', about: 'About us', board: 'Board & team', ags: 'Working groups', network: 'Network & profiles',
-    join: 'Become a member', donate: 'Donate', coop: 'Partners', contactPress: 'Contact & press', transparency: 'Transparency', intern: 'Members area', follow: 'Follow', newsletter: 'Newsletter',
-    ics: 'Subscribe to calendar (.ics)', imprint: 'Legal notice', privacy: 'Privacy', a11y: 'Accessibility',
-    easy: 'Leichte Sprache (German)', cookies: 'Cookie settings',
-  },
-});
+const fuss = texte(lang, 'allgemein', 'fuss');
+const t = {
+  ...fuss,
+  blurb: fuellen(fuss.blurb, { jahr: v.founded }),
+  ...tr(lang, { de: { home: 'TanzNetzDresden – zur Startseite' }, en: { home: 'TanzNetzDresden – home' } }),
+};
 ---
 <footer class="site-footer">
   <Funding />

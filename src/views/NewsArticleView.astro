@@ -12,6 +12,7 @@ import {
 } from '../lib/news';
 import { getVerein } from '../lib/settings';
 import { getLang, tr, url } from '../lib/i18n';
+import { texte } from '../lib/texte';
 
 interface Props {
   post: NewsPost;
@@ -22,20 +23,10 @@ const verein = getVerein(lang);
 const all = await getNews(lang);
 const i = all.findIndex((p) => p.id === post.id);
 const next = [1, 2].map((d) => all[(i + d) % all.length]).filter((p, k, a) => p && p.id !== post.id && a.indexOf(p) === k);
-const t = tr(lang, {
-  de: {
-    back: '← Alle Beiträge', read: 'Lesezeit', min: 'Min', text: 'Text', published: 'Veröffentlicht', deadline: 'Bewerbungsfrist',
-    until: 'bis', glance: 'Auf einen Blick', share: 'Teilen', copy: 'Link kopieren', copied: 'Link kopiert', mail: 'E-Mail',
-    more: 'Weiterlesen', moreH: 'Mehr aus dem Netz', chronicle: 'Zur Chronik →', credit: 'Foto',
-    onlyDe: '',
-  },
-  en: {
-    back: '← All posts', read: 'read', min: 'min', text: 'Text', published: 'Published', deadline: 'Application deadline',
-    until: 'until', glance: 'At a glance', share: 'Share', copy: 'Copy link', copied: 'Link copied', mail: 'Email',
-    more: 'Keep reading', moreH: 'More from the network', chronicle: 'To the chronicle →', credit: 'Photo',
-    onlyDe: 'This post is only available in German so far.',
-  },
-});
+const t = {
+  ...texte(lang, 'news', 'beitrag'),
+  ...tr(lang, { de: { onlyDe: '' }, en: { onlyDe: 'This post is only available in German so far.' } }),
+};
 const cat = newsCategoryLabel[lang][post.category];
 const days = post.deadline ? daysLeft(post.deadline) : 0;
 const canonical = new URL(url(lang, 'news', `${post.id}/`), Astro.site).href;

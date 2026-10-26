@@ -1,11 +1,109 @@
 {
   "_hinweis": "Feste Texte der Website, nach Seiten und Abschnitten in der Reihenfolge wie auf der Seite. Bearbeiten unter Intern → Redaktion → Texte (docs/texte.md). Platzhalter in {geschweiften Klammern} bleiben stehen. Bei „zeilen“ steht jede Zeile auf einer eigenen Zeile (\\n).",
+  "allgemein": {
+    "titel": "Menü, Fuß und Hinweise",
+    "gruppe": "Auf jeder Seite",
+    "pfad": "",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf mit Menü",
+        "texte": {
+          "calendar": { "wo": "Menü: Punkt 1", "de": "Kalender", "en": "Calendar", "max": 24 },
+          "news": { "wo": "Menü: Punkt 2", "de": "News", "en": "News", "max": 24 },
+          "formats": { "wo": "Menü: Punkt 3", "de": "Formate", "en": "Formats", "max": 24 },
+          "training": { "wo": "Menü: Punkt 4", "de": "Training", "en": "Training", "max": 24 },
+          "about": { "wo": "Menü: Punkt 5", "de": "Über uns", "en": "About", "max": 24 },
+          "donate": { "wo": "Menü: Punkt 6", "de": "Spenden", "en": "Donate", "max": 24 },
+          "intern": { "wo": "Link zum internen Bereich", "de": "Login", "en": "Login", "max": 24 },
+          "join": { "wo": "Knopf rechts oben", "de": "Mitglied werden", "en": "Become a member", "max": 24 },
+          "menu": { "wo": "Knopf, der auf dem Handy das Menü öffnet", "de": "Menü", "en": "Menu", "max": 24 },
+          "internBereich": { "wo": "Im geöffneten Handy-Menü: Link zum internen Bereich", "de": "Interner Bereich", "en": "Members area", "max": 24 }
+        }
+      },
+      "fuss": {
+        "titel": "Fuß der Seite",
+        "auch": [{ "text": "Adresse, E-Mail-Adressen, Instagram und Telegram", "ziel": "redaktion:verein" }],
+        "texte": {
+          "blurb": { "wo": "Text unter dem Logo ({jahr} = Gründungsjahr aus den Vereinsdaten)", "de": "Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit {jahr}, seit 2020 als gemeinnütziger Verein.", "en": "Self-organised network of Dresden's independent dance scene. Since {jahr}, a registered non-profit association since 2020.", "max": 200 },
+          "contact": { "wo": "Spalte 1: Überschrift", "de": "Kontakt", "en": "Contact", "max": 24 },
+          "writeMail": { "wo": "Spalte 1: Link zur E-Mail", "de": "E-Mail schreiben", "en": "Send an email", "max": 30 },
+          "club": { "wo": "Spalte 2: Überschrift", "de": "Verein", "en": "Association", "max": 24 },
+          "about": { "wo": "Spalte 2: Link", "de": "Über uns", "en": "About us", "max": 30 },
+          "news": { "wo": "Spalte 2: Link", "de": "News", "en": "News", "max": 30 },
+          "board": { "wo": "Spalte 2: Link", "de": "Vorstand & Team", "en": "Board & team", "max": 30 },
+          "ags": { "wo": "Spalte 2: Link", "de": "Arbeitsgruppen", "en": "Working groups", "max": 30 },
+          "network": { "wo": "Spalte 2: Link", "de": "Netzwerk & Profile", "en": "Network & profiles", "max": 30 },
+          "coop": { "wo": "Spalte 2: Link", "de": "Kooperationen", "en": "Partners", "max": 30 },
+          "join": { "wo": "Spalte 2: Link", "de": "Mitglied werden", "en": "Become a member", "max": 30 },
+          "donate": { "wo": "Spalte 2: Link", "de": "Spenden", "en": "Donate", "max": 30 },
+          "contactPress": { "wo": "Spalte 2: Link", "de": "Kontakt & Presse", "en": "Contact & press", "max": 30 },
+          "transparency": { "wo": "Spalte 2: Link", "de": "Transparenz", "en": "Transparency", "max": 30 },
+          "intern": { "wo": "Spalte 2: Link", "de": "Interner Bereich", "en": "Members area", "max": 30 },
+          "follow": { "wo": "Spalte 3: Überschrift", "de": "Folgen", "en": "Follow", "max": 24 },
+          "newsletter": { "wo": "Spalte 3: Link", "de": "Newsletter", "en": "Newsletter", "max": 30 },
+          "ics": { "wo": "Spalte 3: Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to calendar (.ics)", "max": 40 },
+          "rss": { "wo": "Spalte 3: Link zum RSS-Feed", "de": "News als RSS-Feed", "en": "News as RSS feed", "max": 30 },
+          "imprint": { "wo": "Unterste Zeile: Link", "de": "Impressum", "en": "Legal notice", "max": 24 },
+          "privacy": { "wo": "Unterste Zeile: Link", "de": "Datenschutz", "en": "Privacy", "max": 24 },
+          "a11y": { "wo": "Unterste Zeile: Link", "de": "Barrierefreiheit", "en": "Accessibility", "max": 24 },
+          "easy": { "wo": "Unterste Zeile: Link", "de": "Leichte Sprache", "en": "Leichte Sprache (German)", "max": 30 },
+          "cookies": { "wo": "Unterste Zeile: Knopf für die Cookie-Einstellungen", "de": "Cookie-Einstellungen", "en": "Cookie settings", "max": 30 }
+        }
+      },
+      "newsletter": {
+        "titel": "Newsletter-Anmeldung",
+        "texte": {
+          "email": { "wo": "Beschriftung des Felds", "de": "E-Mail", "en": "Email", "max": 24 },
+          "placeholder": { "wo": "Grauer Beispieltext im leeren Feld", "de": "name@beispiel.de", "en": "name@example.org", "max": 40 },
+          "submit": { "wo": "Knopf", "de": "Anmelden", "en": "Subscribe", "max": 24 },
+          "consent1": { "wo": "Einwilligung: Text vor dem Link", "de": "Ich möchte den Newsletter erhalten und habe die", "en": "I would like to receive the newsletter and have read the", "max": 120 },
+          "privacy": { "wo": "Einwilligung: Link", "de": "Datenschutzerklärung", "en": "privacy policy", "max": 40 },
+          "consent2": { "wo": "Einwilligung: Text nach dem Link", "de": "gelesen. Abmeldung jederzeit möglich.", "en": ". I can unsubscribe at any time.", "max": 120 },
+          "invalid": { "wo": "Meldung: E-Mail-Adresse ungültig", "de": "Bitte gib eine gültige E-Mail-Adresse ein.", "en": "Please enter a valid email address.", "max": 120 },
+          "consent": { "wo": "Meldung: Einwilligung fehlt", "de": "Bitte bestätige die Einwilligung.", "en": "Please confirm your consent.", "max": 120 },
+          "failed": { "wo": "Meldung: Anmeldung fehlgeschlagen", "de": "Die Anmeldung hat nicht geklappt. Bitte versuche es später noch einmal.", "en": "The sign-up did not work. Please try again later.", "max": 160 },
+          "done": { "wo": "Meldung: angemeldet", "de": "Danke. Bitte bestätige deine Anmeldung über den Link in deinem Postfach.", "en": "Thank you. Please confirm your subscription via the link in your inbox.", "max": 160 },
+          "mail": { "wo": "Meldung, wenn die Anmeldung per vorbereiteter E-Mail läuft", "de": "Fast geschafft: Bitte sende die vorbereitete E-Mail ab.", "en": "Almost done: please send the prepared email.", "max": 160 },
+          "subject": { "wo": "Betreff dieser E-Mail", "de": "Newsletter-Anmeldung", "en": "Newsletter sign-up", "max": 80 },
+          "body": { "wo": "Text dieser E-Mail ({email} = eingetragene Adresse)", "de": "Bitte nehmt {email} in den Newsletter auf.", "en": "Please add {email} to the newsletter.", "max": 200 }
+        }
+      },
+      "einwilligung": {
+        "titel": "Hinweis zu Cookies und externen Inhalten",
+        "texte": {
+          "h": { "wo": "Überschrift", "de": "Deine Privatsphäre", "en": "Your privacy", "max": 40 },
+          "text": { "wo": "Text (danach folgt der Link zur Datenschutzerklärung)", "de": "Wir verwenden keine Tracking-Cookies. Für Karten, Videos und Social-Media-Beiträge brauchen wir aber deine Zustimmung, weil dabei Daten an andere Anbieter gehen. Du kannst sie jederzeit im Footer unter „Cookie-Einstellungen“ ändern. Mehr dazu in der", "en": "We do not use tracking cookies. For maps, videos and social media posts we need your consent, because data is sent to other providers. You can change your choice at any time under “Cookie settings” in the footer. More in our", "max": 500 },
+          "privacy": { "wo": "Link am Ende des Texts", "de": "Datenschutzerklärung", "en": "privacy policy", "max": 40 },
+          "all": { "wo": "Knopf", "de": "Alle akzeptieren", "en": "Accept all", "max": 30 },
+          "necessary": { "wo": "Knopf", "de": "Nur notwendige", "en": "Necessary only", "max": 30 },
+          "settings": { "wo": "Knopf, der die Auswahl öffnet", "de": "Einstellungen", "en": "Settings", "max": 30 },
+          "save": { "wo": "Knopf in der Auswahl", "de": "Auswahl speichern", "en": "Save selection", "max": 30 },
+          "always": { "wo": "Zusatz bei „Notwendig“ in der Auswahl", "de": "(immer aktiv)", "en": "(always on)", "max": 30 }
+        }
+      },
+      "foerderung": {
+        "titel": "Förderer (über dem Fuß)",
+        "auch": [{ "text": "Die Förderer mit Logo und Pflichttext", "ziel": "redaktion:verein" }],
+        "texte": {
+          "heading": { "wo": "Kleine Überschrift vor den Logos", "de": "Gefördert durch", "en": "Funded by", "max": 30 }
+        }
+      },
+      "browser": {
+        "titel": "Titel im Browser-Tab",
+        "texte": {
+          "tagline": { "wo": "Auf der Startseite nach dem Namen des Vereins, für Suchmaschinen", "de": "Freie Tanzszene Dresden", "en": "Independent dance scene Dresden", "max": 60 }
+        }
+      }
+    }
+  },
   "startseite": {
     "titel": "Startseite",
+    "gruppe": "Seiten im Menü",
     "pfad": "",
     "abschnitte": {
       "kopf": {
         "titel": "Kopf",
+        "auch": [{ "text": "„Tanz für …“ mit den wechselnden Wörtern", "ziel": "redaktion:hero" }, { "text": "Der nächste Termin kommt aus dem Kalender", "ziel": "intern/kalender/" }],
         "texte": {
           "naechster": { "wo": "Kleine Zeile über dem nächsten Termin", "de": "Upcoming", "en": "Upcoming", "max": 24 },
           "sehen": { "wo": "Einstieg 1 (zu den Terminen): kleine Zeile, darunter groß", "zeilen": 2, "de": "Zuschauen\nTanz sehen", "en": "Watch\nSee dance", "max": 50 },
@@ -16,6 +114,7 @@
       },
       "termine": {
         "titel": "Termine und News",
+        "auch": [{ "text": "Die Termine selbst", "ziel": "intern/kalender/" }, { "text": "Die Beiträge selbst", "ziel": "intern/news/" }],
         "texte": {
           "kicker": { "wo": "Termine: kleine Zeile über der Überschrift", "de": "Tanzkalender", "en": "Dance calendar", "max": 40 },
           "titel": { "wo": "Termine: Überschrift", "de": "Termine", "en": "Events", "max": 30 },
@@ -30,6 +129,7 @@
       },
       "formate": {
         "titel": "Formate",
+        "auch": [{ "text": "Die Formate selbst", "ziel": "redaktion:formate" }],
         "texte": {
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Was wir machen", "en": "What we do", "max": 40 },
           "titel": { "wo": "Überschrift", "de": "Formate & Reihen", "en": "Formats & series", "max": 40 }
@@ -37,6 +137,7 @@
       },
       "netz": {
         "titel": "Eine Stadt. Ein Netz.",
+        "auch": [{ "text": "Die Zahlen und das Gründungsjahr", "ziel": "redaktion:verein" }],
         "texte": {
           "kicker": { "wo": "Kleine Zeile über der Überschrift ({jahr} = Gründungsjahr aus den Vereinsdaten)", "de": "Freie Tanzszene · Dresden · seit {jahr}", "en": "Independent dance · Dresden · since {jahr}", "max": 60 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Eine Stadt.\nEin Netz.", "en": "One city.\nOne network.", "max": 40 },
@@ -55,13 +156,334 @@
           "lead": { "wo": "Text unter der Überschrift", "de": "Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.", "en": "As a member you train at a reduced rate, join working groups and shape the formats of the association. For professional dance artists in and around Dresden.", "max": 400 },
           "antrag": { "wo": "Großer Knopf", "de": "Mitgliedsantrag", "en": "How to join", "max": 30 },
           "spende": { "wo": "Link neben dem Knopf", "de": "Oder mit einer Spende helfen →", "en": "Or help with a donation →", "max": 50 },
+          "newsletterTitel": { "wo": "Überschrift über der Newsletter-Anmeldung", "de": "Newsletter", "en": "Newsletter", "max": 30 },
           "newsletter": { "wo": "Text beim Newsletter", "de": "Einmal im Monat: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.", "en": "Once a month: events, open calls and news from the independent scene (in German).", "max": 200 }
+        }
+      }
+    }
+  },
+  "termine": {
+    "titel": "Tanzkalender und Termine",
+    "gruppe": "Seiten im Menü",
+    "pfad": "termine/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf der Seite Tanzkalender",
+        "auch": [{ "text": "Termine eintragen", "ziel": "intern/kalender/" }],
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Tanzkalender", "en": "Dance calendar", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Alle Termine der freien Tanzszene Dresden: Bühne, Training und Diskurs, dazu das Profitraining KEEP UP.", "en": "All events of Dresden's independent dance scene: stage, training and discourse, plus the KEEP UP professional training.", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Tanzkalender", "en": "Dance calendar", "max": 40 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Was läuft\nim Netz.", "en": "What's on\nin the network.", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Aufführungen, Training und Gespräche aus dem Netzwerk, dazu jeder Tag Profitraining. Abonniere den Kalender, dann landen neue Termine automatisch in deiner Kalender-App.", "en": "Performances, training and talks from the network, plus every day of professional training. Subscribe to the calendar and new events appear in your calendar app automatically.", "max": 400 },
+          "ics": { "wo": "Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to calendar (.ics)", "max": 40 },
+          "submit": { "wo": "Link „Termin einreichen“", "de": "Termin einreichen →", "en": "Submit an event →", "max": 40 },
+          "calKicker": { "wo": "Kalender: kleine Zeile über der Überschrift", "de": "Monat für Monat", "en": "Month by month", "max": 40 },
+          "h2": { "wo": "Kalender: Überschrift", "de": "Kalender", "en": "Calendar", "max": 30 }
+        }
+      },
+      "kalender": {
+        "titel": "Kalender (auch auf der Seite Profitraining)",
+        "texte": {
+          "all": { "wo": "Filter: alles zeigen", "de": "Alle", "en": "All", "max": 20 },
+          "today": { "wo": "Markierung am heutigen Tag", "de": "Heute", "en": "Today", "max": 20 },
+          "none": { "wo": "Wenn im Monat nichts geplant ist", "de": "Gerade sind keine Termine geplant.", "en": "Nothing scheduled right now.", "max": 80 },
+          "free": { "wo": "Wenn am gewählten Tag nichts ist", "de": "An diesem Tag ist nichts geplant.", "en": "Nothing planned on this day.", "max": 80 },
+          "toEvent": { "wo": "Link bei einem Termin", "de": "Zum Termin →", "en": "About the event →", "max": 30 },
+          "toTraining": { "wo": "Link bei einem Trainingstag", "de": "Zum Profitraining →", "en": "Professional training →", "max": 30 },
+          "training": { "wo": "Kennzeichen bei Trainingstagen im Tanzkalender", "de": "Profitraining", "en": "Professional training", "max": 24 }
+        }
+      },
+      "liste": {
+        "titel": "Terminlisten (Startseite, Profile)",
+        "texte": {
+          "empty": { "wo": "Wenn der Filter nichts findet", "de": "Gerade keine Termine in dieser Kategorie.", "en": "No events in this category right now.", "max": 80 }
+        }
+      },
+      "termin": {
+        "titel": "Seite eines Termins",
+        "texte": {
+          "back": { "wo": "Link oben", "de": "← Ganzer Kalender", "en": "← Full calendar", "max": 30 },
+          "past": { "wo": "Hinweis bei vergangenen Terminen", "de": "Dieser Termin ist vorbei.", "en": "This event has already taken place.", "max": 80 },
+          "link": { "wo": "Knopf zu Tickets oder Anmeldung", "de": "Tickets & Anmeldung", "en": "Tickets & registration", "max": 30 },
+          "ics": { "wo": "Link zum Eintragen in den eigenen Kalender", "de": "In meinen Kalender (.ics)", "en": "Add to my calendar (.ics)", "max": 40 },
+          "when": { "wo": "Angabe", "de": "Wann", "en": "When", "max": 16 },
+          "where": { "wo": "Angabe", "de": "Wo", "en": "Where", "max": 16 },
+          "what": { "wo": "Angabe", "de": "Was", "en": "What", "max": 16 },
+          "people": { "wo": "Angabe vor den Mitwirkenden", "de": "Mit", "en": "With", "max": 16 },
+          "post": { "wo": "Hinweis auf einen News-Beitrag", "de": "Mehr dazu in den News", "en": "More in the news", "max": 40 },
+          "read": { "wo": "Link zum Beitrag", "de": "Beitrag lesen →", "en": "Read the post →", "max": 30 },
+          "more": { "wo": "Unten: kleine Zeile", "de": "Tanzkalender", "en": "Dance calendar", "max": 40 },
+          "moreH": { "wo": "Unten: Überschrift", "de": "Weitere Termine", "en": "More events", "max": 40 },
+          "all": { "wo": "Unten: Link", "de": "Ganzer Kalender →", "en": "Full calendar →", "max": 30 }
+        }
+      }
+    }
+  },
+  "news": {
+    "titel": "News",
+    "gruppe": "Seiten im Menü",
+    "pfad": "news/",
+    "abschnitte": {
+      "uebersicht": {
+        "titel": "Übersicht aller Beiträge",
+        "auch": [{ "text": "Beiträge schreiben", "ziel": "intern/news/" }],
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "News", "en": "News", "max": 60 },
+          "description": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Neues aus der freien Tanzszene in Dresden: Ausschreibungen, Formate, Stimmen und Neuigkeiten aus dem Verein.", "en": "News from Dresden's independent dance scene: open calls, formats, voices and updates from the association.", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "News · Neues aus der freien Szene", "en": "News · News from the independent scene", "max": 60 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Aus dem\nNetz.", "en": "From the\nnetwork.", "max": 40 },
+          "featured": { "wo": "Kennzeichen des Titelthemas", "de": "Titelthema", "en": "Featured", "max": 24 },
+          "read": { "wo": "Titelthema: Link", "de": "Beitrag lesen", "en": "Read the post", "max": 30 },
+          "min": { "wo": "Abkürzung nach der Lesezeit", "de": "Min", "en": "min", "max": 10 },
+          "none": { "wo": "Wenn es noch keine Beiträge gibt", "de": "Noch keine Beiträge.", "en": "No posts yet.", "max": 80 },
+          "openCall": { "wo": "Kasten mit offenen Fristen: Überschrift", "de": "Offene Frist", "en": "Open call", "max": 30 },
+          "all": { "wo": "Chronik: kleine Zeile", "de": "Alle Beiträge", "en": "All posts", "max": 30 },
+          "chronicle": { "wo": "Chronik: Überschrift", "de": "Chronik", "en": "Chronicle", "max": 30 },
+          "post": { "wo": "Anzahl: Einzahl (1 Beitrag)", "de": "Beitrag", "en": "post", "max": 20 },
+          "posts": { "wo": "Anzahl: Mehrzahl (5 Beiträge)", "de": "Beiträge", "en": "posts", "max": 20 },
+          "empty": { "wo": "Wenn der Filter nichts findet", "de": "In dieser Kategorie gibt es noch keine Beiträge.", "en": "No posts in this category yet.", "max": 80 },
+          "readShort": { "wo": "Link bei jedem Beitrag", "de": "Lesen", "en": "Read", "max": 20 },
+          "deadline": { "wo": "Ausschreibung: Wort vor dem Datum", "de": "Frist", "en": "Deadline", "max": 20 },
+          "until": { "wo": "Ausschreibung: „bis“ vor dem Datum", "de": "bis", "en": "until", "max": 10 },
+          "toTalk": { "wo": "Stimme/Zitat: Link", "de": "Zum Gespräch", "en": "Read the conversation", "max": 30 },
+          "stayH": { "wo": "Kasten unten: Überschrift", "de": "Nichts verpassen", "en": "Stay in the loop", "max": 40 },
+          "stayP": { "wo": "Kasten unten: Text", "de": "Einmal im Monat im Postfach: Termine, Ausschreibungen und Neuigkeiten aus der freien Szene.", "en": "Once a month in your inbox: events, open calls and news from the independent scene.", "max": 200 },
+          "newsletter": { "wo": "Kasten unten: Knopf", "de": "Newsletter abonnieren", "en": "Subscribe to the newsletter", "max": 40 },
+          "submit": { "wo": "Kasten unten: Link", "de": "Meldung einreichen", "en": "Send us news", "max": 40 },
+          "rss": { "wo": "Kasten unten: Link", "de": "RSS-Feed", "en": "RSS feed", "max": 30 }
+        }
+      },
+      "beitrag": {
+        "titel": "Seite eines Beitrags",
+        "texte": {
+          "back": { "wo": "Link oben", "de": "← Alle Beiträge", "en": "← All posts", "max": 30 },
+          "min": { "wo": "Abkürzung nach der Lesezeit", "de": "Min", "en": "min", "max": 10 },
+          "read": { "wo": "Wort nach der Lesezeit („5 Min Lesezeit“)", "de": "Lesezeit", "en": "read", "max": 20 },
+          "text": { "wo": "Vor dem Namen der Autor:in", "de": "Text", "en": "Text", "max": 20 },
+          "credit": { "wo": "Vor dem Namen der Fotograf:in", "de": "Foto", "en": "Photo", "max": 20 },
+          "published": { "wo": "Unter dem Text, vor dem Datum", "de": "Veröffentlicht", "en": "Published", "max": 30 },
+          "deadline": { "wo": "Ausschreibung: Überschrift", "de": "Bewerbungsfrist", "en": "Application deadline", "max": 30 },
+          "until": { "wo": "Ausschreibung: „bis“ vor dem Datum", "de": "bis", "en": "until", "max": 10 },
+          "glance": { "wo": "Kasten rechts: Überschrift", "de": "Auf einen Blick", "en": "At a glance", "max": 30 },
+          "share": { "wo": "Teilen: Überschrift", "de": "Teilen", "en": "Share", "max": 20 },
+          "copy": { "wo": "Teilen: Knopf", "de": "Link kopieren", "en": "Copy link", "max": 30 },
+          "copied": { "wo": "Teilen: nach dem Kopieren", "de": "Link kopiert", "en": "Link copied", "max": 30 },
+          "mail": { "wo": "Teilen: per E-Mail", "de": "E-Mail", "en": "Email", "max": 20 },
+          "more": { "wo": "Unten: kleine Zeile", "de": "Weiterlesen", "en": "Keep reading", "max": 30 },
+          "moreH": { "wo": "Unten: Überschrift", "de": "Mehr aus dem Netz", "en": "More from the network", "max": 40 },
+          "chronicle": { "wo": "Unten: Link", "de": "Zur Chronik →", "en": "To the chronicle →", "max": 30 }
+        }
+      }
+    }
+  },
+  "profitraining": {
+    "titel": "Profitraining (KEEP UP)",
+    "gruppe": "Seiten im Menü",
+    "pfad": "profitraining/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "auch": [{ "text": "Überschrift, Einleitung, Infos und Kopffoto", "ziel": "redaktion:keep-up-texte" }],
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "KEEP UP · Profitraining", "en": "KEEP UP · Professional training", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Profitraining für Tänzer:innen der freien Szene in Dresden: Kalender, Dozent:innen, Ort und Beitrag.", "en": "Professional training for dancers of Dresden's independent scene: calendar, teachers, venue and fee.", "max": 160 },
+          "toCal": { "wo": "Knopf im Kopf", "de": "Zum Kalender", "en": "To the calendar", "max": 30 },
+          "who": { "wo": "Link im Kopf", "de": "Wer unterrichtet →", "en": "Who teaches →", "max": 30 },
+          "next": { "wo": "Kasten mit dem nächsten Training: Überschrift", "de": "Nächste Einheit", "en": "Next class", "max": 30 }
+        }
+      },
+      "dozentinnen": {
+        "titel": "Dozent:innen (Foto-Mosaik)",
+        "auch": [{ "text": "Wer im Mosaik steht", "ziel": "redaktion:dozentinnen" }],
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Dozent:innen", "en": "Teachers", "max": 30 },
+          "h": { "wo": "Überschrift", "de": "Wer unterrichtet", "en": "Who teaches", "max": 40 },
+          "pause": { "wo": "Knopf, der das Mosaik anhält", "de": "Anhalten", "en": "Pause", "max": 20 },
+          "play": { "wo": "Derselbe Knopf, wenn das Mosaik steht", "de": "Weiterlaufen", "en": "Play", "max": 20 }
+        }
+      },
+      "kalender": {
+        "titel": "Kalender",
+        "auch": [{ "text": "Trainings einplanen", "ziel": "intern/kalender/" }],
+        "texte": {
+          "calKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Kalender", "en": "Calendar", "max": 30 },
+          "calH": { "wo": "Überschrift", "de": "Wann wir trainieren", "en": "When we train", "max": 40 },
+          "training": { "wo": "Legende: Farbe Cyan", "de": "Profitraining", "en": "Professional training", "max": 30 },
+          "workshop": { "wo": "Legende: Farbe Magenta", "de": "Workshop", "en": "Workshop", "max": 30 },
+          "badgeTraining": { "wo": "Kennzeichen eines Trainingstags", "de": "Training", "en": "Training", "max": 20 },
+          "badgeWorkshop": { "wo": "Kennzeichen eines Workshop-Tags", "de": "Workshop", "en": "Workshop", "max": 20 },
+          "toCard": { "wo": "Link bei einem Trainingstag", "de": "Zur Dozent:in →", "en": "Meet the teacher →", "max": 30 },
+          "toEvent": { "wo": "Link bei einem Workshop mit eigener Terminseite", "de": "Zum Workshop →", "en": "About the workshop →", "max": 30 },
+          "folgt": { "wo": "Wenn die Dozent:in ihr Training noch nicht beschrieben hat", "de": "Die Beschreibung zu diesem Training folgt.", "en": "Details about this class will follow.", "max": 120 },
+          "bring": { "wo": "Überschrift über „Bitte mitbringen“", "de": "Mitbringen", "en": "Bring", "max": 20 },
+          "signup": { "wo": "Rechts: Überschrift Anmeldung", "de": "Anmeldung", "en": "Registration", "max": 30 },
+          "telegram": { "wo": "Rechts: Link", "de": "Telegram-Gruppe →", "en": "Telegram group →", "max": 30 },
+          "contact": { "wo": "Rechts: Link", "de": "Kontakt →", "en": "Contact →", "max": 30 },
+          "abo": { "wo": "Rechts: Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to the calendar (.ics)", "max": 40 },
+          "weeks": { "wo": "Rechts: Überschrift der Liste", "de": "Trainingswochen", "en": "Training weeks", "max": 30 },
+          "workshops": { "wo": "Rechts: Überschrift der Liste", "de": "Workshops", "en": "Workshops", "max": 30 }
+        }
+      },
+      "infos": {
+        "titel": "Infos",
+        "texte": {
+          "infos": { "wo": "Kleine Zeile über der Überschrift", "de": "Infos", "en": "Info", "max": 30 },
+          "infosH": { "wo": "Überschrift", "de": "So läuft das Training", "en": "How training works", "max": 40 },
+          "when": { "wo": "Angabe", "de": "Wann", "en": "When", "max": 20 },
+          "where": { "wo": "Angabe", "de": "Wo", "en": "Where", "max": 20 },
+          "forWhom": { "wo": "Angabe", "de": "Für wen", "en": "For whom", "max": 20 },
+          "fee": { "wo": "Angabe", "de": "Beitrag", "en": "Fee", "max": 20 },
+          "join": { "wo": "Knopf", "de": "Mitglied werden", "en": "Become a member", "max": 30 }
+        }
+      }
+    }
+  },
+  "verein": {
+    "titel": "Über uns",
+    "gruppe": "Seiten im Menü",
+    "pfad": "verein/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Über uns", "en": "About us", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden e.V.: self-organised network of Dresden's independent dance scene. Board, working groups and members.", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift ({jahr} = Gründungsjahr)", "de": "Über uns · seit {jahr}", "en": "About us · since {jahr}", "max": 40 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Dezentrale Kulturinstitution.\nUnd Bildungsort.", "en": "A decentralised cultural institution.\nAnd a place of learning.", "max": 80 },
+          "lead": { "wo": "Text unter der Überschrift ({jahr} = Gründungsjahr)", "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.", "en": "Since {jahr}, dance artists of Dresden's independent scene have been building this network, since 2020 as a registered non-profit association. We organise formats, training, discourse and residencies and advocate for better working conditions in dance.", "max": 400 }
+        }
+      },
+      "haltung": {
+        "titel": "Haltung & Wirkung",
+        "auch": [{ "text": "Überschrift, Säulen, Auszeichnungen und Foto", "ziel": "redaktion:haltung" }],
+        "texte": {
+          "awards": { "wo": "Überschrift über den Auszeichnungen", "de": "Ausgezeichnet mit", "en": "Awarded", "max": 30 },
+          "with": { "wo": "Überschrift über den Partnern", "de": "Gemeinsam mit", "en": "Together with", "max": 30 },
+          "all": { "wo": "Link zu allen Partnern", "de": "Alle Partner →", "en": "All partners →", "max": 30 }
+        }
+      },
+      "vorstand": {
+        "titel": "Vorstand & Team",
+        "auch": [{ "text": "Wer im Vorstand ist", "ziel": "redaktion:personen" }],
+        "texte": {
+          "boardKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Koordinationsteam · gewählt 2026", "en": "Coordination team · elected 2026", "max": 50 },
+          "boardH": { "wo": "Überschrift", "de": "Vorstand & Team", "en": "Board & team", "max": 40 },
+          "reach": { "wo": "Text vor der E-Mail", "de": "Den Vorstand erreichen", "en": "Contact the board", "max": 40 },
+          "boardMail": { "wo": "Knopf, der die E-Mail-Adresse zeigt", "de": "E-Mail an den Vorstand", "en": "Email the board", "max": 40 },
+          "boardSubject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Anfrage an den Vorstand", "en": "Enquiry to the board", "max": 80 }
+        }
+      },
+      "ags": {
+        "titel": "Arbeitsgruppen",
+        "auch": [{ "text": "Die Arbeitsgruppen selbst", "ziel": "redaktion:arbeitsgruppen" }],
+        "texte": {
+          "agKicker": { "wo": "Kleine Zeile über der Überschrift ({anzahl} = Zahl der AGs)", "de": "{anzahl} Arbeitsgruppen", "en": "{anzahl} working groups", "max": 40 },
+          "agH": { "wo": "Überschrift", "de": "Wer die Arbeit trägt", "en": "Who carries the work", "max": 40 },
+          "agIntro": { "wo": "Text unter der Überschrift", "de": "Jedes Format hat eine eigene AG. Mitglieder:innen können jederzeit einsteigen.", "en": "Each format has its own working group. Members can join at any time.", "max": 200 }
+        }
+      },
+      "netz": {
+        "titel": "Das Netz",
+        "texte": {
+          "netKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitglieder:innen & Trainer:innen", "en": "Members & teachers", "max": 40 },
+          "netH": { "wo": "Überschrift", "de": "Das Netz", "en": "The network", "max": 40 },
+          "member": { "wo": "Kennzeichen auf einer Karte", "de": "Mitglied", "en": "Member", "max": 20 },
+          "trainer": { "wo": "Kennzeichen auf einer Karte", "de": "Training", "en": "Training", "max": 20 },
+          "allProfiles": { "wo": "Link", "de": "Alle Profile ansehen →", "en": "See all profiles →", "max": 40 },
+          "transparency": { "wo": "Hinweis ganz unten", "de": "Wie wir arbeiten und uns finanzieren, steht auf unserer Transparenz-Seite.", "en": "How we work and how we are funded is on our transparency page.", "max": 200 },
+          "transparencyCta": { "wo": "Link daneben", "de": "Transparenz →", "en": "Transparency →", "max": 30 }
+        }
+      }
+    }
+  },
+  "spenden": {
+    "titel": "Spenden",
+    "gruppe": "Seiten im Menü",
+    "pfad": "spenden/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Spenden", "en": "Donate", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Unterstütze die freie Tanzszene in Dresden: mit einer Spende an TanzNetzDresden e.V. – steuerlich absetzbar.", "en": "Support Dresden's independent dance scene with a donation to TanzNetzDresden e.V. – tax-deductible in Germany.", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Spenden", "en": "Donate", "max": 40 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Tanz braucht\nRückhalt.", "en": "Dance needs\nbacking.", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Seit über 15 Jahren verbinden wir die freie Tanzszene Dresdens. Mit deiner Spende bleiben Training, Bühnen und Austausch für über 70 Tanzschaffende offen und bezahlbar.", "en": "For more than 15 years we have connected Dresden's independent dance scene. Your donation keeps training, stages and exchange open and affordable for more than 70 dance artists.", "max": 400 }
+        }
+      },
+      "konto": {
+        "titel": "Spendenkonto",
+        "auch": [{ "text": "Bankverbindung und Verwendungszweck", "ziel": "redaktion:verein" }],
+        "texte": {
+          "account": { "wo": "Kleine Zeile über der Überschrift", "de": "Spendenkonto", "en": "Bank account", "max": 40 },
+          "accountH": { "wo": "Überschrift", "de": "Per Überweisung, in jeder Höhe.", "en": "By bank transfer, any amount.", "max": 60 },
+          "holder": { "wo": "Angabe", "de": "Empfänger", "en": "Recipient", "max": 20 },
+          "bank": { "wo": "Angabe", "de": "Bank", "en": "Bank", "max": 20 },
+          "ref": { "wo": "Angabe", "de": "Verwendungszweck", "en": "Reference", "max": 24 },
+          "copy": { "wo": "Knopf neben jeder Angabe", "de": "Kopieren", "en": "Copy", "max": 20 },
+          "copied": { "wo": "Derselbe Knopf nach dem Kopieren", "de": "Kopiert", "en": "Copied", "max": 20 },
+          "qrH": { "wo": "QR-Code: Überschrift", "de": "Mit der Banking-App scannen", "en": "Scan with your banking app", "max": 50 },
+          "qrP": { "wo": "QR-Code: Text", "de": "Der Code füllt Empfänger, IBAN und Verwendungszweck aus. Den Betrag wählst du selbst.", "en": "The code fills in recipient, IBAN and reference (SEPA/EPC QR code). You choose the amount.", "max": 200 },
+          "noBank": { "wo": "Solange keine Bankverbindung eingetragen ist", "de": "Die Bankverbindung für Spenden ergänzen wir in Kürze. Bis dahin schick uns gern eine Nachricht, wir melden uns mit den Daten.", "en": "We will add the bank details for donations shortly. Until then, send us a message and we will get back to you.", "max": 250 },
+          "noBankMail": { "wo": "Knopf dazu", "de": "Bankverbindung anfragen", "en": "Ask for bank details", "max": 40 },
+          "noBankSubject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Spende", "en": "Donation", "max": 80 },
+          "receiptQ": { "wo": "Zuwendungsbestätigung: Frage", "de": "Du brauchst eine Zuwendungsbestätigung?", "en": "Do you need a donation receipt?", "max": 80 },
+          "receiptMail": { "wo": "Zuwendungsbestätigung: Knopf", "de": "Schreib uns kurz", "en": "Drop us a line", "max": 40 },
+          "receiptRest": { "wo": "Zuwendungsbestätigung: Text nach dem Knopf", "de": "Name, Adresse und Datum der Überweisung.", "en": "with your name, address and the date of the transfer.", "max": 120 },
+          "receiptSubject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Zuwendungsbestätigung", "en": "Donation receipt", "max": 80 },
+          "receiptBody": { "wo": "Text der vorbereiteten E-Mail", "de": "Name:\nAdresse:\nDatum der Spende:\nBetrag:\n", "en": "Name:\nAddress:\nDate of donation:\nAmount:\n", "max": 300 }
+        }
+      },
+      "bewegung": {
+        "titel": "Was du möglich machst",
+        "auch": [{ "text": "Die Formate selbst", "ziel": "redaktion:formate" }],
+        "texte": {
+          "useKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Was du möglich machst", "en": "What you make possible", "max": 40 },
+          "useH": { "wo": "Überschrift in zwei Zeilen", "zeilen": 2, "de": "Deine Spende\nwird Bewegung", "en": "Your donation\nbecomes movement", "max": 50 },
+          "useP": { "wo": "Text neben der Überschrift", "de": "Spenden fließen direkt in unsere Formate. Wir setzen sie dort ein, wo gerade das Geld fehlt. Für ein bestimmtes Format schreib den Namen in den Verwendungszweck.", "en": "Donations go straight into our formats. We use them where money is missing at the time. For a specific format, write its name in the reference.", "max": 300 },
+          "more": { "wo": "Link bei jedem Format, davor der Name („Mehr zu KEEP UP →“)", "de": "Mehr zu", "en": "More on", "max": 20 }
+        }
+      },
+      "wege": {
+        "titel": "Andere Wege",
+        "texte": {
+          "otherKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Andere Wege", "en": "Other ways", "max": 40 },
+          "otherH": { "wo": "Überschrift", "de": "Lieber anders helfen?", "en": "Rather help differently?", "max": 50 },
+          "memberH": { "wo": "Fördermitglied: Überschrift", "de": "Fördermitglied werden", "en": "Become a supporting member", "max": 50 },
+          "memberP": { "wo": "Fördermitglied: Text", "de": "Mit einem Jahresbeitrag trägst du den Verein mit, ohne selbst zu tanzen.", "en": "With an annual fee you back the association without having to dance yourself.", "max": 200 },
+          "memberCta": { "wo": "Fördermitglied: Link", "de": "Zum Mitgliedsantrag →", "en": "How to join →", "max": 40 },
+          "orgH": { "wo": "Unternehmen: Überschrift", "de": "Unternehmen und Stiftungen", "en": "Companies and foundations", "max": 50 },
+          "orgP": { "wo": "Unternehmen: Text", "de": "Ihr wollt ein Format fördern oder Räume, Technik oder Material stellen? Sprecht uns an.", "en": "Would you like to support a format or provide spaces, technology or material? Get in touch.", "max": 200 },
+          "orgMail": { "wo": "Unternehmen: Knopf", "de": "E-Mail schreiben", "en": "Write an email", "max": 40 },
+          "orgSubject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Förderung", "en": "Support", "max": 80 },
+          "onlineH": { "wo": "Online spenden: Überschrift", "de": "Online spenden", "en": "Donate online", "max": 50 },
+          "onlineP": { "wo": "Online spenden: Text ({anbieter} = Spendenplattform aus den Vereinsdaten)", "de": "Mit Lastschrift, Karte oder PayPal über {anbieter}. Du wirst dafür zu {anbieter} weitergeleitet.", "en": "By direct debit, card or PayPal via {anbieter}. You will be redirected to {anbieter}.", "max": 200 },
+          "onlineCta": { "wo": "Online spenden: Link", "de": "Zu {anbieter} →", "en": "Go to {anbieter} →", "max": 40 }
+        }
+      },
+      "fragen": {
+        "titel": "Fragen (je Frage: Zeile 1 Frage, Zeile 2 Antwort)",
+        "texte": {
+          "faqKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Fragen", "en": "Questions", "max": 40 },
+          "faqH": { "wo": "Überschrift", "de": "Gut zu wissen", "en": "Good to know", "max": 40 },
+          "faqP": { "wo": "Text vor dem Knopf", "de": "Noch etwas offen? Schreib uns.", "en": "Anything else? Write to us.", "max": 100 },
+          "faqMail": { "wo": "Knopf", "de": "E-Mail an uns", "en": "Email us", "max": 40 },
+          "faqSubject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Frage zur Spende", "en": "Question about donating", "max": 80 },
+          "status": { "wo": "Hinweis zur Gemeinnützigkeit ({amt} und {datum} aus den Vereinsdaten)", "de": "Wir sind als gemeinnützig anerkannt ({amt}, Bescheid vom {datum}).", "en": "We are recognised as a non-profit organisation ({amt}, notice dated {datum}).", "max": 200 },
+          "transparency": { "wo": "Hinweis auf die Transparenz-Seite", "de": "Wofür wir unser Geld ausgeben:", "en": "What we spend our money on:", "max": 100 },
+          "transparencyCta": { "wo": "Link dazu", "de": "Transparenz →", "en": "Transparency →", "max": 30 },
+          "frage1": { "wo": "Frage 1", "zeilen": 2, "de": "Ist meine Spende steuerlich absetzbar?\nJa. TanzNetzDresden e.V. ist als gemeinnützig anerkannt. Bis 300 € reicht dem Finanzamt dein Kontoauszug zusammen mit unserem vereinfachten Spendennachweis. Für höhere Beträge oder auf Wunsch stellen wir dir eine Zuwendungsbestätigung aus.", "en": "Is my donation tax-deductible?\nYes, in Germany. TanzNetzDresden e.V. is recognised as a non-profit. Up to €300, your bank statement together with our simplified donation receipt is enough for the tax office. For higher amounts or on request we issue an official donation receipt.", "max": 600 },
+          "frage1Link": { "wo": "Frage 1: Link zum Spendennachweis", "de": "Spendennachweis öffnen →", "en": "Open simplified receipt (German) →", "max": 50 },
+          "frage2": { "wo": "Frage 2", "zeilen": 2, "de": "Kann ich für ein bestimmtes Format spenden?\nJa. Schreib den Namen des Formats in den Verwendungszweck, zum Beispiel „Spende KEEP UP“. Dann fließt der Betrag vollständig dorthin.", "en": "Can I donate to a specific format?\nYes. Write the name of the format in the reference, for example “Donation KEEP UP”. The full amount then goes there.", "max": 600 },
+          "frage3": { "wo": "Frage 3", "zeilen": 2, "de": "Was passiert mit meinen Daten?\nWir sehen nur, was deine Bank mit der Überweisung übermittelt, und nutzen es ausschließlich für die Zuwendungsbestätigung.", "en": "What happens to my data?\nWe only see what your bank sends with the transfer and use it solely for the donation receipt.", "max": 600 }
         }
       }
     }
   },
   "netzwerk": {
     "titel": "Netzwerk",
+    "gruppe": "Weitere Seiten",
     "pfad": "netzwerk/",
     "abschnitte": {
       "kopf": {
@@ -76,6 +498,7 @@
       },
       "liste": {
         "titel": "Profile",
+        "auch": [{ "text": "Profile freigeben", "ziel": "intern/redaktion/freigaben/" }, { "text": "Personen aus der Datei", "ziel": "redaktion:personen" }],
         "texte": {
           "alle": { "wo": "Filter: alle Profile", "de": "Alle", "en": "All", "max": 20 },
           "mitglieder": { "wo": "Filter: nur Mitglieder", "de": "Mitglieder:innen", "en": "Members", "max": 24 },
@@ -94,6 +517,7 @@
   },
   "profil": {
     "titel": "Profil einer Person",
+    "gruppe": "Weitere Seiten",
     "pfad": "netzwerk/",
     "abschnitte": {
       "kopf": {
@@ -130,6 +554,7 @@
           "bilder": { "wo": "Galerie: nach der Anzahl der Fotos", "de": "Bilder", "en": "pictures", "max": 20 },
           "vollbild": { "wo": "Galerie: Knopf", "de": "Vollbild", "en": "Full screen", "max": 20 },
           "alleVollbild": { "wo": "Galerie: letztes Feld im Filmstreifen", "de": "Alle Bilder im Vollbild →", "en": "All pictures full screen →", "max": 40 },
+          "schliessen": { "wo": "Galerie im Vollbild: Knopf oben rechts (dahinter „· Esc“)", "de": "Schließen", "en": "Close", "max": 20 },
           "ueber": { "wo": "Über: kleine Zeile ({name} = Vorname)", "de": "Über {name}", "en": "About {name}", "max": 30 },
           "bald": { "wo": "Über: wenn es noch keinen Text gibt", "de": "Dieses Profil wird gerade aufgebaut.", "en": "This profile is being set up.", "max": 80 },
           "schwerpunkte": { "wo": "Über: Angabe, wenn es keinen Pitch gibt", "de": "Schwerpunkte", "en": "Focus", "max": 20 },
@@ -151,6 +576,285 @@
           "mail": { "wo": "Text der vorbereiteten E-Mail ({name} = Vorname)", "de": "Hallo {name},\n\nProjekt:\nZeitraum:\nOrt:\n\nViele Grüße\n", "en": "Hello {name},\n\nProject:\nDates:\nPlace:\n\nBest wishes\n", "max": 400 },
           "eigenes": { "wo": "Ganz unten, bei Profilen ohne eigenes Konto", "de": "Ist das dein Profil?", "en": "Is this your profile?", "max": 60 },
           "eigenesLink": { "wo": "Link daneben", "de": "Im internen Bereich ergänzen →", "en": "Complete it in the members area →", "max": 50 }
+        }
+      }
+    }
+  },
+  "mitglied": {
+    "titel": "Mitglied werden",
+    "gruppe": "Weitere Seiten",
+    "pfad": "mitglied-werden/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Mitglied werden", "en": "Membership", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Werde Mitglied bei TanzNetzDresden e.V.: günstiger trainieren, Formate mitgestalten, die freie Tanzszene stärken.", "en": "Become a member of TanzNetzDresden e.V.: train at a reduced rate, shape formats, strengthen the independent dance scene.", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitglied werden", "en": "Membership", "max": 40 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Werde Teil\ndes Netzes.", "en": "Become part\nof the network.", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Für professionell arbeitende Tanzschaffende in Dresden und Umgebung: Tänzer:innen, Choreograf:innen, Dozent:innen und alle, die den zeitgenössischen Tanz hier mittragen.", "en": "For professional dance artists in and around Dresden: dancers, choreographers, teachers and everyone who carries contemporary dance here.", "max": 400 }
+        }
+      },
+      "vorteile": {
+        "titel": "Vorteile (je Zeile 1 Überschrift, Zeile 2 Text)",
+        "texte": {
+          "whyKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Was du davon hast", "en": "What you get", "max": 40 },
+          "whyH": { "wo": "Überschrift", "de": "Vorteile", "en": "Benefits", "max": 40 },
+          "vorteil1": { "wo": "Vorteil 1 ({mitglied} und {regulaer} = Preise aus den Vereinsdaten)", "zeilen": 2, "de": "Günstiger trainieren\nKEEP UP Profitraining zum Mitgliedertarif ({mitglied} statt {regulaer}).", "en": "Train for less\nKEEP UP professional training at the member rate ({mitglied} instead of {regulaer}).", "max": 250 },
+          "vorteil2": { "wo": "Vorteil 2", "zeilen": 2, "de": "Formate mitgestalten\nSteig in eine der Arbeitsgruppen ein und entwickle POP UP, Studio Round und Co. mit.", "en": "Shape the formats\nJoin a working group and help develop POP UP, Studio Round and more.", "max": 250 },
+          "vorteil3": { "wo": "Vorteil 3", "zeilen": 2, "de": "Sichtbar werden\nErscheine mit eigenem Profil im Netzwerk auf der Website und im Newsletter.", "en": "Become visible\nAppear with your own profile in the network on the website and in the newsletter.", "max": 250 },
+          "vorteil4": { "wo": "Vorteil 4", "zeilen": 2, "de": "Stimme haben\nMitbestimmen in der Mitgliederversammlung und kulturpolitisch mit einer Stimme sprechen.", "en": "Have a say\nVote at the general assembly and speak with one voice on cultural policy.", "max": 250 }
+        }
+      },
+      "schritte": {
+        "titel": "In vier Schritten (je Zeile 1 Überschrift, Zeile 2 Text)",
+        "texte": {
+          "howKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "So geht’s", "en": "How it works", "max": 40 },
+          "howH": { "wo": "Überschrift", "de": "In vier Schritten", "en": "In four steps", "max": 40 },
+          "schritt1": { "wo": "Schritt 1, wenn es den Antrag als PDF gibt", "zeilen": 2, "de": "Antrag ausfüllen\nLade den Mitgliedsantrag herunter und fülle ihn aus.", "en": "Fill in the form\nDownload the membership form and fill it in.", "max": 250 },
+          "schritt1OhnePdf": { "wo": "Schritt 1, wenn es keinen Antrag als PDF gibt", "zeilen": 2, "de": "Antrag ausfüllen\nSchreib uns kurz, wer du bist und woran du arbeitest. Wir schicken dir den Antrag.", "en": "Fill in the form\nTell us briefly who you are and what you work on. We will send you the form.", "max": 250 },
+          "schritt2": { "wo": "Schritt 2", "zeilen": 2, "de": "An den Vorstand senden\nPer E-Mail oder per Post an die Vereinsadresse.", "en": "Send it to the board\nBy email or by post to the association address.", "max": 250 },
+          "schritt3": { "wo": "Schritt 3", "zeilen": 2, "de": "Kennenlernen\nWir laden dich zum nächsten Sharing ein, dem offenen Netzwerktreffen.", "en": "Get to know us\nWe invite you to the next Sharing, our open network meeting.", "max": 250 },
+          "schritt4": { "wo": "Schritt 4", "zeilen": 2, "de": "Zugang erhalten\nDu bekommst eine Einladung in den internen Bereich und pflegst dort dein Profil.", "en": "Get access\nYou receive an invitation to the members area and set up your profile there.", "max": 250 }
+        }
+      },
+      "kasten": {
+        "titel": "Kasten rechts",
+        "auch": [{ "text": "Beitrag und Mitgliedsantrag (PDF)", "ziel": "redaktion:verein" }],
+        "texte": {
+          "fee": { "wo": "Überschrift über dem Beitrag", "de": "Mitgliedsbeitrag", "en": "Membership fee", "max": 40 },
+          "pdf": { "wo": "Knopf zum Antrag", "de": "Mitgliedsantrag (PDF)", "en": "Membership form (PDF, German)", "max": 40 },
+          "statutes": { "wo": "Link zur Satzung", "de": "Satzung lesen →", "en": "Read the statutes (German) →", "max": 40 },
+          "questions": { "wo": "Text vor der E-Mail", "de": "Fragen? Antrag?", "en": "Questions?", "max": 40 },
+          "mail": { "wo": "Knopf, der die E-Mail-Adresse zeigt", "de": "E-Mail an den Vorstand", "en": "Email the board", "max": 40 },
+          "subject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Mitgliedschaft", "en": "Membership", "max": 80 }
+        }
+      }
+    }
+  },
+  "kooperationen": {
+    "titel": "Kooperationen",
+    "gruppe": "Weitere Seiten",
+    "pfad": "kooperationen/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf und Karte",
+        "auch": [{ "text": "Die Orte auf der Karte", "ziel": "redaktion:orte" }],
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Kooperationspartner", "en": "Partners", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Mit wem TanzNetzDresden arbeitet: Spielorte, Hochschulen, Förderer und Netzwerke in Dresden und darüber hinaus.", "en": "Who TanzNetzDresden works with: venues, universities, funders and networks in Dresden and beyond.", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Kooperationspartner", "en": "Partners", "max": 40 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Ein Netz\naus Orten.", "en": "A network\nof places.", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Unsere Formate entstehen mit Spielorten, Hochschulen, Förderern und Netzwerken in Dresden und darüber hinaus. Hier zeigen wir, mit wem wir arbeiten.", "en": "Our formats are created together with venues, universities, funders and networks in Dresden and beyond. Here is who we work with.", "max": 400 },
+          "places": { "wo": "Karte: Überschrift", "de": "Orte in Dresden", "en": "Places in Dresden", "max": 40 },
+          "tilesBtn": { "wo": "Karte: Knopf für die Stadtkarte", "de": "Stadtkarte einblenden", "en": "Show city map", "max": 40 },
+          "tilesHint": { "wo": "Karte: Hinweis zum Datenschutz", "de": "Kartenbilder von OpenStreetMap – dabei wird deine IP-Adresse übertragen.", "en": "Map images from OpenStreetMap – this transmits your IP address.", "max": 160 },
+          "tilesAlways": { "wo": "Karte: Knopf", "de": "Immer erlauben", "en": "Always allow", "max": 30 }
+        }
+      },
+      "partner": {
+        "titel": "Alle Partner",
+        "auch": [{ "text": "Die Partner selbst", "ziel": "redaktion:partnergruppen" }],
+        "texte": {
+          "allKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Alle Partner", "en": "All partners", "max": 40 },
+          "allH": { "wo": "Überschrift", "de": "Mit wem wir arbeiten", "en": "Who we work with", "max": 40 },
+          "allIntro": { "wo": "Text unter der Überschrift", "de": "Von der Probebühne bis zur bundesweiten Förderung. Sortiert danach, was wir gemeinsam machen.", "en": "From rehearsal stages to national funding. Grouped by what we do together.", "max": 200 },
+          "funders": { "wo": "Hinweis unter der Liste", "de": "Unsere Förderer stehen unten auf jeder Seite.", "en": "Our funders are listed at the bottom of every page.", "max": 120 }
+        }
+      },
+      "anfrage": {
+        "titel": "Kooperation anfragen",
+        "texte": {
+          "coopKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Kooperation", "en": "Cooperation", "max": 40 },
+          "coopTitel": { "wo": "Überschrift in zwei Zeilen", "zeilen": 2, "de": "Ihr wollt mit uns\narbeiten?", "en": "Want to work\nwith us?", "max": 50 },
+          "coopP": { "wo": "Text", "de": "Spielorte, Festivals, Netzwerke und Initiativen: Schreibt uns, wir melden uns mit einem Vorschlag für ein erstes Gespräch.", "en": "Venues, festivals, networks and initiatives: write to us and we will get back to you with a suggestion for a first conversation.", "max": 300 },
+          "coopBtn": { "wo": "Knopf, der die E-Mail-Adresse zeigt", "de": "E-Mail schreiben", "en": "Send an email", "max": 30 },
+          "coopSubject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Kooperationsanfrage", "en": "Cooperation enquiry", "max": 80 }
+        }
+      }
+    }
+  },
+  "kontakt": {
+    "titel": "Kontakt",
+    "gruppe": "Weitere Seiten",
+    "pfad": "kontakt/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und kleine Zeile über der Überschrift", "de": "Kontakt", "en": "Contact", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "So erreichst du TanzNetzDresden e.V.: Kontakt, Vorstand, Presse und Termine einreichen.", "en": "How to reach TanzNetzDresden e.V.: general contact, board, press and event submissions.", "max": 160 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Schreib uns.\nWir antworten.", "en": "Write to us.\nWe will reply.", "max": 40 }
+        }
+      },
+      "wege": {
+        "titel": "Ansprechpartner",
+        "auch": [{ "text": "E-Mail-Adressen und Presse-Kontakt", "ziel": "redaktion:verein" }],
+        "texte": {
+          "general": { "wo": "Allgemein: kleine Zeile", "de": "Allgemein", "en": "General", "max": 30 },
+          "generalH": { "wo": "Allgemein: Überschrift", "de": "Fragen, Ideen, Kooperationen", "en": "Questions, ideas, cooperation", "max": 50 },
+          "generalP": { "wo": "Allgemein: Text", "de": "Für alles rund um Verein, Formate und Training.", "en": "For everything about the association, formats and training. We are happy to answer in English.", "max": 200 },
+          "write": { "wo": "Allgemein: Knopf", "de": "E-Mail schreiben", "en": "Send an email", "max": 40 },
+          "board": { "wo": "Vorstand: kleine Zeile", "de": "Vorstand", "en": "Board", "max": 30 },
+          "boardH": { "wo": "Vorstand: Überschrift", "de": "Vereinsangelegenheiten", "en": "Association matters", "max": 50 },
+          "boardP": { "wo": "Vorstand: Text", "de": "Mitgliedschaft, Finanzen, Kooperationsverträge und alles, was der Vorstand entscheiden muss.", "en": "Membership, finances, cooperation agreements and everything the board needs to decide.", "max": 200 },
+          "boardMail": { "wo": "Vorstand: Knopf", "de": "E-Mail an den Vorstand", "en": "Email the board", "max": 40 },
+          "boardSubject": { "wo": "Vorstand: Betreff der vorbereiteten E-Mail", "de": "Anfrage an den Vorstand", "en": "Enquiry to the board", "max": 80 },
+          "press": { "wo": "Presse: kleine Zeile", "de": "Presse", "en": "Press", "max": 30 },
+          "pressH": { "wo": "Presse: Überschrift", "de": "Presse & Öffentlichkeit", "en": "Press & public relations", "max": 50 },
+          "pressP": { "wo": "Presse: Text ({name} und {rolle} aus den Vereinsdaten → Presse)", "de": "Ansprechperson: {name} ({rolle}). Pressefotos und Infos auf Anfrage.", "en": "Contact: {name} ({rolle}). Press photos and information on request.", "max": 200 },
+          "pressMail": { "wo": "Presse: Knopf", "de": "Presseanfrage senden", "en": "Send a press enquiry", "max": 40 },
+          "pressSubject": { "wo": "Presse: Betreff der vorbereiteten E-Mail", "de": "Presseanfrage", "en": "Press enquiry", "max": 80 },
+          "cal": { "wo": "Termine: kleine Zeile", "de": "Tanzkalender", "en": "Dance calendar", "max": 30 },
+          "calH": { "wo": "Termine: Überschrift", "de": "Termin einreichen", "en": "Submit an event", "max": 50 },
+          "calP": { "wo": "Termine: Text", "de": "Du zeigst etwas in Dresden? Schick uns Titel, Datum und Uhrzeit, Ort, einen Satz zum Inhalt und einen Link. Wir nehmen Termine aus dem Netzwerk in den Kalender auf.", "en": "Showing something in Dresden? Send us the title, date and time, venue, one sentence about it and a link. We add events from the network to the calendar.", "max": 300 },
+          "calMail": { "wo": "Termine: Knopf", "de": "Termin per E-Mail schicken", "en": "Send an event by email", "max": 40 },
+          "calSubject": { "wo": "Termine: Betreff der vorbereiteten E-Mail", "de": "Termin für den Tanzkalender", "en": "Event for the dance calendar", "max": 80 },
+          "route": { "wo": "Anfahrt: Überschrift", "de": "Anfahrt", "en": "Getting here", "max": 30 },
+          "osm": { "wo": "Anfahrt: Link", "de": "In OpenStreetMap öffnen →", "en": "Open in OpenStreetMap →", "max": 40 }
+        }
+      }
+    }
+  },
+  "barrierefreiheit": {
+    "titel": "Barrierefreiheit und Textseiten",
+    "gruppe": "Weitere Seiten",
+    "pfad": "barrierefreiheit/",
+    "abschnitte": {
+      "melden": {
+        "titel": "Barrierefreiheit: Barriere melden",
+        "auch": [{ "text": "Der Text der Seiten Barrierefreiheit, Transparenz, Leichte Sprache", "ziel": "redaktion:seiten" }],
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Barrierefreiheit", "en": "Accessibility", "max": 40 },
+          "easy": { "wo": "Link zur Leichten Sprache", "de": "Infos in Leichter Sprache", "en": "Information in Leichte Sprache (easy German)", "max": 60 },
+          "h": { "wo": "Kasten: Überschrift", "de": "Barriere melden", "en": "Report a barrier", "max": 40 },
+          "p": { "wo": "Kasten: Text", "de": "Ist dir eine Barriere aufgefallen? Schreib uns, wir kümmern uns darum.", "en": "Have you found a barrier? Write to us and we will take care of it.", "max": 200 },
+          "mail": { "wo": "Kasten: Knopf", "de": "Barriere per E-Mail melden", "en": "Report a barrier by email", "max": 40 },
+          "subject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Barriere auf der Website", "en": "Barrier on the website", "max": 80 }
+        }
+      },
+      "textseiten": {
+        "titel": "Alle Textseiten (Transparenz, Barrierefreiheit, Leichte Sprache …)",
+        "texte": {
+          "contents": { "wo": "Überschrift des Inhaltsverzeichnisses", "de": "Inhalt", "en": "Contents", "max": 30 },
+          "updated": { "wo": "Vor dem Datum der letzten Änderung", "de": "Stand", "en": "Last updated", "max": 30 }
+        }
+      }
+    }
+  },
+  "fehler": {
+    "titel": "Seite nicht gefunden (404)",
+    "gruppe": "Selten gebraucht",
+    "pfad": "404.html",
+    "abschnitte": {
+      "seite": {
+        "titel": "Seite (zeigt Deutsch und Englisch nebeneinander)",
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile oben", "de": "Fehler 404", "en": "Error 404", "max": 30 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Hier reißt\ndas Netz.", "en": "The net\ntore here.", "max": 40 },
+          "text": { "wo": "Text", "de": "Diese Seite gibt es nicht (mehr).", "en": "This page does not exist (any more).", "max": 120 },
+          "home": { "wo": "Knopf", "de": "Zur Startseite", "en": "Go to homepage", "max": 30 },
+          "kalender": { "wo": "Link", "de": "Tanzkalender →", "en": "Dance calendar →", "max": 30 }
+        }
+      }
+    }
+  },
+  "ausweis": {
+    "titel": "Mitgliedsausweis prüfen",
+    "gruppe": "Selten gebraucht",
+    "pfad": "mitglied/pruefen/",
+    "abschnitte": {
+      "seite": {
+        "titel": "Seite hinter dem QR-Code auf dem Ausweis ({name} = Name der Person)",
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab", "de": "Mitgliedsausweis prüfen", "en": "", "max": 60 },
+          "desc": { "wo": "Beschreibung", "de": "Prüft, ob ein Mitgliedsausweis von TanzNetzDresden e.V. gültig ist.", "en": "", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitgliedsausweis", "en": "", "max": 40 },
+          "h1": { "wo": "Überschrift", "de": "Ausweis prüfen", "en": "", "max": 40 },
+          "laden": { "wo": "Während der Prüfung", "de": "Einen Moment, wir prüfen den Ausweis …", "en": "", "max": 80 },
+          "nummer": { "wo": "Angabe", "de": "Mitgliedsnummer", "en": "", "max": 30 },
+          "art": { "wo": "Angabe", "de": "Art", "en": "", "max": 30 },
+          "bis": { "wo": "Angabe", "de": "Gültig bis", "en": "", "max": 30 },
+          "gueltig": { "wo": "Status, wenn alles stimmt", "de": "Gültig", "en": "", "max": 30 },
+          "offen": { "wo": "Status, wenn der Beitrag offen ist", "de": "Beitrag offen", "en": "", "max": 30 },
+          "abgelaufen": { "wo": "Status, wenn die Mitgliedschaft beendet ist", "de": "Abgelaufen", "en": "", "max": 30 },
+          "textGueltig": { "wo": "Text bei „Gültig“", "de": "{name} ist Mitglied im TanzNetzDresden e.V. Der Beitrag für dieses Jahr ist bezahlt.", "en": "", "max": 200 },
+          "textOffen": { "wo": "Text bei „Beitrag offen“", "de": "{name} ist Mitglied, der Beitrag für dieses Jahr ist aber noch offen. Der Ausweis gilt erst mit bezahltem Beitrag.", "en": "", "max": 200 },
+          "textAbgelaufen": { "wo": "Text bei „Abgelaufen“", "de": "Die Mitgliedschaft von {name} ist beendet.", "en": "", "max": 200 },
+          "fehlt": { "wo": "Kein Ausweis zum Code: Status", "de": "Nicht gefunden", "en": "", "max": 40 },
+          "fehltText": { "wo": "Kein Ausweis zum Code: Text", "de": "Zu diesem Code gibt es keinen Mitgliedsausweis. Bitte scanne den Code auf der Rückseite des Ausweises erneut oder frag beim Vorstand nach.", "en": "", "max": 250 },
+          "fehler": { "wo": "Prüfung fehlgeschlagen: Status", "de": "Prüfung nicht möglich", "en": "", "max": 40 },
+          "fehlerText": { "wo": "Prüfung fehlgeschlagen: Text", "de": "Die Prüfung hat gerade nicht geklappt. Bitte versuch es gleich noch einmal.", "en": "", "max": 250 },
+          "weiter": { "wo": "Link unten", "de": "Selbst Mitglied werden →", "en": "", "max": 40 }
+        }
+      }
+    }
+  },
+  "rechtliches": {
+    "titel": "Rechtliches (nur Vorstand)",
+    "gruppe": "Selten gebraucht",
+    "pfad": "impressum/",
+    "nurVorstand": true,
+    "abschnitte": {
+      "impressum": {
+        "titel": "Impressum",
+        "auch": [{ "text": "Der Text von Impressum und Datenschutz", "ziel": "redaktion:seiten" }, { "text": "Adresse, Vereinsregister und Vertretung", "ziel": "redaktion:verein" }],
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift (auch Datenschutz)", "de": "Rechtliches", "en": "Legal", "max": 30 },
+          "h": { "wo": "Überschrift der Pflichtangaben", "de": "Angaben gemäß § 5 DDG", "en": "Information pursuant to § 5 DDG (German Digital Services Act)", "max": 100 },
+          "rep": { "wo": "Vor den Namen des Vorstands", "de": "Vertreten durch den Vorstand:", "en": "Represented by the board:", "max": 60 },
+          "reg": { "wo": "Vereinsregister: erste Zeile", "de": "Eingetragen im Vereinsregister", "en": "Registered in the register of associations", "max": 80 },
+          "court": { "wo": "Vereinsregister: Angabe", "de": "Registergericht", "en": "Register court", "max": 30 },
+          "no": { "wo": "Vereinsregister: Angabe", "de": "Registernummer", "en": "Register number", "max": 30 },
+          "contact": { "wo": "Überschrift Kontakt", "de": "Kontakt", "en": "Contact", "max": 30 },
+          "phone": { "wo": "Angabe", "de": "Telefon", "en": "Phone", "max": 20 },
+          "mail": { "wo": "Angabe", "de": "E-Mail", "en": "Email", "max": 20 },
+          "show": { "wo": "Knopf, der die E-Mail-Adresse zeigt", "de": "Adresse anzeigen", "en": "Show address", "max": 30 },
+          "resp": { "wo": "Überschrift Verantwortlich", "de": "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV", "en": "Responsible for content pursuant to § 18 (2) MStV", "max": 100 }
+        }
+      },
+      "datenschutz": {
+        "titel": "Datenschutz",
+        "texte": {
+          "h": { "wo": "Überschrift", "de": "Verantwortliche Stelle", "en": "Controller", "max": 60 },
+          "rep": { "wo": "Vor den Namen des Vorstands", "de": "Vertreten durch den Vorstand:", "en": "Represented by the board:", "max": 60 },
+          "cookies": { "wo": "Knopf neben dem Inhaltsverzeichnis", "de": "Cookie-Einstellungen", "en": "Cookie settings", "max": 30 },
+          "betreff": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Datenschutz", "en": "Data protection", "max": 80 }
+        }
+      },
+      "transparenz": {
+        "titel": "Transparenz",
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Verein", "en": "Association", "max": 30 },
+          "h1": { "wo": "Überschrift Stammdaten", "de": "Name, Sitz und Gründung", "en": "Name, registered office and founding", "max": 60 },
+          "founded": { "wo": "Satz zur Gründung ({jahr} = Gründungsjahr)", "de": "Gegründet {jahr} als Netzwerk, seit 2020 eingetragener Verein.", "en": "Founded in {jahr} as a network, registered association since 2020.", "max": 160 },
+          "reg": { "wo": "Angabe", "de": "Registergericht", "en": "Register court", "max": 30 },
+          "no": { "wo": "Angabe", "de": "Registernummer", "en": "Register number", "max": 30 },
+          "statutes": { "wo": "Link zur Satzung", "de": "Satzung (PDF)", "en": "Statutes (PDF, German)", "max": 40 },
+          "h2": { "wo": "Überschrift Entscheidungsträger:innen", "de": "Entscheidungsträger:innen", "en": "Decision-makers", "max": 60 },
+          "board": { "wo": "Satz vor der Liste des Vorstands", "de": "Der Vorstand (Koordinationsteam, gewählt 2026) leitet den Verein ehrenamtlich:", "en": "The board (coordination team, elected 2026) runs the association on a voluntary basis:", "max": 200 }
+        }
+      },
+      "spendennachweis": {
+        "titel": "Vereinfachter Spendennachweis (nur Deutsch)",
+        "auch": [{ "text": "Angaben zur Steuerbefreiung", "ziel": "redaktion:verein" }],
+        "texte": {
+          "titel": { "wo": "Titel im Browser-Tab und Überschrift", "de": "Vereinfachter Spendennachweis", "en": "", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen", "de": "Spendenbeleg für Spenden bis 300 € an TanzNetzDresden e.V. – zusammen mit dem Kontoauszug beim Finanzamt einreichen.", "en": "", "max": 160 },
+          "zurueck": { "wo": "Link oben", "de": "← Zurück zur Spendenseite", "en": "", "max": 40 },
+          "drucken": { "wo": "Knopf oben", "de": "Drucken oder als PDF speichern", "en": "", "max": 40 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Zuwendungsnachweis · bis 300 €", "en": "", "max": 40 },
+          "unter": { "wo": "Zeile unter der Überschrift", "de": "für Geldzuwendungen bis einschließlich 300 € nach § 50 Abs. 4 Satz 1 Nr. 2 EStDV", "en": "", "max": 120 },
+          "empfaenger": { "wo": "Überschrift", "de": "Zuwendungsempfänger", "en": "", "max": 40 },
+          "beguenstigung": { "wo": "Überschrift", "de": "Steuerbegünstigung", "en": "", "max": 40 },
+          "beguenstigungText": { "wo": "Text ({zweck}, {amt}, {steuernummer}, {datum}, {zeitraum} aus den Vereinsdaten → Steuerbefreiung)", "de": "Der Verein ist wegen {zweck} nach dem letzten zugegangenen Freistellungsbescheid ({amt}, Steuernummer {steuernummer}, vom {datum}) für den Veranlagungszeitraum {zeitraum} nach § 5 Abs. 1 Nr. 9 des Körperschaftsteuergesetzes von der Körperschaftsteuer und nach § 3 Nr. 6 des Gewerbesteuergesetzes von der Gewerbesteuer befreit.", "en": "", "max": 600 },
+          "verwendung": { "wo": "Überschrift", "de": "Verwendung", "en": "", "max": 40 },
+          "verwendungText": { "wo": "Text", "de": "Die Zuwendung wird ausschließlich für die genannten steuerbegünstigten Zwecke verwendet.", "en": "", "max": 300 },
+          "art": { "wo": "Überschrift", "de": "Art der Zuwendung", "en": "", "max": 40 },
+          "artText": { "wo": "Text", "de": "Es handelt sich um eine Spende. Dieser Nachweis gilt nicht für Mitgliedsbeiträge.", "en": "", "max": 300 },
+          "so": { "wo": "Kasten: Überschrift", "de": "So nutzt du den Nachweis", "en": "", "max": 60 },
+          "schritte": { "wo": "Kasten: drei Schritte, je eine Zeile", "zeilen": 3, "de": "Diesen Nachweis ausdrucken oder als PDF speichern.\nZusammen mit dem Kontoauszug, der Lastschrift- oder Online-Banking-Bestätigung aufbewahren. Darauf müssen Name und Kontonummer von dir und uns, Betrag und Buchungstag stehen.\nAuf Nachfrage des Finanzamts beides vorlegen.", "en": "", "max": 600 },
+          "ueber300": { "wo": "Kasten: letzter Satz", "de": "Für Spenden über 300 € stellen wir eine Zuwendungsbestätigung nach amtlichem Muster aus.", "en": "", "max": 200 }
         }
       }
     }

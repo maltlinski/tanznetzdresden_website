@@ -19,12 +19,21 @@ export interface TextEintrag {
 }
 export interface TextAbschnitt {
   titel: string;
+  /**
+   * Was zu diesem Abschnitt anderswo gepflegt wird: Link in der Redaktion.
+   * `ziel`: „redaktion:<bereich>“ (Website-Inhalte) oder ein Pfad im internen Bereich, z. B. „intern/kalender/“
+   */
+  auch?: { text: string; ziel: string }[];
   texte: Record<string, TextEintrag>;
 }
 export interface TextSeite {
   titel: string;
+  /** Gruppe in der Seitenliste der Redaktion (Auf jeder Seite, Seiten im Menü …) */
+  gruppe: string;
   /** Adresse der Seite ohne Sprache und Basis-Pfad ('' = Startseite) */
   pfad: string;
+  /** nur Vorstand und Admin ändern diese Seite (Rechtliches; geprüft auch in der Funktion „inhalte“) */
+  nurVorstand?: boolean;
   abschnitte: Record<string, TextAbschnitt>;
 }
 
@@ -89,9 +98,11 @@ export function alleTexte(datei: Record<string, unknown>) {
  */
 export function dateiText(datei: Record<string, unknown>): string {
   const eine = (v: unknown): string =>
-    v && typeof v === 'object' && !Array.isArray(v)
-      ? `{ ${Object.entries(v).map(([k, x]) => `${JSON.stringify(k)}: ${eine(x)}`).join(', ')} }`
-      : JSON.stringify(v);
+    Array.isArray(v)
+      ? `[${v.map(eine).join(', ')}]`
+      : v && typeof v === 'object'
+        ? `{ ${Object.entries(v).map(([k, x]) => `${JSON.stringify(k)}: ${eine(x)}`).join(', ')} }`
+        : JSON.stringify(v);
   const block = (v: unknown, tiefe: number): string => {
     if (!v || typeof v !== 'object' || Array.isArray(v) || 'wo' in v) return eine(v);
     const ein = '  '.repeat(tiefe + 1);

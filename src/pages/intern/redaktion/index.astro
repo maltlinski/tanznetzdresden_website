@@ -16,8 +16,8 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
     <div>
       <h1 class="i-h1">Website-Inhalte</h1>
       <p class="i-lead">
-        Hier pflegst du die Website: Termine, News, Formate, Profitraining, Personen, Partner und Texte und gibst
-        Mitgliederprofile frei. Was du
+        Hier pflegst du die Website: die Texte der Seiten, dazu Termine, Formate, Profitraining, Personen, Partner und
+        Vereinsdaten, und du gibst Mitgliederprofile frei. Was du
         speicherst, ist nach 2–3 Minuten online. Jede Änderung wird mit deinem Namen festgehalten und lässt sich
         zurückholen.
       </p>
@@ -33,6 +33,23 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
   <p class="i-hint" data-loading hidden>Inhalte werden geladen …</p>
 
   <div data-access hidden>
+    <section class="r-gruppe" aria-labelledby="g-texte">
+      <h2 class="r-gruppe__h" id="g-texte">Texte der Website</h2>
+      <ul class="r-tiles">
+        <li>
+          <a href={href('intern/redaktion/texte/')}>
+            <strong>Texte</strong>
+            <span>Alle Überschriften, Knöpfe und Hinweise, Seite für Seite, Deutsch und Englisch.</span>
+          </a>
+        </li>
+        <li>
+          <a href={href('intern/redaktion/texte/textbuch/')}>
+            <strong>Textbuch</strong>
+            <span>Alle Texte am Stück zum Durchlesen, Abstimmen und Drucken.</span>
+          </a>
+        </li>
+      </ul>
+    </section>
     {gruppen.map((g, gi) => (
       <section class="r-gruppe" aria-labelledby={`g-${gi}`}>
         <h2 class="r-gruppe__h" id={`g-${gi}`}>{g}</h2>
@@ -42,14 +59,6 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
               <a href={href('intern/redaktion/freigaben/')}>
                 <strong>Freigaben<span class="r-tiles__n" data-freigaben-n></span></strong>
                 <span>Profile und Fotos, die Mitglieder selbst pflegen, für die Website freigeben.</span>
-              </a>
-            </li>
-          )}
-          {g === 'Startseite & Verein' && (
-            <li>
-              <a href={href('intern/redaktion/texte/')}>
-                <strong>Texte</strong>
-                <span>Überschriften, Knöpfe und Hinweise der Website, Deutsch und Englisch.</span>
               </a>
             </li>
           )}

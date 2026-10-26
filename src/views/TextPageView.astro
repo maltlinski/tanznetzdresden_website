@@ -9,6 +9,7 @@ import Page from '../layouts/Page.astro';
 import PageIntro from '../components/PageIntro.astro';
 import Prose from '../components/Prose.astro';
 import { getLang, tr, type RouteKey } from '../lib/i18n';
+import { texte } from '../lib/texte';
 
 interface Props {
   id: string;
@@ -25,10 +26,10 @@ const translated = lang === 'en' ? await getEntry('seiten', `en/${id}`) : undefi
 const entry = translated ?? (await getEntry('seiten', id));
 if (!entry) throw new Error(`src/content/seiten/${id}.md fehlt`);
 const { Content, headings } = await render(entry);
-const t = tr(lang, {
-  de: { contents: 'Inhalt', updated: 'Stand', fallback: '' },
-  en: { contents: 'Contents', updated: 'Last updated', fallback: 'This page is only available in German.' },
-});
+const t = {
+  ...texte(lang, 'barrierefreiheit', 'textseiten'),
+  ...tr(lang, { de: { fallback: '' }, en: { fallback: 'This page is only available in German.' } }),
+};
 const dateFmt = lang === 'en' ? 'en-GB' : 'de-DE';
 const tocItems = [...tocExtra, ...headings.filter((h) => h.depth === 2).map((h) => ({ slug: h.slug, text: h.text }))];
 ---

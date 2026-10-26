@@ -11,6 +11,7 @@
 import { Image } from 'astro:assets';
 import Tag from '../ui/Tag.astro';
 import { getLang, tr } from '../../lib/i18n';
+import { texte } from '../../lib/texte';
 import type { Dozentin } from '../../lib/keep-up';
 import { keepUp, mosaikTempo } from '../../settings/keep-up';
 
@@ -20,10 +21,10 @@ interface Props {
 const { dozentinnen } = Astro.props;
 const lang = getLang(Astro);
 const s = keepUp[lang];
-const t = tr(lang, {
-  de: { kicker: 'Dozent:innen', h: 'Wer unterrichtet', toCal: 'Termine im Kalender', pause: 'Anhalten', play: 'Weiterlaufen' },
-  en: { kicker: 'Teachers', h: 'Who teaches', toCal: 'dates in the calendar', pause: 'Pause', play: 'Play' },
-});
+const t = {
+  ...texte(lang, 'profitraining', 'dozentinnen'),
+  ...tr(lang, { de: { toCal: 'Termine im Kalender' }, en: { toCal: 'dates in the calendar' } }),
+};
 
 // Spalten: eine oder zwei Kacheln übereinander, jede Spalte etwas versetzt (wie im Entwurf)
 const MUSTER = [1, 2, 1, 2, 2, 1];

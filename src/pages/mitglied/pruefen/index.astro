@@ -7,32 +7,37 @@
 import Page from '../../../layouts/Page.astro';
 import PageIntro from '../../../components/PageIntro.astro';
 import { url } from '../../../lib/i18n';
+import { texte } from '../../../lib/texte';
+
+const t = texte('de', 'ausweis', 'seite');
+// Texte für das Ergebnis (setzt das Skript ein)
+const ergebnis = { gueltig: t.gueltig, offen: t.offen, abgelaufen: t.abgelaufen, textGueltig: t.textGueltig, textOffen: t.textOffen, textAbgelaufen: t.textAbgelaufen };
 ---
-<Page title="Mitgliedsausweis prüfen" description="Prüft, ob ein Mitgliedsausweis von TanzNetzDresden e.V. gültig ist." route="ausweisPruefen" noindex>
-  <PageIntro kicker="Mitgliedsausweis" title="Ausweis prüfen" kompakt />
+<Page title={t.title} description={t.desc} route="ausweisPruefen" noindex>
+  <PageIntro kicker={t.kicker} title={t.h1} kompakt />
   <section class="section">
     <div class="wrap">
-      <div class="pr" data-pruefen data-ergebnis="laden" aria-live="polite">
-        <p class="pr__laden" data-zeige="laden">Einen Moment, wir prüfen den Ausweis …</p>
+      <div class="pr" data-pruefen data-texte={JSON.stringify(ergebnis)} data-ergebnis="laden" aria-live="polite">
+        <p class="pr__laden" data-zeige="laden">{t.laden}</p>
         <div class="pr__karte" data-zeige="treffer">
           <span class="pr__status" data-pr-status></span>
           <h2 class="pr__name" data-pr-name></h2>
           <dl class="pr__daten">
-            <div><dt>Mitgliedsnummer</dt><dd data-pr-nummer></dd></div>
-            <div><dt>Art</dt><dd data-pr-art></dd></div>
-            <div><dt>Gültig bis</dt><dd data-pr-bis></dd></div>
+            <div><dt>{t.nummer}</dt><dd data-pr-nummer></dd></div>
+            <div><dt>{t.art}</dt><dd data-pr-art></dd></div>
+            <div><dt>{t.bis}</dt><dd data-pr-bis></dd></div>
           </dl>
           <p class="pr__text" data-pr-text></p>
         </div>
         <div class="pr__karte pr__karte--leer" data-zeige="fehlt">
-          <span class="pr__status pr__status--nein">Nicht gefunden</span>
-          <p class="pr__text">Zu diesem Code gibt es keinen Mitgliedsausweis. Bitte scanne den Code auf der Rückseite des Ausweises erneut oder frag beim Vorstand nach.</p>
+          <span class="pr__status pr__status--nein">{t.fehlt}</span>
+          <p class="pr__text">{t.fehltText}</p>
         </div>
         <div class="pr__karte pr__karte--leer" data-zeige="fehler">
-          <span class="pr__status pr__status--nein">Prüfung nicht möglich</span>
-          <p class="pr__text">Die Prüfung hat gerade nicht geklappt. Bitte versuch es gleich noch einmal.</p>
+          <span class="pr__status pr__status--nein">{t.fehler}</span>
+          <p class="pr__text">{t.fehlerText}</p>
         </div>
-        <a class="mono-link pr__weiter" href={url('de', 'mitglied')}>Selbst Mitglied werden →</a>
+        <a class="mono-link pr__weiter" href={url('de', 'mitglied')}>{t.weiter}</a>
       </div>
     </div>
   </section>
@@ -44,6 +49,8 @@ import { url } from '../../../lib/i18n';
 
   const root = document.querySelector<HTMLElement>('[data-pruefen]')!;
   const setzen = (s: string, t: string) => (root.querySelector<HTMLElement>(s)!.textContent = t);
+  const tx = JSON.parse(root.dataset.texte ?? '{}') as Record<string, string>;
+  const mitName = (s: string, name: string) => s.replace(/\{name\}/g, name);
   const code = new URLSearchParams(location.search).get('c') ?? '';
   const sb = getSupabase();
 
@@ -55,7 +62,7 @@ import { url } from '../../../lib/i18n';
     if (error) root.dataset.ergebnis = 'fehler';
     else if (!z) root.dataset.ergebnis = 'fehlt';
     else {
-      const st = { aktiv: 'Gültig', offen: 'Beitrag offen', abgelaufen: 'Abgelaufen' }[z.status] ?? z.status;
+      const st = { aktiv: tx.gueltig, offen: tx.offen, abgelaufen: tx.abgelaufen }[z.status] ?? z.status;
       setzen('[data-pr-status]', st);
       root.querySelector('[data-pr-status]')!.classList.toggle('pr__status--nein', z.status !== 'aktiv');
       setzen('[data-pr-name]', z.name);
@@ -63,9 +70,9 @@ import { url } from '../../../lib/i18n';
       setzen('[data-pr-art]', z.art);
       setzen('[data-pr-bis]', z.gueltig_bis ? kurz(z.gueltig_bis) : '–');
       setzen('[data-pr-text]', {
-        aktiv: `${z.name} ist Mitglied im TanzNetzDresden e.V. Der Beitrag für dieses Jahr ist bezahlt.`,
-        offen: `${z.name} ist Mitglied, der Beitrag für dieses Jahr ist aber noch offen. Der Ausweis gilt erst mit bezahltem Beitrag.`,
-        abgelaufen: `Die Mitgliedschaft von ${z.name} ist beendet.`,
+        aktiv: mitName(tx.textGueltig, z.name),
+        offen: mitName(tx.textOffen, z.name),
+        abgelaufen: mitName(tx.textAbgelaufen, z.name),
       }[z.status] ?? '');
       root.dataset.ergebnis = 'treffer';
     }

@@ -9,10 +9,14 @@
 import { Image } from 'astro:assets';
 import { getVerein } from '../lib/settings';
 import { getLang, tr } from '../lib/i18n';
+import { texte } from '../lib/texte';
 
 const lang = getLang(Astro);
 const v = getVerein(lang);
-const t = tr(lang, { de: { heading: 'Gefördert durch', newTab: 'öffnet in neuem Tab' }, en: { heading: 'Funded by', newTab: 'opens in a new tab' } });
+const t = {
+  heading: texte(lang, 'allgemein', 'foerderung').heading,
+  ...tr(lang, { de: { newTab: 'öffnet in neuem Tab' }, en: { newTab: 'opens in a new tab' } }),
+};
 
 const logoFiles = import.meta.glob<{ default: ImageMetadata }>('../assets/foerderer/*.{svg,png,jpg,jpeg,webp}', { eager: true });
 const logoFor = (file: string) => (file ? logoFiles[`../assets/foerderer/${file}`]?.default : undefined);

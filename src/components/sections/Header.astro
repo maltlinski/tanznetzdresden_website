@@ -3,6 +3,7 @@ import Logo from '../ui/Logo.astro';
 import Button from '../ui/Button.astro';
 import type { Alternates } from '../../layouts/Base.astro';
 import { getLang, langNames, tr, url } from '../../lib/i18n';
+import { texte } from '../../lib/texte';
 
 interface Props {
   alternates?: Alternates;
@@ -13,10 +14,14 @@ const { alternates = {}, fortschritt = false } = Astro.props;
 const lang = getLang(Astro);
 const other = lang === 'de' ? 'en' : 'de';
 const otherUrl = alternates[other] ?? url(other, 'home');
-const t = tr(lang, {
-  de: { home: 'TanzNetzDresden – zur Startseite', menu: 'Menü', mainNav: 'Hauptnavigation', intern: 'Login', internBereich: 'Interner Bereich', join: 'Mitglied werden', calendar: 'Kalender', news: 'News', formats: 'Formate', training: 'Training', about: 'Über uns', donate: 'Spenden', switchTo: 'Switch to English' },
-  en: { home: 'TanzNetzDresden – home', menu: 'Menu', mainNav: 'Main navigation', intern: 'Login', internBereich: 'Members area', join: 'Become a member', calendar: 'Calendar', news: 'News', formats: 'Formats', training: 'Training', about: 'About', donate: 'Donate', switchTo: 'Auf Deutsch wechseln' },
-});
+// Texte: Redaktion → Texte (settings/texte.json); hier nur Beschriftungen für Screenreader
+const t = {
+  ...texte(lang, 'allgemein', 'kopf'),
+  ...tr(lang, {
+    de: { home: 'TanzNetzDresden – zur Startseite', mainNav: 'Hauptnavigation', switchTo: 'Switch to English' },
+    en: { home: 'TanzNetzDresden – home', mainNav: 'Main navigation', switchTo: 'Auf Deutsch wechseln' },
+  }),
+};
 // Reihenfolge wie im Entwurf Startseite v5 (+ Spenden aus dem Spenden-Entwurf); das Netzwerk steht unter „Über uns“
 const nav = [
   { href: url(lang, 'termine'), label: t.calendar },

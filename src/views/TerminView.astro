@@ -13,7 +13,8 @@ import { getProfile } from '../lib/profiles';
 import { renderMarkdown } from '../lib/markdown';
 import { getVerein } from '../lib/settings';
 import { href } from '../lib/url';
-import { getLang, loc, tr, url } from '../lib/i18n';
+import { getLang, loc, url } from '../lib/i18n';
+import { texte } from '../lib/texte';
 
 interface Props {
   termin: Termin;
@@ -34,18 +35,7 @@ const post = d.news ? (await getNews(lang)).find((p) => p.id === d.news) : undef
 const more = (await getUpcoming()).filter((t) => t.id !== termin.id).slice(0, 3);
 const end = (d.end ?? d.start).replace(' ', 'T');
 
-const t = tr(lang, {
-  de: {
-    back: '← Ganzer Kalender', when: 'Wann', where: 'Wo', what: 'Was', people: 'Mit', ics: 'In meinen Kalender (.ics)',
-    link: 'Tickets & Anmeldung', post: 'Mehr dazu in den News', read: 'Beitrag lesen →', past: 'Dieser Termin ist vorbei.',
-    more: 'Tanzkalender', moreH: 'Weitere Termine', all: 'Ganzer Kalender →',
-  },
-  en: {
-    back: '← Full calendar', when: 'When', where: 'Where', what: 'What', people: 'With', ics: 'Add to my calendar (.ics)',
-    link: 'Tickets & registration', post: 'More in the news', read: 'Read the post →', past: 'This event has already taken place.',
-    more: 'Dance calendar', moreH: 'More events', all: 'Full calendar →',
-  },
-});
+const t = texte(lang, 'termine', 'termin');
 const pageUrl = new URL(url(lang, 'termine', `${termin.id}/`), Astro.site).href;
 const jsonLd = {
   '@context': 'https://schema.org',

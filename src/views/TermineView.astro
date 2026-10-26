@@ -7,23 +7,13 @@ import { badgeVariant, categoryLabel, eventCategories, getUpcoming } from '../li
 import { getTanzkalender } from '../lib/kalender';
 import { href } from '../lib/url';
 import { getLang, tr, url } from '../lib/i18n';
+import { texte, zeilen } from '../lib/texte';
 
 const lang = getLang(Astro);
 const { days, months } = await getTanzkalender(lang);
-const t = tr(lang, {
-  de: {
-    title: 'Tanzkalender', desc: 'Alle Termine der freien Tanzszene Dresden: Bühne, Training und Diskurs, dazu das Profitraining KEEP UP.',
-    kicker: 'Tanzkalender', h1: 'Was läuft', accent: 'im Netz.',
-    lead: 'Aufführungen, Training und Gespräche aus dem Netzwerk, dazu jeder Tag Profitraining. Abonniere den Kalender, dann landen neue Termine automatisch in deiner Kalender-App.',
-    ics: 'Kalender abonnieren (.ics)', submit: 'Termin einreichen →', calKicker: 'Monat für Monat', h2: 'Kalender', filter: 'Nach Kategorie filtern',
-  },
-  en: {
-    title: 'Dance calendar', desc: "All events of Dresden's independent dance scene: stage, training and discourse, plus the KEEP UP professional training.",
-    kicker: 'Dance calendar', h1: "What's on", accent: 'in the network.',
-    lead: 'Performances, training and talks from the network, plus every day of professional training. Subscribe to the calendar and new events appear in your calendar app automatically.',
-    ics: 'Subscribe to calendar (.ics)', submit: 'Submit an event →', calKicker: 'Month by month', h2: 'Calendar', filter: 'Filter by category',
-  },
-});
+const k = texte(lang, 'termine', 'kopf');
+const [h1, accent] = zeilen(k.titel);
+const t = { ...k, h1, accent, ...tr(lang, { de: { filter: 'Nach Kategorie filtern' }, en: { filter: 'Filter by category' } }) };
 ---
 <Page title={t.title} description={t.desc} route="termine">
   <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead}>

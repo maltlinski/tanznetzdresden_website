@@ -4,7 +4,8 @@ import { Image } from 'astro:assets';
 import Tag from '../ui/Tag.astro';
 import KeilBar from '../ui/KeilBar.astro';
 import { getVerein } from '../../lib/settings';
-import { getLang, tr, url } from '../../lib/i18n';
+import { getLang, url } from '../../lib/i18n';
+import { texte } from '../../lib/texte';
 import { haltung, haltungFoto } from '../../settings/haltung';
 
 const lang = getLang(Astro);
@@ -13,10 +14,7 @@ const h = haltung[lang];
 const files = import.meta.glob<{ default: ImageMetadata }>('../../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
 const foto = files[`../../assets/photos/${haltungFoto.datei}`];
 if (!foto) throw new Error(`src/settings/haltung.ts: Foto „${haltungFoto.datei}“ fehlt in src/assets/photos/`);
-const t = tr(lang, {
-  de: { awards: 'Ausgezeichnet mit', with: 'Gemeinsam mit', all: 'Alle Partner →' },
-  en: { awards: 'Awarded', with: 'Together with', all: 'All partners →' },
-});
+const t = texte(lang, 'verein', 'haltung');
 ---
 <section id="haltung" class="haltung" aria-labelledby="haltung-h">
   <KeilBar color="var(--cyan)" flip class="haltung__keil" />

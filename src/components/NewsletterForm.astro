@@ -7,31 +7,15 @@
  */
 import { verein } from '../lib/settings';
 import { protectEmail } from '../lib/protect-email';
-import { getLang, tr, url } from '../lib/i18n';
+import { getLang, url } from '../lib/i18n';
+import { texte } from '../lib/texte';
 
 const lang = getLang(Astro);
-const t = tr(lang, {
-  de: {
-    email: 'E-Mail', placeholder: 'name@beispiel.de', submit: 'Anmelden',
-    consent1: 'Ich möchte den Newsletter erhalten und habe die', privacy: 'Datenschutzerklärung', consent2: 'gelesen. Abmeldung jederzeit möglich.',
-    msgs: {
-      invalid: 'Bitte gib eine gültige E-Mail-Adresse ein.', consent: 'Bitte bestätige die Einwilligung.',
-      failed: 'Die Anmeldung hat nicht geklappt. Bitte versuche es später noch einmal.',
-      done: 'Danke. Bitte bestätige deine Anmeldung über den Link in deinem Postfach.',
-      mail: 'Fast geschafft: Bitte sende die vorbereitete E-Mail ab.', subject: 'Newsletter-Anmeldung', body: 'Bitte nehmt {email} in den Newsletter auf.',
-    },
-  },
-  en: {
-    email: 'Email', placeholder: 'name@example.org', submit: 'Subscribe',
-    consent1: 'I would like to receive the newsletter and have read the', privacy: 'privacy policy', consent2: '. I can unsubscribe at any time.',
-    msgs: {
-      invalid: 'Please enter a valid email address.', consent: 'Please confirm your consent.',
-      failed: 'The sign-up did not work. Please try again later.',
-      done: 'Thank you. Please confirm your subscription via the link in your inbox.',
-      mail: 'Almost done: please send the prepared email.', subject: 'Newsletter sign-up', body: 'Please add {email} to the newsletter.',
-    },
-  },
-});
+const nl = texte(lang, 'allgemein', 'newsletter');
+const t = {
+  email: nl.email, placeholder: nl.placeholder, submit: nl.submit, consent1: nl.consent1, privacy: nl.privacy, consent2: nl.consent2,
+  msgs: { invalid: nl.invalid, consent: nl.consent, failed: nl.failed, done: nl.done, mail: nl.mail, subject: nl.subject, body: nl.body },
+};
 
 const action = verein.newsletter.action;
 const fallback = action ? null : await protectEmail(verein.emails.kontakt);

@@ -33,18 +33,18 @@ const t = {
   kicker: kopf.kicker, member: kopf.mitglied, trainer: kopf.training, board: kopf.vorstand, back: kopf.zurueck,
   request: kopf.anfrage, requestShort: leiste.anfrage, showreel: kopf.showreel, scroll: kopf.scrollen, photo: kopf.foto,
   pitchNav: leiste.pitch, gallery: leiste.galerie, aboutNav: leiste.ueber, works: leiste.arbeiten, events: leiste.termine, contact: leiste.kontakt,
-  pitch: inhalt.pitch, galleryH: zeilen(inhalt.galerie), photos: inhalt.bilder, full: inhalt.vollbild, allFull: inhalt.alleVollbild,
+  pitch: inhalt.pitch, galleryH: zeilen(inhalt.galerie), photos: inhalt.bilder, full: inhalt.vollbild, allFull: inhalt.alleVollbild, close: inhalt.schliessen,
   about: (n: string) => fuellen(inhalt.ueber, { name: n }), soon: inhalt.bald, focus: inhalt.schwerpunkte, base: inhalt.basis,
   website: inhalt.website, video: inhalt.video, worksH: zeilen(inhalt.arbeiten), entries: inhalt.eintraege, eventsH: inhalt.termine,
   contactH: (n: string) => zeilen(fuellen(kontakt.titel, { name: n })), email: kontakt.email, showEmail: kontakt.zeigen,
   subject: kontakt.betreff, body: (n: string) => fuellen(kontakt.mail, { name: n }), edit: kontakt.eigenes, editCta: kontakt.eigenesLink,
   ...tr(lang, {
     de: {
-      sections: 'Abschnitte', open: 'Offen für', lightbox: 'Fotos', close: 'Schließen', prev: 'Vorheriges Foto', next: 'Nächstes Foto',
+      sections: 'Abschnitte', open: 'Offen für', lightbox: 'Fotos', prev: 'Vorheriges Foto', next: 'Nächstes Foto',
       zoom: (nr: string) => `Foto ${nr} vergrößern`, portrait: (n: string) => `Porträt von ${n}`,
     },
     en: {
-      sections: 'Sections', open: 'Open to', lightbox: 'Photos', close: 'Close', prev: 'Previous photo', next: 'Next photo',
+      sections: 'Sections', open: 'Open to', lightbox: 'Photos', prev: 'Previous photo', next: 'Next photo',
       zoom: (nr: string) => `Enlarge photo ${nr}`, portrait: (n: string) => `Portrait of ${n}`,
     },
   }),

@@ -2,22 +2,14 @@
 import TextPageView from './TextPageView.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
 import { getVerein } from '../lib/settings';
-import { getLang, tr } from '../lib/i18n';
+import { getLang } from '../lib/i18n';
+import { texte } from '../lib/texte';
 
 const lang = getLang(Astro);
 const v = getVerein(lang);
 const a = v.address;
 const r = v.register;
-const t = tr(lang, {
-  de: {
-    kicker: 'Rechtliches', h: 'Angaben gemäß § 5 DDG', rep: 'Vertreten durch den Vorstand:', reg: 'Eingetragen im Vereinsregister', court: 'Registergericht', no: 'Registernummer',
-    contact: 'Kontakt', phone: 'Telefon', mail: 'E-Mail', show: 'Adresse anzeigen', resp: 'Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV',
-  },
-  en: {
-    kicker: 'Legal', h: 'Information pursuant to § 5 DDG (German Digital Services Act)', rep: 'Represented by the board:', reg: 'Registered in the register of associations', court: 'Register court', no: 'Register number',
-    contact: 'Contact', phone: 'Phone', mail: 'Email', show: 'Show address', resp: 'Responsible for content pursuant to § 18 (2) MStV',
-  },
-});
+const t = texte(lang, 'rechtliches', 'impressum');
 ---
 <TextPageView id="impressum" route="impressum" kicker={t.kicker}>
   <Fragment slot="before">

@@ -59,6 +59,8 @@ const VEREIN_GESCHUETZT = [
   'donation.accountHolder', 'donation.iban', 'donation.bic', 'donation.bank', 'donation.onlineUrl', 'donation.onlineProvider',
   'en.register',
 ];
+/** Feste Texte der Website: Seiten mit "nurVorstand" (Rechtliches) ändert nur der Vorstand */
+const TEXTE = 'src/settings/texte.json';
 const MAX_TEXT = 300_000;
 const MAX_DATEI = 8_000_000;
 const MAX_AENDERUNGEN = 60;
@@ -140,6 +142,15 @@ export function vereinPruefen(alt: string, neu: string): string | null {
   const n = JSON.parse(neu);
   const geaendert = VEREIN_GESCHUETZT.filter((p) => JSON.stringify(holen(a, p)) !== JSON.stringify(holen(n, p)));
   return geaendert.length ? `Diese Angaben ändert nur der Vorstand: ${geaendert.join(', ')}.` : null;
+}
+
+/** texte.json: Seiten mit „nurVorstand“ (vorher oder nachher) müssen gleich bleiben */
+export function textePruefen(alt: string, neu: string): string | null {
+  const a = JSON.parse(alt) as Record<string, { titel?: string; nurVorstand?: boolean }>;
+  const n = JSON.parse(neu) as Record<string, { titel?: string; nurVorstand?: boolean }>;
+  const geschuetzt = [...new Set([...Object.keys(a), ...Object.keys(n)])].filter((k) => a[k]?.nurVorstand || n[k]?.nurVorstand);
+  const geaendert = geschuetzt.filter((k) => JSON.stringify(a[k]) !== JSON.stringify(n[k]));
+  return geaendert.length ? `Diese Texte ändert nur der Vorstand: ${geaendert.map((k) => a[k]?.titel ?? k).join(', ')}.` : null;
 }
 
 function github(env: Env, f: typeof fetch) {
@@ -260,6 +271,14 @@ async function speichern(gh: ReturnType<typeof github>, env: Env, wer: Person, b
       const altSha = stand.dateien.get(VEREIN)?.sha;
       const alt = altSha ? b64.decode((await gh<{ content: string }>(`/git/blobs/${altSha}`)).content) : '{}';
       const f = vereinPruefen(alt, verein.text!);
+      if (f) throw new Fehler(403, f);
+    }
+    const texte = aenderungen.find((a) => a.pfad === TEXTE);
+    if (texte && !vorstand) {
+      if (texte.loeschen) throw new Fehler(403, 'Die Texte kann man nicht löschen.');
+      const altSha = stand.dateien.get(TEXTE)?.sha;
+      const alt = altSha ? b64.decode((await gh<{ content: string }>(`/git/blobs/${altSha}`)).content) : '{}';
+      const f = textePruefen(alt, texte.text!);
       if (f) throw new Fehler(403, f);
     }
 

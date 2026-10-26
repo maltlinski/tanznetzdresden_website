@@ -47,6 +47,10 @@ import '../../../../styles/redaktion.css';
       <nav class="tx-seiten" aria-label="Seiten der Website">
         <ul data-seiten></ul>
       </nav>
+      <div class="tx-wahl i-field">
+        <label for="tx-wahl">Seite der Website</label>
+        <select id="tx-wahl" data-seiten-wahl></select>
+      </div>
       <div class="tx-inhalt" data-inhalt></div>
     </div>
 
@@ -62,16 +66,18 @@ import '../../../../styles/redaktion.css';
 
 <script>
   import { h } from '../../../../scripts/intern/news/dom';
-  import { $, meldung, starten, statusAnzeigen, websiteUrl } from '../../../../scripts/intern/redaktion/seite';
-  import { alleTexte, dateiText, platzhalter, textId, textPruefen, uebernehmen, type TextEintrag } from '../../../../lib/texte-regeln';
+  import { $, meldung, redaktionUrl, starten, statusAnzeigen, websiteUrl } from '../../../../scripts/intern/redaktion/seite';
+  import { bereich } from '../../../../scripts/intern/redaktion/bereiche';
+  import { alleTexte, dateiText, platzhalter, textId, textPruefen, uebernehmen, type TextEintrag, type TextSeite } from '../../../../lib/texte-regeln';
 
   const PFAD = 'src/settings/texte.json';
   type Filter = 'alle' | 'englisch' | 'geaendert';
-  interface Feld { id: string; e: TextEintrag; seite: string; de: HTMLTextAreaElement; en: HTMLTextAreaElement; karte: HTMLElement; englischPasst: boolean }
+  interface Feld { id: string; e: TextEintrag; seite: string; de: HTMLTextAreaElement; en: HTMLTextAreaElement; karte: HTMLElement; englischPasst: boolean; gesperrt: boolean }
 
   const r = await starten();
   if (r) {
     statusAnzeigen(r, $('[data-website-status]'));
+    const vorstand = r.vorstand;
     let sha: string | null = null;
     let datei: Record<string, unknown> = {};
     let felder: Feld[] = [];
@@ -79,6 +85,8 @@ import '../../../../styles/redaktion.css';
     let filter: Filter = 'alle';
     const inhalt = $('[data-inhalt]')!;
     const seitenListe = $('[data-seiten]')!;
+    const seitenWahl = $<HTMLSelectElement>('[data-seiten-wahl]')!;
+    seitenWahl.addEventListener('change', () => waehlen(seitenWahl.value));
     const suche = $<HTMLInputElement>('[data-suche]')!;
     const bar = $('[data-bar]')!;
     const speichernBtn = $<HTMLButtonElement>('[data-speichern]')!;
@@ -91,7 +99,18 @@ import '../../../../styles/redaktion.css';
       datei = JSON.parse(d.text) as Record<string, unknown>;
     };
 
-    const seiten = () => Object.entries(datei).filter(([k]) => !k.startsWith('_')) as [string, { titel: string; pfad: string }][];
+    const seiten = () => Object.entries(datei).filter(([k]) => !k.startsWith('_')) as [string, TextSeite][];
+    const abschnittId = (s: string, a: string) => `abschnitt-${s}-${a}`;
+    /** „redaktion:<bereich>“ → Website-Inhalte, sonst Pfad im internen Bereich */
+    const zielUrl = (ziel: string) => {
+      if (!ziel.startsWith('redaktion:')) return websiteUrl(ziel);
+      const b = bereich(ziel.slice(10));
+      return !b ? redaktionUrl() : b.art === 'einstellung' ? redaktionUrl('eintrag/', { b: b.id }) : redaktionUrl('liste/', { b: b.id });
+    };
+    const zielName = (ziel: string) => {
+      if (!ziel.startsWith('redaktion:')) return ({ 'intern/kalender/': 'Kalender', 'intern/news/': 'Beiträge', 'intern/redaktion/freigaben/': 'Freigaben' } as Record<string, string>)[ziel] ?? 'Interner Bereich';
+      return `Website-Inhalte → ${bereich(ziel.slice(10))?.label ?? ''}`;
+    };
     const geaendert = (f: Feld) => f.de.value !== f.e.de || f.en.value !== f.e.en || (f.englischPasst && !!f.e.enPruefen);
     const offen = () => felder.filter(geaendert);
 
@@ -121,15 +140,21 @@ import '../../../../styles/redaktion.css';
       $('[data-n="geaendert"]')!.textContent = nG ? `(${nG})` : '';
     }
 
+    /** Feld so hoch wie sein Text (nur sichtbare Felder haben eine Höhe) */
+    const hoehe = (ta: HTMLTextAreaElement) => {
+      if (!ta.offsetParent) return;
+      ta.style.height = 'auto';
+      ta.style.height = `${ta.scrollHeight + 3}px`;
+    };
     const zeilenZahl = (e: TextEintrag, text: string) => Math.max(e.zeilen ?? 1, Math.min(8, Math.ceil(text.length / 60) + (text.match(/\n/g)?.length ?? 0)));
 
-    function karte(seiteId: string, abschnitt: string, key: string, e: TextEintrag): Feld {
+    function karte(seiteId: string, abschnitt: string, key: string, e: TextEintrag, gesperrt: boolean): Feld {
       const id = textId(seiteId, abschnitt, key);
       const ph = platzhalter(e.de);
       const feld = (sprache: 'de' | 'en') => {
         const ta = h('textarea', {
           id: `${id}-${sprache}`, rows: zeilenZahl(e, e[sprache] || e.de), value: e[sprache], lang: sprache, spellcheck: true,
-          placeholder: sprache === 'en' ? 'leer = Deutsch wird gezeigt' : undefined, 'data-sprache': sprache,
+          placeholder: sprache === 'en' ? 'leer = Deutsch wird gezeigt' : undefined, 'data-sprache': sprache, readOnly: gesperrt,
         });
         return h('div', { class: `tx-feld i-field${sprache === 'en' ? ' rf-feld--en' : ''}` },
           h('label', { for: ta.id }, sprache === 'de' ? 'Deutsch' : 'Englisch'),
@@ -150,9 +175,9 @@ import '../../../../styles/redaktion.css';
         h('div', { class: 'tx-paar' }, de, en),
         h('div', { class: 'tx-karte__aktionen', 'data-aktionen': true }),
       );
-      const f: Feld = { id, e, seite: seiteId, de: de.querySelector('textarea')!, en: en.querySelector('textarea')!, karte: k, englischPasst: false };
+      const f: Feld = { id, e, seite: seiteId, de: de.querySelector('textarea')!, en: en.querySelector('textarea')!, karte: k, englischPasst: false, gesperrt };
       aktionen(f);
-      for (const ta of [f.de, f.en]) ta.addEventListener('input', () => { pruefeFeld(f); leiste(); });
+      for (const ta of [f.de, f.en]) ta.addEventListener('input', () => { pruefeFeld(f); leiste(); hoehe(ta); });
       pruefeFeld(f);
       return f;
     }
@@ -161,6 +186,7 @@ import '../../../../styles/redaktion.css';
     function aktionen(f: Feld) {
       const box = f.karte.querySelector('[data-aktionen]')!;
       box.replaceChildren();
+      if (f.gesperrt) return;
       if (f.e.enPruefen && !f.englischPasst) {
         box.append(h('span', { class: 'tx-hinweis' }, 'Deutsch wurde geändert: Englisch prüfen.'),
           h('button', { type: 'button', class: 'i-linkbtn', onclick: () => { f.englischPasst = true; aktionen(f); pruefeFeld(f); leiste(); } }, 'Englisch passt so'));
@@ -169,7 +195,7 @@ import '../../../../styles/redaktion.css';
         const u = f.e.ursprung;
         box.append(h('button', {
           type: 'button', class: 'i-linkbtn', title: `Deutsch: ${u.de}\nEnglisch: ${u.en}`,
-          onclick: () => { f.de.value = u.de; f.en.value = u.en; pruefeFeld(f); leiste(); f.de.focus(); },
+          onclick: () => { f.de.value = u.de; f.en.value = u.en; pruefeFeld(f); leiste(); [f.de, f.en].forEach(hoehe); f.de.focus(); },
         }, 'Ursprünglichen Text zurückholen'));
       }
     }
@@ -178,11 +204,27 @@ import '../../../../styles/redaktion.css';
       felder = [];
       inhalt.replaceChildren();
       seitenListe.replaceChildren();
+      seitenWahl.replaceChildren();
       const liste = seiten();
       if (!liste.some(([id]) => id === seite)) seite = liste[0]?.[0] ?? '';
+      // Seitenliste in Gruppen; unter der gewählten Seite ihre Abschnitte als Sprungmarken
+      let gruppe = '';
       for (const [id, s] of liste) {
+        if (s.gruppe !== gruppe) {
+          gruppe = s.gruppe;
+          seitenListe.append(h('li', { class: 'tx-seiten__gruppe', 'aria-hidden': 'true' }, gruppe));
+          seitenWahl.append(h('optgroup', { label: gruppe }));
+        }
+        (seitenWahl.lastElementChild ?? seitenWahl).append(h('option', { value: id }, s.titel));
         const n = alleTexte(datei).filter((x) => x.seite === id).length;
-        seitenListe.append(h('li', {}, h('button', { type: 'button', 'data-seite-wahl': id, onclick: () => waehlen(id) }, h('span', {}, s.titel), h('span', { class: 'tx-seiten__n' }, String(n)))));
+        const abschnitte = Object.entries(s.abschnitte);
+        seitenListe.append(h('li', {},
+          h('button', { type: 'button', 'data-seite-wahl': id, onclick: () => waehlen(id) }, h('span', {}, s.titel), h('span', { class: 'tx-seiten__n' }, String(n))),
+          abschnitte.length > 1
+            ? h('ul', { class: 'tx-seiten__abschnitte', 'data-abschnitte-von': id, hidden: true },
+              ...abschnitte.map(([aid, a]) => h('li', {}, h('a', { href: `#${abschnittId(id, aid)}` }, a.titel))))
+            : null,
+        ));
       }
       let letzteSeite = '';
       let letzterAbschnitt = '';
@@ -192,13 +234,19 @@ import '../../../../styles/redaktion.css';
           letzterAbschnitt = '';
           inhalt.append(h('header', { class: 'tx-seite', 'data-seite': x.seite },
             h('h2', { class: 'tx-seite__h' }, x.s.titel),
-            h('a', { class: 'mono-link', href: websiteUrl(x.s.pfad), target: '_blank', rel: 'noopener' }, 'Auf der Website ansehen →')));
+            h('a', { class: 'mono-link', href: websiteUrl(x.s.pfad), target: '_blank', rel: 'noopener' }, 'Auf der Website ansehen →'),
+            x.s.nurVorstand && !vorstand ? h('p', { class: 'i-msg tx-gesperrt' }, 'Diese Texte ändert nur der Vorstand. Du kannst sie hier lesen.') : null));
         }
         if (x.abschnitt !== letzterAbschnitt) {
           letzterAbschnitt = x.abschnitt;
-          inhalt.append(h('h3', { class: 'tx-abschnitt', 'data-seite': x.seite }, x.a.titel));
+          inhalt.append(h('div', { class: 'tx-abschnitt', 'data-seite': x.seite },
+            h('h3', { class: 'tx-abschnitt__h', id: abschnittId(x.seite, x.abschnitt) }, x.a.titel),
+            x.a.auch?.length
+              ? h('p', { class: 'tx-auch' }, 'Außerdem auf dieser Seite: ',
+                ...x.a.auch.flatMap((a, i) => [i > 0 ? ' · ' : '', h('a', { href: zielUrl(a.ziel) }, a.text), h('span', { class: 'tx-auch__wo' }, ` (${zielName(a.ziel)})`)]))
+              : null));
         }
-        const f = karte(x.seite, x.abschnitt, x.key, x.e);
+        const f = karte(x.seite, x.abschnitt, x.key, x.e, !!x.s.nurVorstand && !vorstand);
         felder.push(f);
         inhalt.append(f.karte);
       }
@@ -227,6 +275,7 @@ import '../../../../styles/redaktion.css';
         (filter !== 'geaendert' || !!f.e.ursprung || geaendert(f));
       const sichtbar = new Set(felder.filter(passt).map((f) => f.id));
       felder.forEach((f) => (f.karte.hidden = !sichtbar.has(f.id)));
+      requestAnimationFrame(() => felder.forEach((f) => !f.karte.hidden && [f.de, f.en].forEach(hoehe)));
       // Überschriften nur, wenn darunter etwas sichtbar ist
       inhalt.querySelectorAll<HTMLElement>('.tx-seite, .tx-abschnitt').forEach((el) => {
         let n = el.nextElementSibling as HTMLElement | null;
@@ -239,6 +288,8 @@ import '../../../../styles/redaktion.css';
       });
       seitenListe.querySelectorAll<HTMLButtonElement>('[data-seite-wahl]').forEach((b) =>
         b.dataset.seiteWahl === seite && !alleSeiten ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
+      seitenWahl.value = seite;
+      seitenListe.querySelectorAll<HTMLElement>('[data-abschnitte-von]').forEach((ul) => (ul.hidden = alleSeiten || ul.dataset.abschnitteVon !== seite));
       inhalt.querySelector('.tx-leer')?.remove();
       if (!sichtbar.size) inhalt.append(h('p', { class: 'r-leer tx-leer' }, q ? `Kein Text mit „${suche.value.trim()}“.` : 'Hier gibt es gerade nichts.'));
     }
@@ -252,7 +303,7 @@ import '../../../../styles/redaktion.css';
       }));
 
     $('[data-verwerfen]')!.addEventListener('click', () => {
-      for (const f of offen()) { f.de.value = f.e.de; f.en.value = f.e.en; f.englischPasst = false; aktionen(f); pruefeFeld(f); }
+      for (const f of offen()) { f.de.value = f.e.de; f.en.value = f.e.en; f.englischPasst = false; aktionen(f); pruefeFeld(f); [f.de, f.en].forEach(hoehe); }
       leiste();
       meldung('');
     });
@@ -309,23 +360,39 @@ import '../../../../styles/redaktion.css';
   .tx-chip[aria-pressed='true'] { background: var(--purple); border-color: var(--purple); color: #fff; }
 
   .tx { display: grid; grid-template-columns: minmax(180px, 220px) minmax(0, 1fr); gap: 24px clamp(20px, 3vw, 40px); align-items: start; }
-  .tx-seiten { position: sticky; top: 16px; }
+  .tx-seiten { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: thin; }
+  .intern .tx .tx-wahl { display: none; }
   .tx-seiten ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; }
   .tx-seiten button {
-    width: 100%; display: flex; justify-content: space-between; gap: 12px; padding: 10px 12px; border: 0; border-left: 4px solid var(--rule);
-    border-radius: 0; background: var(--paper); color: var(--purple); font: inherit; font-weight: 600; text-align: left; cursor: pointer;
+    width: 100%; display: flex; justify-content: space-between; gap: 12px; padding: 7px 10px; border: 0; border-left: 4px solid var(--rule);
+    border-radius: 0; background: var(--paper); color: var(--purple); font: inherit; font-size: 14.5px; font-weight: 600; line-height: 1.3; text-align: left; cursor: pointer;
   }
   .tx-seiten button:hover { border-left-color: var(--magenta); }
   .tx-seiten button[aria-current] { border-left-color: var(--magenta); background: var(--purple); color: #fff; }
+  .tx-seiten__gruppe {
+    margin: 14px 0 2px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  }
+  .tx-seiten__gruppe:first-child { margin-top: 0; }
+  .tx-seiten__abschnitte { margin: 4px 0 6px 4px !important; padding: 0 0 0 12px !important; border-left: 2px solid var(--rule); gap: 2px !important; }
+  .tx-seiten__abschnitte a { display: block; padding: 4px 6px; font-size: 13.5px; color: var(--purple); }
+  .tx-seiten__abschnitte a:hover { color: var(--magenta-2); }
+  .tx-seiten__abschnitte[hidden] { display: none !important; }
   .tx-seiten__n { font-family: var(--font-mono); font-size: 11px; font-weight: 600; opacity: 0.75; }
 
   .tx-inhalt { display: flex; flex-direction: column; gap: 10px; min-width: 0; scroll-margin-top: 16px; }
   .tx-seite { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 6px 20px; margin-top: 18px; }
   .tx-seite:first-child { margin-top: 0; }
   .tx-seite__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -0.02em; color: var(--purple); }
-  .tx-abschnitt {
-    margin: 14px 0 0; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+  .tx-abschnitt { margin: 14px 0 0; display: flex; flex-direction: column; gap: 4px; }
+  .tx-abschnitt__h {
+    margin: 0; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft);
+    scroll-margin-top: 16px;
   }
+  .tx-auch { margin: 0; font-size: 13.5px; color: var(--ink-soft); }
+  .tx-auch a { font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  .tx-auch__wo { color: var(--ink-muted); }
+  .tx-gesperrt { flex-basis: 100%; }
+  .intern .tx-karte .tx-feld textarea[readonly] { background: var(--tint); color: var(--ink-soft); cursor: default; }
   .tx-seite[hidden], .tx-abschnitt[hidden], .tx-karte[hidden] { display: none; }
 
   .tx-karte { display: flex; flex-direction: column; gap: 10px; padding: 16px clamp(14px, 2vw, 20px); background: var(--paper); border-left: 4px solid var(--rule); }
@@ -334,7 +401,7 @@ import '../../../../styles/redaktion.css';
   .tx-karte__wo { margin: 0; font-weight: 600; color: var(--purple); }
   .tx-karte__regel { margin: -4px 0 0; font-size: 13px; color: var(--ink-soft); }
   .tx-paar { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 10px 16px; }
-  .intern .tx-karte .tx-feld textarea { min-height: 0; resize: vertical; }
+  .intern .tx-karte .tx-feld textarea { min-height: 0; resize: vertical; overflow-y: hidden; }
   .tx-feld > label { font-size: 10.5px; }
   .tx-feld__fuss { display: flex; justify-content: space-between; gap: 12px; min-height: 0; }
   .tx-feld__fuss .rf-anzahl { margin: 0 0 0 auto; }
@@ -346,9 +413,7 @@ import '../../../../styles/redaktion.css';
 
   @media (max-width: 860px) {
     .tx { grid-template-columns: minmax(0, 1fr); }
-    .tx-seiten { position: static; }
-    .tx-seiten ul { flex-direction: row; overflow-x: auto; scrollbar-width: none; }
-    .tx-seiten li { flex: none; }
-    .tx-seiten button { width: auto; }
+    .tx-seiten { display: none; }
+    .intern .tx .tx-wahl { display: flex; }
   }
 </style>

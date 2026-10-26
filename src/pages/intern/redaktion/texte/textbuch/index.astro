@@ -13,6 +13,7 @@ import '../../../../../styles/redaktion.css';
 const datei = daten as unknown as Record<string, unknown>;
 const seiten = Object.entries(datei).filter(([k]) => !k.startsWith('_')) as [string, TextSeite][];
 const anzahl = alleTexte(datei).length;
+const gruppen = [...new Set(seiten.map(([, s]) => s.gruppe))];
 const stand = new Intl.DateTimeFormat('de-DE', { dateStyle: 'long', timeZone: 'Europe/Berlin' }).format(new Date());
 const absaetze = (t: string) => t.split('\n');
 const eintraege = (a: TextAbschnitt) => Object.entries(a.texte) as [string, TextEintrag][];
@@ -39,7 +40,12 @@ const eintraege = (a: TextAbschnitt) => Object.entries(a.texte) as [string, Text
 
   <div data-access hidden>
   <nav class="tb-inhalt tb-weg" aria-label="Inhalt des Textbuchs">
-    <ol>{seiten.map(([id, s]) => <li><a href={`#tb-${id}`}>{s.titel}</a></li>)}</ol>
+    {gruppen.map((g) => (
+      <div class="tb-inhalt__gruppe">
+        <span class="tb-inhalt__h">{g}</span>
+        <ol>{seiten.filter(([, s]) => s.gruppe === g).map(([id, s]) => <li><a href={`#tb-${id}`}>{s.titel}</a></li>)}</ol>
+      </div>
+    ))}
   </nav>
 
   <div class="tb">
@@ -80,8 +86,9 @@ const eintraege = (a: TextAbschnitt) => Object.entries(a.texte) as [string, Text
 <style>
   .i-lead a { text-decoration: underline; text-underline-offset: 3px; }
   .tb-stand { margin: -12px 0 0; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted); }
-  .tb-inhalt { margin: 8px 0 28px; }
-  .tb-inhalt ol { display: flex; flex-wrap: wrap; gap: 6px 22px; margin: 0; padding: 0; list-style: none; }
+  .tb-inhalt { margin: 8px 0 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 16px 28px; max-width: 900px; }
+  .tb-inhalt__h { display: block; margin-bottom: 6px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-soft); }
+  .tb-inhalt ol { display: flex; flex-direction: column; gap: 4px; margin: 0; padding: 0; list-style: none; }
   .tb-inhalt a { font-weight: 600; }
   .tb { display: flex; flex-direction: column; gap: 40px; max-width: 900px; }
   .tb-seite { background: var(--paper); padding: clamp(20px, 3vw, 36px); border-top: 3px solid var(--magenta); scroll-margin-top: 16px; }

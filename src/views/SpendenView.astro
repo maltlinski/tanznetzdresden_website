@@ -12,6 +12,7 @@ import { getVerein } from '../lib/settings';
 import { getFormate } from '../lib/content';
 import { formatIban, giroCodeSvg, isValidIban } from '../lib/girocode';
 import { getLang, loc, tr, url } from '../lib/i18n';
+import { fuellen, texte, zeilen } from '../lib/texte';
 import sprung from '../assets/photos/sprung.jpg';
 
 const lang = getLang(Astro);
@@ -31,64 +32,24 @@ const formate = d.formate.map((f) => {
 // Platzhalter wie „[BITTE ERGÄNZEN]“ nicht öffentlich zeigen
 const bescheid = !/\[/.test(`${v.taxExemption.office}${v.taxExemption.noticeDate}`);
 
-const t = tr(lang, {
-  de: {
-    title: 'Spenden', desc: 'Unterstütze die freie Tanzszene in Dresden: mit einer Spende an TanzNetzDresden e.V. – steuerlich absetzbar.',
-    kicker: 'Spenden', h1: 'Tanz braucht', accent: 'Rückhalt.',
-    lead: 'Seit über 15 Jahren verbinden wir die freie Tanzszene Dresdens. Mit deiner Spende bleiben Training, Bühnen und Austausch für über 70 Tanzschaffende offen und bezahlbar.',
-    photoAlt: 'Sprung auf der Bühne',
-    account: 'Spendenkonto', accountH: 'Per Überweisung, in jeder Höhe.',
-    holder: 'Empfänger', bank: 'Bank', ref: 'Verwendungszweck', copy: 'Kopieren', copied: 'Kopiert',
-    qrH: 'Mit der Banking-App scannen', qrP: 'Der Code füllt Empfänger, IBAN und Verwendungszweck aus. Den Betrag wählst du selbst.', qrAlt: 'GiroCode für eine Überweisung',
-    noBank: 'Die Bankverbindung für Spenden ergänzen wir in Kürze. Bis dahin schick uns gern eine Nachricht, wir melden uns mit den Daten.',
-    noBankMail: 'Bankverbindung anfragen', noBankSubject: 'Spende',
-    receiptQ: 'Du brauchst eine Zuwendungsbestätigung?', receiptMail: 'Schreib uns kurz', receiptRest: 'Name, Adresse und Datum der Überweisung.',
-    receiptSubject: 'Zuwendungsbestätigung', receiptBody: 'Name:\nAdresse:\nDatum der Spende:\nBetrag:\n',
-    useKicker: 'Was du möglich machst', useH: ['Deine Spende', 'wird Bewegung'],
-    useP: 'Spenden fließen direkt in unsere Formate. Wir setzen sie dort ein, wo gerade das Geld fehlt. Für ein bestimmtes Format schreib den Namen in den Verwendungszweck.',
-    more: 'Mehr zu',
-    otherKicker: 'Andere Wege', otherH: 'Lieber anders helfen?',
-    memberH: 'Fördermitglied werden', memberP: 'Mit einem Jahresbeitrag trägst du den Verein mit, ohne selbst zu tanzen.', memberCta: 'Zum Mitgliedsantrag →',
-    orgH: 'Unternehmen und Stiftungen', orgP: 'Ihr wollt ein Format fördern oder Räume, Technik oder Material stellen? Sprecht uns an.', orgMail: 'E-Mail schreiben', orgSubject: 'Förderung',
-    onlineH: 'Online spenden', onlineP: (p: string) => `Mit Lastschrift, Karte oder PayPal über ${p}. Du wirst dafür zu ${p} weitergeleitet.`, onlineCta: (p: string) => `Zu ${p} →`,
-    faqKicker: 'Fragen', faqH: 'Gut zu wissen', faqP: 'Noch etwas offen? Schreib uns.', faqMail: 'E-Mail an uns', faqSubject: 'Frage zur Spende',
-    status: (office: string, date: string) => `Wir sind als gemeinnützig anerkannt (${office}, Bescheid vom ${date}).`,
-    transparency: 'Wofür wir unser Geld ausgeben:', transparencyCta: 'Transparenz →',
-    faqs: [
-      { q: 'Ist meine Spende steuerlich absetzbar?', a: 'Ja. TanzNetzDresden e.V. ist als gemeinnützig anerkannt. Bis 300 € reicht dem Finanzamt dein Kontoauszug zusammen mit unserem vereinfachten Spendennachweis. Für höhere Beträge oder auf Wunsch stellen wir dir eine Zuwendungsbestätigung aus.', link: 'Spendennachweis öffnen →' },
-      { q: 'Kann ich für ein bestimmtes Format spenden?', a: 'Ja. Schreib den Namen des Formats in den Verwendungszweck, zum Beispiel „Spende KEEP UP“. Dann fließt der Betrag vollständig dorthin.' },
-      { q: 'Was passiert mit meinen Daten?', a: 'Wir sehen nur, was deine Bank mit der Überweisung übermittelt, und nutzen es ausschließlich für die Zuwendungsbestätigung.' },
-    ],
-  },
-  en: {
-    title: 'Donate', desc: "Support Dresden's independent dance scene with a donation to TanzNetzDresden e.V. – tax-deductible in Germany.",
-    kicker: 'Donate', h1: 'Dance needs', accent: 'backing.',
-    lead: "For more than 15 years we have connected Dresden's independent dance scene. Your donation keeps training, stages and exchange open and affordable for more than 70 dance artists.",
-    photoAlt: 'A leap on stage',
-    account: 'Bank account', accountH: 'By bank transfer, any amount.',
-    holder: 'Recipient', bank: 'Bank', ref: 'Reference', copy: 'Copy', copied: 'Copied',
-    qrH: 'Scan with your banking app', qrP: 'The code fills in recipient, IBAN and reference (SEPA/EPC QR code). You choose the amount.', qrAlt: 'EPC QR code for a bank transfer',
-    noBank: 'We will add the bank details for donations shortly. Until then, send us a message and we will get back to you.',
-    noBankMail: 'Ask for bank details', noBankSubject: 'Donation',
-    receiptQ: 'Do you need a donation receipt?', receiptMail: 'Drop us a line', receiptRest: 'with your name, address and the date of the transfer.',
-    receiptSubject: 'Donation receipt', receiptBody: 'Name:\nAddress:\nDate of donation:\nAmount:\n',
-    useKicker: 'What you make possible', useH: ['Your donation', 'becomes movement'],
-    useP: 'Donations go straight into our formats. We use them where money is missing at the time. For a specific format, write its name in the reference.',
-    more: 'More on',
-    otherKicker: 'Other ways', otherH: 'Rather help differently?',
-    memberH: 'Become a supporting member', memberP: 'With an annual fee you back the association without having to dance yourself.', memberCta: 'How to join →',
-    orgH: 'Companies and foundations', orgP: 'Would you like to support a format or provide spaces, technology or material? Get in touch.', orgMail: 'Write an email', orgSubject: 'Support',
-    onlineH: 'Donate online', onlineP: (p: string) => `By direct debit, card or PayPal via ${p}. You will be redirected to ${p}.`, onlineCta: (p: string) => `Go to ${p} →`,
-    faqKicker: 'Questions', faqH: 'Good to know', faqP: 'Anything else? Write to us.', faqMail: 'Email us', faqSubject: 'Question about donating',
-    status: (office: string, date: string) => `We are recognised as a non-profit organisation (${office}, notice dated ${date}).`,
-    transparency: 'What we spend our money on:', transparencyCta: 'Transparency →',
-    faqs: [
-      { q: 'Is my donation tax-deductible?', a: 'Yes, in Germany. TanzNetzDresden e.V. is recognised as a non-profit. Up to €300, your bank statement together with our simplified donation receipt is enough for the tax office. For higher amounts or on request we issue an official donation receipt.', link: 'Open simplified receipt (German) →' },
-      { q: 'Can I donate to a specific format?', a: 'Yes. Write the name of the format in the reference, for example “Donation KEEP UP”. The full amount then goes there.' },
-      { q: 'What happens to my data?', a: 'We only see what your bank sends with the transfer and use it solely for the donation receipt.' },
-    ],
-  },
-});
+const kopf = texte(lang, 'spenden', 'kopf');
+const bew = texte(lang, 'spenden', 'bewegung');
+const wege = texte(lang, 'spenden', 'wege');
+const fr = texte(lang, 'spenden', 'fragen');
+const [h1, accent] = zeilen(kopf.titel);
+const frage = (text: string, link?: string) => {
+  const [q, a] = zeilen(text);
+  return { q, a, link };
+};
+const t = {
+  ...kopf, h1, accent, ...texte(lang, 'spenden', 'konto'),
+  ...bew, useH: zeilen(bew.useH),
+  ...wege, onlineP: (p: string) => fuellen(wege.onlineP, { anbieter: p }), onlineCta: (p: string) => fuellen(wege.onlineCta, { anbieter: p }),
+  ...fr, status: (amt: string, datum: string) => fuellen(fr.status, { amt, datum }),
+  faqs: [frage(fr.frage1, fr.frage1Link), frage(fr.frage2), frage(fr.frage3)],
+  // nur für Screenreader
+  ...tr(lang, { de: { photoAlt: 'Sprung auf der Bühne', qrAlt: 'GiroCode für eine Überweisung' }, en: { photoAlt: 'A leap on stage', qrAlt: 'EPC QR code for a bank transfer' } }),
+};
 const provider = d.onlineProvider || 'betterplace';
 const kopieren = [
   { k: t.holder, v: d.accountHolder, roh: d.accountHolder, mono: false },

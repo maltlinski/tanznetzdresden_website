@@ -10,6 +10,7 @@ interface Props {
 }
 const { events, target } = Astro.props;
 const lang = getLang(Astro);
+// nur für Screenreader
 const t = tr(lang, {
   de: { group: 'Termine nach Kategorie filtern', unit: 'Termine', shown: 'Termine angezeigt' },
   en: { group: 'Filter events by category', unit: 'events', shown: 'events shown' },

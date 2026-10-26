@@ -19,6 +19,7 @@ import { getTermine, inFileOrder } from './content';
 import { getProfiles } from './profiles';
 import { getVerein } from './settings';
 import { dateLocale, loc, tr, url, type Lang } from './i18n';
+import { texte } from './texte';
 import { monate, type KalenderEintrag, type Tage } from './kalender';
 import { platzhalterFotos } from '../settings/keep-up';
 
@@ -114,10 +115,12 @@ export async function getKeepUp(lang: Lang) {
   const profiles = new Map((await getProfiles()).map((p) => [p.id, p]));
   const eintraege = inFileOrder(await getCollection('keepUpDozentinnen'), dozentinnenRaw);
   const wochen = (await getCollection('keepUpWochen')).sort((a, b) => a.id.localeCompare(b.id));
-  const t = tr(lang, {
-    de: { training: 'Training', workshop: 'Workshop', with: 'mit', toCard: 'Zur Dozent:in →', toEvent: 'Zum Workshop →' },
-    en: { training: 'Training', workshop: 'Workshop', with: 'with', toCard: 'Meet the teacher →', toEvent: 'About the workshop →' },
-  });
+  const k = texte(lang, 'profitraining', 'kalender');
+  const t = {
+    training: k.badgeTraining, workshop: k.badgeWorkshop, toCard: k.toCard, toEvent: k.toEvent,
+    // nur für Screenreader
+    ...tr(lang, { de: { with: 'mit' }, en: { with: 'with' } }),
+  };
 
   // Name, Profil und Foto kommen aus dem Profil der Person (personen.yaml oder selbst gepflegt).
   // Fehlt das Profil (z. B. nicht mehr öffentlich), bleibt das Training mit dem Namen aus dem Kürzel stehen.
@@ -146,10 +149,7 @@ export async function getKeepUp(lang: Lang) {
   const days: Tage = {};
   const add = (date: string, e: KalenderEintrag) => (days[date] ??= []).push(e);
 
-  const t2 = tr(lang, {
-    de: { folgt: 'Die Beschreibung zu diesem Training folgt.', bring: 'Mitbringen' },
-    en: { folgt: 'Details about this class will follow.', bring: 'Bring' },
-  });
+  const t2 = { folgt: k.folgt, bring: k.bring };
   /** Ein Tag mit Dozent:in, als Training (cyan) oder Workshop (magenta) */
   const tagEintragen = (date: string, d: Dozentin, time: string, where: string, art: 'training' | 'workshop', beschreibung: KalenderEintrag['beschreibung']) => {
     const badge = art === 'workshop' ? t.workshop : t.training;

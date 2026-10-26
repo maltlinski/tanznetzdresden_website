@@ -12,7 +12,7 @@
   Unterpfad), zu Dateien über `href()` aus `src/lib/url.ts`.
 - **Feste Texte (Überschriften, Knöpfe, Hinweise) in `src/settings/texte.json`**, gelesen mit `texte(lang, seite, abschnitt)`
   aus `src/lib/texte.ts`. Die Pressestelle ändert sie unter *Intern → Redaktion → Texte* ([texte.md](texte.md)).
-  Bisher umgezogen: Startseite, Netzwerk, Profil; die übrigen Seiten nutzen noch `tr()` und folgen nach und nach.
+  Alle öffentlichen Seiten sind umgezogen; Seiten mit `"nurVorstand": true` (Rechtliches) prüft auch die Funktion `inhalte`.
 - **Texte immer zweisprachig**: in `texte.json` mit `de`/`en`; nur Beschriftungen für Screenreader und der interne
   Bereich bleiben mit `tr(lang, { de, en })` im Code, siehe [mehrsprachigkeit.md](mehrsprachigkeit.md).
 - **Keine Drittanbieter ohne Einwilligung.** Neue externe Dienste in `src/settings/consent.ts` eintragen, über

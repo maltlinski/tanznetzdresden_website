@@ -2,15 +2,14 @@
 import TextPageView from './TextPageView.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
 import { getVerein } from '../lib/settings';
-import { getLang, tr } from '../lib/i18n';
+import { getLang } from '../lib/i18n';
+import { texte } from '../lib/texte';
 
 const lang = getLang(Astro);
 const v = getVerein(lang);
 const a = v.address;
-const t = tr(lang, {
-  de: { kicker: 'Rechtliches', h: 'Verantwortliche Stelle', phone: 'Telefon', mail: 'E-Mail', show: 'Adresse anzeigen', rep: 'Vertreten durch den Vorstand:', cookies: 'Cookie-Einstellungen' },
-  en: { kicker: 'Legal', h: 'Controller', phone: 'Phone', mail: 'Email', show: 'Show address', rep: 'Represented by the board:', cookies: 'Cookie settings' },
-});
+const i = texte(lang, 'rechtliches', 'impressum');
+const t = { kicker: i.kicker, phone: i.phone, mail: i.mail, show: i.show, ...texte(lang, 'rechtliches', 'datenschutz') };
 ---
 <TextPageView id="datenschutz" route="datenschutz" kicker={t.kicker} toc tocExtra={[{ slug: 'verantwortlich', text: t.h }]}>
   <button slot="toc-after" type="button" class="btn btn--primary btn--sm" data-consent-open>{t.cookies}</button>
@@ -19,7 +18,7 @@ const t = tr(lang, {
     <p>
       {v.legalName}<br />{a.street}<br />{a.zip} {a.city}<br />
       {t.phone}: {v.phone}<br />
-      {t.mail}: <ProtectedEmail email={v.emails.datenschutz} label={t.show} subject="Datenschutz" />
+      {t.mail}: <ProtectedEmail email={v.emails.datenschutz} label={t.show} subject={t.betreff} />
     </p>
     <p>{t.rep} {v.register.representatives}.</p>
   </Fragment>

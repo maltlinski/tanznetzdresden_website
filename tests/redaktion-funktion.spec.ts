@@ -3,7 +3,7 @@
  * Läuft ohne Browser, deshalb nur im Projekt „desktop“.
  */
 import { test, expect } from '@playwright/test';
-import { handle, textPruefen, vereinPruefen, type Env } from '../supabase/functions/inhalte/index';
+import { handle, textePruefen, textPruefen, vereinPruefen, type Env } from '../supabase/functions/inhalte/index';
 
 test.beforeEach(({}, info) => test.skip(info.project.name !== 'desktop', 'ohne Browser, einmal reicht'));
 
@@ -224,6 +224,11 @@ test('Rechtliches nur für den Vorstand', async () => {
   const vorstand = fakeGitHub(start, 'vorstand');
   expect((await call(vorstand, { aktion: 'speichern', aenderungen: [{ pfad: 'src/content/seiten/impressum.md', text: '---\ntitle: I\n---\n' }] })).status).toBe(200);
   expect(vereinPruefen('{"register":{"number":"1"}}', '{"register":{"number":"2"}}')).toMatch(/register/);
+  // texte.json: Rechtliches nur Vorstand, Rest frei; auch das Entfernen von „nurVorstand“ zählt
+  const texte = { start: { titel: 'Startseite', x: 1 }, recht: { titel: 'Rechtliches', nurVorstand: true, x: 1 } };
+  expect(textePruefen(JSON.stringify(texte), JSON.stringify({ ...texte, start: { titel: 'Startseite', x: 2 } }))).toBeNull();
+  expect(textePruefen(JSON.stringify(texte), JSON.stringify({ ...texte, recht: { titel: 'Rechtliches', nurVorstand: true, x: 2 } }))).toBe('Diese Texte ändert nur der Vorstand: Rechtliches.');
+  expect(textePruefen(JSON.stringify(texte), JSON.stringify({ ...texte, recht: { titel: 'Rechtliches', x: 1 } }))).toMatch(/Rechtliches/);
 });
 
 test('neu_bauen stößt den Deploy-Workflow an (repository_dispatch), nur für Redaktion und Dozent:innen', async () => {

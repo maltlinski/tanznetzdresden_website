@@ -361,14 +361,37 @@ test('Freigaben: ohne Rolle Presse/Vorstand kein Zugang', async ({ page }) => {
   await expect(page.locator('[data-access]')).toBeHidden();
 });
 
-test('Texte: ändern, Englisch prüfen, Regeln, ursprünglicher Text', async ({ page }) => {
+/** Seite der Website auf „Texte“ wählen: Liste links, auf dem Handy das Auswahlfeld */
+const textSeite = async (page: Page, isMobile: boolean, titel: string) =>
+  isMobile
+    ? page.getByLabel('Seite der Website').selectOption({ label: titel })
+    : page.getByRole('navigation', { name: 'Seiten der Website' }).getByRole('button', { name: new RegExp(`^${titel.replace(/[()]/g, '\\$&')}`) }).click();
+
+test('Texte: ändern, Englisch prüfen, Regeln, ursprünglicher Text', async ({ page, isMobile }) => {
   const gespeichert = await redaktion(page);
   const PFAD = 'src/settings/texte.json';
   await page.goto('/intern/redaktion/texte/');
   await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Texte' })).toHaveAttribute('aria-current', 'page');
-  const seiten = page.getByRole('navigation', { name: 'Seiten der Website' });
-  await expect(seiten.getByRole('button')).toHaveText([/^Startseite/, /^Netzwerk/, /^Profil einer Person/]);
-  await expect(seiten.getByRole('button', { name: /^Startseite/ })).toHaveAttribute('aria-current', 'page');
+  // auf dem Handy ist die Liste ausgeblendet (dort das Auswahlfeld), daher ohne Rolle gesucht
+  const seiten = page.locator('.tx-seiten');
+  // alle Seiten der Website in Gruppen, in der Reihenfolge des Menüs
+  const titel = ['Menü, Fuß und Hinweise', 'Startseite', 'Tanzkalender und Termine', 'News', 'Profitraining (KEEP UP)', 'Über uns', 'Spenden',
+    'Netzwerk', 'Profil einer Person', 'Mitglied werden', 'Kooperationen', 'Kontakt', 'Barrierefreiheit und Textseiten',
+    'Seite nicht gefunden (404)', 'Mitgliedsausweis prüfen', 'Rechtliches (nur Vorstand)'];
+  await expect(seiten.locator('[data-seite-wahl] span:first-child')).toHaveText(titel);
+  await expect(seiten.locator('.tx-seiten__gruppe')).toHaveText(['Auf jeder Seite', 'Seiten im Menü', 'Weitere Seiten', 'Selten gebraucht']);
+  await expect(page.locator('[data-seiten-wahl] option')).toHaveText(titel);
+  await expect(seiten.locator('[data-seite-wahl="allgemein"]')).toHaveAttribute('aria-current', 'page');
+  await expect(page.locator('[data-seiten-wahl]')).toHaveValue('allgemein');
+  // Rechtliches: Presse liest nur
+  await textSeite(page, isMobile, 'Rechtliches (nur Vorstand)');
+  await expect(page.getByText('Diese Texte ändert nur der Vorstand. Du kannst sie hier lesen.')).toBeVisible();
+  await expect(page.locator('[data-text="rechtliches.impressum.h"]').getByLabel('Deutsch')).toHaveAttribute('readonly', '');
+  await textSeite(page, isMobile, 'Startseite');
+  // Abschnitte als Sprungmarken (Liste links) und Wegweiser zu dem, was anderswo gepflegt wird
+  if (!isMobile) await expect(seiten.locator('[data-abschnitte-von="startseite"]').getByRole('link')).toHaveText(['Kopf', 'Termine und News', 'Formate', 'Eine Stadt. Ein Netz.', 'Mitglied werden']);
+  await expect(page.locator('.tx-auch', { hasText: 'Tanz für' }).getByRole('link', { name: '„Tanz für …“ mit den wechselnden Wörtern' })).toHaveAttribute('href', /intern\/redaktion\/eintrag\/\?b=hero$/);
+  await expect(page.locator('.tx-auch', { hasText: 'Die Termine selbst' }).getByRole('link', { name: 'Die Termine selbst' })).toHaveAttribute('href', /intern\/kalender\/$/);
 
   // Überschrift „Werde Teil / des Netzes.“: zwei Zeilen, nur Deutsch ändern
   const karte = page.locator('[data-text="startseite.mitglied.titel"]');
@@ -447,7 +470,7 @@ test('Texte: Englisch prüfen, ursprünglichen Text zurückholen, Filter, Textbu
   // Textbuch
   await page.goto('/intern/redaktion/texte/textbuch/');
   await expect(page.getByRole('heading', { name: 'Textbuch' })).toBeVisible();
-  await expect(page.getByRole('region', { name: 'Startseite' })).toContainText('Werde Teil');
+  await expect(page.getByRole('region', { name: 'Startseite', exact: true })).toContainText('Werde Teil');
   await expect(page.getByRole('button', { name: 'Drucken oder als PDF speichern' })).toBeVisible();
 });
 

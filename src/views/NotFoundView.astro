@@ -2,28 +2,35 @@
 /** Eine 404-Seite für beide Sprachen (GitHub Pages kennt nur eine 404.html). */
 import Page from '../layouts/Page.astro';
 import { url } from '../lib/i18n';
+import { texte, zeilen } from '../lib/texte';
 import Tag from '../components/ui/Tag.astro';
 import KeilBar from '../components/ui/KeilBar.astro';
+
+// beide Sprachen auf einer Seite (Texte: Redaktion → Texte)
+const de = texte('de', 'fehler', 'seite');
+const en = texte('en', 'fehler', 'seite');
+const [deL1, deL2] = zeilen(de.titel);
+const [enL1, enL2] = zeilen(en.titel);
 ---
 <Page title="404" noindex>
   <section class="nf">
     <div class="wrap nf__grid">
       <div>
-        <Tag color="cyan">Fehler 404</Tag>
-        <h1 class="nf__title">Hier reißt<br /><em>das Netz.</em></h1>
-        <p>Diese Seite gibt es nicht (mehr).</p>
+        <Tag color="cyan">{de.kicker}</Tag>
+        <h1 class="nf__title">{deL1}<br /><em>{deL2}</em></h1>
+        <p>{de.text}</p>
         <div class="nf__actions">
-          <a class="btn btn--secondary btn--marker" href={url('de', 'home')}>Zur Startseite</a>
-          <a class="mono-link underline-link" href={url('de', 'termine')}>Tanzkalender →</a>
+          <a class="btn btn--secondary btn--marker" href={url('de', 'home')}>{de.home}</a>
+          <a class="mono-link underline-link" href={url('de', 'termine')}>{de.kalender}</a>
         </div>
       </div>
       <div lang="en">
-        <Tag color="cyan">Error 404</Tag>
-        <p class="nf__title nf__title--en" role="presentation">The net<br /><em>tore here.</em></p>
-        <p>This page does not exist (any more).</p>
+        <Tag color="cyan">{en.kicker}</Tag>
+        <p class="nf__title nf__title--en" role="presentation">{enL1}<br /><em>{enL2}</em></p>
+        <p>{en.text}</p>
         <div class="nf__actions">
-          <a class="btn btn--secondary btn--marker" href={url('en', 'home')}>Go to homepage</a>
-          <a class="mono-link underline-link" href={url('en', 'termine')}>Dance calendar →</a>
+          <a class="btn btn--secondary btn--marker" href={url('en', 'home')}>{en.home}</a>
+          <a class="mono-link underline-link" href={url('en', 'termine')}>{en.kalender}</a>
         </div>
       </div>
     </div>

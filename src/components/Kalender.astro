@@ -10,6 +10,7 @@
  */
 import Tag from './ui/Tag.astro';
 import { dateLocale, getLang, tr } from '../lib/i18n';
+import { texte } from '../lib/texte';
 import { todayKey } from '../lib/keep-up';
 import type { Farbe, Monat, Tage } from '../lib/kalender';
 
@@ -28,10 +29,14 @@ interface Props {
 }
 const { days, months, kicker, title, filter, legende, id = 'kalender', breit = false } = Astro.props;
 const lang = getLang(Astro);
-const t = tr(lang, {
-  de: { all: 'Alle', prev: 'Vorheriger Monat', next: 'Nächster Monat', today: 'Heute', none: 'Gerade sind keine Termine geplant.', prevE: 'Vorheriger Termin', nextE: 'Nächster Termin', free: 'An diesem Tag ist nichts geplant.' },
-  en: { all: 'All', prev: 'Previous month', next: 'Next month', today: 'Today', none: 'Nothing scheduled right now.', prevE: 'Previous date', nextE: 'Next date', free: 'Nothing planned on this day.' },
-});
+const t = {
+  ...texte(lang, 'termine', 'kalender'),
+  // nur für Screenreader
+  ...tr(lang, {
+    de: { prev: 'Vorheriger Monat', next: 'Nächster Monat', prevE: 'Vorheriger Termin', nextE: 'Nächster Termin' },
+    en: { prev: 'Previous month', next: 'Next month', prevE: 'Previous date', nextE: 'Next date' },
+  }),
+};
 
 const locale = dateLocale[lang];
 const utc = (d: string) => new Date(`${d}T00:00:00Z`);

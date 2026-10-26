@@ -14,6 +14,7 @@ import Mosaik from '../components/keep-up/Mosaik.astro';
 import { getVerein } from '../lib/settings';
 import { getKeepUp, todayKey, weekLabel } from '../lib/keep-up';
 import { dateLocale, getLang, loc, tr, url } from '../lib/i18n';
+import { texte } from '../lib/texte';
 import { href } from '../lib/url';
 import { keepUp, keepUpFoto } from '../settings/keep-up';
 
@@ -28,22 +29,12 @@ const files = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*.{
 const foto = files[`../assets/photos/${keepUpFoto.datei}`];
 if (!foto) throw new Error(`src/settings/keep-up.ts: Foto „${keepUpFoto.datei}“ fehlt in src/assets/photos/`);
 
-const t = tr(lang, {
-  de: {
-    title: 'KEEP UP · Profitraining', desc: 'Profitraining für Tänzer:innen der freien Szene in Dresden: Kalender, Dozent:innen, Ort und Beitrag.',
-    toCal: 'Zum Kalender', who: 'Wer unterrichtet →', next: 'Nächste Einheit',
-    calKicker: 'Kalender', calH: 'Wann wir trainieren', filter: 'Nach Dozent:in filtern', training: 'Profitraining', workshop: 'Workshop',
-    signup: 'Anmeldung', telegram: 'Telegram-Gruppe →', contact: 'Kontakt →', abo: 'Kalender abonnieren (.ics)', weeks: 'Trainingswochen', workshops: 'Workshops',
-    infos: 'Infos', infosH: 'So läuft das Training', when: 'Wann', where: 'Wo', forWhom: 'Für wen', fee: 'Beitrag', join: 'Mitglied werden',
-  },
-  en: {
-    title: 'KEEP UP · Professional training', desc: "Professional training for dancers of Dresden's independent scene: calendar, teachers, venue and fee.",
-    toCal: 'To the calendar', who: 'Who teaches →', next: 'Next class',
-    calKicker: 'Calendar', calH: 'When we train', filter: 'Filter by teacher', training: 'Professional training', workshop: 'Workshop',
-    signup: 'Registration', telegram: 'Telegram group →', contact: 'Contact →', abo: 'Subscribe to the calendar (.ics)', weeks: 'Training weeks', workshops: 'Workshops',
-    infos: 'Info', infosH: 'How training works', when: 'When', where: 'Where', forWhom: 'For whom', fee: 'Fee', join: 'Become a member',
-  },
-});
+const t = {
+  ...texte(lang, 'profitraining', 'kopf'),
+  ...texte(lang, 'profitraining', 'kalender'),
+  ...texte(lang, 'profitraining', 'infos'),
+  ...tr(lang, { de: { filter: 'Nach Dozent:in filtern' }, en: { filter: 'Filter by teacher' } }),
+};
 
 // Nächste Einheit beim Build (der Kalender rechnet im Browser mit dem heutigen Datum nach)
 const nk = Object.keys(days).find((d) => d >= todayKey());
