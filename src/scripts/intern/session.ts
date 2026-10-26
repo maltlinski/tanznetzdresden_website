@@ -7,6 +7,8 @@
  */
 import type { SupabaseClient, User } from '@supabase/supabase-js';
 import { getSupabase, type Profile } from '../../lib/supabase';
+import { internPfad } from '../../lib/intern-sprache';
+import { sprache, t } from './sprache';
 
 export interface InternContext {
   sb: SupabaseClient;
@@ -18,13 +20,17 @@ export interface InternContext {
 }
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
-export const internUrl = (path = '') => `${base}intern/${path}`;
+/** Adresse einer internen Seite; auf englischen Seiten die englische, wenn es sie gibt */
+export const internUrl = (path = '') => `${base}${internPfad(sprache, path)}`;
 
 let meldeBereit: (ctx: InternContext) => void = () => {};
 /** Erfüllt, sobald eine Seite initIntern() erfolgreich aufgerufen hat (z. B. für die Seitenleiste der Redaktion) */
 export const bereit = new Promise<InternContext>((r) => (meldeBereit = r));
 
-export const ROLLEN: Record<Profile['role'], string> = { mitglied: 'Mitglied', presse: 'Presse', vorstand: 'Vorstand', admin: 'Admin' };
+export const ROLLEN: Record<Profile['role'], string> = t(
+  { mitglied: 'Mitglied', presse: 'Presse', vorstand: 'Vorstand', admin: 'Admin' },
+  { mitglied: 'Member', presse: 'Press', vorstand: 'Board', admin: 'Admin' },
+);
 
 const root = () => document.querySelector<HTMLElement>('[data-intern]');
 export const setState = (state: 'loading' | 'setup' | 'login' | 'ready') => {
@@ -32,18 +38,20 @@ export const setState = (state: 'loading' | 'setup' | 'login' | 'ready') => {
   if (el) el.dataset.state = state;
 };
 
-/** Deutsche Fehlermeldungen für die häufigsten Supabase-Fehler. */
+/** Verständliche Fehlermeldungen für die häufigsten Supabase-Fehler (Deutsch oder Englisch, je nach Seite). */
 export function errorText(err: unknown): string {
   const msg = String((err as { message?: string })?.message ?? err ?? '');
-  if (/invalid login credentials/i.test(msg)) return 'E-Mail oder Passwort stimmt nicht.';
-  if (/email not confirmed/i.test(msg)) return 'Bitte bestätige zuerst deine E-Mail-Adresse.';
+  if (/invalid login credentials/i.test(msg)) return t('E-Mail oder Passwort stimmt nicht.', 'Email or password is incorrect.');
+  if (/email not confirmed/i.test(msg)) return t('Bitte bestätige zuerst deine E-Mail-Adresse.', 'Please confirm your email address first.');
   // eigene Meldungen der Datenbank-Trigger (supabase/migrations) sind schon verständlich
+  if (sprache === 'en' && /^Neue Fotos/.test(msg)) return 'New photos are approved by the press team or the board.';
+  if (sprache === 'en' && /^Profil nicht gefunden/.test(msg)) return 'Profile not found.';
   if (/^(Nur der Vorstand|Nur Presse|Die Rolle Admin|Neue Fotos|Profil nicht gefunden)/.test(msg)) return msg;
-  if (/rate limit|too many/i.test(msg)) return 'Zu viele Versuche. Bitte warte kurz und versuche es dann erneut.';
-  if (/password should be at least|weak password/i.test(msg)) return 'Das Passwort ist zu kurz oder zu schwach (mindestens 10 Zeichen).';
-  if (/signups not allowed|user not found/i.test(msg)) return 'Für diese Adresse gibt es kein Konto. Zugänge vergibt der Vorstand.';
-  if (/network|fetch/i.test(msg)) return 'Keine Verbindung. Bitte prüfe deine Internetverbindung.';
-  return 'Das hat nicht geklappt. Bitte versuche es erneut.';
+  if (/rate limit|too many/i.test(msg)) return t('Zu viele Versuche. Bitte warte kurz und versuche es dann erneut.', 'Too many attempts. Please wait a moment and try again.');
+  if (/password should be at least|weak password/i.test(msg)) return t('Das Passwort ist zu kurz oder zu schwach (mindestens 10 Zeichen).', 'The password is too short or too weak (at least 10 characters).');
+  if (/signups not allowed|user not found/i.test(msg)) return t('Für diese Adresse gibt es kein Konto. Zugänge vergibt der Vorstand.', 'There is no account for this address. Access is granted by the board.');
+  if (/network|fetch/i.test(msg)) return t('Keine Verbindung. Bitte prüfe deine Internetverbindung.', 'No connection. Please check your internet connection.');
+  return t('Das hat nicht geklappt. Bitte versuche es erneut.', 'That did not work. Please try again.');
 }
 
 export function showMessage(el: HTMLElement | null, text: string, kind: 'error' | 'ok' = 'error') {

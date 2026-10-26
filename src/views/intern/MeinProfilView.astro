@@ -1,0 +1,547 @@
+---
+/**
+ * Intern → Mein Profil: Angaben für Mitglieder und das freiwillige öffentliche Profil (Galerie, Arbeiten, Angaben,
+ * Kontakt, englische Fassung). Deutsch (/intern/profil/) und Englisch (/en/intern/profil/).
+ */
+import Intern from '../../layouts/Intern.astro';
+import { arbeitsgruppen } from '../../settings/arbeitsgruppen';
+import { href } from '../../lib/url';
+import { getLang, tr } from '../../lib/i18n';
+import { internPfad } from '../../lib/intern-sprache';
+import { ANGABEN, GALERIE_LAYOUTS, OFFEN_FUER } from '../../lib/profil-felder';
+
+const lang = getLang(Astro);
+const en = lang === 'en';
+const t = tr(lang, {
+  de: {
+    titel: 'Mein Profil',
+    lead: 'Was du hier einträgst, sehen alle angemeldeten Mitglieder:innen. E-Mail und Telefon nur, wenn du sie freigibst. Ein öffentliches Profil auf der Website ist freiwillig.',
+    name: 'Name', optional: 'optional', pronomen: 'Pronomen', pronomenBsp: 'z. B. sie/ihr', bio: 'Kurzbio',
+    bioHinweis: 'Höchstens 1.200 Zeichen. Woran arbeitest du, was bietest du an? Absätze mit einer Leerzeile trennen.',
+    website: 'Website', telefon: 'Telefon', ags: 'Arbeitsgruppen', sichtbar: 'Für Mitglieder sichtbar',
+    trainer: 'Ich gebe Training (KEEP UP, Workshops)', zeigeMail: 'Meine E-Mail-Adresse für Mitglieder:innen anzeigen',
+    zeigeTel: 'Meine Telefonnummer für Mitglieder:innen anzeigen', oeffentlich: 'Öffentliches Profil auf der Website',
+    oeffentlichWahl: 'Ich möchte ein öffentliches Profil unter „Netzwerk“ (Name, Kurzbio, Fotos, Arbeiten, Kontakt)',
+    adresse: 'Adresse', adresseHinweis: 'Kleinbuchstaben, Ziffern, Bindestriche. Steht dein Name schon auf der Website, nimm dasselbe Kürzel – dann wird das bestehende Profil ergänzt.',
+    taetigkeit: 'Tätigkeit', taetigkeitBsp: 'z. B. Tänzerin und Choreografin', basis: 'Basis', basisBsp: 'z. B. Dresden-Neustadt',
+    satz: 'In einem Satz', satzHinweis: 'Steht groß oben auf deinem Profil. Was nach einem Doppelpunkt kommt, wird pink hervorgehoben, z. B. „Ich bringe Tanz an Orte, an denen ihn niemand erwartet: Höfe, Haltestellen, leere Läden.“',
+    schwerpunkte: 'Schwerpunkte', schwerpunkteBsp: 'z. B. Choreografie, Contemporary, Somatics', schwerpunkteHinweis: 'Mit Komma trennen, höchstens 6.',
+    keinFoto: 'Kein Foto', wartet: 'Wartet auf Freigabe', portraet: 'Porträt',
+    fotoHinweis: 'JPG, PNG oder WebP, höchstens 5 MB, am besten Hochformat. Nur Fotos, an denen du die Rechte hast. Neue Fotos erscheinen nach der Freigabe durch Presse oder Vorstand, bis dahin bleibt das bisherige.',
+    credit: 'Foto: Name der Fotograf:in', fotoWeg: 'Foto entfernen',
+    neuFehlt: 'Galerie, Arbeiten und weitere Angaben kommen bald dazu. Bis dahin bleibt dein Profil wie bisher.',
+    galerie: 'Galerie', galerieHinweis: 'Bis zu 12 Fotos aus deiner Arbeit. Das Porträt steht groß oben, die Galerie darunter. Nur Fotos, an denen du die Rechte hast.',
+    galerieAls: 'Galerie zeigen als', arbeiten: 'Arbeiten', arbeitenHinweis: 'Stücke und Projekte mit Jahr und Ort. Die neuesten stehen oben.',
+    angaben: 'Ausbildung, Sprachen und mehr', kontakt: 'Kontakt und Video', mail: 'Öffentliche E-Mail-Adresse',
+    mailHinweis: 'Für Anfragen über dein Profil. Auf der Website gegen Spam geschützt. Kann eine andere sein als die für den Login.',
+    offen: 'Offen für', video: 'Video oder Showreel', englisch: 'Auf Englisch', englischHinweis: 'Erscheint auf der englischen Seite. Leer = deutscher Text.',
+    taetigkeitEn: 'Tätigkeit (Englisch)', satzEn: 'In einem Satz (Englisch)', bioEn: 'Kurzbio (Englisch)',
+    speichern: 'Speichern', passwort: 'Passwort ändern', ansehen: 'Öffentliches Profil ansehen',
+  },
+  en: {
+    titel: 'My profile',
+    lead: 'All logged-in members can see what you enter here. Email and phone only if you share them. A public profile on the website is optional.',
+    name: 'Name', optional: 'optional', pronomen: 'Pronouns', pronomenBsp: 'e.g. she/her', bio: 'Short bio',
+    bioHinweis: 'Up to 1,200 characters. What are you working on, what do you offer? Separate paragraphs with a blank line. Shown on the German website, and on the English one unless you fill in the English version below.',
+    website: 'Website', telefon: 'Phone', ags: 'Working groups', sichtbar: 'Visible to members',
+    trainer: 'I teach (KEEP UP, workshops)', zeigeMail: 'Show my email address to members',
+    zeigeTel: 'Show my phone number to members', oeffentlich: 'Public profile on the website',
+    oeffentlichWahl: 'I would like a public profile under “Network” (name, short bio, photos, works, contact)',
+    adresse: 'Address', adresseHinweis: 'Lowercase letters, digits, hyphens. If your name is already on the website, use the same handle – the existing profile is then extended.',
+    taetigkeit: 'Profession', taetigkeitBsp: 'e.g. Dancer and choreographer', basis: 'Based in', basisBsp: 'e.g. Dresden-Neustadt',
+    satz: 'In one sentence', satzHinweis: 'Shown large at the top of your profile. Whatever follows a colon is highlighted in pink, e.g. “I bring dance to places where nobody expects it: courtyards, tram stops, empty shops.”',
+    schwerpunkte: 'Focus', schwerpunkteBsp: 'e.g. Choreography, Contemporary, Somatics', schwerpunkteHinweis: 'Separate with commas, up to 6.',
+    keinFoto: 'No photo', wartet: 'Waiting for approval', portraet: 'Portrait',
+    fotoHinweis: 'JPG, PNG or WebP, up to 5 MB, portrait format works best. Only photos you hold the rights to. New photos appear once the press team or the board has approved them; until then the previous one stays.',
+    credit: 'Photo: name of the photographer', fotoWeg: 'Remove photo',
+    neuFehlt: 'Gallery, works and more details are coming soon. Until then your profile stays as it is.',
+    galerie: 'Gallery', galerieHinweis: 'Up to 12 photos of your work. The portrait is shown large at the top, the gallery below. Only photos you hold the rights to.',
+    galerieAls: 'Show gallery as', arbeiten: 'Works', arbeitenHinweis: 'Pieces and projects with year and venue. The newest are listed first.',
+    angaben: 'Training, languages and more', kontakt: 'Contact and video', mail: 'Public email address',
+    mailHinweis: 'For enquiries via your profile. Protected against spam on the website. Can differ from the one you log in with.',
+    offen: 'Open to', video: 'Video or showreel', englisch: 'English version', englischHinweis: 'Shown on the English website. Leave empty to use the texts above.',
+    taetigkeitEn: 'Profession (English)', satzEn: 'In one sentence (English)', bioEn: 'Short bio (English)',
+    speichern: 'Save', passwort: 'Change password', ansehen: 'View public profile',
+  },
+});
+---
+<Intern title={t.titel} current="profil">
+  <h1 class="i-h1">{t.titel}</h1>
+  <p class="i-lead">{t.lead}</p>
+  <div class="i-card">
+    <form class="i-form profile" data-profile-form>
+      <div class="i-field">
+        <label for="p-name">{t.name}</label>
+        <input id="p-name" name="display_name" required maxlength="80" autocomplete="name" />
+      </div>
+      <div class="i-field">
+        <label for="p-pronouns">{t.pronomen} <span class="opt">{t.optional}</span></label>
+        <input id="p-pronouns" name="pronouns" maxlength="40" placeholder={t.pronomenBsp} />
+      </div>
+      <div class="i-field">
+        <label for="p-bio">{t.bio}</label>
+        <textarea id="p-bio" name="bio" maxlength="1200" aria-describedby="p-bio-hint"></textarea>
+        <span class="i-hint" id="p-bio-hint">{t.bioHinweis}</span>
+      </div>
+      <div class="i-field">
+        <label for="p-website">{t.website}</label>
+        <input id="p-website" name="website" type="url" placeholder="https://" autocomplete="url" />
+      </div>
+      <div class="i-field">
+        <label for="p-instagram">Instagram</label>
+        <input id="p-instagram" name="instagram" placeholder="@name" />
+      </div>
+      <div class="i-field">
+        <label for="p-phone">{t.telefon}</label>
+        <input id="p-phone" name="phone" type="tel" autocomplete="tel" />
+      </div>
+      <fieldset class="i-fieldset">
+        <legend class="i-legend">{t.ags}</legend>
+        <div class="ags">
+          {arbeitsgruppen.map((ag) => (
+            <label class="i-check"><input type="checkbox" name="ags" value={ag.name} />{ag.name}</label>
+          ))}
+        </div>
+      </fieldset>
+      <fieldset class="i-fieldset">
+        <legend class="i-legend">{t.sichtbar}</legend>
+        <label class="i-check"><input type="checkbox" name="is_trainer" />{t.trainer}</label>
+        <label class="i-check"><input type="checkbox" name="show_email" />{t.zeigeMail}</label>
+        <label class="i-check"><input type="checkbox" name="show_phone" />{t.zeigeTel}</label>
+      </fieldset>
+
+      <fieldset class="i-fieldset public">
+        <legend class="i-legend">{t.oeffentlich}</legend>
+        <label class="i-check"><input type="checkbox" name="public_listing" data-public-toggle />{t.oeffentlichWahl}</label>
+        <p class="status" data-public-status hidden></p>
+        <div class="public__fields" data-public-fields>
+          <div class="i-field">
+            <label for="p-slug">{t.adresse}</label>
+            <div class="slug"><span>{en ? '…/en/network/' : '…/netzwerk/'}</span><input id="p-slug" name="slug" pattern="[a-z0-9]+(-[a-z0-9]+)*" minlength="3" maxlength="60" aria-describedby="p-slug-hint" /><span>/</span></div>
+            <span class="i-hint" id="p-slug-hint">{t.adresseHinweis}</span>
+          </div>
+          <div class="two">
+            <div class="i-field">
+              <label for="p-profession">{t.taetigkeit} <span class="opt">{t.optional}</span></label>
+              <input id="p-profession" name="profession" maxlength="80" placeholder={t.taetigkeitBsp} data-neu />
+            </div>
+            <div class="i-field">
+              <label for="p-base">{t.basis} <span class="opt">{t.optional}</span></label>
+              <input id="p-base" name="base" maxlength="60" placeholder={t.basisBsp} data-neu />
+            </div>
+          </div>
+          <div class="i-field">
+            <label for="p-pitch">{t.satz} <span class="opt">{t.optional}</span></label>
+            <textarea id="p-pitch" name="pitch" maxlength="200" rows="2" class="kurz" aria-describedby="p-pitch-hint" data-neu></textarea>
+            <span class="i-hint" id="p-pitch-hint">{t.satzHinweis}</span>
+          </div>
+          <div class="i-field">
+            <label for="p-tags">{t.schwerpunkte}</label>
+            <input id="p-tags" name="tags" placeholder={t.schwerpunkteBsp} aria-describedby="p-tags-hint" />
+            <span class="i-hint" id="p-tags-hint">{t.schwerpunkteHinweis}</span>
+          </div>
+          <div class="photo">
+            <div class="photo__box">
+              <div class="photo__preview" data-photo-preview><span>{t.keinFoto}</span></div>
+              <span class="photo__wait" data-photo-wait hidden>{t.wartet}</span>
+            </div>
+            <div class="photo__controls">
+              <div class="i-field">
+                <label for="p-photo">{t.portraet}</label>
+                <input id="p-photo" type="file" accept="image/jpeg,image/png,image/webp" data-photo-input aria-describedby="p-photo-hint" />
+                <span class="i-hint" id="p-photo-hint">{t.fotoHinweis}</span>
+              </div>
+              <div class="i-field">
+                <label for="p-credit">{t.credit}</label>
+                <input id="p-credit" name="photo_credit" maxlength="80" />
+              </div>
+              <button type="button" class="i-linkbtn" data-photo-remove hidden>{t.fotoWeg}</button>
+            </div>
+          </div>
+
+          <p class="i-msg" data-neu-fehlt hidden>{t.neuFehlt}</p>
+          <div class="mehr" data-neu-bereich>
+            <details class="klapp" data-klapp="galerie">
+              <summary>{t.galerie} <span class="klapp__info" data-info-galerie></span></summary>
+              <div class="klapp__in">
+                <p class="i-hint">{t.galerieHinweis}</p>
+                <div data-galerie></div>
+                <fieldset class="i-fieldset">
+                  <legend class="i-legend">{t.galerieAls}</legend>
+                  <div class="wahl">
+                    {Object.entries(GALERIE_LAYOUTS).map(([wert, l]) => (
+                      <label class="i-check"><input type="radio" name="gallery_layout" value={wert} /><span><strong>{en ? l.en : l.de}</strong> {en ? l.hilfe_en : l.hilfe}</span></label>
+                    ))}
+                  </div>
+                </fieldset>
+              </div>
+            </details>
+            <details class="klapp" data-klapp="arbeiten">
+              <summary>{t.arbeiten} <span class="klapp__info" data-info-arbeiten></span></summary>
+              <div class="klapp__in">
+                <p class="i-hint">{t.arbeitenHinweis}</p>
+                <div data-arbeiten></div>
+              </div>
+            </details>
+            <details class="klapp" data-klapp="angaben">
+              <summary>{t.angaben} <span class="klapp__info" data-info-angaben></span></summary>
+              <div class="klapp__in two">
+                {ANGABEN.map((a) => (
+                  <div class="i-field">
+                    <label for={`p-${a.key}`}>{en ? a.en : a.de} <span class="opt">{t.optional}</span></label>
+                    <input id={`p-${a.key}`} name={a.key} maxlength={a.max} placeholder={en ? a.platzhalter_en : a.platzhalter} data-neu />
+                  </div>
+                ))}
+              </div>
+            </details>
+            <details class="klapp" data-klapp="kontakt">
+              <summary>{t.kontakt} <span class="klapp__info" data-info-kontakt></span></summary>
+              <div class="klapp__in">
+                <div class="i-field">
+                  <label for="p-public-email">{t.mail} <span class="opt">{t.optional}</span></label>
+                  <input id="p-public-email" name="public_email" type="email" maxlength="120" autocomplete="email" aria-describedby="p-public-email-hint" data-neu />
+                  <span class="i-hint" id="p-public-email-hint">{t.mailHinweis}</span>
+                </div>
+                <fieldset class="i-fieldset">
+                  <legend class="i-legend">{t.offen}</legend>
+                  <div class="wahl wahl--zwei">
+                    {Object.entries(OFFEN_FUER).map(([wert, l]) => (
+                      <label class="i-check"><input type="checkbox" name="open_for" value={wert} />{en ? l.en : l.de}</label>
+                    ))}
+                  </div>
+                </fieldset>
+                <div class="i-field">
+                  <label for="p-vimeo">{t.video} <span class="opt">{t.optional}</span></label>
+                  <input id="p-vimeo" name="vimeo" type="url" placeholder="https://vimeo.com/…" />
+                </div>
+              </div>
+            </details>
+            <details class="klapp" data-klapp="englisch">
+              <summary>{t.englisch} <span class="klapp__info" data-info-englisch></span></summary>
+              <div class="klapp__in">
+                <p class="i-hint">{t.englischHinweis}</p>
+                <div class="i-field">
+                  <label for="p-profession-en">{t.taetigkeitEn}</label>
+                  <input id="p-profession-en" name="profession_en" maxlength="80" lang="en" placeholder="e.g. Dancer and choreographer" data-neu />
+                </div>
+                <div class="i-field">
+                  <label for="p-pitch-en">{t.satzEn}</label>
+                  <textarea id="p-pitch-en" name="pitch_en" maxlength="200" rows="2" class="kurz" lang="en" data-neu></textarea>
+                </div>
+                <div class="i-field">
+                  <label for="p-bio-en">{t.bioEn}</label>
+                  <textarea id="p-bio-en" name="bio_en" maxlength="1200" lang="en"></textarea>
+                </div>
+              </div>
+            </details>
+          </div>
+        </div>
+      </fieldset>
+
+      <p class="i-msg" role="status" data-profile-msg hidden></p>
+      <div class="profile__actions">
+        <button type="submit" class="btn btn--primary btn--marker">{t.speichern}</button>
+        <a class="i-linkbtn" href={href(internPfad(lang, 'passwort/'))}>{t.passwort}</a>
+        <a class="i-linkbtn" data-public-link hidden target="_blank" rel="noopener">{t.ansehen}</a>
+      </div>
+    </form>
+  </div>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage } from '../../scripts/intern/session';
+  import { photoUrl, slugify, type GalerieEintrag } from '../../lib/supabase';
+  import { arbeitenEditor, galerieEditor } from '../../scripts/intern/profil-galerie';
+  import { sprache, t } from '../../scripts/intern/sprache';
+  import { url } from '../../lib/i18n';
+
+  const BUCKET = 'profilbilder';
+  const ctx = await initIntern(true);
+  const form = document.querySelector<HTMLFormElement>('[data-profile-form]');
+  const msg = document.querySelector<HTMLElement>('[data-profile-msg]');
+  const textFields = ['display_name', 'pronouns', 'bio', 'bio_en', 'website', 'instagram', 'phone', 'slug', 'vimeo', 'photo_credit'] as const;
+  const flags = ['is_trainer', 'show_email', 'show_phone', 'public_listing'] as const;
+  // ab Migration 20261020000000_profil_seite.sql
+  const neueTexte = ['profession', 'profession_en', 'base', 'pitch', 'pitch_en', 'education', 'techniques', 'languages', 'regions', 'height', 'available', 'public_email'] as const;
+  const preview = document.querySelector<HTMLElement>('[data-photo-preview]');
+  const photoInput = document.querySelector<HTMLInputElement>('[data-photo-input]');
+  const removeBtn = document.querySelector<HTMLButtonElement>('[data-photo-remove]');
+  const publicToggle = document.querySelector<HTMLInputElement>('[data-public-toggle]');
+  const publicFields = document.querySelector<HTMLElement>('[data-public-fields]');
+  const publicStatus = document.querySelector<HTMLElement>('[data-public-status]');
+  const publicLink = document.querySelector<HTMLAnchorElement>('[data-public-link]');
+  const waitTag = document.querySelector<HTMLElement>('[data-photo-wait]');
+  /** freigegebenes Foto (auf der Website) und neues, das auf Freigabe wartet */
+  let photoPath: string | null = null;
+  let pendingPath: string | null = null;
+
+  const showPhoto = (localUrl?: string) => {
+    if (!preview) return;
+    const src = localUrl ?? photoUrl(pendingPath ?? photoPath);
+    preview.replaceChildren();
+    if (src) {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = t('Dein Porträt (Vorschau)', 'Your portrait (preview)');
+      preview.append(img);
+    } else {
+      preview.replaceChildren(Object.assign(document.createElement('span'), { textContent: t('Kein Foto', 'No photo') }));
+    }
+    if (waitTag) waitTag.hidden = !pendingPath;
+    if (removeBtn) {
+      removeBtn.hidden = !pendingPath && !photoPath;
+      removeBtn.textContent = pendingPath
+        ? (photoPath ? t('Neues Foto verwerfen', 'Discard new photo') : t('Foto verwerfen', 'Discard photo'))
+        : t('Foto entfernen', 'Remove photo');
+    }
+  };
+  const showPublic = () => {
+    if (publicFields) publicFields.hidden = !publicToggle?.checked;
+  };
+  const showStatus = (verified: boolean, listed: boolean, slug: string | null) => {
+    if (!publicStatus) return;
+    publicStatus.hidden = !listed;
+    publicStatus.dataset.kind = verified ? 'ok' : 'wait';
+    publicStatus.textContent = verified
+      ? t(
+          'Freigegeben: Dein Profil ist öffentlich. Textänderungen erscheinen spätestens am nächsten Morgen, neue Fotos nach der Freigabe.',
+          'Approved: your profile is public. Text changes appear by the next morning at the latest, new photos after approval.',
+        )
+      : t(
+          'Wartet auf Freigabe durch Presse oder Vorstand. Danach erscheint dein Profil auf der Website.',
+          'Waiting for approval by the press team or the board. Your profile then appears on the website.',
+        );
+    if (publicLink) {
+      publicLink.hidden = !(verified && listed && slug);
+      publicLink.href = url(sprache, 'netzwerk', `${slug}/`);
+    }
+  };
+
+  if (ctx && form) {
+    const p = ctx.profile;
+    const hatNeu = !!p && 'gallery' in p;
+    const feld = (n: string) => form.elements.namedItem(n) as HTMLInputElement | HTMLTextAreaElement | null;
+    let galerie: ReturnType<typeof galerieEditor> | null = null;
+    let arbeiten: ReturnType<typeof arbeitenEditor> | null = null;
+    let verified = !!p?.verified;
+    if (!hatNeu) {
+      // Datenbank kennt die neuen Felder noch nicht: nur zeigen, was sich speichern lässt
+      form.querySelectorAll<HTMLElement>('[data-neu]').forEach((el) => (el.closest<HTMLElement>('.i-field')!.hidden = true));
+      form.querySelectorAll<HTMLElement>('[data-klapp="galerie"], [data-klapp="arbeiten"], [data-klapp="angaben"]').forEach((el) => (el.hidden = true));
+      form.querySelector<HTMLElement>('input[name="open_for"]')!.closest<HTMLElement>('fieldset')!.hidden = true;
+      document.querySelector<HTMLElement>('[data-neu-fehlt]')!.hidden = false;
+    }
+    if (p) {
+      for (const f of textFields) {
+        const el = form.elements.namedItem(f) as HTMLInputElement | HTMLTextAreaElement | null;
+        if (el) el.value = (p[f] as string | null) ?? '';
+      }
+      for (const f of flags) {
+        const el = form.elements.namedItem(f) as HTMLInputElement | null;
+        if (el) el.checked = !!p[f];
+      }
+      form.querySelectorAll<HTMLInputElement>('input[name="ags"]').forEach((c) => (c.checked = p.ags?.includes(c.value) ?? false));
+      if (hatNeu) {
+        for (const f of neueTexte) {
+          const el = feld(f);
+          if (el) el.value = p[f] ?? '';
+        }
+        form.querySelectorAll<HTMLInputElement>('input[name="open_for"]').forEach((c) => (c.checked = p.open_for?.includes(c.value) ?? false));
+        form.querySelectorAll<HTMLInputElement>('input[name="gallery_layout"]').forEach((r) => (r.checked = r.value === (p.gallery_layout ?? 'filmstreifen')));
+        galerie = galerieEditor({
+          sb: ctx.sb,
+          userId: ctx.user.id,
+          box: document.querySelector<HTMLElement>('[data-galerie]')!,
+          start: p.gallery ?? [],
+          verified: () => verified,
+          melden: (text, art) => {
+            showMessage(msg, text, art);
+            zusammenfassen();
+          },
+        });
+        arbeiten = arbeitenEditor(document.querySelector<HTMLElement>('[data-arbeiten]')!, p.works ?? []);
+      }
+      (form.elements.namedItem('tags') as HTMLInputElement).value = (p.tags ?? []).join(', ');
+      if (!p.slug) (form.elements.namedItem('slug') as HTMLInputElement).value = slugify(p.display_name);
+      photoPath = p.photo_path;
+      pendingPath = p.photo_pending;
+      showPhoto();
+      showStatus(p.verified, p.public_listing, p.slug);
+    }
+    showPublic();
+    publicToggle?.addEventListener('change', showPublic);
+
+    /** Kurzinfo hinter den aufklappbaren Bereichen, z. B. „3 Fotos, 1 wartet“ */
+    function zusammenfassen() {
+      const info = (k: string, text: string) => {
+        const el = document.querySelector(`[data-info-${k}]`);
+        if (el) el.textContent = text ? `· ${text}` : '';
+      };
+      const g = galerie?.wert() ?? [];
+      const warten = g.filter((x) => !x.frei).length;
+      info('galerie', g.length
+        ? t(
+            `${g.length} ${g.length === 1 ? 'Foto' : 'Fotos'}${warten ? `, ${warten} ${warten === 1 ? 'wartet' : 'warten'} auf Freigabe` : ''}`,
+            `${g.length} ${g.length === 1 ? 'photo' : 'photos'}${warten ? `, ${warten} waiting for approval` : ''}`,
+          )
+        : '');
+      const a = arbeiten?.wert().length ?? 0;
+      info('arbeiten', a ? t(`${a} ${a === 1 ? 'Eintrag' : 'Einträge'}`, `${a} ${a === 1 ? 'entry' : 'entries'}`) : '');
+      const n = (namen: readonly string[]) => namen.filter((x) => feld(x)?.value.trim()).length;
+      const angaben = n(['education', 'techniques', 'languages', 'regions', 'height', 'available']);
+      info('angaben', angaben ? t(`${angaben} ausgefüllt`, `${angaben} filled in`) : '');
+      const kontakt = n(['public_email', 'vimeo']) + form!.querySelectorAll('input[name="open_for"]:checked').length;
+      info('kontakt', kontakt ? t(`${kontakt} ausgefüllt`, `${kontakt} filled in`) : '');
+      info('englisch', n(['profession_en', 'pitch_en', 'bio_en']) ? t('ausgefüllt', 'filled in') : '');
+    }
+    zusammenfassen();
+    form.addEventListener('change', zusammenfassen);
+
+    photoInput?.addEventListener('change', async () => {
+      const file = photoInput.files?.[0];
+      if (!file) return;
+      if (file.size > 5 * 1024 * 1024) return showMessage(msg, t('Das Foto ist größer als 5 MB.', 'The photo is larger than 5 MB.'));
+      const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+      // neuer Dateiname bei jedem Upload, damit Browser- und Build-Caches das neue Bild holen
+      const path = `${ctx.user.id}/portrait-${Date.now()}.${ext}`;
+      showPhoto(URL.createObjectURL(file));
+      const { error } = await ctx.sb.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false });
+      if (error) return showMessage(msg, errorText(error));
+      // ein älteres, noch nicht freigegebenes Foto wird ersetzt
+      const { error: e2 } = await ctx.sb.from('profiles').update({ photo_pending: path }).eq('id', ctx.user.id);
+      if (e2) return showMessage(msg, errorText(e2));
+      if (pendingPath) await ctx.sb.storage.from(BUCKET).remove([pendingPath]);
+      pendingPath = path;
+      photoInput.value = '';
+      showPhoto();
+      showMessage(msg, t(
+        'Foto hochgeladen. Auf der Website erscheint es, sobald Presse oder Vorstand es freigegeben haben.',
+        'Photo uploaded. It appears on the website as soon as the press team or the board has approved it.',
+      ), 'ok');
+    });
+
+    removeBtn?.addEventListener('click', async () => {
+      const pending = !!pendingPath;
+      const path = pendingPath ?? photoPath;
+      const frage = pending
+        ? t('Das neue Foto verwerfen?', 'Discard the new photo?')
+        : t('Foto wirklich entfernen? Es verschwindet auch von der Website.', 'Really remove the photo? It will also disappear from the website.');
+      if (!path || !confirm(frage)) return;
+      const { error } = await ctx.sb.from('profiles').update(pending ? { photo_pending: null } : { photo_path: null }).eq('id', ctx.user.id);
+      if (error) return showMessage(msg, errorText(error));
+      await ctx.sb.storage.from(BUCKET).remove([path]);
+      if (pending) pendingPath = null;
+      else photoPath = null;
+      showPhoto();
+      showMessage(msg, pending ? t('Neues Foto verworfen.', 'New photo discarded.') : t('Foto entfernt.', 'Photo removed.'), 'ok');
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const fd = new FormData(form);
+      const clean = (v: FormDataEntryValue | null) => String(v ?? '').trim() || null;
+      const update = {
+        display_name: String(fd.get('display_name') ?? '').trim(),
+        pronouns: clean(fd.get('pronouns')),
+        bio: clean(fd.get('bio')),
+        bio_en: clean(fd.get('bio_en')),
+        website: clean(fd.get('website')),
+        instagram: clean(fd.get('instagram'))?.replace(/^@/, '') ?? null,
+        vimeo: clean(fd.get('vimeo')),
+        phone: clean(fd.get('phone')),
+        slug: clean(fd.get('slug')),
+        photo_credit: clean(fd.get('photo_credit')),
+        tags: String(fd.get('tags') ?? '').split(',').map((t) => t.trim()).filter(Boolean).slice(0, 6),
+        ags: fd.getAll('ags').map(String),
+        ...Object.fromEntries(flags.map((f) => [f, fd.has(f)])),
+        ...(hatNeu
+          ? {
+              ...Object.fromEntries(neueTexte.map((f) => [f, clean(fd.get(f))])),
+              open_for: fd.getAll('open_for').map(String),
+              gallery_layout: String(fd.get('gallery_layout') ?? 'filmstreifen'),
+              works: arbeiten?.wert() ?? [],
+              gallery: galerie?.wert() ?? [],
+            }
+          : {}),
+      };
+      const { data, error } = await ctx.sb
+        .from('profiles')
+        .update(update)
+        .eq('id', ctx.user.id)
+        .select(hatNeu ? 'verified, public_listing, slug, gallery' : 'verified, public_listing, slug')
+        .single<{ verified: boolean; public_listing: boolean; slug: string | null; gallery?: GalerieEintrag[] }>();
+      if (error) {
+        return showMessage(msg, /duplicate|unique/i.test(error.message)
+          ? t('Diese Adresse ist schon vergeben. Bitte wähle eine andere.', 'This address is already taken. Please choose another one.')
+          : errorText(error));
+      }
+      document.querySelectorAll<HTMLElement>('[data-intern-name]').forEach((el) => (el.textContent = update.display_name));
+      verified = data.verified;
+      if (data.gallery) galerie?.setzen(data.gallery);
+      showStatus(data.verified, data.public_listing, data.slug);
+      zusammenfassen();
+      showMessage(msg, t('Gespeichert.', 'Saved.'), 'ok');
+    });
+  }
+</script>
+
+<style>
+  .opt { color: var(--ink-muted); font-weight: 500; letter-spacing: 0.1em; margin-left: 6px; }
+  :global(.i-fieldset) { border: 0; margin: 0; padding: 0; display: grid; gap: 10px; }
+  :global(.i-fieldset legend) { margin-bottom: 10px; }
+  .ags { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 10px 20px; }
+  .public { padding-top: 22px; border-top: 1px solid var(--rule); }
+  .public__fields { display: grid; gap: 18px; margin-top: 8px; }
+  .public__fields[hidden] { display: none; }
+  .slug { display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 13px; color: var(--ink-muted); }
+  .slug input { flex: 1; }
+  .status { margin: 0; padding: 10px 14px; font-size: 14px; border-left: 4px solid var(--cyan-2); background: var(--cyan-tint); color: var(--purple); }
+  .status[data-kind='wait'] { border-left-color: var(--magenta); background: var(--magenta-tint); }
+  .photo { display: grid; grid-template-columns: 160px 1fr; gap: 20px; align-items: start; }
+  .photo__box { display: grid; gap: 8px; align-content: start; }
+  .photo__wait { justify-self: start; padding: 3px 7px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; background: var(--magenta-tint); color: var(--purple); border-left: 3px solid var(--magenta); }
+  .photo__wait[hidden] { display: none; }
+  .photo__preview { aspect-ratio: 4 / 5; background: var(--purple); color: rgba(255, 255, 255, 0.7); display: grid; place-items: center; font-size: 13px; overflow: hidden; clip-path: var(--keil-corner); }
+  .photo__preview :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .photo__controls { display: grid; gap: 14px; align-content: start; }
+  .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
+  .i-field textarea.kurz { min-height: 0; }
+  .mehr { display: grid; gap: 0; border-top: 1px solid var(--rule); }
+  .klapp { border-bottom: 1px solid var(--rule); }
+  .klapp[hidden] { display: none; }
+  .klapp summary {
+    padding: 14px 0; cursor: pointer; font-family: var(--font-display); font-weight: 700; font-size: 17px; color: var(--purple);
+  }
+  .klapp summary:hover { color: var(--magenta-2); }
+  .klapp__info { font-family: var(--font-body); font-weight: 400; font-size: 13.5px; color: var(--ink-muted); margin-left: 4px; }
+  .klapp__in { display: grid; gap: 16px; padding: 4px 0 22px; }
+  .wahl { display: grid; gap: 10px; }
+  .wahl--zwei { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+  :global(.pg__liste), :global(.pa__liste) { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  :global(.pg__el) { display: grid; grid-template-columns: 112px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 12px; background: var(--paper); }
+  :global(.pg__bild) { display: grid; gap: 6px; }
+  :global(.pg__bild img) { width: 112px; aspect-ratio: 4 / 5; object-fit: cover; background: var(--purple); display: block; }
+  :global(.pg__status) { font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 6px; background: var(--magenta-tint); border-left: 3px solid var(--magenta); color: var(--purple); }
+  :global(.pg__status--ok) { background: var(--cyan-tint); border-left-color: var(--cyan-2); }
+  :global(.pg__felder) { display: grid; gap: 8px; }
+  :global(.pg__felder input), :global(.pa__z input) { width: 100%; min-width: 0; padding: 9px 11px; border: 1.5px solid var(--rule); border-radius: 0; background: #fff; font: inherit; font-size: 14.5px; color: var(--ink); }
+  :global(.pg__felder input:focus), :global(.pa__z input:focus) { outline: none; border-color: var(--magenta); }
+  :global(.pg__knoepfe) { display: flex; flex-direction: column; gap: 6px; }
+  :global(.pg__mini) { width: 34px; height: 34px; border: 1.5px solid var(--rule); border-radius: 0; background: #fff; color: var(--purple); cursor: pointer; font-size: 15px; }
+  :global(.pg__mini:hover:not(:disabled)) { border-color: var(--magenta); color: var(--magenta-2); }
+  :global(.pg__mini:disabled) { opacity: 0.35; cursor: default; }
+  :global(.pg__neu) { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-top: 12px; }
+  :global(.pg__neu .btn[hidden]) { display: none; }
+  :global(.pg__neu input:focus-visible + .btn) { outline: 2px solid var(--magenta); outline-offset: 2px; }
+  :global(.pa__z) { display: grid; grid-template-columns: 90px minmax(0, 1fr) minmax(0, 1fr) auto; gap: 8px; align-items: center; }
+  @media (max-width: 640px) {
+    :global(.pg__el) { grid-template-columns: 84px minmax(0, 1fr); }
+    :global(.pg__bild img) { width: 84px; }
+    :global(.pg__knoepfe) { grid-column: 1 / -1; flex-direction: row; }
+    :global(.pa__z) { grid-template-columns: 80px minmax(0, 1fr) auto; }
+    :global(.pa__z input[data-k='place']) { grid-column: 1 / 3; grid-row: 2; }
+  }
+  .profile__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+  @media (max-width: 560px) { .photo { grid-template-columns: 1fr; } .photo__box { max-width: 200px; } }
+</style>

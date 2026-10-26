@@ -29,7 +29,8 @@ Unter *Authentication*:
 
 - **Sign In / Providers → Email**: aktiv. „Allow new users to sign up“ **ausschalten** (nur Einladungen).
 - **URL Configuration → Site URL**: die Website-Adresse, z. B. `https://tanznetzdresden.de`.
-  **Redirect URLs**: `https://tanznetzdresden.de/intern/**` (bei GitHub Pages mit Unterpfad entsprechend).
+  **Redirect URLs**: `https://tanznetzdresden.de/intern/**` und `https://tanznetzdresden.de/en/intern/**` (englische
+  Seiten, siehe unten; bei GitHub Pages mit Unterpfad entsprechend).
 - **Emails → Templates**: Texte auf Deutsch anpassen. Der Einladungslink sollte auf `/intern/passwort/` führen.
 - **SMTP**: Für mehr als ein paar Mails pro Stunde einen eigenen Mailserver eintragen (z. B. vom Webhoster).
 - Optional **Attack Protection → CAPTCHA** (z. B. Cloudflare Turnstile) gegen automatisierte Login-Versuche.
@@ -84,6 +85,20 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 | Admin | wie Vorstand (Admin vergeben nur Admins) |
 
 **Mitgliedschaft beendet:** *Authentication → Users* → Person löschen. Das Profil wird mit gelöscht.
+
+## Auf Englisch
+
+Die Seiten für Mitglieder gibt es auch auf Englisch unter `/en/intern/`: Anmelden, Mein Status mit Ausweis, Passwort,
+Mein Profil und KEEP UP (Meine Trainings, Training beschreiben). Wer auf der englischen Website auf „Login“ klickt,
+landet dort. Oben in der Seitenleiste schaltet **DE | EN** um; der interne Bereich merkt sich die Wahl im Browser und
+öffnet beim nächsten Mal in dieser Sprache.
+
+Redaktion, Kalender, Mitglieder und Dokumente bleiben deutsch (die Links in der englischen Leiste führen dorthin).
+Welche Seiten es auf Englisch gibt, steht in `src/lib/intern-sprache.ts`. Die Seiten selbst liegen als Views in
+`src/views/intern/`, Texte mit `tr()` (Seite) und `t()` aus `src/scripts/intern/sprache.ts` (Skript).
+
+Nicht übersetzt: E-Mails von Supabase (Einladung, Login-Link; *Emails → Templates*), der Ausweis in Google Wallet
+und die Prüfseite `/mitglied/pruefen/`.
 
 ## Was wo gespeichert wird
 

@@ -12,6 +12,8 @@
 import Base from './Base.astro';
 import Logo from '../components/ui/Logo.astro';
 import { href } from '../lib/url';
+import { getLang, tr, url } from '../lib/i18n';
+import { gegenstueck, internPfad, SPRACHE_KEY } from '../lib/intern-sprache';
 import '../styles/intern.css';
 
 type Punkt = 'status' | 'profil' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine';
@@ -25,31 +27,64 @@ interface Props {
   voll?: boolean;
 }
 const { title, current, loginPage = false, voll = false } = Astro.props;
+const lang = getLang(Astro);
+// Seiten des internen Bereichs ohne Basis-Pfad; englisch nur, wo es sie gibt (lib/intern-sprache.ts)
+const ziel = (pfad: string) => href(internPfad(lang, pfad));
+// interner Bereich, nicht die öffentliche Website: Texte hier mit tr(), nicht in texte.json
+const t = tr(lang, {
+  de: {
+    bereich: 'Interner Bereich', logo: 'Interner Bereich: Mein Status', status: 'Mein Status', profil: 'Mein Profil', mitglieder: 'Mitglieder',
+    dokumente: 'Dokumente', trainings: 'Meine Trainings', redaktion: 'Redaktion', kalender: 'Kalender', beitraege: 'Beiträge', medien: 'Medien',
+    inhalte: 'Website-Inhalte', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung ↗', web: 'Website ansehen →', aus: 'Abmelden',
+    zurWebsite: '← Zur Website', moment: 'Einen Moment …', setupH: 'Noch nicht eingerichtet', sprache: 'Sprache',
+  },
+  en: {
+    bereich: 'Members area', logo: 'Members area: My status', status: 'My status', profil: 'My profile', mitglieder: 'Members',
+    dokumente: 'Documents', trainings: 'My classes', redaktion: 'Editorial', kalender: 'Calendar', beitraege: 'Posts', medien: 'Media',
+    inhalte: 'Website content', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Admin ↗', web: 'View website →', aus: 'Log out',
+    zurWebsite: '← To the website', moment: 'One moment …', setupH: 'Not set up yet', sprache: 'Language',
+  },
+});
 const mitglied: { id: Punkt; label: string; path: string }[] = [
-  { id: 'status', label: 'Mein Status', path: 'intern/' },
-  { id: 'profil', label: 'Mein Profil', path: 'intern/profil/' },
-  { id: 'mitglieder', label: 'Mitglieder', path: 'intern/mitglieder/' },
-  { id: 'dokumente', label: 'Dokumente', path: 'intern/dokumente/' },
+  { id: 'status', label: t.status, path: '' },
+  { id: 'profil', label: t.profil, path: 'profil/' },
+  { id: 'mitglieder', label: t.mitglieder, path: 'mitglieder/' },
+  { id: 'dokumente', label: t.dokumente, path: 'dokumente/' },
 ];
 // KEEP UP: „Meine Trainings“ für eingeplante Dozent:innen (geplant wird im Kalender)
 const keepup: { id: Punkt; label: string; path: string; n: string }[] = [
-  { id: 'keepup-meine', label: 'Meine Trainings', path: 'intern/keep-up/meine/', n: 'keepup-meine' },
+  { id: 'keepup-meine', label: t.trainings, path: 'keep-up/meine/', n: 'keepup-meine' },
 ];
-// nur für Presse, Vorstand und Admin
+// nur für Presse, Vorstand und Admin (nur deutsch)
 const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
-  { id: 'kalender', label: 'Kalender', path: 'intern/kalender/', n: 'kalender' },
-  { id: 'beitraege', label: 'Beiträge', path: 'intern/news/', n: 'beitraege' },
-  { id: 'medien', label: 'Medien', path: 'intern/news/medien/', n: 'medien' },
-  { id: 'inhalte', label: 'Website-Inhalte', path: 'intern/redaktion/' },
-  { id: 'texte', label: 'Texte', path: 'intern/redaktion/texte/' },
-  { id: 'freigaben', label: 'Freigaben', path: 'intern/redaktion/freigaben/', n: 'freigaben' },
+  { id: 'kalender', label: t.kalender, path: 'kalender/', n: 'kalender' },
+  { id: 'beitraege', label: t.beitraege, path: 'news/', n: 'beitraege' },
+  { id: 'medien', label: t.medien, path: 'news/medien/', n: 'medien' },
+  { id: 'inhalte', label: t.inhalte, path: 'redaktion/' },
+  { id: 'texte', label: t.texte, path: 'redaktion/texte/' },
+  { id: 'freigaben', label: t.freigaben, path: 'redaktion/freigaben/', n: 'freigaben' },
 ];
+// Umschalter Deutsch/English, nur auf Seiten, die es in beiden Sprachen gibt
+const anders = gegenstueck(Astro.url.pathname, import.meta.env.BASE_URL);
+const sprachen = anders
+  ? (['de', 'en'] as const).map((l) => ({ l, kurz: l.toUpperCase(), name: l === 'de' ? 'Deutsch' : 'English', href: l === lang ? Astro.url.pathname : anders.pfad }))
+  : [];
+const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : null;
 ---
 <Base title={`${title} · Intern`} noindex>
-  <script is:inline slot="head">
+  <script is:inline slot="head" define:vars={{ weiche }}>
+    // Gemerkte Sprache (Umschalter in der Leiste): gleich zur Seite in dieser Sprache
+    let weiter = false;
+    try {
+      const s = weiche && localStorage.getItem(weiche.key);
+      if (s && s !== weiche.hier) {
+        weiter = true;
+        location.replace(weiche.dort + location.search + location.hash);
+      }
+    } catch {}
     // Blende von der Website (Header.astro): sofort zeigen, damit nichts aufblitzt
     try {
-      if (sessionStorage.getItem('tndd-blende') === '1') {
+      if (!weiter && sessionStorage.getItem('tndd-blende') === '1') {
         sessionStorage.removeItem('tndd-blende');
         if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('blende');
       }
@@ -59,27 +94,34 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
   <div class="intern rd surface-tint" data-intern data-state="loading">
     <aside class="rd-side" data-side>
       <div class="rd-side__kopf">
-        <a href={href('intern/')} class="rd-side__logo" aria-label="Interner Bereich: Mein Status" data-blende-ziel="logo"><Logo part="mark" /></a>
-        <span class="rd-side__k" data-blende-ziel="tag">Interner Bereich</span>
+        <a href={ziel('')} class="rd-side__logo" aria-label={t.logo} data-blende-ziel="logo"><Logo part="mark" /></a>
+        <span class="rd-side__k" data-blende-ziel="tag">{t.bereich}</span>
+        {sprachen.length > 0 && (
+          <div class="rd-sprache" role="group" aria-label={t.sprache}>
+            {sprachen.map((s) => (
+              <a href={s.href} hreflang={s.l} lang={s.l} aria-label={s.name} aria-current={s.l === lang ? 'true' : undefined} data-intern-sprache={s.l}>{s.kurz}</a>
+            ))}
+          </div>
+        )}
       </div>
-      <nav class="rd-nav" aria-label="Interner Bereich" data-when="ready" data-side-teil>
+      <nav class="rd-nav" aria-label={t.bereich} data-when="ready" data-side-teil>
         {mitglied.map((i) => (
-          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined}>
+          <a href={ziel(i.path)} aria-current={i.id === current ? 'page' : undefined}>
             <span class="rd-nav__m" aria-hidden="true"></span>
             <span class="rd-nav__l">{i.label}</span>
           </a>
         ))}
         <span class="rd-nav__gruppe" data-keepup-gruppe hidden>KEEP UP</span>
         {keepup.map((i) => (
-          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined} data-keepup="dozent" hidden>
+          <a href={ziel(i.path)} aria-current={i.id === current ? 'page' : undefined} data-keepup="dozent" hidden>
             <span class="rd-nav__m" aria-hidden="true"></span>
             <span class="rd-nav__l">{i.label}</span>
             <span class="rd-nav__n" data-nav-n={i.n}></span>
           </a>
         ))}
-        <span class="rd-nav__gruppe" data-redaktion-only hidden>Redaktion</span>
+        <span class="rd-nav__gruppe" data-redaktion-only hidden>{t.redaktion}</span>
         {redaktion.map((i) => (
-          <a href={href(i.path)} aria-current={i.id === current ? 'page' : undefined} data-redaktion-only hidden>
+          <a href={ziel(i.path)} aria-current={i.id === current ? 'page' : undefined} data-redaktion-only hidden>
             <span class="rd-nav__m" aria-hidden="true"></span>
             <span class="rd-nav__l">{i.label}</span>
             {i.n && <span class="rd-nav__n" data-nav-n={i.n}></span>}
@@ -87,7 +129,7 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
         ))}
         <a href="https://supabase.com/dashboard" target="_blank" rel="noopener" data-vorstand-only hidden>
           <span class="rd-nav__m" aria-hidden="true"></span>
-          <span class="rd-nav__l">Verwaltung ↗</span>
+          <span class="rd-nav__l">{t.verwaltung}</span>
         </a>
       </nav>
       <div class="rd-side__fuss" data-when="ready" data-side-teil>
@@ -98,17 +140,19 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
             <span class="rd-side__rolle" data-intern-unterzeile></span>
           </span>
         </div>
-        <a class="rd-side__web" href={href('')} target="_blank" rel="noopener">Website ansehen →</a>
-        <button type="button" class="rd-side__aus" data-logout>Abmelden</button>
+        <a class="rd-side__web" href={url(lang, 'home')} target="_blank" rel="noopener">{t.web}</a>
+        <button type="button" class="rd-side__aus" data-logout>{t.aus}</button>
       </div>
-      <a class="rd-side__web rd-side__web--aussen" href={href('')} data-when="login">← Zur Website</a>
+      <a class="rd-side__web rd-side__web--aussen" href={url(lang, 'home')} data-when="login">{t.zurWebsite}</a>
     </aside>
 
     <main id="inhalt" tabindex="-1" class:list={['rd-main', voll && 'rd-main--voll']} data-blende-inhalt>
-      <p class="intern__status rd-status" data-when="loading" role="status">Einen Moment …</p>
+      <p class="intern__status rd-status" data-when="loading" role="status">{t.moment}</p>
       <div class="i-card rd-status" data-when="setup">
-        <h1 class="i-h1">Noch nicht eingerichtet</h1>
-        <p>Der interne Bereich braucht ein Supabase-Projekt. Die Anleitung steht in <code>docs/intern.md</code> im Repository.</p>
+        <h1 class="i-h1">{t.setupH}</h1>
+        {lang === 'en'
+          ? <p>The members area needs a Supabase project. See <code>docs/intern.md</code> in the repository.</p>
+          : <p>Der interne Bereich braucht ein Supabase-Projekt. Die Anleitung steht in <code>docs/intern.md</code> im Repository.</p>}
       </div>
       {loginPage ? <div class="rd-flaeche"><slot /></div> : <div class="rd-flaeche" data-when="ready"><slot /></div>}
     </main>
@@ -119,7 +163,7 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
     <div class="blende__flaeche" data-blende-flaeche><span class="blende__naht" data-blende-naht></span></div>
     <div class="blende__mitte">
       <span class="blende__logo" data-blende-logo><Logo part="mark" /></span>
-      <span class="blende__tag" data-blende-tag>Interner Bereich</span>
+      <span class="blende__tag" data-blende-tag>{t.bereich}</span>
     </div>
   </div>
 </Base>
@@ -129,8 +173,22 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
   import { offeneFreigaben } from '../scripts/intern/freigaben';
   import { blendeAus } from '../scripts/blende';
   import { photoUrl } from '../lib/supabase';
+  import { SPRACHE_KEY } from '../lib/intern-sprache';
+  import { t } from '../scripts/intern/sprache';
 
   blendeAus();
+
+  // Sprache merken: beim nächsten Besuch öffnet der interne Bereich in dieser Sprache
+  document.querySelectorAll<HTMLAnchorElement>('a[data-intern-sprache]').forEach((a) =>
+    a.addEventListener('click', (e) => {
+      try {
+        localStorage.setItem(SPRACHE_KEY, a.dataset.internSprache ?? 'de');
+      } catch {}
+      if (a.hasAttribute('aria-current')) return e.preventDefault();
+      e.preventDefault();
+      location.assign(a.pathname + location.search + location.hash);
+    }),
+  );
 
   const ctx = await bereit;
 
@@ -151,7 +209,7 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
   void ctx.sb.from('mitgliedschaften').select('seit').eq('person', ctx.user.id).maybeSingle<{ seit: string | null }>().then(
     ({ data }) => {
       const jahr = data?.seit?.slice(0, 4);
-      if (unterzeile && jahr) unterzeile.textContent = [`Mitglied seit ${jahr}`, rolle].filter(Boolean).join(' · ');
+      if (unterzeile && jahr) unterzeile.textContent = [t(`Mitglied seit ${jahr}`, `Member since ${jahr}`), rolle].filter(Boolean).join(' · ');
     },
     () => {},
   );
@@ -208,6 +266,14 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
     font-family: var(--font-mono); font-weight: 600; text-transform: uppercase;
   }
   .rd-side__k { font-size: 11px; letter-spacing: 0.2em; color: var(--cyan); white-space: nowrap; }
+  .rd-sprache { display: flex; }
+  .rd-sprache a {
+    padding: 5px 8px; margin-left: -1px; border: 1px solid rgba(255, 255, 255, 0.4); color: #fff;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em;
+  }
+  .rd-sprache a:first-child { margin-left: 0; }
+  .rd-sprache a:hover { border-color: #fff; color: #fff; }
+  .rd-sprache a[aria-current] { background: #fff; border-color: #fff; color: var(--purple); }
   .rd-nav { flex-direction: column; gap: 2px; }
   .intern[data-state='ready'] .rd-nav[data-when] { display: flex !important; }
   .rd-nav a {

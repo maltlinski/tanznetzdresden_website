@@ -42,14 +42,26 @@ export function ausweisJahr(m: Pick<Mitgliedschaft, 'bezahlt_bis' | 'ende'>, heu
   return heute.getFullYear();
 }
 
-const fmt = (o: Intl.DateTimeFormatOptions) => new Intl.DateTimeFormat('de-DE', { ...o, timeZone: 'UTC' });
+/** Englische Namen der Arten, die Intern → Mitglieder vorschlägt (freie Eingaben bleiben, wie sie sind) */
+const ART_EN: Record<string, string> = {
+  'Ordentliches Mitglied': 'Full member',
+  Tanzschaffende: 'Dance professional',
+  Fördermitglied: 'Supporting member',
+  Ehrenmitglied: 'Honorary member',
+};
+/** „Ordentliches Mitglied · Tanzschaffende“ → „Full member · Dance professional“ */
+export const artName = (art: string, sprache: 'de' | 'en' = 'de') =>
+  sprache === 'en' ? art.split(' · ').map((teil) => ART_EN[teil] ?? teil).join(' · ') : art;
+
+/** Datumsangaben; `locale` 'en-GB' für die englischen Seiten */
+const fmt = (o: Intl.DateTimeFormatOptions, locale: string) => new Intl.DateTimeFormat(locale, { ...o, timeZone: 'UTC' });
 const datum = (s: string) => new Date(`${s.slice(0, 10)}T00:00:00Z`);
-/** 31.12.2026 */
-export const kurz = (s: string) => fmt({ day: '2-digit', month: '2-digit', year: 'numeric' }).format(datum(s));
-/** 31. Dezember 2026 */
-export const lang = (s: string) => fmt({ day: 'numeric', month: 'long', year: 'numeric' }).format(datum(s));
-/** März 2019 */
-export const monat = (s: string) => fmt({ month: 'long', year: 'numeric' }).format(datum(s));
+/** 31.12.2026 (en: 31/12/2026) */
+export const kurz = (s: string, locale = 'de-DE') => fmt({ day: '2-digit', month: '2-digit', year: 'numeric' }, locale).format(datum(s));
+/** 31. Dezember 2026 (en: 31 December 2026) */
+export const lang = (s: string, locale = 'de-DE') => fmt({ day: 'numeric', month: 'long', year: 'numeric' }, locale).format(datum(s));
+/** März 2019 (en: March 2019) */
+export const monat = (s: string, locale = 'de-DE') => fmt({ month: 'long', year: 'numeric' }, locale).format(datum(s));
 
 /** Adresse der öffentlichen Prüfseite für den QR-Code */
 export function pruefUrl(code: string, origin = location.origin): string {

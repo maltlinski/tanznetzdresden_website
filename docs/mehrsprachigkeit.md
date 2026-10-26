@@ -22,7 +22,8 @@ Verknüpfung über `hreflang`.
 Bei Rechtstexten gilt die deutsche Fassung. Die englischen Seiten weisen darauf hin. Ändert sich die deutsche
 Datenschutzerklärung, bitte die englische Fassung mitziehen.
 
-**Nur auf Deutsch:** interner Bereich, Leichte Sprache, Kalender-Abo (`.ics`), Newsletter.
+**Nur auf Deutsch:** Redaktion und Verwaltung im internen Bereich, Leichte Sprache, Kalender-Abo (`.ics`), Newsletter.
+Die Seiten für Mitglieder im internen Bereich gibt es auch auf Englisch (`/en/intern/`, docs/intern.md → Auf Englisch).
 
 ## Neue Seite in beiden Sprachen
 

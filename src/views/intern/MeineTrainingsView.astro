@@ -1,0 +1,179 @@
+---
+/**
+ * Intern → KEEP UP → Meine Trainings: die Dozent:in sieht, wofür der Vorstand sie eingeplant hat, und öffnet
+ * den Editor, um ihr Training zu beschreiben. Zuordnung: Profiladresse = Kürzel in keep-up/dozentinnen.yaml.
+ * Deutsch und Englisch (/en/intern/keep-up/meine/).
+ */
+import Intern from '../../layouts/Intern.astro';
+import KeepUpDaten from '../../components/intern/KeepUpDaten.astro';
+import { href } from '../../lib/url';
+import { getLang, tr } from '../../lib/i18n';
+import { internPfad } from '../../lib/intern-sprache';
+
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: {
+    titel: 'Meine Trainings', tag: 'KEEP UP · Dozent:in',
+    lead: 'Der Vorstand hat dich für diese Termine eingeplant. Beschreib dein Training, füge bei Bedarf ein Bild hinzu und veröffentliche es. Auf der Website erscheint die Beschreibung neben dem Kalender, sobald jemand den Tag anklickt.',
+    ohne: 'Du bist noch für kein KEEP UP-Training eingeplant.',
+    ohne1: 'Damit deine Trainings hier erscheinen, braucht dein Profil die Adresse, unter der du bei KEEP UP geführt wirst (z. B.',
+    ohne2: '), und muss freigegeben sein. Die Adresse stellst du unter', ohne3: 'ein; bei Fragen hilft der Vorstand.', profil: 'Mein Profil',
+    anstehend: 'Anstehend', nichts: 'Aktuell bist du für keine Termine eingeplant.', vergangen: 'Vergangen',
+  },
+  en: {
+    titel: 'My classes', tag: 'KEEP UP · Teacher',
+    lead: 'The board has scheduled you for these dates. Describe your class, add a picture if you like and publish it. On the website the description appears next to the calendar as soon as someone clicks the day.',
+    ohne: 'You are not scheduled for any KEEP UP class yet.',
+    ohne1: 'For your classes to appear here, your profile needs the address under which you are listed at KEEP UP (e.g.',
+    ohne2: ') and has to be approved. You set the address under', ohne3: '; the board is happy to help with questions.', profil: 'My profile',
+    anstehend: 'Upcoming', nichts: 'You are not scheduled for any dates at the moment.', vergangen: 'Past',
+  },
+});
+---
+<Intern title={`KEEP UP · ${t.titel}`} current="keepup-meine">
+  <KeepUpDaten />
+  <div class="mt-kopf">
+    <span class="tag">{t.tag}</span>
+    <h1 class="i-h1" data-hallo>{t.titel}</h1>
+    <p class="mt-lead">{t.lead}</p>
+  </div>
+
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <div class="i-card mt-ohne" data-ohne hidden>
+    <p>{t.ohne}</p>
+    <p class="i-hint">
+      {t.ohne1} <code>aurora-fradella</code>{t.ohne2} <a href={href(internPfad(lang, 'profil/'))}>{t.profil}</a> {t.ohne3}
+    </p>
+  </div>
+
+  <div class="ku-hinweis mt-todo" data-todo hidden>
+    <div class="ku-hinweis__text"><span class="ku-hinweis__sq" aria-hidden="true"></span><span class="ku-hinweis__titel" data-todo-text></span></div>
+  </div>
+
+  <div data-anstehend hidden>
+    <span class="ku-label mt-label">{t.anstehend}</span>
+    <div class="mt-karten" data-karten></div>
+    <p class="mt-nichts" data-nichts hidden>{t.nichts}</p>
+  </div>
+  <div data-vergangen-box hidden>
+    <span class="ku-label mt-label mt-label--abstand">{t.vergangen}</span>
+    <div class="mt-vergangen" data-vergangen></div>
+  </div>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage, internUrl } from '../../scripts/intern/session';
+  import { gsap, EASE, motionOk } from '../../scripts/gsap';
+  import { h } from '../../scripts/intern/news/dom';
+  import { daten, ladeTermine, ich, heute, zeitraum, tageText, istVorbei, artText, badge, FEHLT, tabelleFehlt } from '../../scripts/intern/keep-up';
+  import { STATUS, status, ersterTag, KURZ_MAX, type KeepUpTermin } from '../../lib/keep-up-plan';
+  import { sprache, t } from '../../scripts/intern/sprache';
+
+  const ctx = await initIntern(true);
+  const $ = <T extends HTMLElement = HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const { dozentinnen } = daten();
+  const h0 = heute();
+
+
+  const pruefungen = (x: KeepUpTermin) => [
+    { label: t('Titel', 'Title'), ok: !!x.titel.trim() },
+    {
+      label: x.kurz.length > KURZ_MAX ? t('Kurzbeschreibung zu lang', 'Short description too long') : t('Kurzbeschreibung', 'Short description'),
+      ok: !!x.kurz.trim() && x.kurz.length <= KURZ_MAX,
+    },
+    { label: t('Bild (optional)', 'Picture (optional)'), ok: !!x.bild },
+  ];
+  const editor = (x: KeepUpTermin) => `${internUrl('keep-up/beschreiben/')}?id=${x.id}`;
+  const statusText = (st: keyof typeof STATUS) => (sprache === 'en' ? STATUS[st].label_en : STATUS[st].label);
+
+  function zeigen(termine: KeepUpTermin[]) {
+    const sortiert = [...termine].sort((a, b) => ersterTag(a).localeCompare(ersterTag(b)));
+    const kommend = sortiert.filter((t) => !istVorbei(t, h0));
+    const vorbei = sortiert.filter((t) => istVorbei(t, h0)).reverse();
+    const offen = kommend.filter((t) => ['offen', 'entwurf'].includes(status(t))).length;
+    $('[data-todo]').hidden = !offen;
+    $('[data-todo-text]').textContent = offen === 1
+      ? t('Ein Termin braucht noch eine Beschreibung.', 'One date still needs a description.')
+      : t(`${offen} Termine brauchen noch eine Beschreibung.`, `${offen} dates still need a description.`);
+    $('[data-anstehend]').hidden = false;
+    $('[data-nichts]').hidden = !!kommend.length;
+    $('[data-karten]').replaceChildren(
+      ...kommend.map((x) => {
+        const st = status(x);
+        const fertig = st === 'online';
+        const cta = t(
+          { offen: 'Beschreiben', entwurf: 'Weiter schreiben', geaendert: 'Änderungen prüfen', online: 'Bearbeiten' },
+          { offen: 'Describe', entwurf: 'Continue writing', geaendert: 'Review changes', online: 'Edit' },
+        )[st];
+        return h('article', { class: `mt-karte${fertig ? ' is-fertig' : ''}` },
+          h('div', { class: 'mt-karte__badges' }, badge(artText(x), x.art === 'workshop' ? 'magenta' : 'cyan'), badge(statusText(st), STATUS[st].badge)),
+          h('div', { class: 'mt-karte__wann' }, h('span', { class: 'mt-karte__zeitraum', text: zeitraum(x) }), h('span', { class: 'mt-karte__meta', text: [tageText(x), x.zeit, x.ort].filter(Boolean).join(' · ') })),
+          h('h2', { class: `mt-karte__titel${x.titel ? '' : ' is-leer'}`, text: x.titel || t('Noch ohne Titel', 'No title yet') }),
+          x.notiz ? h('div', { class: 'mt-notiz' }, h('span', { class: 'mt-notiz__k', text: t('Notiz vom Vorstand', 'Note from the board') }), h('span', { text: x.notiz })) : null,
+          h('div', { class: 'ku-checks' }, ...pruefungen(x).map((p) => h('span', { class: `ku-check${p.ok ? ' is-ok' : ''}`, text: p.label }))),
+          h('a', { class: fertig ? 'ku-ghost mt-karte__cta' : 'btn btn--primary btn--marker mt-karte__cta', href: editor(x) }, cta),
+        );
+      }),
+    );
+    $('[data-vergangen-box]').hidden = !vorbei.length;
+    $('[data-vergangen]').replaceChildren(
+      ...vorbei.map((x) => {
+        const st = status(x);
+        return h('a', { class: 'mt-zeile', href: editor(x) },
+          h('span', { class: 'mt-zeile__wann', text: zeitraum(x) }),
+          h('span', { class: 'mt-zeile__titel', text: x.titel || t('Ohne Beschreibung', 'No description') }),
+          badge(statusText(st), STATUS[st].badge),
+          h('span', { class: 'mt-zeile__pfeil', 'aria-hidden': 'true', text: '→' }),
+        );
+      }),
+    );
+    if (motionOk()) gsap.from('.mt-karte, .mt-zeile', { y: 18, opacity: 0, duration: 0.6, ease: EASE, stagger: 0.04, clearProps: 'transform,opacity' });
+  }
+
+  // ---------- Laden ----------
+  if (ctx) {
+    try {
+      const kuerzel = await ich(ctx.sb);
+      const termine = kuerzel ? await ladeTermine(ctx.sb, kuerzel) : [];
+      const vorname = (dozentinnen.find((d) => d.id === kuerzel)?.name ?? ctx.profile?.display_name ?? '').split(/\s+/)[0];
+      if (vorname) $('[data-hallo]').textContent = t(`Hallo ${vorname}.`, `Hello ${vorname}.`);
+      if (!termine.length) $('[data-ohne]').hidden = false;
+      else zeigen(termine);
+    } catch (e) {
+      showMessage($('[data-msg]'), tabelleFehlt(e) ? FEHLT : errorText(e));
+    }
+  }
+</script>
+
+<style>
+  .mt-kopf { display: flex; flex-direction: column; gap: 14px; max-width: 680px; margin-bottom: 28px; }
+  .mt-kopf .i-h1 { margin: 0; }
+  .mt-lead { margin: 0; font-size: 16px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
+  .mt-ohne p { margin: 0 0 10px; }
+  .mt-todo { padding: 16px 20px; margin-bottom: 24px; }
+  .mt-todo .ku-hinweis__titel { font-size: 18px; }
+  .mt-todo .ku-hinweis__sq { margin-top: 4px; }
+  .mt-label { display: block; margin-bottom: 12px; }
+  .mt-label--abstand { margin-top: 44px; }
+  .mt-karten { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 330px), 1fr)); gap: 16px; }
+  .mt-karten :global(.mt-karte) { background: var(--paper); border-top: 3px solid var(--magenta); padding: 22px 22px 20px; display: flex; flex-direction: column; gap: 14px; }
+  .mt-karten :global(.mt-karte.is-fertig) { border-top-color: var(--rule); }
+  .mt-karten :global(.mt-karte__badges) { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+  .mt-karten :global(.mt-karte__wann) { display: flex; flex-direction: column; gap: 6px; }
+  .mt-karten :global(.mt-karte__zeitraum) { font-family: var(--font-display); font-weight: 800; font-size: 32px; line-height: 1; letter-spacing: -0.03em; color: var(--purple); }
+  .mt-karten :global(.mt-karte__meta) { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--ink-soft); }
+  .mt-karten :global(.mt-karte__titel) { margin: 0; font-family: var(--font-display); font-weight: 700; font-size: 19px; line-height: 1.2; letter-spacing: -0.01em; color: var(--purple); }
+  .mt-karten :global(.mt-karte__titel.is-leer) { color: var(--ink-muted); }
+  .mt-karten :global(.mt-notiz) { background: var(--tint); padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; font-size: 14px; line-height: 1.5; }
+  .mt-karten :global(.mt-notiz__k) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2); }
+  .mt-karten :global(.mt-karte__cta) { margin-top: auto; align-self: flex-start; }
+  .mt-nichts { margin: 0; padding: 28px 0; font-size: 15px; color: var(--ink-soft); }
+  .mt-vergangen { border-top: 2px solid var(--purple); background: var(--paper); }
+  .mt-vergangen :global(.mt-zeile) {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 8px 20px; padding: 14px 16px; border-bottom: 1px solid var(--rule); color: inherit;
+  }
+  .mt-vergangen :global(.mt-zeile:hover) { background: var(--tint); }
+  .mt-vergangen :global(.mt-zeile__wann) { flex: 0 0 120px; font-family: var(--font-display); font-weight: 800; font-size: 18px; letter-spacing: -0.02em; color: var(--purple); }
+  .mt-vergangen :global(.mt-zeile__titel) { flex: 1 1 200px; font-size: 15px; color: var(--ink-soft); }
+  .mt-vergangen :global(.mt-zeile__pfeil) { font-family: var(--font-display); font-size: 20px; color: var(--purple); }
+</style>

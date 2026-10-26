@@ -9,7 +9,7 @@ import { getKeepUp } from '../../lib/keep-up';
 import { getVerein } from '../../lib/settings';
 import { getDateiTermine, getFormate, getOrte } from '../../lib/content';
 import { getProfiles } from '../../lib/profiles';
-import { url } from '../../lib/i18n';
+import { getLang, url } from '../../lib/i18n';
 import { href } from '../../lib/url';
 import type { KalenderDaten, KeepUpDaten } from '../../scripts/intern/keep-up';
 
@@ -18,9 +18,11 @@ interface Props {
   kalender?: boolean;
 }
 const { kalender = false } = Astro.props;
+// Meine Trainings und der Editor gibt es auch auf Englisch (/en/intern/keep-up/…)
+const lang = getLang(Astro);
 
-const { dozentinnen } = await getKeepUp('de');
-const verein = getVerein('de');
+const { dozentinnen } = await getKeepUp(lang);
+const verein = getVerein(lang);
 const dateien = import.meta.glob<{ default: ImageMetadata }>('../../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
 const klein = async (src: ImageMetadata | string) => (typeof src === 'string' ? src : (await getImage({ src, width: 160, height: 160, fit: 'cover' })).src);
 
@@ -34,7 +36,7 @@ const daten: KeepUpDaten = {
       .map(async ([pfad, m]) => ({ bild: pfad.replace('../../', ''), src: (await getImage({ src: m.default, width: 480 })).src, alt: '' })),
   ),
   ort: verein.training.place,
-  website: url('de', 'profitraining', '#kalender'),
+  website: url(lang, 'profitraining', '#kalender'),
 };
 
 if (kalender) {

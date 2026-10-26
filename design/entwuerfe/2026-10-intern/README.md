@@ -2,7 +2,7 @@
 
 Aus Claude Design. Die Seite „Mein Status“ und ihr Rahmen gelten als Vorlage für den ganzen internen Bereich
 (wie die Redaktion: lila Seitenleiste links). Umgesetzt in `src/layouts/Intern.astro` (Rahmen für alle internen
-Seiten, die Redaktion nutzt ihn über `src/layouts/Redaktion.astro`) und `src/pages/intern/index.astro`.
+Seiten, die Redaktion nutzt ihn über `src/layouts/Redaktion.astro`) und `src/views/intern/StatusView.astro` (Seiten `/intern/` und `/en/intern/`).
 Daten: `supabase/migrations/20261022000000_mitgliedschaft.sql`, Status-Regel in `src/lib/mitgliedschaft.ts`.
 Einrichtung und Pflege: `docs/intern.md`.
 

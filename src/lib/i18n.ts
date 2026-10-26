@@ -42,8 +42,8 @@ export const routes = {
   leichteSprache: { de: 'leichte-sprache/', en: null },
   impressum: { de: 'impressum/', en: 'legal-notice/' },
   datenschutz: { de: 'datenschutz/', en: 'privacy/' },
-  // interner Bereich bleibt vorerst deutsch
-  intern: { de: 'intern/', en: null },
+  // interner Bereich: Mitgliederseiten auch auf Englisch, Redaktion nur deutsch (src/lib/intern-sprache.ts)
+  intern: { de: 'intern/', en: 'intern/' },
   // Prüfseite für den Mitgliedsausweis (QR-Code auf der Rückseite)
   ausweisPruefen: { de: 'mitglied/pruefen/', en: null },
 } as const satisfies Record<string, Record<Lang, string | null>>;

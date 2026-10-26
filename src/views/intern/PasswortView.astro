@@ -1,0 +1,60 @@
+---
+/** Intern → Passwort festlegen (auch nach „Passwort vergessen?“). Deutsch und Englisch. */
+import Intern from '../../layouts/Intern.astro';
+import { getLang, tr } from '../../lib/i18n';
+
+const lang = getLang(Astro);
+const t = tr(lang, {
+  de: {
+    titel: 'Passwort festlegen', lead: 'Wähle ein neues Passwort mit mindestens 10 Zeichen. Ein Passwort-Manager hilft.',
+    neu: 'Neues Passwort', wiederholen: 'Wiederholen', speichern: 'Speichern',
+  },
+  en: {
+    titel: 'Set password', lead: 'Choose a new password with at least 10 characters. A password manager helps.',
+    neu: 'New password', wiederholen: 'Repeat', speichern: 'Save',
+  },
+});
+---
+<Intern title={t.titel}>
+  <div class="i-card">
+    <h1 class="i-h1">{t.titel}</h1>
+    <p class="i-lead">{t.lead}</p>
+    <form class="i-form" data-pw-form>
+      <input type="email" name="username" autocomplete="username" hidden data-pw-user />
+      <div class="i-field">
+        <label for="pw-new">{t.neu}</label>
+        <input id="pw-new" name="password" type="password" autocomplete="new-password" minlength="10" required />
+      </div>
+      <div class="i-field">
+        <label for="pw-repeat">{t.wiederholen}</label>
+        <input id="pw-repeat" name="repeat" type="password" autocomplete="new-password" minlength="10" required />
+      </div>
+      <p class="i-msg" role="alert" data-pw-msg hidden></p>
+      <div><button type="submit" class="btn btn--primary btn--marker">{t.speichern}</button></div>
+    </form>
+  </div>
+</Intern>
+
+<script>
+  import { initIntern, errorText, showMessage, internUrl } from '../../scripts/intern/session';
+  import { t } from '../../scripts/intern/sprache';
+
+  const ctx = await initIntern(true);
+  const form = document.querySelector<HTMLFormElement>('[data-pw-form]');
+  const msg = document.querySelector<HTMLElement>('[data-pw-msg]');
+  const user = document.querySelector<HTMLInputElement>('[data-pw-user]');
+  if (user && ctx) user.value = ctx.user.email ?? '';
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!ctx) return;
+    const fd = new FormData(form);
+    const pw = String(fd.get('password') ?? '');
+    if (pw.length < 10) return showMessage(msg, t('Bitte mindestens 10 Zeichen.', 'Please use at least 10 characters.'));
+    if (pw !== fd.get('repeat')) return showMessage(msg, t('Die beiden Passwörter stimmen nicht überein.', 'The two passwords do not match.'));
+    const { error } = await ctx.sb.auth.updateUser({ password: pw });
+    if (error) return showMessage(msg, errorText(error));
+    showMessage(msg, t('Gespeichert. Du wirst weitergeleitet …', 'Saved. Redirecting …'), 'ok');
+    setTimeout(() => location.replace(internUrl('profil/')), 1200);
+  });
+</script>

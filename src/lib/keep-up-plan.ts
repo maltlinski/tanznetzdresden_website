@@ -39,11 +39,11 @@ export type OeffentlicherTermin = Pick<KeepUpTermin, 'id' | 'art' | 'dozent' | '
 
 export type Status = 'offen' | 'entwurf' | 'online' | 'geaendert';
 
-export const STATUS: Record<Status, { label: string; badge: string }> = {
-  offen: { label: 'Ohne Beschreibung', badge: 'outline' },
-  entwurf: { label: 'Entwurf', badge: 'purple' },
-  online: { label: 'Online', badge: 'cyan' },
-  geaendert: { label: 'Änderungen offen', badge: 'magenta' },
+export const STATUS: Record<Status, { label: string; label_en: string; badge: string }> = {
+  offen: { label: 'Ohne Beschreibung', label_en: 'No description', badge: 'outline' },
+  entwurf: { label: 'Entwurf', label_en: 'Draft', badge: 'purple' },
+  online: { label: 'Online', label_en: 'Online', badge: 'cyan' },
+  geaendert: { label: 'Änderungen offen', label_en: 'Unpublished changes', badge: 'magenta' },
 };
 
 /** Höchstlänge der Kurzbeschreibung (die Datenbank erlaubt etwas mehr) */
