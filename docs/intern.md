@@ -70,8 +70,39 @@ mit denselben Namen überschreiben.
 
 ## 4. Mitglieder einladen
 
-*Authentication → Users → Invite user*: E-Mail-Adresse eingeben. Die Person bekommt einen Link, legt ein Passwort
-fest und pflegt danach ihr Profil. Beim ersten Login wird automatisch ein Profil angelegt.
+**Im internen Bereich (Vorstand):** *Intern → Mitglieder → Neues Mitglied einladen*. Name, E-Mail, Rolle, Sprache
+der Einladung und – wenn die Tabelle `mitgliedschaften` da ist – Art und Beginn der Mitgliedschaft eintragen,
+„Einladung senden“. Die Person bekommt eine E-Mail, legt über den Link ihr Passwort fest (`/intern/passwort/`, bei
+englischer Einladung `/en/intern/passwort/`) und ist drin. Darunter stehen die Einladungen, die noch niemand
+angenommen hat: **Erneut senden** (Link abgelaufen, Mail im Spam) oder **Zurücknehmen** (z. B. Tippfehler in der
+Adresse). Bestehende Zugänge kann die Funktion nicht löschen.
+
+**Einrichten (einmal):**
+
+1. *Edge Functions → Deploy a new function → Via Editor*, Name `einladen`, Inhalt von
+   `supabase/functions/einladen/index.ts` hineinkopieren. „Verify JWT“ eingeschaltet lassen.
+   (Oder mit der CLI: `supabase functions deploy einladen --project-ref <projekt>`.)
+2. *Edge Functions → Secrets*: `SITE_URL`, z. B. `https://tanznetzdresden.de/` (gibt es schon, wenn Google Wallet
+   eingerichtet ist). Den Service-Schlüssel setzt Supabase selbst (`SUPABASE_SERVICE_ROLE_KEY`); er steht nur in der
+   Funktion, nie im Repository oder im Browser.
+3. *Authentication → URL Configuration → Redirect URLs*: `…/intern/**` und `…/en/intern/**` (siehe Schritt 2).
+4. *Authentication → Emails → Invite user*: Text anpassen. Die Sprache der Einladung steht in `.Data.sprache`,
+   der Name in `.Data.display_name`, zum Beispiel:
+
+   ```html
+   {{ if eq .Data.sprache "en" }}
+   <h2>Welcome to TanzNetzDresden</h2>
+   <p>Hello {{ .Data.display_name }}, the board has invited you to the members area.</p>
+   <p><a href="{{ .ConfirmationURL }}">Set your password</a></p>
+   {{ else }}
+   <h2>Willkommen im TanzNetzDresden</h2>
+   <p>Hallo {{ .Data.display_name }}, der Vorstand hat dich in den internen Bereich eingeladen.</p>
+   <p><a href="{{ .ConfirmationURL }}">Passwort festlegen</a></p>
+   {{ end }}
+   ```
+
+Ohne die Funktion zeigt *Intern → Mitglieder* einen Hinweis. Dann geht es wie bisher über das Dashboard:
+*Authentication → Users → Invite user*. Beim ersten Login wird automatisch ein Profil angelegt.
 
 **Ersten Vorstand ernennen:** *Table Editor → profiles* → bei der Person `role` auf `vorstand` oder `admin` setzen
 (braucht die vierte Migration, sonst kommt „Nur der Vorstand kann Rollen ändern.“).
@@ -167,4 +198,3 @@ Einrichtung in [redaktion.md](redaktion.md#einrichten-einmalig-admin).
 ## Ideen für später
 
 - Interne Termine (Plenum, AG-Treffen) im selben Kalender (`src/components/Kalender.astro`), sichtbar nur für Mitglieder.
-- Einladungen direkt aus dem internen Bereich (braucht eine Supabase Edge Function mit Service-Key).

@@ -116,5 +116,4 @@ Der Abschnitt „Haltung & Wirkung“ steht auf „Über uns“ (`/verein/`) und
 - Einzelseiten für weitere Formate (wie `/profitraining/`: Route in `src/lib/i18n.ts`, `seite:` im Format). Termine haben schon eigene Seiten (`src/views/TerminView.astro`).
 - Pressebereich mit Download-Paket.
 - Ausschreibungen & Open Calls als eigene Sammlung mit Ablaufdatum.
-- Interner Bereich auf Englisch.
 - Statistik ohne Cookies (z. B. selbst gehostetes Matomo/Plausible) über die Kategorie „statistik“.

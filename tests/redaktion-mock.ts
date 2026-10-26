@@ -28,6 +28,8 @@ export interface Mock {
   mitgliedschaftGespeichert: Record<string, unknown>[];
   /** Aufrufe der Funktion „ausweis“ (Google Wallet) */
   wallet: number;
+  /** Aufrufe der Funktion „einladen“ (Vorstand) */
+  einladen: Record<string, unknown>[];
   /** Tabelle keepup_termine (aktueller Stand) und jede Änderung daran */
   keepup: Record<string, unknown>[];
   keepupAenderungen: { methode: string; body: Record<string, unknown> | null }[];
@@ -63,6 +65,8 @@ export interface MockOptionen {
   keepupKontakte?: Record<string, unknown>[];
   /** Zeilen in kalender_termine; undefined = Tabelle fehlt (Migration 20261026) */
   kalender?: Record<string, unknown>[];
+  /** offene Einladungen (Funktion „einladen“); undefined = Funktion nicht angelegt */
+  einladungen?: Record<string, unknown>[];
 }
 
 /** Neue Einplanung mit den Standardwerten der Tabelle */
@@ -74,7 +78,7 @@ const INHALT = ['titel', 'kurz', 'text', 'schwerpunkte', 'mitbringen', 'bild', '
 
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
-  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [] };
+  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, einladen: [], keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [] };
   const mitglieder = new Map<string, Record<string, unknown>>([...(o.mitgliedschaft ? [o.mitgliedschaft] : []), ...(o.mitgliedschaften ?? [])].map((z) => [String(z.person), z]));
   let profil: Record<string, unknown> = { id: 'u1', display_name: 'Pia Presse', role: 'presse', verified: false, public_listing: false, tags: [], ags: [], ...o.profil };
   const dateien = new Map<string, Buffer>();
@@ -101,6 +105,12 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       if (req.method() === 'HEAD') return route.fulfill({ status: 200, headers: { ...cors, 'Content-Range': '0-0/0' } });
       if (req.method() === 'PATCH') {
         const body = req.postDataJSON() as Record<string, unknown>;
+        // Profil einer anderen Person (Vorstand vergibt Rollen): merken, eigenes Profil bleibt
+        const fremd = url.searchParams.get('id');
+        if (fremd && fremd !== 'eq.u1') {
+          m.profilGespeichert.push({ id: fremd.replace(/^eq\./, ''), ...body });
+          return json(einzeln ? body : [body]);
+        }
         if ('gallery' in body && !('gallery' in profil)) return json({ message: 'column "gallery" does not exist', code: '42703' }, 400);
         m.profilGespeichert.push(body);
         // wie der Trigger profiles_galerie: nur schon freigegebene Fotos bleiben frei
@@ -263,6 +273,19 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       } catch (e) {
         return json({ message: (e as Error).message, code: 'P0001' }, 400);
       }
+    }
+    if (url.pathname === '/functions/v1/einladen') {
+      if (!o.einladungen) return route.fulfill({ status: 404, contentType: 'text/plain', body: 'Function not found', headers: cors });
+      const body = req.postDataJSON() as Record<string, unknown>;
+      m.einladen.push(body);
+      if (body.aktion === 'offen') return json({ offen: o.einladungen });
+      if (body.aktion === 'einladen') {
+        if (body.email === 'lea@example.org') return json({ fehler: 'Für diese Adresse gibt es schon einen Zugang.' }, 409);
+        o.einladungen.unshift({ id: 'neu1', email: body.email, name: body.name, eingeladen_am: new Date().toISOString() });
+        return json({ id: 'neu1', email: body.email });
+      }
+      if (body.aktion === 'zuruecknehmen') o.einladungen.splice(o.einladungen.findIndex((x) => x.id === body.id), 1);
+      return json({ ok: true });
     }
     if (url.pathname === '/functions/v1/ausweis') {
       m.wallet++;

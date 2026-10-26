@@ -1,4 +1,8 @@
 ---
+/**
+ * Intern → Mitglieder: alle mit Zugang. Der Vorstand lädt hier neue Mitglieder ein (Supabase-Funktion „einladen“),
+ * vergibt Rollen und pflegt die Mitgliedschaften (Nummer, Beitrag, Austritt).
+ */
 import Intern from '../../../layouts/Intern.astro';
 ---
 <Intern title="Mitglieder" current="mitglieder">
@@ -14,6 +18,65 @@ import Intern from '../../../layouts/Intern.astro';
   </div>
   <p class="i-msg" role="alert" data-dir-msg hidden></p>
   <p class="dir-pending" data-dir-pending hidden></p>
+
+  <!-- Einladen (nur Vorstand) -->
+  <section class="ei" aria-labelledby="ei-h" data-einladen hidden>
+    <details class="ei__klapp" data-ei-klapp>
+      <summary><span class="ei__h" id="ei-h">Neues Mitglied einladen</span><span class="ei__zahl" data-ei-zahl></span></summary>
+      <div class="ei__innen">
+        <p class="ei__hilfe">
+          Die Person bekommt eine E-Mail mit einem Link. Darüber legt sie ihr Passwort fest und ist danach im internen Bereich.
+          Rolle und Mitgliedschaft lassen sich später auf ihrer Karte ändern.
+        </p>
+        <p class="i-msg" data-ei-fehlt hidden>
+          Die Funktion „einladen“ ist in Supabase noch nicht eingerichtet. Die Anleitung steht in <code>docs/intern.md</code>
+          („Mitglieder einladen“). Bis dahin geht es über das Supabase-Dashboard.
+        </p>
+        <form class="ei__form" data-ei-form>
+          <div class="i-field">
+            <label for="ei-name">Name</label>
+            <input id="ei-name" name="name" required maxlength="80" autocomplete="off" />
+          </div>
+          <div class="i-field">
+            <label for="ei-email">E-Mail</label>
+            <input id="ei-email" name="email" type="email" required maxlength="200" autocomplete="off" />
+          </div>
+          <div class="i-field">
+            <label for="ei-rolle">Rolle</label>
+            <select id="ei-rolle" name="rolle">
+              <option value="mitglied">Mitglied</option>
+              <option value="presse">Presse (darf News schreiben)</option>
+              <option value="vorstand">Vorstand</option>
+              <option value="admin" data-nur-admin>Admin</option>
+            </select>
+          </div>
+          <div class="i-field">
+            <label for="ei-sprache">Sprache der Einladung</label>
+            <select id="ei-sprache" name="sprache">
+              <option value="de">Deutsch</option>
+              <option value="en">English</option>
+            </select>
+          </div>
+          <div class="i-field" data-ei-ms>
+            <label for="ei-art">Art der Mitgliedschaft</label>
+            <input id="ei-art" name="art" list="ms-arten" value="Ordentliches Mitglied" maxlength="80" />
+          </div>
+          <div class="i-field" data-ei-ms>
+            <label for="ei-seit">Mitglied seit</label>
+            <input id="ei-seit" name="seit" type="date" />
+          </div>
+          <div class="ei__knoepfe">
+            <button type="submit" class="btn btn--primary btn--marker" data-ei-senden>Einladung senden</button>
+          </div>
+        </form>
+        <div class="ei-offen" data-ei-offen hidden>
+          <h2 class="ei-offen__h">Noch nicht angenommen</h2>
+          <ul class="ei-offen__liste" data-ei-liste></ul>
+        </div>
+      </div>
+    </details>
+  </section>
+
   <ul class="dir" data-dir aria-live="polite"></ul>
   <template data-dir-item>
     <li class="dir__card">
@@ -79,6 +142,7 @@ import Intern from '../../../layouts/Intern.astro';
 
   const ms = new Map<string, Mitgliedschaft>();
   let msFehlt = false;
+  let cards: HTMLLIElement[] = [];
   const STATUS_TEXT = { aktiv: 'aktiv', offen: 'Beitrag offen', abgelaufen: 'abgelaufen' } as const;
 
   /** Bereich „Mitgliedschaft“ auf einer Karte (nur Vorstand) */
@@ -132,7 +196,9 @@ import Intern from '../../../layouts/Intern.astro';
     box.hidden = false;
   }
 
-  if (ctx && list && tpl) {
+  /** Mitgliederliste laden und zeigen (auch nach einer Einladung) */
+  async function laden() {
+    if (!ctx || !list || !tpl) return;
     const { data, error } = await ctx.sb.rpc('member_directory');
     if (error) showMessage(msg, errorText(error));
     const entries = (data ?? []) as DirectoryEntry[];
@@ -143,7 +209,7 @@ import Intern from '../../../layouts/Intern.astro';
       else (r.data as Mitgliedschaft[]).forEach((z) => ms.set(z.person, z));
       if (msFehlt) showMessage(msg, 'Mitgliedschaften lassen sich pflegen, sobald die Migration 20261022000000_mitgliedschaft.sql eingespielt ist (docs/intern.md).');
     }
-    const cards = entries.map((m) => {
+    cards = entries.map((m) => {
       const li = tpl.content.firstElementChild!.cloneNode(true) as HTMLLIElement;
       li.querySelector('.dir__name')!.textContent = m.display_name || 'Ohne Namen';
       const badge = li.querySelector<HTMLElement>('.dir__badge')!;
@@ -198,11 +264,161 @@ import Intern from '../../../layouts/Intern.astro';
       return li;
     });
     list.replaceChildren(...cards);
-    if (ctx.isRedaktion) void freigabenHinweis(ctx.sb, document.querySelector('[data-dir-pending]'));
-    search?.addEventListener('input', () => {
-      const q = search.value.trim().toLowerCase();
-      cards.forEach((c) => (c.hidden = !!q && !(c.dataset.search ?? '').includes(q)));
+    filtern();
+  }
+  function filtern() {
+    const q = (search?.value ?? '').trim().toLowerCase();
+    cards.forEach((c) => (c.hidden = !!q && !(c.dataset.search ?? '').includes(q)));
+  }
+
+  // ---------- Einladen (Vorstand, Funktion supabase/functions/einladen) ----------
+  type Offen = { id: string; email: string; name: string; eingeladen_am: string };
+  class Fehlt extends Error {}
+
+  async function funktion<T>(body: Record<string, unknown>): Promise<T> {
+    const { data, error } = await ctx!.sb.functions.invoke<T>('einladen', { body });
+    if (!error) return data as T;
+    const antwort = (error as { context?: Response }).context;
+    let j: { fehler?: string } | null = null;
+    try {
+      j = await antwort?.json();
+    } catch {}
+    if (j?.fehler) throw new Error(j.fehler);
+    // Funktion nicht angelegt (404) oder nicht erreichbar
+    if (!antwort || antwort.status === 404) throw new Fehlt();
+    throw new Error(errorText(error));
+  }
+
+  function einladen() {
+    if (!ctx?.isVorstand) return;
+    const box = document.querySelector<HTMLElement>('[data-einladen]')!;
+    const form = box.querySelector<HTMLFormElement>('[data-ei-form]')!;
+    const senden = box.querySelector<HTMLButtonElement>('[data-ei-senden]')!;
+    const fehlt = box.querySelector<HTMLElement>('[data-ei-fehlt]')!;
+    const offenBox = box.querySelector<HTMLElement>('[data-ei-offen]')!;
+    const liste = box.querySelector<HTMLUListElement>('[data-ei-liste]')!;
+    const zahl = box.querySelector<HTMLElement>('[data-ei-zahl]')!;
+    const feld = (n: string) => form.elements.namedItem(n) as HTMLInputElement;
+    const datum = (iso: string) => (iso ? new Intl.DateTimeFormat('de-DE', { day: 'numeric', month: 'long', year: 'numeric' }).format(new Date(iso)) : '');
+    // Admin vergeben nur Admins; ohne Tabelle mitgliedschaften keine Angaben dazu
+    if (ctx.profile?.role !== 'admin') form.querySelector('[data-nur-admin]')?.remove();
+    if (msFehlt) form.querySelectorAll<HTMLElement>('[data-ei-ms]').forEach((el) => el.remove());
+    else feld('seit').value = new Date().toISOString().slice(0, 10);
+    box.hidden = false;
+
+    const fehler = (e: unknown) => {
+      if (e instanceof Fehlt) fehlt.hidden = false;
+      else showMessage(msg, e instanceof Error ? e.message : errorText(e));
+    };
+
+    async function offeneLaden() {
+      try {
+        const { offen } = await funktion<{ offen: Offen[] }>({ aktion: 'offen' });
+        fehlt.hidden = true;
+        zahl.textContent = offen.length ? `${offen.length} offen` : '';
+        offenBox.hidden = !offen.length;
+        liste.replaceChildren(
+          ...offen.map((o) => {
+            const li = document.createElement('li');
+            li.className = 'ei-offen__z';
+            const wer = document.createElement('span');
+            wer.className = 'ei-offen__wer';
+            const name = document.createElement('strong');
+            name.textContent = o.name || o.email;
+            const mehr = document.createElement('span');
+            mehr.textContent = [o.name ? o.email : '', o.eingeladen_am ? `eingeladen am ${datum(o.eingeladen_am)}` : ''].filter(Boolean).join(' · ');
+            wer.append(name, mehr);
+            const knopf = (text: string, label: string, fn: () => Promise<void>) => {
+              const b = document.createElement('button');
+              b.type = 'button';
+              b.className = 'ei-offen__knopf';
+              b.textContent = text;
+              b.setAttribute('aria-label', `${label}: ${o.name || o.email}`);
+              b.addEventListener('click', async () => {
+                b.disabled = true;
+                try {
+                  await fn();
+                } catch (e) {
+                  fehler(e);
+                } finally {
+                  b.disabled = false;
+                }
+              });
+              return b;
+            };
+            li.append(
+              wer,
+              knopf('Erneut senden', 'Einladung erneut senden', async () => {
+                await funktion({ aktion: 'erneut', id: o.id });
+                showMessage(msg, `Einladung an ${o.email} noch einmal verschickt.`, 'ok');
+              }),
+              knopf('Zurücknehmen', 'Einladung zurücknehmen', async () => {
+                if (!confirm(`Einladung an ${o.email} zurücknehmen? Der Link in der E-Mail funktioniert dann nicht mehr.`)) return;
+                await funktion({ aktion: 'zuruecknehmen', id: o.id });
+                showMessage(msg, `Einladung an ${o.email} zurückgenommen.`, 'ok');
+                await Promise.all([offeneLaden(), laden()]);
+              }),
+            );
+            return li;
+          }),
+        );
+      } catch (e) {
+        fehler(e);
+      }
+    }
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      if (!form.reportValidity()) return;
+      const name = feld('name').value.trim();
+      const email = feld('email').value.trim();
+      const rolle = (form.elements.namedItem('rolle') as HTMLSelectElement).value;
+      senden.disabled = true;
+      senden.textContent = 'Wird verschickt …';
+      try {
+        const { id } = await funktion<{ id: string }>({
+          aktion: 'einladen',
+          name,
+          email,
+          sprache: (form.elements.namedItem('sprache') as HTMLSelectElement).value,
+        });
+        // Rolle und Mitgliedschaft mit der eigenen Anmeldung (Row Level Security, Trigger der Rollen)
+        const nachher: string[] = [];
+        if (rolle !== 'mitglied') {
+          const { error } = await ctx.sb.from('profiles').update({ role: rolle }).eq('id', id);
+          if (error) nachher.push(`Rolle: ${errorText(error)}`);
+        }
+        if (!msFehlt) {
+          const { error } = await ctx.sb
+            .from('mitgliedschaften')
+            .upsert({ person: id, art: feld('art').value.trim() || 'Ordentliches Mitglied', seit: feld('seit').value || null });
+          if (error) nachher.push(`Mitgliedschaft: ${errorText(error)}`);
+        }
+        showMessage(
+          msg,
+          nachher.length
+            ? `Einladung an ${email} verschickt. Bitte auf der Karte nachtragen – ${nachher.join(' ')}`
+            : `Einladung an ${email} verschickt. ${name} steht jetzt in der Liste.`,
+          nachher.length ? 'error' : 'ok',
+        );
+        form.reset();
+        if (!msFehlt) feld('seit').value = new Date().toISOString().slice(0, 10);
+        await Promise.all([offeneLaden(), laden()]);
+      } catch (err) {
+        fehler(err);
+      } finally {
+        senden.disabled = false;
+        senden.textContent = 'Einladung senden';
+      }
     });
+    void offeneLaden();
+  }
+
+  if (ctx) {
+    await laden();
+    einladen();
+    if (ctx.isRedaktion) void freigabenHinweis(ctx.sb, document.querySelector('[data-dir-pending]'));
+    search?.addEventListener('input', filtern);
   }
 </script>
 
@@ -238,6 +454,31 @@ import Intern from '../../../layouts/Intern.astro';
   :global(.dir__role[hidden]) { display: none; }
   :global(.dir__role label) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
   :global(.dir__role select) { flex: 1; min-width: 0; font: inherit; padding: 6px 8px; border: 1.5px solid var(--rule); border-radius: 0; background: var(--paper); color: var(--purple); }
+  /* Einladen */
+  .ei { margin: 0 0 28px; background: var(--paper); border-top: 3px solid var(--purple); }
+  .ei[hidden] { display: none; }
+  .ei__klapp summary { display: flex; align-items: baseline; gap: 14px; padding: 18px 22px; cursor: pointer; }
+  .ei__h { font-family: var(--font-display); font-weight: 800; font-size: 20px; letter-spacing: -0.02em; color: var(--purple); }
+  .ei__klapp summary:hover .ei__h { color: var(--magenta-2); }
+  .ei__zahl { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--magenta-2); }
+  .ei__innen { display: flex; flex-direction: column; gap: 18px; padding: 0 22px 22px; }
+  .ei__hilfe { margin: 0; max-width: 680px; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }
+  .ei__form { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px 20px; align-items: end; }
+  .ei__knoepfe { grid-column: 1 / -1; }
+  .ei-offen { display: flex; flex-direction: column; gap: 10px; padding-top: 16px; border-top: 1px solid var(--rule); }
+  .ei-offen[hidden] { display: none; }
+  .ei-offen__h { margin: 0; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+  .ei-offen__liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; }
+  .ei-offen__liste :global(.ei-offen__z) { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .ei-offen__liste :global(.ei-offen__wer) { flex: 1 1 260px; display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--ink-soft); }
+  .ei-offen__liste :global(.ei-offen__wer strong) { font-size: 15px; color: var(--purple); }
+  .ei-offen__liste :global(.ei-offen__knopf) {
+    padding: 7px 11px; border: 1.5px solid var(--purple); border-radius: 0; background: var(--paper); color: var(--purple); cursor: pointer;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .ei-offen__liste :global(.ei-offen__knopf:hover) { border-color: var(--magenta); color: var(--magenta-2); }
+  .ei-offen__liste :global(.ei-offen__knopf:disabled) { opacity: 0.5; cursor: default; }
+
   .dir-pending { margin: 0 0 20px; padding: 12px 16px; border-left: 4px solid var(--magenta); background: var(--paper); color: var(--purple); font-weight: 600; }
   .dir-pending :global(a) { color: var(--purple); }
   .dir-pending :global(a:hover) { color: var(--magenta-2); }

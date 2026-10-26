@@ -96,12 +96,12 @@
       "notice_en": "Funded by the Cultural Foundation of the Free State of Saxony. This measure is co-financed by tax revenue on the basis of the budget adopted by the Saxon State Parliament."
     },
     {
-      "name": "Die Beauftragte der Bundesregierung für Kultur und Medien",
+      "name": "Der Beauftragte der Bundesregierung für Kultur und Medien",
       "name_en": "Federal Government Commissioner for Culture and the Media",
       "url": "https://kulturstaatsminister.de/",
       "logo": "bkm.png",
       "height": 62,
-      "note": "Logo zeigt noch „Die Beauftragte“; seit Mai 2025 ist es „Der Beauftragte“ (Wolfram Weimer). Fassung laut Zuwendungsbescheid verwenden."
+      "note": "Logo-Datei bkm.png zeigt noch „Die Beauftragte“. Seit Mai 2025 heißt das Amt „Der Beauftragte“ (Wolfram Weimer), das Logo wurde 2025 entsprechend geändert. Neue Datei laut Zuwendungsbescheid bzw. von kulturstaatsminister.de unter Redaktion → Verein → Förderer hochladen (docs/livegang.md)."
     },
     {
       "name": "NEUSTART KULTUR",
