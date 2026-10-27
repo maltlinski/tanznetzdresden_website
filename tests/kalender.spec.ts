@@ -63,7 +63,7 @@ test('Termin eintragen: Tag anklicken, ausfüllen, Website baut neu', async ({ p
     body: {
       slug: `${plusTage(mo, 3)}-studio-round-10`, titel: 'Studio Round #10', titel_en: '', datum: plusTage(mo, 3), von: '19:30', bis: '21:00', zeit_text: '',
       ort: 'Villa Wigman für Tanz', kategorie: 'Diskurs', kurz: 'Showing und moderiertes Gespräch.', kurz_en: '', text: '', link: 'https://tickets.example.org/sr10',
-      format: 'studio-round', personen: ['alina-lucifero'], news: '', sichtbar: true,
+      format: 'studio-round', personen: ['alina-lucifero'], news: '', sichtbar: true, eintritt: '', eintritt_en: '',
     },
   });
   expect(m.neubau).toBe(1);

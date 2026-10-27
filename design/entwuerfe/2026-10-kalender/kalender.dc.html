@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>Kalender · TanzNetzDresden</title>
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/base.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/styles.css">
+  <script src="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/_ds_bundle.js"></script>
+  <script src="keepup-store.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/Flip.min.js"></script>
+  <style>
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);hyphens:auto}
+    a{color:var(--magenta);text-decoration:none}
+    a:hover{color:var(--purple)}
+    *{box-sizing:border-box}
+    ::selection{background:var(--magenta);color:#fff}
+    input[type=search]::-webkit-search-cancel-button{-webkit-appearance:none}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:#fff">
+
+  <header ref="{{ headRef }}" style="position:sticky;top:0;z-index:30;background:var(--purple);border-bottom:1px solid rgba(255,255,255,0.12)">
+    <div style="max-width:1320px;margin:0 auto;padding:18px clamp(20px,4vw,48px);display:flex;align-items:center;flex-wrap:wrap;gap:16px 40px">
+      <a href="TanzNetzDresden Website v5.dc.html" onMouseEnter="{{ logoRainbow }}" style="position:relative;display:flex;align-items:center;color:#fff">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="76px" hint-size="76px,36px"></x-import>
+        <span data-rainbow="" aria-hidden="true" style="position:absolute;left:0;top:50%;transform:translateY(-50%);width:76px;aspect-ratio:1010/378;pointer-events:none;background-image:linear-gradient(105deg,rgba(0,0,0,0) 0%,rgba(0,0,0,0) 34%,#ff3b3b 39%,#ff9f1c 43%,#ffe600 47%,#3ddc84 51%,#2fb8ff 55%,#6b5bff 59%,#d14bff 63%,rgba(0,0,0,0) 67%,rgba(0,0,0,0) 100%);background-size:300% 100%;background-position:100% 0;-webkit-mask-image:url(assets/tndd-mark.svg);mask-image:url(assets/tndd-mark.svg);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat"></span>
+      </a>
+      <div style="margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:12px clamp(16px,2.4vw,36px)">
+        <nav style="display:flex;flex-wrap:wrap;gap:6px clamp(14px,2vw,28px)">
+          <a href="Kalender.dc.html" aria-current="page" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);padding:6px 0;border-bottom:1.5px solid var(--magenta)">Kalender</a>
+          <a href="TanzNetzDresden Website v5.dc.html#formate" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Formate</a>
+          <a href="KEEP UP Profitraining.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Training</a>
+          <a href="News.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Journal</a>
+          <a href="TanzNetzDresden Website v5.dc.html#netz" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Über uns</a>
+        </nav>
+        <a href="Mitgliedsstatus.dc.html" onClick="{{ goInternal }}" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Login</a>
+        <a href="TanzNetzDresden Website v5.dc.html#mitglied" style="display:flex">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="sm" marker="{{ true }}" hint-size="160px,32px">Mitglied werden</x-import>
+        </a>
+      </div>
+    </div>
+    <div ref="{{ progRef }}" style="position:absolute;left:0;bottom:-3px;height:3px;width:0;background:var(--magenta)"></div>
+  </header>
+
+  <section ref="{{ heroRef }}" onMouseMove="{{ onHeroMove }}" data-screen-label="Kalender · Kopf" style="position:relative;background:var(--purple);color:#fff;overflow:hidden">
+    {{ heroNet }}
+    <div style="position:relative;max-width:1320px;margin:0 auto;padding:clamp(56px,8vw,112px) clamp(20px,4vw,48px) clamp(64px,8vw,104px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,440px),1fr));gap:48px clamp(32px,6vw,96px);align-items:end">
+      <div>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" style="margin-bottom:24px" hint-size="240px,16px">Tanzkalender · Dresden</x-import>
+        <h1 data-split="" style="font-family:var(--font-display);font-weight:800;font-size:clamp(52px,7vw,104px);line-height:0.92;letter-spacing:-0.035em;margin:0 0 28px;color:#fff">Tanz in Dresden.<br><span style="color:var(--cyan)">Alle Termine.</span></h1>
+        <p data-rise="" style="max-width:480px;margin:0;font-size:clamp(16px,1.5vw,19px);line-height:1.6;color:rgba(255,255,255,0.88);text-wrap:pretty">Bühne, Training und Diskurs aus dem Netz an einem Ort. Nach Format filtern, im Monat blättern und Termine direkt in den eigenen Kalender übernehmen.</p>
+      </div>
+      <div data-rise="" style="background:rgba(46,26,77,0.9);border-top:3px solid var(--magenta)">
+        <div style="padding:16px 20px 12px;display:flex;align-items:center;gap:12px;font-family:var(--font-mono);font-size:12px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:#fff"><span style="width:10px;height:10px;background:var(--magenta)"></span>Als Nächstes</div>
+        <sc-for list="{{ next }}" as="n" hint-placeholder-count="3">
+          <button onClick="{{ n.open }}" style="width:100%;display:grid;grid-template-columns:64px minmax(0,1fr) auto;gap:18px;align-items:center;padding:16px 20px;border:0;border-top:1px solid rgba(255,255,255,0.14);background:transparent;color:#fff;text-align:left;cursor:pointer;font:inherit;border-radius:0;transition:color 150ms" style-hover="color:var(--cyan)">
+            <span style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan)">{{ n.dow }}</span>
+              <span style="font-family:var(--font-display);font-weight:800;font-size:40px;line-height:0.88;letter-spacing:-0.04em;color:#fff">{{ n.day }}</span>
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff">{{ n.mo }}</span>
+            </span>
+            <span style="min-width:0;display:flex;flex-direction:column;gap:5px">
+              <span style="font-family:var(--font-display);font-weight:700;font-size:clamp(18px,1.7vw,22px);line-height:1.12;letter-spacing:-0.015em;color:inherit">{{ n.title }}</span>
+              <span style="font-size:14px;line-height:1.45;color:rgba(255,255,255,0.8)">{{ n.line }}</span>
+            </span>
+            <span aria-hidden="true" style="font-family:var(--font-display);font-size:24px;color:var(--magenta)">→</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 12 }}" style="position:absolute;left:0;bottom:0;width:34%" hint-size="34%,12px"></x-import>
+  </section>
+
+  <div ref="{{ barRef }}" style="position:sticky;top:{{ hhPx }};z-index:20;background:#fff;border-bottom:1px solid var(--rule)">
+    <div style="max-width:1320px;margin:0 auto;padding:14px clamp(20px,4vw,48px);display:flex;flex-wrap:wrap;align-items:center;gap:12px 20px">
+      <div role="tablist" aria-label="Ansicht" style="display:flex;border:1.5px solid var(--purple)">
+        <sc-for list="{{ views }}" as="v" hint-placeholder-count="2">
+          <button role="tab" aria-selected="{{ v.sel }}" onClick="{{ v.pick }}" style="padding:9px 16px;border:0;background:{{ v.bg }};color:{{ v.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;border-radius:0">{{ v.label }}</button>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+          <button onClick="{{ c.pick }}" aria-pressed="{{ c.pressed }}" style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid var(--purple);background:{{ c.bg }};color:{{ c.fg }};font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta)"><span style="width:8px;height:8px;background:{{ c.sq }};box-shadow:{{ c.ol }}"></span>{{ c.label }}<span style="color:{{ c.cnt }}">{{ c.count }}</span></button>
+        </sc-for>
+      </div>
+      <div style="margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+        <input type="search" value="{{ q }}" onChange="{{ onQ }}" placeholder="Suchen: Titel, Ort, Name" aria-label="Termine durchsuchen" style="width:clamp(200px,22vw,280px);padding:10px 12px;border:1.5px solid var(--rule);background:#fff;color:var(--purple);font-family:var(--font-body);font-size:14px;border-radius:0;outline:none" style-focus="border-color:var(--magenta)">
+        <button onClick="{{ goToday }}" style="padding:10px 14px;border:1.5px solid var(--purple);background:var(--purple);color:#fff;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;border-radius:0" style-hover="background:var(--magenta);border-color:var(--magenta)">Heute</button>
+      </div>
+    </div>
+  </div>
+
+  <main ref="{{ mainRef }}" data-screen-label="Kalender" style="max-width:1320px;margin:0 auto;padding:clamp(32px,4vw,56px) clamp(20px,4vw,48px) clamp(72px,9vw,120px)">
+
+    <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-wrap:wrap;gap:40px clamp(32px,4vw,64px);align-items:flex-start">
+
+        <aside style="flex:0 1 300px;min-width:260px;position:sticky;top:{{ asideTop }};display:flex;flex-direction:column;gap:28px">
+          <div style="border-top:3px solid var(--magenta);padding-top:16px">
+            <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px">
+              <span style="font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:-0.02em;color:var(--purple)">{{ miniLabel }}</span>
+              <div style="display:flex;gap:6px">
+                <button onClick="{{ miniPrev }}" aria-label="Vorheriger Monat" style="width:34px;height:34px;border:1.5px solid var(--purple);background:transparent;color:var(--purple);font-family:var(--font-display);font-size:16px;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta);color:var(--magenta)">←</button>
+                <button onClick="{{ miniNext }}" aria-label="Nächster Monat" style="width:34px;height:34px;border:1.5px solid var(--purple);background:transparent;color:var(--purple);font-family:var(--font-display);font-size:16px;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta);color:var(--magenta)">→</button>
+              </div>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px;margin-bottom:4px">
+              <sc-for list="{{ wdays }}" as="w" hint-placeholder-count="7">
+                <span style="text-align:center;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted);padding:4px 0">{{ w }}</span>
+              </sc-for>
+            </div>
+            <div ref="{{ miniRef }}" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:2px">
+              <sc-for list="{{ mini }}" as="d" hint-placeholder-count="35">
+                <button onClick="{{ d.pick }}" aria-label="{{ d.aria }}" aria-disabled="{{ d.dis }}" style="aspect-ratio:1/1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;border:0;background:{{ d.bg }};box-shadow:{{ d.ring }};color:{{ d.fg }};font-family:var(--font-display);font-weight:700;font-size:14px;cursor:{{ d.cur }};border-radius:0;padding:0;transition:background 200ms,color 200ms" style-hover="box-shadow:inset 0 0 0 1.5px var(--purple)">
+                  <span>{{ d.n }}</span>
+                  <span style="display:flex;gap:2px;height:5px">
+                    <sc-for list="{{ d.dots }}" as="dt" hint-placeholder-count="0">
+                      <span style="width:5px;height:5px;background:{{ dt.sq }};box-shadow:{{ dt.ol }}"></span>
+                    </sc-for>
+                  </span>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;padding-top:18px;border-top:1px solid var(--rule)">
+            <sc-for list="{{ legend }}" as="lg" hint-placeholder-count="4">
+              <span style="display:flex;align-items:center;gap:10px;font-size:14px;color:var(--ink-soft)"><span style="width:10px;height:10px;background:{{ lg.sq }};box-shadow:{{ lg.ol }}"></span><strong style="font-weight:600;color:var(--purple)">{{ lg.label }}</strong>{{ lg.text }}</span>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;padding-top:18px;border-top:1px solid var(--rule)">
+            <button onClick="{{ icsAll }}" style="align-self:flex-start;padding:0;border:0;background:transparent;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);cursor:pointer" style-hover="color:var(--purple)">Auswahl als .ics laden</button>
+            <a href="mailto:kontakt@tanznetzdresden.de?subject=Termin%20f%C3%BCr%20den%20Kalender" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)" style-hover="color:var(--magenta)">Termin einreichen →</a>
+          </div>
+        </aside>
+
+        <div style="flex:1 1 560px;min-width:0">
+          <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 24px;margin-bottom:8px">
+            <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted)">{{ resultLabel }}</span>
+            <button onClick="{{ togglePast }}" style="padding:0;border:0;background:transparent;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);cursor:pointer" style-hover="color:var(--purple)">{{ pastLabel }}</button>
+          </div>
+
+          <sc-for list="{{ months }}" as="mo" hint-placeholder-count="2">
+            <div style="margin-bottom:24px">
+              <div style="position:sticky;top:{{ monthTop }};z-index:2;background:#fff;padding:18px 0 12px;border-bottom:2px solid var(--purple);display:flex;align-items:baseline;justify-content:space-between;gap:16px">
+                <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(28px,3vw,40px);line-height:1;letter-spacing:-0.03em;color:var(--purple);margin:0">{{ mo.label }}</h2>
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ mo.count }}</span>
+              </div>
+              <sc-for list="{{ mo.days }}" as="day" hint-placeholder-count="3">
+                <div data-flip-id="{{ day.fid }}" data-day="{{ day.key }}" style="border-bottom:1px solid var(--rule)">
+                  <div style="display:grid;grid-template-columns:clamp(58px,7vw,84px) minmax(0,1fr);gap:clamp(12px,2vw,28px);padding:14px 0;opacity:{{ day.op }}">
+                    <div style="display:flex;flex-direction:column;gap:4px;padding-top:8px">
+                      <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ day.dow }}</span>
+                      <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(34px,3.4vw,46px);line-height:0.88;letter-spacing:-0.04em;color:{{ day.numCol }}">{{ day.day }}</span>
+                      <sc-if value="{{ day.isToday }}" hint-placeholder-val="{{ false }}">
+                        <span style="align-self:flex-start;margin-top:4px;background:var(--magenta);color:#fff;padding:2px 6px;font-family:var(--font-mono);font-size:10px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase">Heute</span>
+                      </sc-if>
+                    </div>
+                    <div style="display:flex;flex-direction:column;min-width:0">
+                      <sc-if value="{{ day.empty }}" hint-placeholder-val="{{ false }}">
+                        <span style="padding:14px 8px;font-size:15px;color:var(--ink-muted)">Heute ist nichts eingetragen.</span>
+                      </sc-if>
+                      <sc-for list="{{ day.items }}" as="it" hint-placeholder-count="1">
+                        <div data-ev="{{ it.id }}" style="border-top:{{ it.bt }}">
+                          <button onClick="{{ it.toggle }}" aria-expanded="{{ it.openS }}" style="width:100%;display:grid;grid-template-columns:clamp(84px,8.4vw,108px) minmax(0,1fr) auto 22px;gap:clamp(10px,1.6vw,20px);align-items:center;padding:13px 8px;background:{{ it.bg }};border:0;text-align:left;cursor:pointer;color:var(--purple);border-radius:0;font:inherit;transition:background 200ms" style-hover="background:var(--tint)">
+                            <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--purple)">{{ it.time }}</span>
+                            <span style="min-width:0;display:flex;flex-direction:column;gap:3px">
+                              <span style="font-family:var(--font-display);font-weight:700;font-size:clamp(18px,1.6vw,21px);line-height:1.15;letter-spacing:-0.015em;color:var(--purple)">{{ it.title }}</span>
+                              <span style="font-size:14px;line-height:1.45;color:var(--ink-soft)">{{ it.line }}</span>
+                            </span>
+                            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ it.badge }}" size="sm" hint-size="70px,22px">{{ it.catLabel }}</x-import>
+                            <span aria-hidden="true" style="font-family:var(--font-display);font-weight:700;font-size:24px;line-height:1;color:var(--magenta);text-align:center;transform:rotate({{ it.rot }});transition:transform 350ms cubic-bezier(0.16,1,0.3,1)">+</span>
+                          </button>
+                          <sc-if value="{{ it.open }}" hint-placeholder-val="{{ false }}">
+                            <div data-detail="{{ it.id }}" style="overflow:hidden;background:var(--tint)">
+                              <div style="padding:4px 8px 22px calc(clamp(84px,8.4vw,108px) + clamp(18px,2.4vw,28px));display:flex;flex-direction:column;gap:16px">
+                                <p style="margin:0;max-width:620px;font-size:15px;line-height:1.6;color:var(--ink);text-wrap:pretty">{{ it.desc }}</p>
+                                <sc-if value="{{ it.hasDays }}" hint-placeholder-val="{{ false }}">
+                                  <div style="display:flex;flex-wrap:wrap;gap:6px">
+                                    <sc-for list="{{ it.days }}" as="s" hint-placeholder-count="3">
+                                      <span style="background:#fff;border:1px solid var(--rule);padding:5px 9px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple)">{{ s }}</span>
+                                    </sc-for>
+                                  </div>
+                                </sc-if>
+                                <div style="display:flex;flex-wrap:wrap;gap:12px 40px">
+                                  <div style="display:flex;flex-direction:column;gap:4px">
+                                    <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">Wann</span>
+                                    <span style="font-size:14px;line-height:1.5;color:var(--purple)">{{ it.when }}</span>
+                                  </div>
+                                  <div style="display:flex;flex-direction:column;gap:4px">
+                                    <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">Wo</span>
+                                    <span style="font-size:14px;line-height:1.5;color:var(--purple)">{{ it.place }}</span>
+                                    <sc-if value="{{ it.hasAddr }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">{{ it.addr }}</span></sc-if>
+                                  </div>
+                                  <sc-if value="{{ it.hasPrice }}" hint-placeholder-val="{{ false }}">
+                                    <div style="display:flex;flex-direction:column;gap:4px">
+                                      <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">Eintritt</span>
+                                      <span style="font-size:14px;line-height:1.5;color:var(--purple)">{{ it.price }}</span>
+                                    </div>
+                                  </sc-if>
+                                </div>
+                                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px">
+                                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" size="sm" marker="{{ true }}" onClick="{{ it.ics }}" hint-size="200px,34px">In Kalender speichern</x-import>
+                                  <sc-if value="{{ it.hasAddr }}" hint-placeholder-val="{{ false }}">
+                                    <a href="{{ it.route }}" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)" style-hover="color:var(--purple)">Route →</a>
+                                  </sc-if>
+                                  <sc-if value="{{ it.hasLink }}" hint-placeholder-val="{{ false }}">
+                                    <a href="{{ it.link }}" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)" style-hover="color:var(--purple)">{{ it.linkLabel }} →</a>
+                                  </sc-if>
+                                </div>
+                              </div>
+                            </div>
+                          </sc-if>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-for>
+
+          <sc-if value="{{ isEmpty }}" hint-placeholder-val="{{ false }}">
+            <div style="border-top:3px solid var(--magenta);padding:28px 0;display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+              <span style="font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:-0.02em;color:var(--purple)">Keine Termine für diese Auswahl.</span>
+              <button onClick="{{ resetAll }}" style="padding:0;border:0;background:transparent;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);cursor:pointer" style-hover="color:var(--purple)">Filter zurücksetzen →</button>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isMonth }}" hint-placeholder-val="{{ false }}">
+      <div style="display:flex;flex-wrap:wrap;gap:40px clamp(32px,4vw,56px);align-items:flex-start">
+        <div style="flex:1 1 640px;min-width:0">
+          <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px;margin-bottom:20px">
+            <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(36px,4.4vw,56px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">{{ vmLabel }}</h2>
+            <div style="display:flex;gap:8px">
+              <button onClick="{{ vmPrev }}" aria-label="Vorheriger Monat" style="width:48px;height:48px;border:1.5px solid var(--purple);background:transparent;color:var(--purple);font-family:var(--font-display);font-size:22px;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta);color:var(--magenta)">←</button>
+              <button onClick="{{ vmNext }}" aria-label="Nächster Monat" style="width:48px;height:48px;border:1.5px solid var(--purple);background:var(--purple);color:#fff;font-family:var(--font-display);font-size:22px;cursor:pointer;border-radius:0" style-hover="background:var(--magenta);border-color:var(--magenta)">→</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr))">
+            <sc-for list="{{ wdays }}" as="w" hint-placeholder-count="7">
+              <span style="padding:0 8px 8px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted)">{{ w }}</span>
+            </sc-for>
+          </div>
+          <div ref="{{ gridRef }}" style="display:grid;grid-template-columns:repeat(7,minmax(0,1fr));border-top:2px solid var(--purple);border-left:1px solid var(--rule)">
+            <sc-for list="{{ grid }}" as="c" hint-placeholder-count="35">
+              <button onClick="{{ c.pick }}" aria-label="{{ c.aria }}" aria-pressed="{{ c.selS }}" style="min-width:0;min-height:clamp(76px,8.6vw,122px);display:flex;flex-direction:column;align-items:stretch;gap:4px;padding:7px;border:0;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:{{ c.bg }};box-shadow:{{ c.ring }};text-align:left;cursor:pointer;border-radius:0;font:inherit;color:var(--purple);transition:background 200ms" style-hover="background:var(--tint)">
+                <span style="align-self:flex-start;min-width:24px;padding:2px 5px;font-family:var(--font-display);font-weight:800;font-size:15px;line-height:1.1;letter-spacing:-0.01em;background:{{ c.numBg }};color:{{ c.numFg }}">{{ c.n }}</span>
+                <div style="display:flex;flex-direction:column;gap:3px;min-width:0;opacity:{{ c.op }}">
+                  <sc-for list="{{ c.chips }}" as="ch" hint-placeholder-count="0">
+                    <span data-chip="" style="display:flex;align-items:center;gap:5px;min-width:0;font-size:12px;line-height:1.25;color:var(--purple)"><span style="flex:none;width:7px;height:7px;background:{{ ch.sq }};box-shadow:{{ ch.ol }}"></span><span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap"><span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;color:var(--ink-muted)">{{ ch.t }}</span> {{ ch.title }}</span></span>
+                  </sc-for>
+                  <sc-if value="{{ c.hasMore }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--magenta)">{{ c.more }}</span>
+                  </sc-if>
+                </div>
+              </button>
+            </sc-for>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:16px">
+            <sc-for list="{{ legend }}" as="lg" hint-placeholder-count="4">
+              <span style="display:flex;align-items:center;gap:8px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-soft)"><span style="width:9px;height:9px;background:{{ lg.sq }};box-shadow:{{ lg.ol }}"></span>{{ lg.label }}</span>
+            </sc-for>
+          </div>
+        </div>
+
+        <aside ref="{{ panelRef }}" data-screen-label="Kalender · Tag" style="flex:0 1 380px;min-width:280px;position:sticky;top:{{ asideTop }};border-top:3px solid var(--magenta);padding-top:18px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--magenta)">{{ panel.kicker }}</span>
+          <h3 style="font-family:var(--font-display);font-weight:800;font-size:clamp(26px,2.4vw,32px);line-height:1.02;letter-spacing:-0.025em;color:var(--purple);margin:8px 0 18px">{{ panel.label }}</h3>
+          <sc-for list="{{ panel.items }}" as="it" hint-placeholder-count="1">
+            <div data-pitem="" style="border-top:1px solid var(--rule);padding:16px 0 18px;display:flex;flex-direction:column;gap:10px">
+              <div style="display:flex;align-items:center;justify-content:space-between;gap:12px">
+                <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.04em;color:var(--purple)">{{ it.time }}</span>
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ it.badge }}" size="sm" hint-size="70px,22px">{{ it.catLabel }}</x-import>
+              </div>
+              <span style="font-family:var(--font-display);font-weight:800;font-size:22px;line-height:1.1;letter-spacing:-0.02em;color:var(--purple)">{{ it.title }}</span>
+              <span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">{{ it.line }}</span>
+              <p style="margin:0;font-size:14.5px;line-height:1.6;color:var(--ink);text-wrap:pretty">{{ it.desc }}</p>
+              <sc-if value="{{ it.hasAddr }}" hint-placeholder-val="{{ false }}"><span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">{{ it.addr }}</span></sc-if>
+              <sc-if value="{{ it.hasPrice }}" hint-placeholder-val="{{ false }}"><span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple)">{{ it.price }}</span></sc-if>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px;margin-top:4px">
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" size="sm" marker="{{ true }}" onClick="{{ it.ics }}" hint-size="200px,34px">In Kalender speichern</x-import>
+                <sc-if value="{{ it.hasAddr }}" hint-placeholder-val="{{ false }}">
+                  <a href="{{ it.route }}" target="_blank" rel="noopener" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)" style-hover="color:var(--purple)">Route →</a>
+                </sc-if>
+                <sc-if value="{{ it.hasLink }}" hint-placeholder-val="{{ false }}">
+                  <a href="{{ it.link }}" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)" style-hover="color:var(--purple)">{{ it.linkLabel }} →</a>
+                </sc-if>
+              </div>
+            </div>
+          </sc-for>
+          <sc-if value="{{ panel.empty }}" hint-placeholder-val="{{ false }}">
+            <div style="border-top:1px solid var(--rule);padding:18px 0;display:flex;flex-direction:column;align-items:flex-start;gap:14px">
+              <span style="font-size:15px;line-height:1.6;color:var(--ink-soft)">An diesem Tag ist nichts eingetragen.</span>
+              <sc-if value="{{ panel.hasNext }}" hint-placeholder-val="{{ false }}">
+                <button onClick="{{ panel.goNext }}" style="padding:0;border:0;background:transparent;text-align:left;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;line-height:1.6;color:var(--magenta);cursor:pointer" style-hover="color:var(--purple)">{{ panel.nextLabel }} →</button>
+              </sc-if>
+            </div>
+          </sc-if>
+        </aside>
+      </div>
+    </sc-if>
+  </main>
+
+  <footer style="background:var(--purple);color:#fff">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,88px) clamp(20px,4vw,48px) 28px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px 48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.16)">
+        <div style="grid-column:span 2;min-width:0;max-width:100%">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="full" color="#ffffff" width="240px" hint-size="240px,80px"></x-import>
+          <p style="margin:22px 0 0;max-width:340px;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.78)">Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit 2010, seit 2020 als gemeinnütziger Verein.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Kontakt</span>
+          <span style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.86)">Pfotenhauer Straße 59 HH<br>01307 Dresden</span>
+          <a href="mailto:kontakt@tanznetzdresden.de" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">kontakt@tanznetzdresden.de</a>
+          <a href="tel:+4915771520512" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">+49 1577 1520 512</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Verein</span>
+          <a href="TanzNetzDresden Website v5.dc.html#netz" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Über uns</a>
+          <a href="TanzNetzDresden Website v5.dc.html#formate" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Formate</a>
+          <a href="Kooperationspartner.dc.html" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Kooperationspartner</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Folgen</span>
+          <a href="#" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Instagram · @tanznetzdresden</a>
+          <a href="#" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Telegram · KEEP UP</a>
+          <a href="TanzNetzDresden Website v5.dc.html#mitglied" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">Newsletter</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px 28px;padding-top:22px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7)">
+        <span>© 2026 TanzNetzDresden e.V.</span>
+        <a href="#" style="color:rgba(255,255,255,0.7);margin-left:auto" style-hover="color:var(--cyan)">Impressum</a>
+        <a href="#" style="color:rgba(255,255,255,0.7)" style-hover="color:var(--cyan)">Datenschutz</a>
+      </div>
+    </div>
+  </footer>
+
+  <div ref="{{ gateRef }}" aria-hidden="true" style="position:fixed;inset:0;z-index:200;pointer-events:none;visibility:hidden;overflow:hidden">
+    <div data-g-seam="" style="position:absolute;top:0;bottom:0;left:0;width:calc(100% + 14vw);background:var(--magenta);clip-path:polygon(0 0,100% 0,calc(100% - 14vw) 100%,0 100%)"></div>
+    <div data-g-panel="" style="position:absolute;top:0;bottom:0;left:0;width:calc(100% + 14vw);background:var(--purple);clip-path:polygon(0 0,100% 0,calc(100% - 14vw) 100%,0 100%)"></div>
+    <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+      <div style="width:min(320px,50vw);display:flex;flex-direction:column;align-items:center;gap:22px">
+        <div data-g-logo="" style="width:100%">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="100%" hint-size="100%,120px"></x-import>
+        </div>
+        <span data-g-tag="" style="font-family:var(--font-mono);font-size:13px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);white-space:nowrap">Interner Bereich</span>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;defaultView&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;liste&quot;,&quot;monat&quot;],&quot;default&quot;:&quot;liste&quot;,&quot;tsType&quot;:&quot;'liste' | 'monat'&quot;,&quot;section&quot;:&quot;Kalender&quot;,&quot;label&quot;:&quot;Startansicht&quot;},&quot;groupTraining&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Kalender&quot;,&quot;label&quot;:&quot;Training wöchentlich bündeln&quot;},&quot;netDensity&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:0.7,&quot;min&quot;:0.4,&quot;max&quot;:1.8,&quot;step&quot;:0.1,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Netz&quot;,&quot;label&quot;:&quot;Netzdichte&quot;}}">
+const MON = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const MOS = ['Jan', 'Feb', 'März', 'Apr', 'Mai', 'Juni', 'Juli', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const DOW = ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donnerstag', 'Freitag', 'Samstag'];
+const DS = ['So', 'Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa'];
+const WD = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+const TODAY = new Date(2026, 9, 27);
+const pad = (n) => String(n).padStart(2, '0');
+const k = (d) => d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+const TK = k(TODAY);
+const parse = (s) => { const [y, m, d] = s.split('-').map(Number); return new Date(y, m - 1, d); };
+const monday = (d) => { const x = new Date(d); x.setDate(x.getDate() - ((x.getDay() + 6) % 7)); return x; };
+const CAT = {
+  'Bühne': { badge: 'magenta', sq: 'var(--magenta)', ol: 'none', text: ' · Aufführungen, Showings' },
+  'Training': { badge: 'cyan', sq: 'var(--cyan)', ol: 'none', text: ' · KEEP UP, Workshops' },
+  'Diskurs': { badge: 'purple', sq: 'var(--purple)', ol: 'none', text: ' · Gespräche, Treffen' },
+  'Frist': { badge: 'outline', sq: '#fff', ol: 'inset 0 0 0 1.5px var(--magenta)', text: ' · Open Calls' },
+};
+const PL = {
+  villa: ['Villa Wigman für Tanz', 'Bautzner Straße 107, 01099 Dresden'],
+  zw: ['Zentralwerk', 'Riesaer Straße 32, 01127 Dresden'],
+  soc: ['Societaetstheater', 'An der Dreikönigskirche 1a, 01097 Dresden'],
+  tenza: ['TENZA Schmiede', ''],
+  mail: ['Bewerbung per E-Mail', ''],
+};
+const FIX = [
+  { id: 'sr9', d: [2026, 9, 15], t: ['19:30', '21:30'], title: 'Studio Round #9', pl: 'villa', cat: 'Diskurs', desc: 'Showing und moderiertes Gespräch, mit Gästen aus Freiburg und Frankfurt.', price: 'Eintritt frei' },
+  { id: 'pu-okt', d: [2026, 9, 31], t: ['20:00', '22:00'], title: 'POP UP', pl: 'zw', cat: 'Bühne', desc: 'Neue Kurzstücke aus dem Netzwerk. Danach Bar und Gespräch mit den Künstler:innen.', price: 'Eintritt auf Spendenbasis' },
+  { id: 'nc-nov', d: [2026, 10, 3], t: ['18:00', '19:30'], title: 'Newcomer:innen-Treffen', pl: 'tenza', cat: 'Diskurs', desc: 'Für alle, die neu in Dresden tanzen oder gerade ihre Ausbildung abgeschlossen haben. Die AG Newcomer:innen stellt das Netz vor und beantwortet Fragen.', price: 'Eintritt frei' },
+  { id: 'oc-popup', d: [2026, 10, 15], t: ['', ''], title: 'Open Call POP UP Frühjahr 2027', pl: 'mail', cat: 'Frist', desc: 'Kurzstücke bis 20 Minuten gesucht. Einsendeschluss ist um 23:59 Uhr.', link: 'Open Calls.dc.html', linkLabel: 'Zum Open Call' },
+  { id: 'eit-nov', d: [2026, 10, 20], t: ['17:00', '18:30'], title: 'Elternschaft in Tanz', pl: 'zw', cat: 'Diskurs', desc: 'Offene Runde der AG zu Proben, Touren und Familie. Kinder sind willkommen.', price: 'Eintritt frei' },
+  { id: 'vd6-1', d: [2026, 10, 26], t: ['20:00', '21:30'], title: 'vision:danceable #6', pl: 'soc', cat: 'Bühne', desc: 'Kurzstückreihe mit der 4 rooms company und dem about blank collective.', price: 'Tickets über das Societaetstheater' },
+  { id: 'vd6-2', d: [2026, 10, 27], t: ['20:00', '21:30'], title: 'vision:danceable #6', pl: 'soc', cat: 'Bühne', desc: 'Kurzstückreihe mit der 4 rooms company und dem about blank collective. Zweiter Abend.', price: 'Tickets über das Societaetstheater' },
+  { id: 'sh-dez', d: [2026, 11, 6], t: ['17:00', '19:00'], title: 'Sharing · Offenes Netzwerktreffen', pl: 'tenza', cat: 'Diskurs', desc: 'Für Mitglieder:innen und alle, die es werden wollen. Wer mag, zeigt Material in Arbeit.', price: 'Eintritt frei' },
+  { id: 'sr10', d: [2027, 0, 15], t: ['19:30', '21:30'], title: 'Studio Round #10', pl: 'villa', cat: 'Diskurs', desc: 'Showing und moderiertes Gespräch. Das Programm folgt.', price: 'Eintritt frei' },
+  { id: 'pux-jan', d: [2027, 0, 23], t: ['20:00', '22:00'], title: 'POP UP exchange', pl: 'zw', cat: 'Bühne', desc: 'Austausch mit Partner:innen aus anderen Städten: Gastspiele und Arbeiten aus Dresden an einem Abend.', price: 'Eintritt auf Spendenbasis' },
+];
+const TRAIN_DESC = 'Offenes Profitraining für professionell arbeitende Tänzer:innen. Jede Woche unterrichtet eine andere Dozent:in aus Dresden oder von außerhalb.';
+const WS_DESC = 'Workshop am Wochenende in der TENZA. Anmeldung über die Telegram-Gruppe von KEEP UP.';
+const cmp = (a, b) => (a.key + (a.t0 || '99') < b.key + (b.t0 || '99') ? -1 : 1);
+
+function buildEvents() {
+  const out = FIX.map((e) => {
+    const date = new Date(e.d[0], e.d[1], e.d[2]);
+    return { id: e.id, date, key: k(date), t0: e.t[0], t1: e.t[1], title: e.title, sub: '', place: PL[e.pl][0], addr: PL[e.pl][1], cat: e.cat, desc: e.desc, price: e.price || '', link: e.link || '', linkLabel: e.linkLabel || '' };
+  });
+  const st = window.KeepUpStore;
+  if (st) {
+    const tn = Object.fromEntries(st.TRAINERS.map((t) => [t.id, t]));
+    const S = st.sessions(st.load());
+    Object.keys(S).forEach((key) => S[key].forEach((s, i) => {
+      const date = parse(key), tt = String(s.time || '').split('–'), tr = tn[s.tr], ws = s.kind === 'workshop';
+      out.push({ id: 'ku-' + key + '-' + i, date, key, t0: tt[0] || '', t1: tt[1] || '', title: ws ? 'KEEP UP · Workshop' : 'KEEP UP · Profitraining', sub: tr ? 'mit ' + tr.name : '', trainer: tr ? tr.name : '', place: s.where || 'TENZA Schmiede', addr: '', cat: 'Training', training: !ws, desc: ws ? WS_DESC : TRAIN_DESC, price: '', link: 'KEEP UP Profitraining.dc.html', linkLabel: 'KEEP UP Kalender' });
+    }));
+  }
+  return out.sort(cmp);
+}
+
+const icsEsc = (s) => String(s || '').replace(/\\/g, '\\\\').replace(/\n/g, '\\n').replace(/,/g, '\\,').replace(/;/g, '\\;');
+function icsFile(evs, name) {
+  const L = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//TanzNetzDresden e.V.//Kalender//DE', 'CALSCALE:GREGORIAN', 'X-WR-CALNAME:TanzNetzDresden'];
+  evs.forEach((e) => {
+    const ds = e.key.replace(/-/g, '');
+    L.push('BEGIN:VEVENT', 'UID:' + e.id + '@tanznetzdresden.de', 'DTSTAMP:20261027T000000Z');
+    if (e.t0) L.push('DTSTART;TZID=Europe/Berlin:' + ds + 'T' + e.t0.replace(':', '') + '00', 'DTEND;TZID=Europe/Berlin:' + ds + 'T' + (e.t1 || e.t0).replace(':', '') + '00');
+    else { const n = new Date(e.date); n.setDate(n.getDate() + 1); L.push('DTSTART;VALUE=DATE:' + ds, 'DTEND;VALUE=DATE:' + k(n).replace(/-/g, '')); }
+    L.push('SUMMARY:' + icsEsc(e.title + (e.sub ? ' ' + e.sub : '')), 'LOCATION:' + icsEsc([e.place, e.addr].filter(Boolean).join(', ')), 'DESCRIPTION:' + icsEsc(e.desc), 'END:VEVENT');
+  });
+  L.push('END:VCALENDAR');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([L.join('\r\n')], { type: 'text/calendar;charset=utf-8' }));
+  a.download = name + '.ics'; document.body.appendChild(a); a.click();
+  setTimeout(() => { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+}
+
+class Component extends DCLogic {
+  state = { view: this.props.defaultView === 'monat' ? 'monat' : 'liste', cat: 'Alle', q: '', past: false, open: null, mm: 2026 * 12 + 9, vm: 2026 * 12 + 9, sel: TK, spy: null, hh: 73, th: 66 };
+  headRef = React.createRef(); barRef = React.createRef(); heroRef = React.createRef(); netRef = React.createRef();
+  mainRef = React.createRef(); gridRef = React.createRef(); miniRef = React.createRef(); panelRef = React.createRef();
+  progRef = React.createRef(); gateRef = React.createRef();
+
+  evs() { const has = !!window.KeepUpStore; if (!this._evs || this._evsHas !== has) { this._evs = buildEvents(); this._evsHas = has; } return this._evs; }
+  match(e, cat, q) { if (cat !== 'Alle' && e.cat !== cat) return false; return !q || (e.title + ' ' + e.sub + ' ' + e.place + ' ' + e.desc).toLowerCase().includes(q); }
+  gsapOk() { return !!(window.gsap && window.Flip && window.ScrollTrigger) && !this.reduced; }
+
+  whenGsap(cb) {
+    let n = 0;
+    const t = () => {
+      const g = window.gsap;
+      if (g && window.SplitText && window.ScrollTrigger && window.Flip) { g.registerPlugin(window.SplitText, window.ScrollTrigger, window.Flip); (document.fonts ? document.fonts.ready : Promise.resolve()).then(cb); }
+      else if (n++ < 40) setTimeout(t, 100); else cb();
+    };
+    t();
+  }
+
+  componentDidMount() {
+    this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!window.KeepUpStore) { let n = 0; const t = () => { if (window.KeepUpStore) this.forceUpdate(); else if (n++ < 30) setTimeout(t, 100); }; t(); }
+    this.measure();
+    if (window.ResizeObserver) { this.ro = new ResizeObserver(() => this.measure()); [this.headRef.current, this.barRef.current].forEach((el) => el && this.ro.observe(el)); }
+    this.onScrollP = () => { if (!this._pr) this._pr = requestAnimationFrame(() => this.prog()); };
+    window.addEventListener('scroll', this.onScrollP, { passive: true });
+    this.whenGsap(() => { this.gsapReady = true; this.drawNet(); this.textIntro(); this.spy(); });
+  }
+  componentWillUnmount() {
+    if (this.ro) this.ro.disconnect();
+    window.removeEventListener('scroll', this.onScrollP);
+    (this._spyT || []).forEach((t) => t.kill());
+    if (this._ctx) this._ctx.revert();
+    if (this._netTw) this._netTw.forEach((t) => t.kill());
+  }
+  componentDidUpdate() {
+    if (this._drawnKey !== this._netKey + '|' + this._netV && this.gsapReady) this.drawNet();
+    const pv = this._pv || { view: this.state.view, open: this.state.open, dv: this.props.defaultView };
+    this._pv = { view: this.state.view, open: this.state.open, dv: this.props.defaultView };
+    if (pv.dv !== this.props.defaultView && this.props.defaultView) this.setView(this.props.defaultView);
+    if (this._spyKey !== this._listKey || pv.view !== this.state.view) { this._spyKey = this._listKey; clearTimeout(this._st); this._st = setTimeout(() => this.spy(), 650); }
+    else if (pv.open !== this.state.open && window.ScrollTrigger) { clearTimeout(this._rf); this._rf = setTimeout(() => window.ScrollTrigger.refresh(), 560); }
+  }
+
+  measure() {
+    const h = this.headRef.current, b = this.barRef.current;
+    const hh = h ? Math.round(h.getBoundingClientRect().height) : 73, th = b ? Math.round(b.getBoundingClientRect().height) : 66;
+    if (hh !== this.state.hh || th !== this.state.th) this.setState({ hh, th });
+  }
+  prog() {
+    this._pr = null;
+    const el = this.progRef.current, hero = this.heroRef.current; if (!el) return;
+    const s0 = hero ? hero.offsetTop + hero.offsetHeight - this.state.hh : 0, d = document.documentElement.scrollHeight - window.innerHeight - s0;
+    el.style.width = (d > 0 ? Math.max(0, Math.min(100, ((window.scrollY - s0) / d) * 100)) : 0) + '%';
+  }
+
+  netEl() {
+    const den = Math.max(0.4, Math.min(1.8, this.props.netDensity ?? 0.6)), key = String(den);
+    if (this._netKey === key && this._netV === 4) return this._net;
+    this._netV = 4;
+    const W = 1600, H = 640;
+    let a = 27;
+    const r = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    const ar = Math.sqrt(W * H / (840 * 1188)), kq = Math.max(0.5, ar * 1.4);
+    const N = Math.max(10, Math.round(30 * den * ar * 1.3)), md = 120 * ar * 1.05 / Math.sqrt(den), P = [];
+    let tries = 0;
+    while (P.length < N && tries < 4000) {
+      tries++;
+      let x = r() * W, y = r() * H;
+      if (r() < 0.25) { const e = Math.floor(r() * 4); if (e === 0) x = -3; else if (e === 1) x = W + 3; else if (e === 2) y = -3; else y = H + 3; }
+      if (P.every((p) => Math.hypot(p[0] - x, p[1] - y) > md)) P.push([x, y]);
+    }
+    const seen = {}, E = [];
+    const L = (i, j) => { if (i === j) return; const kk = i < j ? i + '-' + j : j + '-' + i; if (seen[kk]) return; seen[kk] = 1; E.push([i, j, r() < 0.08]); };
+    P.forEach((p, i) => {
+      P.map((q, j) => [Math.hypot(q[0] - p[0], q[1] - p[1]), j]).filter((x) => x[1] !== i).sort((x, y) => x[0] - y[0]).slice(0, 3).forEach((n) => L(i, n[1]));
+      if (r() < 0.3) L(i, Math.floor(r() * P.length));
+    });
+    E.sort((e1, e2) => Math.min(P[e1[0]][0], P[e1[1]][0]) - Math.min(P[e2[0]][0], P[e2[1]][0]));
+    const ce = React.createElement, f = (n) => +n.toFixed(1);
+    const lines = E.map(([i, j, th], n) => ce('line', { key: 'l' + n, x1: f(P[i][0]), y1: f(P[i][1]), x2: f(P[j][0]), y2: f(P[j][1]), pathLength: 1, strokeDasharray: 1, stroke: '#48C6D7', strokeOpacity: th ? 0.28 : 0.15, strokeWidth: th ? 2 : 1 }));
+    const rects = P.map((p, i) => i).sort((i, j) => P[i][0] - P[j][0]).map((i) => {
+      const p = P[i], mg = r() < 0.35, s = (mg ? (r() < 0.2 ? 22 : 13) : 7) * kq;
+      return ce('rect', { key: 'r' + i, x: f(p[0] - s / 2), y: f(p[1] - s / 2), width: f(s), height: f(s), fill: mg ? '#DA1A6A' : '#48C6D7', fillOpacity: mg ? 0.7 : 0.4 });
+    });
+    this._netKey = key;
+    this._net = ce('svg', { key: 'net-' + key + '-' + this._netV, ref: this.netRef, viewBox: '0 0 ' + W + ' ' + H, preserveAspectRatio: 'xMidYMid slice', 'aria-hidden': 'true', style: { position: 'absolute', inset: '-4% 0', width: '100%', height: '108%', display: 'block', pointerEvents: 'none', opacity: this.gsapReady ? 1 : 0 } }, lines, rects);
+    return this._net;
+  }
+
+  drawNet() {
+    const svg = this.netRef.current; if (!svg) return;
+    this._drawnKey = this._netKey + '|' + this._netV;
+    svg.style.opacity = 1;
+    if (this._netTw) this._netTw.forEach((t) => t.kill());
+    if (!this.gsapOk()) return;
+    const g = window.gsap;
+    this._netTw = [
+      g.fromTo(svg.querySelectorAll('line'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.2, ease: 'expo.out', stagger: 0.0035 }),
+      g.fromTo(svg.querySelectorAll('rect'), { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.6, ease: 'expo.out', stagger: 0.005, delay: 0.3, clearProps: 'transform' }),
+      g.to(svg, { yPercent: 12, ease: 'none', scrollTrigger: { trigger: this.heroRef.current, start: 'top top', end: 'bottom top', scrub: true } }),
+    ];
+    this._qx = g.quickTo(svg, 'x', { duration: 1.4, ease: 'expo.out' });
+    this._qy = g.quickTo(svg, 'y', { duration: 1.4, ease: 'expo.out' });
+  }
+  textIntro() {
+    if (!this.gsapOk() || !window.SplitText) return;
+    const g = window.gsap, hero = this.heroRef.current; if (!hero) return;
+    this._ctx = g.context(() => {
+      const h = hero.querySelector('[data-split]');
+      if (h) { const s = window.SplitText.create(h, { type: 'words' }); g.from(s.words, { x: -60, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.06 }); }
+      g.from(hero.querySelectorAll('[data-rise]'), { x: -40, opacity: 0, duration: 0.8, ease: 'expo.out', stagger: 0.1, delay: 0.35 });
+    });
+  }
+  heroMove(e) {
+    if (!this._qx) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    this._qx(((e.clientX - r.left) / r.width - 0.5) * -24);
+    this._qy(((e.clientY - r.top) / r.height - 0.5) * -14);
+  }
+
+  spy() {
+    (this._spyT || []).forEach((t) => t.kill()); this._spyT = [];
+    if (!this.gsapReady || !window.ScrollTrigger || this.state.view !== 'liste') return;
+    const root = this.mainRef.current; if (!root) return;
+    root.querySelectorAll('[data-day]').forEach((el) => {
+      const key = el.getAttribute('data-day');
+      this._spyT.push(window.ScrollTrigger.create({ trigger: el, start: 'top 45%', end: 'bottom 45%', onToggle: (s) => {
+        if (s.isActive && this.state.spy !== key) { const d = parse(key), mm = d.getFullYear() * 12 + d.getMonth(); this.setState({ spy: key, mm }, () => { if (mm !== this._lastMm) { this._lastMm = mm; this.slideIn(this.miniRef.current, 1); } }); }
+      } }));
+    });
+    window.ScrollTrigger.refresh();
+  }
+
+  slideIn(el, dir) { if (el && this.gsapOk()) window.gsap.fromTo(el, { x: dir * 36, opacity: 0 }, { x: 0, opacity: 1, duration: 0.5, ease: 'expo.out', clearProps: 'transform,opacity' }); }
+
+  flip(update) {
+    const root = this.mainRef.current;
+    if (!this.gsapOk() || !root) { this.setState(update); return; }
+    const g = window.gsap, F = window.Flip, st = F.getState(root.querySelectorAll('[data-flip-id]'));
+    this.setState(update, () => {
+      F.from(st, { targets: root.querySelectorAll('[data-flip-id]'), duration: 0.55, ease: 'expo.out', onEnter: (els) => g.fromTo(els, { opacity: 0, x: -24 }, { opacity: 1, x: 0, duration: 0.5, ease: 'expo.out', stagger: 0.02, clearProps: 'opacity,transform' }) });
+      const chips = root.querySelectorAll('[data-chip]');
+      if (chips.length) g.from(chips, { opacity: 0, x: -8, duration: 0.4, ease: 'expo.out', stagger: 0.004, clearProps: 'opacity,transform' });
+    });
+  }
+
+  toggle(id) {
+    const g = window.gsap, root = this.mainRef.current, cur = this.state.open, ok = this.gsapOk();
+    const openNew = () => this.setState({ open: id }, () => { const el = root && root.querySelector('[data-detail="' + id + '"]'); if (el && ok) g.from(el, { height: 0, opacity: 0, duration: 0.5, ease: 'expo.out', clearProps: 'height,opacity' }); });
+    const closeCur = (done) => { const el = root && root.querySelector('[data-detail="' + cur + '"]'); if (el && ok) g.to(el, { height: 0, opacity: 0, duration: 0.26, ease: 'power3.in', onComplete: done }); else done(); };
+    if (cur === id) closeCur(() => this.setState({ open: null }));
+    else if (cur) closeCur(openNew);
+    else openNew();
+  }
+
+  scrollToEl(el) {
+    if (!el) return;
+    const y = el.getBoundingClientRect().top + window.scrollY - (this.state.hh + this.state.th + 70);
+    window.scrollTo({ top: y, behavior: this.reduced ? 'auto' : 'smooth' });
+  }
+  scrollToDay(key) {
+    const root = this.mainRef.current; if (!root) return;
+    const all = Array.from(root.querySelectorAll('[data-day]'));
+    const el = all.find((x) => x.getAttribute('data-day') >= key) || all[all.length - 1];
+    if (!el) return;
+    this.scrollToEl(el);
+    if (this.gsapOk()) window.gsap.fromTo(el, { backgroundColor: 'rgba(72,198,215,0.22)' }, { backgroundColor: 'rgba(72,198,215,0)', duration: 1.4, delay: 0.45, ease: 'power2.out', clearProps: 'backgroundColor' });
+  }
+  pickMini(key, has) {
+    if (!has) return;
+    if (key < TK && !this.state.past) this.setState({ past: true }, () => setTimeout(() => this.scrollToDay(key), 60));
+    else this.scrollToDay(key);
+  }
+  openEvent(id) {
+    this.setState({ view: 'liste', cat: 'Alle', q: '', open: id }, () => setTimeout(() => {
+      const root = this.mainRef.current, el = root && root.querySelector('[data-ev="' + id + '"]');
+      this.scrollToEl(el);
+      const d = root && root.querySelector('[data-detail="' + id + '"]');
+      if (d && this.gsapOk()) window.gsap.from(d, { height: 0, opacity: 0, duration: 0.6, delay: 0.3, ease: 'expo.out', clearProps: 'height,opacity' });
+    }, 40));
+  }
+  setView(v) {
+    if (v === this.state.view) return;
+    this.setState({ view: v, open: null }, () => { const el = this.mainRef.current; if (el && this.gsapOk()) window.gsap.fromTo(el, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, ease: 'expo.out', clearProps: 'transform,opacity' }); });
+  }
+  navVm(dir) {
+    const vm = this.state.vm + dir, y = Math.floor(vm / 12), m = vm % 12;
+    const first = this.evs().find((e) => e.date.getFullYear() === y && e.date.getMonth() === m && this.match(e, this.state.cat, this.state.q.trim().toLowerCase()));
+    const sel = TODAY.getFullYear() === y && TODAY.getMonth() === m ? TK : first ? first.key : k(new Date(y, m, 1));
+    this.setState({ vm, sel }, () => { this.slideIn(this.gridRef.current, dir); this.panelIn(); });
+  }
+  panelIn() { const p = this.panelRef.current; if (p && this.gsapOk()) window.gsap.from(p.querySelectorAll('h3,[data-pitem]'), { x: -24, opacity: 0, duration: 0.45, ease: 'expo.out', stagger: 0.05, clearProps: 'transform,opacity' }); }
+  goToday() {
+    if (this.state.view === 'monat') { const dir = this.state.vm > 2026 * 12 + 9 ? -1 : 1; this.setState({ vm: 2026 * 12 + 9, sel: TK }, () => { this.slideIn(this.gridRef.current, dir); this.panelIn(); }); }
+    else this.setState({ mm: 2026 * 12 + 9 }, () => this.scrollToDay(TK));
+  }
+
+  goInternal(e) {
+    const g = window.gsap, root = this.gateRef.current;
+    try { sessionStorage.setItem('tndd-gate', '1'); } catch (err) {}
+    if (!g || !root || this.reduced) return;
+    e.preventDefault();
+    if (this._gating) return; this._gating = true;
+    const q = (s) => root.querySelector(s);
+    g.set(root, { visibility: 'visible', pointerEvents: 'auto' });
+    g.set([q('[data-g-seam]'), q('[data-g-panel]')], { xPercent: -100 });
+    g.set([q('[data-g-logo]'), q('[data-g-tag]')], { opacity: 0, x: -60 });
+    g.timeline({ onComplete: () => { window.location.href = 'Mitgliedsstatus.dc.html'; } })
+      .to(q('[data-g-seam]'), { xPercent: 0, duration: 0.75, ease: 'expo.inOut' }, 0)
+      .to(q('[data-g-panel]'), { xPercent: 0, duration: 0.75, ease: 'expo.inOut' }, 0.09)
+      .to(q('[data-g-logo]'), { opacity: 1, x: 0, duration: 0.6, ease: 'expo.out' }, 0.55)
+      .to(q('[data-g-tag]'), { opacity: 1, x: 0, duration: 0.6, ease: 'expo.out' }, 0.65)
+      .to({}, { duration: 0.15 });
+  }
+  logoRainbow(e) {
+    const el = e.currentTarget && e.currentTarget.querySelector('[data-rainbow]');
+    if (!el || !el.animate || (this._rb && this._rb.playState === 'running')) return;
+    this._rb = el.animate([{ backgroundPosition: '100% 0' }, { backgroundPosition: '0% 0' }], { duration: 950, easing: 'cubic-bezier(0.45,0,0.25,1)' });
+  }
+
+  item(e, i, always) {
+    const c = CAT[e.cat], isOpen = always || this.state.open === e.id;
+    const time = e.cat === 'Frist' ? 'Frist' : e.t0 ? e.t0 + (e.t1 ? '–' + e.t1 : '') : 'ganztägig';
+    const dl = DOW[e.date.getDay()] + ', ' + e.date.getDate() + '. ' + MON[e.date.getMonth()] + ' ' + e.date.getFullYear();
+    return {
+      id: e.id, title: e.title, line: [e.sub, e.place].filter(Boolean).join(' · '), time,
+      badge: c.badge, catLabel: e.cat, open: isOpen, openS: isOpen ? 'true' : 'false', rot: isOpen ? '45deg' : '0deg',
+      bg: isOpen ? 'var(--tint)' : 'transparent', bt: i ? '1px solid var(--rule)' : 'none',
+      toggle: () => this.toggle(e.id),
+      desc: e.desc, hasDays: !!(e.days && e.days.length), days: e.days || [],
+      when: e.sessions ? 'Diese Woche · ' + time + ' Uhr' : dl + (e.cat === 'Frist' ? ' · bis 23:59 Uhr' : e.t0 ? ' · ' + time + ' Uhr' : ''),
+      place: e.place, addr: e.addr, hasAddr: !!e.addr,
+      route: e.addr ? 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(e.place + ', ' + e.addr) : '',
+      price: e.price, hasPrice: !!e.price, link: e.link, hasLink: !!e.link, linkLabel: e.linkLabel,
+      ics: () => icsFile(e.sessions || [e], 'tanznetzdresden-' + e.id),
+    };
+  }
+
+  cells(abs, evs, fn) {
+    const y = Math.floor(abs / 12), m = abs % 12, lead = (new Date(y, m, 1).getDay() + 6) % 7, days = new Date(y, m + 1, 0).getDate();
+    const by = {}; evs.forEach((e) => { (by[e.key] = by[e.key] || []).push(e); });
+    const out = [], total = Math.ceil((lead + days) / 7) * 7;
+    for (let i = 0; i < total; i++) { const d = new Date(y, m, 1 - lead + i), key = k(d); out.push(fn(d, key, by[key] || [], d.getMonth() === m)); }
+    return out;
+  }
+
+  renderVals() {
+    const { view, cat, q, past, mm, vm, sel, spy, hh, th } = this.state;
+    const ql = q.trim().toLowerCase(), all = this.evs();
+    const upcoming = all.filter((e) => e.key >= TK);
+    const shown = all.filter((e) => this.match(e, cat, ql));
+    const group = cat === 'Alle' && this.props.groupTraining !== false;
+
+    const cats = ['Alle', 'Bühne', 'Training', 'Diskurs'].map((l) => {
+      const on = cat === l, c = CAT[l];
+      return { label: l, count: String(l === 'Alle' ? upcoming.length : upcoming.filter((e) => e.cat === l).length), bg: on ? 'var(--purple)' : 'transparent', fg: on ? '#fff' : 'var(--purple)', cnt: on ? 'var(--cyan)' : 'var(--ink-muted)', sq: c ? c.sq : (on ? '#fff' : 'var(--purple)'), ol: c ? (on && l === 'Diskurs' ? 'inset 0 0 0 1.5px #fff' : c.ol) : 'none', pressed: on ? 'true' : 'false', pick: () => { if (this.state.cat !== l) this.flip({ cat: l, open: null }); } };
+    });
+    const views = [['liste', 'Liste'], ['monat', 'Monat']].map(([v, l]) => ({ label: l, sel: view === v ? 'true' : 'false', bg: view === v ? 'var(--purple)' : '#fff', fg: view === v ? '#fff' : 'var(--purple)', pick: () => this.setView(v) }));
+    const legend = ['Bühne', 'Training', 'Diskurs', 'Frist'].map((l) => ({ label: l, text: CAT[l].text, sq: CAT[l].sq, ol: CAT[l].ol }));
+
+    // list
+    let listEvs = shown.filter((e) => past || e.key >= TK);
+    const pastCount = shown.filter((e) => e.key < TK).length;
+    if (group) {
+      const weeks = {}, rest = [];
+      listEvs.forEach((e) => { if (e.training) { const wk = k(monday(e.date)); (weeks[wk] = weeks[wk] || []).push(e); } else rest.push(e); });
+      Object.keys(weeks).forEach((wk) => {
+        const ss = weeks[wk], f0 = ss[0], trs = Array.from(new Set(ss.map((s) => s.trainer).filter(Boolean)));
+        rest.push({ ...f0, id: 'kuw-' + wk, sub: ss.map((s) => DS[s.date.getDay()]).join(' · ') + (trs.length ? ' · mit ' + trs.join(', ') : ''), days: ss.map((s) => DS[s.date.getDay()] + ' ' + s.date.getDate() + '. ' + MOS[s.date.getMonth()]), sessions: ss });
+      });
+      listEvs = rest.sort(cmp);
+    }
+    const realCount = listEvs.length;
+    if (!ql && !listEvs.some((e) => e.key === TK)) listEvs = listEvs.concat([{ key: TK, date: TODAY, ph: true }]).sort(cmp);
+    const months = []; let cm = null, cd = null;
+    listEvs.forEach((e) => {
+      const mk = e.date.getFullYear() * 12 + e.date.getMonth();
+      if (!cm || cm.mk !== mk) { cm = { mk, label: MON[e.date.getMonth()] + ' ' + e.date.getFullYear(), days: [], n: 0 }; months.push(cm); cd = null; }
+      if (!cd || cd.key !== e.key) { const isT = e.key === TK; cd = { key: e.key, fid: 'd-' + e.key, dow: DS[e.date.getDay()], day: String(e.date.getDate()), isToday: isT, numCol: isT ? 'var(--magenta)' : 'var(--purple)', op: e.key < TK ? '0.55' : '1', raw: [] }; cm.days.push(cd); }
+      if (!e.ph) { cd.raw.push(e); cm.n++; }
+    });
+    months.forEach((mo) => { mo.count = mo.n + (mo.n === 1 ? ' Termin' : ' Termine'); mo.days.forEach((d) => { d.items = d.raw.map((e, i) => this.item(e, i, false)); d.empty = !d.raw.length; }); });
+    this._listKey = view + '|' + cat + '|' + ql + '|' + past + '|' + group + '|' + listEvs.length;
+
+    // mini month
+    const my = Math.floor(mm / 12), mmo = mm % 12;
+    const mini = this.cells(mm, shown, (d, key, list, inM) => {
+      const has = list.length > 0 && inM, on = key === spy && inM, isT = key === TK;
+      const dots = Array.from(new Set(list.map((e) => e.cat))).slice(0, 3).map((c) => ({ sq: on && c === 'Diskurs' ? '#fff' : CAT[c].sq, ol: CAT[c].ol }));
+      return { n: inM ? String(d.getDate()) : '', dots: inM ? dots : [], bg: on ? 'var(--purple)' : 'transparent', fg: on ? '#fff' : !inM ? 'transparent' : key < TK ? 'var(--ink-muted)' : 'var(--purple)', ring: isT && !on ? 'inset 0 0 0 1.5px var(--magenta)' : 'none', cur: has ? 'pointer' : 'default', dis: has ? 'false' : 'true', aria: inM ? DOW[d.getDay()] + ', ' + d.getDate() + '. ' + MON[d.getMonth()] + (list.length ? ', ' + list.length + ' Termine' : ', keine Termine') : '', pick: () => this.pickMini(key, has) };
+    });
+
+    // month grid
+    const grid = this.cells(vm, shown, (d, key, list, inM) => {
+      const isT = key === TK, isS = key === sel;
+      const chips = list.slice(0, 3).map((e) => ({ sq: CAT[e.cat].sq, ol: CAT[e.cat].ol, t: e.cat === 'Frist' ? 'Frist' : e.t0, title: e.cat === 'Training' ? (e.training ? 'KEEP UP' : 'Workshop') : e.title }));
+      return { n: String(d.getDate()), chips, hasMore: list.length > 3, more: '+' + (list.length - 3) + ' weitere', bg: inM ? '#fff' : 'var(--tint)', ring: isS ? 'inset 0 0 0 2px var(--magenta)' : 'none', selS: isS ? 'true' : 'false', numBg: isT ? 'var(--magenta)' : 'transparent', numFg: isT ? '#fff' : !inM ? 'var(--ink-muted)' : key < TK ? 'var(--ink-muted)' : 'var(--purple)', op: key < TK ? '0.55' : '1', aria: DOW[d.getDay()] + ', ' + d.getDate() + '. ' + MON[d.getMonth()] + ', ' + (list.length ? list.length + ' Termine' : 'keine Termine'), pick: () => { if (this.state.sel !== key) this.setState({ sel: key }, () => this.panelIn()); } };
+    });
+    const sd = parse(sel), pItems = shown.filter((e) => e.key === sel), nx = shown.find((e) => e.key > sel);
+    const panel = {
+      kicker: sel === TK ? 'Heute' : sel < TK ? 'Vergangen' : 'Ausgewählter Tag',
+      label: DOW[sd.getDay()] + ', ' + sd.getDate() + '. ' + MON[sd.getMonth()],
+      items: pItems.map((e, i) => this.item(e, i, true)), empty: !pItems.length, hasNext: !!nx,
+      nextLabel: nx ? 'Nächster Termin: ' + DS[nx.date.getDay()] + ' ' + nx.date.getDate() + '. ' + MOS[nx.date.getMonth()] + ' · ' + nx.title : '',
+      goNext: () => { if (!nx) return; const nvm = nx.date.getFullYear() * 12 + nx.date.getMonth(), dir = nvm > this.state.vm ? 1 : 0; this.setState({ sel: nx.key, vm: nvm }, () => { if (dir) this.slideIn(this.gridRef.current, 1); this.panelIn(); }); },
+    };
+
+    const next = upcoming.filter((e) => e.cat !== 'Training').slice(0, 3).map((e) => ({ id: e.id, dow: DS[e.date.getDay()], day: String(e.date.getDate()), mo: MOS[e.date.getMonth()], title: e.title, line: [e.cat === 'Frist' ? 'Frist' : e.t0 + ' Uhr', e.place].join(' · '), open: () => this.openEvent(e.id) }));
+
+    return {
+      headRef: this.headRef, barRef: this.barRef, heroRef: this.heroRef, mainRef: this.mainRef, gridRef: this.gridRef, miniRef: this.miniRef, panelRef: this.panelRef, progRef: this.progRef, gateRef: this.gateRef,
+      heroNet: this.netEl(), onHeroMove: (e) => this.heroMove(e),
+      logoRainbow: (e) => this.logoRainbow(e), goInternal: (e) => this.goInternal(e),
+      hhPx: hh + 'px', monthTop: (hh + th) + 'px', asideTop: (hh + th + 24) + 'px',
+      views, cats, legend, wdays: WD, q,
+      onQ: (e) => { const v = e.target.value; clearTimeout(this._qt); this.setState({ q: v, open: null }); },
+      goToday: () => this.goToday(),
+      isList: view === 'liste', isMonth: view === 'monat',
+      months, isEmpty: realCount === 0,
+      resultLabel: realCount + (realCount === 1 ? ' Termin' : ' Termine') + (past ? '' : ' ab heute') + (ql ? ' für „' + q.trim() + '“' : ''),
+      pastLabel: past ? 'Vergangene ausblenden' : 'Vergangene zeigen (' + pastCount + ')',
+      togglePast: () => this.flip({ past: !past, open: null }),
+      resetAll: () => this.flip({ cat: 'Alle', q: '', open: null }),
+      icsAll: () => icsFile(shown.filter((e) => e.key >= TK), 'tanznetzdresden-kalender'),
+      miniLabel: MON[mmo] + ' ' + my, mini,
+      miniPrev: () => this.setState({ mm: mm - 1 }, () => this.slideIn(this.miniRef.current, -1)),
+      miniNext: () => this.setState({ mm: mm + 1 }, () => this.slideIn(this.miniRef.current, 1)),
+      vmLabel: MON[vm % 12] + ' ' + Math.floor(vm / 12), grid, panel,
+      vmPrev: () => this.navVm(-1), vmNext: () => this.navVm(1),
+      next,
+    };
+  }
+}
+</script>
+</body>
+</html>

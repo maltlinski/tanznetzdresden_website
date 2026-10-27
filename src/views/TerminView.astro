@@ -26,6 +26,7 @@ const verein = getVerein(lang);
 const date = dateParts(d.start, lang);
 const title = loc(d, 'title', lang);
 const teaser = loc(d, 'teaser', lang);
+const eintritt = loc(d, 'eintritt', lang);
 const time = loc(d, 'timeLabel', lang) ?? (d.end ? `${date.time.replace(' Uhr', '')}–${dateParts(d.end, lang).time}` : date.time);
 const body = termin.body?.trim() ? renderMarkdown(termin.body, import.meta.env.BASE_URL) : '';
 const people = (await Promise.all(d.people.map(async (id) => ({ id, profile: await getProfile(id) }))))
@@ -91,6 +92,7 @@ const jsonLd = {
             <div><dt>{t.when}</dt><dd>{date.long}<br />{time}</dd></div>
             <div><dt>{t.where}</dt><dd>{d.venue}</dd></div>
             <div><dt>{t.what}</dt><dd>{categoryLabel[lang][d.category]}</dd></div>
+            {eintritt && <div><dt>{texte(lang, 'termine', 'eintrag').eintritt}</dt><dd>{eintritt}</dd></div>}
             {people.length > 0 && (
               <div>
                 <dt>{t.people}</dt>

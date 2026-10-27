@@ -1,12 +1,9 @@
 /**
- * Ein Kalender für die ganze Website: Monatsraster mit Tagesansicht und Filter
- * (src/components/Kalender.astro). Der Tanzkalender (/termine/) zeigt alle Termine
- * und die KEEP UP-Trainingstage, die Profitrainings-Seite nur das Training.
+ * Monatsraster mit Tagesansicht und Filter (src/components/Kalender.astro) für die Profitrainings-Seite.
+ * Der Tanzkalender (/termine/) hat eine eigene Darstellung: src/lib/tanzkalender.ts.
  */
-import { badgeVariant, categoryLabel, getTermine, type Termin } from './content';
-import { getKeepUp, todayKey } from './keep-up';
-import { dateLocale, loc, url, type Lang } from './i18n';
-import { texte } from './texte';
+import { todayKey } from './keep-up';
+import { dateLocale, type Lang } from './i18n';
 
 export type Farbe = 'cyan' | 'magenta' | 'purple';
 
@@ -91,51 +88,4 @@ export function monate(days: Tage, lang: Lang): { days: Tage; months: Monat[] } 
   }
   for (const list of Object.values(days)) list.sort((a, b) => a.time.localeCompare(b.time));
   return { days: Object.fromEntries(keys.map((k) => [k, days[k]])), months };
-}
-
-/** Uhrzeit eines Termins: „19:30–21:00“ bzw. die eigene Angabe (timeLabel) */
-const terminZeit = (t: Termin, lang: Lang) => {
-  const from = t.data.start.split(' ')[1];
-  const to = t.data.end?.split(' ')[1];
-  return loc(t.data, 'timeLabel', lang)?.replace(/\s*Uhr$/, '') ?? (to ? `${from}–${to}` : from);
-};
-
-/** Tanzkalender: alle Termine und die Trainingstage von KEEP UP */
-export async function getTanzkalender(lang: Lang) {
-  const t = texte(lang, 'termine', 'kalender');
-  const days: Tage = {};
-  const add = (date: string, e: KalenderEintrag) => (days[date] ??= []).push(e);
-
-  for (const termin of await getTermine()) {
-    const cat = termin.data.category;
-    const title = loc(termin.data, 'title', lang);
-    add(termin.data.start.split(' ')[0], {
-      time: terminZeit(termin, lang),
-      title,
-      sub: [termin.data.venue, loc(termin.data, 'teaser', lang)].join(' · '),
-      badge: categoryLabel[lang][cat],
-      color: badgeVariant[cat],
-      short: title,
-      keys: [cat],
-      label: `${categoryLabel[lang][cat]}: ${title}`,
-      links: [{ href: url(lang, 'termine', `${termin.id}/`), text: t.toEvent }],
-    });
-  }
-
-  const { trainings } = await getKeepUp(lang);
-  for (const e of trainings) {
-    add(e.date, {
-      time: e.time,
-      title: `KEEP UP · ${e.titel ?? e.dozentin.name}`,
-      sub: [e.titel ? e.dozentin.name : '', e.dozentin.stil, e.where].filter(Boolean).join(' · '),
-      badge: e.art === 'workshop' ? 'Workshop' : categoryLabel[lang].Training,
-      color: 'cyan',
-      short: 'KEEP UP',
-      keys: ['Training'],
-      label: `${t.training}: ${e.dozentin.name}`,
-      links: [{ href: url(lang, 'profitraining', '#kalender'), text: t.toTraining }],
-      nebenbei: true,
-    });
-  }
-  return monate(days, lang);
 }

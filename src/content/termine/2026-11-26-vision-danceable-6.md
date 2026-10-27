@@ -3,6 +3,8 @@
 title: "vision:danceable #6"
 start: "2026-11-26 20:00"
 venue: "Societaetstheater"
+eintritt: "Tickets über das Societaetstheater"
+eintritt_en: "Tickets via Societaetstheater"
 category: Bühne
 teaser: "Kurzstückreihe mit 4 rooms company und about blank collective"
 teaser_en: "Short-piece series with 4 rooms company and about blank collective"

@@ -21,7 +21,8 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
    `supabase/migrations/20261022000000_mitgliedschaft.sql` (Mitgliedschaft und Mitgliedsausweis, siehe unten „Mein Status“) und
    `supabase/migrations/20261025000000_keepup.sql` (KEEP UP planen und beschreiben, siehe [keep-up.md](keep-up.md)) und
    `supabase/migrations/20261026000000_kalender.sql` (Termine im internen Kalender eintragen, siehe [kalender.md](kalender.md)) und
-   `supabase/migrations/20261027000000_open_calls.sql` (Open Calls, siehe [open-calls.md](open-calls.md)).
+   `supabase/migrations/20261027000000_open_calls.sql` (Open Calls, siehe [open-calls.md](open-calls.md)) und
+   `supabase/migrations/20261028000000_kalender_eintritt.sql` (Eintritt bei Terminen, siehe [kalender.md](kalender.md)).
    Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
 
 ## 2. Login konfigurieren
@@ -63,6 +64,7 @@ mit denselben Namen überschreiben.
 | Mein Status zeigt immer „In Vorbereitung“; Mitglieder: „Mitgliedschaften lassen sich pflegen, sobald …“ | Neunte Migration `20261022000000_mitgliedschaft.sql` ausführen, dann unter *Intern → Mitglieder* die Mitgliedschaft eintragen. |
 | Kalender: „Termine eintragen geht, sobald die Migration … ausgeführt ist“ | Elfte Migration `20261026000000_kalender.sql` ausführen. |
 | Open Calls: „Open Calls gibt es, sobald die Migration … ausgeführt ist“ | Zwölfte Migration `20261027000000_open_calls.sql` ausführen. |
+| Kalender: kein Feld „Eintritt“ unter *Mehr Angaben* | Dreizehnte Migration `20261028000000_kalender_eintritt.sql` ausführen. |
 | KEEP UP: „Die Tabelle für KEEP UP fehlt noch“ | Zehnte Migration `20261025000000_keepup.sql` ausführen. |
 | Dozent:in sieht „Meine Trainings“ nicht | Profiladresse muss genau dem Kürzel in `keep-up/dozentinnen.yaml` entsprechen und das Profil freigegeben sein; und der Vorstand muss sie eingeplant haben ([keep-up.md](keep-up.md)). |
 | Google Wallet: „noch nicht eingerichtet“ | Funktion `ausweis` und ihre Secrets fehlen, siehe „Google Wallet“ unten. |

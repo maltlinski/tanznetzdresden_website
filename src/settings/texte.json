@@ -174,25 +174,69 @@
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Tanzkalender", "en": "Dance calendar", "max": 60 },
           "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Alle Termine der freien Tanzszene Dresden: Bühne, Training und Diskurs, dazu das Profitraining KEEP UP.", "en": "All events of Dresden's independent dance scene: stage, training and discourse, plus the KEEP UP professional training.", "max": 160 },
-          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Tanzkalender", "en": "Dance calendar", "max": 40 },
-          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Was läuft\nim Netz.", "en": "What's on\nin the network.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Aufführungen, Training und Gespräche aus dem Netzwerk, dazu jeder Tag Profitraining. Abonniere den Kalender, dann landen neue Termine automatisch in deiner Kalender-App.", "en": "Performances, training and talks from the network, plus every day of professional training. Subscribe to the calendar and new events appear in your calendar app automatically.", "max": 400 },
-          "ics": { "wo": "Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to calendar (.ics)", "max": 40 },
-          "submit": { "wo": "Link „Termin einreichen“", "de": "Termin einreichen →", "en": "Submit an event →", "max": 40 },
-          "calKicker": { "wo": "Kalender: kleine Zeile über der Überschrift", "de": "Monat für Monat", "en": "Month by month", "max": 40 },
-          "h2": { "wo": "Kalender: Überschrift", "de": "Kalender", "en": "Calendar", "max": 30 }
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Tanzkalender · Dresden", "en": "Dance calendar · Dresden", "max": 40 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Cyan", "zeilen": 2, "de": "Tanz in Dresden.\nAlle Termine.", "en": "Dance in Dresden.\nEvery date.", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Bühne, Training und Diskurs aus dem Netz an einem Ort. Nach Format filtern, im Monat blättern und Termine direkt in den eigenen Kalender übernehmen.", "en": "Stage, training and discourse from the network in one place. Filter by format, browse by month and add dates straight to your own calendar.", "max": 400 },
+          "next": { "wo": "Kasten rechts: Überschrift über den nächsten drei Terminen", "de": "Als Nächstes", "en": "Up next", "max": 30 },
+          "ics": { "wo": "Spalte links: Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to calendar (.ics)", "max": 40 },
+          "submit": { "wo": "Spalte links: Link „Termin einreichen“", "de": "Termin einreichen →", "en": "Submit an event →", "max": 40 }
+        }
+      },
+      "ansicht": {
+        "titel": "Leiste, Liste und Monat",
+        "texte": {
+          "liste": { "wo": "Leiste: Ansicht", "de": "Liste", "en": "List", "max": 12 },
+          "monat": { "wo": "Leiste: Ansicht", "de": "Monat", "en": "Month", "max": 12 },
+          "suche": { "wo": "Leiste: Suchfeld (Platzhalter)", "de": "Suchen: Titel, Ort, Name", "en": "Search: title, venue, name", "max": 40 },
+          "heute": { "wo": "Leiste: Knopf zum heutigen Tag, auch Markierung am heutigen Tag", "de": "Heute", "en": "Today", "max": 12 },
+          "buehneText": { "wo": "Legende: nach „Bühne“", "de": "Aufführungen, Showings", "en": "Performances, showings", "max": 40 },
+          "trainingText": { "wo": "Legende: nach „Training“", "de": "KEEP UP, Workshops", "en": "KEEP UP, workshops", "max": 40 },
+          "diskursText": { "wo": "Legende: nach „Diskurs“", "de": "Gespräche, Treffen", "en": "Talks, meetings", "max": 40 },
+          "frist": { "wo": "Kennzeichen für Bewerbungsfristen (Ausschreibungen in den News)", "de": "Frist", "en": "Deadline", "max": 16 },
+          "fristText": { "wo": "Legende: nach „Frist“", "de": "Open Calls", "en": "Open calls", "max": 40 },
+          "auswahl": { "wo": "Spalte links: alle gezeigten Termine als Kalenderdatei", "de": "Auswahl als .ics laden", "en": "Download selection (.ics)", "max": 40 },
+          "treffer": { "wo": "Über der Liste und je Monat ({zahl} = Anzahl)", "de": "{zahl} Termine", "en": "{zahl} events", "max": 30 },
+          "treffer1": { "wo": "Über der Liste und je Monat, genau ein Termin", "de": "1 Termin", "en": "1 event", "max": 30 },
+          "abHeute": { "wo": "Über der Liste, nach der Anzahl", "de": "ab heute", "en": "from today", "max": 20 },
+          "fuer": { "wo": "Über der Liste bei einer Suche ({suche} = Suchwort)", "de": "für „{suche}“", "en": "for “{suche}”", "max": 30 },
+          "zeigen": { "wo": "Über der Liste ({zahl} = vergangene Termine)", "de": "Vergangene zeigen ({zahl})", "en": "Show past ({zahl})", "max": 40 },
+          "ausblenden": { "wo": "Über der Liste, wenn Vergangene zu sehen sind", "de": "Vergangene ausblenden", "en": "Hide past", "max": 40 },
+          "heuteLeer": { "wo": "Liste: am heutigen Tag ohne Termin", "de": "Heute ist nichts eingetragen.", "en": "Nothing listed for today.", "max": 60 },
+          "leer": { "wo": "Liste: wenn Filter oder Suche nichts finden", "de": "Keine Termine für diese Auswahl.", "en": "No events for this selection.", "max": 60 },
+          "reset": { "wo": "Liste: Link unter „Keine Termine“", "de": "Filter zurücksetzen →", "en": "Reset filters →", "max": 40 },
+          "weitere": { "wo": "Monat: in einem Tag mit mehr als drei Terminen ({zahl} = übrige)", "de": "+{zahl} weitere", "en": "+{zahl} more", "max": 20 },
+          "ausgewaehlt": { "wo": "Monat, rechts: kleine Zeile über dem Datum", "de": "Ausgewählter Tag", "en": "Selected day", "max": 30 },
+          "vergangen": { "wo": "Monat, rechts: kleine Zeile bei einem vergangenen Tag", "de": "Vergangen", "en": "Past", "max": 30 },
+          "tagLeer": { "wo": "Monat, rechts: Tag ohne Termin", "de": "An diesem Tag ist nichts eingetragen.", "en": "Nothing listed on this day.", "max": 60 },
+          "naechster": { "wo": "Monat, rechts: Sprung zum nächsten Termin ({termin} = Datum und Titel)", "de": "Nächster Termin: {termin} →", "en": "Next event: {termin} →", "max": 40 }
+        }
+      },
+      "eintrag": {
+        "titel": "Aufgeklappter Termin",
+        "texte": {
+          "wann": { "wo": "Angabe", "de": "Wann", "en": "When", "max": 16 },
+          "ort": { "wo": "Angabe", "de": "Wo", "en": "Where", "max": 16 },
+          "eintritt": { "wo": "Angabe (auch auf der Seite eines Termins)", "de": "Eintritt", "en": "Admission", "max": 16 },
+          "speichern": { "wo": "Knopf: Termin als Kalenderdatei", "de": "In Kalender speichern", "en": "Save to calendar", "max": 30 },
+          "route": { "wo": "Link zum Ort (Kartendienst)", "de": "Route →", "en": "Directions →", "max": 24 },
+          "zumTermin": { "wo": "Link zur Seite des Termins", "de": "Zum Termin →", "en": "About the event →", "max": 30 },
+          "zumTraining": { "wo": "Link beim Profitraining", "de": "KEEP UP Kalender →", "en": "KEEP UP calendar →", "max": 30 },
+          "zumCall": { "wo": "Link bei einer Frist (zur Ausschreibung in den News)", "de": "Zur Ausschreibung →", "en": "To the open call →", "max": 30 },
+          "uhr": { "wo": "Uhrzeit ({zeit} = z. B. 19:30)", "de": "{zeit} Uhr", "en": "{zeit}", "max": 20 },
+          "mit": { "wo": "Vor dem Namen der Dozent:in ({name})", "de": "mit {name}", "en": "with {name}", "max": 20 },
+          "profitraining": { "wo": "Titel eines Trainings", "de": "KEEP UP · Profitraining", "en": "KEEP UP · Professional training", "max": 40 },
+          "workshop": { "wo": "Titel eines Workshops aus der KEEP UP-Planung", "de": "KEEP UP · Workshop", "en": "KEEP UP · Workshop", "max": 40 },
+          "trainingInfo": { "wo": "Text beim Training, solange die Dozent:in nichts beschrieben hat", "de": "Offenes Profitraining für professionell arbeitende Tänzer:innen. Jede Woche unterrichtet eine andere Dozent:in aus Dresden oder von außerhalb.", "en": "Open professional training for professional dancers. Each week a different teacher from Dresden or elsewhere leads the class.", "max": 300 },
+          "workshopInfo": { "wo": "Text beim Workshop, solange die Dozent:in nichts beschrieben hat", "de": "Workshop am Wochenende. Anmeldung über die Telegram-Gruppe von KEEP UP.", "en": "Weekend workshop. Registration via the KEEP UP Telegram group.", "max": 300 }
         }
       },
       "kalender": {
-        "titel": "Kalender (auch auf der Seite Profitraining)",
+        "titel": "Kalender der Seite Profitraining",
         "texte": {
           "all": { "wo": "Filter: alles zeigen", "de": "Alle", "en": "All", "max": 20 },
           "today": { "wo": "Markierung am heutigen Tag", "de": "Heute", "en": "Today", "max": 20 },
           "none": { "wo": "Wenn im Monat nichts geplant ist", "de": "Gerade sind keine Termine geplant.", "en": "Nothing scheduled right now.", "max": 80 },
-          "free": { "wo": "Wenn am gewählten Tag nichts ist", "de": "An diesem Tag ist nichts geplant.", "en": "Nothing planned on this day.", "max": 80 },
-          "toEvent": { "wo": "Link bei einem Termin", "de": "Zum Termin →", "en": "About the event →", "max": 30 },
-          "toTraining": { "wo": "Link bei einem Trainingstag", "de": "Zum Profitraining →", "en": "Professional training →", "max": 30 },
-          "training": { "wo": "Kennzeichen bei Trainingstagen im Tanzkalender", "de": "Profitraining", "en": "Professional training", "max": 24 }
+          "free": { "wo": "Wenn am gewählten Tag nichts ist", "de": "An diesem Tag ist nichts geplant.", "en": "Nothing planned on this day.", "max": 80 }
         }
       },
       "liste": {

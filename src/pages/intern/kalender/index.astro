@@ -153,6 +153,16 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
                   <input id="t-zeit" maxlength="60" placeholder="z. B. Einlass 19:00" data-t="zeit_text" />
                 </div>
               </div>
+              <div class="kal-zwei" data-t-eintritt-box>
+                <div class="i-field">
+                  <label for="t-eintritt">Eintritt</label>
+                  <input id="t-eintritt" maxlength="80" placeholder="z. B. Eintritt frei" data-t="eintritt" />
+                </div>
+                <div class="i-field">
+                  <label for="t-eintritt-en">Eintritt auf Englisch</label>
+                  <input id="t-eintritt-en" maxlength="80" placeholder="z. B. Free admission" data-t="eintritt_en" />
+                </div>
+              </div>
               <div class="i-field">
                 <label for="t-titel-en">Titel auf Englisch</label>
                 <input id="t-titel-en" maxlength="120" data-t="titel_en" />
@@ -252,7 +262,10 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
   const bewegung = motionOk();
   const h0 = heute();
   const FEHLT_KALENDER = 'Termine eintragen geht, sobald die Migration supabase/migrations/20261026000000_kalender.sql ausgeführt ist (docs/kalender.md).';
-  const T_SPALTEN = 'id,slug,titel,titel_en,datum,von,bis,zeit_text,ort,kategorie,kurz,kurz_en,text,link,format,personen,news,sichtbar';
+  const T_BASIS = 'id,slug,titel,titel_en,datum,von,bis,zeit_text,ort,kategorie,kurz,kurz_en,text,link,format,personen,news,sichtbar';
+  /** Eintritt gibt es erst mit der Migration 20261028000000_kalender_eintritt.sql; vorher ohne diese Spalten */
+  let eintrittDa = true;
+  let T_SPALTEN = `${T_BASIS},eintritt,eintritt_en`;
 
   /** Termin aus der Tabelle oder aus einer Datei (nur lesen, übernehmen) */
   type Datei = KalenderDaten['dateiTermine'][number];
@@ -445,7 +458,7 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
   tf<HTMLSelectElement>('format').replaceChildren(h('option', { value: '', text: 'Kein Format' }), ...kal.formate.map((f) => h('option', { value: f.id, text: f.titel })));
 
   function leererTermin(datum: string): TerminEntwurf {
-    return { id: null, datei: false, slug: '', titel: '', titel_en: '', datum, von: '19:00', bis: null, zeit_text: '', ort: '', kategorie: 'Bühne', kurz: '', kurz_en: '', text: '', link: '', format: '', personen: [], news: '', sichtbar: true };
+    return { id: null, datei: false, slug: '', titel: '', titel_en: '', datum, von: '19:00', bis: null, zeit_text: '', ort: '', kategorie: 'Bühne', kurz: '', kurz_en: '', text: '', link: '', format: '', personen: [], news: '', eintritt: '', eintritt_en: '', sichtbar: true };
   }
   function neuerTermin(datum?: string) {
     // ohne Datum: heute, wenn der heutige Monat zu sehen ist, sonst der Erste des Monats
@@ -480,10 +493,10 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
   }
 
   function felderFuellen() {
-    for (const k of ['titel', 'datum', 'von', 'ort', 'kurz', 'link', 'text', 'format', 'zeit_text', 'titel_en', 'kurz_en'] as const) tf(k).value = String(te[k] ?? '');
+    for (const k of ['titel', 'datum', 'von', 'ort', 'kurz', 'link', 'text', 'format', 'zeit_text', 'titel_en', 'kurz_en', 'eintritt', 'eintritt_en'] as const) tf(k).value = String(te[k] ?? '');
     tf('bis').value = te.bis ?? '';
     $<HTMLInputElement>('[data-t-sichtbar]').checked = te.sichtbar;
-    ($('[data-t-mehr]') as HTMLDetailsElement).open = !!(te.text || te.personen.length || te.format || te.zeit_text || te.titel_en || te.kurz_en);
+    ($('[data-t-mehr]') as HTMLDetailsElement).open = !!(te.text || te.personen.length || te.format || te.zeit_text || te.titel_en || te.kurz_en || te.eintritt || te.eintritt_en);
     ($('[data-s-zeit]') as HTMLInputElement).value = e.zeit;
     ($('[data-s-ort]') as HTMLInputElement).value = e.ort;
     ($('[data-s-notiz]') as HTMLTextAreaElement).value = e.notiz;
@@ -550,7 +563,7 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
   }
 
   // Eingaben im Termin übernehmen
-  for (const k of ['titel', 'datum', 'von', 'bis', 'ort', 'kurz', 'link', 'text', 'format', 'zeit_text', 'titel_en', 'kurz_en'] as const) {
+  for (const k of ['titel', 'datum', 'von', 'bis', 'ort', 'kurz', 'link', 'text', 'format', 'zeit_text', 'titel_en', 'kurz_en', 'eintritt', 'eintritt_en'] as const) {
     tf(k).addEventListener('input', () => {
       const v = tf(k).value;
       if (k === 'bis') te.bis = v || null;
@@ -606,6 +619,7 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
       titel: te.titel.trim(), titel_en: te.titel_en.trim(), datum: te.datum, von: uhr(te.von), bis: te.bis ? uhr(te.bis) : null,
       zeit_text: te.zeit_text.trim(), ort: te.ort.trim(), kategorie: te.kategorie, kurz: te.kurz.trim(), kurz_en: te.kurz_en.trim(),
       text: te.text.trim(), link: te.link.trim(), format: te.format, personen: te.personen, news: te.news, sichtbar: te.sichtbar,
+      ...(eintrittDa ? { eintritt: (te.eintritt ?? '').trim(), eintritt_en: (te.eintritt_en ?? '').trim() } : {}),
     };
     const knopf = $<HTMLButtonElement>('[data-s-speichern]');
     knopf.disabled = true;
@@ -615,7 +629,7 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
       : await ctx.sb.from('kalender_termine').insert(felder).select(T_SPALTEN).single();
     knopf.disabled = false;
     if (res.error) return showMessage(sMsg, tabelleFehlt(res.error) || /kalender_termine/.test(res.error.message) ? FEHLT_KALENDER : errorText(res.error));
-    const t = res.data as KalenderTermin;
+    const t = res.data as unknown as KalenderTermin;
     kt = kt.filter((x) => x.id !== t.id).concat(t);
     zumMonat(t.datum);
     schliessen();
@@ -639,7 +653,7 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
         const { id: _id, ...zeile } = weg;
         const { data, error: f2 } = await ctx.sb.from('kalender_termine').insert(zeile).select(T_SPALTEN).single();
         if (f2) return toast(errorText(f2));
-        kt.push(data as KalenderTermin);
+        kt.push(data as unknown as KalenderTermin);
         zeichnen();
         if (weg.sichtbar) void neuBauen();
       },
@@ -802,10 +816,19 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
   if (ctx && !ctx.isRedaktion) {
     showMessage(msg, 'Den Kalender pflegen Presse, Vorstand und Admin. Deine eigenen KEEP UP-Trainings findest du unter „Meine Trainings“.');
   } else if (ctx) {
-    const [a, b] = await Promise.allSettled([
-      ctx.sb.from('kalender_termine').select(T_SPALTEN).order('datum').then(({ data, error }) => { if (error) throw error; return (data ?? []) as KalenderTermin[]; }),
-      ladeTermine(ctx.sb),
-    ]);
+    const termineLaden = async (): Promise<KalenderTermin[]> => {
+      let { data, error } = await ctx.sb.from('kalender_termine').select(T_SPALTEN).order('datum');
+      // Spalte fehlt (42703): Migration für den Eintritt noch nicht eingespielt – ohne sie weiter
+      if (error?.code === '42703' && /eintritt/.test(error.message)) {
+        eintrittDa = false;
+        T_SPALTEN = T_BASIS;
+        $('[data-t-eintritt-box]').hidden = true;
+        ({ data, error } = await ctx.sb.from('kalender_termine').select(T_SPALTEN).order('datum'));
+      }
+      if (error) throw error;
+      return (data ?? []) as unknown as KalenderTermin[];
+    };
+    const [a, b] = await Promise.allSettled([termineLaden(), ladeTermine(ctx.sb)]);
     if (a.status === 'fulfilled') kt = a.value;
     else kalenderDa = false;
     if (b.status === 'fulfilled') ku = b.value;

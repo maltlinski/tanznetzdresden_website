@@ -31,6 +31,9 @@ const termine = defineCollection({
     /** Anzeige der Uhrzeit, falls abweichend (z. B. "11:00–15:00 Uhr") */
     timeLabel: z.string().optional(),
     timeLabel_en: z.string().optional(),
+    /** Eintritt, z. B. "Eintritt frei" oder "Tickets über das Societaetstheater" (Tanzkalender, Terminseite) */
+    eintritt: z.string().optional(),
+    eintritt_en: z.string().optional(),
     category: z.enum(['Bühne', 'Training', 'Diskurs']),
     teaser: z.string(),
     teaser_en: z.string().optional(),
@@ -165,6 +168,8 @@ const orte = defineCollection({
     rolle_en: z.string().optional(),
     lat: z.number().min(-90).max(90),
     lon: z.number().min(-180).max(180),
+    /** Straße und Ort, z. B. "Bautzner Straße 107, 01099 Dresden" (Tanzkalender: unter dem Ort) */
+    adresse: z.string().optional(),
     /** Ausgangspunkt des Netzes (magenta) */
     sitz: z.boolean().default(false),
     /** ids anderer Orte, zu denen eine Linie gezogen wird */

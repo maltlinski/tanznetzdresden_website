@@ -150,7 +150,7 @@ test('Sprachumschalter führt zur passenden Seite in der anderen Sprache', async
   await page.getByRole('link', { name: 'English', exact: true }).click();
   await expect(page).toHaveURL(/\/en\/events\/$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
-  await expect(page.getByRole('heading', { level: 1 })).toContainText("What's on");
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Dance in Dresden');
   if (isMobile) await page.getByRole('button', { name: 'Menu' }).click();
   await page.getByRole('link', { name: 'Deutsch', exact: true }).click();
   await expect(page).toHaveURL(/\/termine\/$/);
@@ -211,48 +211,13 @@ test('News: Galerie mit Großansicht und Hinweiskasten, Fotos werden optimiert a
   await expect(page.locator('figure.nb--galerie figcaption')).toContainText('Photos:');
 });
 
-/** Tanzkalender mit festem Datum (Platzhalter-Termine Okt.–Dez. 2026) */
-async function openKalender(page: Page, path = '/termine/') {
+/** Kalender der Profitrainings-Seite mit festem Datum (Platzhalter-Termine Okt.–Dez. 2026) */
+async function openKalender(page: Page, path = '/profitraining/') {
   await page.clock.install({ time: new Date('2026-10-12T08:00:00+02:00') });
   await page.goto(path);
   await dismissConsent(page);
   return page.locator('#kalender');
 }
-
-test('Tanzkalender: Termine und Profitraining in einem Kalender, Filter nach Kategorie', async ({ page }) => {
-  const cal = await openKalender(page);
-  await expect(cal.locator('[data-kcal-label]')).toHaveText('Oktober 2026');
-  // heute: Profitraining
-  await expect(cal.locator('[data-kcal-date]')).toHaveText('12. Oktober');
-  await expect(cal.locator('[data-kcal-items]')).toContainText('KEEP UP · Leon Börgens');
-  await expect(cal.locator('[data-kcal-items] a', { hasText: 'Zum Profitraining' })).toHaveAttribute('href', /\/profitraining\/#kalender$/);
-  // Termin wählen
-  await cal.getByRole('button', { name: /^Donnerstag, 15\. Oktober 2026/ }).click();
-  await expect(cal.locator('[data-kcal-items]')).toContainText('Studio Round');
-  await expect(cal.locator('[data-kcal-items] a', { hasText: 'Zum Termin' })).toHaveAttribute('href', /\/termine\/2026-10-15-studio-round-9\/$/);
-  // nur Bühne: Trainingstage sind gesperrt, Auswahl springt zum nächsten Bühnentermin
-  await cal.getByRole('button', { name: 'Bühne', exact: true }).click();
-  await expect(cal.getByRole('button', { name: /^Montag, 12\. Oktober 2026/ })).toBeDisabled();
-  await expect(cal.locator('[data-kcal-date]')).toHaveText('31. Oktober');
-  await expect(cal.locator('[data-kcal-items]')).toContainText('POP UP');
-});
-
-test('Tanzkalender: #kategorie-… wählt den Filter vor; englische Texte', async ({ page }) => {
-  const cal = await openKalender(page, '/en/events/#kategorie-buhne');
-  await expect(cal.getByRole('button', { name: 'Stage', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  await expect(cal.locator('[data-kcal-date]')).toHaveText('31 October');
-  await expect(cal.locator('[data-kcal-items]')).toContainText('New short pieces from the network');
-  await expect(cal.locator('[data-kcal-items] .badge')).toHaveText('Stage');
-});
-
-test('Tanzkalender ohne JavaScript: Liste aller kommenden Termine', async ({ browser }) => {
-  const ctx = await browser.newContext({ javaScriptEnabled: false });
-  const page = await ctx.newPage();
-  await page.goto('/termine/');
-  await expect(page.locator('#kalender .kcal__layout')).toBeHidden();
-  await expect(page.locator('#all-events .event').first()).toBeVisible();
-  await ctx.close();
-});
 
 test('Demo-Ansicht: Beispielinhalte nur mit Schalter, Echtes bleibt', async ({ page }) => {
   await page.goto('/netzwerk/alina-lucifero/');

@@ -154,7 +154,8 @@ export const bereiche: Bereich[] = [
       { typ: 'datumzeit', key: 'start', label: 'Beginn', pflicht: true, hilfe: 'Ortszeit Dresden.' },
       { typ: 'datumzeit', key: 'end', label: 'Ende', hilfe: 'Optional, für den Kalender-Export.' },
       { typ: 'text', key: 'timeLabel', label: 'Uhrzeit anders anzeigen', en: true, hilfe: 'Optional, z. B. „11:00–15:00 Uhr“ oder „ganztägig“.' },
-      { typ: 'text', key: 'venue', label: 'Ort', pflicht: true, platzhalter: 'z. B. TENZA Schmiede' },
+      { typ: 'text', key: 'venue', label: 'Ort', pflicht: true, platzhalter: 'z. B. TENZA Schmiede', hilfe: 'Heißt der Ort wie einer unter Kooperationen → Orte, zeigt der Kalender Adresse und Route.' },
+      { typ: 'text', key: 'eintritt', label: 'Eintritt', en: true, max: 80, platzhalter: 'z. B. Eintritt frei', hilfe: 'Optional, z. B. „Eintritt auf Spendenbasis“ oder „Tickets über das Societaetstheater“.' },
       { typ: 'auswahl', key: 'category', label: 'Kategorie', pflicht: true, optionen: opt('Bühne', 'Training', 'Diskurs') },
       { typ: 'textlang', key: 'teaser', label: 'Kurzbeschreibung', pflicht: true, en: true, zeilen: 2, max: 300, hilfe: 'Ein Satz für Kalender und Startseite.' },
       { typ: 'markdown', key: 'body', label: 'Beschreibung für die Terminseite', hilfe: 'Optional. Absätze mit Leerzeile trennen.' },
@@ -401,6 +402,7 @@ export const bereiche: Bereich[] = [
     felder: [
       { typ: 'text', key: 'name', label: 'Name', pflicht: true },
       { typ: 'text', key: 'kurz', label: 'Kurzname auf der Karte', hilfe: 'Optional, sonst der Name.' },
+      { typ: 'text', key: 'adresse', label: 'Adresse', platzhalter: 'z. B. Bautzner Straße 107, 01099 Dresden', hilfe: 'Optional. Steht im Tanzkalender unter dem Ort, wenn ein Termin dort stattfindet (Ort wie Name oder Kurzname).' },
       { typ: 'text', key: 'rolle', label: 'Was wir dort machen', pflicht: true, en: true },
       { typ: 'zahl', key: 'lat', label: 'Breitengrad', pflicht: true, min: -90, max: 90, schritt: 0.00001, hilfe: 'In OpenStreetMap: Rechtsklick → „Adresse anzeigen“, erste Zahl.' },
       { typ: 'zahl', key: 'lon', label: 'Längengrad', pflicht: true, min: -180, max: 180, schritt: 0.00001, hilfe: 'Zweite Zahl.' },

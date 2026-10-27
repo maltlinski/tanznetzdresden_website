@@ -47,6 +47,7 @@ if (kalender) {
       datei: true as const, slug: t.id, titel: t.data.title, titel_en: t.data.title_en ?? '', datum, von, bis: t.data.end?.split(' ')[1] ?? null,
       zeit_text: t.data.timeLabel ?? '', ort: t.data.venue, kategorie: t.data.category, kurz: t.data.teaser, kurz_en: t.data.teaser_en ?? '',
       text: t.body?.trim() ?? '', link: t.data.link ?? '', format: t.data.format?.id ?? '', personen: t.data.people, news: t.data.news ?? '',
+      eintritt: t.data.eintritt ?? '', eintritt_en: t.data.eintritt_en ?? '',
     };
   });
   const k: KalenderDaten = {

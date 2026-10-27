@@ -32,6 +32,9 @@ export interface KalenderTermin {
   personen: string[];
   /** passender News-Beitrag */
   news: string;
+  /** Eintritt, z. B. „Eintritt frei“ (fehlt, solange die Migration 20261028 nicht eingespielt ist) */
+  eintritt?: string;
+  eintritt_en?: string;
   /** false = Entwurf, nur intern zu sehen */
   sichtbar: boolean;
 }
@@ -69,6 +72,8 @@ export function alsTerminDaten(r: OeffentlicherKalenderTermin) {
     category: r.kategorie,
     teaser: r.kurz,
     teaser_en: r.kurz_en || undefined,
+    eintritt: r.eintritt || undefined,
+    eintritt_en: r.eintritt_en || undefined,
     people: r.personen ?? [],
     link: r.link || undefined,
     news: r.news || undefined,

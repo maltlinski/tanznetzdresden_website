@@ -13,6 +13,7 @@
   verbunden: [villa-wigman, palucca, semperoper]
 - id: villa-wigman
   name: "Villa Wigman für Tanz"
+  adresse: "Bautzner Straße 107, 01099 Dresden"
   kurz: "Villa Wigman"
   rolle: "Partnerschaft"
   rolle_en: "Partnership"
@@ -21,12 +22,14 @@
   verbunden: [societaetstheater, hellerau]
 - id: societaetstheater
   name: "Societaetstheater"
+  adresse: "An der Dreikönigskirche 1a, 01097 Dresden"
   rolle: "vision:danceable"
   lat: 51.06056
   lon: 13.74264
   verbunden: [semperoper, zentralwerk]
 - id: zentralwerk
   name: "Zentralwerk Dresden"
+  adresse: "Riesaer Straße 32, 01127 Dresden"
   kurz: "Zentralwerk"
   rolle: "Partnerschaft"
   rolle_en: "Partnership"

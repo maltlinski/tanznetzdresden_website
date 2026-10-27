@@ -62,6 +62,8 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 ## 4. Inhalte (Presse und Vorstand)
 
 - [ ] **Termine**: Platzhalter aus dem Entwurf durch echte ersetzen (*Intern → Kalender*), alte löschen.
+- [ ] **Orte** (*Kooperationen → Orte*): Adressen prüfen und ergänzen (TENZA Schmiede, Palucca, Semperoper, Staatsoperette,
+  HELLERAU fehlen noch). Der Tanzkalender zeigt sie unter dem Ort eines Termins.
 - [ ] **KEEP UP**: Dozent:innen einplanen, Beschreibungen anstoßen (*Intern → Kalender*, *Meine Trainings*).
 - [ ] **Fotos**: Formate *Welttanztag* und *Bodies & Textiles* nutzen fremde Fotos – eigene ergänzen.
 - [ ] **Kooperationen** (`src/content/kooperation/`): Partnerliste und Rollen mit den Partnern abstimmen,
@@ -87,8 +89,8 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 
 **Supabase** (docs/intern.md)
 
-- [ ] Alle **zwölf Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
-      (bis `20261027000000_open_calls.sql`).
+- [ ] Alle **dreizehn Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
+      (bis `20261028000000_kalender_eintritt.sql`).
 - [ ] *Authentication*: Selbst-Registrierung aus, Site URL gesetzt, **Redirect URLs** `…/intern/**` und
       `…/en/intern/**`.
 - [ ] **E-Mails** (*Authentication → Emails*): Vorlagen für Einladung, Login-Link und Passwort auf Deutsch (und
