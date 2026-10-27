@@ -19,6 +19,9 @@ Vieles lässt sich ohne Code ändern: *Intern → Redaktion → Website-Inhalte*
       Organisationseinstellungen) und Newsletter-Dienst abschließen. Supabase-Projekt in der Region EU (Frankfurt) prüfen.
 - [ ] **Barrierefreiheitserklärung** (`src/content/seiten/barrierefreiheit.md`): Stelle `[BITTE PRÜFEN]` klären.
 - [ ] **Englische Rechtstexte** (`src/content/seiten/en/`) nach jeder Änderung der deutschen mitziehen.
+- [ ] **Gestaltung**: Vereinbarung zwischen Malte Leonard Herz und dem Verein über die Nutzung der Gestaltung
+  (wofür, ob der Verein ändern darf, was nach einem Wechsel gilt, Nennung). Die Website nennt die Gestaltung im Fuß
+  und im Impressum (`src/settings/gestaltung.ts`), die Rechte stehen in `LICENSE`.
 - [ ] **Bildrechte**: für alle Fotos auf der Website geklärt, Nachweise in der Mediathek (*Intern → Medien*) eingetragen.
 - [ ] Postfächer `kontakt@` und `vorstand@tanznetzdresden.de` gibt es und jemand liest sie (`verein.json` → `emails`).
 

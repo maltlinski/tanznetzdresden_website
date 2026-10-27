@@ -684,3 +684,19 @@ test('Profitraining: englische Fassung und Verlinkung aus Menü und Formaten', a
   // Formate ohne eigene Seite sind keine Links
   await expect(page.locator('#formate article[data-format="studio-round"]')).toHaveCount(1);
 });
+
+test('Gestaltung: Name im Fuß, im Impressum und in den Metadaten', async ({ page }) => {
+  for (const [start, impressum, label, h] of [
+    ['/', '/impressum/', 'Gestaltung: Malte Leonard Herz', 'Gestaltung'],
+    ['/en/', '/en/legal-notice/', 'Design: Malte Leonard Herz', 'Design'],
+  ] as const) {
+    await page.goto(start);
+    await expect(page.locator('meta[name="designer"]')).toHaveAttribute('content', 'Malte Leonard Herz');
+    const link = page.locator('.site-footer__legal').getByRole('link', { name: label });
+    await expect(link).toBeVisible();
+    await link.click();
+    await expect(page).toHaveURL(new RegExp(`${impressum}#gestaltung$`));
+    await expect(page.getByRole('heading', { level: 2, name: h, exact: true })).toBeVisible();
+    await expect(page.locator('#gestaltung + p')).toContainText('© 2026 Malte Leonard Herz');
+  }
+});

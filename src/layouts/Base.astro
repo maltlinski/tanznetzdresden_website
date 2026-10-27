@@ -13,6 +13,7 @@ import { getVerein } from '../lib/settings';
 import { getLang, htmlLang, tr, type Lang } from '../lib/i18n';
 import { texte } from '../lib/texte';
 import { CONSENT_VERSION } from '../settings/consent';
+import { gestaltung } from '../settings/gestaltung';
 import ConsentBanner from '../components/ConsentBanner.astro';
 import DemoBand from '../components/DemoBand.astro';
 import { DEMO_KEY } from '../lib/demo';
@@ -72,6 +73,7 @@ const jsonLd = {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
+    <meta name="designer" content={gestaltung.name} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
     {alt.de && <link rel="alternate" hreflang="de" href={alt.de} />}

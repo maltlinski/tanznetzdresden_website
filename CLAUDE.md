@@ -16,5 +16,6 @@ Website des TanzNetzDresden e.V. – Astro 7, TypeScript (strict), statischer Bu
 - Feste Texte (Überschriften, Knöpfe, Hinweise) stehen in `src/settings/texte.json` (Seite → Abschnitt → Text, de/en), gelesen mit `texte(lang, seite, abschnitt)` aus `src/lib/texte.ts`; die Pressestelle ändert sie unter Intern → Redaktion → Texte (docs/texte.md). Neue sichtbare Texte dort eintragen, nicht mit `tr()` (das nur für Screenreader-Beschriftungen und den internen Bereich).
 - E-Mail-Adressen nur über `<ProtectedEmail>`. Externe Dienste nur mit Einwilligung (`src/settings/consent.ts`).
 - Designsystem: liegt in `design/system/` (nicht von Hand ändern, sondern `npm run design:import`). Immer Tokens statt fester Farben/Werte; Abweichungen nur in `src/styles/overrides.css`. Radius 0, keine Schatten/Verläufe, Magenta nur als Akzent.
+- Gestaltung: © Malte Leonard Herz (LICENSE). Name in `src/settings/gestaltung.ts`, genannt im Fuß, im Impressum (`#gestaltung`) und in `<meta name="designer">` – nicht entfernen.
 - Texte: Wir-Form, Doppelpunkt-Gendern (Tänzer:innen), keine Emojis.
 - Vor dem Commit: `npm run build && npm test` (Playwright; lokal ggf. `PW_CHROMIUM=/pfad/zu/chrome`).

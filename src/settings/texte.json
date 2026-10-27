@@ -43,6 +43,7 @@
           "newsletter": { "wo": "Spalte 3: Link", "de": "Newsletter", "en": "Newsletter", "max": 30 },
           "ics": { "wo": "Spalte 3: Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to calendar (.ics)", "max": 40 },
           "rss": { "wo": "Spalte 3: Link zum RSS-Feed", "de": "News als RSS-Feed", "en": "News as RSS feed", "max": 30 },
+          "design": { "wo": "Unterste Zeile: vor dem Namen der Person, die die Website gestaltet hat (Link zum Impressum)", "de": "Gestaltung:", "en": "Design:", "max": 24 },
           "imprint": { "wo": "Unterste Zeile: Link", "de": "Impressum", "en": "Legal notice", "max": 24 },
           "privacy": { "wo": "Unterste Zeile: Link", "de": "Datenschutz", "en": "Privacy", "max": 24 },
           "a11y": { "wo": "Unterste Zeile: Link", "de": "Barrierefreiheit", "en": "Accessibility", "max": 24 },
@@ -810,7 +811,10 @@
           "phone": { "wo": "Angabe", "de": "Telefon", "en": "Phone", "max": 20 },
           "mail": { "wo": "Angabe", "de": "E-Mail", "en": "Email", "max": 20 },
           "show": { "wo": "Knopf, der die E-Mail-Adresse zeigt", "de": "Adresse anzeigen", "en": "Show address", "max": 30 },
-          "resp": { "wo": "Überschrift Verantwortlich", "de": "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV", "en": "Responsible for content pursuant to § 18 (2) MStV", "max": 100 }
+          "resp": { "wo": "Überschrift Verantwortlich", "de": "Verantwortlich für den Inhalt nach § 18 Abs. 2 MStV", "en": "Responsible for content pursuant to § 18 (2) MStV", "max": 100 },
+          "designH": { "wo": "Überschrift Gestaltung", "de": "Gestaltung", "en": "Design", "max": 60 },
+          "designBy": { "wo": "Gestaltung: vor dem Namen", "de": "Gestaltung und Designsystem der Website:", "en": "Website design and design system:", "max": 80 },
+          "designRights": { "wo": "Gestaltung: Rechte ({name} = Name aus src/settings/gestaltung.ts)", "de": "Die Rechte an Gestaltung, Grafiken und Designsystem liegen bei {name}. Wir nutzen sie für diese Website und unsere Veröffentlichungen. Jede andere Nutzung, auch in Teilen, braucht die schriftliche Zustimmung von {name}.", "en": "The rights to the design, graphics and design system belong to {name}. We use them for this website and our publications. Any other use, including in part, requires the written consent of {name}.", "max": 400 }
         }
       },
       "datenschutz": {

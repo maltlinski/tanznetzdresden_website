@@ -81,3 +81,10 @@ docs/                 Anleitungen
 - [Veröffentlichen](docs/deployment.md): GitHub Pages, eigene Domain, Hosting in der EU
 - [Vor dem Livegang](docs/livegang.md): Checkliste Recht & Inhalte
 - [Weiterentwickeln](docs/entwicklung.md): Konventionen, Designsystem, neue Seiten und Dienste
+
+## Rechte
+
+Gestaltung, Designsystem und Code: © 2026 Malte Leonard Herz, alle Rechte vorbehalten. Der TanzNetzDresden e.V.
+nutzt die Gestaltung für diese Website und seine Veröffentlichungen. Inhalte (Texte, Fotos, Logos) gehören den
+jeweiligen Rechteinhaber:innen. Einzelheiten in [LICENSE](LICENSE). Die Nennung „Gestaltung: …“ im Fuß, im
+Impressum und in `<meta name="designer">` kommt aus `src/settings/gestaltung.ts`.

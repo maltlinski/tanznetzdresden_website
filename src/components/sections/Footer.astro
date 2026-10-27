@@ -6,6 +6,7 @@ import { getVerein } from '../../lib/settings';
 import { href } from '../../lib/url';
 import { getLang, tr, url } from '../../lib/i18n';
 import { fuellen, texte } from '../../lib/texte';
+import { gestaltung } from '../../settings/gestaltung';
 
 const lang = getLang(Astro);
 const v = getVerein(lang);
@@ -57,6 +58,7 @@ const t = {
     </div>
     <div class="site-footer__legal">
       <span>© {year} {v.legalName}</span>
+      <a href={url(lang, 'impressum', '#gestaltung')}>{t.design} {gestaltung.name}</a>
       <a href={url(lang, 'impressum')} class="site-footer__legal-first">{t.imprint}</a>
       <a href={url(lang, 'datenschutz')}>{t.privacy}</a>
       <a href={url(lang, 'barrierefreiheit')}>{t.a11y}</a>

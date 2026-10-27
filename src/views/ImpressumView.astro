@@ -3,7 +3,8 @@ import TextPageView from './TextPageView.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
 import { getVerein } from '../lib/settings';
 import { getLang } from '../lib/i18n';
-import { texte } from '../lib/texte';
+import { fuellen, texte } from '../lib/texte';
+import { gestaltung } from '../settings/gestaltung';
 
 const lang = getLang(Astro);
 const v = getVerein(lang);
@@ -25,5 +26,8 @@ const t = texte(lang, 'rechtliches', 'impressum');
     </p>
     <h2>{t.resp}</h2>
     <p>{r.contentResponsible}</p>
+    <h2 id="gestaltung">{t.designH}</h2>
+    <p>{t.designBy} {gestaltung.name}<br />© {gestaltung.seit} {gestaltung.name}</p>
+    <p>{fuellen(t.designRights, { name: gestaltung.name })}</p>
   </Fragment>
 </TextPageView>

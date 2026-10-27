@@ -1,0 +1,49 @@
+Rechte an diesem Repository (TanzNetzDresden – Website)
+=======================================================
+
+1. Gestaltung
+-------------
+
+Gestaltung der Website, Designsystem (design/system/), Entwürfe (design/entwuerfe/),
+Grafiken, Animationen und Stile (src/styles/ und die Stile in den Bausteinen),
+ausgenommen das Logo des Vereins (siehe 3.):
+
+    © 2026 Malte Leonard Herz. Alle Rechte vorbehalten.
+
+Der TanzNetzDresden e.V. darf die Gestaltung für diese Website und seine
+Veröffentlichungen nutzen. Einzelheiten regelt eine Vereinbarung zwischen
+Malte Leonard Herz und dem Verein. Jede andere Nutzung, Vervielfältigung oder
+Bearbeitung, auch in Teilen, braucht die vorherige schriftliche Zustimmung von
+Malte Leonard Herz.
+
+2. Quellcode
+------------
+
+    © 2026 Malte Leonard Herz. Alle Rechte vorbehalten.
+
+Dass das Repository öffentlich einsehbar ist, erlaubt keine Nutzung außerhalb
+dieser Website.
+
+3. Inhalte
+----------
+
+Texte, Fotos, das Logo des TanzNetzDresden e.V. und die Logos der Förderer
+gehören den jeweiligen Rechteinhaber:innen (siehe Impressum der Website,
+Fotonachweis). Sie dürfen nur mit deren Zustimmung genutzt werden.
+
+4. Fremde Bestandteile
+----------------------
+
+Schriften (Open Sans, Work Sans, JetBrains Mono: SIL Open Font License 1.1) und Bibliotheken
+aus node_modules/ stehen unter ihren eigenen Lizenzen.
+
+
+English summary
+---------------
+
+Design, design system, drafts, graphics and styles: © 2026 Malte Leonard Herz,
+all rights reserved. TanzNetzDresden e.V. may use the design for this website and
+its publications; any other use requires prior written consent. Source code:
+© 2026 Malte Leonard Herz, all rights reserved. Content (texts, photos, logos)
+belongs to the respective rights holders. Fonts and libraries are under their own
+licences. The German version applies.
