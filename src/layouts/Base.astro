@@ -96,6 +96,19 @@ const jsonLd = {
     <meta name="twitter:card" content="summary_large_image" />
 
     <script is:inline>document.documentElement.classList.add('js');</script>
+    <script is:inline define:vars={{ base }}>
+      // Link aus einer Supabase-E-Mail, der auf einer öffentlichen Seite landet (Zieladresse fehlt unter
+      // Redirect URLs, dann nimmt Supabase die Site URL): weiter in den internen Bereich, Schlüssel bleiben dran
+      (() => {
+        const h = new URLSearchParams(location.hash.slice(1));
+        const q = new URLSearchParams(location.search);
+        if (location.pathname.includes('/intern/') || !(h.get('access_token') || h.get('error_code') || q.get('token_hash'))) return;
+        const typ = h.get('type') || q.get('type');
+        const en = location.pathname.startsWith(base + 'en/') ? 'en/' : '';
+        const ziel = typ === 'invite' || typ === 'recovery' ? 'intern/passwort/' : 'intern/';
+        location.replace(base + en + ziel + location.search + location.hash);
+      })();
+    </script>
     <script is:inline define:vars={{ key: DEMO_KEY }}>
       // Demo-Ansicht (src/lib/demo.ts): ?demo=1 schaltet an, ?demo=0 aus, sonst gilt der gespeicherte Schalter
       try {

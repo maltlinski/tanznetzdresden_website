@@ -34,6 +34,13 @@ Unter *Authentication*:
   **Redirect URLs**: `https://tanznetzdresden.de/intern/**` und `https://tanznetzdresden.de/en/intern/**` (englische
   Seiten, siehe unten; bei GitHub Pages mit Unterpfad entsprechend).
 - **Emails → Templates**: Texte auf Deutsch anpassen. Der Einladungslink sollte auf `/intern/passwort/` führen.
+  Empfohlen: Links, die erst auf der Website eingelöst werden. Sonst öffnen Virenscanner mancher Postfächer
+  (z. B. Microsoft 365) den Link vorher, und er gilt als „schon benutzt“. Dafür in den Vorlagen den Link ersetzen:
+  - *Invite user*: `<a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=invite">…</a>`
+  - *Magic link*: `<a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=email">…</a>`
+  - *Reset password*: `<a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery">…</a>`
+
+  Die Standardvorlagen (`{{ .ConfirmationURL }}`) funktionieren ebenfalls.
 - **SMTP**: Für mehr als ein paar Mails pro Stunde einen eigenen Mailserver eintragen (z. B. vom Webhoster).
 - Optional **Attack Protection → CAPTCHA** (z. B. Cloudflare Turnstile) gegen automatisierte Login-Versuche.
 
@@ -53,6 +60,7 @@ mit denselben Namen überschreiben.
 |---|---|
 | `/intern/` zeigt „Noch nicht eingerichtet“ | Zugangsdaten fehlen in `src/settings/supabase.ts`, oder der Neubau läuft noch (*Actions*). |
 | Anmelden: „Für diese Adresse gibt es kein Konto“ | Person unter *Authentication → Users* einladen. Registrieren geht absichtlich nicht. |
+| Link aus der E-Mail: „abgelaufen oder wurde schon benutzt“ | Jeder Link gilt nur einmal und eine Stunde lang (*Authentication → Sign In / Providers → Email → Email OTP Expiration*). Neuen Link über „Passwort vergessen?“ anfordern. Passiert es oft, öffnet ein Virenscanner des Postfachs die Links vorher: Vorlagen mit `token_hash` nutzen (Schritt 2). |
 | Link aus der E-Mail führt auf `localhost` oder eine Fehlerseite | *Authentication → URL Configuration*: Site URL und Redirect URLs prüfen (Schritt 2). Bei GitHub Pages: `https://maltlinski.github.io/tanznetzdresden_website/intern/**`. |
 | Angemeldet, aber Fehlermeldungen oder leere Listen | Nicht alle Migrationen ausgeführt. Im SQL-Editor der Reihe nach ausführen; meldet eine „already exists“, war sie schon ausgeführt. |
 | Table Editor oder SQL-Editor: „Nur der Vorstand kann Rollen ändern.“ | Fünfte Migration `20261013000000_freigaben.sql` (noch einmal) ausführen, dann erneut speichern. Im SQL-Editor oben rechts muss als Rolle `postgres` stehen, nicht ein angemeldetes Mitglied. |

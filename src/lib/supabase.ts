@@ -138,7 +138,10 @@ export function getSupabase(): SupabaseClient | null {
   client =
     SUPABASE_URL && SUPABASE_ANON_KEY
       ? createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
-          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'pkce' },
+          // implicit statt pkce: Links aus E-Mails (Einladung, Login-Link, Passwort vergessen) müssen auch in einem
+          // anderen Browser oder auf dem Handy funktionieren. Bei pkce gelten sie nur im Browser, der sie angefordert
+          // hat, und Einladungen des Vorstands (ohne Anforderung im Browser) gar nicht.
+          auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true, flowType: 'implicit' },
         })
       : null;
   return client;

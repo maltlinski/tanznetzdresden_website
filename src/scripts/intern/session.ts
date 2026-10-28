@@ -5,7 +5,7 @@
  * Zustände am Element [data-intern] → data-state:
  *   loading · setup (Supabase fehlt) · login (nicht angemeldet) · ready
  */
-import type { SupabaseClient, User } from '@supabase/supabase-js';
+import type { EmailOtpType, SupabaseClient, User } from '@supabase/supabase-js';
 import { getSupabase, type Profile } from '../../lib/supabase';
 import { internPfad } from '../../lib/intern-sprache';
 import { sprache, t } from './sprache';
@@ -62,6 +62,21 @@ export function showMessage(el: HTMLElement | null, text: string, kind: 'error' 
 }
 
 /**
+ * Link aus einer E-Mail, den Supabase abgelehnt hat (abgelaufen, schon benutzt – oft hat ein Virenscanner
+ * des Postfachs ihn vorher geöffnet). Supabase hängt den Fehler hinter # oder ? an.
+ */
+function linkFehler() {
+  const p = new URLSearchParams(location.hash.slice(1));
+  const q = new URLSearchParams(location.search);
+  return Boolean(p.get('error_code') || p.get('error') || q.get('error_code') || q.get('error_description'));
+}
+const LINK_ABGELAUFEN = () =>
+  t(
+    'Der Link aus der E-Mail ist abgelaufen oder wurde schon benutzt. Trag deine E-Mail-Adresse ein und fordere über „Passwort vergessen?“ einen neuen an.',
+    'The link from the email has expired or was already used. Enter your email address and request a new one with “Forgot your password?”.',
+  );
+
+/**
  * @param requireLogin true: ohne Anmeldung zur Login-Seite weiterleiten
  */
 export async function initIntern(requireLogin = true): Promise<InternContext | null> {
@@ -70,16 +85,28 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
     setState('setup');
     return null;
   }
+  let fehler = linkFehler();
+  // Link im Format ?token_hash=…&type=… (eigene Mail-Vorlage, docs/intern.md): erst auf der Seite einlösen
+  const q = new URLSearchParams(location.search);
+  const tokenHash = q.get('token_hash');
+  if (tokenHash && !fehler) {
+    const { error } = await sb.auth.verifyOtp({ token_hash: tokenHash, type: (q.get('type') || 'email') as EmailOtpType });
+    if (error) fehler = true;
+    for (const k of ['token_hash', 'type']) q.delete(k);
+    history.replaceState(null, '', location.pathname + (q.toString() ? `?${q}` : '') + location.hash);
+  }
   const { data } = await sb.auth.getSession();
   const user = data.session?.user;
   if (!user) {
     if (requireLogin) {
-      location.replace(`${internUrl()}?weiter=${encodeURIComponent(location.pathname)}`);
+      location.replace(`${internUrl()}?weiter=${encodeURIComponent(location.pathname)}${fehler ? '&link=abgelaufen' : ''}`);
     } else {
       setState('login');
+      if (fehler || q.get('link') === 'abgelaufen') showMessage(document.querySelector('[data-login-msg]'), LINK_ABGELAUFEN());
     }
     return null;
   }
+  if (fehler) history.replaceState(null, '', location.pathname + location.search);
   const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle<Profile>();
   const isVorstand = profile?.role === 'vorstand' || profile?.role === 'admin';
   const isRedaktion = isVorstand || profile?.role === 'presse';
