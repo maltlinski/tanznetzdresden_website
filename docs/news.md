@@ -3,9 +3,16 @@
 Die News erscheinen an drei Stellen:
 
 - **Startseite:** „Aus dem Netz“ neben den Terminen: das Titelthema mit Foto, darunter offene Ausschreibungen und das Neueste.
-- **`/news/`:** Übersicht mit Titelthema, offenen Fristen und der Chronik nach Monaten mit Filter. Englisch unter `/en/news/`.
-- **`/news/<adresse>/`:** der einzelne Beitrag (Entwurf News v3, `design/entwuerfe/2026-10-news/`):
-  - **Kopf** in fünf Varianten: *Vollbild* (Foto über die ganze Breite, Titel auf einem lila Band), *Hochkant*
+- **`/news/`:** Übersicht mit Titelthema, offenen Fristen und der **Chronik als Archiv** (Entwurf News v4). Englisch unter `/en/news/`.
+  - Eine Leiste bleibt beim Scrollen unter dem Kopf stehen (auf dem Handy nicht): **Suche** in Titel, Teaser,
+    Autor:in und Rubrik, **Sortierung** (Neueste, Älteste, A–Z), **Ansicht** (*Liste* mit Fotos und Teasern oder
+    *Kompakt* als Zeilen mit Datum, Titel, Rubrik und Lesezeit bzw. offener Frist), **Rubriken** und **Jahre** mit
+    der Zahl der Treffer. Darunter stehen die Zahl der Treffer und „Filter zurücksetzen“.
+  - Die Beiträge stehen nach Jahr und Monat (bei A–Z ohne). Erst 24 Beiträge (kompakt 60), dann „Weitere laden“.
+  - Das Titelthema steht oben und erscheint in der Chronik erst, wenn gefiltert oder gesucht wird.
+  - Ohne JavaScript ist die Leiste ausgeblendet und die ganze Chronik sichtbar. Logik: `src/scripts/news-chronik.ts`.
+- **`/news/<adresse>/`:** der einzelne Beitrag (Entwurf News v3/v4, `design/entwuerfe/2026-10-news/`):
+  - **Kopf** in fünf Varianten: *Vollbild* (Foto über die ganze Breite, darunter der Titel auf einem lila Band), *Hochkant*
     (Text links, hohes Foto rechts), *Split* (halb Text, halb Foto mit schräger Kante), *Typo* (großer Titel, Foto
     darunter). Ohne Titelbild zeigt der Kopf **das Netz** auf einer Farbfläche (Lila, Cyan oder Hell); ein
     Magenta-Knoten trägt die wichtigste Angabe, bei Ausschreibungen den Countdown zur Frist.
@@ -42,7 +49,7 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
   sich leeren lässt.
 - **Titel** und **Teaser** (Zähler bis 220 Zeichen, mehr geht, ist aber nicht empfohlen).
 - **Titelbild:** hineinziehen, **Aus Mediathek** oder **Vom Computer**. Ein Klick ins Bild setzt den
-  **Fokuspunkt**. Darunter steht, wie das Foto in der Übersicht (4 : 3), auf der Startseite (16 : 9) und im Artikel
+  **Fokuspunkt**. Darunter steht, wie das Foto in der Übersicht (16 : 10), auf der Startseite (16 : 9) und im Artikel
   (21 : 9) zugeschnitten wird. Dazu kommen die Bildbeschreibung (freiwillig, empfohlen) und der Fotonachweis.
 - **Kopfbereich:** Mit Titelbild zeigen kleine Skizzen die Varianten *Automatisch*, *Vollbild*, *Hochkant*, *Split*
   und *Typo* („Automatisch“: Querformat wird Vollbild, Hochkant-Fotos bekommen den Hochkant-Kopf; daneben steht, was
@@ -50,7 +57,7 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
   (kleine Zeile und Angabe, z. B. „Ausgabe“ · „#6 · 26. November“). Bei Ausschreibungen zeigt der Knoten die Frist.
 - **Eckdaten:** Zeilen wie „Wann · Do · 26. November 2026 · 20:00 Uhr“, mit „+ Eckdatum“ dazu. Sie stehen als
   Infokasten oben im Beitrag.
-- **Inhalt** aus Blöcken: **Absatz**, **Zwischentitel**, **Zitat** (mit „Name · Rolle“), **Bild**, **Bildpaar**,
+- **Inhalt** aus Blöcken: **Absatz**, **Zwischentitel**, **Zitat** (mit „Name · Rolle“; lange Zitate setzt die Seite kleiner), **Bild**, **Bildpaar**,
   **Bildstrecke**, **Bild & Text** und **Hinweiskasten**, dazu die **Bausteine** (z. B. Förderhinweise, gepflegt unter *Website-Inhalte →
   News-Bausteine*, `src/settings/news-bausteine.json`).
   - „Block hinzufügen“ steht unten. „+ Hier einfügen“ zwischen zwei Blöcken fügt an dieser Stelle ein.

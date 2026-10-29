@@ -86,7 +86,7 @@ export async function medienHochladen(sb: SupabaseClient, f: File, slug = 'media
 }
 
 export const ZUSCHNITTE = [
-  { label: 'Übersicht · 4:3', ratio: '4 / 3', clip: 'polygon(0 0, 100% 0, 100% 84%, 88% 100%, 0 100%)' },
+  { label: 'Übersicht · 16:10', ratio: '16 / 10', clip: 'polygon(0 0, 100% 0, 100% 86%, 92% 100%, 0 100%)' },
   { label: 'Startseite · 16:9', ratio: '16 / 9', clip: 'polygon(0 0, 100% 0, 100% 86%, 93% 100%, 0 100%)' },
   { label: 'Artikel · 21:9', ratio: '21 / 9', clip: 'polygon(0 0, 100% 0, 100% 86%, 94% 100%, 0 100%)' },
 ];

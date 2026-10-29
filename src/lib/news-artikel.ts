@@ -56,7 +56,7 @@ export function kopfHtml(d: KopfDaten): string {
     `<div class="ak__meta" data-rise="0.08">${badge(variante, kat)}<span>${nr}<time datetime="${d.datum}">${dateLong(d.datum, d.lang)}</time>${mitZeit ? ` · ${lesezeit}` : ''}</span></div>`;
   const zurueck = (cls = '') =>
     d.zurueck ? `<a href="${esc(d.zurueck)}" class="ak__back${cls}" data-rise="0">${esc(t.back)}</a>` : `<span class="ak__back${cls}" data-rise="0">${esc(t.back)}</span>`;
-  // lange Titel (oft aus der alten Website) kleiner setzen, damit sie das Foto nicht zudecken
+  // lange Titel (oft aus der alten Website) kleiner setzen, sonst füllen sie den Kopf
   const h1 = `<h1 class="ak__titel${d.titel.length > 60 ? ' ak__titel--lang' : ''}" data-split>${esc(d.titel)}</h1>`;
   const teaser = d.teaser ? `<p class="ak__teaser" data-rise="0.26">${esc(d.teaser)}</p>` : '';
   const autor = (extra = '') => `<span class="ak__autor" data-rise="0.34">${esc(t.text)} · ${esc(d.autor)}${extra}</span>`;
@@ -71,7 +71,7 @@ export function kopfHtml(d: KopfDaten): string {
       return (
         `<header class="ak ak--vollbild" data-kopf>${zoom('ak__buehne')}` +
         `<div class="ak__oben"><div class="wrap">${zurueck(' ak__back--fahne')}</div></div>` +
-        `<div class="ak__band">${keil('var(--cyan)', 'ak__keil-oben', true)}<div class="wrap ak__band-innen">` +
+        `<div class="ak__band">${keil('var(--cyan)', 'ak__keil-oben')}<div class="wrap ak__band-innen">` +
         `<div class="ak__block">${meta()}${h1}</div>${credit}</div></div></header>`
       );
     case 'hochkant':

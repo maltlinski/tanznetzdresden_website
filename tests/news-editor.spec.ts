@@ -394,6 +394,21 @@ test('Live-Vorschau daneben (Desktop) und groß; Klick in die Vorschau springt i
   await expect(dlg).toBeHidden();
 });
 
+test('Vorschau: lange Zitate werden kleiner gesetzt', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vorschau neben dem Formular nur auf breiten Bildschirmen');
+  await redaktion(page);
+  await page.goto('/intern/news/bearbeiten/');
+  await page.getByLabel('Titel', { exact: true }).fill('Zitate');
+  await page.getByLabel('Absatz, Block 1', { exact: true }).fill('Erster Absatz.');
+  await ende(page, '+ Zitat');
+  const zitat = page.getByLabel('Zitat, Block 2', { exact: true });
+  const vs = page.frameLocator('[data-vp] iframe');
+  await zitat.fill('Kurz und knapp.');
+  await expect(vs.locator('.ab__text blockquote')).not.toHaveClass(/zitat--/);
+  await zitat.fill('Wir wollen sehen, woran andere gerade arbeiten. '.repeat(6).trim());
+  await expect(vs.locator('.ab__text blockquote')).toHaveClass('zitat--l');
+});
+
 test('Kopfbereich: mit Titelbild eine Variante wählen, ohne Titelbild Farbfläche und Knoten', async ({ page, isMobile }) => {
   const m = await redaktion(page);
   await page.goto('/intern/news/bearbeiten/');

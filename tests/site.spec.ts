@@ -388,19 +388,67 @@ test('News: Startseite zeigt Titelthema und offene Ausschreibungen, Links führe
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Aus dem');
 });
 
-test('News: Filter zeigt nur die gewählte Kategorie, „Alle“ blendet das Titelthema in der Chronik aus', async ({ page }) => {
-  const alle = veroeffentlicht();
+test('News: Chronik als Archiv mit Rubriken, Jahren, Suche, Sortierung, Ansicht und „Weitere laden“', async ({ page }) => {
+  const lead = veroeffentlicht().find((p) => p.image) ?? neuester;
+  const alle = veroeffentlicht().filter((p) => p.id !== lead.id);
   await page.goto('/news/');
   await dismissConsent(page);
-  const posts = page.locator('[data-post]:visible');
-  await expect(page.locator('[data-post]')).toHaveCount(alle.length);
-  await expect(posts).toHaveCount(alle.length - 1);
-  await page.getByRole('button', { name: /^Verein/ }).click();
-  await expect(page.getByRole('button', { name: /^Verein/ })).toHaveAttribute('aria-pressed', 'true');
-  await expect(posts).toHaveCount(alle.filter((p) => p.category === 'Verein').length);
-  await page.getByRole('button', { name: /^Training/ }).click();
-  const training = alle.find((p) => p.category === 'Training')!;
-  await expect(posts.filter({ hasText: training.title })).toHaveCount(1);
+  const chronik = page.locator('#journal');
+  const posts = chronik.locator('[data-liste] [data-post]');
+  const ergebnis = chronik.locator('[data-ergebnis]');
+  // ohne Filter: Titelthema nicht in der Liste, erst 24 Beiträge, dann nachladen
+  await expect(ergebnis).toHaveText(`${alle.length} Beiträge`);
+  await expect(posts).toHaveCount(Math.min(24, alle.length));
+  await expect(chronik.locator(`[data-liste] a[href$="/news/${lead.id}/"]`)).toHaveCount(0);
+  if (alle.length > 24) {
+    await expect(chronik.locator('[data-mehr-text]')).toHaveText(`24 von ${alle.length} Beiträgen`);
+    await chronik.getByRole('button', { name: /^Weitere \d+ laden$/ }).click();
+    await expect(posts).toHaveCount(Math.min(48, alle.length));
+  }
+  await expect(chronik.locator('.jjahr__zahl').first()).toHaveText(alle[0].date.slice(0, 4));
+
+  // Rubrik: die Zahl stimmt mit den Treffern überein (mit Filter gehört das Titelthema dazu); noch einmal klicken: wieder alle
+  const verein = veroeffentlicht().filter((p) => p.category === 'Verein');
+  const chip = chronik.getByRole('button', { name: `Verein ${verein.length}`, exact: true });
+  await chip.click();
+  await expect(chip).toHaveAttribute('aria-pressed', 'true');
+  await expect(posts).toHaveCount(Math.min(24, verein.length));
+  await expect(ergebnis).toHaveText(`${verein.length} ${verein.length === 1 ? 'Beitrag' : 'Beiträge'} · Verein`);
+  await chip.click();
+  await expect(chronik.getByRole('group', { name: 'Nach Kategorie filtern' }).getByRole('button', { name: /^Alle/ })).toHaveAttribute('aria-pressed', 'true');
+
+  // Jahr: nur Beiträge dieses Jahres (mit Filter gehört das Titelthema wieder dazu)
+  const jahr = alle.at(-1)!.date.slice(0, 4);
+  const imJahr = veroeffentlicht().filter((p) => p.date.startsWith(jahr));
+  await chronik.getByRole('group', { name: 'Jahr' }).getByRole('button', { name: new RegExp(`^${jahr}`) }).click();
+  await expect(ergebnis).toHaveText(`${imJahr.length} ${imJahr.length === 1 ? 'Beitrag' : 'Beiträge'} · ${jahr}`);
+  expect((await posts.evaluateAll((els) => els.map((e) => (e as HTMLElement).dataset.date!))).every((d) => d.startsWith(jahr))).toBe(true);
+
+  // Suche findet einen Beitrag über seinen Titel; nichts gefunden → zurücksetzen
+  await chronik.getByRole('button', { name: 'Filter zurücksetzen' }).click();
+  const gesucht = alle.find((p) => p.category === 'Training') ?? alle[0];
+  await chronik.getByRole('searchbox', { name: 'Beiträge durchsuchen' }).fill(gesucht.title.toLowerCase());
+  await expect(chronik.locator(`[data-liste] a.post[href$="/news/${gesucht.id}/"]`)).toBeVisible();
+  await chronik.getByRole('searchbox', { name: 'Beiträge durchsuchen' }).fill('xyzxyz kein beitrag');
+  await expect(chronik.getByText('Nichts gefunden.')).toBeVisible();
+  await expect(posts).toHaveCount(0);
+  await chronik.getByRole('button', { name: 'Filter zurücksetzen' }).click();
+  await expect(chronik.getByRole('searchbox', { name: 'Beiträge durchsuchen' })).toHaveValue('');
+  await expect(ergebnis).toHaveText(`${alle.length} Beiträge`);
+
+  // A–Z: ohne Jahre, Titel in alphabetischer Reihenfolge
+  await chronik.getByRole('button', { name: 'A–Z' }).click();
+  await expect(chronik.locator('.jjahr__zahl')).toHaveCount(0);
+  const titel = await posts.evaluateAll((els) => els.slice(0, 8).map((e) => (e as HTMLElement).dataset.titel!.replace(/^[^\p{L}\p{N}]+/u, '')));
+  expect(titel).toEqual([...titel].sort((x, y) => x.localeCompare(y, 'de')));
+
+  // Kompakt: Zeilen statt Karten, bis zu 60 auf einmal
+  await chronik.getByRole('button', { name: 'Neueste' }).click();
+  await chronik.getByRole('button', { name: 'Kompakt' }).click();
+  await expect(posts).toHaveCount(Math.min(60, alle.length));
+  await expect(posts.first().locator('.zeile')).toBeVisible();
+  await expect(posts.first().locator('.post')).toBeHidden();
+  await expect(posts.first().locator('.zeile__rechts')).toHaveText(/\d+ Min|Frist · noch \d+ Tag/);
 });
 
 test('News: englische Seite nutzt die Übersetzung und weist auf fehlende Übersetzungen hin', async ({ page }) => {

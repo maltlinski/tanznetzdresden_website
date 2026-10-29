@@ -151,7 +151,7 @@ const jsonLd = {
     // Titelbild zieht beim Scrollen langsam nach oben
     if (motionOk()) {
       article.querySelectorAll<HTMLElement>('.ak--vollbild .ak__img, .ak--hochkant .ak__img, .ak--split .ak__img').forEach((img) => {
-        gsap.fromTo(img, { yPercent: 0, scale: 1.16 }, { yPercent: 7, scale: 1.16, ease: 'none', scrollTrigger: { trigger: img.closest('.ak'), start: 'top top', end: 'bottom top', scrub: true } });
+        gsap.fromTo(img, { yPercent: 0, scale: 1.1 }, { yPercent: 4, scale: 1.1, ease: 'none', scrollTrigger: { trigger: img.closest('.ak'), start: 'top top', end: 'bottom top', scrub: true } });
       });
     }
   }

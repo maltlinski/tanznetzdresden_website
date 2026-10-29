@@ -186,6 +186,12 @@ export function renderMarkdown(src: string, base = '/', opt: MarkdownOptionen = 
         // Bilder nur über Bilder-Abschnitte, nicht als Markdown-Bild im Text
         return escape(text);
       },
+      blockquote({ tokens }) {
+        // Zitat: je länger, desto kleiner (artikel.css, .zitat--m/l/xl)
+        const n = tokens[0]?.type === 'paragraph' ? tokens[0].text.length : 0;
+        const groesse = n > 360 ? ' class="zitat--xl"' : n > 220 ? ' class="zitat--l"' : n > 120 ? ' class="zitat--m"' : '';
+        return `<blockquote${groesse}>\n${this.parser.parse(tokens)}</blockquote>\n`;
+      },
     },
   });
   return md.parse(src ?? '', { async: false });
