@@ -206,15 +206,44 @@ test('News: Galerie mit Großansicht, Archivbilder in zwei Größen', async ({ p
   // Bilder der alten Website liegen fertig verkleinert vor (800 px und 1600 px), neue werden beim Build optimiert
   await expect(fig.locator('img').first()).toHaveAttribute('srcset', /-800\.webp \d+w, .+\.webp \d+w|\/_astro\/.+\.webp/);
   await expect(fig.locator('img').first()).toHaveAttribute('width', /^\d+$/);
-  if (g.yaml.foto) await expect(fig.locator('figcaption')).toContainText(`Fotos: ${g.yaml.foto}`);
-  await fig.locator('a').nth(1).click();
-  const lb = page.getByRole('dialog', { name: 'Foto' });
+  if (g.yaml.foto) await expect(fig.locator('figcaption')).toContainText(`Fotos · ${g.yaml.foto}`);
+  // Großansicht: alle Fotos des Beitrags in einer Reihe, mit Nummer, Bezeichnung und Vorschaubildern
+  const alle = await page.locator('[data-article] a[data-lightbox]').count();
+  const zweites = fig.locator('a').nth(1);
+  const k = await zweites.getAttribute('data-k');
+  const pos = await zweites.evaluate((el) => [...document.querySelectorAll('[data-article] a[data-lightbox]')].indexOf(el));
+  await zweites.click();
+  const lb = page.getByRole('dialog', { name: 'Bildansicht' });
   await expect(lb).toBeVisible();
-  await expect(lb.locator('.lb__n')).toHaveText(`2 von ${g.n}`);
+  const pad = (n: number) => String(n).padStart(2, '0');
+  await expect(lb.locator('.lb__n')).toHaveText(`${pad(pos + 1)} / ${pad(alle)}`);
+  await expect(lb.locator('.lb__k')).toHaveText(k!);
+  await expect(lb.locator('.lb__daumen button')).toHaveCount(alle);
   await page.keyboard.press('ArrowRight');
-  await expect(lb.locator('.lb__n')).toHaveText(`3 von ${g.n}`);
+  await expect(lb.locator('.lb__n')).toHaveText(`${pad(((pos + 1) % alle) + 1)} / ${pad(alle)}`);
   await page.keyboard.press('Escape');
   await expect(lb).toBeHidden();
+});
+
+test('News: Beitrag ohne Titelbild hat den Netz-Kopf mit Knoten, Zeile zum Teilen und Fuß', async ({ page }) => {
+  const p = veroeffentlicht().find((x) => !x.image && !x.deadline)!;
+  await page.goto(`/news/${p.id}/`);
+  const kopf = page.locator('.ak--netz');
+  await expect(kopf).toBeVisible();
+  await expect(kopf.getByRole('heading', { level: 1 })).toHaveText(p.title);
+  await expect(kopf.locator('canvas.ak__netz')).toHaveCount(1);
+  // der Knoten erscheint, sobald das Netz steht
+  await expect.poll(() => kopf.locator('[data-knoten]').evaluate((el) => getComputedStyle(el).opacity), { timeout: 6000 }).toBe('1');
+  await expect(page.locator('.ab__zeile')).toContainText(p.author);
+  await expect(page.locator('.ab__zeile').getByRole('button', { name: 'Link kopieren' })).toBeVisible();
+  await expect(page.locator('.ab__fuss')).toContainText('Veröffentlicht');
+  // Ausschreibung: Knoten mit Frist, Countdown in den Eckdaten
+  const call = veroeffentlicht().find((x) => x.deadline && !x.image);
+  if (call) {
+    await page.goto(`/news/${call.id}/`);
+    await expect(page.locator('.ak__knoten')).toContainText('Bewerbungsfrist');
+    await expect(page.locator('.ab__fakten .ab__call')).toBeVisible();
+  }
 });
 
 test('News: Förderhinweis als Kasten, E-Mail-Adressen geschützt, Video als Link', async ({ page }) => {

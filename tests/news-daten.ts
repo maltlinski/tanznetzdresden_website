@@ -11,6 +11,7 @@ export interface NewsDatei {
   title: string;
   date: string;
   category: string;
+  author: string;
   deadline?: string;
   image?: string;
   draft?: boolean;

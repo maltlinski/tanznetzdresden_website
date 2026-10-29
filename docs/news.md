@@ -4,7 +4,18 @@ Die News erscheinen an drei Stellen:
 
 - **Startseite:** „Aus dem Netz“ neben den Terminen: das Titelthema mit Foto, darunter offene Ausschreibungen und das Neueste.
 - **`/news/`:** Übersicht mit Titelthema, offenen Fristen und der Chronik nach Monaten mit Filter. Englisch unter `/en/news/`.
-- **`/news/<adresse>/`:** der einzelne Beitrag.
+- **`/news/<adresse>/`:** der einzelne Beitrag (Entwurf News v3, `design/entwuerfe/2026-10-news/`):
+  - **Kopf** in fünf Varianten: *Vollbild* (Foto über die ganze Breite, Titel auf einem lila Band), *Hochkant*
+    (Text links, hohes Foto rechts), *Split* (halb Text, halb Foto mit schräger Kante), *Typo* (großer Titel, Foto
+    darunter). Ohne Titelbild zeigt der Kopf **das Netz** auf einer Farbfläche (Lila, Cyan oder Hell); ein
+    Magenta-Knoten trägt die wichtigste Angabe, bei Ausschreibungen den Countdown zur Frist.
+  - darunter eine Zeile mit Autor:in, Datum, „Link kopieren“ und „E-Mail“, die **Eckdaten** als Infokasten (bei
+    Ausschreibungen zuerst der Countdown), dann der Text in einer Spalte. Fotos gibt es in drei Breiten (Textbreite,
+    weit mit Keil-Ecke, randlos), als Galerie, **Bildpaar**, **Bildstrecke** (lila Band zum seitlichen Blättern) und
+    **Bild & Text** (das Bild bleibt stehen, die Texte laufen daneben vorbei).
+  - Jedes Foto hat eine Nummer („Abb. 03“). Am Ende stehen die **Bildnachweise**, darunter „Mehr aus dem Netz“.
+  - Ein Klick auf ein Foto öffnet die **Großansicht** mit allen Fotos des Beitrags (Pfeile, Pfeiltasten, Wischen,
+    Vorschaubilder).
 
 Dazu kommen RSS-Feeds unter `/news.xml` und `/en/news.xml`.
 
@@ -25,7 +36,7 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
 - **Kopfleiste:** „← Beiträge“, Status, Speicherstand, „Vorschau an/aus“ und **Veröffentlichen** (bei Beiträgen,
   die schon online sind: **Aktualisieren**).
 - **Vorlage** (nur bei neuen Beiträgen): *Rückblick*, *Ausschreibung* oder *Veranstaltung* legen Rubrik,
-  „Auf einen Blick“ und die Blöcke an. Graue Hinweise sagen, was hineingehört.
+  Eckdaten und die Blöcke an. Graue Hinweise sagen, was hineingehört.
 - **Rubrik** als Knöpfe. Bei *Ausschreibung* erscheint die **Bewerbungsfrist** (Countdown auf der Website), bei
   *Stimme* das **Zitat für die Übersicht** (Zitatkarte). Steht schon etwas darin, bleibt das Feld sichtbar, damit es
   sich leeren lässt.
@@ -33,8 +44,14 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
 - **Titelbild:** hineinziehen, **Aus Mediathek** oder **Vom Computer**. Ein Klick ins Bild setzt den
   **Fokuspunkt**. Darunter steht, wie das Foto in der Übersicht (4 : 3), auf der Startseite (16 : 9) und im Artikel
   (21 : 9) zugeschnitten wird. Dazu kommen die Bildbeschreibung (freiwillig, empfohlen) und der Fotonachweis.
-- **Inhalt** aus Blöcken: **Absatz**, **Zwischentitel**, **Zitat** (mit „Name · Rolle“), **Bild** und
-  **Hinweiskasten**, dazu die **Bausteine** (z. B. Förderhinweise, gepflegt unter *Website-Inhalte →
+- **Kopfbereich:** Mit Titelbild zeigen kleine Skizzen die Varianten *Automatisch*, *Vollbild*, *Hochkant*, *Split*
+  und *Typo* („Automatisch“: Querformat wird Vollbild, Hochkant-Fotos bekommen den Hochkant-Kopf; daneben steht, was
+  der Beitrag gerade zeigt). Ohne Titelbild: Farbfläche des Netzes (Lila, Cyan, Hell) und die Angabe am Knoten
+  (kleine Zeile und Angabe, z. B. „Ausgabe“ · „#6 · 26. November“). Bei Ausschreibungen zeigt der Knoten die Frist.
+- **Eckdaten:** Zeilen wie „Wann · Do · 26. November 2026 · 20:00 Uhr“, mit „+ Eckdatum“ dazu. Sie stehen als
+  Infokasten oben im Beitrag.
+- **Inhalt** aus Blöcken: **Absatz**, **Zwischentitel**, **Zitat** (mit „Name · Rolle“), **Bild**, **Bildpaar**,
+  **Bildstrecke**, **Bild & Text** und **Hinweiskasten**, dazu die **Bausteine** (z. B. Förderhinweise, gepflegt unter *Website-Inhalte →
   News-Bausteine*, `src/settings/news-bausteine.json`).
   - „Block hinzufügen“ steht unten. „+ Hier einfügen“ zwischen zwei Blöcken fügt an dieser Stelle ein.
   - Verschieben geht durch **Ziehen am Griff ⠿** oder mit ↑ ↓.
@@ -42,15 +59,23 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
     Personen, Termine, News und Seiten der Website suchen oder eine andere Website eintragen.
   - **Personenkarten** (z. B. Resident:innen, Vorstand): eine Aufzählung, deren Punkte mit einem fetten Namen beginnen.
   - **Bild:** Ein leerer Bild-Block nimmt Fotos per Ziehen, aus der **Mediathek** oder per **Hochladen**.
-    - Ein Foto zeigt Fokuspunkt, Bildbeschreibung, Bildunterschrift und Fotonachweis direkt.
+    - Ein Foto zeigt Fokuspunkt, Bildbeschreibung, Bildunterschrift und Fotonachweis direkt. Darunter die
+      **Breite**: Textbreite, Weit (etwas breiter als der Text, mit Keil-Ecke), Randlos (ganze Seitenbreite) oder
+      Neben dem Text.
     - **„+ Weitere Fotos“** macht daraus eine **Galerie**. In der Galerie öffnet ein Klick auf ein Foto dessen
       Angaben (Fokus, Beschreibung, Drehen, Reihenfolge, Entfernen), „Fertig“ schließt sie. Reihenfolge auch durch
       Ziehen.
-    - **Darstellung** (eingeklappt): Format (Original, Quer 3 : 2, Hoch 3 : 4, Quadrat), Fotos pro Reihe (2–4, auf
-      dem Handy höchstens zwei), ein einzelnes Foto groß oder **neben dem Text**.
+    - **Darstellung** (eingeklappt): Format (Original, Quer 3 : 2, Hoch 3 : 4, Quadrat) und Fotos pro Reihe (2–4,
+      auf dem Handy höchstens zwei).
+  - **Bildpaar:** genau zwei Fotos, auf der Website gleich hoch (auch Hoch- neben Querformat). Jedes Foto hat
+    Bildbeschreibung und eine eigene Unterschrift; Reihenfolge durch Ziehen, × entfernt.
+  - **Bildstrecke:** Titel und 3 bis 12 Fotos, jedes mit eigener Unterschrift. Auf der Website ein lila Band über die
+    ganze Breite zum seitlichen Blättern, „Vollbild“ öffnet die Großansicht.
+  - **Bild & Text:** Titel und 2 bis 6 Schritte, jeder mit Bild, kurzem Titel, zwei, drei Sätzen und
+    Bildbeschreibung. Auf der Website bleibt das Bild stehen und wechselt, während die Texte daneben vorbeilaufen.
   - **Englisch** steht bei jedem Block zum Aufklappen.
-- **Auf einen Blick**, **Englische Fassung** und **Weitere Angaben** (Text von, Datum, Titelthema, Adresse,
-  Vorschau-Link, Löschen) sind eingeklappt.
+- **Englische Fassung** (auch die Angabe am Knoten) und **Weitere Angaben** (Text von, Datum, Titelthema,
+  Adresse, Vorschau-Link, Löschen) sind eingeklappt.
 - **Live-Vorschau** rechts (ab etwa 1180 px Breite): zeigt den Beitrag beim Schreiben genau wie auf der Website,
   Desktop oder Mobil, Deutsch oder Englisch. Ein Klick in die Vorschau springt zum Block, beim Schreiben scrollt sie
   mit und markiert die Stelle. Auf kleinen Bildschirmen öffnet „Vorschau“ sie groß.
@@ -63,7 +88,8 @@ nächsten Öffnen „Wiederherstellen“ an.
 **Veröffentlichen** öffnet ein Seitenpanel:
 
 - **Checkliste:** *Pflicht* sind Titel, Teaser, bei Ausschreibungen die Frist und keine Emoji. *Empfohlen* sind ein
-  Teaser bis 220 Zeichen, Titelbild, Bildbeschreibungen, Fotonachweise, keine leeren Blöcke und die englische
+  Teaser bis 220 Zeichen, Titelbild, Bildbeschreibungen, Fotonachweise, keine leeren oder unvollständigen Blöcke
+  (Bildpaar mit zwei Fotos, Bildstrecke ab drei, Bild & Text mit Bild und Text in jedem Schritt) und die englische
   Fassung. „Beheben“ springt zum Feld. Solange Pflichtpunkte fehlen, bleibt der Knopf gesperrt.
 - **Zeitpunkt:** *Sofort* oder *Planen*. Geplante Beiträge erscheinen am gewählten Tag morgens mit dem automatischen
   Update, nicht zu einer bestimmten Uhrzeit. In der Liste steht dann „Geplant“. Beim ersten Veröffentlichen
@@ -109,6 +135,10 @@ deadline: 2026-11-15           # optional → Ausschreibung
 image: ../../../assets/photos/foto.jpg   # optional → Foto-Beitrag
 alt: Was auf dem Foto zu sehen ist
 featured: false                # Titelthema
+hero: auto                     # Kopf mit Foto: auto · vollbild · hochkant · split · typo
+heroTheme: purple              # ohne Foto: Fläche des Netzes · purple · cyan · tint
+nodeKicker: Ausgabe            # ohne Foto: Angabe am Knoten (kleine Zeile …
+nodeValue: '#6 · 26. November' #  … und Angabe); bei Ausschreibungen die Frist
 quote: { text: '…', who: Name, role: Funktion }   # optional → Stimme
 teaser: Ein bis zwei Sätze.
 facts:
@@ -126,6 +156,7 @@ Text in Markdown. Links zu Seiten der Website mit /kontakt/ (der Unterpfad wird 
 ::: bilder
 format: quer          # original · quer · hoch · quadrat
 spalten: 2            # 2–4, bei mehreren Fotos
+breite: weit          # nur ein Foto: text · weit · randlos
 text: Bildunterschrift
 foto: Name Fotograf:in
 bilder:
@@ -134,14 +165,31 @@ bilder:
     fokus: 50% 30%    # optional: Bildausschnitt beim Zuschneiden
 :::
 
+::: bilder
+darstellung: strecke  # paar (genau 2 Fotos) · strecke (Bildstrecke, 3–12) · neben (ein Foto neben dem Text)
+titel: Der Tag in Bildern
+bilder:
+  - datei: ../../../assets/photos/foto.jpg
+    alt: Was zu sehen ist
+    text: Unterschrift nur für dieses Foto
+:::
+
+::: schritte          # Bild & Text
+titel: Ein Tag in der Stadt
+schritte:
+  - datei: ../../../assets/photos/foto.jpg
+    alt: Was zu sehen ist
+    titel: Raus aus dem Studio
+    text: Zwei, drei Sätze zu diesem Bild.
+:::
+
 ::: hinweis
 Förderhinweis oder anderer abgesetzter Text.
 :::
 ```
 
-Ein Beispiel steht in `src/content/news/de/keep-up-herbst.md`.
-
-Die englische Datei braucht nur, was übersetzt ist: `title`, `teaser`, `alt`, `facts`, `quote` und den Text.
+Die englische Datei braucht nur, was übersetzt ist: `title`, `teaser`, `alt`, `facts`, `quote`, `nodeKicker`,
+`nodeValue` und den Text.
 Alles andere kommt aus der deutschen Datei.
 
 **Beide Wege gleichzeitig:** Die Website führt Dateien und Beiträge aus dem internen Bereich zusammen und sortiert
@@ -213,14 +261,18 @@ Supabase-Webhook ist dafür nicht mehr nötig.
 
 ## Datenbank
 
-Migrationen `supabase/migrations/20261009000000_news.sql`, `20261015000000_news_bilder.sql` und
-`20261016000000_mediathek.sql` im SQL-Editor ausführen.
+Migrationen `supabase/migrations/20261009000000_news.sql`, `20261015000000_news_bilder.sql`,
+`20261016000000_mediathek.sql` und `20261029000000_news_kopf.sql` im SQL-Editor ausführen.
 
 - Die zweite erlaubt längere Texte (bis 100.000 Zeichen), speichert den Bildausschnitt des Titelfotos und macht die
   Bildbeschreibung zum Titelfoto freiwillig.
 - Die dritte legt die Mediathek an (Tabelle `news_medien`, öffentlich lesbar, schreiben nur die Redaktion; Leserecht
   der Redaktion auf den Bucket, damit die Mediathek alle Fotos auflisten kann) und die Spalte `newsletter`. Ohne sie
   funktioniert der Editor weiter, nur Mediathek-Angaben und Newsletter-Vormerkung lassen sich nicht speichern.
+- Die vierte speichert den **Kopfbereich** (`hero`, `hero_theme`) und die Angabe am Knoten (`node_kicker`,
+  `node_value`, auch `_en`) und gibt sie in `public_news` mit aus. Ohne sie zeigt der Editor die Wahl trotzdem; wer
+  etwas anderes als „Automatisch“, Lila und keinen Knoten wählt, bekommt beim Speichern den Hinweis auf die Migration.
+  Bildpaar, Bildstrecke und Bild & Text stehen im Text und brauchen keine neuen Spalten.
 
 Die erste legt an:
 
@@ -234,9 +286,11 @@ Die erste legt an:
 | Was | Wo |
 |---|---|
 | Zusammenführen, Datumsformate, Fristen | `src/lib/news.ts` |
-| Markdown sicher in HTML (ohne eigenes HTML, nur sichere Links), Bilder- und Hinweis-Abschnitte | `src/lib/markdown.ts` |
-| Blöcke ↔ Markdown (Zwischentitel `##`, Zitat `>`, Bilder- und Hinweis-Abschnitte), Mediathek-Angaben beim Build | `src/lib/news-bloecke.ts` |
+| Markdown sicher in HTML (ohne eigenes HTML, nur sichere Links), Bilder-, Schritte- und Hinweis-Abschnitte, Bildnummern | `src/lib/markdown.ts` |
+| Blöcke ↔ Markdown (Zwischentitel `##`, Zitat `>`, Bilder-, Schritte- und Hinweis-Abschnitte), Mediathek-Angaben beim Build | `src/lib/news-bloecke.ts` |
 | Fotos im Text beim Build optimieren | `bilderOptimieren()` in `src/lib/news.ts` |
+| Gerüst des Beitrags (Kopf-Varianten, Zeile, Eckdaten, Bildnachweise) für Seite und Vorschau | `src/lib/news-artikel.ts` |
+| Netz-Kopf, Bildstrecke, Bild & Text, Aufwischen der Fotos, Link kopieren | `src/scripts/news-artikel.ts` |
 | Stile des Beitrags (Seite und Vorschau) | `src/styles/artikel.css`, Großansicht `src/scripts/lightbox.ts` |
 | Rahmen der Redaktion (Seitenleiste) | `src/layouts/Redaktion.astro` |
 | Block-Editor, Fotos hochladen/drehen | `src/scripts/intern/news/abschnitte.ts`, `fotos.ts` |

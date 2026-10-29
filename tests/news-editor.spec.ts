@@ -368,7 +368,7 @@ test('Live-Vorschau daneben (Desktop) und groß; Klick in die Vorschau springt i
     await expect(vs.locator('.nb--galerie .nb__item img')).toHaveCount(2);
     await vs.getByText('Erster Absatz.').click();
     await expect(page.getByLabel('Absatz, Block 1', { exact: true })).toBeFocused();
-    await vs.locator('.ah__title').click();
+    await vs.locator('.ak__titel').click();
     await expect(page.getByLabel('Titel', { exact: true })).toBeFocused();
     // ausblenden bleibt gemerkt
     await page.getByRole('button', { name: 'Vorschau aus' }).click();
@@ -386,12 +386,165 @@ test('Live-Vorschau daneben (Desktop) und groß; Klick in die Vorschau springt i
   await expect(dlg).toBeVisible();
   const v = page.frameLocator('[data-vorschau-frame]');
   await expect(v.getByRole('heading', { level: 1 })).toHaveText('Rückblick mit Fotos');
-  await expect(v.locator('.ah__img-frame img')).toHaveAttribute('style', /object-position: 50% (19|20|21)%/);
+  await expect(v.locator('.ak__img')).toHaveAttribute('style', /object-position: ?50% (19|20|21)%/);
   await expect(v.locator('.nb--galerie .nb__item img')).toHaveCount(2);
   await dlg.getByRole('button', { name: 'Englisch' }).click();
   await expect(v.locator('html')).toHaveAttribute('lang', 'en');
   await dlg.getByRole('button', { name: 'Schließen' }).click();
   await expect(dlg).toBeHidden();
+});
+
+test('Kopfbereich: mit Titelbild eine Variante wählen, ohne Titelbild Farbfläche und Knoten', async ({ page, isMobile }) => {
+  const m = await redaktion(page);
+  await page.goto('/intern/news/bearbeiten/');
+  await page.getByLabel('Titel', { exact: true }).fill('vision:danceable #6');
+  await page.getByLabel('Teaser', { exact: true }).fill('Am 26. November zeigt die Kurzstückreihe neue Arbeiten.');
+  await page.getByLabel('Absatz, Block 1', { exact: true }).fill('Text.');
+  const kopf = page.locator('[data-kopf-feld]');
+  // ohne Titelbild: Netz auf einer Farbfläche, der Knoten trägt die Angabe
+  await expect(kopf.locator('[data-kopf-info]')).toHaveText('Ohne Titelbild · Netz');
+  await kopf.getByRole('radio', { name: 'Cyan' }).check({ force: true });
+  await kopf.getByLabel('Knoten · kleine Zeile').fill('Ausgabe');
+  await kopf.getByLabel('Knoten · Angabe').fill('#6 · 26. November');
+  if (!isMobile) {
+    const vs = page.frameLocator('[data-vp] iframe');
+    await expect(vs.locator('.ak--netz.ak--cyan')).toBeVisible();
+    await expect(vs.locator('[data-knoten]')).toContainText('#6 · 26. November');
+    // Klick in den Kopf der Vorschau springt zum Kopfbereich
+    await vs.locator('.ak__netz').click({ position: { x: 5, y: 5 } });
+    await expect(kopf.getByRole('radio', { name: 'Cyan' })).toBeFocused();
+  }
+  // Ausschreibung: der Knoten zeigt die Frist, die Felder entfallen
+  await page.getByRole('radio', { name: 'Ausschreibung' }).check({ force: true });
+  await expect(kopf.getByLabel('Knoten · kleine Zeile')).toBeHidden();
+  await expect(kopf.getByText('Bei Ausschreibungen zeigt der Knoten automatisch den Countdown bis zur Frist.')).toBeVisible();
+  await page.getByRole('radio', { name: 'Netzwerk' }).check({ force: true });
+
+  // mit Titelbild: Querformat → Auto zeigt Vollbild; Split gewählt
+  await page.locator('[data-photo-input]').first().setInputFiles(FOTOS[0]);
+  await expect(kopf.locator('[data-kopf-info]')).toHaveText('Querformat · zeigt Vollbild');
+  await kopf.getByRole('radio', { name: 'Split' }).check({ force: true });
+  await expect(kopf.locator('[data-kopf-info]')).toHaveText('Querformat · zeigt Split');
+  if (!isMobile) await expect(page.frameLocator('[data-vp] iframe').locator('.ak--split .ak__img')).toBeVisible();
+  // Hochkant-Foto: Auto zeigt den Hochkant-Kopf (der nachgebaute Speicher liefert als drittes Foto duo-rot.jpg, hochkant)
+  await kopf.getByRole('radio', { name: /^Auto/ }).check({ force: true });
+  await page.locator('[data-photo-input]').nth(1).setInputFiles(FOTOS[1]);
+  await expect.poll(() => m.hochgeladen.length).toBe(2);
+  await page.locator('[data-photo-input]').nth(1).setInputFiles(FOTOS[2]);
+  await expect(kopf.locator('[data-kopf-info]')).toHaveText('Hochkant-Foto · zeigt Hochkant');
+  await expect(kopf.locator('[data-kopf-name="auto"]')).toHaveText('Auto · Hochkant');
+  if (!isMobile) await expect(page.frameLocator('[data-vp] iframe').locator('.ak--hochkant')).toBeVisible();
+  await kopf.getByRole('radio', { name: 'Typo' }).check({ force: true });
+
+  await panelOeffnen(page);
+  await panel(page).getByRole('button', { name: 'Jetzt veröffentlichen' }).click();
+  await expect(panel(page)).toBeHidden();
+  expect(m.gespeichert.at(-1)).toMatchObject({ hero: 'typo', hero_theme: 'cyan', node_kicker: 'Ausgabe', node_value: '#6 · 26. November' });
+});
+
+test('Eckdaten stehen offen im Editor und oben im Beitrag', async ({ page, isMobile }) => {
+  const m = await redaktion(page);
+  await page.goto('/intern/news/bearbeiten/');
+  await page.getByLabel('Titel', { exact: true }).fill('Studio Round #9');
+  await page.getByRole('button', { name: '+ Eckdatum' }).click();
+  await page.locator('[data-fakten]').getByLabel('Bezeichnung').fill('Wann');
+  await page.locator('[data-fakten]').getByLabel('Angabe').fill('Do · 15. Oktober · 19:30 Uhr');
+  if (!isMobile) await expect(page.frameLocator('[data-vp] iframe').locator('.ab__fakten')).toContainText('Do · 15. Oktober · 19:30 Uhr');
+  await page.getByRole('button', { name: '+ Eckdatum' }).click();
+  await page.locator('[data-fakten] .ne-fact').nth(1).getByRole('button', { name: 'Löschen' }).click();
+  await expect(page.locator('[data-fakten] .ne-fact')).toHaveCount(1);
+  await expect.poll(() => m.gespeichert.at(-1)?.facts, { timeout: 8000 }).toEqual([{ label: 'Wann', value: 'Do · 15. Oktober · 19:30 Uhr' }]);
+});
+
+test('Bildpaar, Bildstrecke und Bild & Text: Blöcke anlegen, Checkliste, Vorschau', async ({ page, isMobile }) => {
+  const m = await redaktion(page);
+  await page.goto('/intern/news/bearbeiten/');
+  await page.getByLabel('Titel', { exact: true }).fill('Welttanztag 2026');
+  await page.getByLabel('Teaser', { exact: true }).fill('Die Stadt als Bühne.');
+  await page.getByLabel('Absatz, Block 1', { exact: true }).fill('Zum Welttanztag gehen wir raus.');
+
+  // Bildpaar: genau zwei Fotos, jedes mit eigener Unterschrift
+  await ende(page, '+ Bildpaar');
+  const paar = page.locator('.ab-block').nth(1);
+  await expect(typen(page).nth(1)).toHaveText('Bildpaar');
+  await expect(paar.getByText('Ein Bildpaar braucht genau 2 Bilder.')).toBeVisible();
+  await paar.locator('input[type=file]').setInputFiles(FOTOS);
+  await expect(page.locator('[data-msg]')).toContainText('Ein Bildpaar hat genau 2 Bilder.');
+  await expect(paar.locator('.fm-kachel')).toHaveCount(2);
+  await expect(paar.locator('.fm-kachel .is-laedt')).toHaveCount(0);
+  await expect(paar.locator('.fm-plus')).toHaveCount(0);
+  await paar.getByLabel('Foto 1: Bildunterschrift', { exact: true }).fill('Duo in Blau.');
+  await paar.getByLabel('Foto 2: Bildbeschreibung', { exact: true }).fill('Tänzerin im Sprung');
+
+  // Bildstrecke: unter drei Fotos unvollständig
+  await ende(page, '+ Bildstrecke');
+  const strecke = page.locator('.ab-block').nth(2);
+  await strecke.getByPlaceholder('Titel der Bildstrecke').fill('Der Tag in Bildern');
+  await strecke.locator('input[type=file]').setInputFiles(FOTOS.slice(0, 2));
+  await expect(strecke.locator('.fm-kachel')).toHaveCount(2);
+  await expect(strecke.getByText('Mindestens 3, höchstens 12 Bilder.')).toBeVisible();
+
+  // Bild & Text: zwei Schritte; ohne Bild und Text unvollständig
+  await ende(page, '+ Bild & Text');
+  const schritte = page.locator('.ab-block').nth(3);
+  await expect(schritte.locator('.fs-schritt')).toHaveCount(2);
+  await schritte.getByPlaceholder('Titel, z. B. Ein Tag in der Stadt').fill('Ein Tag in der Stadt');
+  await schritte.locator('.fs-schritt').nth(0).locator('input[type=file]').setInputFiles(FOTOS[0]);
+  await schritte.getByLabel('Schritt 1: Titel', { exact: true }).fill('Raus aus dem Studio');
+  await schritte.getByLabel('Schritt 1: Text', { exact: true }).fill('Getanzt wird dort, wo Menschen unterwegs sind.');
+
+  await panelOeffnen(page);
+  const unvollstaendig = panel(page).locator('li', { hasText: 'Keine leeren oder unvollständigen Blöcke' });
+  await expect(unvollstaendig).toHaveAttribute('data-zustand', 'tipp');
+  await unvollstaendig.getByRole('button', { name: /beheben/ }).click();
+  await expect(strecke).toHaveClass(/is-markiert/);
+
+  await strecke.locator('input[type=file]').setInputFiles(FOTOS[2]);
+  await expect(strecke.locator('.fm-kachel')).toHaveCount(3);
+  await expect(typen(page).nth(2)).toHaveText('Bildstrecke · 3 Bilder');
+  await schritte.locator('.fs-schritt').nth(1).locator('input[type=file]').setInputFiles(FOTOS[1]);
+  await expect(schritte.locator('.fs-bild')).toHaveCount(2);
+  await schritte.getByLabel('Schritt 2: Text', { exact: true }).fill('Kein Podest, kein Eintritt.');
+
+  if (!isMobile) {
+    const vs = page.frameLocator('[data-vp] iframe');
+    await expect(vs.locator('.nb--paar .nb__item')).toHaveCount(2);
+    await expect(vs.locator('.nb--paar figcaption')).toContainText('Abb. 01Duo in Blau.');
+    await expect(vs.locator('.nb--strecke .nb__titel')).toHaveText('Der Tag in Bildern');
+    await expect(vs.locator('.nb--strecke .nb__item')).toHaveCount(3);
+    await expect(vs.locator('.ns__titel')).toHaveText('Ein Tag in der Stadt');
+    await expect(vs.locator('.ns__schritt')).toHaveCount(2);
+  }
+
+  await panelOeffnen(page);
+  await expect(unvollstaendig).toHaveAttribute('data-zustand', 'ok');
+  await panel(page).getByRole('button', { name: 'Jetzt veröffentlichen' }).click();
+  await expect(panel(page)).toBeHidden();
+  const body = m.gespeichert.at(-1)!.body as string;
+  const { bloecke } = abschnitte(body);
+  expect(bloecke.map((b) => b.typ)).toEqual(['text', 'bilder', 'bilder', 'schritte']);
+  expect(bloecke[1]).toMatchObject({ darstellung: 'paar', bilder: [{ text: 'Duo in Blau.' }, { alt: 'Tänzerin im Sprung' }] });
+  expect(bloecke[2]).toMatchObject({ darstellung: 'strecke', titel: 'Der Tag in Bildern' });
+  expect(bloecke[3]).toMatchObject({ titel: 'Ein Tag in der Stadt', schritte: [{ titel: 'Raus aus dem Studio' }, { text: 'Kein Podest, kein Eintritt.' }] });
+  // Bildbeschreibung aus dem Bildpaar steht in der Mediathek
+  const zweites = (bloecke[1] as { bilder: { datei: string }[] }).bilder[1].datei;
+  expect(m.medien.get(zweites)).toMatchObject({ alt: 'Tänzerin im Sprung' });
+});
+
+test('Ein Foto: Breite Textbreite, weit, randlos oder neben dem Text', async ({ page }) => {
+  const m = await redaktion(page);
+  await page.goto('/intern/news/bearbeiten/');
+  await page.getByLabel('Titel', { exact: true }).fill('Ein Foto');
+  await ende(page, '+ Bild');
+  const block = page.locator('.ab-block').nth(1);
+  await block.locator('input[type=file]').setInputFiles(FOTOS[0]);
+  const breite = block.getByRole('group', { name: 'Breite' });
+  await expect(breite.getByRole('button', { name: 'Weit' })).toHaveAttribute('aria-pressed', 'true');
+  await breite.getByRole('button', { name: 'Randlos' }).click();
+  await expect(breite.getByRole('button', { name: 'Randlos' })).toHaveAttribute('aria-pressed', 'true');
+  await expect.poll(() => (m.gespeichert.at(-1)?.body as string | undefined) ?? '', { timeout: 8000 }).toContain('breite: randlos');
+  await breite.getByRole('button', { name: 'Neben dem Text' }).click();
+  await expect.poll(() => (m.gespeichert.at(-1)?.body as string | undefined) ?? '', { timeout: 8000 }).toContain('darstellung: neben');
 });
 
 test('Editor und Veröffentlichen-Panel sind barrierearm (axe)', async ({ page }) => {
@@ -424,4 +577,28 @@ test('Format: Zwischentitel und Zitat sind eigene Blöcke; Mediathek-Angaben gel
   expect(de).toMatchObject({ foto: 'Kim', bilder: [{ datei: '2026/a.jpg', alt: 'Neu', fokus: '20% 30%' }] });
   expect(medienAnwenden(neu, medien, 'en')).toContain('alt: New');
   expect(medienAnwenden(neu, new Map())).toBe(neu);
+});
+
+test('Format: Bildpaar, Bildstrecke und Bild & Text mit Englisch bleiben beim Hin und Her gleich', () => {
+  const de = [
+    '::: bilder\ndarstellung: paar\nbilder:\n  - datei: 2026/a.jpg\n    alt: A\n    text: Erstes\n  - datei: 2026/b.jpg\n    alt: B\n:::',
+    '::: bilder\ndarstellung: strecke\ntitel: Der Tag\nbilder:\n  - datei: 2026/a.jpg\n    alt: A\n  - datei: 2026/b.jpg\n    alt: B\n  - datei: 2026/c.jpg\n    alt: C\n:::',
+    '::: schritte\ntitel: Ein Tag\nschritte:\n  - datei: 2026/a.jpg\n    alt: A\n    titel: Raus\n    text: Zum Welttanztag.\n  - datei: ""\n    titel: Noch ohne Bild\n:::',
+    '::: bilder\nbreite: randlos\nformat: original\nbilder:\n  - datei: 2026/a.jpg\n    alt: A\n:::',
+  ].join('\n\n');
+  const en = de.replace('text: Erstes', 'text: First').replace('titel: Der Tag', 'titel: The day').replace('titel: Raus', 'titel: Out');
+  const { bloecke, passend } = abschnitte(de, en);
+  expect(passend).toBe(true);
+  expect(bloecke.map((b) => b.typ)).toEqual(['bilder', 'bilder', 'schritte', 'bilder']);
+  expect(bloecke[0]).toMatchObject({ darstellung: 'paar', bilder: [{ text: 'Erstes', text_en: 'First' }, { alt: 'B' }] });
+  expect(bloecke[1]).toMatchObject({ darstellung: 'strecke', titel: 'Der Tag', titel_en: 'The day' });
+  expect(bloecke[2]).toMatchObject({ typ: 'schritte', schritte: [{ titel: 'Raus', titel_en: 'Out' }, { datei: '', titel: 'Noch ohne Bild' }] });
+  expect(bloecke[3]).toMatchObject({ breite: 'randlos' });
+  expect(zuMarkdown(bloecke, 'de')).toBe(zuMarkdown(abschnitte(zuMarkdown(bloecke, 'de')).bloecke, 'de'));
+  expect(zuMarkdown(bloecke, 'en')).toContain('titel: The day');
+  // Mediathek: Nachweis je Foto, wenn der Abschnitt keinen eigenen hat
+  const medien = new Map([['2026/a.jpg', { alt: 'Neu', alt_en: '', credit: 'Kim', focus: null }], ['2026/b.jpg', { alt: '', alt_en: '', credit: 'Lea', focus: null }]]);
+  const mit = abschnitte(medienAnwenden(zuMarkdown(bloecke), medien)).bloecke;
+  expect(mit[0]).toMatchObject({ foto: 'Kim, Lea', bilder: [{ foto: 'Kim' }, { foto: 'Lea' }] });
+  expect(mit[2]).toMatchObject({ schritte: [{ alt: 'Neu', foto: 'Kim' }, { titel: 'Noch ohne Bild' }] });
 });

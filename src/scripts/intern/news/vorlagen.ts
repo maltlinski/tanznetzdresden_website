@@ -15,7 +15,10 @@ export interface Vorlage {
 
 const text = (platzhalter: string): EBlock => ({ typ: 'text', de: '', en: '', platzhalter });
 const titel = (platzhalter: string): EBlock => ({ typ: 'zwischentitel', de: '', en: '', platzhalter });
-const bilder = (): EBlock => ({ typ: 'bilder', darstellung: 'raster', format: 'quer', spalten: 4, text: '', text_en: '', foto: '', bilder: [] });
+const bild = (format: 'quer' | 'original', spalten: 3 | 4 = 4): EBlock => ({
+  typ: 'bilder', darstellung: 'raster', breite: 'weit', format, spalten, titel: '', titel_en: '', text: '', text_en: '', foto: '', bilder: [],
+});
+const bilder = () => bild('quer');
 
 export const vorlagen: Vorlage[] = [
   {
@@ -53,7 +56,7 @@ export const vorlagen: Vorlage[] = [
     fakten: ['Wann', 'Wo', 'Eintritt'],
     bloecke: () => [
       text('Was erwartet das Publikum? Wer ist dabei?'),
-      { typ: 'bilder', darstellung: 'raster', format: 'original', spalten: 3, text: '', text_en: '', foto: '', bilder: [] },
+      bild('original', 3),
     ],
   },
 ];

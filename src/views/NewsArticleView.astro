@@ -1,15 +1,18 @@
 ---
-/** Einzelner News-Beitrag: Kopf auf Lila, Foto, Text mit „Auf einen Blick“, Teilen, Weiterlesen. */
+/**
+ * Einzelner News-Beitrag (Entwurf News v3): Kopf in fünf Varianten (Vollbild, Hochkant, Split, Typo, ohne Foto
+ * das Netz), Zeile mit Teilen, Eckdaten, Text mit Bildern in drei Breiten, Bildpaar, Bildstrecke und Bild & Text,
+ * Bildnachweise, Großansicht und „Mehr aus dem Netz“. Das Gerüst kommt aus src/lib/news-artikel.ts (gleich in
+ * der Vorschau des Editors).
+ */
+import { getImage, inferRemoteSize } from 'astro:assets';
 import Page from '../layouts/Page.astro';
 import Tag from '../components/ui/Tag.astro';
 import Badge from '../components/ui/Badge.astro';
-import KeilBar from '../components/ui/KeilBar.astro';
 import NewsImage from '../components/NewsImage.astro';
 import '../styles/artikel.css';
-import {
-  getNews, daysLeft, deadlineText, dateLong, dateShort, nrLabel, newsBadge, newsBadgeOnDark, newsCategoryLabel,
-  type NewsPost,
-} from '../lib/news';
+import { getNews, dateShort, newsBadge, newsCategoryLabel, type NewsPost } from '../lib/news';
+import { faktenHtml, fussHtml, kopfHtml, kopfModus, nachweise, zeileHtml } from '../lib/news-artikel';
 import { getVerein } from '../lib/settings';
 import { getLang, tr, url } from '../lib/i18n';
 import { texte } from '../lib/texte';
@@ -27,10 +30,36 @@ const t = {
   ...texte(lang, 'news', 'beitrag'),
   ...tr(lang, { de: { onlyDe: '' }, en: { onlyDe: 'This post is only available in German so far.' } }),
 };
-const cat = newsCategoryLabel[lang][post.category];
-const days = post.deadline ? daysLeft(post.deadline) : 0;
 const canonical = new URL(url(lang, 'news', `${post.id}/`), Astro.site).href;
 const mail = `mailto:?subject=${encodeURIComponent(post.title)}&body=${encodeURIComponent(`${post.teaser}\n\n${canonical}`)}`;
+
+// Titelbild: Seitenverhältnis entscheidet über den Kopf (Hochkant-Foto → Hochkant-Kopf)
+let bild: Parameters<typeof kopfHtml>[0]['bild'];
+let modus = kopfModus(post.hero, false);
+if (post.image) {
+  const masse = typeof post.image === 'string' ? await inferRemoteSize(post.image).catch(() => null) : post.image;
+  const verhaeltnis = masse?.width && masse.height ? masse.width / masse.height : 1.5;
+  modus = kopfModus(post.hero, true, verhaeltnis);
+  const remote = typeof post.image === 'string' ? { inferSize: true } : {};
+  const sizes = { vollbild: '100vw', hochkant: '(min-width: 900px) 46vw, 100vw', split: '(min-width: 900px) 56vw, 100vw', typo: '(min-width: 1320px) 1224px, 100vw', netz: '100vw' }[modus];
+  const [klein, gross] = await Promise.all([
+    getImage({ src: post.image, ...remote, widths: [640, 1000, 1400, 1900, 2400], format: 'webp', quality: 80 }),
+    getImage({ src: post.image, ...remote, width: 2400, format: 'webp', quality: 82 }),
+  ]);
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  const pos = post.imageFocus ? ` style="object-position:${post.imageFocus}"` : '';
+  bild = {
+    img: `<img class="ak__img" src="${klein.src}" srcset="${klein.srcSet.attribute}" sizes="${sizes}" alt="${esc(post.alt ?? '')}" decoding="async" fetchpriority="high"${pos}>`,
+    gross: gross.src,
+    verhaeltnis,
+    credit: post.imageCredit,
+  };
+}
+const kopf = kopfHtml({
+  lang, modus, flaeche: post.heroTheme, kategorie: post.category, titel: post.title, teaser: post.teaser, autor: post.author,
+  nr: post.nr, datum: post.date, minuten: post.minutes, zurueck: url(lang, 'news', '#journal'), bild, knoten: post.node, frist: post.deadline,
+});
+const liste = nachweise(post.html, bild?.credit ? { k: t.cover, credit: bild.credit } : undefined);
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'NewsArticle',
@@ -52,71 +81,19 @@ const jsonLd = {
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
-  <article data-article data-lang={lang}>
-    <header class="ah">
-      <div class="wrap ah__inner">
-        <a href={url(lang, 'news', '#journal')} class="ah__back" data-rise="0">{t.back}</a>
-        <div class="ah__meta" data-rise="0.08">
-          <Badge variant={newsBadgeOnDark(post.category)}>{cat}</Badge>
-          <span>{nrLabel(post.nr)} · <time datetime={post.date}>{dateLong(post.date, lang)}</time> · {post.minutes} {t.min} {t.read}</span>
-        </div>
-        <h1 class="ah__title" data-rise="0.16">{post.title}</h1>
-        <p class="ah__teaser" data-rise="0.26">{post.teaser}</p>
-        <span class="ah__author" data-rise="0.34">{t.text} · {post.author}</span>
-      </div>
-      <KeilBar class="ah__keil" />
-    </header>
+  <article data-article data-lang={lang} data-seed={post.id}>
+    <Fragment set:html={kopf} />
 
-    {post.image && (
-      <div class="wrap">
-        <figure class="ah__img">
-          <div class="ah__img-frame">
-            <NewsImage src={post.image} alt={post.alt ?? ''} widths={[640, 1000, 1400, 1900]} sizes="(min-width: 1320px) 1224px, 100vw" loading="eager" focus={post.imageFocus} />
-            <span class="ah__corner" aria-hidden="true"></span>
-          </div>
-          {post.imageCredit && <figcaption class="ah__credit">{t.credit}: {post.imageCredit}</figcaption>}
-        </figure>
+    <div class="ab">
+      <div class="ab__spalte">
+        {modus === 'vollbild' && post.teaser && <p class="ab__stand">{post.teaser}</p>}
+        {!post.translated && <p class="ab__note" lang="en">{t.onlyDe}</p>}
+        <Fragment set:html={zeileHtml(lang, post.author, post.date, mail)} />
+        <Fragment set:html={faktenHtml(lang, post.facts, post.deadline)} />
+        <div class="ab__text" lang={post.translated ? undefined : 'de'} set:html={post.html} />
+        <Fragment set:html={fussHtml(lang, post.author, post.date, liste)} />
       </div>
-    )}
-
-    <section class="ab">
-      <div class="wrap ab__inner">
-        <div class="ab__main">
-          {!post.translated && <p class="ab__note" lang="en">{t.onlyDe}</p>}
-          <div class="ab__text" lang={post.translated ? undefined : 'de'} set:html={post.html} />
-          <p class="ab__foot">{t.text} · {post.author} · {t.published} {dateLong(post.date, lang)}</p>
-        </div>
-
-        <aside class="ab__aside">
-          {post.deadline && (
-            <div class="ab__call">
-              <span class="ab__call-k">{t.deadline}</span>
-              <span class="ab__call-n" data-deadline={post.deadline} data-deadline-part="n">{deadlineText(days, 'n', lang)}</span>
-              <span class="ab__call-u">
-                <span data-deadline={post.deadline} data-deadline-part="unit">{deadlineText(days, 'unit', lang)}</span> · {t.until} {dateShort(post.deadline, lang)}
-              </span>
-            </div>
-          )}
-          {post.facts.length > 0 && (
-            <div class="ab__facts">
-              <h2 class="ab__aside-h">{t.glance}</h2>
-              <dl>
-                {post.facts.map((f) => (
-                  <div><dt>{f.label}</dt><dd>{f.value}</dd></div>
-                ))}
-              </dl>
-            </div>
-          )}
-          <div class="ab__share">
-            <h2 class="ab__aside-h">{t.share}</h2>
-            <div class="ab__share-btns">
-              <button type="button" class="chip" data-copy data-copied={t.copied}>{t.copy}</button>
-              <a class="chip" href={mail}>{t.mail}</a>
-            </div>
-          </div>
-        </aside>
-      </div>
-    </section>
+    </div>
 
     {next.length > 0 && (
       <section class="more surface-tint" aria-labelledby="more-h">
@@ -131,12 +108,19 @@ const jsonLd = {
           <div class="more__grid">
             {next.map((p) => (
               <a href={url(lang, 'news', `${p.id}/`)} class="more__card">
-                <div class="more__meta">
-                  <span>{dateShort(p.date, lang)}</span>
-                  <Badge variant={newsBadge[p.category]}>{newsCategoryLabel[lang][p.category]}</Badge>
+                <div class:list={['more__bild', !p.image && `more__bild--${p.heroTheme}`]}>
+                  {p.image
+                    ? <NewsImage src={p.image} alt={p.alt ?? ''} focus={p.imageFocus} sizes="(min-width: 1000px) 620px, 100vw" />
+                    : <canvas data-netz-karte={p.id} data-thema={p.heroTheme} aria-hidden="true"></canvas>}
                 </div>
-                <h3 class="more__title">{p.title}</h3>
-                <p class="more__teaser">{p.teaser}</p>
+                <div class="more__body">
+                  <div class="more__meta">
+                    <span>{dateShort(p.date, lang)}</span>
+                    <Badge variant={newsBadge[p.category]}>{newsCategoryLabel[lang][p.category]}</Badge>
+                  </div>
+                  <h3 class="more__title">{p.title}</h3>
+                  <p class="more__teaser">{p.teaser}</p>
+                </div>
               </a>
             ))}
           </div>
@@ -148,15 +132,29 @@ const jsonLd = {
 
 <script>
   import { introText } from '../scripts/intro-text';
+  import { titelHerein } from '../scripts/split-text';
+  import { gsap, motionOk } from '../scripts/gsap';
   import { initLightbox } from '../scripts/lightbox';
+  import { initArtikel, kartenNetze } from '../scripts/news-artikel';
   import { initProtectedEmails } from '../scripts/protected-email';
   import '../scripts/deadline';
 
   const article = document.querySelector<HTMLElement>('[data-article]');
-  introText(article?.querySelector('.ah') ?? null);
-  if (article) initLightbox(article);
-  // E-Mail-Adressen im Text (src/lib/news-email.ts)
-  if (article) initProtectedEmails(article);
+  if (article) {
+    introText(article.querySelector('.ak'));
+    titelHerein(article.querySelector('.ak') ?? undefined);
+    initLightbox(article);
+    initArtikel(article, { seed: article.dataset.seed ?? '' });
+    kartenNetze(article);
+    // E-Mail-Adressen im Text (src/lib/news-email.ts)
+    initProtectedEmails(article);
+    // Titelbild zieht beim Scrollen langsam nach oben
+    if (motionOk()) {
+      article.querySelectorAll<HTMLElement>('.ak--vollbild .ak__img, .ak--hochkant .ak__img, .ak--split .ak__img').forEach((img) => {
+        gsap.fromTo(img, { yPercent: 0, scale: 1.16 }, { yPercent: 7, scale: 1.16, ease: 'none', scrollTrigger: { trigger: img.closest('.ak'), start: 'top top', end: 'bottom top', scrub: true } });
+      });
+    }
+  }
 
   // Lesefortschritt als Magenta-Linie unter dem Header
   const header = document.querySelector<HTMLElement>('[data-header]');
@@ -172,24 +170,6 @@ const jsonLd = {
     addEventListener('scroll', update, { passive: true });
     update();
   }
-
-  // Link kopieren
-  document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach((btn) => {
-    const label = btn.textContent;
-    btn.addEventListener('click', async () => {
-      try {
-        await navigator.clipboard.writeText(location.href.split('#')[0]);
-        btn.textContent = btn.dataset.copied ?? label;
-        btn.setAttribute('aria-pressed', 'true');
-        setTimeout(() => {
-          btn.textContent = label;
-          btn.removeAttribute('aria-pressed');
-        }, 2000);
-      } catch {
-        prompt('Link', location.href);
-      }
-    });
-  });
 </script>
 
 <style>
@@ -201,8 +181,13 @@ const jsonLd = {
   .more__all { color: var(--magenta-2); letter-spacing: 0.14em; }
   .more__all:hover { color: var(--purple); }
   .more__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 20px; }
-  .more__card { display: flex; flex-direction: column; gap: 12px; background: var(--paper); border-top: 3px solid var(--magenta); padding: 24px 24px 28px; color: var(--purple); }
+  .more__card { display: flex; flex-direction: column; background: var(--paper); border-top: 3px solid var(--magenta); color: var(--purple); }
   .more__card:hover { color: var(--magenta-2); }
+  .more__bild { position: relative; aspect-ratio: 16 / 9; background: var(--purple); overflow: hidden; }
+  .more__bild--cyan { background: var(--cyan); }
+  .more__bild--tint { background: var(--tint); }
+  .more__bild :global(img), .more__bild canvas { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .more__body { display: flex; flex-direction: column; gap: 12px; padding: 24px 24px 28px; }
   .more__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
   .more__title { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.4vw, 30px); line-height: 1.05; letter-spacing: -0.025em; color: inherit; text-wrap: balance; }
   .more__teaser { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink-soft); }

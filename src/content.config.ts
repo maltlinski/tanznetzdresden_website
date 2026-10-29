@@ -215,7 +215,14 @@ const newsTranslatable = (image: SchemaContext['image']) => ({
   quote: z.object({ text: z.string(), who: z.string(), role: z.string().optional() }).optional(),
   image: image().optional(),
   alt: z.string().optional(),
+  /** Ohne Titelbild: Netz-Kopf mit Magenta-Knoten – kleine Zeile und Angabe (z. B. „Ausgabe“ · „#6 · 26. November“) */
+  nodeKicker: z.string().optional(),
+  nodeValue: z.string().optional(),
 });
+/** Kopf der Beitragsseite (Entwurf News v3): auto = Vollbild, Hochkant-Fotos bekommen den Hochkant-Kopf */
+export const newsHeroes = ['auto', 'vollbild', 'hochkant', 'split', 'typo'] as const;
+/** Farbfläche des Netz-Kopfs (Beiträge ohne Titelbild) */
+export const newsThemes = ['purple', 'cyan', 'tint'] as const;
 const news = defineCollection({
   loader: glob({ pattern: '*.md', base: './src/content/news/de' }),
   schema: ({ image }) =>
@@ -226,6 +233,8 @@ const news = defineCollection({
         category: z.enum(newsCategories),
         /** Wer den Text geschrieben hat */
         author: z.string(),
+        hero: z.enum(newsHeroes).default('auto'),
+        heroTheme: z.enum(newsThemes).default('purple'),
         /** Bildausschnitt des Fotos, z. B. "50% 30%" (waagerecht, senkrecht) */
         imageFocus: z.string().regex(/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30%').optional(),
         /** Bewerbungsfrist – macht den Beitrag zur Ausschreibung */

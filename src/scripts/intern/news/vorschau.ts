@@ -6,13 +6,13 @@
 export type Geraet = 'computer' | 'handy';
 export type Sprache = 'de' | 'en';
 /** Wohin ein Klick in der Vorschau springt */
-export type Sprungziel = { ziel: 'abschnitt'; i: number } | { ziel: 'titel' | 'kurztext' | 'titelfoto' | 'fakten' | 'frist' };
+export type Sprungziel = { ziel: 'abschnitt'; i: number } | { ziel: 'titel' | 'kurztext' | 'titelfoto' | 'fakten' | 'frist' | 'kopf' };
 
 export interface Vorschau {
   /** neuen Stand schicken (gebündelt) */
   neu(): void;
-  /** Block i (oder Titel, Teaser, Titelbild) in der Vorschau zeigen und markieren */
-  zeigen(i: number | 'titel' | 'kurztext' | 'titelfoto'): void;
+  /** Block i (oder Titel, Teaser, Titelbild, Kopf, Eckdaten) in der Vorschau zeigen und markieren */
+  zeigen(i: number | 'titel' | 'kurztext' | 'titelfoto' | 'kopf' | 'fakten'): void;
 }
 
 /** Breite, in der „Computer“ dargestellt und dann verkleinert wird */

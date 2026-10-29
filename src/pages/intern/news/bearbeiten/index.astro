@@ -36,6 +36,17 @@ const linkziele = [
   ...(await getNews('de')).map((n) => ({ art: 'News', titel: n.title, href: ohneBasis(url('de', 'news', `${n.id}/`)) })),
 ];
 const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
+
+// Kopfbereich: kleine Skizzen der Varianten (Entwurf Redaktion v2); „bild“ = dort steht das Titelbild
+type Teil = { l: string; t: string; w: string; h: string; bg?: string; bild?: boolean };
+const SKIZZEN: Record<'vollbild' | 'hochkant' | 'split' | 'typo', Teil[]> = {
+  vollbild: [{ l: '0', t: '0', w: '100%', h: '100%', bild: true }, { l: '0', t: '64%', w: '100%', h: '36%', bg: 'color-mix(in srgb, var(--purple) 90%, transparent)' }, { l: '8%', t: '75%', w: '52%', h: '9%', bg: '#fff' }, { l: '0', t: '60%', w: '40%', h: '4%', bg: 'var(--cyan)' }],
+  hochkant: [{ l: '0', t: '0', w: '100%', h: '100%', bg: 'var(--purple)' }, { l: '60%', t: '0', w: '30%', h: '100%', bild: true }, { l: '8%', t: '52%', w: '42%', h: '10%', bg: '#fff' }, { l: '8%', t: '68%', w: '30%', h: '6%', bg: 'rgba(255,255,255,0.6)' }],
+  split: [{ l: '0', t: '0', w: '100%', h: '100%', bg: 'var(--purple)' }, { l: '46%', t: '0', w: '54%', h: '100%', bild: true }, { l: '8%', t: '52%', w: '32%', h: '10%', bg: '#fff' }, { l: '8%', t: '68%', w: '24%', h: '6%', bg: 'rgba(255,255,255,0.6)' }],
+  typo: [{ l: '0', t: '0', w: '100%', h: '58%', bg: 'var(--purple)' }, { l: '8%', t: '16%', w: '50%', h: '10%', bg: '#fff' }, { l: '8%', t: '44%', w: '84%', h: '52%', bild: true }],
+};
+const KOEPFE = [['auto', 'Automatisch'], ['vollbild', 'Vollbild'], ['hochkant', 'Hochkant'], ['split', 'Split'], ['typo', 'Typo']] as const;
+const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--cyan)'], ['tint', 'Hell', 'var(--tint)']] as const;
 ---
 <Redaktion title="Beitrag" current="beitraege" voll>
   <div class="ne-top">
@@ -145,6 +156,61 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
             <p class="i-msg" data-photo-msg hidden></p>
           </div>
 
+          <div class="ne-feld" data-kopf-feld>
+            <div class="ne-feld__kopf">
+              <span class="ne-label" id="ne-kopf-l">Kopfbereich</span>
+              <span class="ne-feld__tipp" data-kopf-info>Ohne Titelbild · Netz</span>
+            </div>
+            <div class="ne-kopf" data-kopf-mit-bild hidden>
+              <div class="ne-koepfe" role="radiogroup" aria-labelledby="ne-kopf-l">
+                {KOEPFE.map(([wert, name], i) => (
+                  <label class="ne-kopf-opt">
+                    <input type="radio" name="hero" value={wert} checked={i === 0} />
+                    <span class="ne-skizze" aria-hidden="true">
+                      {(wert === 'auto' ? (['vollbild', 'hochkant'] as const) : [wert]).map((m) => (
+                        <span class="ne-skizze__satz" data-skizze={m}>
+                          {SKIZZEN[m].map((t) => (
+                            <span class="ne-skizze__teil" style={`left:${t.l};top:${t.t};width:${t.w};height:${t.h}${t.bg ? `;background:${t.bg}` : ''}`}>
+                              {t.bild && <img alt="" data-kopf-bild />}
+                            </span>
+                          ))}
+                        </span>
+                      ))}
+                    </span>
+                    <span class="ne-kopf-opt__name" data-kopf-name={wert}>{name}</span>
+                  </label>
+                ))}
+              </div>
+              <span class="i-hint">Automatisch: Querformat wird Vollbild, Hochkant-Fotos bekommen den Hochkant-Kopf.</span>
+            </div>
+            <div class="ne-kopf ne-kopf--netz" data-kopf-ohne-bild>
+              <span class="i-hint">Ohne Titelbild zeigt der Beitrag das Netz auf einer Farbfläche. Ein Magenta-Knoten trägt die wichtigste Angabe.</span>
+              <div class="ne-flaechen" role="radiogroup" aria-label="Farbfläche">
+                {FLAECHEN.map(([wert, name, farbe], i) => (
+                  <label class="ne-kopf-opt ne-flaeche">
+                    <input type="radio" name="hero_theme" value={wert} checked={i === 0} />
+                    <span class="ne-flaeche__farbe" style={`background:${farbe}`} aria-hidden="true"></span>
+                    <span class="ne-kopf-opt__name">{name}</span>
+                  </label>
+                ))}
+              </div>
+              <p class="i-hint ne-kopf__frist" data-nur="Ausschreibung">Bei Ausschreibungen zeigt der Knoten automatisch den Countdown bis zur Frist.</p>
+              <div class="ne-row" data-kein="Ausschreibung">
+                <div class="i-field"><label for="ne-node-k">Knoten · kleine Zeile</label><input id="ne-node-k" name="node_kicker" maxlength="60" placeholder="z. B. Ausgabe" /></div>
+                <div class="i-field"><label for="ne-node-v">Knoten · Angabe</label><input id="ne-node-v" name="node_value" maxlength="80" placeholder="z. B. #6 · 26. November" /></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ne-feld" data-fakten>
+            <div class="ne-feld__kopf">
+              <span class="ne-label" id="ne-facts-l">Eckdaten</span>
+              <span class="ne-feld__tipp">Infokasten oben im Beitrag</span>
+            </div>
+            <div class="ne-facts ne-facts--haupt" data-facts="facts" role="group" aria-labelledby="ne-facts-l"></div>
+            <button type="button" class="ne-plus" data-add-fact="facts">+ Eckdatum</button>
+          </div>
+
           <div class="ne-feld">
             <div class="ne-feld__kopf">
               <span class="ne-label" id="ne-body-l">Inhalt</span>
@@ -154,25 +220,22 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
             <div class="ne-abschnitte" data-abschnitte aria-labelledby="ne-body-l"></div>
           </div>
 
-          <details class="ne-mehr" data-fakten>
-            <summary>Auf einen Blick <span class="ne-opt">optional</span></summary>
-            <p class="i-hint">Kurze Fakten neben dem Text, z. B. „Wann · Do, 15. Oktober, 19:30 Uhr“ oder „Wo · Villa Wigman“.</p>
-            <div class="ne-facts" data-facts="facts"></div>
-            <button type="button" class="md-leise" data-add-fact="facts">+ Zeile hinzufügen</button>
-          </details>
-
           <details class="ne-mehr ne-en" data-en>
             <summary>Englische Fassung <span class="ne-opt" data-en-state></span></summary>
             <p class="i-hint">Fehlt ein Feld, zeigt die englische Seite den deutschen Text. Die Blöcke übersetzt du direkt dort („Englisch“ aufklappen).</p>
             <div class="i-field"><label for="ne-title-en">Title</label><input id="ne-title-en" name="title_en" maxlength="160" lang="en" /></div>
             <div class="i-field"><label for="ne-teaser-en">Teaser (English)</label><textarea id="ne-teaser-en" name="teaser_en" maxlength="400" rows="2" lang="en"></textarea></div>
             <div class="i-field" data-nur-bild><label for="ne-alt-en">Image description</label><input id="ne-alt-en" name="image_alt_en" maxlength="300" lang="en" /></div>
+            <div class="ne-row" data-kein="Ausschreibung" data-nur-netz>
+              <div class="i-field"><label for="ne-node-k-en">Node · small line</label><input id="ne-node-k-en" name="node_kicker_en" maxlength="60" lang="en" /></div>
+              <div class="i-field"><label for="ne-node-v-en">Node · value</label><input id="ne-node-v-en" name="node_value_en" maxlength="80" lang="en" /></div>
+            </div>
             <div data-nur="Stimme">
               <div class="i-field"><label for="ne-qtext-en">Quote</label><textarea id="ne-qtext-en" name="quote_text_en" rows="2" maxlength="400" lang="en"></textarea></div>
               <div class="i-field"><label for="ne-qrole-en">Role</label><input id="ne-qrole-en" name="quote_role_en" maxlength="160" lang="en" /></div>
             </div>
             <div class="ne-facts-en">
-              <span class="ne-label">At a glance</span>
+              <span class="ne-label">Key facts</span>
               <div class="ne-facts" data-facts="facts_en" data-mirror></div>
             </div>
           </details>
@@ -418,10 +481,10 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       const factBoxes = { facts: $('[data-facts="facts"]')!, facts_en: $('[data-facts="facts_en"]')! };
       const factRow = (box: HTMLElement, f: Fact, mirror?: Fact) => {
         const div = h('div', { class: 'ne-fact' },
-          h('input', { value: f.label, placeholder: mirror?.label || 'z. B. Wann', maxLength: 60, 'aria-label': 'Bezeichnung' }),
-          h('input', { value: f.value, placeholder: mirror?.value || 'z. B. Do · 15. Oktober · 19:30 Uhr', maxLength: 200, 'aria-label': 'Angabe' }));
+          h('input', { class: 'ne-fact__k', value: f.label, placeholder: mirror?.label || 'Wann', maxLength: 60, 'aria-label': 'Bezeichnung' }),
+          h('input', { class: 'ne-fact__v', value: f.value, placeholder: mirror?.value || 'Do · 26. November 2026 · 20:00 Uhr', maxLength: 200, 'aria-label': 'Angabe' }));
         if (!box.hasAttribute('data-mirror')) {
-          div.append(h('button', { type: 'button', class: 'md-leise', text: 'Entfernen', onclick: () => { div.remove(); syncMirror(); geaendert(); } }));
+          div.append(h('button', { type: 'button', class: 'ne-fact__weg', text: 'Löschen', onclick: () => { div.remove(); syncMirror(); geaendert(); } }));
         }
         box.append(div);
       };
@@ -443,7 +506,6 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
         de.forEach((f) => factRow(factBoxes.facts, f));
         de.forEach((f, i) => factRow(factBoxes.facts_en, en[i] ?? { label: '', value: '' }, f));
         $('.ne-facts-en')!.hidden = !de.length;
-        if (de.length) $<HTMLDetailsElement>('[data-fakten]')!.open = true;
       };
       $('[data-add-fact="facts"]')!.addEventListener('click', () => {
         factRow(factBoxes.facts, { label: '', value: '' });
@@ -457,16 +519,20 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       const sichtbar = (nur: string) => val('category') === nur || (nur === 'Ausschreibung' ? !!val('deadline') : !!val('quote_text'));
       const rubrik = () => {
         $$('[data-nur]').forEach((el) => (el.hidden = !sichtbar(el.dataset.nur!)));
+        $$('[data-kein]').forEach((el) => (el.hidden = val('category') === el.dataset.kein || (el.hasAttribute('data-nur-netz') && !!imagePath)));
         $('[data-nur-bild]')!.hidden = !imagePath;
       };
 
       /** Formular aus einem gespeicherten Stand füllen (ohne Blöcke) */
       const fuellen = (r: Partial<NewsRow>) => {
         for (const k of ['title', 'teaser', 'image_alt', 'image_credit', 'deadline', 'quote_text', 'quote_who', 'quote_role',
-          'date', 'author', 'featured', 'title_en', 'teaser_en', 'image_alt_en', 'quote_text_en', 'quote_role_en', 'slug']) {
+          'date', 'author', 'featured', 'title_en', 'teaser_en', 'image_alt_en', 'quote_text_en', 'quote_role_en', 'slug',
+          'node_kicker', 'node_value', 'node_kicker_en', 'node_value_en']) {
           set(k, (r as Record<string, unknown>)[k]);
         }
         set('category', r.category ?? 'Netzwerk');
+        set('hero', r.hero ?? 'auto');
+        set('hero_theme', r.hero_theme ?? 'purple');
         if (!r.date) set('date', heute());
         if (!r.author) set('author', ctx.profile?.display_name ?? '');
         slugTouched = !!r.slug;
@@ -559,11 +625,41 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
         photoMsg.textContent = t;
         photoMsg.hidden = !t;
       };
+      // Kopfbereich: Varianten mit Titelbild oder Farbfläche und Knoten ohne
+      const kopfInfo = $('[data-kopf-info]')!;
+      const KOPF_NAME: Record<string, string> = { vollbild: 'Vollbild', hochkant: 'Hochkant', split: 'Split', typo: 'Typo' };
+      let hochformat = false;
+      const kopfZeigen = () => {
+        const src = newsPhotoUrl(imagePath);
+        $('[data-kopf-mit-bild]')!.hidden = !src;
+        $('[data-kopf-ohne-bild]')!.hidden = !!src;
+        const auto = hochformat ? 'hochkant' : 'vollbild';
+        $$('[data-skizze]').forEach((el) => (el.hidden = !!el.closest('.ne-kopf-opt')?.querySelector('input[value="auto"]') && el.dataset.skizze !== auto));
+        $('[data-kopf-name="auto"]')!.textContent = `Auto · ${KOPF_NAME[auto]}`;
+        const gewaehlt = val('hero') || 'auto';
+        const zeigt = gewaehlt === 'auto' || (gewaehlt === 'vollbild' && hochformat) ? auto : gewaehlt;
+        kopfInfo.textContent = src ? `${hochformat ? 'Hochkant-Foto' : 'Querformat'} · zeigt ${KOPF_NAME[zeigt]}` : 'Ohne Titelbild · Netz';
+      };
+      const kopfBild = (src: string | null) => {
+        $$<HTMLImageElement>('[data-kopf-bild]').forEach((img) => {
+          if (src) img.src = src;
+          img.style.objectPosition = imageFocus ?? '';
+        });
+        if (!src) return kopfZeigen();
+        const probe = new Image();
+        probe.onload = () => {
+          hochformat = probe.naturalHeight > probe.naturalWidth;
+          kopfZeigen();
+        };
+        probe.src = src;
+        kopfZeigen();
+      };
       const showPhoto = () => {
         const src = newsPhotoUrl(imagePath);
         leerEl.hidden = !!src;
         vollEl.hidden = !src;
         rubrik();
+        kopfBild(src);
         if (!src) return;
         let crops = zuschnitte(src, imageFocus);
         $('[data-cover-crops]')!.replaceChildren(crops);
@@ -572,6 +668,7 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
           const neu = zuschnitte(src, f);
           crops.replaceWith(neu);
           crops = neu;
+          $$<HTMLImageElement>('[data-kopf-bild]').forEach((img) => (img.style.objectPosition = f));
           geaendert();
         }));
       };
@@ -631,6 +728,19 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       });
 
       // ---------- Daten zum Speichern ----------
+      /** Kopfbereich und Knoten (Migration 20261029000000) */
+      const kopf = () => ({
+        hero: (val('hero') || 'auto') as NonNullable<NewsRow['hero']>,
+        hero_theme: (val('hero_theme') || 'purple') as NonNullable<NewsRow['hero_theme']>,
+        node_kicker: orNull(val('node_kicker')),
+        node_value: orNull(val('node_value')),
+        node_kicker_en: orNull(val('node_kicker_en')),
+        node_value_en: orNull(val('node_value_en')),
+      });
+      const kopfOk = () => {
+        const k = kopf();
+        return 'hero' in row || k.hero !== 'auto' || k.hero_theme !== 'purple' || !!(k.node_kicker || k.node_value || k.node_kicker_en || k.node_value_en);
+      };
       const datumBeimVeroeffentlichen = { wert: '' };
       const daten = (status: 'entwurf' | 'veroeffentlicht') => {
         const bloecke = editor.bloecke();
@@ -659,6 +769,8 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
           ...(imageFocus || 'image_focus' in row ? { image_focus: imagePath ? imageFocus : null } : {}),
           // erst ab Migration 20261016000000
           ...(newsletterOk ? { newsletter } : {}),
+          // erst ab Migration 20261029000000: ohne sie nur mitschicken, wenn etwas gewählt ist
+          ...(kopfOk() ? kopf() : {}),
           image_alt_en: imagePath ? orNull(val('image_alt_en')) : null,
           quote_text: zitat ? orNull(val('quote_text')) : null,
           quote_who: zitat ? orNull(val('quote_who')) : null,
@@ -673,7 +785,7 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       /** für die Vorschau: dazu jeder Block einzeln (Klick springt dorthin) */
       const vorschauDaten = (lang: Sprache) => {
         const bloecke = editor.bloecke();
-        return { ...daten(row.status ?? 'entwurf'), image_focus: imageFocus, abschnitte: bloecke.map((b) => zuMarkdown([b], lang)) };
+        return { ...daten(row.status ?? 'entwurf'), ...kopf(), image_focus: imageFocus, abschnitte: bloecke.map((b) => zuMarkdown([b], lang)) };
       };
 
       // ---------- Springen (aus der Vorschau oder der Checkliste) ----------
@@ -691,15 +803,16 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
         if (z.ziel === 'kurztext') return hin(teaser);
         if (z.ziel === 'frist') return hin(field('deadline') as HTMLElement);
         if (z.ziel === 'titelfoto') return hin(coverFeld, imagePath ? field('image_alt') as HTMLElement : $('[data-cover-mediathek]'));
-        if (z.ziel === 'fakten') {
-          $<HTMLDetailsElement>('[data-fakten]')!.open = true;
-          return hin($('[data-fakten]'), factBoxes.facts.querySelector('input') ?? $('[data-add-fact="facts"]'));
-        }
+        if (z.ziel === 'fakten') return hin($('[data-fakten]'), factBoxes.facts.querySelector('input') ?? $('[data-add-fact="facts"]'));
+        if (z.ziel === 'kopf') return hin(kopfFeld, kopfFeld.querySelector<HTMLInputElement>(`${imagePath ? '[data-kopf-mit-bild]' : '[data-kopf-ohne-bild]'} input:checked`));
       };
+      const kopfFeld = $('[data-kopf-feld]')!;
       const vp = vorschau({ url: `${internUrl('news/vorschau/')}?eingebettet=1`, daten: vorschauDaten, springen });
       titel.addEventListener('focus', () => vp.zeigen('titel'));
       teaser.addEventListener('focus', () => vp.zeigen('kurztext'));
       coverFeld.addEventListener('focusin', () => vp.zeigen('titelfoto'));
+      kopfFeld.addEventListener('focusin', () => vp.zeigen('kopf'));
+      $('[data-fakten]')!.addEventListener('focusin', () => vp.zeigen('fakten'));
 
       // ---------- Checkliste ----------
       type Punkt = { text: string; ok: boolean; pflicht: boolean; ziel: () => void };
@@ -716,17 +829,17 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
         const ohne = editor.ohneBeschreibung() + (imagePath && !val('image_alt') ? 1 : 0);
         p.push({ text: ohne ? `Bildbeschreibung fehlt bei ${ohne} ${ohne === 1 ? 'Foto' : 'Fotos'}` : 'Bildbeschreibung für alle Bilder', ok: !ohne, pflicht: false, ziel: () => {
           if (imagePath && !val('image_alt')) return hin(field('image_alt') as HTMLElement);
-          const i = $$('.ab-block').findIndex((b) => b.classList.contains('ab-block--bilder'));
-          if (i >= 0) editor.springen(i);
+          const i = $$('.ab-block').findIndex((b) => b.classList.contains('ab-block--bilder') || b.classList.contains('ab-block--schritte'));
+          if (i >= 0) springen({ ziel: 'abschnitt', i });
         } });
         const ohneNachweis = editor.ohneNachweis() + (imagePath && !val('image_credit') ? 1 : 0);
         p.push({ text: 'Fotonachweis für alle Bilder', ok: !ohneNachweis, pflicht: false, ziel: () => {
           if (imagePath && !val('image_credit')) return hin(field('image_credit') as HTMLElement);
-          const i = $$('.ab-block').findIndex((b) => b.classList.contains('ab-block--bilder'));
-          if (i >= 0) editor.springen(i);
+          const i = $$('.ab-block').findIndex((b) => b.classList.contains('ab-block--bilder') || b.classList.contains('ab-block--schritte'));
+          if (i >= 0) springen({ ziel: 'abschnitt', i });
         } });
         const leer = editor.leer();
-        p.push({ text: 'Keine leeren Blöcke', ok: leer < 0, pflicht: false, ziel: () => leer >= 0 && editor.springen(leer) });
+        p.push({ text: 'Keine leeren oder unvollständigen Blöcke', ok: leer < 0, pflicht: false, ziel: () => leer >= 0 && springen({ ziel: 'abschnitt', i: leer }) });
         const alles = JSON.stringify(daten('entwurf'));
         p.push({ text: 'Keine Emoji (Gestaltungsregel)', ok: !EMOJI.test(alles), pflicht: true, ziel: () => springen({ ziel: 'titel' }) });
         p.push({ text: 'Englische Fassung', ok: !!val('title_en') || hatEnglisch(editor.bloecke()), pflicht: false, ziel: () => {
@@ -826,6 +939,7 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
             const dup = /duplicate|unique/i.test(error.message);
             if (/image_focus|news_image_alt/.test(error.message)) melden('Die Datenbank ist noch nicht auf dem neuen Stand: Bitte die Migration 20261015000000_news_bilder.sql im SQL-Editor ausführen.');
             else if (/newsletter/.test(error.message)) melden('Bitte die Migration 20261016000000_mediathek.sql im SQL-Editor ausführen.');
+            else if (/hero|node_kicker|node_value/.test(error.message)) melden('Für den Kopfbereich bitte die Migration 20261029000000_news_kopf.sql im SQL-Editor ausführen.');
             else if (/body_check|body_en_check/.test(error.message)) melden('Der Text ist zu lang. Bitte die Migration 20261015000000_news_bilder.sql ausführen (erlaubt längere Texte) oder kürzen.');
             else melden(dup ? 'Diese Adresse ist schon vergeben. Bitte unter „Weitere Angaben → Adresse“ eine andere wählen.' : errorText(error));
             return false;
@@ -895,7 +1009,9 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
       }
       form.addEventListener('input', geaendert);
       form.addEventListener('change', (e) => {
-        if ((e.target as HTMLInputElement).name === 'category') rubrik();
+        const name = (e.target as HTMLInputElement).name;
+        if (name === 'category') rubrik();
+        if (name === 'hero') kopfZeigen();
         geaendert();
       });
 

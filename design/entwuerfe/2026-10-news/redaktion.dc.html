@@ -1,0 +1,1808 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>v2 · TanzNetzDresden · Redaktion</title>
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/base.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/styles.css">
+  <script src="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/_ds_bundle.js"></script>
+  <style>
+    body{margin:0;background:var(--tint-2);color:var(--ink);font-family:var(--font-body);hyphens:auto}
+    *{box-sizing:border-box}
+    a{color:var(--magenta);text-decoration:none}
+    a:hover{color:var(--purple)}
+    textarea,input,button{font:inherit;color:inherit}
+    ::placeholder{color:var(--ink-muted);opacity:1}
+    button:focus-visible,label:focus-within{outline:2px solid var(--magenta);outline-offset:2px}
+    ::selection{background:var(--magenta);color:#fff}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;display:flex">
+
+  <aside style="flex:0 0 220px;position:sticky;top:0;align-self:flex-start;height:100vh;overflow:auto;background:var(--purple);color:#fff;display:flex;flex-direction:column;gap:32px;padding:26px 14px 22px;z-index:20">
+    <div style="display:flex;flex-direction:column;gap:14px;padding:0 8px">
+      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="76px" hint-size="76px,29px"></x-import>
+      <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan)">Redaktion</span>
+    </div>
+    <nav style="display:flex;flex-direction:column;gap:2px">
+      <sc-for list="{{ nav }}" as="n" hint-placeholder-count="2">
+        <button onClick="{{ n.go }}" style="display:flex;align-items:center;gap:12px;width:100%;padding:13px 10px;border:0;border-radius:0;background:{{ n.bg }};color:#fff;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;text-align:left" style-hover="background:rgba(255,255,255,0.08)">
+          <span style="width:8px;height:8px;flex:none;background:{{ n.mk }}"></span>
+          <span style="flex:1">{{ n.label }}</span>
+          <span style="color:rgba(255,255,255,0.7)">{{ n.count }}</span>
+        </button>
+      </sc-for>
+    </nav>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:14px;padding:18px 8px 0;border-top:1px solid rgba(255,255,255,0.16)">
+      <button onClick="{{ toProfile }}" style="display:flex;align-items:center;gap:12px;padding:0;border:0;border-radius:0;background:none;color:#fff;cursor:pointer;text-align:left" style-hover="color:var(--cyan)">
+        <span style="position:relative;flex:none;width:40px;height:40px;overflow:hidden;background:var(--purple-2)">
+          <sc-if value="{{ me.hasImg }}" hint-placeholder-val="{{ false }}">
+            <img loading="lazy" src="{{ me.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ me.pos }}">
+          </sc-if>
+        </span>
+        <span style="display:flex;flex-direction:column;gap:4px;min-width:0">
+          <span style="font-family:var(--font-display);font-weight:700;font-size:16px;letter-spacing:-0.01em">{{ me.name }}</span>
+          <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.72)">{{ me.role }}</span>
+        </span>
+      </button>
+      <a href="News.dc.html" style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan)" style-hover="color:#fff">Website ansehen →</a>
+    </div>
+  </aside>
+
+  <main style="flex:1 1 0;min-width:0">
+
+    <sc-if value="{{ isList }}" hint-placeholder-val="{{ true }}">
+      <section data-screen-label="Beiträge" style="max-width:1180px;padding:clamp(28px,4vw,52px) clamp(20px,3.5vw,48px) 80px">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:20px 32px;margin-bottom:28px">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="200px,14px">Website · News</x-import>
+            <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(40px,5vw,60px);line-height:0.95;letter-spacing:-0.035em;color:var(--purple);margin:0">Beiträge</h1>
+          </div>
+          <div style="display:flex;flex-wrap:wrap;align-items:center;gap:12px">
+            <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Beiträge durchsuchen" style="width:min(280px,100%);padding:12px 14px;border:1.5px solid var(--rule);border-radius:0;background:#fff;font-size:15px;outline:none" style-focus="border-color:var(--magenta)">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" marker="{{ true }}" onClick="{{ newPost }}" hint-size="180px,42px">Neuer Beitrag</x-import>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px">
+          <sc-for list="{{ tabs }}" as="t" hint-placeholder-count="4">
+            <button onClick="{{ t.pick }}" style="display:flex;gap:8px;align-items:center;padding:10px 14px;border:1.5px solid var(--purple);border-radius:0;background:{{ t.bg }};color:{{ t.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta)">{{ t.label }}<span style="opacity:0.65">{{ t.count }}</span></button>
+          </sc-for>
+        </div>
+
+        <div style="border-top:2px solid var(--purple);background:#fff">
+          <sc-for list="{{ rows }}" as="r" hint-placeholder-count="5">
+            <div role="button" tabindex="0" onClick="{{ r.open }}" style="display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;padding:16px 18px 16px 14px;border-bottom:1px solid var(--rule);cursor:pointer;transition:background 150ms" style-hover="background:var(--tint)">
+              <div style="position:relative;flex:none;width:112px;aspect-ratio:4/3;background:var(--tint);overflow:hidden;display:flex;align-items:center;justify-content:center">
+                <sc-if value="{{ r.hasThumb }}" hint-placeholder-val="{{ false }}">
+                  <img loading="lazy" src="{{ r.thumb }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ r.pos }};display:block">
+                </sc-if>
+                <sc-if value="{{ r.noThumb }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">Nur Text</span>
+                </sc-if>
+              </div>
+              <div style="flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ r.badge }}" size="sm" hint-size="80px,20px">{{ r.cat }}</x-import>
+                  <sc-if value="{{ r.warn }}" hint-placeholder-val="{{ false }}">
+                    <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)">{{ r.warn }}</span>
+                  </sc-if>
+                </div>
+                <h3 style="margin:0;font-family:var(--font-display);font-weight:700;font-size:21px;line-height:1.15;letter-spacing:-0.015em;color:var(--purple);text-wrap:balance">{{ r.title }}</h3>
+                <sc-if value="{{ showTeaser }}" hint-placeholder-val="{{ true }}">
+                  <p style="margin:0;font-size:14px;line-height:1.5;color:var(--ink-soft);display:-webkit-box;-webkit-line-clamp:1;-webkit-box-orient:vertical;overflow:hidden">{{ r.teaser }}</p>
+                </sc-if>
+              </div>
+              <div style="flex:0 0 190px;display:flex;flex-direction:column;align-items:flex-start;gap:7px">
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ r.stVar }}" size="sm" hint-size="70px,20px">{{ r.st }}</x-import>
+                <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft)">{{ r.when }}</span>
+                <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted)">{{ r.author }}</span>
+              </div>
+              <span style="font-family:var(--font-display);font-size:22px;color:var(--purple)">→</span>
+            </div>
+          </sc-for>
+          <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+            <div style="padding:48px 18px;font-size:15px;color:var(--ink-soft)">Keine Beiträge in dieser Ansicht.</div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+
+    <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Editor">
+        <div style="position:sticky;top:0;z-index:15;height:64px;background:#fff;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:12px 16px;padding:0 clamp(16px,2.6vw,32px)">
+          <button onClick="{{ toList }}" style="flex:none;border:0;background:none;padding:6px 0;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)" style-hover="color:var(--magenta)">← Beiträge</button>
+          <span style="flex:none;width:1px;height:22px;background:var(--rule)"></span>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ d.stVar }}" size="sm" style="flex:none" hint-size="70px,20px">{{ d.st }}</x-import>
+          <span style="flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ savedLabel }}</span>
+          <div style="margin-left:auto;flex:none;display:flex;align-items:center;gap:10px">
+            <button onClick="{{ togglePv }}" style="white-space:nowrap;padding:10px 12px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">{{ pvToggleLabel }}</button>
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" marker="{{ true }}" onClick="{{ openPublish }}" hint-size="170px,40px">{{ d.pubCta }}</x-import>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-start">
+          <div style="flex:1 1 460px;min-width:0;padding:clamp(24px,3.4vw,44px) clamp(18px,3vw,40px) 140px">
+            <div style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:30px">
+
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Rubrik</span>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="6">
+                    <button onClick="{{ c.pick }}" style="padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:{{ c.bg }};color:{{ c.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta)">{{ c.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+
+              <sc-if value="{{ d.isCall }}" hint-placeholder-val="{{ false }}">
+                <div id="f-deadline" style="max-width:280px">
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" type="date" label="Bewerbungsfrist" value="{{ d.deadline }}" onChange="{{ onDeadline }}" invalid="{{ d.noDeadline }}" hint="Wird auf der Website als Countdown angezeigt." hint-size="280px,90px"></x-import>
+                </div>
+              </sc-if>
+
+              <div id="f-title" onFocus="{{ focusTitle }}" style="display:flex;flex-direction:column;gap:8px">
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Titel</span>
+                <textarea rows="1" value="{{ d.title }}" onChange="{{ onTitle }}" placeholder="Worum geht es?" style="width:100%;resize:none;field-sizing:content;min-height:52px;border:0;border-bottom:2px solid var(--rule);border-radius:0;background:transparent;padding:4px 0 14px;outline:none;font-family:var(--font-display);font-weight:800;font-size:clamp(30px,3.4vw,44px);line-height:1.02;letter-spacing:-0.03em;color:var(--purple)" style-focus="border-bottom-color:var(--magenta)"></textarea>
+              </div>
+
+              <div id="f-teaser" onFocus="{{ focusTeaser }}" style="display:flex;flex-direction:column;gap:8px">
+                <div style="display:flex;justify-content:space-between;gap:12px">
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Teaser</span>
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;color:{{ d.teaserCountColor }}">{{ d.teaserCount }}</span>
+                </div>
+                <textarea rows="2" value="{{ d.teaser }}" onChange="{{ onTeaser }}" placeholder="Zwei, drei Sätze: Was, wann, wo, mit wem?" style="width:100%;resize:none;field-sizing:content;min-height:84px;border:1.5px solid var(--rule);border-radius:0;background:#fff;padding:12px 14px;outline:none;font-size:17px;line-height:1.55;color:var(--ink)" style-focus="border-color:var(--magenta)"></textarea>
+                <span style="font-size:12.5px;line-height:1.4;color:var(--ink-muted)">Erscheint in der Chronik, im Newsletter und als Vorschau beim Teilen.</span>
+              </div>
+
+              <div id="f-cover" onFocus="{{ focusCover }}" onDragOver="{{ cz.over }}" onDragLeave="{{ cz.leave }}" onDrop="{{ cz.drop }}" style="display:flex;flex-direction:column;gap:12px">
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Titelbild</span>
+
+                <sc-if value="{{ cover.has }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:flex;flex-direction:column;gap:14px;background:#fff;border:1.5px solid {{ cz.border }};padding:14px">
+                    <div onClick="{{ cover.focal }}" title="Klicken, um den Fokuspunkt zu setzen" style="position:relative;cursor:crosshair;background:var(--purple);line-height:0">
+                      <img loading="lazy" src="{{ cover.src }}" alt="{{ cover.alt }}" draggable="false" style="width:100%;max-height:420px;object-fit:contain;display:block;user-select:none">
+                      <div style="position:absolute;left:{{ cover.fxp }};top:{{ cover.fyp }};width:30px;height:30px;transform:translate(-50%,-50%);border:2px solid #fff;outline:1.5px solid var(--purple);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:left 200ms cubic-bezier(0.16,1,0.3,1),top 200ms cubic-bezier(0.16,1,0.3,1)"><span style="width:8px;height:8px;background:var(--magenta)"></span></div>
+                    </div>
+                    <span style="font-size:12.5px;line-height:1.4;color:var(--ink-soft)">Ins Bild klicken setzt den Fokuspunkt. Alle Zuschnitte richten sich danach.</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:14px">
+                      <sc-for list="{{ crops }}" as="k" hint-placeholder-count="3">
+                        <div style="display:flex;flex-direction:column;gap:6px">
+                          <div style="position:relative;height:84px;aspect-ratio:{{ k.ratio }};overflow:hidden;background:var(--purple);clip-path:{{ k.clip }}">
+                            <img loading="lazy" src="{{ cover.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ cover.pos }};display:block;transition:object-position 200ms">
+                          </div>
+                          <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ k.label }}</span>
+                        </div>
+                      </sc-for>
+                    </div>
+                    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:14px">
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Alt-Text" value="{{ cover.alt }}" onChange="{{ cover.onAlt }}" invalid="{{ cover.noAlt }}" placeholder="Was ist zu sehen?" hint="{{ cover.altHint }}" hint-size="100%,90px"></x-import>
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Fotonachweis" value="{{ cover.credit }}" onChange="{{ cover.onCredit }}" placeholder="Foto: Vorname Nachname" hint="Gilt überall, wo das Bild verwendet wird." hint-size="100%,90px"></x-import>
+                    </div>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px">
+                      <button onClick="{{ pickCover }}" style="padding:9px 13px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Anderes Bild</button>
+                      <button onClick="{{ removeCover }}" style="padding:9px 13px;border:1.5px solid transparent;border-radius:0;background:transparent;color:var(--ink-soft);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="color:var(--magenta)">Entfernen</button>
+                    </div>
+                  </div>
+                </sc-if>
+
+                <sc-if value="{{ cover.none }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;flex-direction:column;align-items:center;text-align:center;gap:14px;padding:clamp(28px,4vw,44px) 20px;border:2px dashed {{ cz.border }};background:{{ cz.bg }};transition:background 150ms,border-color 150ms">
+                    <span style="width:12px;height:12px;background:var(--magenta)"></span>
+                    <span style="font-family:var(--font-display);font-weight:700;font-size:21px;letter-spacing:-0.01em;color:var(--purple)">Bild hierher ziehen</span>
+                    <span style="font-size:13.5px;line-height:1.5;color:var(--ink-soft);max-width:360px">JPG oder PNG. Große Fotos werden automatisch auf 1600 px verkleinert.</span>
+                    <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:4px">
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" size="sm" onClick="{{ pickCover }}" hint-size="140px,32px">Aus Mediathek</x-import>
+                      <label style="display:inline-flex;align-items:center;padding:8px 14px;border:1.5px solid var(--purple);color:var(--purple);font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Vom Computer<input type="file" accept="image/*" onChange="{{ uploadCover }}" style="display:none"></label>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div id="f-hero" onFocus="{{ focusHero }}" style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px">
+                  <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:0.16em;color:var(--magenta)">Kopfbereich</span>
+                  <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:0.12em;color:var(--ink-muted)">{{ heroInfo }}</span>
+                </div>
+                <sc-if value="{{ cover.has }}" hint-placeholder-val="{{ false }}">
+                  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(112px,1fr));gap:8px">
+                    <sc-for list="{{ heroOpts }}" as="h" hint-placeholder-count="5">
+                      <button onClick="{{ h.pick }}" style="display:flex;flex-direction:column;gap:8px;padding:7px 7px 9px;border:1.5px solid {{ h.border }};border-radius:0;background:#fff;cursor:pointer;text-align:left" style-hover="border-color:var(--magenta)">
+                        <div style="position:relative;width:100%;aspect-ratio:16/10;background:var(--tint);overflow:hidden">
+                          <sc-for list="{{ h.parts }}" as="pt" hint-placeholder-count="3">
+                            <div style="position:absolute;left:{{ pt.l }};top:{{ pt.t }};width:{{ pt.w }};height:{{ pt.h }};background:{{ pt.bg }};overflow:hidden">
+                              <sc-if value="{{ pt.img }}" hint-placeholder-val="{{ false }}">
+                                <img src="{{ cover.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ cover.pos }};display:block">
+                              </sc-if>
+                            </div>
+                          </sc-for>
+                        </div>
+                        <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;color:{{ h.fg }}">{{ h.label }}</span>
+                      </button>
+                    </sc-for>
+                  </div>
+                  <span style="font-size:12.5px;line-height:1.45;color:var(--ink-muted)">Automatisch: Querformat wird Vollbild, Hochkant-Fotos bekommen den Hochkant-Kopf.</span>
+                </sc-if>
+                <sc-if value="{{ cover.none }}" hint-placeholder-val="{{ true }}">
+                  <div style="display:flex;flex-direction:column;gap:14px;background:#fff;border:1px solid var(--rule);padding:14px">
+                    <span style="font-size:13.5px;line-height:1.5;color:var(--ink-soft)">Ohne Titelbild zeigt der Beitrag das Netz auf einer Farbfläche. Ein Magenta-Knoten trägt die wichtigste Angabe.</span>
+                    <div style="display:flex;flex-wrap:wrap;gap:8px">
+                      <sc-for list="{{ themeOpts }}" as="o" hint-placeholder-count="3">
+                        <button onClick="{{ o.pick }}" style="flex:1 1 110px;display:flex;flex-direction:column;gap:8px;padding:7px 7px 9px;border:1.5px solid {{ o.border }};border-radius:0;background:#fff;cursor:pointer;text-align:left" style-hover="border-color:var(--magenta)">
+                          <span style="display:block;height:44px;background:{{ o.bg }};border:1px solid var(--rule)"></span>
+                          <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;color:{{ o.fg }}">{{ o.label }}</span>
+                        </button>
+                      </sc-for>
+                    </div>
+                    <sc-if value="{{ d.isCall }}" hint-placeholder-val="{{ false }}">
+                      <span style="font-size:13px;line-height:1.5;color:var(--purple)">Bei Ausschreibungen zeigt der Knoten automatisch den Countdown bis zur Frist.</span>
+                    </sc-if>
+                    <sc-if value="{{ d.notCall }}" hint-placeholder-val="{{ true }}">
+                      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px">
+                        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Knoten · Kicker" value="{{ d.nodeK }}" onChange="{{ onNodeK }}" placeholder="z. B. Ausgabe" hint-size="100%,66px"></x-import>
+                        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Knoten · Angabe" value="{{ d.nodeV }}" onChange="{{ onNodeV }}" placeholder="z. B. #6 · 26. November" hint-size="100%,66px"></x-import>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div id="f-facts" onFocus="{{ focusFacts }}" style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px">
+                  <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:0.16em;color:var(--magenta)">Eckdaten</span>
+                  <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:0.12em;color:var(--ink-muted)">Infokasten oben im Beitrag</span>
+                </div>
+                <sc-for list="{{ facts }}" as="f" hint-placeholder-count="2">
+                  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:4px 0;border-bottom:1px solid var(--rule)">
+                    <input value="{{ f.k }}" onChange="{{ f.onK }}" placeholder="Wann" style="flex:0 1 150px;min-width:0;border:0;background:transparent;padding:8px 0;outline:none;font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:0.16em;color:var(--ink-muted)">
+                    <input value="{{ f.v }}" onChange="{{ f.onV }}" placeholder="Do · 26. November 2026 · 20:00 Uhr" style="flex:1 1 220px;min-width:0;border:0;background:transparent;padding:8px 0;outline:none;font-size:15px;font-weight:600;color:var(--purple)">
+                    <button onClick="{{ f.del }}" style="height:28px;padding:0 10px;border:1px solid var(--rule);border-radius:0;background:#fff;color:var(--ink-soft);font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Löschen</button>
+                  </div>
+                </sc-for>
+                <button onClick="{{ addFact }}" style="align-self:flex-start;padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:0.14em;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">+ Eckdatum</button>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <div style="display:flex;flex-wrap:wrap;justify-content:space-between;gap:6px 16px">
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Inhalt</span>
+                  <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted)">Klick in der Vorschau springt zum Block</span>
+                </div>
+                <sc-for list="{{ blocks }}" as="b" hint-placeholder-count="3">
+                  <div id="{{ b.domId }}" onFocus="{{ b.focus }}" onDragOver="{{ b.over }}" onDragLeave="{{ b.leave }}" onDrop="{{ b.drop }}" style="background:#fff;border:1px solid var(--rule);border-left:3px solid {{ b.edge }};padding:12px 16px 16px;display:flex;flex-direction:column;gap:10px;transition:border-color 150ms">
+                    <div style="display:flex;align-items:center;gap:6px">
+                      <span style="flex:1;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:{{ b.lblColor }}">{{ b.label }}</span>
+                      <button onClick="{{ b.up }}" title="Nach oben" style="width:30px;height:28px;border:1px solid var(--rule);border-radius:0;background:#fff;color:var(--purple);cursor:pointer;opacity:{{ b.upOp }}" style-hover="border-color:var(--magenta)">↑</button>
+                      <button onClick="{{ b.down }}" title="Nach unten" style="width:30px;height:28px;border:1px solid var(--rule);border-radius:0;background:#fff;color:var(--purple);cursor:pointer;opacity:{{ b.downOp }}" style-hover="border-color:var(--magenta)">↓</button>
+                      <button onClick="{{ b.del }}" style="height:28px;padding:0 10px;border:1px solid var(--rule);border-radius:0;background:#fff;color:var(--ink-soft);font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Löschen</button>
+                    </div>
+                    <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ true }}">
+                      <textarea rows="3" value="{{ b.text }}" onChange="{{ b.onText }}" placeholder="Text schreiben …" style="width:100%;resize:none;field-sizing:content;min-height:76px;border:0;background:transparent;padding:0;outline:none;font-size:16.5px;line-height:1.65;color:var(--ink)"></textarea>
+                    </sc-if>
+                    <sc-if value="{{ b.isH }}" hint-placeholder-val="{{ false }}">
+                      <input value="{{ b.text }}" onChange="{{ b.onText }}" placeholder="Zwischentitel" style="width:100%;border:0;background:transparent;padding:0;outline:none;font-family:var(--font-display);font-weight:800;font-size:24px;letter-spacing:-0.02em;color:var(--purple)">
+                    </sc-if>
+                    <sc-if value="{{ b.isQ }}" hint-placeholder-val="{{ false }}">
+                      <textarea rows="2" value="{{ b.text }}" onChange="{{ b.onText }}" placeholder="Zitat ohne Anführungszeichen" style="width:100%;resize:none;field-sizing:content;min-height:60px;border:0;background:transparent;padding:0;outline:none;font-family:var(--font-display);font-weight:700;font-size:22px;line-height:1.2;letter-spacing:-0.015em;color:var(--purple)"></textarea>
+                      <input value="{{ b.who }}" onChange="{{ b.onWho }}" placeholder="Name · Rolle" style="width:100%;border:0;border-top:1px solid var(--rule);background:transparent;padding:10px 0 0;outline:none;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-soft)">
+                    </sc-if>
+                    <sc-if value="{{ b.hasImg }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-wrap:wrap;gap:14px">
+                        <div onClick="{{ b.img.focal }}" title="Klicken, um den Fokuspunkt zu setzen" style="position:relative;flex:0 0 200px;aspect-ratio:4/3;overflow:hidden;background:var(--purple);cursor:crosshair">
+                          <img loading="lazy" src="{{ b.img.src }}" alt="" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ b.img.pos }};display:block">
+                          <div style="position:absolute;left:{{ b.img.fxp }};top:{{ b.img.fyp }};width:20px;height:20px;transform:translate(-50%,-50%);border:2px solid #fff;display:flex;align-items:center;justify-content:center;pointer-events:none"><span style="width:6px;height:6px;background:var(--magenta)"></span></div>
+                        </div>
+                        <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:12px">
+                          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Alt-Text" value="{{ b.img.alt }}" onChange="{{ b.img.onAlt }}" invalid="{{ b.img.noAlt }}" placeholder="Was ist zu sehen?" hint-size="100%,66px"></x-import>
+                          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Bildunterschrift" value="{{ b.cap }}" onChange="{{ b.onCap }}" placeholder="optional" hint-size="100%,66px"></x-import>
+                          <button onClick="{{ b.pick }}" style="align-self:flex-start;padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Bild ändern</button>
+                        </div>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.needsImg }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px 16px;padding:22px 14px;border:2px dashed {{ b.dzBorder }};background:{{ b.dzBg }}">
+                        <span style="font-size:14px;color:var(--ink-soft)">Bild hierher ziehen oder</span>
+                        <button onClick="{{ b.pick }}" style="padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:var(--purple);color:#fff;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="background:var(--magenta);border-color:var(--magenta)">Mediathek</button>
+                        <label style="padding:8px 12px;border:1.5px solid var(--purple);color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Hochladen<input type="file" accept="image/*" onChange="{{ b.upload }}" style="display:none"></label>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isImgT }}" hint-placeholder-val="{{ false }}">
+                      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding-top:10px;border-top:1px solid var(--rule)">
+                        <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;color:var(--ink-muted);margin-right:4px">Breite</span>
+                        <sc-for list="{{ b.sizes }}" as="z" hint-placeholder-count="3">
+                          <button onClick="{{ z.pick }}" style="padding:6px 10px;border:1.5px solid var(--purple);border-radius:0;background:{{ z.bg }};color:{{ z.fg }};font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;cursor:pointer" style-hover="border-color:var(--magenta)">{{ z.label }}</button>
+                        </sc-for>
+                      </div>
+                    </sc-if>
+                    <sc-if value="{{ b.isStrip }}" hint-placeholder-val="{{ false }}">
+                      <input value="{{ b.text }}" onChange="{{ b.onText }}" placeholder="Titel der Bildstrecke" style="width:100%;border:0;background:transparent;padding:0;outline:none;font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:-0.02em;color:var(--purple)">
+                    </sc-if>
+                    <sc-if value="{{ b.isMulti }}" hint-placeholder-val="{{ false }}">
+                      <div onDragOver="{{ b.az.over }}" onDragLeave="{{ b.az.leave }}" onDrop="{{ b.az.drop }}" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;outline:{{ b.az.outline }};outline-offset:4px">
+                        <sc-for list="{{ b.items }}" as="it" hint-placeholder-count="2">
+                          <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                            <div onClick="{{ it.focal }}" title="Klicken, um den Fokuspunkt zu setzen" style="position:relative;aspect-ratio:4/3;background:var(--purple);overflow:hidden;cursor:crosshair">
+                              <img loading="lazy" src="{{ it.src }}" alt="" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ it.pos }};display:block;user-select:none">
+                              <span style="position:absolute;left:0;top:0;padding:4px 7px;background:var(--purple);color:#fff;font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:0.14em">{{ it.nr }}</span>
+                              <button onClick="{{ it.del }}" title="Entfernen" style="position:absolute;top:0;right:0;width:28px;height:28px;border:0;border-radius:0;background:rgba(46,26,77,0.9);color:#fff;font-size:15px;cursor:pointer" style-hover="background:var(--magenta)">×</button>
+                            </div>
+                            <input value="{{ it.alt }}" onChange="{{ it.onAlt }}" placeholder="Alt-Text (Pflicht)" style="width:100%;border:0;border-bottom:1.5px solid {{ it.altBorder }};border-radius:0;background:transparent;padding:7px 0;outline:none;font-size:13px;color:var(--ink)">
+                            <input value="{{ it.cap }}" onChange="{{ it.onCap }}" placeholder="Bildunterschrift" style="width:100%;border:0;border-bottom:1px solid var(--rule);border-radius:0;background:transparent;padding:7px 0;outline:none;font-size:13px;color:var(--ink-soft)">
+                          </div>
+                        </sc-for>
+                        <sc-if value="{{ b.canAdd }}" hint-placeholder-val="{{ true }}">
+                          <div style="aspect-ratio:4/3;border:2px dashed var(--ink-muted);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px;text-align:center">
+                            <span style="font-size:12.5px;color:var(--ink-soft)">Bilder hierher ziehen</span>
+                            <button onClick="{{ b.addPick }}" style="padding:7px 10px;border:1.5px solid var(--purple);border-radius:0;background:var(--purple);color:#fff;font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;cursor:pointer" style-hover="background:var(--magenta);border-color:var(--magenta)">Mediathek</button>
+                            <label style="padding:7px 10px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:0.14em;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Hochladen<input type="file" accept="image/*" multiple="{{ true }}" onChange="{{ b.addUpload }}" style="display:none"></label>
+                          </div>
+                        </sc-if>
+                      </div>
+                      <span style="font-size:12.5px;line-height:1.45;color:{{ b.hintColor }}">{{ b.hint }}</span>
+                    </sc-if>
+                    <sc-if value="{{ b.isScrolly }}" hint-placeholder-val="{{ false }}">
+                      <input value="{{ b.text }}" onChange="{{ b.onText }}" placeholder="Titel, z. B. Ein Tag in der Stadt" style="width:100%;border:0;background:transparent;padding:0;outline:none;font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:-0.02em;color:var(--purple)">
+                      <sc-for list="{{ b.steps }}" as="st" hint-placeholder-count="2">
+                        <div style="display:flex;flex-wrap:wrap;gap:14px;padding-top:12px;border-top:1px solid var(--rule)">
+                          <sc-if value="{{ st.hasImg }}" hint-placeholder-val="{{ false }}">
+                            <div onClick="{{ st.focal }}" title="Klicken, um den Fokuspunkt zu setzen" style="position:relative;flex:0 0 150px;aspect-ratio:4/3;background:var(--purple);overflow:hidden;cursor:crosshair">
+                              <img loading="lazy" src="{{ st.src }}" alt="" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ st.pos }};display:block;user-select:none">
+                              <button onClick="{{ st.pick }}" style="position:absolute;left:0;bottom:0;padding:5px 8px;border:0;border-radius:0;background:rgba(46,26,77,0.9);color:#fff;font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:0.14em;cursor:pointer" style-hover="background:var(--magenta)">Ändern</button>
+                            </div>
+                          </sc-if>
+                          <sc-if value="{{ st.noImg }}" hint-placeholder-val="{{ true }}">
+                            <div onDragOver="{{ st.over }}" onDragLeave="{{ st.leave }}" onDrop="{{ st.drop }}" style="flex:0 0 150px;aspect-ratio:4/3;border:2px dashed {{ st.dzBorder }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;padding:8px">
+                              <button onClick="{{ st.pick }}" style="padding:7px 10px;border:1.5px solid var(--purple);border-radius:0;background:var(--purple);color:#fff;font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;cursor:pointer" style-hover="background:var(--magenta);border-color:var(--magenta)">Bild wählen</button>
+                              <label style="padding:6px 9px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:0.14em;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Hochladen<input type="file" accept="image/*" onChange="{{ st.upload }}" style="display:none"></label>
+                            </div>
+                          </sc-if>
+                          <div style="flex:1 1 220px;min-width:0;display:flex;flex-direction:column;gap:8px">
+                            <div style="display:flex;align-items:center;gap:6px">
+                              <span style="flex:1;font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:0.16em;color:var(--magenta)">Schritt {{ st.nr }}</span>
+                              <button onClick="{{ st.up }}" title="Nach oben" style="width:28px;height:26px;border:1px solid var(--rule);border-radius:0;background:#fff;color:var(--purple);cursor:pointer" style-hover="border-color:var(--magenta)">↑</button>
+                              <button onClick="{{ st.down }}" title="Nach unten" style="width:28px;height:26px;border:1px solid var(--rule);border-radius:0;background:#fff;color:var(--purple);cursor:pointer" style-hover="border-color:var(--magenta)">↓</button>
+                              <button onClick="{{ st.del }}" style="height:26px;padding:0 8px;border:1px solid var(--rule);border-radius:0;background:#fff;color:var(--ink-soft);font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:0.14em;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Löschen</button>
+                            </div>
+                            <input value="{{ st.title }}" onChange="{{ st.onTitle }}" placeholder="Kurzer Titel" style="width:100%;border:0;border-bottom:1px solid var(--rule);background:transparent;padding:6px 0;outline:none;font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-0.01em;color:var(--purple)">
+                            <textarea rows="2" value="{{ st.text }}" onChange="{{ st.onText }}" placeholder="Zwei, drei Sätze zu diesem Bild" style="width:100%;resize:none;field-sizing:content;min-height:54px;border:0;background:transparent;padding:0;outline:none;font-size:15px;line-height:1.6;color:var(--ink)"></textarea>
+                            <sc-if value="{{ st.hasImg }}" hint-placeholder-val="{{ false }}">
+                              <input value="{{ st.alt }}" onChange="{{ st.onAlt }}" placeholder="Alt-Text (Pflicht)" style="width:100%;border:0;border-bottom:1.5px solid {{ st.altBorder }};background:transparent;padding:6px 0;outline:none;font-size:13px;color:var(--ink)">
+                            </sc-if>
+                          </div>
+                        </div>
+                      </sc-for>
+                      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px">
+                        <button onClick="{{ b.addStep }}" style="padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:0.14em;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">+ Schritt</button>
+                        <span style="font-size:12.5px;line-height:1.45;color:{{ b.hintColor }}">{{ b.hint }}</span>
+                      </div>
+                    </sc-if>
+                  </div>
+                </sc-for>
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:12px 14px;border:1.5px dashed var(--rule)">
+                  <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted);margin-right:6px">Block hinzufügen</span>
+                  <sc-for list="{{ addBtns }}" as="a" hint-placeholder-count="4">
+                    <button onClick="{{ a.add }}" style="padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">+ {{ a.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <sc-if value="{{ showPv }}" hint-placeholder-val="{{ true }}">
+            <div ref="{{ pvRef }}" style="flex:1 1 440px;min-width:0;position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto;background:var(--tint);border-left:1px solid var(--rule);padding:18px clamp(14px,2vw,28px) 48px">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px">
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" size="{{ 11 }}" hint-size="140px,12px">Live-Vorschau</x-import>
+                <div style="display:flex">
+                  <sc-for list="{{ devices }}" as="v" hint-placeholder-count="2">
+                    <button onClick="{{ v.pick }}" style="padding:7px 12px;border:1.5px solid var(--purple);margin-left:-1.5px;border-radius:0;background:{{ v.bg }};color:{{ v.fg }};font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer">{{ v.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="width:{{ pvWidth }};max-width:100%;margin:0 auto;background:#fff;border:1px solid var(--rule);container-type:inline-size;transition:width 300ms cubic-bezier(0.16,1,0.3,1)">
+                <div style="background:var(--purple);padding:max(12px,2.6cqw) 5cqw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.12)">
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="52px" hint-size="52px,20px"></x-import>
+                  <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);border-bottom:1.5px solid var(--magenta);padding-bottom:3px">News</span>
+                </div>
+                <sc-if value="{{ pv.isFull }}" hint-placeholder-val="{{ false }}">
+                  <div data-pv="cover" onClick="{{ jumpCover }}" style="position:relative;aspect-ratio:16/11;min-height:260px;background:var(--purple);overflow:hidden;cursor:pointer;outline:{{ pv.coverOutline }};outline-offset:-3px">
+                    <img loading="lazy" src="{{ cover.src }}" alt="{{ cover.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ cover.pos }};display:block;transition:object-position 250ms">
+                    <div style="position:absolute;left:0;right:0;bottom:0;background:rgba(46,26,77,0.9);padding:3.6cqw 5cqw 4.4cqw;display:flex;flex-direction:column;gap:12px">
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--cyan)" height="{{ 8 }}" flip="{{ true }}" style="position:absolute;left:0;bottom:100%;width:40%" hint-size="40%,8px"></x-import>
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ pv.badgeDark }}" size="sm" hint-size="80px,20px">{{ pv.cat }}</x-import>
+                      <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.16em;color:{{ pv.metaDark }}">{{ pv.meta }}</span>
+                    </div>
+                      <h1 data-pv="title" onClick="{{ jumpTitle }}" style="margin:0;font-family:var(--font-display);font-weight:800;font-size:clamp(22px,6cqw,60px);line-height:0.95;letter-spacing:-0.04em;color:{{ pv.titleColor }};text-wrap:balance;cursor:pointer;outline:{{ pv.titleOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.title }}</h1>
+                    </div>
+                  </div>
+                  <div style="padding:5cqw 5cqw 0"><p data-pv="teaser" onClick="{{ jumpTeaser }}" style="margin:0;max-width:560px;font-size:clamp(13px,2.2cqw,18px);line-height:1.55;color:var(--purple);text-wrap:pretty;cursor:pointer;outline:{{ pv.teaserOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.teaser }}</p></div>
+                </sc-if>
+                <sc-if value="{{ pv.isTall }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;background:var(--purple);color:#fff;display:flex;flex-wrap:wrap-reverse;align-items:stretch;gap:0 4cqw;padding-left:5cqw">
+                    <div style="flex:1 1 200px;min-width:0;padding:6cqw 0 9cqw;display:flex;flex-direction:column;justify-content:flex-end;gap:14px">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ pv.badgeDark }}" size="sm" hint-size="80px,20px">{{ pv.cat }}</x-import>
+                      <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.16em;color:{{ pv.metaDark }}">{{ pv.meta }}</span>
+                    </div>
+                      <h1 data-pv="title" onClick="{{ jumpTitle }}" style="margin:0;font-family:var(--font-display);font-weight:800;font-size:clamp(22px,5.4cqw,56px);line-height:0.95;letter-spacing:-0.04em;color:{{ pv.titleColor }};text-wrap:balance;cursor:pointer;outline:{{ pv.titleOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.title }}</h1>
+                      <p data-pv="teaser" onClick="{{ jumpTeaser }}" style="margin:0;max-width:560px;font-size:clamp(13px,2.2cqw,18px);line-height:1.55;color:rgba(255,255,255,0.9);text-wrap:pretty;cursor:pointer;outline:{{ pv.teaserOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.teaser }}</p>
+                    </div>
+                    <div data-pv="cover" onClick="{{ jumpCover }}" style="flex:0 1 auto;position:relative;height:clamp(240px,70cqw,620px);aspect-ratio:{{ cover.ratio }};max-width:100%;background:var(--magenta);clip-path:polygon(0 0,100% 0,100% 100%,16% 100%,0 90%);cursor:pointer">
+                      <div style="position:absolute;inset:0 0 0 6px;overflow:hidden;background:var(--purple);clip-path:polygon(0 0,100% 0,100% 100%,16% 100%,0 90%)"><img loading="lazy" src="{{ cover.src }}" alt="{{ cover.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ cover.pos }};display:block;transition:object-position 250ms"></div>
+                    </div>
+                    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 8 }}" style="position:absolute;left:0;bottom:0;width:34%" hint-size="34%,8px"></x-import>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ pv.isSplit }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:relative;background:var(--purple);color:#fff;display:flex;flex-wrap:wrap;min-height:56cqw">
+                    <div style="flex:1 1 220px;min-width:0;padding:6cqw 4cqw 9cqw 5cqw;display:flex;flex-direction:column;justify-content:flex-end;gap:14px">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ pv.badgeDark }}" size="sm" hint-size="80px,20px">{{ pv.cat }}</x-import>
+                      <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.16em;color:{{ pv.metaDark }}">{{ pv.meta }}</span>
+                    </div>
+                      <h1 data-pv="title" onClick="{{ jumpTitle }}" style="margin:0;font-family:var(--font-display);font-weight:800;font-size:clamp(22px,5cqw,52px);line-height:0.95;letter-spacing:-0.04em;color:{{ pv.titleColor }};text-wrap:balance;cursor:pointer;outline:{{ pv.titleOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.title }}</h1>
+                      <p data-pv="teaser" onClick="{{ jumpTeaser }}" style="margin:0;max-width:560px;font-size:clamp(13px,2.2cqw,18px);line-height:1.55;color:rgba(255,255,255,0.9);text-wrap:pretty;cursor:pointer;outline:{{ pv.teaserOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.teaser }}</p>
+                    </div>
+                    <div data-pv="cover" onClick="{{ jumpCover }}" style="flex:1.25 1 240px;min-height:clamp(200px,46cqw,540px);position:relative;background:var(--magenta);clip-path:polygon(14% 0,100% 0,100% 100%,0 100%);cursor:pointer">
+                      <div style="position:absolute;inset:0;overflow:hidden;background:var(--purple);clip-path:polygon(calc(14% + 6px) 0,100% 0,100% 100%,6px 100%)"><img loading="lazy" src="{{ cover.src }}" alt="{{ cover.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ cover.pos }};display:block;transition:object-position 250ms"></div>
+                    </div>
+                    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 8 }}" style="position:absolute;left:0;bottom:0;width:34%" hint-size="34%,8px"></x-import>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ pv.isNet }}" hint-placeholder-val="{{ false }}">
+                  <div data-pv="hero" onClick="{{ jumpHero }}" style="position:relative;background:{{ pv.bg }};color:{{ pv.fg }};min-height:clamp(300px,60cqw,600px);display:flex;flex-direction:column;justify-content:flex-end;padding:6cqw 5cqw 9cqw;overflow:hidden;cursor:pointer">
+                    <canvas ref="{{ pvNetRef }}" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%;display:block"></canvas>
+                    <div ref="{{ pvNodeRef }}" style="position:absolute;z-index:2;left:0;top:0;padding:6px 10px 8px;background:{{ pv.bg }};display:flex;flex-direction:column;gap:4px;pointer-events:none">
+                      <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:0.16em;color:{{ pv.metaCol }};white-space:nowrap">{{ pv.nodeK }}</span>
+                      <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(14px,2.6cqw,24px);line-height:1;letter-spacing:-0.02em;color:{{ pv.fg }};white-space:nowrap">{{ pv.nodeV }}</span>
+                    </div>
+                    <div data-pv-net-text="" style="position:relative;z-index:1;max-width:min(100%,560px);display:flex;flex-direction:column;gap:14px">
+                    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px">
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ pv.badgeHero }}" size="sm" hint-size="80px,20px">{{ pv.cat }}</x-import>
+                      <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.16em;color:{{ pv.metaCol }}">{{ pv.meta }}</span>
+                    </div>
+                      <h1 data-pv="title" onClick="{{ jumpTitle }}" style="margin:0;font-family:var(--font-display);font-weight:800;font-size:clamp(22px,5.4cqw,56px);line-height:0.95;letter-spacing:-0.04em;color:{{ pv.netTitleColor }};text-wrap:balance;cursor:pointer;outline:{{ pv.titleOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.title }}</h1>
+                      <p data-pv="teaser" onClick="{{ jumpTeaser }}" style="margin:0;max-width:560px;font-size:clamp(13px,2.2cqw,18px);line-height:1.55;color:{{ pv.soft }};text-wrap:pretty;cursor:pointer;outline:{{ pv.teaserOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.teaser }}</p>
+                    </div>
+                    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="{{ pv.keil }}" height="{{ 8 }}" style="position:absolute;left:0;bottom:0;width:34%;z-index:2" hint-size="34%,8px"></x-import>
+                  </div>
+                </sc-if>
+                <sc-if value="{{ pv.isTypo }}" hint-placeholder-val="{{ true }}">
+                <div style="position:relative;background:var(--purple);color:#fff;padding:7cqw 5cqw 12cqw">
+                  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;margin-bottom:16px">
+                    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ pv.badgeDark }}" size="sm" hint-size="80px,20px">{{ pv.cat }}</x-import>
+                    <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan)">{{ pv.meta }}</span>
+                  </div>
+                  <h1 data-pv="title" onClick="{{ jumpTitle }}" style="margin:0 0 16px;font-family:var(--font-display);font-weight:800;font-size:clamp(28px,8cqw,76px);line-height:0.95;letter-spacing:-0.04em;color:{{ pv.titleColor }};text-wrap:balance;cursor:pointer;outline:{{ pv.titleOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.title }}</h1>
+                  <p data-pv="teaser" onClick="{{ jumpTeaser }}" style="margin:0;max-width:620px;font-size:clamp(14px,2.4cqw,19px);line-height:1.55;color:rgba(255,255,255,0.9);text-wrap:pretty;cursor:pointer;outline:{{ pv.teaserOutline }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pv.teaser }}</p>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 8 }}" style="position:absolute;left:0;bottom:0;width:34%" hint-size="34%,8px"></x-import>
+                </div>
+                <sc-if value="{{ cover.has }}" hint-placeholder-val="{{ false }}">
+                  <div data-pv="cover" onClick="{{ jumpCover }}" style="padding:0 5cqw;cursor:pointer">
+                    <div style="position:relative;margin-top:-7cqw;aspect-ratio:21/9;background:var(--purple);overflow:hidden;clip-path:polygon(0 0,100% 0,100% 86%,94% 100%,0 100%);outline:{{ pv.coverOutline }}">
+                      <img loading="lazy" src="{{ cover.src }}" alt="{{ cover.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ cover.pos }};display:block;transition:object-position 250ms">
+                      <div style="position:absolute;top:0;left:0;width:4cqw;height:4cqw;background:var(--magenta)"></div>
+                    </div>
+                    <sc-if value="{{ cover.credit }}" hint-placeholder-val="{{ false }}">
+                      <div style="padding-top:8px;text-align:right;font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ cover.credit }}</div>
+                    </sc-if>
+                  </div>
+                </sc-if>
+                </sc-if>
+                <sc-if value="{{ pv.hasFacts }}" hint-placeholder-val="{{ false }}">
+                  <div data-pv="facts" onClick="{{ jumpFacts }}" style="margin:6cqw 5cqw 0;border-top:3px solid var(--magenta);display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:0 18px;cursor:pointer">
+                    <sc-for list="{{ pv.facts }}" as="f" hint-placeholder-count="2">
+                      <div style="padding:10px 0 12px;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:3px">
+                        <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:0.16em;color:var(--ink-muted)">{{ f.k }}</span>
+                        <span style="font-size:13.5px;line-height:1.45;font-weight:600;color:var(--purple)">{{ f.v }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </sc-if>
+                <div style="padding:6cqw 5cqw 8cqw">
+                  <sc-for list="{{ pvBlocks }}" as="b" hint-placeholder-count="3">
+                    <div data-pv="{{ b.id }}" onClick="{{ b.click }}" style="cursor:pointer;outline:{{ b.outline }};outline-offset:6px;margin-bottom:1.1em;max-width:{{ b.maxW }};margin-left:{{ b.mx }};margin-right:{{ b.mx }}" style-hover="outline:1.5px solid var(--cyan)">
+                      <sc-if value="{{ b.isP }}" hint-placeholder-val="{{ true }}">
+                        <p style="margin:0;font-size:clamp(14px,2.4cqw,18px);line-height:1.72;color:{{ b.color }};text-wrap:pretty;white-space:pre-line">{{ b.text }}</p>
+                      </sc-if>
+                      <sc-if value="{{ b.isH }}" hint-placeholder-val="{{ false }}">
+                        <h2 style="display:flex;align-items:center;gap:12px;margin:1.2em 0 0;font-family:var(--font-display);font-weight:800;font-size:clamp(19px,3.4cqw,30px);line-height:1.1;letter-spacing:-0.02em;color:{{ b.hColor }}"><span style="flex:none;width:9px;height:9px;background:var(--magenta)"></span>{{ b.text }}</h2>
+                      </sc-if>
+                      <sc-if value="{{ b.isQ }}" hint-placeholder-val="{{ false }}">
+                        <figure style="margin:1.2em 0;padding:20px 0 18px;border-top:3px solid var(--magenta);border-bottom:1px solid var(--rule)">
+                          <span aria-hidden="true" style="display:block;font-family:var(--font-display);font-weight:800;font-size:64px;line-height:0.6;height:30px;color:var(--magenta)">„</span>
+                          <blockquote style="margin:0 0 12px;font-family:var(--font-display);font-weight:700;font-size:clamp(19px,3.6cqw,34px);line-height:1.15;letter-spacing:-0.02em;color:{{ b.hColor }};text-wrap:balance">{{ b.text }}</blockquote>
+                          <figcaption style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted)">{{ b.who }}</figcaption>
+                        </figure>
+                      </sc-if>
+                      <sc-if value="{{ b.isImg }}" hint-placeholder-val="{{ false }}">
+                        <figure style="margin:1.4em 0">
+                          <div style="position:relative;aspect-ratio:{{ b.ratio }};background:var(--tint);overflow:hidden;clip-path:{{ b.clip }};display:flex;align-items:center;justify-content:center">
+                            <sc-if value="{{ b.hasImg }}" hint-placeholder-val="{{ false }}">
+                              <img loading="lazy" src="{{ b.src }}" alt="{{ b.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ b.pos }};display:block">
+                            </sc-if>
+                            <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">Bild fehlt</span>
+                          </div>
+                          <sc-if value="{{ b.capLine }}" hint-placeholder-val="{{ false }}">
+                            <figcaption style="padding-top:8px;padding-left:{{ b.capPad }};padding-right:{{ b.capPad }};font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ b.capLine }}</figcaption>
+                          </sc-if>
+                        </figure>
+                      </sc-if>
+                      <sc-if value="{{ b.isPair }}" hint-placeholder-val="{{ false }}">
+                        <figure style="margin:1.4em 0;display:flex;flex-direction:column;gap:8px">
+                          <div style="display:flex;gap:8px">
+                            <sc-for list="{{ b.pitems }}" as="it" hint-placeholder-count="2">
+                              <div style="flex:{{ it.grow }} 1 0;min-width:0;position:relative;aspect-ratio:{{ it.ratio }};background:var(--tint);overflow:hidden;display:flex;align-items:center;justify-content:center">
+                                <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;color:var(--ink-muted)">Bild fehlt</span>
+                                <sc-if value="{{ it.hasImg }}" hint-placeholder-val="{{ false }}"><img loading="lazy" src="{{ it.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ it.pos }};display:block"></sc-if>
+                              </div>
+                            </sc-for>
+                          </div>
+                          <sc-if value="{{ b.capLine }}" hint-placeholder-val="{{ false }}">
+                            <figcaption style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10px;letter-spacing:0.14em;color:var(--ink-muted)">{{ b.capLine }}</figcaption>
+                          </sc-if>
+                        </figure>
+                      </sc-if>
+                      <sc-if value="{{ b.isStrip }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin:1.4em 0;background:var(--purple);color:#fff;padding:4cqw 0">
+                          <div style="padding:0 5cqw 12px;display:flex;flex-direction:column;gap:6px">
+                            <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:0.16em;color:var(--cyan)">Bildstrecke · {{ b.count }}</span>
+                            <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(18px,3.4cqw,30px);line-height:1;letter-spacing:-0.03em;color:#fff">{{ b.stitle }}</span>
+                          </div>
+                          <div style="display:flex;gap:8px;overflow-x:auto;padding:0 5cqw;scrollbar-width:none">
+                            <sc-for list="{{ b.pitems }}" as="it" hint-placeholder-count="3">
+                              <div style="flex:none;position:relative;height:clamp(110px,28cqw,280px);width:calc(clamp(110px,28cqw,280px) * {{ it.grow }});background:rgba(255,255,255,0.08);overflow:hidden"><sc-if value="{{ it.hasImg }}" hint-placeholder-val="{{ false }}"><img loading="lazy" src="{{ it.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ it.pos }};display:block"></sc-if></div>
+                            </sc-for>
+                          </div>
+                        </div>
+                      </sc-if>
+                      <sc-if value="{{ b.isScrolly }}" hint-placeholder-val="{{ false }}">
+                        <div style="margin:1.4em 0;background:var(--tint);padding:5cqw;display:flex;flex-direction:column;gap:14px">
+                          <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:0.16em;color:var(--magenta)">Bild &amp; Text · scrollt auf der Website</span>
+                          <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(18px,3.4cqw,30px);line-height:1;letter-spacing:-0.03em;color:var(--purple)">{{ b.stitle }}</span>
+                          <sc-for list="{{ b.psteps }}" as="st" hint-placeholder-count="2">
+                            <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-start">
+                              <div style="flex:1.3 1 170px;position:relative;aspect-ratio:4/3;background:var(--purple);overflow:hidden;clip-path:polygon(0 0,100% 0,100% 90%,93% 100%,0 100%)"><sc-if value="{{ st.hasImg }}" hint-placeholder-val="{{ false }}"><img loading="lazy" src="{{ st.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ st.pos }};display:block"></sc-if></div>
+                              <div style="flex:1 1 150px;background:#fff;border-top:3px solid var(--magenta);padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px">
+                                <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:9.5px;letter-spacing:0.16em;color:var(--magenta)">{{ st.k }}</span>
+                                <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(15px,2.4cqw,20px);line-height:1.1;letter-spacing:-0.02em;color:var(--purple)">{{ st.title }}</span>
+                                <span style="font-size:clamp(12.5px,1.9cqw,14.5px);line-height:1.55;color:{{ st.color }}">{{ st.text }}</span>
+                              </div>
+                            </div>
+                          </sc-for>
+                        </div>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                  <div style="margin-top:28px;padding-top:14px;border-top:1px solid var(--rule);font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted)">Text · {{ pv.author }}</div>
+                </div>
+              </div>
+              <div style="margin-top:12px;text-align:center;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.12em;color:var(--ink-muted)">tanznetzdresden.de/news/{{ pv.slug }}</div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{ isMedia }}" hint-placeholder-val="{{ false }}">
+      <section data-screen-label="Medien" style="max-width:1280px;padding:clamp(28px,4vw,52px) clamp(20px,3.5vw,48px) 80px">
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 32px;margin-bottom:24px">
+          <div style="display:flex;flex-direction:column;gap:14px">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="200px,14px">Website · Medien</x-import>
+            <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(40px,5vw,60px);line-height:0.95;letter-spacing:-0.035em;color:var(--purple);margin:0">Mediathek</h1>
+          </div>
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:{{ libStatColor }}">{{ libStat }}</span>
+        </div>
+
+        <div onDragOver="{{ lz.over }}" onDragLeave="{{ lz.leave }}" onDrop="{{ lz.drop }}" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px;padding:22px 24px;margin-bottom:28px;border:2px dashed {{ lz.border }};background:{{ lz.bg }};transition:background 150ms,border-color 150ms">
+          <div style="display:flex;align-items:center;gap:16px">
+            <span style="flex:none;width:12px;height:12px;background:var(--magenta)"></span>
+            <div style="display:flex;flex-direction:column;gap:4px">
+              <span style="font-family:var(--font-display);font-weight:700;font-size:20px;letter-spacing:-0.01em;color:var(--purple)">Bilder hierher ziehen</span>
+              <span style="font-size:13.5px;line-height:1.45;color:var(--ink-soft)">Mehrere auf einmal möglich. Große Fotos werden auf 1600 px verkleinert.</span>
+            </div>
+          </div>
+          <label style="display:inline-flex;align-items:center;gap:9px;padding:12px 20px;background:var(--purple);color:#fff;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;transition:background 200ms" style-hover="background:var(--magenta)"><span style="width:6px;height:6px;background:currentColor"></span>Dateien wählen<input type="file" accept="image/*" multiple onChange="{{ uploadLib }}" style="display:none"></label>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-start;gap:28px">
+          <div style="flex:1 1 440px;min-width:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:14px">
+            <sc-for list="{{ lib }}" as="m" hint-placeholder-count="8">
+              <button onClick="{{ m.select }}" style="display:flex;flex-direction:column;gap:8px;padding:0;border:0;border-radius:0;background:none;cursor:pointer;text-align:left">
+                <div style="position:relative;width:100%;aspect-ratio:1;overflow:hidden;background:var(--purple);outline:3px solid {{ m.ring }};outline-offset:-3px">
+                  <img loading="lazy" src="{{ m.src }}" alt="{{ m.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ m.pos }};display:block">
+                  <sc-if value="{{ m.noAlt }}" hint-placeholder-val="{{ false }}">
+                    <span style="position:absolute;left:0;bottom:0;padding:4px 7px;background:var(--magenta);color:#fff;font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase">Alt-Text fehlt</span>
+                  </sc-if>
+                </div>
+                <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.name }}</span>
+              </button>
+            </sc-for>
+          </div>
+
+          <sc-if value="{{ sel.has }}" hint-placeholder-val="{{ true }}">
+            <div style="flex:0 1 380px;min-width:280px;position:sticky;top:24px;background:#fff;border-top:3px solid var(--magenta);padding:20px 20px 24px;display:flex;flex-direction:column;gap:16px">
+              <div onClick="{{ sel.focal }}" title="Klicken, um den Fokuspunkt zu setzen" style="position:relative;cursor:crosshair;background:var(--purple);line-height:0">
+                <img loading="lazy" src="{{ sel.src }}" alt="{{ sel.alt }}" draggable="false" style="width:100%;max-height:320px;object-fit:contain;display:block;user-select:none">
+                <div style="position:absolute;left:{{ sel.fxp }};top:{{ sel.fyp }};width:28px;height:28px;transform:translate(-50%,-50%);border:2px solid #fff;outline:1.5px solid var(--purple);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:left 200ms cubic-bezier(0.16,1,0.3,1),top 200ms cubic-bezier(0.16,1,0.3,1)"><span style="width:8px;height:8px;background:var(--magenta)"></span></div>
+              </div>
+              <div style="display:flex;flex-wrap:wrap;gap:10px">
+                <sc-for list="{{ crops }}" as="k" hint-placeholder-count="3">
+                  <div style="display:flex;flex-direction:column;gap:5px">
+                    <div style="position:relative;height:62px;aspect-ratio:{{ k.ratio }};overflow:hidden;background:var(--purple);clip-path:{{ k.clip }}">
+                      <img loading="lazy" src="{{ sel.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ sel.pos }};display:block">
+                    </div>
+                    <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted)">{{ k.label }}</span>
+                  </div>
+                </sc-for>
+              </div>
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Alt-Text" value="{{ sel.alt }}" onChange="{{ sel.onAlt }}" invalid="{{ sel.noAlt }}" placeholder="Was ist zu sehen?" hint="{{ sel.altHint }}" hint-size="100%,90px"></x-import>
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Fotonachweis" value="{{ sel.credit }}" onChange="{{ sel.onCredit }}" placeholder="Foto: Vorname Nachname" hint-size="100%,66px"></x-import>
+              <div style="display:flex;flex-direction:column;gap:8px;padding-top:6px;border-top:1px solid var(--rule)">
+                <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Verwendet in</span>
+                <sc-for list="{{ sel.used }}" as="u" hint-placeholder-count="1">
+                  <button onClick="{{ u.open }}" style="padding:0;border:0;background:none;text-align:left;cursor:pointer;font-size:14px;line-height:1.4;font-weight:600;color:var(--purple)" style-hover="color:var(--magenta)">{{ u.title }} →</button>
+                </sc-for>
+                <sc-if value="{{ sel.unused }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:14px;color:var(--ink-muted)">Noch in keinem Beitrag.</span>
+                </sc-if>
+              </div>
+            </div>
+          </sc-if>
+        </div>
+      </section>
+    </sc-if>
+    <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+      <div data-screen-label="Mein Profil">
+        <div style="position:sticky;top:0;z-index:15;height:64px;background:#fff;border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:12px 16px;padding:0 clamp(16px,2.6vw,32px)">
+          <span style="flex:none;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Mein Profil</span>
+          <span style="flex:none;width:1px;height:22px;background:var(--rule)"></span>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ pf.visVar }}" size="sm" style="flex:none" hint-size="80px,20px">{{ pf.visLabel }}</x-import>
+          <span style="flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ savedLabel }}</span>
+          <div style="margin-left:auto;flex:none;display:flex;align-items:center;gap:14px">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Switch" checked="{{ pf.public }}" onChange="{{ togglePublic }}" label="Öffentlich" hint-size="120px,26px"></x-import>
+            <button onClick="{{ togglePv }}" style="white-space:nowrap;padding:10px 12px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">{{ pvToggleLabel }}</button>
+            <a href="Profil%20v2.dc.html" target="_blank" style="display:inline-flex;align-items:center;gap:9px;padding:12px 18px;background:var(--purple);color:#fff;font-family:var(--font-body);font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;white-space:nowrap;transition:background 200ms" style-hover="background:var(--magenta);color:#fff"><span style="width:6px;height:6px;background:currentColor"></span>Seite ansehen</a>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-wrap:wrap;align-items:flex-start">
+          <div style="flex:1 1 460px;min-width:0;padding:clamp(24px,3.4vw,44px) clamp(18px,3vw,40px) 140px">
+            <div style="max-width:700px;margin:0 auto;display:flex;flex-direction:column;gap:40px">
+
+              <div style="background:#fff;border:1px solid var(--rule);border-top:3px solid var(--magenta);padding:18px 20px 20px;display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px">
+                  <span style="font-family:var(--font-display);font-weight:800;font-size:44px;line-height:0.9;letter-spacing:-0.04em;color:var(--magenta)">{{ pc.pct }}</span>
+                  <span style="font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-0.01em;color:var(--purple)">Profil vollständig</span>
+                </div>
+                <div style="height:6px;background:var(--tint)"><div style="height:100%;width:{{ pc.bar }};background:var(--magenta);transition:width 400ms cubic-bezier(0.16,1,0.3,1)"></div></div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  <sc-for list="{{ pc.missing }}" as="c" hint-placeholder-count="1">
+                    <button onClick="{{ c.fix }}" style="padding:7px 11px;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">+ {{ c.add }}</button>
+                  </sc-for>
+                </div>
+                <sc-if value="{{ pc.done }}" hint-placeholder-val="{{ false }}">
+                  <span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">Alles da. Dein Profil ist bereit für die Netzwerk-Übersicht.</span>
+                </sc-if>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:18px">
+                <div style="display:flex;align-items:baseline;gap:14px;border-top:2px solid var(--purple);padding-top:16px">
+                  <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;color:var(--magenta)">01</span>
+                  <h2 style="margin:0;font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:-0.02em;color:var(--purple)">Wer du bist</h2>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px">
+                  <div id="f-p-name" onFocus="{{ fP.name }}"><x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Name" value="{{ pf.name }}" onChange="{{ pOn.name }}" placeholder="Vorname Nachname" hint-size="100%,66px"></x-import></div>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Pronomen" value="{{ pf.pronouns }}" onChange="{{ pOn.pronouns }}" placeholder="optional" hint-size="100%,66px"></x-import>
+                  <div id="f-p-role" onFocus="{{ fP.name }}"><x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Bezeichnung" value="{{ pf.role }}" onChange="{{ pOn.role }}" placeholder="z. B. Tänzer:in und Choreograf:in" hint-size="100%,66px"></x-import></div>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Basis" value="{{ pf.base }}" onChange="{{ pOn.base }}" placeholder="Stadtteil oder Stadt" hint-size="100%,66px"></x-import>
+                </div>
+                <div id="f-p-disc" style="display:flex;flex-direction:column;gap:10px">
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Disziplinen · bis zu 4</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px">
+                    <sc-for list="{{ discChips }}" as="c" hint-placeholder-count="8">
+                      <button onClick="{{ c.pick }}" style="padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:{{ c.bg }};color:{{ c.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta)">{{ c.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div id="f-p-pitch" onFocus="{{ fP.pitch }}" style="display:flex;flex-direction:column;gap:8px">
+                  <div style="display:flex;justify-content:space-between;gap:12px">
+                    <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Dein Pitch</span>
+                    <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;color:{{ pf.pitchColor }}">{{ pf.pitchCount }}</span>
+                  </div>
+                  <textarea rows="2" value="{{ pf.pitch }}" onChange="{{ pOn.pitch }}" placeholder="Ein Satz: Woran arbeitest du, was macht deine Arbeit aus?" style="width:100%;resize:none;field-sizing:content;min-height:72px;border:1.5px solid var(--rule);border-radius:0;background:#fff;padding:12px 14px;outline:none;font-family:var(--font-display);font-weight:700;font-size:21px;line-height:1.25;letter-spacing:-0.015em;color:var(--purple)" style-focus="border-color:var(--magenta)"></textarea>
+                  <span style="font-size:12.5px;line-height:1.4;color:var(--ink-muted)">Steht groß oben auf deiner Seite und in der Übersicht aller Tanzschaffenden.</span>
+                </div>
+              </div>
+
+              <div id="f-p-gal" onFocus="{{ fP.gal }}" style="display:flex;flex-direction:column;gap:14px">
+                <div style="display:flex;align-items:baseline;gap:14px;border-top:2px solid var(--purple);padding-top:16px">
+                  <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;color:var(--magenta)">02</span>
+                  <h2 style="flex:1;margin:0;font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:-0.02em;color:var(--purple)">Bilder</h2>
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;color:var(--ink-muted)">{{ pf.galCount }}</span>
+                </div>
+                <span style="font-size:14px;line-height:1.5;color:var(--ink-soft)">Mindestens 4, bis zu 12 Bilder. Das erste ist dein Titelbild. Zum Sortieren Bilder ziehen, zum Bearbeiten anklicken.</span>
+                <div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px">
+                  <sc-for list="{{ gal }}" as="g" hint-placeholder-count="5">
+                    <div draggable="true" onDragStart="{{ g.dragStart }}" onDragOver="{{ g.dragOver }}" onDrop="{{ g.drop }}" onDragEnd="{{ g.dragEnd }}" onClick="{{ g.select }}" style="position:relative;grid-column:{{ g.span }};grid-row:{{ g.span }};aspect-ratio:1;overflow:hidden;background:var(--purple);cursor:grab;outline:3px solid {{ g.ring }};outline-offset:-3px">
+                      <img loading="lazy" src="{{ g.src }}" alt="{{ g.alt }}" draggable="false" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ g.pos }};display:block;pointer-events:none">
+                      <span style="position:absolute;top:0;left:0;padding:4px 7px;background:var(--purple);color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.12em">{{ g.nr }}</span>
+                      <sc-if value="{{ g.isFirst }}" hint-placeholder-val="{{ false }}">
+                        <span style="position:absolute;top:0;right:0;padding:4px 8px;background:var(--cyan);color:var(--purple);font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase">Titelbild</span>
+                      </sc-if>
+                      <sc-if value="{{ g.noAlt }}" hint-placeholder-val="{{ false }}">
+                        <span style="position:absolute;left:0;bottom:0;padding:4px 7px;background:var(--magenta);color:#fff;font-family:var(--font-mono);font-size:9px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">Alt-Text fehlt</span>
+                      </sc-if>
+                    </div>
+                  </sc-for>
+                  <sc-for list="{{ slots }}" as="s" hint-placeholder-count="0">
+                    <div onDragOver="{{ gz.over }}" onDragLeave="{{ gz.leave }}" onDrop="{{ gz.drop }}" style="aspect-ratio:1;border:2px dashed var(--rule);display:flex;align-items:center;justify-content:center;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ s.label }}</div>
+                  </sc-for>
+                  <sc-if value="{{ canAdd }}" hint-placeholder-val="{{ true }}">
+                    <div onDragOver="{{ gz.over }}" onDragLeave="{{ gz.leave }}" onDrop="{{ gz.drop }}" style="aspect-ratio:1;border:2px dashed {{ gzBorder }};background:{{ gz.bg }};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:8px;text-align:center">
+                      <label style="padding:8px 10px;background:var(--purple);color:#fff;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="background:var(--magenta)">+ Hochladen<input type="file" accept="image/*" multiple onChange="{{ uploadGal }}" style="display:none"></label>
+                      <button onClick="{{ pickGal }}" style="padding:4px 0;border:0;background:none;cursor:pointer;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple)" style-hover="color:var(--magenta)">Mediathek</button>
+                    </div>
+                  </sc-if>
+                </div>
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px">
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Galerie-Layout</span>
+                  <div style="display:flex">
+                    <sc-for list="{{ layoutChips }}" as="l" hint-placeholder-count="2">
+                      <button onClick="{{ l.pick }}" style="padding:8px 14px;margin-left:-1.5px;border:1.5px solid var(--purple);border-radius:0;background:{{ l.bg }};color:{{ l.fg }};font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer">{{ l.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <sc-if value="{{ gd.has }}" hint-placeholder-val="{{ true }}">
+                  <div id="f-p-galdetail" style="display:flex;flex-wrap:wrap;gap:18px;background:#fff;border:1px solid var(--rule);border-left:3px solid var(--magenta);padding:16px">
+                    <div style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:10px">
+                      <div onClick="{{ gd.focal }}" title="Klicken, um den Fokuspunkt zu setzen" style="position:relative;cursor:crosshair;background:var(--purple);line-height:0">
+                        <img loading="lazy" src="{{ gd.src }}" alt="{{ gd.alt }}" draggable="false" style="width:100%;max-height:300px;object-fit:contain;display:block;user-select:none">
+                        <div style="position:absolute;left:{{ gd.fxp }};top:{{ gd.fyp }};width:28px;height:28px;transform:translate(-50%,-50%);border:2px solid #fff;outline:1.5px solid var(--purple);display:flex;align-items:center;justify-content:center;pointer-events:none;transition:left 200ms cubic-bezier(0.16,1,0.3,1),top 200ms cubic-bezier(0.16,1,0.3,1)"><span style="width:8px;height:8px;background:var(--magenta)"></span></div>
+                      </div>
+                      <div style="display:flex;flex-wrap:wrap;gap:10px">
+                        <sc-for list="{{ pcrops }}" as="k" hint-placeholder-count="3">
+                          <div style="display:flex;flex-direction:column;gap:5px">
+                            <div style="position:relative;height:64px;aspect-ratio:{{ k.ratio }};overflow:hidden;background:var(--purple);clip-path:{{ k.clip }}">
+                              <img loading="lazy" src="{{ gd.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ gd.pos }};display:block">
+                            </div>
+                            <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted)">{{ k.label }}</span>
+                          </div>
+                        </sc-for>
+                      </div>
+                    </div>
+                    <div style="flex:1 1 240px;min-width:0;display:flex;flex-direction:column;gap:12px">
+                      <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Bild {{ gd.nr }}</span>
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Alt-Text" value="{{ gd.alt }}" onChange="{{ gd.onAlt }}" invalid="{{ gd.noAlt }}" placeholder="Was ist zu sehen?" hint="{{ gd.altHint }}" hint-size="100%,90px"></x-import>
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Fotonachweis" value="{{ gd.credit }}" onChange="{{ gd.onCredit }}" placeholder="Foto: Vorname Nachname" hint-size="100%,66px"></x-import>
+                      <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Bildunterschrift" value="{{ gd.cap }}" onChange="{{ gd.onCap }}" placeholder="optional, z. B. Stück · Ort · Jahr" hint-size="100%,66px"></x-import>
+                      <div style="display:flex;flex-wrap:wrap;gap:8px">
+                        <sc-if value="{{ gd.notFirst }}" hint-placeholder-val="{{ false }}">
+                          <button onClick="{{ gd.makeFirst }}" style="padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:transparent;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Als Titelbild</button>
+                        </sc-if>
+                        <button onClick="{{ gd.remove }}" style="padding:8px 12px;border:1.5px solid transparent;border-radius:0;background:transparent;color:var(--ink-soft);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="color:var(--magenta)">Entfernen</button>
+                      </div>
+                    </div>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div id="f-p-bio" onFocus="{{ fP.bio }}" style="display:flex;flex-direction:column;gap:16px">
+                <div style="display:flex;align-items:baseline;gap:14px;border-top:2px solid var(--purple);padding-top:16px">
+                  <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;color:var(--magenta)">03</span>
+                  <h2 style="flex:1;margin:0;font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:-0.02em;color:var(--purple)">Über dich</h2>
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;color:var(--ink-muted)">{{ pf.bioCount }}</span>
+                </div>
+                <textarea rows="6" value="{{ pf.bio }}" onChange="{{ pOn.bio }}" placeholder="Werdegang, Arbeitsweise, Themen. Leerzeile = neuer Absatz." style="width:100%;resize:none;field-sizing:content;min-height:160px;border:1.5px solid var(--rule);border-radius:0;background:#fff;padding:14px 16px;outline:none;font-size:16.5px;line-height:1.65;color:var(--ink)" style-focus="border-color:var(--magenta)"></textarea>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Offen für</span>
+                  <div style="display:flex;flex-wrap:wrap;gap:6px">
+                    <sc-for list="{{ openChips }}" as="c" hint-placeholder-count="6">
+                      <button onClick="{{ c.pick }}" style="padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:{{ c.bg }};color:{{ c.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta)">{{ c.label }}</button>
+                    </sc-for>
+                  </div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:10px">
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Steckbrief</span>
+                  <span style="font-size:12.5px;line-height:1.4;color:var(--ink-muted)">Leere Felder werden auf deiner Seite nicht angezeigt.</span>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:16px">
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Ausbildung" value="{{ pf.edu }}" onChange="{{ pOn.edu }}" placeholder="Schule, Abschluss, Jahr" hint-size="100%,66px"></x-import>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Techniken" value="{{ pf.tech }}" onChange="{{ pOn.tech }}" placeholder="z. B. Release, Floorwork" hint-size="100%,66px"></x-import>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Sprachen" value="{{ pf.langs }}" onChange="{{ pOn.langs }}" placeholder="z. B. Deutsch, Englisch" hint-size="100%,66px"></x-import>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Arbeitsorte" value="{{ pf.regions }}" onChange="{{ pOn.regions }}" placeholder="Städte, Reisebereitschaft" hint-size="100%,66px"></x-import>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Körpergröße" value="{{ pf.height }}" onChange="{{ pOn.height }}" placeholder="optional" hint-size="100%,66px"></x-import>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Verfügbar" value="{{ pf.avail }}" onChange="{{ pOn.avail }}" placeholder="z. B. ab März 2027" hint-size="100%,66px"></x-import>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Video-Link" value="{{ pf.video }}" onChange="{{ pOn.video }}" placeholder="Vimeo oder YouTube" hint-size="100%,66px"></x-import>
+                </div>
+              </div>
+
+              <div id="f-p-works" onFocus="{{ fP.works }}" style="display:flex;flex-direction:column;gap:12px">
+                <div style="display:flex;align-items:baseline;gap:14px;border-top:2px solid var(--purple);padding-top:16px">
+                  <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;color:var(--magenta)">04</span>
+                  <h2 style="flex:1;margin:0;font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:-0.02em;color:var(--purple)">Arbeiten</h2>
+                  <button onClick="{{ addWork }}" style="padding:8px 12px;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">+ Arbeit</button>
+                </div>
+                <sc-for list="{{ works }}" as="w" hint-placeholder-count="3">
+                  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:12px 14px;background:#fff;border:1px solid var(--rule)">
+                    <input value="{{ w.year }}" onChange="{{ w.onYear }}" placeholder="Jahr" style="flex:0 0 64px;width:64px;border:0;background:transparent;outline:none;font-family:var(--font-display);font-weight:800;font-size:20px;letter-spacing:-0.02em;color:var(--magenta)">
+                    <div style="flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:4px">
+                      <input value="{{ w.title }}" onChange="{{ w.onTitle }}" placeholder="Titel des Stücks oder Projekts" style="width:100%;border:0;background:transparent;outline:none;font-family:var(--font-display);font-weight:700;font-size:17px;color:var(--purple)">
+                      <input value="{{ w.place }}" onChange="{{ w.onPlace }}" placeholder="Format · Ort" style="width:100%;border:0;background:transparent;outline:none;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;color:var(--ink-soft)">
+                    </div>
+                    <button onClick="{{ w.del }}" style="height:28px;padding:0 10px;border:1px solid var(--rule);border-radius:0;background:#fff;color:var(--ink-soft);font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Löschen</button>
+                  </div>
+                </sc-for>
+              </div>
+
+              <div id="f-p-contact" onFocus="{{ fP.contact }}" style="display:flex;flex-direction:column;gap:16px">
+                <div style="display:flex;align-items:baseline;gap:14px;border-top:2px solid var(--purple);padding-top:16px">
+                  <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;color:var(--magenta)">05</span>
+                  <h2 style="margin:0;font-family:var(--font-display);font-weight:800;font-size:26px;letter-spacing:-0.02em;color:var(--purple)">Kontakt</h2>
+                </div>
+                <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:16px">
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="E-Mail" type="email" value="{{ pf.email }}" onChange="{{ pOn.email }}" placeholder="name@beispiel.de" hint-size="100%,66px"></x-import>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Website" value="{{ pf.web }}" onChange="{{ pOn.web }}" placeholder="optional" hint-size="100%,66px"></x-import>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Input" label="Instagram" value="{{ pf.insta }}" onChange="{{ pOn.insta }}" placeholder="@handle" hint-size="100%,66px"></x-import>
+                </div>
+                <span style="font-size:12.5px;line-height:1.45;color:var(--ink-muted)">Auf deiner Seite erscheinen ein Knopf „E-Mail schreiben“ mit vorausgefülltem Betreff und, falls eingetragen, ein Link für eine Instagram-Nachricht.</span>
+              </div>
+
+            </div>
+          </div>
+
+          <sc-if value="{{ showPv }}" hint-placeholder-val="{{ true }}">
+            <div ref="{{ pvRef }}" style="flex:1 1 440px;min-width:0;position:sticky;top:64px;height:calc(100vh - 64px);overflow:auto;background:var(--tint);border-left:1px solid var(--rule);padding:18px clamp(14px,2vw,28px) 48px">
+              <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px;margin-bottom:14px">
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" size="{{ 11 }}" hint-size="140px,12px">Live-Vorschau</x-import>
+                <div style="display:flex">
+                  <sc-for list="{{ devices }}" as="v" hint-placeholder-count="2">
+                    <button onClick="{{ v.pick }}" style="padding:7px 12px;border:1.5px solid var(--purple);margin-left:-1.5px;border-radius:0;background:{{ v.bg }};color:{{ v.fg }};font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer">{{ v.label }}</button>
+                  </sc-for>
+                </div>
+              </div>
+              <div style="width:{{ pvWidth }};max-width:100%;margin:0 auto;background:#fff;border:1px solid var(--rule);container-type:inline-size;transition:width 300ms cubic-bezier(0.16,1,0.3,1)">
+                <div style="background:var(--purple);padding:max(12px,2.6cqw) 5cqw;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,0.12)">
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="52px" hint-size="52px,20px"></x-import>
+                  <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);border-bottom:1.5px solid var(--magenta);padding-bottom:3px">Netzwerk</span>
+                </div>
+                <div style="position:relative;background:var(--purple);color:#fff;padding:6cqw 5cqw 11cqw;display:flex;flex-wrap:wrap;align-items:flex-end;gap:5cqw">
+                  <div style="flex:1 1 52%;min-width:0;display:flex;flex-direction:column;gap:max(10px,2.6cqw)">
+                    <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan)">Tanzschaffende · Dresden</span>
+                    <h1 data-pv="p-name" onClick="{{ jP.name }}" style="margin:0;font-family:var(--font-display);font-weight:800;font-size:clamp(30px,10cqw,104px);line-height:0.88;letter-spacing:-0.045em;cursor:pointer;outline:{{ pp.nameOut }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)"><span style="color:#fff">{{ pp.first }}</span><br><span style="color:var(--magenta)">{{ pp.rest }}</span></h1>
+                    <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--cyan)">{{ pp.meta }}</span>
+                    <p data-pv="p-pitch" onClick="{{ jP.pitch }}" style="margin:0;font-family:var(--font-display);font-weight:700;font-size:clamp(15px,3.2cqw,30px);line-height:1.2;letter-spacing:-0.015em;color:{{ pp.pitchColor }};text-wrap:pretty;cursor:pointer;outline:{{ pp.pitchOut }};outline-offset:6px" style-hover="outline:1.5px solid var(--cyan)">{{ pp.pitch }}</p>
+                    <div style="display:flex;flex-wrap:wrap;gap:6px">
+                      <sc-for list="{{ pp.open }}" as="o" hint-placeholder-count="3">
+                        <span style="padding:5px 8px;border:1.5px solid var(--cyan);color:var(--cyan);font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase">{{ o.label }}</span>
+                      </sc-for>
+                    </div>
+                  </div>
+                  <sc-if value="{{ pp.hasHero }}" hint-placeholder-val="{{ false }}">
+                    <div data-pv="p-gal" onClick="{{ jP.gal }}" style="position:relative;flex:1 1 30%;min-width:120px;aspect-ratio:4/5;overflow:hidden;background:#000;clip-path:polygon(0 0,100% 0,100% 88%,86% 100%,0 100%);cursor:pointer;outline:{{ pp.galOut }}">
+                      <img loading="lazy" src="{{ pp.hero.src }}" alt="{{ pp.hero.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ pp.hero.pos }};display:block;transition:object-position 250ms">
+                      <div style="position:absolute;top:0;left:0;width:4cqw;height:4cqw;background:var(--magenta)"></div>
+                    </div>
+                  </sc-if>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 8 }}" style="position:absolute;left:0;bottom:0;width:34%" hint-size="34%,8px"></x-import>
+                </div>
+                <sc-if value="{{ pp.hasGallery }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ jP.gal }}" style="padding:6cqw 5cqw 0;cursor:pointer">
+                    <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">{{ pp.galLabel }}</span>
+                    <div style="display:grid;grid-template-columns:repeat(12,minmax(0,1fr));grid-auto-flow:dense;gap:1.4cqw;margin-top:2.4cqw">
+                      <sc-for list="{{ pp.gallery }}" as="g" hint-placeholder-count="4">
+                        <div style="position:relative;grid-column:{{ g.c }};grid-row:{{ g.r }};aspect-ratio:{{ g.ratio }};overflow:hidden;background:var(--purple)">
+                          <img loading="lazy" src="{{ g.src }}" alt="{{ g.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ g.pos }};display:block">
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+                <div data-pv="p-bio" onClick="{{ jP.bio }}" style="padding:7cqw 5cqw 0;display:flex;flex-wrap:wrap;gap:5cqw;cursor:pointer;outline:{{ pp.bioOut }};outline-offset:-4px">
+                  <div style="flex:1 1 55%;min-width:0">
+                    <span style="display:block;margin-bottom:2cqw;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Über {{ pp.first }}</span>
+                    <sc-for list="{{ pp.paras }}" as="p" hint-placeholder-count="2">
+                      <p style="margin:0 0 1em;font-size:clamp(13.5px,2.3cqw,18px);line-height:1.7;color:var(--ink);text-wrap:pretty">{{ p.t }}</p>
+                    </sc-for>
+                  </div>
+                  <div style="flex:1 1 28%;min-width:140px;border-top:3px solid var(--magenta);padding-top:1.6cqw">
+                    <sc-for list="{{ pp.facts }}" as="f" hint-placeholder-count="3">
+                      <div style="padding:1.6cqw 0;border-bottom:1px solid var(--rule);display:flex;flex-direction:column;gap:3px">
+                        <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--ink-muted)">{{ f.k }}</span>
+                        <span style="font-size:clamp(12.5px,2cqw,15px);line-height:1.45;font-weight:600;color:var(--purple)">{{ f.v }}</span>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+                <sc-if value="{{ pp.hasWorks }}" hint-placeholder-val="{{ true }}">
+                  <div data-pv="p-works" onClick="{{ jP.works }}" style="padding:6cqw 5cqw 0;cursor:pointer;outline:{{ pp.worksOut }};outline-offset:-4px">
+                    <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--magenta)">Arbeiten</span>
+                    <div style="margin-top:2cqw;border-top:2px solid var(--purple)">
+                      <sc-for list="{{ pp.works }}" as="w" hint-placeholder-count="3">
+                        <div style="display:flex;align-items:baseline;gap:3cqw;padding:2.2cqw 0;border-bottom:1px solid var(--rule)">
+                          <span style="flex:none;width:14cqw;font-family:var(--font-display);font-weight:800;font-size:clamp(15px,3.2cqw,28px);letter-spacing:-0.03em;color:var(--magenta)">{{ w.year }}</span>
+                          <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:3px">
+                            <span style="font-family:var(--font-display);font-weight:700;font-size:clamp(14px,2.7cqw,22px);letter-spacing:-0.015em;color:var(--purple)">{{ w.title }}</span>
+                            <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted)">{{ w.place }}</span>
+                          </div>
+                        </div>
+                      </sc-for>
+                    </div>
+                  </div>
+                </sc-if>
+                <div data-pv="p-contact" onClick="{{ jP.contact }}" style="margin-top:8cqw;background:var(--cyan);color:var(--purple);padding:6cqw 5cqw 9cqw;clip-path:polygon(0 0,100% 0,100% 84%,94% 100%,0 100%);cursor:pointer;display:flex;flex-direction:column;gap:2.4cqw;outline:{{ pp.contactOut }};outline-offset:-4px">
+                    <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(22px,6cqw,56px);line-height:0.95;letter-spacing:-0.035em">Mit {{ pp.first }} arbeiten</span>
+                    <span style="font-size:clamp(13px,2.2cqw,17px);line-height:1.5">{{ pp.openLine }}</span>
+                    <span style="align-self:flex-start;display:inline-flex;align-items:center;gap:8px;padding:2cqw 3.2cqw;background:var(--purple);color:#fff;font-size:clamp(10px,1.6cqw,12px);font-weight:600;letter-spacing:0.08em;text-transform:uppercase"><span style="width:6px;height:6px;background:currentColor"></span>{{ pp.cta }}</span>
+                </div>
+              </div>
+              <div style="margin-top:12px;text-align:center;font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.12em;color:var(--ink-muted)">tanznetzdresden.de/netzwerk/{{ pp.slug }}</div>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </sc-if>
+  </main>
+</div>
+
+<sc-if value="{{ publishOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closePublish }}" style="position:fixed;inset:0;z-index:50;background:rgba(46,26,77,0.55);display:flex;justify-content:flex-end">
+    <div onClick="{{ stop }}" data-screen-label="Veröffentlichen" style="width:min(460px,100%);height:100%;overflow:auto;background:#fff;border-left:3px solid var(--magenta);padding:30px 30px 40px;display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:16px">
+        <div style="display:flex;flex-direction:column;gap:12px;min-width:0">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="160px,14px">Veröffentlichen</x-import>
+          <h2 style="margin:0;font-family:var(--font-display);font-weight:800;font-size:26px;line-height:1.05;letter-spacing:-0.025em;color:var(--purple);text-wrap:balance">{{ pv.title }}</h2>
+        </div>
+        <button onClick="{{ closePublish }}" style="flex:none;padding:6px 0;border:0;background:none;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)" style-hover="color:var(--magenta)">Schließen</button>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;justify-content:space-between;gap:12px;margin-bottom:6px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Checkliste</span>
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;color:var(--ink-muted)">{{ chkSummary }}</span>
+        </div>
+        <sc-for list="{{ checks }}" as="c" hint-placeholder-count="6">
+          <div style="display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--rule)">
+            <span style="flex:none;width:16px;height:16px;background:{{ c.boxBg }};border:1.5px solid {{ c.boxBorder }}"></span>
+            <span style="flex:1;font-size:14.5px;line-height:1.4;color:{{ c.color }}">{{ c.label }}</span>
+            <sc-if value="{{ c.open }}" hint-placeholder-val="{{ false }}">
+              <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:{{ c.noteColor }}">{{ c.note }}</span>
+              <button onClick="{{ c.fix }}" style="padding:5px 9px;border:1.5px solid var(--purple);border-radius:0;background:#fff;color:var(--purple);font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Beheben</button>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Zeitpunkt</span>
+        <div style="display:flex">
+          <sc-for list="{{ modes }}" as="o" hint-placeholder-count="2">
+            <button onClick="{{ o.pick }}" style="flex:1;padding:11px 12px;margin-left:-1.5px;border:1.5px solid var(--purple);border-radius:0;background:{{ o.bg }};color:{{ o.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer">{{ o.label }}</button>
+          </sc-for>
+        </div>
+        <sc-if value="{{ isPlan }}" hint-placeholder-val="{{ false }}">
+          <input type="datetime-local" value="{{ pubAt }}" onChange="{{ onPubAt }}" style="padding:11px 13px;border:1.5px solid var(--rule);border-radius:0;font-size:15px;outline:none" style-focus="border-color:var(--magenta)">
+        </sc-if>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:14px">
+        <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">Ausspielen</span>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Switch" checked="{{ true }}" disabled="{{ true }}" label="Website · News und Chronik" hint-size="100%,26px"></x-import>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Switch" checked="{{ chNews }}" onChange="{{ toggleNews }}" label="In den nächsten Newsletter" hint-size="100%,26px"></x-import>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Switch" checked="{{ chInsta }}" onChange="{{ toggleInsta }}" label="Instagram-Story als Vorlage anlegen" hint-size="100%,26px"></x-import>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--purple)">So erscheint er in der Chronik</span>
+        <div style="display:flex;gap:14px;align-items:center;padding:14px;background:var(--tint)">
+          <sc-if value="{{ cover.has }}" hint-placeholder-val="{{ false }}">
+            <div style="position:relative;flex:none;width:110px;aspect-ratio:4/3;overflow:hidden;background:var(--purple);clip-path:polygon(0 0,100% 0,100% 84%,88% 100%,0 100%)">
+              <img loading="lazy" src="{{ cover.src }}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ cover.pos }}">
+            </div>
+          </sc-if>
+          <div style="min-width:0;display:flex;flex-direction:column;gap:6px">
+            <span style="font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-muted)">{{ pv.metaShort }}</span>
+            <span style="font-family:var(--font-display);font-weight:800;font-size:18px;line-height:1.08;letter-spacing:-0.02em;color:var(--purple)">{{ pv.title }}</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px;margin-top:auto">
+        <sc-if value="{{ pubBlocked }}" hint-placeholder-val="{{ false }}">
+          <span style="font-size:13.5px;line-height:1.45;color:var(--magenta)">Erst die Pflichtpunkte erledigen, dann geht der Beitrag online.</span>
+        </sc-if>
+        <div style="display:flex;flex-wrap:wrap;gap:10px">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" marker="{{ true }}" disabled="{{ pubBlocked }}" onClick="{{ publish }}" hint-size="200px,40px">{{ pubLabel }}</x-import>
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="ghost" onClick="{{ closePublish }}" hint-size="150px,40px">Weiter bearbeiten</x-import>
+        </div>
+        <sc-if value="{{ d.isOnline }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ unpublish }}" style="align-self:flex-start;padding:4px 0;border:0;background:none;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta)" style-hover="color:var(--purple)">Offline nehmen</button>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ pickerOpen }}" hint-placeholder-val="{{ false }}">
+  <div onClick="{{ closePicker }}" style="position:fixed;inset:0;z-index:50;background:rgba(46,26,77,0.55);display:flex;align-items:center;justify-content:center;padding:24px">
+    <div onClick="{{ stop }}" onDragOver="{{ pz.over }}" onDragLeave="{{ pz.leave }}" onDrop="{{ pz.drop }}" data-screen-label="Bild wählen" style="width:min(980px,100%);max-height:88vh;overflow:auto;background:#fff;border-top:3px solid var(--magenta);padding:26px 28px 30px;display:flex;flex-direction:column;gap:20px;outline:{{ pz.outline }};outline-offset:-6px">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px">
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" hint-size="140px,14px">Mediathek</x-import>
+          <h2 style="margin:0;font-family:var(--font-display);font-weight:800;font-size:32px;line-height:1;letter-spacing:-0.03em;color:var(--purple)">Bild wählen</h2>
+        </div>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:14px">
+          <span style="font-size:13.5px;color:var(--ink-soft)">Oder Datei ins Fenster ziehen</span>
+          <label style="display:inline-flex;align-items:center;padding:10px 16px;border:1.5px solid var(--purple);color:var(--purple);font-family:var(--font-body);font-size:11px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer" style-hover="border-color:var(--magenta);color:var(--magenta)">Hochladen<input type="file" accept="image/*" onChange="{{ uploadPick }}" style="display:none"></label>
+          <button onClick="{{ closePicker }}" style="padding:6px 0;border:0;background:none;cursor:pointer;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)" style-hover="color:var(--magenta)">Schließen</button>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px">
+        <sc-for list="{{ pickList }}" as="m" hint-placeholder-count="8">
+          <button onClick="{{ m.choose }}" style="display:flex;flex-direction:column;gap:7px;padding:0;border:0;border-radius:0;background:none;cursor:pointer;text-align:left" style-hover="color:var(--magenta)">
+            <div style="position:relative;width:100%;aspect-ratio:4/3;overflow:hidden;background:var(--purple)">
+              <img loading="lazy" src="{{ m.src }}" alt="{{ m.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ m.pos }};display:block">
+              <sc-if value="{{ m.noAlt }}" hint-placeholder-val="{{ false }}">
+                <span style="position:absolute;left:0;bottom:0;padding:4px 7px;background:var(--magenta);color:#fff;font-family:var(--font-mono);font-size:9.5px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase">Alt-Text fehlt</span>
+              </sc-if>
+            </div>
+            <span style="font-family:var(--font-mono);font-size:10px;font-weight:600;letter-spacing:0.08em;color:var(--ink-soft);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ m.name }}</span>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</sc-if>
+
+<sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+  <div role="status" style="position:fixed;right:24px;bottom:24px;z-index:60;display:flex;align-items:center;gap:12px;padding:14px 18px;background:var(--purple);color:#fff;font-size:14.5px;max-width:calc(100% - 48px)">
+    <span style="flex:none;width:9px;height:9px;background:var(--magenta)"></span>{{ toast }}
+  </div>
+</sc-if>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;editorLayout&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Geteilt&quot;,&quot;Fokus&quot;],&quot;default&quot;:&quot;Geteilt&quot;,&quot;tsType&quot;:&quot;'Geteilt' | 'Fokus'&quot;,&quot;section&quot;:&quot;Editor&quot;},&quot;strictChecks&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Editor&quot;},&quot;compactList&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:false,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Beitragsliste&quot;}}">
+const P = 'assets/photos/';
+const KEY = 'tndd-redaktion-v2';
+const CATS = ['Netzwerk', 'Ausschreibung', 'Training', 'Verein', 'Rückblick', 'Stimme'];
+const BADGE = { Netzwerk: 'purple', Ausschreibung: 'magenta', Training: 'cyan', Verein: 'purple', 'Rückblick': 'cyan', Stimme: 'magenta' };
+const ST = { draft: ['Entwurf', 'outline'], scheduled: ['Geplant', 'cyan'], published: ['Online', 'purple'] };
+const MON = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember'];
+const MO = ['Jan', 'Feb', 'Mär', 'Apr', 'Mai', 'Jun', 'Jul', 'Aug', 'Sep', 'Okt', 'Nov', 'Dez'];
+const LBL = { p: 'Absatz', h: 'Zwischentitel', q: 'Zitat', img: 'Bild', pair: 'Bildpaar', strip: 'Bildstrecke', scrolly: 'Bild & Text' };
+const KEIL = 'polygon(0 0,100% 0,100% 88%,92% 100%,0 100%)';
+const HERO_L = { auto: 'Automatisch', vollbild: 'Vollbild', hochkant: 'Hochkant', split: 'Split', typo: 'Typo', netz: 'Netz' };
+const PARTS = {
+  vollbild: [{ l: '0', t: '0', w: '100%', h: '100%', img: true }, { l: '0', t: '64%', w: '100%', h: '36%', bg: 'rgba(46,26,77,0.9)' }, { l: '8%', t: '75%', w: '52%', h: '9%', bg: '#fff' }, { l: '0', t: '60%', w: '40%', h: '4%', bg: 'var(--cyan)' }],
+  hochkant: [{ l: '0', t: '0', w: '100%', h: '100%', bg: 'var(--purple)' }, { l: '60%', t: '0', w: '30%', h: '100%', img: true }, { l: '8%', t: '52%', w: '42%', h: '10%', bg: '#fff' }, { l: '8%', t: '68%', w: '30%', h: '6%', bg: 'rgba(255,255,255,0.6)' }],
+  split: [{ l: '0', t: '0', w: '100%', h: '100%', bg: 'var(--purple)' }, { l: '46%', t: '0', w: '54%', h: '100%', img: true }, { l: '8%', t: '52%', w: '32%', h: '10%', bg: '#fff' }, { l: '8%', t: '68%', w: '24%', h: '6%', bg: 'rgba(255,255,255,0.6)' }],
+  typo: [{ l: '0', t: '0', w: '100%', h: '58%', bg: 'var(--purple)' }, { l: '8%', t: '16%', w: '50%', h: '10%', bg: '#fff' }, { l: '8%', t: '44%', w: '84%', h: '52%', img: true }],
+};
+const THEMES = {
+  purple: { label: 'Purple', bg: 'var(--purple)', fg: '#fff', meta: 'var(--cyan)', soft: 'rgba(255,255,255,0.9)', keil: 'var(--magenta)' },
+  cyan: { label: 'Cyan', bg: 'var(--cyan)', fg: 'var(--purple)', meta: 'var(--purple)', soft: 'var(--purple)', keil: 'var(--purple)' },
+  tint: { label: 'Tint', bg: 'var(--tint)', fg: 'var(--purple)', meta: 'var(--ink-soft)', soft: 'var(--ink-soft)', keil: 'var(--magenta)' },
+};
+const NETC = {
+  purple: { edge: '72,198,215', node: '255,255,255', ea: 0.34 },
+  cyan: { edge: '46,26,77', node: '46,26,77', ea: 0.3 },
+  tint: { edge: '46,26,77', node: '46,26,77', ea: 0.2 },
+};
+const hashStr = (t) => { let h = 2166136261; for (let i = 0; i < t.length; i++) { h ^= t.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; };
+const rng = (a) => () => { a |= 0; a = (a + 0x6D2B79F5) | 0; let t = Math.imul(a ^ (a >>> 15), 1 | a); t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t; return ((t ^ (t >>> 14)) >>> 0) / 4294967296; };
+const clamp01 = (v) => Math.max(0, Math.min(1, v));
+const easeO = (v) => 1 - Math.pow(1 - v, 3);
+function buildNet(W, H, seed, box, lab) {
+  const rnd = rng(hashStr(seed)), S = W < 700 ? 62 : 84, pts = [];
+  for (let y = S / 2; y < H + S / 2; y += S) for (let x = S / 2; x < W + S / 2; x += S) {
+    const px = x + (rnd() - 0.5) * S * 0.9, py = y + (rnd() - 0.5) * S * 0.9;
+    const dim = !!box && px > box.x0 && px < box.x1 && py > box.y0 && py < box.y1;
+    const inLab = !!lab && px > lab.x0 && px < lab.x1 && py > lab.y0 && py < lab.y1;
+    if (!inLab && rnd() < (dim ? 0.2 : 0.8)) pts.push({ x: px, y: py, dim });
+  }
+  const ax = lab ? lab.ax : W * 0.74, ay = lab ? lab.ay : H * 0.42;
+  const near = (p, k) => pts.map((q, j) => [j, Math.hypot(q.x - p.x, q.y - p.y)]).filter((z) => z[1] > 0).sort((u, v) => u[1] - v[1]).slice(0, k).map((z) => z[0]);
+  const keys = new Set(), edges = [];
+  pts.forEach((p, i) => near(p, 3).forEach((j) => {
+    const key = i < j ? i + '-' + j : j + '-' + i; if (keys.has(key)) return; keys.add(key);
+    edges.push({ a: i, b: j, d: Math.min(p.x, pts[j].x) / W + rnd() * 0.12, dim: p.dim || pts[j].dim });
+  }));
+  const anchor = { x: ax, y: ay, links: near({ x: ax, y: ay }, 6) };
+  return { pts, edges, anchor };
+}
+function paintNet(ctx, net, W, H, th, T, m) {
+  const BUILD = 1.5;
+  ctx.clearRect(0, 0, W, H); ctx.lineWidth = 1;
+  for (const e of net.edges) {
+    const q = easeO(clamp01((T - e.d * BUILD) / 0.5)); if (q <= 0) continue;
+    const a = net.pts[e.a], b = net.pts[e.b];
+    ctx.strokeStyle = 'rgba(' + th.edge + ',' + (th.ea * (e.dim ? 0.35 : 1)).toFixed(3) + ')';
+    ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(a.x + (b.x - a.x) * q, a.y + (b.y - a.y) * q); ctx.stroke();
+  }
+  const R = 170;
+  for (const p of net.pts) {
+    if (T < (p.x / W) * BUILD) continue;
+    const hot = m && Math.hypot(p.x - m.x, p.y - m.y) < R;
+    ctx.fillStyle = 'rgba(' + th.node + ',' + (hot ? 1 : p.dim ? 0.25 : 0.6) + ')';
+    const sz = hot ? 4 : 2.5; ctx.fillRect(p.x - sz / 2, p.y - sz / 2, sz, sz);
+  }
+  const A = net.anchor, qa = easeO(clamp01((T - BUILD) / 0.7));
+  if (qa > 0) {
+    ctx.lineWidth = 1.25; ctx.strokeStyle = 'rgba(218,26,106,0.85)';
+    for (const j of A.links) { const p = net.pts[j]; ctx.beginPath(); ctx.moveTo(A.x, A.y); ctx.lineTo(A.x + (p.x - A.x) * qa, A.y + (p.y - A.y) * qa); ctx.stroke(); }
+    const s = 12 * qa; ctx.fillStyle = '#DA1A6A'; ctx.fillRect(A.x - s / 2, A.y - s / 2, s, s);
+  }
+  if (m) {
+    ctx.lineWidth = 1.25;
+    for (const p of net.pts) { const d = Math.hypot(p.x - m.x, p.y - m.y); if (d < R) { ctx.strokeStyle = 'rgba(218,26,106,' + ((1 - d / R) * 0.85).toFixed(3) + ')'; ctx.beginPath(); ctx.moveTo(m.x, m.y); ctx.lineTo(p.x, p.y); ctx.stroke(); } }
+    ctx.fillStyle = '#DA1A6A'; ctx.fillRect(m.x - 5, m.y - 5, 10, 10);
+  }
+  return T > BUILD + 0.8;
+}
+
+const EMOJI = /\p{Extended_Pictographic}/u;
+const pad = (n) => String(n).padStart(2, '0');
+const parts = (iso) => iso.slice(0, 10).split('-').map(Number);
+const dLong = (iso) => { if (!iso) return ''; const [y, m, d] = parts(iso); return pad(d) + '. ' + MON[m - 1] + ' ' + y; };
+const dShort = (iso) => { if (!iso) return ''; const [y, m, d] = parts(iso); return pad(d) + '. ' + MO[m - 1] + ' ' + y; };
+const hm = (iso) => (iso && iso.length > 10 ? iso.slice(11, 16) + ' Uhr' : '');
+const uid = () => Math.random().toString(36).slice(2, 9);
+const ymd = (t) => t.getFullYear() + '-' + pad(t.getMonth() + 1) + '-' + pad(t.getDate());
+const B = (t, text, x) => ({ id: uid(), t, text: text || '', who: '', cap: '', img: null, ...(x || {}) });
+const I = (img, cap) => ({ id: uid(), img, cap: cap || '' });
+const St = (img, title, text) => ({ id: uid(), img: img || null, title: title || '', text: text || '' });
+const ratioOf = (m) => (m && m.w && m.h ? { s: m.w + '/' + m.h, n: m.w / m.h } : { s: '3/2', n: 1.5 });
+const blockImgs = (b) => (b.t === 'img' ? [b.img] : b.t === 'pair' || b.t === 'strip' ? (b.items || []).map((x) => x.img) : b.t === 'scrolly' ? (b.steps || []).map((x) => x.img) : []).filter(Boolean);
+const allImgs = (p) => [p.img, ...p.blocks.flatMap(blockImgs)].filter(Boolean);
+const incomplete = (b) => (b.t === 'img' ? !b.img : b.t === 'pair' ? (b.items || []).length !== 2 : b.t === 'strip' ? (b.items || []).length < 3 : b.t === 'scrolly' ? (b.steps || []).length < 2 || (b.steps || []).some((x) => !x.img || !x.text.trim()) : !(b.text || '').trim());
+const slugify = (s) => (s || 'neuer-beitrag').toLowerCase().replace(/ä/g, 'ae').replace(/ö/g, 'oe').replace(/ü/g, 'ue').replace(/ß/g, 'ss').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 60);
+
+const SEED_MEDIA = [
+  { id: 'm1', src: P + 'duo-silhouette-stage.jpg', name: 'duo-silhouette-stage.jpg', alt: 'Duo als Silhouette auf der Bühne', credit: 'Foto: TanzNetzDresden e.V.', fx: 50, fy: 45 },
+  { id: 'm2', src: P + 'headstand-solo.jpg', name: 'headstand-solo.jpg', alt: 'Solo-Tänzerin im Kopfstand', credit: 'Foto: TanzNetzDresden e.V.', fx: 50, fy: 40 },
+  { id: 'm3', src: P + 'duo-orange-blue.jpg', name: 'duo-orange-blue.jpg', alt: 'Zwei Tanzende in orangem und blauem Licht', credit: 'Foto: TanzNetzDresden e.V.', fx: 50, fy: 50 },
+  { id: 'm4', src: P + 'ensemble-curtain-call.jpg', name: 'ensemble-curtain-call.jpg', alt: 'Ensemble auf der Bühne beim Schlussapplaus', credit: 'Foto: TanzNetzDresden e.V.', fx: 50, fy: 50 },
+  { id: 'm5', src: P + 'solo-blau.jpg', name: 'solo-blau.jpg', alt: 'Solo in blauem Bühnenlicht', credit: '', fx: 50, fy: 50 },
+  { id: 'm6', src: P + 'sprung.jpg', name: 'sprung.jpg', alt: '', credit: '', fx: 50, fy: 50 },
+  { id: 'm7', src: P + 'duo-rot.jpg', name: 'duo-rot.jpg', alt: 'Duo in rotem Licht', credit: 'Foto: TanzNetzDresden e.V.', fx: 50, fy: 50 },
+  { id: 'm8', src: P + 'kopfstand.jpg', name: 'kopfstand.jpg', alt: '', credit: '', fx: 50, fy: 50 },
+];
+const SEED_POSTS = [
+  { id: 'studio-round-9-rueckblick', status: 'scheduled', date: '2026-10-16', publishAt: '2026-10-20T09:00', cat: 'Rückblick', author: 'Thomas Natzschka', img: 'm5', deadline: '',
+    title: 'Rückblick: Studio Round #9', teaser: 'Drei Arbeiten aus Dresden, Freiburg und Frankfurt, ein volles Haus in der Villa Wigman und ein langes Gespräch danach.',
+    blocks: [B('p', 'Am 15. Oktober war die Villa Wigman bis auf den letzten Platz besetzt. Drei Künstler:innen haben je 15 Minuten aus einer Arbeit im Prozess gezeigt.'), B('img', '', { img: 'm6', cap: 'Studio Round #9 in der Villa Wigman' }), B('p', 'Im anschließenden Gespräch ging es um Arbeitsbedingungen in der freien Szene und darum, wie Austausch zwischen den Städten weitergehen kann.')] },
+  { id: 'vision-danceable-6', status: 'draft', date: '2026-10-16', publishAt: '', cat: 'Netzwerk', author: 'Malte Leonard Herz', img: null, deadline: '', theme: 'cyan', nodeK: 'Ausgabe', nodeV: '#6 · 26. November',
+    facts: [{ id: uid(), k: 'Wann', v: 'Do · 26. November 2026 · 20:00 Uhr' }, { id: uid(), k: 'Wo', v: 'Societaetstheater, Dresden' }, { id: uid(), k: 'Mit', v: '4 rooms company · about blank collective' }],
+    title: 'vision:danceable #6 am Societaetstheater', teaser: 'Am 26. November zeigt die Kurzstückreihe neue Arbeiten aus der freien Szene. Gemeinsam mit der 4 rooms company und dem about blank collective.',
+    blocks: [B('p', 'vision:danceable ist unsere Kurzstückreihe am Societaetstheater. Seit 2024 gestalten wir sie gemeinsam mit der 4 rooms company und dem about blank collective.'), B('p', 'An einem Abend laufen mehrere kurze Arbeiten hintereinander. So entsteht ein Querschnitt durch das, was die Szene gerade beschäftigt.'), B('p', '')] },
+  { id: 'open-call-pop-up-2027', status: 'published', date: '2026-10-06', publishAt: '', cat: 'Ausschreibung', author: 'AG POP UP', img: null, deadline: '2026-11-15', theme: 'tint',
+    facts: [{ id: uid(), k: 'Frist', v: '15. November 2026' }, { id: uid(), k: 'Format', v: 'Kurzstück bis 20 Minuten' }],
+    title: 'Open Call: POP UP Frühjahr 2027', teaser: 'Wir suchen Kurzstücke bis 20 Minuten von Tanzschaffenden aus Dresden und Umgebung. Bewerbungen bis 15. November.',
+    blocks: [B('p', 'POP UP ist seit 2019 unser niedrigschwelliges Aufführungsformat. Hier zeigen Tanzschaffende aus dem Netzwerk neue Arbeiten, erste Entwürfe und Stücke, die einen Ort zum Ausprobieren brauchen.'), B('h', 'Wen wir suchen'), B('p', 'Wir freuen uns über Bewerbungen von Tänzer:innen, Choreograf:innen und Kollektiven aus Dresden und Umgebung. Das Stück darf höchstens 20 Minuten dauern.'), B('h', 'So bewirbst du dich'), B('p', 'Schick uns bis zum 15. November eine kurze Beschreibung deines Vorhabens, einen Link zu einem Probenvideo und deine Kontaktdaten an kontakt@tanznetzdresden.de.')] },
+  { id: 'studio-round-9', status: 'published', date: '2026-10-01', publishAt: '', cat: 'Netzwerk', author: 'Alina Lucifero', img: 'm1', deadline: '',
+    title: 'Studio Round #9: Drei Städte, ein Abend', teaser: 'Am 15. Oktober zeigen Tanzschaffende aus Dresden, Freiburg und Frankfurt neue Arbeiten in der Villa Wigman. Danach sprechen wir gemeinsam über das, was wir gesehen haben.',
+    blocks: [B('p', 'Die Studio Round ist unser Format für Arbeiten im Prozess. Drei Künstler:innen zeigen je 15 Minuten aus einem Stück, das noch nicht fertig sein muss.'), B('q', 'Wir wollen sehen, woran andere gerade arbeiten, nicht nur, was sie fertig haben.', { who: 'Alina Lucifero · Projektleitung Studio Round' }), B('pair', '', { items: [I('m7', 'Duo in rotem Licht.'), I('m3', 'Duo zwischen Orange und Blau.')] }), B('p', 'Der Eintritt ist frei. Spenden fließen direkt in die Reisekosten der Gäste.')] },
+  { id: 'keep-up-herbst', status: 'published', date: '2026-09-08', publishAt: '', cat: 'Training', author: 'Rika Yotsumoto', img: 'm2', deadline: '', hero: 'split',
+    title: 'KEEP UP: Das Herbstprogramm steht', teaser: 'Bis Dezember trainieren wir 3–5× pro Woche in der TENZA, mit wechselnden Dozent:innen aus Dresden und von außerhalb.',
+    blocks: [B('p', 'KEEP UP ist das Profitraining des TanzNetzDresden. Seit 2022 trainieren wir mehrmals pro Woche in der TENZA.'), B('h', 'Workshop im November'), B('p', 'Am 14. November findet ein Workshop von 11 bis 15 Uhr statt. Die Anmeldung läuft über die Telegram-Gruppe.')] },
+  { id: 'bodies-textiles', status: 'published', date: '2026-08-19', publishAt: '', cat: 'Netzwerk', author: 'Justine Rouquart', img: 'm7', deadline: '',
+    title: 'Neues Format: Bodies & Textiles', teaser: 'Ab 2027 bringen wir Tanz und Mode zusammen, gemeinsam mit Wir Gestalten Dresden und dem Slow Fashion Festival.',
+    blocks: [B('p', 'Wie bewegt sich ein Körper in einem Stoff, und was erzählt Kleidung über Bewegung? Mit Bodies & Textiles starten wir 2027 ein Format, das Tanz und nachhaltige Mode zusammenbringt.')] },
+  { id: 'welttanztag-2026', status: 'published', date: '2026-05-04', publishAt: '', cat: 'Rückblick', author: 'AG Welttanztag', img: 'm4', deadline: '',
+    title: 'Welttanztag 2026: Die Stadt als Bühne', teaser: 'Am 29. April haben wir an verschiedenen Orten in Dresden getanzt, draußen, ohne Eintritt und für alle, die stehen geblieben sind.',
+    blocks: [B('p', 'Zum Welttanztag gehen wir jedes Jahr raus aus den Studios. Am 29. April haben Tanzschaffende aus dem Netzwerk an mehreren Orten in der Stadt getanzt.'), B('strip', 'Der Tag in Bildern', { items: [I('m6', 'Sprung.'), I('m7'), I('m3'), I('m5'), I('m4', 'Zum Schluss alle zusammen.')] })] },
+];
+const CROPS = [
+  { label: 'Chronik · 4:3', ratio: '4/3', clip: 'polygon(0 0,100% 0,100% 84%,88% 100%,0 100%)' },
+  { label: 'Artikel · 21:9', ratio: '21/9', clip: 'polygon(0 0,100% 0,100% 86%,94% 100%,0 100%)' },
+  { label: 'Social · 1:1', ratio: '1/1', clip: 'none' },
+];
+
+const DISC = ['Zeitgenössischer Tanz', 'Choreografie', 'Performance', 'Improvisation', 'Tanztheater', 'Tanzpädagogik', 'Urban Dance', 'Somatik'];
+const OPEN = ['Kooperationen', 'Engagements', 'Workshops geben', 'Unterricht', 'Residenzen', 'Mentoring'];
+const G = (img, cap) => ({ id: uid(), img, cap: cap || '' });
+const W = (year, title, place) => ({ id: uid(), year, title, place });
+const SEED_PROFILE = {
+  name: 'Lea Sommer', pronouns: 'sie/ihr', role: 'Tänzerin und Choreografin', base: 'Dresden-Neustadt', since: '2019',
+  disciplines: ['Zeitgenössischer Tanz', 'Choreografie', 'Improvisation'],
+  pitch: 'Ich bringe Tanz an Orte, an denen ihn niemand erwartet: Höfe, Haltestellen, leere Läden.',
+  bio: 'Lea Sommer arbeitet als Tänzerin und Choreografin in Dresden. Nach dem Studium hat sie mit freien Kompanien in Leipzig und Berlin getourt und ist 2019 nach Dresden zurückgekehrt.\n\nIhre Stücke entstehen oft draußen. Sie fragt, wie Passant:innen zu Publikum werden und was ein Körper an einem Ort verändert, der nicht für Tanz gebaut ist.\n\nIm TanzNetzDresden ist sie in der AG Welttanztag aktiv und trainiert regelmäßig bei KEEP UP.',
+  open: ['Kooperationen', 'Engagements', 'Workshops geben'],
+  gallery: [G('m5'), G('m6', 'Probe im Hof, Neustadt'), G('m8'), G('m7'), G('m2')],
+  works: [W('2026', 'Echo, draußen', 'Welttanztag · Öffentlicher Raum Dresden'), W('2025', 'Bodenhaftung', 'vision:danceable #4 · Societaetstheater'), W('2025', 'Zwischenräume (Work in Progress)', 'Studio Round #7 · Villa Wigman'), W('2024', 'Kreide', 'POP UP · TENZA')],
+  video: 'vimeo.com/leasommer', web: 'leasommer.de', insta: '@lea.sommer.tanz', email: 'kontakt@leasommer.de',
+  public: true, contactForm: true, layout: 'Mosaik',
+};
+const EXTRA = { edu: 'Palucca Hochschule für Tanz Dresden, BA Tanz (2015)', tech: 'Release, Contact Improvisation, Floorwork, klassische Basis', langs: 'Deutsch, Englisch, Französisch', regions: 'Dresden, Leipzig, Berlin · reisebereit', height: '168 cm', avail: 'ab Januar 2027' };
+const PCROPS = [
+  { label: 'Profil · 4:5', ratio: '4/5', clip: 'polygon(0 0,100% 0,100% 88%,86% 100%,0 100%)' },
+  { label: 'Galerie · 4:3', ratio: '4/3', clip: 'none' },
+  { label: 'Netzwerk · 1:1', ratio: '1/1', clip: 'none' },
+];
+const mosaic = (n, layout) => {
+  if (layout === 'Raster') return Array.from({ length: n }, () => ({ c: 'span 4', r: 'span 1', ratio: '4/5' }));
+  const out = [], big = { c: 'span 7', r: 'span 2', ratio: 'auto' }, sm = { c: 'span 5', r: 'span 1', ratio: '4/3' };
+  let i = 0, grp = 0;
+  while (i < n) {
+    const left = n - i;
+    if (left >= 3) { out.push(...(grp % 2 === 0 ? [big, sm, sm] : [sm, big, sm])); i += 3; grp++; }
+    else if (left === 2) { out.push({ c: 'span 6', r: 'span 1', ratio: '4/3' }, { c: 'span 6', r: 'span 1', ratio: '4/3' }); i += 2; }
+    else { out.push({ c: 'span 12', r: 'span 1', ratio: '21/9' }); i += 1; }
+  }
+  return out;
+};
+
+const loadSaved = () => { try { return JSON.parse(localStorage.getItem(KEY) || 'null'); } catch (e) { return null; } };
+
+class Component extends DCLogic {
+  state = (() => {
+    const s = loadSaved();
+    return {
+      view: 'list', editId: null, filter: 'all', q: '', active: null, device: 'desktop', showPv: null,
+      publishOpen: false, pubMode: 'now', pubAt: '', chNews: true, chInsta: false, picker: null,
+      mediaSel: 'm1', drag: null, toast: null, savedAt: null,
+      posts: (s && s.posts) || SEED_POSTS, media: (s && s.media) || SEED_MEDIA,
+      profile: (s && s.profile) || SEED_PROFILE, galSel: null, galOver: null,
+    };
+  })();
+  pvRef = React.createRef();
+  pvNetRef = React.createRef();
+  pvNodeRef = React.createRef();
+
+  componentDidMount() {
+    this.measure();
+    this._rs = () => { this._pvKey = null; this.drawPvNet(); };
+    window.addEventListener('resize', this._rs);
+    requestAnimationFrame(() => this.drawPvNet());
+    if (document.fonts) document.fonts.ready.then(() => { this._pvKey = null; this.drawPvNet(); });
+  }
+  componentDidUpdate() { this.schedPvNet(); }
+  schedPvNet(reset) {
+    if (reset) this._pvKey = null;
+    if (this._pvRaf) return;
+    this._pvRaf = requestAnimationFrame(() => { this._pvRaf = 0; this.drawPvNet(); });
+  }
+  watchPvNet() {
+    const c = this.pvNetRef.current, host = c && c.parentElement;
+    if (host === this._roHost) return;
+    if (this._ro) this._ro.disconnect();
+    this._roHost = host;
+    if (host && window.ResizeObserver) { this._ro = new ResizeObserver(() => this.schedPvNet(true)); this._ro.observe(host); }
+  }
+  measure() {
+    this.state.media.forEach((m) => {
+      if (m.w || !m.src) return;
+      const im = new Image();
+      im.onload = () => this.updMedia(m.id, { w: im.naturalWidth, h: im.naturalHeight });
+      im.src = m.src;
+    });
+  }
+  drawPvNet() {
+    this.watchPvNet();
+    const c = this.pvNetRef.current; if (!c) { this._pvKey = null; return; }
+    const sec = c.parentElement, r = sec.getBoundingClientRect(), W = r.width, H = r.height;
+    const raw = this.post(); if (!W || !H || !raw) return;
+    const th = raw.theme || 'purple';
+    const key = [W, H, th, raw.id, raw.nodeK, raw.nodeV, raw.title, raw.teaser, raw.cat, raw.deadline].join('|');
+    if (key === this._pvKey) return; this._pvKey = key;
+    const dpr = Math.min(2, window.devicePixelRatio || 1);
+    c.width = Math.round(W * dpr); c.height = Math.round(H * dpr);
+    const ctx = c.getContext('2d'); ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const tb = sec.querySelector('[data-pv-net-text]'), t = tb && tb.getBoundingClientRect();
+    const box = t ? { x0: t.left - r.left - 20, y0: t.top - r.top - 20, x1: t.right - r.left + 20, y1: t.bottom - r.top + 20 } : null;
+    let ax = W * 0.74, ay = H * 0.36;
+    if (box && box.x1 > W * 0.62) { ax = W * 0.66; ay = Math.max(46, Math.min(H * 0.3, box.y0 - 46)); }
+    const lab = this.pvNodeRef.current; let lb = null;
+    if (lab) {
+      const lw = lab.offsetWidth, lh = lab.offsetHeight, right = ax + 12 + lw > W - 10;
+      const lx = right ? ax - 12 - lw : ax + 12, ly = ay - 14;
+      lab.style.left = lx + 'px'; lab.style.top = ly + 'px';
+      lb = { ax, ay, x0: lx - 12, y0: ly - 12, x1: lx + lw + 12, y1: ly + lh + 12 };
+    }
+    paintNet(ctx, buildNet(W, H, raw.id, box, lb), W, H, NETC[th] || NETC.purple, 99, null);
+  }
+  updItem(bid, iid, patch) { this.updPost((p) => ({ blocks: p.blocks.map((b) => (b.id === bid ? { ...b, items: (b.items || []).map((x) => (x.id === iid ? { ...x, ...patch } : x)) } : b)) })); }
+  delItem(bid, iid) { this.updPost((p) => ({ blocks: p.blocks.map((b) => (b.id === bid ? { ...b, items: (b.items || []).filter((x) => x.id !== iid) } : b)) })); }
+  addItems(bid, mids) {
+    const blk = (this.post() || { blocks: [] }).blocks.find((b) => b.id === bid); if (!blk) return;
+    const max = blk.t === 'pair' ? 2 : 12, room = max - (blk.items || []).length;
+    if (room <= 0) { this.flash(blk.t === 'pair' ? 'Ein Bildpaar hat genau 2 Bilder.' : 'Maximal 12 Bilder pro Bildstrecke.'); return; }
+    this.updPost((p) => ({ blocks: p.blocks.map((b) => (b.id === bid ? { ...b, items: [...(b.items || []), ...mids.slice(0, room).map((m) => I(m))] } : b)) }));
+    if (mids.length > room) this.flash((mids.length - room) + ' Bilder nicht übernommen.');
+  }
+  updStep(bid, sid, patch) { this.updPost((p) => ({ blocks: p.blocks.map((b) => (b.id === bid ? { ...b, steps: (b.steps || []).map((x) => (x.id === sid ? { ...x, ...patch } : x)) } : b)) })); }
+  stepOp(bid, sid, op) {
+    this.updPost((p) => ({ blocks: p.blocks.map((b) => {
+      if (b.id !== bid) return b;
+      const a = [...(b.steps || [])], i = a.findIndex((x) => x.id === sid);
+      if (op === 'del') a.splice(i, 1);
+      else { const j = i + op; if (j < 0 || j >= a.length) return b; [a[i], a[j]] = [a[j], a[i]]; }
+      return { ...b, steps: a };
+    }) }));
+  }
+  updFact(fid, patch) { this.updPost((p) => ({ facts: (p.facts || []).map((f) => (f.id === fid ? { ...f, ...patch } : f)) })); }
+
+  componentWillUnmount() { clearTimeout(this._st); clearTimeout(this._tt); window.removeEventListener('resize', this._rs); cancelAnimationFrame(this._pvRaf); this._ro && this._ro.disconnect(); }
+
+  persist() {
+    clearTimeout(this._st);
+    this._st = setTimeout(() => {
+      try { localStorage.setItem(KEY, JSON.stringify({ posts: this.state.posts, media: this.state.media, profile: this.state.profile })); }
+      catch (e) { this.flash('Lokaler Speicher voll. Bitte weniger große Bilder hochladen.'); }
+    }, 300);
+    this.setState({ savedAt: new Date() });
+  }
+  flash(msg) { clearTimeout(this._tt); this.setState({ toast: msg }); this._tt = setTimeout(() => this.setState({ toast: null }), 2800); }
+
+  m(id) { return id ? this.state.media.find((x) => x.id === id) || null : null; }
+  post() { return this.state.posts.find((p) => p.id === this.state.editId); }
+  setPosts(fn, cb) { this.setState((s) => ({ posts: fn(s.posts) }), () => { this.persist(); cb && cb(); }); }
+  updPost(patch) { const id = this.state.editId; this.setPosts((ps) => ps.map((p) => (p.id === id ? { ...p, ...(typeof patch === 'function' ? patch(p) : patch) } : p))); }
+  updBlock(bid, patch) { this.updPost((p) => ({ blocks: p.blocks.map((b) => (b.id === bid ? { ...b, ...patch } : b)) })); }
+  updMedia(mid, patch) { this.setState((s) => ({ media: s.media.map((x) => (x.id === mid ? { ...x, ...patch } : x)) }), () => this.persist()); }
+
+  goto(view) { this.setState({ view, publishOpen: false, picker: null }); window.scrollTo(0, 0); }
+  openPost(id) { this.setState({ view: 'edit', editId: id, active: null, publishOpen: false, picker: null }, () => this.schedPvNet(true)); window.scrollTo(0, 0); }
+  newPost() {
+    const p = { id: 'neu-' + uid(), status: 'draft', date: ymd(new Date()), publishAt: '', cat: 'Netzwerk', author: this.state.profile.name || 'Redaktion', img: null, deadline: '', title: '', teaser: '', blocks: [B('p')] };
+    this.setState((s) => ({ posts: [p, ...s.posts], view: 'edit', editId: p.id, active: 'title' }), () => {
+      this.persist(); window.scrollTo(0, 0);
+      const t = document.querySelector('#f-title textarea'); t && t.focus();
+    });
+  }
+  addBlock(t) {
+    const b = B(t, '', t === 'img' ? { size: 'wide' } : t === 'pair' || t === 'strip' ? { items: [] } : t === 'scrolly' ? { steps: [St(), St()] } : null);
+    this.updPost((p) => ({ blocks: [...p.blocks, b] }));
+    setTimeout(() => this.jump(b.id), 30);
+  }
+  moveBlock(id, d) {
+    this.updPost((p) => {
+      const a = [...p.blocks], i = a.findIndex((b) => b.id === id), j = i + d;
+      if (j < 0 || j >= a.length) return {};
+      [a[i], a[j]] = [a[j], a[i]]; return { blocks: a };
+    });
+  }
+  delBlock(id) { this.updPost((p) => ({ blocks: p.blocks.filter((b) => b.id !== id) })); }
+
+  resize(file) {
+    return new Promise((res, rej) => {
+      const url = URL.createObjectURL(file), img = new Image();
+      img.onload = () => {
+        const k = Math.min(1, 1600 / Math.max(img.naturalWidth, img.naturalHeight));
+        const c = document.createElement('canvas');
+        c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+        c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+        URL.revokeObjectURL(url); res(c.toDataURL('image/jpeg', 0.82));
+      };
+      img.onerror = rej; img.src = url;
+    });
+  }
+  async handleFiles(list, target) {
+    const files = Array.from(list || []).filter((f) => /^image\//.test(f.type));
+    if (!files.length) { this.setState({ drag: null }); return; }
+    const items = [];
+    for (const f of files) {
+      try { items.push({ id: 'u' + uid(), src: await this.resize(f), name: f.name, alt: '', credit: '', fx: 50, fy: 50 }); } catch (e) {}
+    }
+    if (!items.length) return;
+    this.setState((s) => ({ media: [...items, ...s.media], drag: null, picker: null, mediaSel: target === 'lib' ? items[0].id : s.mediaSel }), () => {
+      this.persist(); this.measure();
+      if (target === 'gal') this.addGallery(items.map((x) => x.id));
+      else if (target && target.indexOf('add:') === 0) this.addItems(target.slice(4), items.map((x) => x.id));
+      else if (target && target !== 'lib') this.assign(target, items[0].id);
+    });
+    this.flash(items.length === 1 ? 'Bild hochgeladen. Jetzt noch den Alt-Text ergänzen.' : items.length + ' Bilder hochgeladen.');
+  }
+  assign(target, mid) {
+    if (target === 'cover') this.updPost({ img: mid });
+    else if (target && target.indexOf('blk:') === 0) this.updBlock(target.slice(4), { img: mid });
+    else if (target === 'gal') this.addGallery([mid]);
+    else if (target && target.indexOf('add:') === 0) this.addItems(target.slice(4), [mid]);
+    else if (target && target.indexOf('step:') === 0) { const [, bid, sid] = target.split(':'); this.updStep(bid, sid, { img: mid }); }
+  }
+  dz(key, target) {
+    const drag = this.state.drag === key;
+    return {
+      over: (e) => { e.preventDefault(); e.stopPropagation(); if (e.dataTransfer) e.dataTransfer.dropEffect = 'copy'; if (this.state.drag !== key) this.setState({ drag: key }); },
+      leave: (e) => { if (!e.currentTarget.contains(e.relatedTarget)) this.setState({ drag: null }); },
+      drop: (e) => { e.preventDefault(); e.stopPropagation(); this.handleFiles(e.dataTransfer && e.dataTransfer.files, target); },
+      border: drag ? 'var(--magenta)' : 'var(--rule)', bg: drag ? 'var(--magenta-tint)' : 'var(--tint-2)',
+      outline: drag ? '2px dashed var(--magenta)' : 'none',
+    };
+  }
+  focal(mid) {
+    return (e) => {
+      const r = e.currentTarget.getBoundingClientRect(), img = e.currentTarget.querySelector('img');
+      const ir = img ? img.getBoundingClientRect() : r;
+      const c = (v) => Math.round(Math.max(0, Math.min(100, v)));
+      this.updMedia(mid, { fx: c(((e.clientX - ir.left) / ir.width) * 100), fy: c(((e.clientY - ir.top) / ir.height) * 100) });
+    };
+  }
+  mv(m) {
+    if (!m) return { has: false, none: true };
+    const noAlt = !m.alt.trim();
+    return {
+      ...m, has: true, none: false, noAlt, pos: m.fx + '% ' + m.fy + '%', fxp: m.fx + '%', fyp: m.fy + '%',
+      altHint: noAlt ? 'Pflicht: Beschreibe kurz, was zu sehen ist.' : 'Für Screenreader und Suchmaschinen.',
+      onAlt: (e) => this.updMedia(m.id, { alt: e.target.value }),
+      onCredit: (e) => this.updMedia(m.id, { credit: e.target.value }),
+      focal: this.focal(m.id),
+    };
+  }
+
+  setActive(key, fromForm) {
+    if (this.state.active === key) return;
+    this.setState({ active: key });
+    if (fromForm) requestAnimationFrame(() => {
+      const pane = this.pvRef.current; if (!pane) return;
+      const el = pane.querySelector('[data-pv="' + key + '"]'); if (!el) return;
+      const top = el.getBoundingClientRect().top - pane.getBoundingClientRect().top + pane.scrollTop - 80;
+      pane.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    });
+  }
+  jump(key) {
+    const el = document.getElementById('f-' + key) || document.getElementById('blk-' + key);
+    this.setState({ active: key });
+    if (!el) return;
+    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 96, behavior: 'smooth' });
+    const f = el.querySelector('textarea, input:not([type=file])');
+    f && f.focus({ preventScroll: true });
+  }
+
+  checks(d) {
+    const cover = this.m(d.img);
+    const pairs = [d.img && ['cover', d.img], ...d.blocks.flatMap((b) => blockImgs(b).map((mid) => [b.id, mid]))].filter(Boolean).map(([k, mid]) => [k, this.m(mid)]).filter((x) => x[1]);
+    const imgs = pairs.map((x) => x[1]);
+    const firstNoAlt = (pairs.find((x) => !x[1].alt.trim()) || [])[0];
+    const firstNoCredit = (pairs.find((x) => !x[1].credit.trim()) || [])[0];
+    const empty = d.blocks.find(incomplete);
+    const text = [d.title, d.teaser, d.nodeK || '', d.nodeV || '', ...(d.facts || []).map((f) => f.k + ' ' + f.v), ...d.blocks.map((b) => [b.text, b.who, b.cap, ...(b.items || []).map((x) => x.cap), ...(b.steps || []).map((x) => x.title + ' ' + x.text)].join(' '))].join(' ');
+    return [
+      { label: 'Titel gesetzt', ok: !!d.title.trim(), req: true, fix: 'title' },
+      { label: 'Teaser geschrieben, höchstens 220 Zeichen', ok: !!d.teaser.trim() && d.teaser.length <= 220, req: true, fix: 'teaser' },
+      d.cat === 'Ausschreibung' && { label: 'Bewerbungsfrist eingetragen', ok: !!d.deadline, req: true, fix: 'deadline' },
+      { label: 'Titelbild gewählt', ok: !!cover, req: false, fix: 'cover' },
+      { label: 'Alt-Text für alle Bilder', ok: imgs.every((x) => x.alt.trim()), req: true, fix: firstNoAlt },
+      { label: 'Fotonachweis für alle Bilder', ok: imgs.every((x) => x.credit.trim()), req: false, fix: firstNoCredit },
+      { label: 'Keine leeren oder unvollständigen Blöcke', ok: !empty, req: false, fix: empty && empty.id },
+      { label: 'Keine Emoji (CI-Regel)', ok: !EMOJI.test(text), req: true, fix: 'title' },
+    ].filter(Boolean);
+  }
+
+  openPublish() {
+    const d = this.post(); if (!d) return;
+    const t = new Date(); t.setDate(t.getDate() + 1);
+    this.setState({ publishOpen: true, pubMode: d.status === 'scheduled' ? 'plan' : 'now', pubAt: d.publishAt || ymd(t) + 'T09:00' });
+  }
+  publish() {
+    const { pubMode, pubAt, chNews, chInsta } = this.state;
+    const extra = [chNews && 'Newsletter', chInsta && 'Instagram-Vorlage'].filter(Boolean);
+    if (pubMode === 'plan') {
+      this.updPost({ status: 'scheduled', publishAt: pubAt });
+      this.flash('Eingeplant für ' + dShort(pubAt) + ' · ' + hm(pubAt) + (extra.length ? ' · plus ' + extra.join(' und ') : ''));
+    } else {
+      const was = this.post().status === 'published';
+      this.updPost((p) => ({ status: 'published', publishAt: '', date: was ? p.date : ymd(new Date()) }));
+      this.flash((was ? 'Änderungen sind online' : 'Beitrag ist online') + (extra.length ? ' · plus ' + extra.join(' und ') : ''));
+    }
+    this.setState({ publishOpen: false });
+  }
+
+  updProfile(patch) { this.setState((s) => ({ profile: { ...s.profile, ...(typeof patch === 'function' ? patch(s.profile) : patch) } }), () => this.persist()); }
+  addGallery(ids) {
+    const room = 12 - this.state.profile.gallery.length;
+    if (room <= 0) { this.flash('Maximal 12 Bilder pro Profil.'); return; }
+    const add = ids.slice(0, room).map((id) => G(id));
+    this.updProfile((p) => ({ gallery: [...p.gallery, ...add] }));
+    this.setState({ galSel: add[add.length - 1].id });
+    if (ids.length > room) this.flash('Maximal 12 Bilder. ' + (ids.length - room) + ' nicht übernommen.');
+  }
+  moveGal(from, to) { if (from === to) return; this.updProfile((p) => { const a = [...p.gallery]; const [x] = a.splice(from, 1); a.splice(to, 0, x); return { gallery: a }; }); }
+  updGal(gid, patch) { this.updProfile((p) => ({ gallery: p.gallery.map((g) => (g.id === gid ? { ...g, ...patch } : g)) })); }
+  delGal(gid) { this.updProfile((p) => ({ gallery: p.gallery.filter((g) => g.id !== gid) })); this.setState({ galSel: null }); }
+  updWork(id, patch) { this.updProfile((p) => ({ works: p.works.map((w) => (w.id === id ? { ...w, ...patch } : w)) })); }
+  toggleIn(k, v, max) {
+    const a = this.state.profile[k] || [];
+    if (a.includes(v)) { this.updProfile({ [k]: a.filter((x) => x !== v) }); return; }
+    if (max && a.length >= max) { this.flash('Höchstens ' + max + ' auswählen.'); return; }
+    this.updProfile({ [k]: [...a, v] });
+  }
+
+  profileVals(S) {
+    const P = { ...EXTRA, ...S.profile }, act = S.active;
+    const out = (k) => (act === k ? '2px solid var(--magenta)' : '2px solid transparent');
+    const galAll = P.gallery.map((g, i) => ({ g, i, m: this.m(g.img) })).filter((x) => x.m);
+    const selX = galAll.find((x) => x.g.id === S.galSel) || galAll[0];
+    const n = galAll.length;
+    const gal = galAll.map(({ g, i, m }, k) => ({
+      ...this.mv(m), nr: pad(k + 1), isFirst: k === 0, span: k === 0 ? 'span 2' : 'span 1',
+      ring: selX && g.id === selX.g.id ? 'var(--magenta)' : S.galOver === i ? 'var(--cyan)' : 'transparent',
+      select: () => this.setState({ galSel: g.id, active: 'p-gal' }),
+      dragStart: (e) => { this._gdrag = i; try { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', g.id); } catch (err) {} },
+      dragOver: (e) => { e.preventDefault(); e.stopPropagation(); if (this.state.galOver !== i) this.setState({ galOver: i }); },
+      drop: (e) => { e.preventDefault(); e.stopPropagation(); const from = this._gdrag; this._gdrag = null; this.setState({ galOver: null }); if (from != null) this.moveGal(from, i); else this.handleFiles(e.dataTransfer && e.dataTransfer.files, 'gal'); },
+      dragEnd: () => { this._gdrag = null; this.setState({ galOver: null }); },
+    }));
+    const si = selX ? galAll.indexOf(selX) : -1;
+    const gd = selX ? { ...this.mv(selX.m), nr: pad(si + 1), cap: selX.g.cap, notFirst: si > 0,
+      onCap: (e) => this.updGal(selX.g.id, { cap: e.target.value }),
+      makeFirst: () => this.moveGal(selX.i, 0), remove: () => this.delGal(selX.g.id) } : { has: false };
+    const words = (P.bio || '').split(/\s+/).filter(Boolean).length;
+    const noAlt = galAll.find((x) => !x.m.alt.trim());
+    const go = (k) => () => this.jump(k);
+    const checks = [
+      { ok: !!P.name.trim(), add: 'Name eintragen', fix: go('p-name') },
+      { ok: !!P.role.trim(), add: 'Bezeichnung ergänzen', fix: go('p-role') },
+      { ok: !!P.pitch.trim() && P.pitch.length <= 160, add: 'Pitch schreiben', fix: go('p-pitch') },
+      { ok: P.disciplines.length > 0, add: 'Disziplinen wählen', fix: go('p-disc') },
+      { ok: n >= 4, add: (4 - n) + (4 - n === 1 ? ' Bild' : ' Bilder') + ' hinzufügen', fix: go('p-gal') },
+      { ok: !noAlt, add: 'Alt-Texte ergänzen', fix: () => { this.setState({ galSel: noAlt.g.id }); setTimeout(() => this.jump('p-galdetail'), 30); } },
+      { ok: words >= 40, add: 'Bio schreiben', fix: go('p-bio') },
+      { ok: P.works.length > 0, add: 'Erste Arbeit eintragen', fix: go('p-works') },
+      { ok: !!P.email.trim(), add: 'E-Mail hinterlegen', fix: go('p-contact') },
+    ];
+    const pct = Math.round((checks.filter((c) => c.ok).length / checks.length) * 100);
+    const mk = (k) => (e) => this.updProfile({ [k]: e.target.value });
+    const fa = (k) => () => this.setActive(k, true);
+    const nm = P.name.trim().split(/\s+/).filter(Boolean);
+    const hero = galAll[0] ? this.mv(galAll[0].m) : { has: false };
+    const rest = galAll.slice(1), spans = mosaic(rest.length, P.layout);
+    const chip = (list, sel, max, key) => list.map((l) => { const on = sel.includes(l); return { label: l, bg: on ? 'var(--purple)' : 'transparent', fg: on ? '#fff' : 'var(--purple)', pick: () => this.toggleIn(key, l, max) }; });
+    return {
+      pf: { ...P, visLabel: P.public ? 'Öffentlich' : 'Verborgen', visVar: P.public ? 'purple' : 'outline',
+        pitchCount: P.pitch.length + ' / 160', pitchColor: P.pitch.length > 160 ? 'var(--magenta)' : 'var(--ink-muted)',
+        bioCount: words + ' Wörter', galCount: n + ' / 12' },
+      pOn: { edu: mk('edu'), tech: mk('tech'), langs: mk('langs'), regions: mk('regions'), height: mk('height'), avail: mk('avail'), name: mk('name'), pronouns: mk('pronouns'), role: mk('role'), base: mk('base'), since: mk('since'), pitch: mk('pitch'), bio: mk('bio'), video: mk('video'), email: mk('email'), web: mk('web'), insta: mk('insta') },
+      fP: { name: fa('p-name'), pitch: fa('p-pitch'), gal: fa('p-gal'), bio: fa('p-bio'), works: fa('p-works'), contact: fa('p-contact') },
+      jP: { name: go('p-name'), pitch: go('p-pitch'), gal: go('p-gal'), bio: go('p-bio'), works: go('p-works'), contact: go('p-contact') },
+      pc: { pct: pct + ' %', bar: pct + '%', missing: checks.filter((c) => !c.ok), done: checks.every((c) => c.ok) },
+      discChips: chip(DISC, P.disciplines, 4, 'disciplines'), openChips: chip(OPEN, P.open, 0, 'open'),
+      layoutChips: ['Filmstreifen', 'Mosaik', 'Raster'].map((l) => ({ label: l, bg: P.layout === l ? 'var(--purple)' : '#fff', fg: P.layout === l ? '#fff' : 'var(--purple)', pick: () => this.updProfile({ layout: l }) })),
+      gal, gd, slots: Array.from({ length: Math.max(0, 4 - n) }, (_, k) => ({ label: 'Bild ' + (n + k + 1) })), canAdd: n < 12,
+      gz: this.dz('gal', 'gal'), gzBorder: S.drag === 'gal' ? 'var(--magenta)' : 'var(--ink-muted)',
+      uploadGal: (e) => { this.handleFiles(e.target.files, 'gal'); e.target.value = ''; }, pickGal: () => this.setState({ picker: 'gal' }),
+      pcrops: PCROPS,
+      works: P.works.map((w) => ({ ...w, onYear: (e) => this.updWork(w.id, { year: e.target.value }), onTitle: (e) => this.updWork(w.id, { title: e.target.value }), onPlace: (e) => this.updWork(w.id, { place: e.target.value }), del: () => this.updProfile((p) => ({ works: p.works.filter((x) => x.id !== w.id) })) })),
+      addWork: () => { this.updProfile((p) => ({ works: [W(String(new Date().getFullYear()), '', ''), ...p.works] })); setTimeout(() => this.jump('p-works'), 30); },
+      togglePublic: () => this.updProfile((p) => ({ public: !p.public })), toggleContact: () => this.updProfile((p) => ({ contactForm: !p.contactForm })),
+      pp: {
+        first: nm[0] || 'Dein', rest: nm.slice(1).join(' ') || 'Name', meta: [P.pronouns, P.role, P.base].filter(Boolean).join(' · '),
+        pitch: P.pitch || 'Dein Pitch in einem Satz.', pitchColor: P.pitch ? '#fff' : 'rgba(255,255,255,0.45)',
+        hasHero: !!hero.has, hero, hasGallery: rest.length > 0, galLabel: 'Galerie · ' + n + ' Bilder',
+        gallery: rest.map((x, k) => ({ src: x.m.src, alt: x.m.alt, pos: x.m.fx + '% ' + x.m.fy + '%', ...spans[k] })),
+        paras: (P.bio || '').split(/\n\s*\n/).map((t) => t.trim()).filter(Boolean).map((t) => ({ t })),
+        facts: [['Ausbildung', P.edu], ['Techniken', P.tech], ['Sprachen', P.langs], ['Arbeitsorte', P.regions], ['Basis', P.base], ['Körpergröße', P.height], ['Verfügbar', P.avail]].filter(([, v]) => v).map(([k, v]) => ({ k, v })),
+        works: [...P.works].sort((a, b) => String(b.year).localeCompare(String(a.year))), hasWorks: P.works.length > 0,
+        open: P.open.map((l) => ({ label: l })), openLine: P.open.length ? 'Offen für ' + P.open.join(', ') + '.' : '',
+        cta: P.email ? 'E-Mail schreiben' : 'E-Mail fehlt', slug: slugify(P.name),
+        nameOut: out('p-name'), pitchOut: out('p-pitch'), galOut: out('p-gal'), bioOut: out('p-bio'), worksOut: out('p-works'), contactOut: out('p-contact'),
+      },
+      me: { name: P.name || 'Mein Profil', role: P.role || 'Profil bearbeiten', hasImg: !!hero.has, src: hero.src || '', pos: hero.pos || '50% 50%' },
+      toProfile: () => this.goto('profile'), pctLabel: pct + ' %',
+    };
+  }
+
+  renderVals() {
+    const S = this.state;
+    const strict = this.props.strictChecks ?? true;
+    const showPv = S.showPv ?? (this.props.editorLayout !== 'Fokus');
+    const posts = S.posts;
+    const tabsDef = [['all', 'Alle'], ['draft', 'Entwürfe'], ['scheduled', 'Geplant'], ['published', 'Online']];
+    const order = (p) => (p.status === 'scheduled' ? p.publishAt || p.date : p.date);
+    const ql = S.q.trim().toLowerCase();
+    const rows = posts
+      .filter((p) => S.filter === 'all' || p.status === S.filter)
+      .filter((p) => !ql || (p.title + ' ' + p.teaser + ' ' + p.author).toLowerCase().includes(ql))
+      .sort((a, b) => order(b).localeCompare(order(a)))
+      .map((p) => {
+        const m = this.m(p.img), imgs = allImgs(p).map((x) => this.m(x)).filter(Boolean);
+        return {
+          title: p.title || 'Ohne Titel', teaser: p.teaser || 'Noch kein Teaser', cat: p.cat, badge: BADGE[p.cat] || 'purple',
+          st: ST[p.status][0], stVar: ST[p.status][1], author: p.author,
+          when: p.status === 'published' ? 'Online seit ' + dShort(p.date) : p.status === 'scheduled' ? dShort(p.publishAt) + ' · ' + hm(p.publishAt) : 'Zuletzt ' + dShort(p.date),
+          hasThumb: !!m, noThumb: !m, thumb: m ? m.src : '', pos: m ? m.fx + '% ' + m.fy + '%' : '50% 50%',
+          warn: imgs.some((x) => !x.alt.trim()) ? 'Alt-Text fehlt' : '',
+          open: () => this.openPost(p.id),
+        };
+      });
+    const tabs = tabsDef.map(([k, l]) => ({
+      label: l, count: k === 'all' ? posts.length : posts.filter((p) => p.status === k).length,
+      bg: S.filter === k ? 'var(--purple)' : 'transparent', fg: S.filter === k ? '#fff' : 'var(--purple)',
+      pick: () => this.setState({ filter: k }),
+    }));
+    const PV = this.profileVals(S);
+    const nav = [['Beiträge', posts.length, 'list'], ['Medien', S.media.length, 'media'], ['Mein Profil', PV.pctLabel, 'profile']].map(([label, count, v]) => {
+      const on = S.view === v || (v === 'list' && S.view === 'edit');
+      return { label, count, bg: on ? 'rgba(255,255,255,0.1)' : 'transparent', mk: on ? 'var(--magenta)' : 'rgba(255,255,255,0.28)', go: () => this.goto(v) };
+    });
+
+    const raw = this.post() || posts[0];
+    const cover = this.mv(this.m(raw.img));
+    const act = S.active;
+    const words = [raw.teaser, ...raw.blocks.map((b) => [b.text, ...(b.steps || []).map((x) => x.text)].join(' '))].join(' ').split(/\s+/).filter(Boolean).length;
+    const read = Math.max(1, Math.ceil(words / 180)) + ' Min';
+    const dateIso = raw.status === 'scheduled' ? raw.publishAt : raw.status === 'published' ? raw.date : ymd(new Date());
+    const tl = raw.teaser.length;
+    const d = {
+      ...raw, st: ST[raw.status][0], stVar: ST[raw.status][1], isCall: raw.cat === 'Ausschreibung', noDeadline: !raw.deadline,
+      isOnline: raw.status === 'published', notCall: raw.cat !== 'Ausschreibung', nodeK: raw.nodeK || '', nodeV: raw.nodeV || '',
+      pubCta: raw.status === 'published' ? 'Aktualisieren' : 'Veröffentlichen',
+      teaserCount: tl + ' / 220', teaserCountColor: tl > 220 ? 'var(--magenta)' : 'var(--ink-muted)',
+    };
+    const out = (k) => (act === k ? '2px solid var(--magenta)' : '2px solid transparent');
+    const coverM = this.m(raw.img), portrait = !!(coverM && coverM.w && coverM.h > coverM.w);
+    const hsel = raw.hero || 'auto';
+    const resolve = (k) => { let x = k === 'auto' ? 'vollbild' : k; if (x === 'vollbild' && portrait) x = 'hochkant'; return x; };
+    const mode = coverM ? resolve(hsel) : 'netz';
+    cover.ratio = ratioOf(coverM).s;
+    const th = THEMES[raw.theme || 'purple'] || THEMES.purple, thk = raw.theme || 'purple';
+    let daysTxt = '';
+    if (raw.deadline) { const [y, mo, dd] = parts(raw.deadline); const nd = Math.ceil((new Date(y, mo - 1, dd, 23, 59, 59) - Date.now()) / 864e5); daysTxt = nd < 0 ? 'abgelaufen' : 'noch ' + nd + (nd === 1 ? ' Tag' : ' Tage'); }
+    const heroOpts = ['auto', 'vollbild', 'hochkant', 'split', 'typo'].map((k) => ({
+      label: k === 'auto' ? 'Auto · ' + HERO_L[resolve('auto')] : HERO_L[k], parts: PARTS[resolve(k)],
+      border: hsel === k ? 'var(--magenta)' : 'var(--rule)', fg: hsel === k ? 'var(--magenta)' : 'var(--purple)',
+      pick: () => this.updPost({ hero: k }),
+    }));
+    const themeOpts = Object.keys(THEMES).map((k) => ({ label: THEMES[k].label, bg: THEMES[k].bg, border: thk === k ? 'var(--magenta)' : 'var(--rule)', fg: thk === k ? 'var(--magenta)' : 'var(--purple)', pick: () => this.updPost({ theme: k }) }));
+    const facts = (raw.facts || []).map((f) => ({ ...f, onK: (e) => this.updFact(f.id, { k: e.target.value }), onV: (e) => this.updFact(f.id, { v: e.target.value }), del: () => this.updPost((p) => ({ facts: (p.facts || []).filter((x) => x.id !== f.id) })) }));
+    const pvFacts = (raw.facts || []).filter((f) => (f.k || '').trim() || (f.v || '').trim());
+    const pv = {
+      isFull: mode === 'vollbild', isTall: mode === 'hochkant', isSplit: mode === 'split', isTypo: mode === 'typo', isNet: mode === 'netz',
+      bg: th.bg, fg: th.fg, metaCol: th.meta, soft: th.soft, keil: th.keil,
+      netTitleColor: raw.title ? th.fg : 'var(--ink-muted)',
+      badgeHero: thk === 'purple' ? (raw.cat === 'Verein' || raw.cat === 'Netzwerk' ? 'cyan' : BADGE[raw.cat]) : thk === 'cyan' ? 'purple' : BADGE[raw.cat] || 'purple',
+      metaDark: 'var(--cyan)',
+      nodeK: raw.cat === 'Ausschreibung' ? 'Frist · ' + (raw.deadline ? dShort(raw.deadline) : 'fehlt') : raw.nodeK || 'Kicker',
+      nodeV: raw.cat === 'Ausschreibung' ? daysTxt || 'Datum eintragen' : raw.nodeV || 'Angabe',
+      facts: pvFacts, hasFacts: pvFacts.length > 0,
+      cat: raw.cat, badgeDark: raw.cat === 'Verein' || raw.cat === 'Netzwerk' ? 'cyan' : BADGE[raw.cat],
+      meta: dLong(dateIso) + ' · ' + read + ' Lesezeit',
+      metaShort: dShort(dateIso) + ' · ' + raw.cat,
+      title: raw.title || 'Titel des Beitrags', titleColor: raw.title ? '#fff' : 'rgba(255,255,255,0.45)',
+      teaser: raw.teaser || 'Hier steht der Teaser.', author: raw.author, slug: slugify(raw.title),
+      titleOutline: out('title'), teaserOutline: out('teaser'), coverOutline: act === 'cover' ? '3px solid var(--magenta)' : 'none',
+    };
+    const n = raw.blocks.length;
+    const blocks = raw.blocks.map((b, i) => {
+      const m = b.img ? this.m(b.img) : null, z = this.dz('blk:' + b.id, 'blk:' + b.id), on = act === b.id;
+      return {
+        ...b, domId: 'blk-' + b.id, label: LBL[b.t], isP: b.t === 'p', isH: b.t === 'h', isQ: b.t === 'q',
+        isImgT: b.t === 'img', isMulti: b.t === 'pair' || b.t === 'strip', isStrip: b.t === 'strip', isScrolly: b.t === 'scrolly',
+        sizes: [['text', 'Textbreite'], ['wide', 'Weit'], ['full', 'Randlos']].map(([k, l]) => { const on = (b.size || 'wide') === k; return { label: l, bg: on ? 'var(--purple)' : '#fff', fg: on ? '#fff' : 'var(--purple)', pick: () => this.updBlock(b.id, { size: k }) }; }),
+        items: (b.items || []).map((it, k) => { const v = this.mv(this.m(it.img)); return { ...v, cap: it.cap, nr: pad(k + 1), altBorder: v.noAlt ? 'var(--magenta)' : 'var(--rule)', onCap: (e) => this.updItem(b.id, it.id, { cap: e.target.value }), del: (e) => { e.stopPropagation(); this.delItem(b.id, it.id); } }; }),
+        canAdd: b.t === 'pair' ? (b.items || []).length < 2 : (b.items || []).length < 12,
+        az: (() => { const zz = this.dz('add:' + b.id, 'add:' + b.id); return { ...zz }; })(),
+        addPick: () => this.setState({ picker: 'add:' + b.id }),
+        addUpload: (e) => { this.handleFiles(e.target.files, 'add:' + b.id); e.target.value = ''; },
+        hint: b.t === 'pair' ? ((b.items || []).length === 2 ? 'Hoch- und Querformat werden auf der Website gleich hoch gesetzt.' : 'Ein Bildpaar braucht genau 2 Bilder.') : b.t === 'strip' ? ((b.items || []).length < 3 ? 'Mindestens 3, höchstens 12 Bilder.' : (b.items || []).length + ' Bilder · auf der Website seitlich scrollbar.') : b.t === 'scrolly' ? 'Das Bild bleibt auf der Website stehen, die Texte laufen daneben vorbei. 2 bis 6 Schritte.' : '',
+        hintColor: incomplete(b) && b.t !== 'scrolly' ? 'var(--magenta)' : 'var(--ink-muted)',
+        steps: (b.steps || []).map((st, k, arr) => {
+          const m2 = this.m(st.img), v = this.mv(m2), key = 'step:' + b.id + ':' + st.id, zz = this.dz(key, key);
+          return { ...v, title: st.title, text: st.text, nr: pad(k + 1), hasImg: !!m2, noImg: !m2, altBorder: v.noAlt ? 'var(--magenta)' : 'var(--rule)',
+            onTitle: (e) => this.updStep(b.id, st.id, { title: e.target.value }), onText: (e) => this.updStep(b.id, st.id, { text: e.target.value }),
+            pick: (e) => { e && e.stopPropagation && e.stopPropagation(); this.setState({ picker: key }); },
+            upload: (e) => { this.handleFiles(e.target.files, key); e.target.value = ''; },
+            over: zz.over, leave: zz.leave, drop: zz.drop, dzBorder: zz.border === 'var(--rule)' ? 'var(--ink-muted)' : zz.border,
+            up: () => this.stepOp(b.id, st.id, -1), down: () => this.stepOp(b.id, st.id, 1), del: () => this.stepOp(b.id, st.id, 'del') };
+        }),
+        addStep: () => { if ((b.steps || []).length >= 6) { this.flash('Höchstens 6 Schritte.'); return; } this.updBlock(b.id, { steps: [...(b.steps || []), St()] }); },
+        hasImg: b.t === 'img' && !!m, needsImg: b.t === 'img' && !m, img: this.mv(m),
+        edge: on ? 'var(--magenta)' : 'var(--rule)', lblColor: on ? 'var(--magenta)' : 'var(--ink-muted)',
+        upOp: i === 0 ? 0.3 : 1, downOp: i === n - 1 ? 0.3 : 1,
+        focus: () => this.setActive(b.id, true),
+        onText: (e) => this.updBlock(b.id, { text: e.target.value }),
+        onWho: (e) => this.updBlock(b.id, { who: e.target.value }),
+        onCap: (e) => this.updBlock(b.id, { cap: e.target.value }),
+        up: () => this.moveBlock(b.id, -1), down: () => this.moveBlock(b.id, 1), del: () => this.delBlock(b.id),
+        pick: () => this.setState({ picker: 'blk:' + b.id }),
+        upload: (e) => { this.handleFiles(e.target.files, 'blk:' + b.id); e.target.value = ''; },
+        over: z.over, leave: z.leave, drop: z.drop, dzBorder: z.border === 'var(--rule)' ? 'var(--ink-muted)' : z.border, dzBg: z.bg,
+      };
+    });
+    const pvBlocks = raw.blocks.map((b) => {
+      const m = b.img ? this.m(b.img) : null, empty = !(b.text || '').trim();
+      return {
+        id: b.id, isP: b.t === 'p', isH: b.t === 'h', isQ: b.t === 'q', isImg: b.t === 'img',
+        isPair: b.t === 'pair', isStrip: b.t === 'strip', isScrolly: b.t === 'scrolly',
+        ...(() => {
+          const sz = b.size || 'wide', lay = b.t === 'img' ? sz : b.t === 'q' || b.t === 'pair' ? 'wide' : b.t === 'strip' || b.t === 'scrolly' ? 'full' : 'text';
+          return { maxW: lay === 'text' ? '640px' : 'none', mx: lay === 'text' ? 'auto' : lay === 'full' ? '-5cqw' : '0', ratio: sz === 'full' ? '21/9' : '3/2', clip: sz === 'wide' ? KEIL : 'none', capPad: sz === 'full' ? '5cqw' : '0' };
+        })(),
+        pitems: (() => {
+          const a = (b.items || []).map((it) => { const mm = this.m(it.img), r = ratioOf(mm); return { hasImg: !!mm, src: mm ? mm.src : '', pos: mm ? mm.fx + '% ' + mm.fy + '%' : '50% 50%', ratio: r.s, grow: r.n }; });
+          if (b.t === 'pair') while (a.length < 2) a.push({ hasImg: false, src: '', pos: '50% 50%', ratio: '3/2', grow: 1.5 });
+          if (b.t === 'strip' && !a.length) for (let k = 0; k < 3; k++) a.push({ hasImg: false, src: '', pos: '50% 50%', ratio: '3/2', grow: 1.5 });
+          return a;
+        })(),
+        stitle: b.text || (b.t === 'strip' ? 'Bildstrecke' : 'Bild & Text'), count: (b.items || []).length + ' Bilder',
+        psteps: (b.steps || []).map((st, k, arr) => { const mm = this.m(st.img); return { k: pad(k + 1) + ' / ' + pad(arr.length), title: st.title || 'Titel', text: st.text || 'Text zu diesem Bild', color: st.text ? 'var(--ink)' : 'var(--ink-muted)', hasImg: !!mm, src: mm ? mm.src : '', pos: mm ? mm.fx + '% ' + mm.fy + '%' : '50% 50%' }; }),
+        text: empty ? (b.t === 'h' ? 'Zwischentitel' : b.t === 'q' ? 'Zitat' : 'Leerer Absatz') : b.text,
+        color: empty ? 'var(--ink-muted)' : 'var(--ink)', hColor: empty ? 'var(--ink-muted)' : 'var(--purple)',
+        who: b.who, hasImg: !!m, src: m ? m.src : '', alt: m ? m.alt : '', pos: m ? m.fx + '% ' + m.fy + '%' : '50% 50%',
+        capLine: b.t === 'pair' ? (b.items || []).map((it) => it.cap).filter(Boolean).join(' · ') : [b.cap, m && m.credit].filter(Boolean).join(' · '),
+        outline: out(b.id), click: () => this.jump(b.id),
+      };
+    });
+    const checks = this.checks(raw).map((c) => ({
+      ...c, open: !c.ok,
+      boxBg: c.ok ? 'var(--cyan)' : 'transparent', boxBorder: c.ok ? 'var(--cyan)' : c.req ? 'var(--magenta)' : 'var(--ink-muted)',
+      color: c.ok ? 'var(--ink-soft)' : 'var(--purple)', note: c.req ? 'Pflicht' : 'Empfohlen', noteColor: c.req ? 'var(--magenta)' : 'var(--ink-muted)',
+      fix: () => this.setState({ publishOpen: false }, () => c.fix && this.jump(c.fix)),
+    }));
+    const okN = checks.filter((c) => c.ok).length;
+    const pubBlocked = strict && checks.some((c) => c.req && !c.ok);
+
+    const usedIn = (mid) => posts.filter((p) => allImgs(p).includes(mid));
+    const lib = S.media.map((x) => ({ ...this.mv(x), ring: S.mediaSel === x.id ? 'var(--magenta)' : 'transparent', select: () => this.setState({ mediaSel: x.id }) }));
+    const selM = this.m(S.mediaSel) || S.media[0];
+    const used = selM ? usedIn(selM.id).map((p) => ({ title: p.title || 'Ohne Titel', open: () => this.openPost(p.id) })) : [];
+    if (selM && S.profile.gallery.some((g) => g.img === selM.id)) used.push({ title: 'Mein Profil · Galerie', open: () => this.goto('profile') });
+    const sel = { ...this.mv(selM), used, unused: !used.length };
+    const missing = S.media.filter((x) => !x.alt.trim()).length;
+    const t = S.savedAt;
+
+    return {
+      nav, isList: S.view === 'list', isEdit: S.view === 'edit', isMedia: S.view === 'media',
+      q: S.q, onQ: (e) => this.setState({ q: e.target.value }), newPost: () => this.newPost(),
+      tabs, rows, noRows: !rows.length, showTeaser: !this.props.compactList,
+      toList: () => this.goto('list'),
+      d, cover, pv, blocks, pvBlocks, crops: CROPS, heroOpts, themeOpts, facts,
+      heroInfo: coverM ? (portrait ? 'Hochkant-Foto' : 'Querformat') + ' · zeigt ' + HERO_L[mode] : 'Ohne Titelbild · Netz',
+      focusHero: () => this.setActive('hero', true), focusFacts: () => this.setActive('facts', true),
+      jumpHero: () => this.jump('hero'), jumpFacts: () => this.jump('facts'),
+      onNodeK: (e) => this.updPost({ nodeK: e.target.value }), onNodeV: (e) => this.updPost({ nodeV: e.target.value }),
+      addFact: () => this.updPost((p) => ({ facts: [...(p.facts || []), { id: uid(), k: '', v: '' }] })),
+      pvNetRef: this.pvNetRef, pvNodeRef: this.pvNodeRef,
+      savedLabel: t ? 'Gespeichert · ' + pad(t.getHours()) + ':' + pad(t.getMinutes()) : 'Alle Änderungen gespeichert',
+      showPv, pvToggleLabel: showPv ? 'Vorschau aus' : 'Vorschau an', togglePv: () => this.setState({ showPv: !showPv }),
+      pvRef: this.pvRef, pvWidth: S.device === 'mobile' ? '390px' : '100%',
+      devices: [['desktop', 'Desktop'], ['mobile', 'Mobil']].map(([k, l]) => ({ label: l, bg: S.device === k ? 'var(--purple)' : '#fff', fg: S.device === k ? '#fff' : 'var(--purple)', pick: () => this.setState({ device: k }) })),
+      catChips: CATS.map((c) => ({ label: c, bg: raw.cat === c ? 'var(--purple)' : 'transparent', fg: raw.cat === c ? '#fff' : 'var(--purple)', pick: () => this.updPost({ cat: c }) })),
+      onTitle: (e) => this.updPost({ title: e.target.value.replace(/\n/g, ' ') }),
+      onTeaser: (e) => this.updPost({ teaser: e.target.value }),
+      onDeadline: (e) => this.updPost({ deadline: e.target.value }),
+      focusTitle: () => this.setActive('title', true), focusTeaser: () => this.setActive('teaser', true), focusCover: () => this.setActive('cover', true),
+      jumpTitle: (e) => { e && e.stopPropagation && e.stopPropagation(); this.jump('title'); }, jumpTeaser: (e) => { e && e.stopPropagation && e.stopPropagation(); this.jump('teaser'); }, jumpCover: () => this.jump('cover'),
+      cz: this.dz('cover', 'cover'),
+      pickCover: () => this.setState({ picker: 'cover' }),
+      removeCover: () => this.updPost({ img: null }),
+      uploadCover: (e) => { this.handleFiles(e.target.files, 'cover'); e.target.value = ''; },
+      addBtns: ['p', 'h', 'q', 'img', 'pair', 'strip', 'scrolly'].map((k) => ({ label: LBL[k], add: () => this.addBlock(k) })),
+
+      publishOpen: S.publishOpen, openPublish: () => this.openPublish(), closePublish: () => this.setState({ publishOpen: false }),
+      stop: (e) => e.stopPropagation(),
+      checks, chkSummary: okN + ' von ' + checks.length + ' erfüllt', pubBlocked,
+      modes: [['now', 'Sofort'], ['plan', 'Planen']].map(([k, l]) => ({ label: l, bg: S.pubMode === k ? 'var(--purple)' : '#fff', fg: S.pubMode === k ? '#fff' : 'var(--purple)', pick: () => this.setState({ pubMode: k }) })),
+      isPlan: S.pubMode === 'plan', pubAt: S.pubAt, onPubAt: (e) => this.setState({ pubAt: e.target.value }),
+      chNews: S.chNews, chInsta: S.chInsta,
+      toggleNews: () => this.setState({ chNews: !S.chNews }), toggleInsta: () => this.setState({ chInsta: !S.chInsta }),
+      pubLabel: S.pubMode === 'plan' ? 'Einplanen' : raw.status === 'published' ? 'Änderungen veröffentlichen' : 'Jetzt veröffentlichen',
+      publish: () => this.publish(),
+      unpublish: () => { this.updPost({ status: 'draft' }); this.setState({ publishOpen: false }); this.flash('Beitrag ist offline und wieder Entwurf.'); },
+
+      pickerOpen: !!S.picker, closePicker: () => this.setState({ picker: null, drag: null }),
+      pz: this.dz('pick', S.picker),
+      uploadPick: (e) => { this.handleFiles(e.target.files, S.picker); e.target.value = ''; },
+      pickList: S.media.map((x) => ({ ...this.mv(x), choose: () => { const tg = S.picker; this.setState({ picker: null }); this.assign(tg, x.id); } })),
+
+      lz: this.dz('lib', 'lib'), lib, sel,
+      uploadLib: (e) => { this.handleFiles(e.target.files, 'lib'); e.target.value = ''; },
+      libStat: S.media.length + ' Bilder' + (missing ? ' · ' + missing + ' ohne Alt-Text' : ' · alle mit Alt-Text'),
+      libStatColor: missing ? 'var(--magenta)' : 'var(--ink-muted)',
+      toast: S.toast,
+      ...PV, isProfile: S.view === 'profile',
+    };
+  }
+}
+</script>
+</body>
+</html>

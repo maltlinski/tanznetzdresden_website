@@ -70,3 +70,21 @@ export function zeichenHinaus(s: SplitText): Promise<void> {
     });
   });
 }
+
+/**
+ * Titel im Kopf eines Beitrags: Wörter gleiten nacheinander herein, danach wird die Aufteilung zurückgenommen –
+ * sonst könnten lange Wörter (als Blöcke) nicht mehr umbrechen.
+ */
+export function titelHerein(root: ParentNode = document, delay = 0.16): void {
+  if (!motionOk()) return;
+  const els = [...root.querySelectorAll<HTMLElement>('[data-split]')];
+  if (!els.length) return;
+  els.forEach((el) => (el.style.visibility = 'hidden'));
+  schriften().then(() => {
+    for (const el of els) {
+      const s = SplitText.create(el, { type: 'words' });
+      el.style.visibility = '';
+      gsap.from(s.words, { x: -60, opacity: 0, duration: 0.8, ease: EASE, stagger: 0.06, delay, onComplete: () => s.revert() });
+    }
+  });
+}

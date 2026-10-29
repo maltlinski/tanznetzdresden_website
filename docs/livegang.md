@@ -94,8 +94,8 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 
 **Supabase** (docs/intern.md)
 
-- [ ] Alle **dreizehn Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
-      (bis `20261028000000_kalender_eintritt.sql`).
+- [ ] Alle **vierzehn Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
+      (bis `20261029000000_news_kopf.sql`).
 - [ ] *Authentication*: Selbst-Registrierung aus, Site URL gesetzt, **Redirect URLs** `…/intern/**` und
       `…/en/intern/**`.
 - [ ] **E-Mails** (*Authentication → Emails*): Vorlagen für Einladung, Login-Link und Passwort auf Deutsch (und

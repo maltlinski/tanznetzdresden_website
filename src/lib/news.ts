@@ -10,7 +10,7 @@ import { getCollection, type CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
 import type { Lang } from './i18n';
-import { newsCategories } from '../content.config';
+import { newsCategories, type newsHeroes, type newsThemes } from '../content.config';
 import { renderMarkdown } from './markdown';
 import { ASSET, medienAnwenden, type MedienAngaben } from './news-bloecke';
 import { emailsSchuetzen } from './news-email';
@@ -19,6 +19,8 @@ import archivBilder from '../content/news/archiv-bilder.json';
 import type { NewsCategory } from './news-format';
 export * from './news-format';
 export type NewsKind = 'call' | 'quote' | 'photo' | 'text';
+export type NewsHero = (typeof newsHeroes)[number];
+export type NewsTheme = (typeof newsThemes)[number];
 
 type De = CollectionEntry<'news'>;
 type En = CollectionEntry<'newsEn'>;
@@ -40,6 +42,12 @@ export interface NewsPost {
   imageCredit?: string;
   /** Bildausschnitt des Titelfotos, z. B. „50% 30%“ */
   imageFocus?: string;
+  /** Kopf der Beitragsseite (mit Titelbild) */
+  hero: NewsHero;
+  /** Farbfläche des Netz-Kopfs (ohne Titelbild) */
+  heroTheme: NewsTheme;
+  /** Angabe am Magenta-Knoten im Netz-Kopf */
+  node?: { kicker: string; value: string };
   date: string;
   category: NewsCategory;
   author: string;
@@ -59,6 +67,9 @@ const kindOf = (p: { deadline?: string | null; quote?: unknown; image?: unknown 
 const filled = <T,>(v: T | null | undefined): v is T => v !== undefined && v !== null && v !== '' && !(Array.isArray(v) && !v.length);
 
 type Draft = Omit<NewsPost, 'nr'>;
+const knoten = (kicker?: string | null, value?: string | null) => (kicker?.trim() || value?.trim() ? { kicker: kicker?.trim() ?? '', value: value?.trim() ?? '' } : undefined);
+const HEROES = ['auto', 'vollbild', 'hochkant', 'split', 'typo'];
+const THEMES = ['purple', 'cyan', 'tint'];
 
 function fromFile(d: De, e: En | undefined, lang: Lang): Draft {
   const t = e?.data ?? {};
@@ -76,6 +87,9 @@ function fromFile(d: De, e: En | undefined, lang: Lang): Draft {
     image: d.data.image,
     alt: filled(t.alt) ? t.alt : d.data.alt,
     imageFocus: d.data.imageFocus,
+    hero: d.data.hero,
+    heroTheme: d.data.heroTheme,
+    node: knoten(filled(t.nodeKicker) ? t.nodeKicker : d.data.nodeKicker, filled(t.nodeValue) ? t.nodeValue : d.data.nodeValue),
     date: d.data.date,
     category: d.data.category,
     author: d.data.author,
@@ -113,6 +127,13 @@ interface RemoteNews {
   image_alt_en: string | null;
   quote_text_en: string | null;
   quote_role_en: string | null;
+  /** Migration 20261029000000 */
+  hero?: string | null;
+  hero_theme?: string | null;
+  node_kicker?: string | null;
+  node_value?: string | null;
+  node_kicker_en?: string | null;
+  node_value_en?: string | null;
 }
 
 let medienCache: Promise<Map<string, MedienAngaben>> | undefined;
@@ -188,6 +209,9 @@ function fromRemote(r: RemoteNews, lang: Lang, medien: Map<string, MedienAngaben
     alt: (en ? m?.alt_en : m?.alt) || pick(r.image_alt ?? undefined, r.image_alt_en),
     imageCredit: m?.credit || r.image_credit || undefined,
     imageFocus: [m?.focus, r.image_focus].find((f): f is string => !!f && /^\d{1,3}% \d{1,3}%$/.test(f)),
+    hero: (HEROES.includes(r.hero ?? '') ? r.hero : 'auto') as NewsHero,
+    heroTheme: (THEMES.includes(r.hero_theme ?? '') ? r.hero_theme : 'purple') as NewsTheme,
+    node: knoten(pick(r.node_kicker, r.node_kicker_en), pick(r.node_value, r.node_value_en)),
     date: r.date,
     category: r.category,
     author: r.author,
@@ -230,11 +254,12 @@ async function newsLaden(lang: Lang): Promise<NewsPost[]> {
 }
 
 /**
- * Fotos aus Bilder-Abschnitten (src/lib/markdown.ts) beim Build herunterladen und optimieren:
+ * Fotos aus Bilder- und Schritte-Abschnitten (src/lib/markdown.ts) beim Build herunterladen und optimieren:
  * kleine Fassungen für die Seite, eine große für die Großansicht. Besucher:innen laden nichts von Supabase.
+ * Das Seitenverhältnis kommt als --r an den Link (Bildpaar und Bildstrecke setzen die Fotos gleich hoch).
  * Fehlt ein Foto, fällt es weg (Warnung im Log) statt den Build abzubrechen.
  */
-const NB = /<a class="nb__item" href="([^"]*)" data-lightbox data-bild="[^"]*"((?: aria-label="[^"]*")?)><img src="[^"]*"([^>]*)><\/a>/g;
+const NB = /<a class="nb__item" href="([^"]*)"([^>]*)><img src="[^"]*"([^>]*)><\/a>|<img class="ns__bild" src="([^"]*)"([^>]*)>/g;
 const versionen = new Map<string, ReturnType<typeof bildVersionen>>();
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
 async function bildVersionen(url: string | ImageMetadata) {
@@ -245,44 +270,52 @@ async function bildVersionen(url: string | ImageMetadata) {
   ]);
   return { klein, gross };
 }
+interface Fassung { gross: string; klein: string; srcset: string; w: number; h: number }
 /**
  * Bilder aus der alten Website (scripts/wordpress-import/): liegen schon verkleinert unter public/news/archiv/
  * (1600 px und -800), Maße in src/content/news/archiv-bilder.json – der Build muss sie nicht umrechnen.
  */
 const ARCHIV = /^(?:.*?)(\/news\/archiv\/.+)\.webp$/;
-function archivBild(url: string) {
+function archivBild(url: string): Fassung | null {
   const m = ARCHIV.exec(url);
   const masse = m && (archivBilder as Record<string, number[]>)[`${m[1]}.webp`];
   if (!m || !masse) return null;
-  const voll = url, klein = url.replace(/\.webp$/, '-800.webp');
+  const klein = url.replace(/\.webp$/, '-800.webp');
   const [w, h] = masse;
   const f = Math.min(1, 800 / w, 800 / h);
   const kw = Math.round(w * f), kh = Math.round(h * f);
-  return (name: string, rest: string) =>
-    `<a class="nb__item" href="${voll}" data-lightbox${name}><img src="${klein}" srcset="${klein} ${kw}w, ${voll} ${w}w" width="${kw}" height="${kh}"${rest}></a>`;
+  return { gross: url, klein, srcset: `${klein} ${kw}w, ${url} ${w}w`, w: kw, h: kh };
+}
+async function fassung(url: string, id: string): Promise<Fassung | null | undefined> {
+  const archiv = archivBild(url);
+  if (archiv) return archiv;
+  const asset = url.match(ASSET)?.[1];
+  if (!/^https:\/\//.test(url) && !asset) return undefined;
+  if (!versionen.has(url)) {
+    const quelle = asset ? fotos[`../assets/photos/${asset}`]?.default : url;
+    versionen.set(url, quelle ? bildVersionen(quelle) : Promise.reject(new Error('Datei fehlt in src/assets/photos/')));
+  }
+  try {
+    const { klein, gross } = await versionen.get(url)!;
+    const { width = 0, height = 0 } = klein.attributes as { width?: number; height?: number };
+    return { gross: gross.src, klein: klein.src, srcset: klein.srcSet.attribute, w: width, h: height };
+  } catch (err) {
+    console.warn(`[news] Foto in „${id}“ nicht gefunden (${url}) – es fällt weg. ${String(err).slice(0, 120)}`);
+    return null;
+  }
 }
 async function bilderOptimieren(html: string, id: string): Promise<string> {
   const treffer = [...html.matchAll(NB)];
   if (!treffer.length) return html;
   const ersatz = await Promise.all(
-    treffer.map(async ([ganz, href, name, rest]) => {
-      const url = href.replace(/&amp;/g, '&');
-      const archiv = archivBild(url);
-      if (archiv) return archiv(name, rest);
-      const asset = url.match(ASSET)?.[1];
-      if (!/^https:\/\//.test(url) && !asset) return ganz;
-      if (!versionen.has(url)) {
-        const quelle = asset ? fotos[`../assets/photos/${asset}`]?.default : url;
-        versionen.set(url, quelle ? bildVersionen(quelle) : Promise.reject(new Error('Datei fehlt in src/assets/photos/')));
-      }
-      try {
-        const { klein, gross } = await versionen.get(url)!;
-        const { width, height } = klein.attributes as { width?: number; height?: number };
-        return `<a class="nb__item" href="${gross.src}" data-lightbox${name}><img src="${klein.src}" srcset="${klein.srcSet.attribute}" width="${width}" height="${height}"${rest}></a>`;
-      } catch (err) {
-        console.warn(`[news] Foto in „${id}“ nicht gefunden (${url}) – es fällt weg. ${String(err).slice(0, 120)}`);
-        return '';
-      }
+    treffer.map(async ([ganz, href, attr, rest, src, restNs]) => {
+      const url = (href ?? src).replace(/&amp;/g, '&');
+      const f = await fassung(url, id);
+      if (f === undefined) return ganz;
+      if (f === null) return '';
+      const r = f.w && f.h ? ` style="--r:${(f.w / f.h).toFixed(4)}"` : '';
+      if (src !== undefined) return `<img class="ns__bild" src="${f.klein}" srcset="${f.srcset}" width="${f.w}" height="${f.h}"${restNs}>`;
+      return `<a class="nb__item" href="${f.gross}"${attr}${r}><img src="${f.klein}" srcset="${f.srcset}" width="${f.w}" height="${f.h}"${rest}></a>`;
     }),
   );
   let i = 0;

@@ -224,6 +224,15 @@ export const bereiche: Bereich[] = [
       { typ: 'datum', key: 'deadline', label: 'Bewerbungsfrist', hilfe: 'Macht den Beitrag zur Ausschreibung mit Countdown.' },
       { typ: 'bild', key: 'image', label: 'Foto', ordner: 'photos', form: 'relativ' },
       { typ: 'text', key: 'alt', label: 'Bildbeschreibung', en: true, hilfe: BILD_ALT },
+      { typ: 'auswahl', key: 'hero', label: 'Kopfbereich', optionen: [
+        { wert: 'auto', label: 'Automatisch (Querformat: Vollbild, Hochkant-Foto: Hochkant)' }, { wert: 'vollbild', label: 'Vollbild' },
+        { wert: 'hochkant', label: 'Hochkant' }, { wert: 'split', label: 'Split' }, { wert: 'typo', label: 'Typo (Titel, Foto darunter)' },
+      ], hilfe: 'Wie der Kopf der Beitragsseite mit Foto aussieht.' },
+      { typ: 'auswahl', key: 'heroTheme', label: 'Farbfläche ohne Foto', optionen: [
+        { wert: 'purple', label: 'Lila' }, { wert: 'cyan', label: 'Cyan' }, { wert: 'tint', label: 'Hell' },
+      ], hilfe: 'Ohne Foto zeigt der Kopf das Netz auf dieser Fläche.' },
+      { typ: 'text', key: 'nodeKicker', label: 'Netz-Knoten: kleine Zeile', en: true, platzhalter: 'z. B. Ausgabe', hilfe: 'Ohne Foto trägt ein Magenta-Knoten im Netz die wichtigste Angabe. Bei Ausschreibungen zeigt er die Frist.' },
+      { typ: 'text', key: 'nodeValue', label: 'Netz-Knoten: Angabe', en: true, platzhalter: 'z. B. #6 · 26. November' },
       { typ: 'text', key: 'imageFocus', label: 'Bildausschnitt', platzhalter: '50% 30%', muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30%'], hilfe: 'Optional. Welche Stelle im Foto sichtbar bleibt, wenn es zugeschnitten wird: waagerecht und senkrecht in Prozent.' },
       { typ: 'liste', key: 'facts', label: 'Auf einen Blick', en: true, neu: 'Zeile hinzufügen', titel: (v) => v.label ?? '', felder: [
         { typ: 'text', key: 'label', label: 'Was', pflicht: true, platzhalter: 'z. B. Wann' },

@@ -1,12 +1,11 @@
 ---
 /**
- * Vorschau eines News-Beitrags, so wie er auf der Website erscheint (gleiche Stile: src/styles/artikel.css,
- * gleiches Gerüst wie src/views/NewsArticleView.astro – bei Änderungen dort hier mitziehen).
+ * Vorschau eines News-Beitrags, so wie er auf der Website erscheint (gleiches Gerüst: src/lib/news-artikel.ts,
+ * gleiche Stile: src/styles/artikel.css, gleiche Skripte: src/scripts/news-artikel.ts).
  *  - im Editor (Rahmen, ?eingebettet=1): bekommt den aktuellen Stand per postMessage, auch ungespeichert
  *  - als Link (?id=…): zeigt den zuletzt gespeicherten Stand, nur für Presse, Vorstand und Admin
  */
 import Page from '../../../../layouts/Page.astro';
-import KeilBar from '../../../../components/ui/KeilBar.astro';
 import '../../../../styles/artikel.css';
 ---
 <Page title="Vorschau · News" noindex>
@@ -14,141 +13,114 @@ import '../../../../styles/artikel.css';
   <p class="vb vb--fehler" data-vorschau-fehler hidden></p>
 
   <article data-article hidden>
-    <header class="ah">
-      <div class="wrap ah__inner">
-        <span class="ah__back" data-t="back"></span>
-        <div class="ah__meta">
-          <span class="badge" data-v="badge"></span>
-          <span data-v="meta"></span>
-        </div>
-        <h1 class="ah__title" data-v="title"></h1>
-        <p class="ah__teaser" data-v="teaser"></p>
-        <span class="ah__author" data-v="author"></span>
+    <div data-v="kopf"></div>
+    <div class="ab">
+      <div class="ab__spalte">
+        <p class="ab__stand" data-v="stand" hidden></p>
+        <p class="ab__note" lang="en" data-v="only-de" hidden>This post is only available in German so far.</p>
+        <div data-v="zeile"></div>
+        <div data-v="fakten"></div>
+        <div class="ab__text" data-v="html"></div>
+        <div data-v="fuss"></div>
       </div>
-      <KeilBar class="ah__keil" />
-    </header>
-
-    <div class="wrap" data-v="cover" hidden>
-      <figure class="ah__img">
-        <div class="ah__img-frame">
-          <img alt="" data-v="cover-img" />
-          <span class="ah__corner" aria-hidden="true"></span>
-        </div>
-        <figcaption class="ah__credit" data-v="credit"></figcaption>
-      </figure>
     </div>
-
-    <section class="ab">
-      <div class="wrap ab__inner">
-        <div class="ab__main">
-          <p class="ab__note" lang="en" data-v="only-de" hidden>This post is only available in German so far.</p>
-          <div class="ab__text" data-v="html"></div>
-          <p class="ab__foot" data-v="foot"></p>
-        </div>
-        <aside class="ab__aside">
-          <div class="ab__call" data-v="call" hidden>
-            <span class="ab__call-k" data-t="deadline"></span>
-            <span class="ab__call-n" data-v="call-n"></span>
-            <span class="ab__call-u" data-v="call-u"></span>
-          </div>
-          <div class="ab__facts" data-v="facts" hidden>
-            <h2 class="ab__aside-h" data-t="glance"></h2>
-            <dl data-v="facts-dl"></dl>
-          </div>
-          <div class="ab__share">
-            <h2 class="ab__aside-h" data-t="share"></h2>
-            <div class="ab__share-btns"><span class="chip" data-t="copy"></span><span class="chip" data-t="mail"></span></div>
-          </div>
-        </aside>
-      </div>
-    </section>
   </article>
 </Page>
 
 <script>
   import { renderMarkdown } from '../../../../lib/markdown';
   import { newsPhotoUrl, getSupabase, type NewsRow } from '../../../../lib/supabase';
-  import { dateLong, daysLeft, deadlineText, dateShort, newsBadgeOnDark, newsCategoryLabel } from '../../../../lib/news-format';
+  import { faktenHtml, fussHtml, kopfHtml, kopfModus, nachweise, zeileHtml, type Flaeche } from '../../../../lib/news-artikel';
+  import { texte } from '../../../../lib/texte';
   import { initLightbox } from '../../../../scripts/lightbox';
+  import { initArtikel, verhaeltnisse } from '../../../../scripts/news-artikel';
 
   type Beitrag = Partial<NewsRow>;
   const base = import.meta.env.BASE_URL;
   const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
   const v = (k: string) => $(`[data-v="${k}"]`);
-  const T = {
-    de: { back: '← Alle Beiträge', min: 'Min Lesezeit', text: 'Text', published: 'Veröffentlicht', deadline: 'Bewerbungsfrist', until: 'bis', glance: 'Auf einen Blick', share: 'Teilen', copy: 'Link kopieren', mail: 'E-Mail', credit: 'Foto' },
-    en: { back: '← All posts', min: 'min read', text: 'Text', published: 'Published', deadline: 'Application deadline', until: 'until', glance: 'At a glance', share: 'Share', copy: 'Copy link', mail: 'Email', credit: 'Photo' },
-  };
   const article = $('[data-article]');
   initLightbox(article);
 
   type MitAbschnitten = Beitrag & { abschnitte?: string[] };
   const eingebettet = window.parent !== window;
 
-  function zeigen(b: MitAbschnitten, lang: 'de' | 'en') {
-    const t = T[lang];
+  // Seitenverhältnis des Titelbilds (entscheidet zwischen Vollbild und Hochkant)
+  const masse = new Map<string, Promise<number>>();
+  const verhaeltnis = (src: string) => {
+    if (!masse.has(src)) {
+      masse.set(src, new Promise((fertig) => {
+        const im = new Image();
+        im.onload = () => fertig(im.naturalWidth / im.naturalHeight || 1.5);
+        im.onerror = () => fertig(1.5);
+        im.src = src;
+      }));
+    }
+    return masse.get(src)!;
+  };
+  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+  let erstesMal = true;
+  let zuletzt: { b: MitAbschnitten; lang: 'de' | 'en' } | null = null;
+
+  async function zeigen(b: MitAbschnitten, lang: 'de' | 'en') {
+    zuletzt = { b, lang };
+    const t = texte(lang, 'news', 'beitrag');
     const en = lang === 'en';
     const pick = <X,>(de: X, e: X | null | undefined) => (en && e != null && e !== '' && !(Array.isArray(e) && !e.length) ? e : de);
     const body = pick(b.body ?? '', b.body_en);
     const cat = b.category ?? 'Netzwerk';
     const date = b.date || new Date().toISOString().slice(0, 10);
-    const words = `${b.teaser ?? ''} ${body}`.replace(/::: bilder[\s\S]*?:::/g, '').split(/\s+/).filter(Boolean).length;
+    const words = `${b.teaser ?? ''} ${body}`.replace(/::: (bilder|schritte)[\s\S]*?:::/g, '').split(/\s+/).filter(Boolean).length;
+    const titel = pick(b.title ?? '', b.title_en) || (en ? 'Title' : 'Titel des Beitrags');
+    const teaser = pick(b.teaser ?? '', b.teaser_en);
+    const cover = newsPhotoUrl(b.image_path ?? null);
+    const r = cover ? await verhaeltnis(cover) : undefined;
+    if (zuletzt?.b !== b) return; // inzwischen neuer Stand
+    const modus = kopfModus(b.hero, !!cover, r);
+    const credit = b.image_credit ?? '';
+    const kicker = pick(b.node_kicker ?? '', b.node_kicker_en);
+    const value = pick(b.node_value ?? '', b.node_value_en);
 
     document.documentElement.lang = lang;
-    document.querySelectorAll<HTMLElement>('[data-t]').forEach((el) => (el.textContent = t[el.dataset.t as keyof typeof t] ?? ''));
-    const badge = v('badge');
-    badge.className = `badge${newsBadgeOnDark(cat) === 'magenta' ? '' : ` badge--${newsBadgeOnDark(cat)}`}`;
-    badge.textContent = newsCategoryLabel[lang][cat];
-    v('meta').textContent = `${dateLong(date, lang)} · ${Math.max(2, Math.ceil(words / 180))} ${t.min}`;
-    v('title').textContent = pick(b.title ?? '', b.title_en) || (en ? 'Title' : 'Titel');
-    v('teaser').textContent = pick(b.teaser ?? '', b.teaser_en);
-    v('author').textContent = `${t.text} · ${b.author ?? ''}`;
-
-    const cover = newsPhotoUrl(b.image_path ?? null);
-    v('cover').hidden = !cover;
-    if (cover) {
-      const img = v('cover-img') as HTMLImageElement;
-      img.src = cover;
-      img.alt = pick(b.image_alt ?? '', b.image_alt_en);
-      img.style.objectPosition = b.image_focus ?? '';
-      v('credit').textContent = b.image_credit ? `${t.credit}: ${b.image_credit}` : '';
-    }
-
+    v('kopf').innerHTML = kopfHtml({
+      lang, modus, flaeche: (b.hero_theme ?? 'purple') as Flaeche, kategorie: cat, titel, teaser, autor: b.author ?? '',
+      datum: date, minuten: Math.max(2, Math.ceil(words / 180)), zurueck: '',
+      bild: cover
+        ? {
+            img: `<img class="ak__img" src="${esc(cover)}" alt="${esc(pick(b.image_alt ?? '', b.image_alt_en))}"${b.image_focus ? ` style="object-position:${b.image_focus}"` : ''}>`,
+            gross: cover, verhaeltnis: r ?? 1.5, credit,
+          }
+        : undefined,
+      knoten: kicker || value ? { kicker, value } : undefined,
+      frist: b.deadline ?? undefined,
+    });
+    const stand = v('stand');
+    stand.hidden = modus !== 'vollbild' || !teaser;
+    stand.textContent = teaser;
     v('only-de').hidden = !(en && !b.body_en && (b.body ?? '').trim());
+    v('zeile').innerHTML = zeileHtml(lang, b.author ?? '', date, '#');
+    v('fakten').innerHTML = faktenHtml(lang, pick(b.facts ?? [], b.facts_en), b.deadline ?? undefined);
+
     // Aus dem Editor: jeder Abschnitt einzeln, damit ein Klick zur Stelle im Editor springt
+    const abb = { n: 0 };
+    const html = v('html');
     if (b.abschnitte) {
-      const html = v('html');
       html.replaceChildren(...b.abschnitte.map((md, i) => {
         const teil = document.createElement('div');
         teil.className = 'vs-teil';
         teil.dataset.abschnitt = String(i);
-        teil.innerHTML = renderMarkdown(md, base, { lang }) || `<p class="vs-leer">${en ? 'Empty section' : 'Leerer Abschnitt'}</p>`;
+        teil.innerHTML = renderMarkdown(md, base, { lang, abb }) || `<p class="vs-leer">${en ? 'Empty section' : 'Leerer Abschnitt'}</p>`;
         return teil;
       }));
       if (!b.abschnitte.length) html.innerHTML = `<p class="vs-leer">${en ? 'No text yet.' : 'Noch kein Text.'}</p>`;
     } else {
-      v('html').innerHTML = renderMarkdown(body, base, { lang }) || `<p class="vs-leer">${en ? 'No text yet.' : 'Noch kein Text.'}</p>`;
+      html.innerHTML = renderMarkdown(body, base, { lang, abb }) || `<p class="vs-leer">${en ? 'No text yet.' : 'Noch kein Text.'}</p>`;
     }
-    v('foot').textContent = `${t.text} · ${b.author ?? ''} · ${t.published} ${dateLong(date, lang)}`;
-
-    v('call').hidden = !b.deadline;
-    if (b.deadline) {
-      const days = daysLeft(b.deadline);
-      v('call-n').textContent = deadlineText(days, 'n', lang);
-      v('call-u').textContent = `${deadlineText(days, 'unit', lang)} · ${t.until} ${dateShort(b.deadline, lang)}`;
-    }
-    const facts = pick(b.facts ?? [], b.facts_en).filter((f) => f.label || f.value);
-    v('facts').hidden = !facts.length;
-    v('facts-dl').replaceChildren(...facts.map((f) => {
-      const div = document.createElement('div');
-      const dt = document.createElement('dt');
-      const dd = document.createElement('dd');
-      dt.textContent = f.label;
-      dd.textContent = f.value;
-      div.append(dt, dd);
-      return div;
-    }));
+    v('fuss').innerHTML = fussHtml(lang, b.author ?? '', date, nachweise(html.innerHTML, credit ? { k: t.cover, credit } : undefined));
     article.hidden = false;
+    initArtikel(article, { seed: b.slug || titel, neu: !erstesMal });
+    if (erstesMal) erstesMal = false;
+    verhaeltnisse(article);
   }
 
   const fehler = (text: string) => {
@@ -170,18 +142,25 @@ import '../../../../styles/artikel.css';
       if (error || !data) fehler('Diesen Beitrag gibt es nicht, oder die Vorschau ist nur für Presse, Vorstand und Admin.');
       else {
         $('[data-vorschau-stand]').textContent = `· gespeichert am ${new Date(data.updated_at).toLocaleString('de-DE')}${data.status === 'veroeffentlicht' ? ' · online' : ' · Entwurf'}`;
-        zeigen(data, params.get('lang') === 'en' ? 'en' : 'de');
+        await zeigen(data, params.get('lang') === 'en' ? 'en' : 'de');
       }
     }
   }
+
+  // Stellen im Beitrag, die zu einem Feld im Editor gehören
+  const STELLEN: [string, string][] = [
+    ['.ak__titel', 'titel'], ['.ak__teaser', 'kurztext'], ['.ab__stand', 'kurztext'], ['.ak__zoom', 'titelfoto'], ['.ak__figur', 'titelfoto'],
+    ['.ab__call', 'frist'], ['.ab__fakten', 'fakten'], ['.ak__knoten', 'kopf'], ['.ak--netz', 'kopf'], ['.ak', 'kopf'],
+  ];
+  const ZIEL: Record<string, string> = { titel: '.ak__titel', kurztext: '.ak__teaser, .ab__stand', titelfoto: '.ak__zoom', fakten: '.ab__fakten', kopf: '.ak' };
+
   // Aus dem Editor (gleiche Adresse): aktueller, auch ungespeicherter Stand
   addEventListener('message', (e) => {
     if (e.origin !== location.origin) return;
-    if (e.data?.typ === 'news-vorschau') zeigen(e.data.beitrag as MitAbschnitten, e.data.lang === 'en' ? 'en' : 'de');
+    if (e.data?.typ === 'news-vorschau') void zeigen(e.data.beitrag as MitAbschnitten, e.data.lang === 'en' ? 'en' : 'de');
     if (e.data?.typ === 'news-zeigen') {
-      // Block i oder Titel, Teaser, Titelbild: hinscrollen und markieren
-      const stellen: Record<string, string> = { titel: '.ah__title', kurztext: '.ah__teaser', titelfoto: '.ah__img' };
-      const teil = e.data.ziel ? document.querySelector<HTMLElement>(stellen[e.data.ziel] ?? '-') : document.querySelector<HTMLElement>(`[data-abschnitt="${Number(e.data.i)}"]`);
+      // Block i oder Titel, Teaser, Titelbild, Kopf, Eckdaten: hinscrollen und markieren
+      const teil = e.data.ziel ? document.querySelector<HTMLElement>(ZIEL[e.data.ziel] ?? '-') : document.querySelector<HTMLElement>(`[data-abschnitt="${Number(e.data.i)}"]`);
       const ziel = (e.data.ziel ? teil : teil?.firstElementChild) as HTMLElement | null;
       if (!teil || !ziel) return;
       ziel.scrollIntoView({ block: 'center', behavior: 'smooth' });
@@ -193,11 +172,11 @@ import '../../../../styles/artikel.css';
   // Klick in der Vorschau → zur Stelle im Editor
   if (eingebettet) {
     document.documentElement.classList.add('vorschau-eingebettet');
-    const ziele: [string, string][] = [['.ah__title', 'titel'], ['.ah__teaser', 'kurztext'], ['.ah__img', 'titelfoto'], ['.ab__facts', 'fakten'], ['.ab__call', 'frist']];
     article.addEventListener('click', (e) => {
       const t = e.target as Element;
+      if (t.closest('.nb__steuer, [data-copy]')) return;
       const teil = t.closest<HTMLElement>('[data-abschnitt]');
-      const ziel = teil ? null : ziele.find(([sel]) => t.closest(sel))?.[1];
+      const ziel = teil ? null : STELLEN.find(([sel]) => t.closest(sel))?.[1];
       if (!teil && !ziel) return;
       e.preventDefault();
       e.stopPropagation();
@@ -212,16 +191,18 @@ import '../../../../styles/artikel.css';
     font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
   }
   .vb--fehler { background: var(--purple); }
-  .ah__back { cursor: default; }
+  :global(.ak__back) { cursor: default; }
   /* Abschnitte liegen als display: contents im Text, damit die Abstände wie auf der Website bleiben */
   :global(.vs-teil) { display: contents; }
   :global(.vs-leer) { color: var(--ink-muted); font-style: italic; }
   :global(.vorschau-eingebettet .vs-teil > *),
-  :global(.vorschau-eingebettet .ah__title), :global(.vorschau-eingebettet .ah__teaser), :global(.vorschau-eingebettet .ah__img),
-  :global(.vorschau-eingebettet .ab__facts), :global(.vorschau-eingebettet .ab__call) { cursor: pointer; }
+  :global(.vorschau-eingebettet .ak__titel), :global(.vorschau-eingebettet .ak__teaser), :global(.vorschau-eingebettet .ak__zoom),
+  :global(.vorschau-eingebettet .ab__stand), :global(.vorschau-eingebettet .ab__fakten), :global(.vorschau-eingebettet .ak) { cursor: pointer; }
   :global(.vorschau-eingebettet .vs-teil:hover > *), :global(.vorschau-eingebettet .vs-aktiv > *),
   :global(.vorschau-eingebettet .vs-aktiv-el) { outline: 2px dashed var(--magenta); outline-offset: 6px; }
-  :global(.vorschau-eingebettet .ah__title:hover), :global(.vorschau-eingebettet .ah__teaser:hover), :global(.vorschau-eingebettet .ah__img:hover) { outline: 1.5px solid var(--cyan); outline-offset: 6px; }
+  :global(.vorschau-eingebettet .ak__titel:hover), :global(.vorschau-eingebettet .ak__teaser:hover), :global(.vorschau-eingebettet .ab__stand:hover),
+  :global(.vorschau-eingebettet .ab__fakten:hover) { outline: 1.5px solid var(--cyan); outline-offset: 6px; }
+  :global(.vorschau-eingebettet .ak.vs-aktiv-el), :global(.vorschau-eingebettet .ak__zoom.vs-aktiv-el) { outline-offset: -3px; }
   /* im Editor ohne Band: dort steht „Live-Vorschau“ schon darüber */
   :global(.vorschau-eingebettet .vb:not(.vb--fehler)) { display: none; }
 </style>

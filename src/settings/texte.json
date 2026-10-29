@@ -317,7 +317,17 @@
           "mail": { "wo": "Teilen: per E-Mail", "de": "E-Mail", "en": "Email", "max": 20 },
           "more": { "wo": "Unten: kleine Zeile", "de": "Weiterlesen", "en": "Keep reading", "max": 30 },
           "moreH": { "wo": "Unten: Überschrift", "de": "Mehr aus dem Netz", "en": "More from the network", "max": 40 },
-          "chronicle": { "wo": "Unten: Link", "de": "Zur Chronik →", "en": "To the chronicle →", "max": 30 }
+          "chronicle": { "wo": "Unten: Link", "de": "Zur Chronik →", "en": "To the chronicle →", "max": 30 },
+          "cover": { "wo": "Bezeichnung des Titelbilds (Bildunterschrift, Bildnachweise)", "de": "Titelbild", "en": "Cover", "max": 20 },
+          "fig": { "wo": "Nummer der Bilder im Text, z. B. „Abb. 01“", "de": "Abb.", "en": "Fig.", "max": 10 },
+          "photos": { "wo": "Vor den Namen bei mehreren Fotos", "de": "Fotos", "en": "Photos", "max": 20 },
+          "credits": { "wo": "Unten: Überschrift der Bildnachweise", "de": "Bildnachweise", "en": "Image credits", "max": 30 },
+          "strip": { "wo": "Bildstrecke: kleine Zeile über dem Titel", "de": "Bildstrecke", "en": "Gallery", "max": 30 },
+          "steps": { "wo": "Bild & Text: kleine Zeile über dem Titel", "de": "Bild & Text", "en": "Image & text", "max": 30 },
+          "image": { "wo": "Anzahl: Einzahl (1 Bild)", "de": "Bild", "en": "image", "max": 20 },
+          "images": { "wo": "Anzahl: Mehrzahl (6 Bilder)", "de": "Bilder", "en": "images", "max": 20 },
+          "fullscreen": { "wo": "Bildstrecke: Knopf für die Großansicht", "de": "Vollbild", "en": "Full screen", "max": 20 },
+          "close": { "wo": "Großansicht: Knopf zum Schließen", "de": "Schließen · Esc", "en": "Close · Esc", "max": 30 }
         }
       }
     }

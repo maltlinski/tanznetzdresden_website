@@ -57,7 +57,8 @@ export async function medienLaden(sb: SupabaseClient): Promise<Mediathek> {
     const darin = new Map<string, string>();
     if (p.image_path) darin.set(p.image_path, '');
     for (const b of abschnitte(p.body ?? '').bloecke) {
-      if (b.typ === 'bilder') for (const x of b.bilder) if (imBucket(x.datei)) darin.set(x.datei, x.alt);
+      const fotos = b.typ === 'bilder' ? b.bilder : b.typ === 'schritte' ? b.schritte : [];
+      for (const x of fotos) if (x.datei && imBucket(x.datei)) darin.set(x.datei, x.alt);
     }
     for (const [d, alt] of darin) {
       const m = holen(d);

@@ -94,6 +94,13 @@ export interface NewsRow {
   quote_role_en: string | null;
   /** für den nächsten Newsletter vorgemerkt (Migration 20261016000000) */
   newsletter?: boolean;
+  /** Kopf der Beitragsseite und Netz-Knoten (Migration 20261029000000) */
+  hero?: 'auto' | 'vollbild' | 'hochkant' | 'split' | 'typo';
+  hero_theme?: 'purple' | 'cyan' | 'tint';
+  node_kicker?: string | null;
+  node_value?: string | null;
+  node_kicker_en?: string | null;
+  node_value_en?: string | null;
   updated_at: string;
   published_at: string | null;
 }
