@@ -1,0 +1,6 @@
+# Graphify (Wissensgraph des Codes, siehe CLAUDE.md): was nicht in den Graphen gehört
+# Beiträge der alten Website – Text, kein Code
+src/content/news/
+# Designsystem wird importiert (npm run design:import), Entwürfe sind Vorlagen
+design/system/
+design/entwuerfe/
