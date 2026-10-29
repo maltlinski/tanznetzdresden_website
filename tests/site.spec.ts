@@ -225,25 +225,38 @@ test('News: Galerie mit Großansicht, Archivbilder in zwei Größen', async ({ p
   await expect(lb).toBeHidden();
 });
 
-test('News: Beitrag ohne Titelbild hat den Netz-Kopf mit Knoten, Zeile zum Teilen und Fuß', async ({ page }) => {
-  const p = veroeffentlicht().find((x) => !x.image && !x.deadline)!;
+test('News: Kopf mit Titelbild, Großansicht ab dem Titelbild, Zeile zum Teilen und Fuß', async ({ page }) => {
+  const p = veroeffentlicht().find((x) => x.image)!;
   await page.goto(`/news/${p.id}/`);
-  const kopf = page.locator('.ak--netz');
-  await expect(kopf).toBeVisible();
+  await dismissConsent(page);
+  const kopf = page.locator('.ak');
+  await expect(kopf).toHaveClass(/ak--(vollbild|hochkant|split|typo)/);
   await expect(kopf.getByRole('heading', { level: 1 })).toHaveText(p.title);
-  await expect(kopf.locator('canvas.ak__netz')).toHaveCount(1);
-  // der Knoten erscheint, sobald das Netz steht
-  await expect.poll(() => kopf.locator('[data-knoten]').evaluate((el) => getComputedStyle(el).opacity), { timeout: 6000 }).toBe('1');
   await expect(page.locator('.ab__zeile')).toContainText(p.author);
   await expect(page.locator('.ab__zeile').getByRole('button', { name: 'Link kopieren' })).toBeVisible();
   await expect(page.locator('.ab__fuss')).toContainText('Veröffentlicht');
-  // Ausschreibung: Knoten mit Frist, Countdown in den Eckdaten
-  const call = veroeffentlicht().find((x) => x.deadline && !x.image);
-  if (call) {
-    await page.goto(`/news/${call.id}/`);
-    await expect(page.locator('.ak__knoten')).toContainText('Bewerbungsfrist');
-    await expect(page.locator('.ab__fakten .ab__call')).toBeVisible();
-  }
+  // das Titelbild ist das erste Foto der Großansicht
+  const zoom = page.locator('.ak__zoom');
+  const box = (await zoom.boundingBox())!;
+  await zoom.click({ position: { x: box.width * 0.8, y: 30 } });
+  const lb = page.getByRole('dialog', { name: 'Bildansicht' });
+  await expect(lb.locator('.lb__n')).toHaveText(/^01 \/ \d{2}$/);
+  await expect(lb.locator('.lb__k')).toHaveText('Titelbild');
+  await page.keyboard.press('Escape');
+  await expect(lb).toBeHidden();
+});
+
+test('News: Beitrag ohne Titelbild hat den Netz-Kopf mit Knoten', async ({ page }) => {
+  // alle Beiträge der alten Website haben ein Titelbild; ohne geht es nur im Editor (tests/news-editor.spec.ts)
+  const p = veroeffentlicht().find((x) => !x.image);
+  test.skip(!p, 'kein Beitrag ohne Titelbild');
+  await page.goto(`/news/${p!.id}/`);
+  const kopf = page.locator('.ak--netz');
+  await expect(kopf.getByRole('heading', { level: 1 })).toHaveText(p!.title);
+  await expect(kopf.locator('canvas.ak__netz')).toHaveCount(1);
+  // der Knoten erscheint, sobald das Netz steht
+  await expect.poll(() => kopf.locator('[data-knoten]').evaluate((el) => getComputedStyle(el).opacity), { timeout: 6000 }).toBe('1');
+  if (p!.deadline) await expect(page.locator('.ak__knoten')).toContainText('Bewerbungsfrist');
 });
 
 test('News: Förderhinweis als Kasten, E-Mail-Adressen geschützt, Video als Link', async ({ page }) => {

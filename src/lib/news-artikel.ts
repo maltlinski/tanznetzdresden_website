@@ -56,7 +56,8 @@ export function kopfHtml(d: KopfDaten): string {
     `<div class="ak__meta" data-rise="0.08">${badge(variante, kat)}<span>${nr}<time datetime="${d.datum}">${dateLong(d.datum, d.lang)}</time>${mitZeit ? ` · ${lesezeit}` : ''}</span></div>`;
   const zurueck = (cls = '') =>
     d.zurueck ? `<a href="${esc(d.zurueck)}" class="ak__back${cls}" data-rise="0">${esc(t.back)}</a>` : `<span class="ak__back${cls}" data-rise="0">${esc(t.back)}</span>`;
-  const h1 = `<h1 class="ak__titel" data-split>${esc(d.titel)}</h1>`;
+  // lange Titel (oft aus der alten Website) kleiner setzen, damit sie das Foto nicht zudecken
+  const h1 = `<h1 class="ak__titel${d.titel.length > 60 ? ' ak__titel--lang' : ''}" data-split>${esc(d.titel)}</h1>`;
   const teaser = d.teaser ? `<p class="ak__teaser" data-rise="0.26">${esc(d.teaser)}</p>` : '';
   const autor = (extra = '') => `<span class="ak__autor" data-rise="0.34">${esc(t.text)} · ${esc(d.autor)}${extra}</span>`;
   const credit = d.bild?.credit ? `<span class="ak__credit">${esc(t.credit)} · ${esc(d.bild.credit)}</span>` : '';

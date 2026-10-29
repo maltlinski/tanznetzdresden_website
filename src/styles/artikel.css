@@ -35,6 +35,9 @@ a.ak__back:hover { color: var(--cyan); }
 .ak__zoom:focus-visible { outline: 3px solid var(--cyan); outline-offset: -3px; }
 .ak__img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
 
+/* lange Titel: kleiner und breiter, in allen Varianten */
+.ak .ak__titel.ak__titel--lang { font-size: clamp(30px, 3.8vw, 60px); line-height: 1; letter-spacing: -0.03em; max-width: 26ch; }
+
 /* Vollbild: Foto über die ganze Breite, Titel auf einem lila Band unten */
 .ak--vollbild .ak__buehne { width: 100%; height: clamp(460px, 84vh, 940px); }
 .ak__oben { position: absolute; top: 0; left: 0; right: 0; pointer-events: none; }
