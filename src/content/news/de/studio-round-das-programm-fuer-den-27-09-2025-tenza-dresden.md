@@ -3,6 +3,7 @@ title: STUDIO ROUND • das Programm für den 27.09.2025 in Dresden • TENZA Sc
 date: 2025-09-15
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tantnetzdresden-studio-round-2025-selected-shots-cindy-hammer-anna-till-andre-wirsig.webp
 teaser: Unsere Ausschreibung für die zehnte Edition unserer STUDIO ROUND war erfolgreich und genau aus diesem Grund können wir euch in unserem heutigen Blog-Beitrag verraten, wer am 27.
 ---
 
@@ -37,6 +38,13 @@ Am 27. September 2025 werden in der TENZA in Dresden ab 20 Uhr (Doors open: 19 U
 
 ### Chiara Fersini
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-studion-round-x-2025-chiara-fersini.webp
+    alt: ""
+:::
+
 Chiara ist eine Tänzerin und Choreografin aus Salento im Südosten Italiens, die derzeit in Deutschland lebt. Sie absolvierte ihre Ausbildung zur Tänzerin an der Mo.Da.-Schule in Modena (Italien), am zeitgenössischen Junior Ballet de Lille und am Kibbutz Contemporary Dance Company International Program in Israel. Danach begann sie als freischaffende Künstlerin in Projekten von Luana Rossetti, Toula Limnaios cie., Oxymoron Dance Company, Curtis&Co., Chaim Gebber Open Scene, Hans-Otto-Theater, Theater Thikwa, Vola Stageart Company und Three Sixty Shows zu arbeiten. Seit 2022 schafft sie eigene Werke, die national und international Anerkennung finden.
 
 Mehr über Chiara Fersini gibt es unter:  
@@ -56,6 +64,13 @@ Mehr über das Stück gibt es unter:
 **Dauer**: 10 Minuten
 
 ### Diana Gill
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-studion-round-x-2025-diana-gill.webp
+    alt: ""
+:::
 
 Diana wurde in Dresden geboren und absolvierte ihre professionelle Ausbildung zur Bühnentänzerin und Tanzpädagogin am Mind and Dance – Ballettförderzentrum Nürnberg e.V. Bereits während ihrer Tanzausbildung war sie an zahlreichen Projekten beteiligt. Sie tanzte unter anderem Choreografien von Sebastian Eilers (SETanztheater Nürnberg), Benoît Favre und Lorenzo Ponteprimo. Nach ihrem Abschluss wurde sie Mitglied des EBB Junior Ballet in Madrid unter der künstl. Leitung von Jean-Philippe Dury, wo sie auch in Choreografien von La Chula Danza, Barbara Fritsche und Alessandro Alfonzetti zu sehen war.  
 Heute lebt und arbeitet Diana freiberuflich als Tänzerin und Tanzpädagogin in Dresden und studiert berufsbegleitend den Masterstudiengang Tanzpädagogik an der Palucca Hochschule für Tanz Dresden.
@@ -79,6 +94,13 @@ Pauline Michel (\*1995) ist freischaffende Tänzerin. 2019 absolvierte sie ihr S
 Vilma Ehnberg (\*2000) ist freischaffende Tänzerin. Ihr Studium in Tanz begann sie an der Ballettakademien Stockholm und schloss es 2024 ab. Seitdem arbeitete sie in Stockholm und Frankfurt.
 
 ### rock bottom
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-studion-round-x-2025-vilma-ehnberg-pauline-michel-rock-bottom.webp
+    alt: ""
+:::
 
 rock bottom beschäftigt sich mit der potenziellen Energie unseres Gewichts und der Gedankenflut in unseren Köpfen. Hintergrund der Arbeit sind Zustände von Erschöpfung und Stress, die uns macht- und bewegungslos fühlen lassen. Es basiert auf einer Recherche-Residenz am ID\_Tanzhaus im Mai 2025. Dort arbeiteten wir, Pauline Michel und Vilma Ehnberg, mit der Idee, wie wir – statt gegen Zustände körperlicher Schwere anzukämpfen – Schwere zu nutzen, um zusammen Bewegungen und Energie und Widerstandskraft zu generieren. Inspiriert haben uns Bewegungen schwerer Objekte und der Wucht, die sie entfalten: Steine, die ins Rollen kommen und nicht mehr aufzuhalten sind.  
 rock bottom spielt mit Rock-Musik und geologischen Gesteinsformen. Wir schaffen unterschiedliche Bilder von uns als Sub- oder Objekten von Schwere: unsere gesichtslosen Körpern als ‘erschöpfter Masse’/Landschaft, als schwere, rollende Objekte, als sich erhebende rock’n’roll Charaktere oder der Welt entziehende Gesichter.
@@ -114,5 +136,11 @@ Das Format STUDIO ROUND ist Teil der Projektmaßnahme ROUNDABOUT von TanzNetzDre
 Unterstützt durch das NATIONALE PERFORMANCE NETZ – Impulsförderung Tanz & Theater – gefördert von der Beauftragten der Bundesregierung für Kultur und Medien sowie den Kultur- und Kunstministerien der Länder.
 
 Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+:::
 
 Header-Foto: Anna Till & Cindy Hammer "selected shots"

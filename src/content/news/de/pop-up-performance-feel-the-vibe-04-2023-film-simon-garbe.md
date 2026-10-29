@@ -3,6 +3,7 @@ title: POP UP-Performance • »Feel the vibe« (04/2023) • der Film von Simon
 date: 2023-08-21
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-pop-up-performance-april-2023-feel-the-vibe.webp
 teaser: Unter dem Titel »Feel the vibe« fand am 27. April diesen Jahres eine POP UP-Performance auf der Studiobühne der Landesbühnen Sachsen statt.
 ---
 

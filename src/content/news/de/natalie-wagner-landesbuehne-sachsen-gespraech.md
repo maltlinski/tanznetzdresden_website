@@ -3,6 +3,7 @@ title: »Jede Besonderheit birgt meiner Meinung nach Potenziale.«
 date: 2022-04-05
 category: Stimme
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanzenetzdresden-natalie-wagner-landesbu-cc-88hne-sachsen-klaus-gigga.webp
 teaser: Vor kurzem haben wir darüber berichtet, dass TNDD-Mitglied Natalie Wagner die neue Chefchoreografin an den Landesbühnen Sachsen ist.
 ---
 

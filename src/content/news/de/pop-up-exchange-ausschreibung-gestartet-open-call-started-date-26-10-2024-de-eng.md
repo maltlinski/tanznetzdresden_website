@@ -3,6 +3,7 @@ title: "POP UP exchange • Ausschreibung gestartet / Open call started • Date
 date: 2024-07-26
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tndd-studio-round-ii-05112021-tenza-schmiede-10.webp
 teaser: Unser zweites Format, das nach der Sommerpause zurückkehrt ist POP UP exchange. Mehr zu allem Kommenden, den Details der bereits laufenden Ausschreibung und dem dazugehörigen Termin am 26.
 ---
 
@@ -47,6 +48,16 @@ Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschut
 
 Unterstützt durch das NATIONALE PERFORMANCE NETZ Impulsförderung Tanz & Theater, gefördert von der Beauftragten der Bundesregierung für Kultur und Medien, sowie den Kultur- und Kunstministerien der Länder.
 
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+:::
+
 ## POP UP exchange 2024 (en)
 
 *Our second format returning after the summer break is POP UP exchange. Find out more about everything coming up, the details of the already running submission phase and the corresponding date on October 26, 2024 in today's blog post. (scroll up for german version)*
@@ -82,5 +93,15 @@ More information is available under:
 TNDD studio round is a project by TanzNetzDresden. Funded by the Office for Culture and Monument Protection and the Cultural Foundation of the Free State of Saxony. The measure is co-financed by tax funds on the basis of the budget passed by the Saxon State Parliament.
 
 Supported by the NATIONAL PERFORMANCE NETZ Impulsförderung Tanz & Theater, funded by the Federal Government Commissioner for Culture and the Media and the Ministries of Culture and the Arts of the federal states.
+
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+:::
 
 Header-Photo: YoY collective (Emma Zani & Roberto Doveri)@TNDD studio round VI (14.04.2023); Shot by Stephan Tautz

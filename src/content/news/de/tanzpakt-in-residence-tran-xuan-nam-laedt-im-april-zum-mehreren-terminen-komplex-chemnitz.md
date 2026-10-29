@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Tran Xuan Nam lädt im April zum mehreren Termi
 date: 2024-04-11
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tran-xuan-nam-fotograf-peter-rossner.webp
 teaser: Im Rahmen von TANZPAKT in residence arbeitete Tran Xuan Nam als Resident im KOMPLEX in Chemnitz. Nun lädt der Künstler im Zuge der Residenz im April zu mehreren Terminen ein.
 ---
 

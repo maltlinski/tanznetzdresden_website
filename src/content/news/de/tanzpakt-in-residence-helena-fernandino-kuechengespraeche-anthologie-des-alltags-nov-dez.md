@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Helena Fernandino Küchengespräche • Antholo
 date: 2022-11-11
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-tanzpakt-in-residence-2022-helena-fernandino-e1668158225833.webp
 teaser: Aktuell arbeitet die Künstlerin Helena Fernandino im Rahmen von TANZPAKT in residence in der Villa Wigman.
 ---
 
@@ -39,6 +40,18 @@ Als Abschluss der künstlerischen Residenz in der villa\\wigman, lädt die Küns
     - 14:00 Uhr: Performance
 - **Ort**: [Villa Wigman](https://villawigman.de/), Bautzner Straße 107, 01099 Dresden
 - Der Eintritt ist frei
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-in-residence-2022-helena-fernandino-andre-wirsig.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-in-residence-2022-helena-fernandino-blue-in-mir-uwe-nimmrichter.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-in-residence-2022-helena-fernandino-2.webp
+    alt: ""
+:::
 
 ## Einladung zu den Küchengesprächen – Mitwirkende gesucht!
 

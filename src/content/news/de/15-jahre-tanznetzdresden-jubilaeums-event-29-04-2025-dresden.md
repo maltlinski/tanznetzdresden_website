@@ -3,6 +3,7 @@ title: 15 Jahre TanzNetzDresden • das Jubiläums-Event zum Welttanztag • 29.
 date: 2025-03-28
 category: Verein
 author: TanzNetzDresden
+image: ../../../assets/news/2024/simongarbe-com-tndd-welttanztag-33.webp
 teaser: Großes steht in diesem Jahr an, denn das TanzNetzDresden wird 2025 sein 15jähriges Bestehen zelebrieren. Explizit zum diesjährigen Welttanztag sind hierfür für den 29.
 ---
 
@@ -13,6 +14,12 @@ teaser: Großes steht in diesem Jahr an, denn das TanzNetzDresden wird 2025 sein
 Tanz ist universal, überwindet die Grenzen von Kultur, Politik oder ethnischer Zugehörigkeit und kann Menschen in einer friedlichen und freundschaftlichen Sprache - eben der des Tanzes - zusammenführen. Außerdem hat Tanz, so wie letztlich alle Künste - die große Kraft, Momente zeitloser Natur zu schaffen. So zeitlos dieses Potenzial jedoch ist, so ist es dennoch in die Zeit eingebunden. Und so kommt es, dass auch das TanzNetzDresden auf eine Zeitlichkeit zurückblickt. In diesem Jahr sogar auf eine Zeitachse, die stolze 15 Jahre umfasst.
 
 Doch anstatt, dass wir im Zurückblicken die Zeit vergessen, wollen wir euch lieber für Zukünftiges einladen und einmal mehr den internationalen Welttanztag nutzen, um die Kraft unseres Netzwerks sowie die Vielseitigkeit der mit ihm verbundenen Künstler:innen zu feiern. Nutzen möchten wir den Tag außerdem zum Vernetzen, zum Sichtbarmachen von Tanz sowie verschiedener Partner:innen, Künstler:innen und Tanzschulen. Und natürlich möchten wir euch zum Mittanzen anregen.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2025/simongarbe-com-tndd-welttanztag-18.webp
+    alt: ""
+:::
 
 ## Das Programm des TNDD-Jubiläums am 29.04.2025
 

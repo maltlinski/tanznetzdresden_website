@@ -3,6 +3,7 @@ title: POP UP-Performance • »Feel the vibe« • 27.04.2023 • Landesbühnen
 date: 2023-04-04
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-popup-april-feel-the-vibe-e1680685347509.webp
 teaser: Unter dem Titel »Feel the vibe« findet am Donnerstag, dem 27. April 2023 eine POP UP-Performance auf der Studiobühne der Landesbühnen Sachsen statt.
 ---
 

@@ -3,6 +3,7 @@ title: "tanz_netzwerk_bremen CONNECTION präs.: öffentliches Symposium • 12. 
 date: 2023-05-03
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanz-netzwerk-bremen-symposium-mai-2023-e1698316296145.webp
 teaser: Das Projekt tanz\netzwerk\bremen CONNECTION ist die Intensivierung des 2022 begonnenen Austauschs zwischen dem tanz\netzwerk\bremen PROFESSIONAL, dem TanzNetzDresden und TanzXchange Münster.
 ---
 
@@ -72,3 +73,9 @@ Rückfragen zu den Veranstaltungen von tanz\_netzwerk\_bremen CONNECTION beantwo
 Gefördert vom Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien im Rahmen von NEUSTART KULTUR und vom Senator für Kultur der Freien Hansestadt Bremen.
 
 Header-Foto: [lafdk-bremen.de](https://lafdk-bremen.de/)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/daku-logokombi-hellgrau-05.webp
+    alt: ""
+:::

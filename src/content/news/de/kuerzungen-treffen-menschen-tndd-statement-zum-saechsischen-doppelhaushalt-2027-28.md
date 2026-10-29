@@ -3,6 +3,7 @@ title: »Kürzungen treffen Menschen« • TNDD-Statement zum sächsischen Doppe
 date: 2026-09-28
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tanznetzdresden-2026-statement-header-e1790665446369.webp
 teaser: Mit großer Sorgen und Verunsicherung verfolgt auch das TanzNetzDresden die Ereignisse im Zuge der Planung des sächsischen Haushaltes für die Jahre 2027 und 2028, welche unter anderem massive …
 ---
 
@@ -11,6 +12,12 @@ teaser: Mit großer Sorgen und Verunsicherung verfolgt auch das TanzNetzDresden 
 ### »Kürzungen treffen Menschen«
 
 Das verfasste Statement zur Situation soloselbstständiger Tanzschaffender ist ebenso an einzelne Mitglieder:innen des sächsischen Landtages geschickt worden, um auch auf direkten Wege auf die Sorgen und die Anliegen der Freien Szene hinzuweisen und zugleich zu verdeutlichen, welche Konsequenzen die beabsichtigten Kürzungen hätten. Sowohl für das künstlerische Angebot der Stadt Dresden, das Renommee der Stadt Dresden in punkto Tanz, aber vor allem auch welche Bedeutung die Kürzungen für das Arbeiten und Leben all jener Künstler:innen hätte, die in der Freien Szene aktiv sind und ihr die Lebendigkeit und Qualität verleihen, mit der sich die Stadt auch gern schmückt und die wiederum weit über die Stadt hinaus Strahlkraft und Bedeutung besitzt.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2026/tanznetzdresden-2026-statement-beitrag.webp
+    alt: ""
+:::
 
 ## Lebendigkeit durch Fairness und zuverlässige Förderung. Der Standpunkt der Freien Szene in Dresden.
 
@@ -52,6 +59,6 @@ Daniela Lehmann** (Choreografin)**Natalie Wagner** (Choreografin)**Anna Till** (
 **Rika Yotsumoto** (Tänzerin / Choreografin)  
 **Fang Yun Lo** (Choreografin / Artistic Director ) / Polymer DMT**Justine Rouquart** (Tänzerin / Choreografin / Tanzpädagogin)**Magdalena Weniger** (Tanzschaffende / Performerin)**Antje Gruner** (Tanzpädagogin)**Joao Pedro de Paula** (Choreograf / Tänzer)**Vivian Loridana Walter** (Tänzerin)**Valeria Bobke** (Tänzerin)**Heike Zadow** (Kulturschaffende)
 
-### Eine PDF Version unseres Statement gibt es hier zum Download.
+### [Eine PDF Version unseres Statement gibt es hier zum Download.](/news/archiv/dateien/2026/2026-09-29-statement-tanznetzdresden-e-v.pdf)
 
-### Wir möchten an dieser Stelle außerdem betonen, dass wir uns dem kürzlich veröffentlichten Statements der freien Produktionshäuser und Spielstätten für die Darstellenden Künste in Sachsen sowie des [Deutschen Bühnenvereins, Landesverband Sachsen](https://www.buehnenverein-sachsen.de/media/filer_public/52/9b/529b3a79-a809-4c13-8b03-80b395dd482a/statement_lv_dbv_zum_regierungsentwurf_doppelhaushalt_2027_28.pdf) ausdrücklich anschließen und darin aufgeführten Positionen ausdrücklich unterstützen.
+### Wir möchten an dieser Stelle außerdem betonen, dass wir uns dem kürzlich veröffentlichten [Statements der freien Produktionshäuser und Spielstätten für die Darstellenden Künste in Sachsen](/news/archiv/dateien/2026/2026-09-16-protestnote-kuerzung-kdfs-final.pdf) sowie des [Deutschen Bühnenvereins, Landesverband Sachsen](https://www.buehnenverein-sachsen.de/media/filer_public/52/9b/529b3a79-a809-4c13-8b03-80b395dd482a/statement_lv_dbv_zum_regierungsentwurf_doppelhaushalt_2027_28.pdf) ausdrücklich anschließen und darin aufgeführten Positionen ausdrücklich unterstützen.

@@ -3,6 +3,7 @@ title: 'tanz_netzwerk_bremen CONNECTION presents: Workshop with Guy Cools "Who n
 date: 2023-02-21
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-connection-2023-guy-cools.webp
 teaser: In context of our 2023 joint project tanz\netzwerk\bremen CONNECTION TanzNetzDresden, TanzXchange Münster and the Landesverband freie darstellende Künste Bremen are organizing not just a Peer to …
 ---
 
@@ -46,3 +47,9 @@ Please register via mail at [info@lafdk-bremen.de](mailto:info@lafdk-bremen.de) 
 *A project in cooperation with TanzNetzDresden, funded by the Office for Culture and Monument Protection Dresden and the Cultural Foundation of the Free State of Saxony\*. \*This measure is co-financed by tax funds on the basis of the budget passed by the members of the Saxon State Parliament.*
 
 Header-photo: Guy Cools; provided by [lafdk-bremen.de](https://lafdk-bremen.de/)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/daku-logokombi-hellgrau-05.webp
+    alt: ""
+:::

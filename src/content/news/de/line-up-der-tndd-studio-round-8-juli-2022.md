@@ -3,6 +3,7 @@ title: Now it's official - das Line up der vierten TNDD studio round (08.07.2022
 date: 2022-06-17
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-studio-round-4-paula-caldirola-2.webp
 teaser: Das komplette Line up der kommenden TNDD studio round Ausgabe, die am 8. Juli wie gewohnt ab 20 Uhr in der TENZA Schmiede stattfinden wird, ist nun online und kann durchstöbert werden.
 ---
 
@@ -16,6 +17,13 @@ Das komplette Line up der kommenden TNDD studio round Ausgabe, die am 8. Juli wi
 Detaillierte Informationen zu den einzelnen Beiträgen der vierten TNDD studio round folgen nun oder können direkt auf der [Unterseite der studio round](/#formate) eingesehen werden. Dort befinden sich alle Informationen auch in englischer Sprache.
 
 ### Charles A. Washington: "Acid"
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tndd-studio-round-4-charles-washington-juli-2022.webp
+    alt: ""
+:::
 
 Charles A. Washington untersucht verschiedene Ansätze zur Bewegung durch Umweltfaktoren wie den Raum und die Menschen, die diesen Raum bewohnen. Sein Unterricht wechselt zwischen Improvisation und verschiedenen strukturierten Übungen, die die drei verschiedenen Arten von Bewusstsein, die er derzeit erforscht, erkunden. Sein Unterricht bietet eine Möglichkeit, den Körper auf eine offene und großzügige Weise wahrzunehmen und zu spüren, die sich in der Qualität der Bewegung und der spielerischen Dynamik manifestiert, die zu einer sozialen oder/und tiefen inneren Erfahrung führt.
 
@@ -50,6 +58,14 @@ Instagram: [instagram.com/lapau.li](https://www.instagram.com/lapau.li/)
 [Video auf Vimeo ansehen ↗](https://vimeo.com/716946331?embedded=true&source=video_title&owner=98272959)
 
 ### Therese Bendjus & Daria Belous: Studies of Softening *(entfällt leider aufgrund von Krankheit und wird bei der TNDD studio round#5 im kommenden Herbst nachgeholt)*
+
+::: bilder
+darstellung: neben
+text: Therese Bendjus
+bilder:
+  - datei: /news/archiv/2022/tndd-studio-round-2022-therese-benjus-daria-belous-soft-2-kopie.webp
+    alt: ""
+:::
 
 Therese Bendjus, ursprünglich aus Dresden, ist eine Performance-Künstlerin, die sich für Laborexperimente rund um Verletzlichkeit, Berührung und Begegnung interessiert. In ihrem derzeitigen Studium am Hochschulübergreifenden Zentrum Tanz Berlin beschäftigt sie sich mit dem Material Mensch und Fragen der persönlichen Transparenz im Moment einer Performance.
 

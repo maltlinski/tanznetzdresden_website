@@ -3,6 +3,8 @@ title: Noch bis zum 30. September bewerben! TANZPAKT in residence 2023 • Aussc
 date: 2022-09-08
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tenza-schmiede-dresden.webp
+alt: TENZA schmiede Dresden
 deadline: 2022-09-30
 teaser: – realisiert in den Jahren 2022-24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat zum Ziel hat.
 ---
@@ -40,7 +42,7 @@ Residenzort und eine Werkstattpräsentation zum Abschluss der Residenzzeit.
 [Villa Wigman](http://villawigman.de/tanzpakt-in-residence/) (Dresden) / ganzjährig 2023  
 [TanzNetzDresden](/) / [TENZA](https://www.tenza.de/) (Dresden) Februar, April, Juli-August, Oktober 2023
 
-Die vollständige Ausschreibung findet ihr hier: **TANZPAKT-in-residence\_Ausschreibung-2023\_de.pdf**
+Die vollständige Ausschreibung findet ihr hier: [**TANZPAKT-in-residence\_Ausschreibung-2023\_de.pdf**](/news/archiv/dateien/2022/tanzpakt-in-residence-ausschreibung-2023-de.pdf)
 
 oder direkt auf der Website der Villa Wigman unter:
 
@@ -83,7 +85,7 @@ The working residency includes the implementation of one or more trainings or wo
 [villa\\wigman](http://villawigman.de/tanzpakt-in-residence/) (Dresden) / all year round 2023  
 [TanzNetzDresden](/) / [TENZA](https://www.tenza.de/) (Dresden) February / April / July-August / October 2023
 
-The complete announcement can be found here: **TANZPAKT-in-residence\_Ausschreibung-2023\_en.pdf**
+The complete announcement can be found here: **[TANZPAKT-in-residence\_Ausschreibung-2023\_en.pdf](/news/archiv/dateien/2022/tanzpakt-in-residence-ausschreibung-2023-en.pdf)**
 
 or directly on the website of Villa Wigman:
 

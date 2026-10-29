@@ -3,6 +3,7 @@ title: TANZPAKT in residence.re-preview • Rückschau und Ausblick am 14. Novem
 date: 2024-10-22
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-villa-wigman-2024-tanzpakt-in-residence-preview.webp
 teaser: Die villa/wigman lädt das Fachpublikum am 14. November auf die Bautzner Straße, um unser gemeinsames Kooperationsprojekt TANZPAKT in residence, welches in diesem Jahr zu Ende geht, zu reflektieren, …
 ---
 

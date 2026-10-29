@@ -3,6 +3,7 @@ title: Tanzplattform Deutschland 2026 in Dresden • Ein Rückblick und jede Men
 date: 2026-03-18
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tp-26-i-klaus-gigga-4685.webp
 teaser: Nach fünf intensiven Festivaltagen ist die Tanzplattform Deutschland 2026 – und damit die 17. Ausgabe seit der Gründung 1994 – in Dresden erfolgreich zu Ende gegangen.
 ---
 
@@ -29,6 +30,28 @@ Bei den [Pitching Sessions Saxony](/news/tanznetzdresden-villawigman-societaetst
 
 Fotografisch festgehalten hat Stephan Floss die Pitching Sessions Saxony und wir freuen uns, Ausschnitte seiner Sammlung hier zeigen zu können.
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2026/tpd26-pitching-saxony-anna-till-005-stephan-floss-kopie.webp
+    alt: ""
+  - datei: /news/archiv/2026/tpd26-pitching-saxony-sahar-damoni-034-stephan-floss-kopie.webp
+    alt: ""
+  - datei: /news/archiv/2026/tpd26-pitching-saxony-go-plastic-041-stephan-floss-kopie.webp
+    alt: ""
+  - datei: /news/archiv/2026/tpd26-pitching-saxony-miller-de-nobili-026-stephan-floss-kopie.webp
+    alt: ""
+  - datei: /news/archiv/2026/tpd26-pitching-saxony-irina-pauls-040-stephan-floss-kopie.webp
+    alt: ""
+  - datei: /news/archiv/2026/tpd26-pitching-saxony-irina-pauls-024-stephan-floss-kopie.webp
+    alt: ""
+  - datei: /news/archiv/2026/tpd26-pitching-saxony-forward-dance-008-stephan-floss-kopie.webp
+    alt: ""
+  - datei: /news/archiv/2026/tpd26-pitching-saxony-forward-dance-001-stephan-floss-kopie.webp
+    alt: ""
+:::
+
 ### Show Up!
 
 Bei [SHOW UP!](/news/tanznetzdresden-tanzplattform-show-up-societaetstheater-13-03-2026/) handelte es sich um ein Late Night Special im [Societaetstheater](https://www.societaetstheater.de/), bei dem sechs verschiedene Künstler:innen Einblick in ihre Arbeit geben konnten. Anna Till hierzu:
@@ -36,6 +59,36 @@ Bei [SHOW UP!](/news/tanznetzdresden-tanzplattform-show-up-societaetstheater-13-
 > Es war wirklich sehr gut besucht und das Publikum hat es genossen, durch das Societaetstheater zu wandeln. Mit einem facettenreichen Mix ist es uns hier gelungen, die regionale Szene zu präsentieren und zugleich einen Treffpunkt für die Professionals zu gestalten - alles mit einem Abend voller Performance, Party, Installation und einem Live-Stream von zwei Tänzer:innen aus deren Studios.
 
 Wunderbar visuell festgehalten hat den Abend von Show Up! Fotograf Klaus Gigga, der uns für diesen Beitrag auch die Fotos zur Verfügung gestellt hat.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4038.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4140.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4211.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4338.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-3819.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4405.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4110.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4631.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4668.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4824.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4523.webp
+    alt: ""
+  - datei: /news/archiv/2026/tp-26-i-klaus-gigga-4295.webp
+    alt: ""
+:::
 
 ### Soft Space
 

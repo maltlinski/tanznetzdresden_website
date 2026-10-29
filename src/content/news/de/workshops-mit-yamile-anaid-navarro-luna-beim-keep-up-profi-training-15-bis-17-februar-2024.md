@@ -3,12 +3,20 @@ title: Workshops mit Yamile Anaid Navarro Luna beim KEEP UP Profi-Training • 1
 date: 2024-02-06
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/221228-yamile-1-web-kopie.webp
 teaser: Zusätzlich zur Special Week mit Tiago Manquinho wird es im Rahmen des KEEP UP Profi-Trainings eine kleine dreiteilige Workshop-Reihe mit Yamile Anaid Navarro Luna vom 15. bis 17. Februar geben.
 ---
 
 *Zusätzlich zur Special Week mit Tiago Manquinho wird es im Rahmen des KEEP UP Profi-Trainings eine kleine dreiteilige Workshop-Reihe mit Yamile Anaid Navarro Luna vom 15. bis 17. Februar geben. Weitere Informationen zu diesem Angebot findet ihr im heutigen Blog-Beitrag, der wie immer sowohl auf Deutsch als auch auf [Englisch](/en/news/workshops-mit-yamile-anaid-navarro-luna-beim-keep-up-profi-training-15-bis-17-februar-2024/) erscheint.*
 
 ## Yamile Anaid Navarro Luna
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/221228-yamile-1-web.webp
+    alt: ""
+:::
 
 Yamile Anaid Navarro Luna, wurde in Mexiko-Stadt geboren. Sie begann ihre professionelle Tanzausbildung an der Agora Cultural Center Dance School in Villahermosa, Tabasco, Mexiko. Jahre später zog sie nach Spanien, um ihre professionelle Tanzausbildung in Barcelona fortzusetzen. Im Jahr 2009 machte sie ihren Abschluss als Klassische Tänzerin am Institut del Teatre, im selben Jahr schrieb sie sich für das dreijährige Bachelor-Programm an der Palucca Hochschule für Tanz in Dresden ein.
 
@@ -30,6 +38,13 @@ Mehr über Yamile Anaid Navarro Luna gibt es unter:
 Yamile Anaid Navarro Luna bietet in der Zeit vom 15. bis 17. Februar eine an drei Tagen stattfindende Workshop-Reihe im Rahmen des KEEP UP Profi-Trainings im [Ballettstudio Espiral](https://www.ballettstudio-espiral.de/) an. Die Workshops stehen unter dem Titel »Voice-Body Connection« und finden auf Englisch und Deutsch statt. Seit 2020 hat Yamile diese Praktike vorangetrieben, die in einer einzigartigen Methodik gipfelt, die sie während ihrer #TakeHeart-Residenz im Jahr 2022 entwickelt hat. Dieser Workshop ist nicht nur eine Erfahrung, sondern zugleich eine Erkundung der symbiotischen Beziehung zwischen Stimme und Bewegung. Sie selbst sagt zu diesem besonderen Angebot Folgendes:
 
 > Wir freuen uns darauf, Dich zu unserem Voice-Body Connection Workshop zu begrüßen. Dort, wo deine Stimme ihren wahren Ausdruck findet. Entwickelt und geleitet wird er von mir, Yamile Anaid Navarro Luna. Wir freuen uns außerdem, bekannt zu geben, dass die Tänzerin und Choreografin Gui Yuexuan uns unterstützen wird. Gui Yuexuan, die von Anfang an bei den Voice-Body Connection Praktiken dabei war, wird da sein, um Dich zu inspirieren und zu demonstrieren, welche bemerkenswerte Reise man unternehmen kann, wenn man Stimme und Körper verbindet.
+
+::: bilder
+foto: "-Credit: Shi Yu"
+bilder:
+  - datei: /news/archiv/2024/screenshot-2023-12-22-at-12-10-28.webp
+    alt: ""
+:::
 
 **Wir haben Yamile Navarro gefragt, für wen dieser Workshop speziell gedacht ist.**
 

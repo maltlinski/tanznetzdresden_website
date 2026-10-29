@@ -3,12 +3,20 @@ title: POP UP exchange • TanzNetzDresden trifft das Tanznetz Freiburg • 19.1
 date: 2022-11-04
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetz-freiburg-jennifer-rohrbacher.webp
 teaser: Initiiert vom TanzNetzDresden, werden am Wochenende des 18. und 19. November 2022 vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus im Rahmen von POP UP …
 ---
 
 Initiiert vom TanzNetzDresden, werden am Wochenende des 18. und 19. November 2022 vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus im Rahmen von POP UP exchange zum Austausch eingeladen. POP UP exchange soll die strukturellen und künstlerischen Verbindungen sichtbar machen, vor Ort, für die Stadtgesellschaft und überregional über soziale Medien. Die Initiativen werden sich, ihr Profil und ihre Akteur:innen vorstellen, das TanzNetzDresden ist vor Ort, folgt uns für Live-Interviews und Performance-Snippets. Am 19. November 2022 besuchen wir Freiburg und das Tanznetz vor Ort. Wir lernen Akteur:innen, Orte und Arbeitsfelder kennen und erleben das Performance-Format CLUB UNIQUE in der assoziierten Spielstätte E-WERK FREIBURG. Was sich alles hinter dem besonderen Clubformat versteckt und was das Tanznetz Freiburg macht - all das steht im heutigen POP UP exchange-Blog-Beitrag.
 
 ## Tanznetz Freiburg
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetz-freiburg-logo.webp
+    alt: ""
+:::
 
 Die Tanznetz Freiburg gUG ist die Interessensvertretung für professionelle freie Tanzschaffende in Freiburg und Region. Ziel ist es nachhaltige und tragfähige Strukturen aufzubauen, welche Künstler\*innen im Tanzbereich unterstützen. Die gemeinnützige Unternehmergesellschaft setzt ein qualifizierendes sowie künstlerisches Programm um und vernetzt mit Akteur\*innen auf nationaler und internationaler Ebene, fördert Diversität sowie den künstlerischen Austausch – über (Landes)grenzen hinweg. Die Anbindung an die Szene wird durch den Beirat aus sechs Tanzkünstler\*innen der freien Szene gewährleistet.
 
@@ -17,6 +25,13 @@ Die Tanznetz Freiburg gUG ist die Interessensvertretung für professionelle frei
 - [facebook.com/TanznetzFreiburg](http://www.facebook.com/TanznetzFreiburg)
 
 ## CLUB UNIQUE
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-freiburg-clubunique.webp
+    alt: ""
+:::
 
 CLUB UNIQUE ist eine kollektive Formatentwicklung des Tanznetz Freiburg in Zusammenarbeit mit Tanzschaffenden aus Freiburg und Region sowie dem E-WERK Freiburg. Es handelt sich um ein Party-Format mit künstlerischen Interventionen. Die Mischung aus Party und Performance findet am 19.11.2022 statt und feiert den Moment. Mit dabei: DJs, Live-Performances, Improvisationen und Happenings schichten nach und nach einen Kunstraum voller Energie und Möglichkeiten.
 

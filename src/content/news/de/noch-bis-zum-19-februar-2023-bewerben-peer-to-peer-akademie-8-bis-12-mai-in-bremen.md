@@ -3,6 +3,7 @@ title: "Noch bis zum 19. Februar 2023 bewerben: für die Peer to Peer-Akademie �
 date: 2023-02-14
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-ausschreibung-peer-topeer-akademie-mai-2023-bremen-e1676378563772.webp
 deadline: 2023-02-19
 teaser: Das Projekt tanz\netzwerk\bremen CONNECTION ist die Intensivierung des 2022 begonnenen Austauschs zwischen dem tanz\netzwerk\bremen PROFESSIONAL, dem TanzNetzDresden und TanzXchange Münster.
 ---
@@ -66,3 +67,9 @@ Eine Jury, besetzt mit jeweils einem Mitglied der drei beteiligten Netzwerke, en
 Gefördert vom Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien im Rahmen von NEUSTART KULTUR und vom Senator für Kultur der Freien Hansestadt Bremen.
 
 Header-Grafik: [lafdk-bremen.de](https://lafdk-bremen.de/)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/daku-logokombi-hellgrau-05.webp
+    alt: ""
+:::

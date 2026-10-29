@@ -3,6 +3,7 @@ title: POP UP-Performance • »leave me a message« • 26.08.2023 • Bönisch
 date: 2023-08-04
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-pop-up-performance-2023-august-leave-me-a-message-e1691152084935.webp
 teaser: Unter dem Titel »leave me a message« findet am Samstag, dem 26. August 2023 eine POP UP-Performance auf dem Dresdner Bönischplatz sowie im Anschluss auf dem Martin-Luther-Platz in der Dresdner Neustadt statt.
 ---
 

@@ -3,6 +3,7 @@ title: "Die Jury hat entschieden: Das sind die Resident:innen von residence plus
 date: 2026-01-14
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tanznetzdresden-residence-plus-2026-artists-e1768399038177.webp
 teaser: Im heutigen Blog-Beitrag freuen wir uns, die sechs Resident\innen für residence plus 2025/26 bekanntzugeben.
 ---
 

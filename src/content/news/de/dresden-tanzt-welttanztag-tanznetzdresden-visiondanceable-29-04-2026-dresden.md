@@ -3,6 +3,7 @@ title: Dresden tanzt! – Welttanztag mit TanzNetzDresden & vision:danceable •
 date: 2026-03-18
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/simongarbe-com-tndd-welttanztag-2.webp
 teaser: Auch in diesem Jahr zelebrieren wir den Welttanztag und haben uns daher für den 29. April 2026 abermals etwas besonderes ausgedacht.
 facts:
   - label: Wann

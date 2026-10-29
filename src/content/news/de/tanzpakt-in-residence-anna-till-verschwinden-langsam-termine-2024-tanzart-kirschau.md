@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Anna Till »verschwinden, langsam« • Termine
 date: 2024-08-06
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanzpakt-in-residence-loredana-nemes-e1718188840773.webp
 teaser: Im Rahmen von TANZPAKT in residence arbeitet Anna Till in diesem Jahr über vier Zeiträume hinweg als Residentin in Kirschau.
 ---
 
@@ -56,7 +57,14 @@ Weitere Informationen gibt es unter folgendem Link:
 
 ## Über Anna Till
 
-Anna Till arbeitet als freischaffende Choreografin und Tänzerin mit Basis in Dresden. Ihre künstlerische Arbeit kennzeichnet ein Interesse an der Verschränkung zwischen Vergangenheit und Gegenwart und die Lust am interdisziplinären Experimentieren. Der Körper als Symbolträger, als Spiegel von Gesellschaft und als Ausdrucksmittel in Bewegung steht im Fokus jeder Stückerarbeitung. Wichtige Gemeinschaftsarbeiten sind „parallel situation“ (2017) und „Experiencing Time“ (2021) mit Barbara Lubich und „life in numbers“ (2019) mit Katiá Manjate. Anna leitet eine Company „situation productions“, ist Teil der Kollektivs TILL&LUBICH und  Vorstandsmitglied im TanzNetzDresden.
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-anna-till-tanzpakt-in-residence-kirschau-2024.webp
+    alt: ""
+:::
+
+Anna Till arbeitet als freischaffende Choreografin und Tänzerin mit Basis in Dresden. Ihre künstlerische Arbeit kennzeichnet ein Interesse an der Verschränkung zwischen Vergangenheit und Gegenwart und die Lust am interdisziplinären Experimentieren. Der Körper als Symbolträger, als Spiegel von Gesellschaft und als Ausdrucksmittel in Bewegung steht im Fokus jeder Stückerarbeitung. Wichtige Gemeinschaftsarbeiten sind „parallel situation“ (2017) und „Experiencing Time“ (2021) mit Barbara Lubich und „life in numbers“ (2019) mit Katiá Manjate. Anna leitet eine Company „situation productions“, ist Teil der Kollektivs TILL&LUBICH und Vorstandsmitglied im TanzNetzDresden.
 
 Gerade wurde ihr Stück „Schwanensee in Sneakers“ (von Nora Otte, Anna Till, Konstanze Grotkopp, Johannes Till) für die Tanzplattform 2024 ausgewählt.
 

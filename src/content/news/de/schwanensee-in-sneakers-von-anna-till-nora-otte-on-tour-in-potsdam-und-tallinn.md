@@ -3,6 +3,7 @@ title: »Schwanensee in Sneakers« von Anna Till & Nora Otte on Tour in Potsdam 
 date: 2024-03-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-stephan-floss-anna-till-exploredance-schwanensee-in-sneakersjpeg.webp
 teaser: Gerade eben haben wir darüber berichtet, dass TanzNetzDresden-Mitglied Anna Till mit ihrem, gemeinsam mit Nora Otte entwickelten Stück »Schwanensee in Sneakers«, bei der diesjährigen Tanzplattform …
 ---
 
@@ -24,12 +25,24 @@ Die Solo-Performance »[Schwanensee in Sneakers](https://www.annatill.de/schwane
 
 ### [+++ Website +++](https://explore-dance.de/en/produktionen/anna-till-schwanensee-in-sneakers/)
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-anna-till-exploredance-schwanensee-sneakers-stephan-floss-2.webp
+    alt: ""
+:::
+
 Bisher haben Anna Till und Nora Otte das Stück vor Schulklassen und im Rahmen der Tanzplattform Deutschland 2024 gezeigt und sich mit Jugendlichen darüber ausgetauscht. Nun wird das Solo an den folgenden Terminen im März und April gezeigt:
 
 - **21\. & 22. März 2024** in der [fabrik Potsdam](https://www.fabrikpotsdam.de/)  
     mehr Information gibt es unter [fabrikpotsdam.de/event/1158](https://www.fabrikpotsdam.de/event/1158)
 - **20\. April 2024** in [Sõltumatu Tantsu Lava](https://www.stl.ee/en/lavastused/) (STL, Independent Dance Stage) in Tallinn, Estland (in Kooperation mit dem Goethe Institut)  
     mehr Information gibt es unter [stl.ee/en/lavastused/saksa-kevad-2](https://www.stl.ee/en/lavastused/saksa-kevad-2)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/exploredance-schwanensee-016.webp
+    alt: ""
+:::
 
 Wir wünschen Anna Till und Nora Otte viel Erfolg und Spaß bei den kommenden Terminen und möchten allen Interessierten außerdem noch sagen, dass es unter den folgenden Links weitere Informationen zum Stück und seiner Entstehungsgeschichte gibt:
 

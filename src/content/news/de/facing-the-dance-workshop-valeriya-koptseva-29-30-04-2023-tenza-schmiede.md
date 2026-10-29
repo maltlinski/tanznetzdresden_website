@@ -3,6 +3,7 @@ title: Facing the Dance-Workshop mit Valeriya Koptseva • 29. & 30.04.2023@TENZ
 date: 2023-04-26
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-workshop-2023-tenza-valeriya-koptseva-1-e1682505303113.webp
 teaser: Facing the Dance präsentiert am 29. und 30. April 2023 in der TENZA Schmiede einen Workshop mit der ukrainischen Tänzerin, Choreografin und Tanzlehrerin Valeriya Koptseva.
 ---
 
@@ -15,6 +16,12 @@ Eine Bewegungspraxis für alle: professionelle Tänzer:innen und diejenigen, die
 Valeriya Koptseva über Ansatz und Inhalt des Workshops:
 
 > In den schwierigsten Momenten meines Lebens bringe ich mich immer in Bewegung. Gezwungenermaßen. Ich komme mir durch meinen Körper näher. Und ich finde dadurch Stille und Akzeptanz in meinem Geist. Das ist eine Kraft der Bewegung, die mir gegeben wurde und die ich gerne mit den Menschen teilen möchte. Durch die Improvisationsübungen werden wir diese Verbindung aufbauen: Körper-Geist-Seele. Wir werden uns selbst besser kennenlernen, wir werden uns von Muskelverklemmungen und Verspannungen befreien. Wir werden unsere Körper, den Raum und unsere Partner:innen erkunden. Wir werden alleine, zu zweit und in der Gruppe uns verbinden. Diese Übungen bleiben bei euch und können ein Leben lang angewendet werden. Ihr könnt sie mit Hilfe eurer Vorstellungskraft modifizieren, aber dennoch ist dies ein dauerhafter Weg eurer Erkundung. Ich möchte euch Werkzeuge an die Hand geben, um nach neuen Formen und Empfindungen in eurem Körper zu suchen.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-workshop-2023-tenza-valeriya-koptseva-2.webp
+    alt: ""
+:::
 
 ## Über Valeriya Koptseva
 

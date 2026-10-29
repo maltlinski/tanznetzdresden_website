@@ -3,6 +3,7 @@ title: TNDD studio round • Ausschreibungen gestartet / Open calls started • 
 date: 2024-07-22
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-studio-round-ausschreibung-2023.webp
 teaser: Wir melden uns langsam aus der Sommerpause zurück und freuen uns gleich, mitteilen zu können, dass unser beliebtes Formate TNDD studio round (sowie POP UP Exchange - aber hierzu folgt ein gesonderter …
 ---
 

@@ -3,6 +3,7 @@ title: TNDD beim GrooveGarden Festival 2021
 date: 2021-08-16
 category: Netzwerk
 author: Erich
+image: ../../../assets/news/2021/tanznetzdresden-groovegarden.webp
 teaser: Die GrooveStation im Herzen der Dresdner Neustadt verwandelt ihren Innenhof von 20. bis 22. August 2021 in eine Festivalspielwiese mit unterschiedlichen künstlerischen Spielarten.
 ---
 

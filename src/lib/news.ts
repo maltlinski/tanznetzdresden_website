@@ -234,7 +234,7 @@ async function newsLaden(lang: Lang): Promise<NewsPost[]> {
  * kleine Fassungen für die Seite, eine große für die Großansicht. Besucher:innen laden nichts von Supabase.
  * Fehlt ein Foto, fällt es weg (Warnung im Log) statt den Build abzubrechen.
  */
-const NB = /<a class="nb__item" href="([^"]*)" data-lightbox data-bild="[^"]*"><img src="[^"]*"([^>]*)><\/a>/g;
+const NB = /<a class="nb__item" href="([^"]*)" data-lightbox data-bild="[^"]*"((?: aria-label="[^"]*")?)><img src="[^"]*"([^>]*)><\/a>/g;
 const versionen = new Map<string, ReturnType<typeof bildVersionen>>();
 const fotos = import.meta.glob<{ default: ImageMetadata }>('../assets/photos/*.{jpg,jpeg,png,webp}', { eager: true });
 async function bildVersionen(url: string | ImageMetadata) {
@@ -252,23 +252,23 @@ async function bildVersionen(url: string | ImageMetadata) {
 const ARCHIV = /^(?:.*?)(\/news\/archiv\/.+)\.webp$/;
 function archivBild(url: string) {
   const m = ARCHIV.exec(url);
-  const masse = m && (archivBilder as Record<string, [number, number]>)[`${m[1]}.webp`];
+  const masse = m && (archivBilder as Record<string, number[]>)[`${m[1]}.webp`];
   if (!m || !masse) return null;
   const voll = url, klein = url.replace(/\.webp$/, '-800.webp');
   const [w, h] = masse;
   const f = Math.min(1, 800 / w, 800 / h);
   const kw = Math.round(w * f), kh = Math.round(h * f);
-  return (rest: string) =>
-    `<a class="nb__item" href="${voll}" data-lightbox><img src="${klein}" srcset="${klein} ${kw}w, ${voll} ${w}w" width="${kw}" height="${kh}"${rest}></a>`;
+  return (name: string, rest: string) =>
+    `<a class="nb__item" href="${voll}" data-lightbox${name}><img src="${klein}" srcset="${klein} ${kw}w, ${voll} ${w}w" width="${kw}" height="${kh}"${rest}></a>`;
 }
 async function bilderOptimieren(html: string, id: string): Promise<string> {
   const treffer = [...html.matchAll(NB)];
   if (!treffer.length) return html;
   const ersatz = await Promise.all(
-    treffer.map(async ([ganz, href, rest]) => {
+    treffer.map(async ([ganz, href, name, rest]) => {
       const url = href.replace(/&amp;/g, '&');
       const archiv = archivBild(url);
-      if (archiv) return archiv(rest);
+      if (archiv) return archiv(name, rest);
       const asset = url.match(ASSET)?.[1];
       if (!/^https:\/\//.test(url) && !asset) return ganz;
       if (!versionen.has(url)) {
@@ -278,7 +278,7 @@ async function bilderOptimieren(html: string, id: string): Promise<string> {
       try {
         const { klein, gross } = await versionen.get(url)!;
         const { width, height } = klein.attributes as { width?: number; height?: number };
-        return `<a class="nb__item" href="${gross.src}" data-lightbox><img src="${klein.src}" srcset="${klein.srcSet.attribute}" width="${width}" height="${height}"${rest}></a>`;
+        return `<a class="nb__item" href="${gross.src}" data-lightbox${name}><img src="${klein.src}" srcset="${klein.srcSet.attribute}" width="${width}" height="${height}"${rest}></a>`;
       } catch (err) {
         console.warn(`[news] Foto in „${id}“ nicht gefunden (${url}) – es fällt weg. ${String(err).slice(0, 120)}`);
         return '';

@@ -3,6 +3,7 @@ title: 15 Jahre TanzNetzDresden • die Performances zum Jubiläum • 29.04.202
 date: 2025-04-15
 category: Verein
 author: TanzNetzDresden
+image: ../../../assets/news/2024/simongarbe-com-tndd-welttanztag-2.webp
 teaser: Das TanzNetzDresden feiert am 29. April 2025 sein 15jähriges Bestehen. Da dürfen natürlich auch Performances nicht fehlen. Ganze fünf Stück wird es daher am Tag des Jubiläums geben.
 ---
 
@@ -12,6 +13,12 @@ Die folgenden Abschnitte geben Informationen zu den einzelnen Performances, die 
 [tanznetzdresden.de/15-jahre-tanznetzdresden-jubilaeums-event-29-04-2025-dresden](/news/15-jahre-tanznetzdresden-jubilaeums-event-29-04-2025-dresden/)
 
 ## Laura Gary
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-laura-gary-mind-swings.webp
+    alt: ""
+:::
 
 Laura Gary ist eine in Frankreich geborene Tänzerin, Choreografin und somatische Bewegungspädagogin mit Sitz in Brandenburg, Deutschland. Ihre Arbeit ist stark von den Prinzipien des Body-Mind Centering®, buddhistischer Meditation und improvisierter Komposition geprägt. Durch Bewegung erforscht sie die Verbindung zwischen Körper, Wahrnehmung und persönlicher Geschichte und entwickelt Performances und Workshops an der Schnittstelle von Somatik, Tanz und reflektierender Praxis.
 
@@ -34,6 +41,12 @@ Fotocredit: Gaëlle AP
 
 ## Diana Gill
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-diana-gill-marta-nasciuti.webp
+    alt: ""
+:::
+
 Diana Gill wurde in Dresden geboren und begann im Alter von fünf Jahren zu tanzen. Nach dem Abitur absolvierte sie ihre professionelle Ausbildung zur Bühnentänzerin und Tanzpädagogin am Mind and Dance – Ballettförderzentrum Nürnberg e.V., mit dem Schwerpunkt auf Modernen und Zeitgenössischen Tanz. Bereits während ihrer Tanzausbildung war Diana Gill an zahlreichen Projekten beteiligt und unterrichtete verschiedene Altersklassen und Leistungsniveaus. Sie tanzte unter anderem Choreografien von Sebastian Eilers (SETanztheater Nürnberg), Benoît Favre und Lorenzo Ponteprimo. Nach ihrem Abschluss wurde sie als Tänzerin in das Elephant in the Black Box Junior Ballet in Madrid unter der künstlerischen Leitung von Jean-Philippe Dury aufgenommen. Dort war sie unter anderem in Stücken von La Chula Danza, Barbara Fritsche und Alessandro Alfonzetti zu sehen.
 
 Diana Gill lebt und arbeitet als freiberufliche Tänzerin und Tanzpädagogin in Dresden.
@@ -53,6 +66,13 @@ Fotocredit: Marta Nasciuti
 
 ## Daniela Lehmann
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-daniela-lehmann-portrait.webp
+    alt: ""
+:::
+
 Daniela Lehmann ist Tänzerin und Choreografin. Sie studierte Tanz und Philosophie in Dresden, Freiburg im Breisgau und Berlin und spezialisierte sich auf Instant Composing. 2005 wurde sie für ihre Performance „Mina“ bei der Euroszene in Leipzig mit dem Preis für das beste deutsche Tanzsolo ausgezeichnet. Zwischen 2006 und 2015 lebte sie in Berlin und seit 2010 teilweise in Dahab/Ägypten. Dies führte zu einer Intensivierung der Auseinandersetzung mit kulturellen Aspekten des Tanzes, was sie unter anderem dazu veranlasste, ihre ganz eigene Lehrmethode „FREE DIVE“ und ihr Mentoring Programm "Choreography of Life" zu entwickeln. Sie ist Mitinitiatorin der internationalen Improvisationsplattform CUE und anderer Formate, die Menschen verbinden – besipielsweise Community Dance im Zentralwerk.
 
 Ihr umfangreiches Repertoire umfasst ortsspezifische Arbeiten, Bühnenstücke und Hybridformate (z.B. die Performance-Exhibition ANNA UNHEIM) in Zusammenarbeit mit Künstlern aus verschiedenen Bereichen, z.B. Diego Agullo (Autor, Philosoph), Philipp Caspari (Countertenor) und Barbara Lubich (Filmemacherin, Soziologin).
@@ -68,6 +88,13 @@ Als „lyrical mover“ erzählt Daniela Lehmann in ihrer Performance “yes 15 
 
 ## Sara Koluchová
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-sara-koluchova.webp
+    alt: ""
+:::
+
 Sara Koluchová ist eine tschechische Tänzerin und Choreografin, die in Salzburg geboren wurde und derzeit in Dresden (Deutschland) lebt. Sie schloss 2017 ihr Studium am Duncan Centre Conservatory Prague ab und erhielt 2021 ihren Master in Tanzkomposition an der Folkwang Universität der Künste Essen. Sie hat mit Choreographen wie Michal Záhora, Susanne Linke und Jerome Bel, Urs Dietrich, Henrietta Horn, LaborGras und Sasha Waltz gearbeitet. Ihre Solowerke sind „Portrait of a Post-Habsburgian“ (Mittelfest 2021), ‚Grinning Like Facepacks‘ (Tanzwerkstatt Europa 2022) und ‚Remembering Bach to Joplin‘ (Vision:danceable, Societaetstheater 2024). Im Jahr 2021 gründet sie gemeinsam mit Jennie Boultbee Jennie&Sara in Wonderland, das sich auf Forschung und surrealistischen Tanz konzentriert, darunter Projekte zur Jooss-Leeder-Methode. Im Jahr 2022 war sie Tutorin für das Projekt „In C - Marler Partitur“ von Sasha Waltz. 2023 erhielt sie das Tanzforschung-NRW-Stipendium für ihr Projekt „Portrait of...“ und arbeitete mit Sasha Waltz & Guests an den Aufführungen „Beethoven 7“ und „In C“. Sie unterrichtet als Gastdozentin an verschiedenen Ausbildungsstätten (Duncan Centre Conservatory, Deutsche Sporthochschule Köln etc.)
 
 Mehr über Sara Koluchová gibt es unter  
@@ -78,6 +105,13 @@ Mehr über Sara Koluchová gibt es unter
 Ein Tanz für den Tanz. Ein Solostück von Sara Koluchová unter Verwendung des Songs “Wonderful Life" von Black. Ist es improvisiert oder choreographiert? Das ist die Frage.
 
 ## Valeria Bobke
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-valeria-bobke.webp
+    alt: ""
+:::
 
 Valeria Bobke ist freischaffende zeitgenössische Tänzerin und interessiert sich für Biologie, Empathie und Verbindungen zwischen den Gegensätzen. Ihre Praxis zielt darauf ab, das Künstliche mit dem Natürlichen, das Akrobatische mit dem Fußgängerischen und den Betrachter mit dem Performer in Einklang zu bringen. In ihrer künstlerischen Praxis findet Valeria Bobke Inspiration in der Vielfalt und dem Austausch verschiedener Kunstformen und dem Prozess des Schaffens. Die kleinste Motte ist ebenso wertvoll wie die berühmtesten Kunstwerke.
 

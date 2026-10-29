@@ -3,6 +3,7 @@ title: TNDD studio round is back • das Programm für Oktober & Dezember 2024 i
 date: 2024-10-09
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tndd-studio-round-ii-05112021-tenza-schmiede-36.webp
 teaser: Unsere Ausschreibungen für die kommenden drei Editionen der TNDD studio round waren erfolgreich und genau aus diesem Grund können wir euch heute verraten, wer im Oktober und Dezember bei den drei …
 ---
 
@@ -37,5 +38,15 @@ Weitere Informationen zur TNDD studio round gibt es unter:
 Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz. Gefördert von der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
 Unterstützt durch das NATIONALE PERFORMANCE NETZ Impulsförderung Tanz & Theater, gefördert von der Beauftragten der Bundesregierung für Kultur und Medien, sowie den Kultur- und Kunstministerien der Länder.
+
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+:::
 
 Header-Foto: Silvia Remigio & Veronica Parlagreco „Has Someone Seen Tyler Durden“ @TNDD studio round II (05.11.2021); Fotografiert von Stephan Tautz

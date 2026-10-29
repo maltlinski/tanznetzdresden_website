@@ -3,6 +3,7 @@ title: "tanz_netzwerk_bremen & TNDD präs.: CARE & CONNECT: Empowering the local
 date: 2024-02-28
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tndd-claire-lefevre-franzi-kreis.webp
 teaser: Bereits 2022 und 2023 wurde der Austausch zwischen dem tanz\netzwerk\bremen und dem TanzNetzDresden begonnen und fortlaufend intensiviert. Nun gibt es in Bremen am 11. und 12.
 ---
 
@@ -30,6 +31,14 @@ Als Auftakt von CARE ABOUT kommen wir zusammen, um „live“ zu komponieren. Wi
 **10:00 Uhr** // Bewegungseinheit mit Noé Valdes Vega (Dresden): **"Resonance Axes."  
 11:45 Uhr** // Meet&Cook  
 **14:00 Uhr** // Workshop mit [Claire Lefèvre](https://clairelefevre.com/about): **"TOGETHER FOREVER // ON NETWORKING, CAREWORKING AND BUILDING SUSTAINABLE STRUCTURES"**
+
+::: bilder
+text: Claire Lefèvre I
+foto: grafiert von Franzi Kreis
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-bremen-claire-lefevre-franzi-kreis.webp
+    alt: ""
+:::
 
 This workshop is an investigation of care as methodology in the process of making performances. It proposes that, by placing care at the centre of our artistic processes, we can move away from exploitative capitalist structures and towards interconnected and sustainable practices. We will examine how (un-)supportive the environments in which we make works currently are and collectively speculate on how much more caring, accessible, and pleasurable these could be. This is an invitation to re-imagine production models from a queer feminist perspective. Focusing on care work is not only necessary for the survival of performance artists, whose working condition are notoriously precarious, it is also a radical act of acknowledging the reproduction labour which is part of making performance art. By revaluing this work and integrating it at the core of our artistic practices, we move away from hetero-patriarchal and production driven models, and get closer to queer and inter-dependent methodologies, where “how we do things” is equally important as what we do in the first place.
 

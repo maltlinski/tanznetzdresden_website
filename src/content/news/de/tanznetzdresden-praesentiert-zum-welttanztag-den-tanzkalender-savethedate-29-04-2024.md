@@ -3,6 +3,7 @@ title: "TanzNetzDresden präsentiert zum Welttanztag den Tanzkalender • #savet
 date: 2024-04-22
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanzkalender-teaser.webp
 teaser: Bald ist es soweit und Dresden bekommt anlässlich des diesjährigen Welttanztages am 29. April 2024 den Tanzkalender.
 ---
 

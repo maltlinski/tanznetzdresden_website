@@ -15,6 +15,12 @@ More than ever, visitors to the upcoming TNDD studio round can expect three exci
 
 Detailed information on the individual contributions to the eighth TNDD studio round will now follow or can be viewed directly on the [studio round subpage](/#formate). There, all information is also available in English. An additional blog post in German is available [***here***](/news/tndd-studio-round-edition-nr-viii-15-dezember-2023-tenza-schmiede-das-vollstaendige-line/).
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-15-12-2023-nuan-2.webp
+    alt: ""
+:::
+
 ## Yuexuan Gui & Shiyu Liu
 
 **Yuexuan Gui** is a Chinese freelance dancer-choreographer, currently based in Dresden, Germany. She has presented her own works at festivals, theatres, galleries both in Germany and China, such as: Theater Pforzheim, Beijing Dance Festival, CloudMove - International Online Dance Festival, SoloDuo festival NRW, Oktogon HfBK Dresden, Zukunft Tanzt Festival 2022, Bauhaus Museum, Venice Biennale di Danza. She has started researching and questioning the thin line of absurdity in 2020, and discovered her interest lies in interdisciplinary performance mixing her dance experience with theatrical ideas.
@@ -33,7 +39,20 @@ nuán is a duet piece about the friendship between two women. It was inspired by
 **Performers:** Yuexuan Gui & Shiyu Liu  
 **Duration:** around 12 minutes
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-15-12-2023-romantic-mode.webp
+    alt: ""
+:::
+
 ## M.over X Rothe (Leipzig/Dresden)
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-15-12-2023-mandy-felix-adler.webp
+    alt: ""
+:::
 
 [Mandy Unger aka. M.over](https://m-over.de/) works as a choreographer, dancer, networker and DJ. In 2019 she founded the M.over Company in Leipzig. She has received numerous grants and funding from Tanzpakt in Residence, Theaterverband Thüringen, Kulturstiftung Sachsen and several research grants from Dachverband Tanz and Fonds Darstellende Künste. Her stage productions are a conglomerate of pop and contemporary art as well as sociological field studies. As a dancer, she explores the foundation of floorwork, contemporary dance, social dances (hip hop freestyle, experimental and house) and rave culture.
 
@@ -41,6 +60,13 @@ You can find out more about Mandy Unger a.k.a. M.over at:
 [m-over.de](https://m-over.de/)
 
 Photo: Felix Adler
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-15-12-2023-theresa-rothe-jana-slaby-2.webp
+    alt: ""
+:::
 
 [**Theresa Rothe**](https://theresarothe.com/) (1990) works as a visual artist in Dresden and Leipzig. In 2019, she was awarded the Saxon State Scholarship and creates works for exhibitions in Germany and abroad, combining sculpture, installation, drawing/painting and performative elements in her artistic work. In doing so, she reflects on and questions the curiosities of everyday life, animal observations and the voyeuristic gaze by engaging with her own body and various materials. Dream images and fantasies form the basis of her exploration of the unconscious.
 
@@ -54,6 +80,12 @@ Photo: Jana Slaby
 Surrounded by Theresa Rothe's objects in a world that eludes reality, dancer Mandy Unger will explore the relationship between closeness and intimacy with her own body. Inspired by Rothe's exhibition space "Romantic Mode", an experience between touch, suggestion and expectations will be created with the audience.
 
 **Performer**: Mandy Unger a.k.a. M.over
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-sengle-ullrich-nicht-genuegend-15-12-2023-k-h-mierke-2.webp
+    alt: ""
+:::
 
 ## Sophie Sengle & Franziska Ullrich
 

@@ -3,6 +3,7 @@ title: "TanzNetzDresden präsentiert: »we CARE a lot« • Der Rückblick von S
 date: 2025-02-28
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2025/web-tndd-studio-round-7402367-c2-a9fotojenniferrohrbacher.webp
 teaser: Heute möchten wir auf das 2024er TanzNetzDresden Projekt »we CARE a lot« zurückblicken und zeigen, was wir im Rahmen jener Initiative in den Monaten September bis Dezember 2024 umsetzen konnten.
 ---
 
@@ -38,12 +39,48 @@ Neben der »TNDD studio round« Ausgabe in Dresden finden im Zuge unserer Kooper
 - **06\. Dezember 2024,** [Südufer](https://suedufer-freiburg.de/), Freiburg – **Marion Plantey** (Frankfurt am Main) “HUG”, **Sophia Barr** (Freiburg) “Cette pierre qui marche sur l’eau et refuse obstinément d’y couler – A Stone That Walks on Water and Stubbornly Refuses to Sink“, **Joao Pedro de Paula** (Dresden) “The Percin Show”
 - **13\. Dezember 2024,** [Z-Zentrum für Proben und Forschung](https://kultur-frankfurt.de/portal/de/Buehne/Proberaeume/1920/2456/0/0/4.aspx), Frankfurt am Main – **Cindy Hammer** (Dresden) “MELANCHOLIC MARATHON” (Ausschnitt)**, Karolin Stächele** (Freiburg) “YOU HAVE NO IDEA” & **Maria Kobzeva** (Frankfurt am Main) “Maybe we’ll see”
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/web-tndd-studio-round-7401692-c2-a9fotojenniferrohrbacher.webp
+    alt: ""
+  - datei: /news/archiv/2025/id-th-soundround24-2247.webp
+    alt: ""
+  - datei: /news/archiv/2025/id-th-soundround24-1173.webp
+    alt: ""
+  - datei: /news/archiv/2025/id-th-soundround24-578.webp
+    alt: ""
+  - datei: /news/archiv/2025/web-tndd-studio-round-7401638-c2-a9fotojenniferrohrbacher.webp
+    alt: ""
+  - datei: /news/archiv/2025/web-tndd-studio-round-7402496-c2-a9fotojenniferrohrbacher.webp
+    alt: ""
+  - datei: /news/archiv/2025/id-th-soundround24-1440.webp
+    alt: ""
+  - datei: /news/archiv/2025/id-th-soundround24-2720.webp
+    alt: ""
+  - datei: /news/archiv/2025/id-th-soundround24-1005.webp
+    alt: ""
+  - datei: /news/archiv/2025/id-th-soundround24-2177.webp
+    alt: ""
+  - datei: /news/archiv/2025/web-tndd-studio-round-7402145-c2-a9fotojenniferrohrbacher.webp
+    alt: ""
+  - datei: /news/archiv/2025/id-th-soundround24-2714.webp
+    alt: ""
+:::
+
 Bilder: Jennifer Rohrbacher, Baumann Fotografie
 
 Bei allen Terminen fungiert das Format »TNDD studio round« einmal mehr als Präsentations- und Austauschformat, das lokale Künstler:innen in diesem Fall zusätzlich mit Künstler:innen aus den jeweils anderen Städten im Rahmen von »CARE ABOUT« in Kontakt brachte sowie Produktionen aus dem zeitgenössischen Tanz- und Performance-Bereich vor interessiertem Publikum kostenfrei präsentierte.
 
 Weitere Informationen zur TNDD studio round gibt es unter:  
 [https://tanznetzdresden.de/studio-round](/#formate)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2022/tndd-studio-round-ii-05112021-tenza-schmiede-14.webp
+    alt: ""
+:::
 
 ## POP UP exchange (26.10.2024)
 
@@ -84,5 +121,19 @@ Mehr zu VISION DANCEABLE gibt es unter:
 »we CARE a lot« ist ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz, der Kulturstiftung des Freistaates Sachsen und der Bürgerstiftung. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
 Unterstützt durch das NATIONALE PERFORMANCE NETZ Impulsförderung Tanz & Theater, gefördert von der Beauftragten der Bundesregierung für Kultur und Medien, sowie den Kultur- und Kunstministerien der Länder.
+
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+  - datei: /news/archiv/2023/kdfs-logowappentext-2020-rgb.webp
+    alt: ""
+  - datei: /news/archiv/2025/buergerstiftung.webp
+    alt: ""
+:::
 
 Header-Foto: Jennifer Rohrbacher

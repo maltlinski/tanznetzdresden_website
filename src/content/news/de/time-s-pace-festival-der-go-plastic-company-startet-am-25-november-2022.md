@@ -3,6 +3,7 @@ title: time & s_pace Festival der go plastic company startet am 25. November 202
 date: 2022-11-22
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/go-plastic-company-time-s-pace-festival-grafik-lea-schweinfurth-scaled-e1669118216620.webp
 teaser: Am kommenden Freitag, dem 25. November startet in HELLERAU das time & s\pace Festival der go plastic company.
 ---
 

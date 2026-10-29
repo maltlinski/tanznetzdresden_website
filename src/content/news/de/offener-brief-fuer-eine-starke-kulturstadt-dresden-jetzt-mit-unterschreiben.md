@@ -3,6 +3,7 @@ title: Offener Brief für eine starke Kulturstadt Dresden • Jetzt mit untersch
 date: 2024-10-30
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-offener-brief-kultur-dresden-grafik-gross.webp
 teaser: In Reaktion auf die geplanten Kürzungen im Kulturbereich der Landeshauptstadt Dresden haben wir als TanzNetzDresden gemeinsam mit zahllosen Akteur:innen und Institutionen der Freien Szene einen …
 ---
 
@@ -12,6 +13,13 @@ Zum Anlass des offenen Briefes: Der Haushaltsentwurf der Landeshauptstadt Dresde
 
 Freie Künstler:innen, Kulturakteur:innen, Kultur- und Bildungsinstitutionen fordern daher die gänzliche Rücknahme der Kulturkürzungen und eine Stärkung von Kunst und Kultur in gesellschaftlich angespannten und polarisierten Zeiten.
 
+::: bilder
+text: '"Schwanensee in Sneakers" von situation productions'
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-anna-till-offener-brief-dresdner-kultur.webp
+    alt: '"Schwanensee in Sneakers" von situation productions'
+:::
+
 ### Das Potential der Freien Szene erhalten
 
 Die Freie Szene und ihre Institutionen prägen einen maßgeblichen Teil des Kunst- und Kulturangebotes der Stadt Dresden. Sie begeistern ein großes Publikum und sind ein Motor für künstlerische Innovation. Die Freie Szene erschließt neue Orte im öffentlichen Raum und ermöglicht damit niedrigschwellige Zugänge zu Kultur. Sie entwickelt durch partizipative Projekte nachhaltig Beziehungen zu diversen gesellschaftlichen Gruppen. Die Freie Szene leistet einen essenziellen Beitrag zur kulturellen Bildung. Regelmäßig arbeitet sie mit Schulklassen und Jugendclubs in kulturellen Bildungsprojekten zusammen und vermittelt durch ihre künstlerische und dialogische Praxis einen anderen Zugang zu unserer Wirklichkeit und zu gesellschaftlichen Themen. Die Freie Szene ist international aufgestellt und spricht auch internationale Stadtgesellschaften an. Sie ist in verschiedenen Netzwerken regional und international vertreten und damit als Kulturbotschafterin für Dresden tätig.
@@ -19,6 +27,14 @@ Die Freie Szene und ihre Institutionen prägen einen maßgeblichen Teil des Kuns
 ### Produktive Verbindungen nicht gefährden
 
 Die Verflechtungen von Freier Szene und Kultur- und Bildungsinstitutionen sind stark ausgeprägt. Ihre zahl-reichen Akteur:innen sind aus den künstlerischen Ausbildungsstätten Dresdens wie dem Heinrich-Schütz-Konservatorium, der Palucca Hochschule für Tanz, der Hochschule für Bildende Künste und der Hochschule für Musik Carl Maria von Weber hervorgegangen und geben heute ihre Erfahrung an Schüler:innen und Studierende weiter. Diese Institutionen sind auf die enge Anbindung an die Freie Szene angewiesen, da viele Absolvent:innen ihre Karrieren in den Netzwerken und an den Institutionen der Freien Szene beginnen. Darüber hinaus gibt es eine enge Verzahnung von Freier Szene und Kulturinstitutionen, deren Synergien durch eine Schwächung auf beiden Seiten gefährdet sind.
+
+::: bilder
+text: Aziza Bouidezkane, Laila Weber und Julia Amme. Probe für das Theaterstück „Im Osten nichts Neues oder Wer wem den Hintern auswischt“ von missingdots,
+foto: "grafiert am 04. Oktober 2023 im Festspielhaus Hellerau in Dresden. Foto: André Wirsig"
+bilder:
+  - datei: /news/archiv/2024/2024-10-30-offener-brief-kultur-dresden-andre-wirsig-missingdots-im-osten-nichts-neues.webp
+    alt: "Aziza Bouidezkane, Laila Weber und Julia Amme. Probe für das Theaterstück „Im Osten nichts Neues oder Wer wem den Hintern auswischt“ von missingdots, fotografiert am 04. Oktober 2023 im Festspielhaus Hellerau in Dresden. Foto: André Wirsig"
+:::
 
 ### Kürzungen versus Kreativwirtschaft
 

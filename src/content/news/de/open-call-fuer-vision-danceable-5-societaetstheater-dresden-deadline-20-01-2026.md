@@ -3,6 +3,7 @@ title: "Open Call für VISION DANCEABLE #5 • Societaetstheater Dresden •Dead
 date: 2026-01-08
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tanznetzdresden-vision-danceable-2026-andre-wirsig.webp
 deadline: 2026-01-20
 teaser: Wir freuen uns, dass auch in 2026 die Reihe vision:danceable im Societaetstheater forgesetzt werden kann. Für die fünfte Auflage des Präsentationsformat läuft noch bis zum 20.
 ---
@@ -10,6 +11,13 @@ teaser: Wir freuen uns, dass auch in 2026 die Reihe vision:danceable im Societae
 *Wir freuen uns, dass auch in 2026 die Reihe vision:danceable im Societaetstheater forgesetzt werden kann. Für die fünfte Auflage des Präsentationsformat läuft noch bis zum 20. Januar 2026 der Open Call, bei dem Arbeiten gesucht werden, die eine klare choreografische Handschrift erkennen lassen, experimentieren, verdichten oder neue Perspektiven auf Bewegung, Körper und Raum eröffnen. Alle weiteren Informationen gibt es jetzt im heutigen Blog-Beitrag.*
 
 ## VISION DANCEABLE #5
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/tanznetzdresden-vision-danceable-2026-instagram.webp
+    alt: ""
+:::
 
 Gemeinsam mit dem [Societaetstheater](https://www.societaetstheater.de/) findet der nächste Kurzstück- /Kurzfilmabend statt. **vision:danceable** ist ein Präsentationsformat, das lokale Künstler:innen in Dresden miteinander vernetzt und die Vielfalt der tänzerischen und künstlerischen Arbeiten sichtbar macht. Mit dem Format möchten wir ein breites Publikum erreichen und den Zugang zu zeitgenössischer Tanzkunst weiter öffnen.
 

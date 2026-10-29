@@ -3,6 +3,7 @@ title: "Kreatives Sachsen lädt ein: »Elternschaft & Selbstständigkeit« • 1
 date: 2023-11-07
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-2023-kreatives-sachsen-elternschaft-selbststaendigkeit-e1699385560334.webp
 teaser: Die Vereinbarkeit von Familie und Beruf – vor allem im Kunstbetrieb und eben auch im Bereich des Tanzes - stellt nach wie vor eine große Herausforderung dar.
 ---
 

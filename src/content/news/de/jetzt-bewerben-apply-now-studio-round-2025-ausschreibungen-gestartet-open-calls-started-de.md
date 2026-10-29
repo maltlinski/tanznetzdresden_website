@@ -3,6 +3,7 @@ title: Jetzt bewerben / Apply now • STUDIO ROUND 2025 • Ausschreibungen gest
 date: 2025-06-17
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2025/web-tndd-studio-round-7402486-c2-a9fotojenniferrohrbacher.webp
 teaser: Wir freuen uns sehr, mitteilen zu können, dass unser beliebtes Format STUDIO ROUND in 2025 weitergehen wird. Ganz konkret bedeutet das, dass ihr euch ab sofort auf unsere Ausschreibung bewerben könnt.
 ---
 
@@ -58,6 +59,12 @@ Weitere Informationen gibt es unter:
 
 Mehr über TNDD studio round gibt es [**hier**](/#formate).
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2025/id-th-soundround24-2086.webp
+    alt: ""
+:::
+
 ## STUDIO ROUND 2025 (en)
 
 The exchange and presentation format by TanzNetzDresden continues its city exchange in 2025: Together with the partners Tanznetz Freiburg, ID\_Tanzhaus Frankfurt Rhein-Main and Tanzzentrale der Region Nürnberg, four editions will take place between September and December 2025 in Dresden, Nuremberg/ Fürth, Freiburg, and Frankfurt am Main.
@@ -103,9 +110,35 @@ More information is available under:
 
 [**Here**](/#formate) you find more about TNDD studio round.
 
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-logo-black-rgb.webp
+    alt: ""
+  - datei: /news/archiv/2025/weiss-schwarz-print.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzfr-logo-rgb-220831.webp
+    alt: ""
+  - datei: /news/archiv/2025/thfrm-logo-schrift-100k.webp
+    alt: ""
+:::
+
 Das Format STUDIO ROUND ist Teil der Projektmaßnahme ROUNDABOUT von TanzNetzDresden, ID\_Tanzhaus Frankfurt Rhein-Main, dem Tanznetz Freiburg und der Tanzzentrale der Region Nürnberg.  
 Unterstützt durch das NATIONALE PERFORMANCE NETZ – Impulsförderung Tanz & Theater – gefördert von der Beauftragten der Bundesregierung für Kultur und Medien sowie den Kultur- und Kunstministerien der Länder.
 
 Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+  - datei: /news/archiv/2023/kdfs-logowappentext-2020-rgb.webp
+    alt: ""
+:::
 
 Fotos: Jennifer Rohrbacher

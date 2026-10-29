@@ -3,6 +3,7 @@ title: "We proudly present: line up of the sixth TNDD studio round (April 14, 20
 date: 2023-03-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-studio-round-2023-inesorabilmenteunavia-performed-at-teatro-di-anghiari.webp
 teaser: The complete line up of the upcoming sixth TNDD studio round edition, which will take place on April 14, 2023 as usual from 8pm at the TENZA Schmiede, is now online and can be browsed.
 ---
 
@@ -14,15 +15,33 @@ The complete line up of the upcoming sixth TNDD studio round edition, which will
 
 Detailed information on the individual contributions of our upcoming studio round will now follow in English or can be viewed directly on the [studio round subpage](/#formate). There you will also find all information in german language. An additional blog article in german language can be found [***here***](/news/wir-praesentieren-stolz-das-line-up-der-sechsten-tndd-studio-round-14-april-2023/).
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/ka-dietze-tanznetzdresden-tndd.webp
+    alt: ""
+:::
+
 ## Ka Dietze (Germany)
 
 »music . dance I performance\_chorography\_composition\_instant. teaching since 1991 I music from 1970\_ from 2009 consequently overtone I since 2004 interactive expression &SynthesisResearch SoundDanceMovementEncounter – Switch&Schnittstellen. Dissolution of classifications I far-eastern influences concerning philosophy, body- & breathing techniques I own formats. Collaboration with other disciplines Practitioner TAO-Touch® & CHT® since 2016 incl own research on healing, esp. pain & HS“.«
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-2023-ka-dietze-collage.webp
+    alt: ""
+:::
 
 ### „# 2.1.2.1 I Wo beginnt Tanz … endet\_beginnt Klang … endet Tanz?“
 
 »instant Klang\_Tanz begins . ends . begins … the one arises from the other – rarely clearly assignable in the origin WHERE begins – ends WHAT? in the performative space of 2.1.2.1 overtone instruments – a space installation to which all present choose their perspective: INSIDE #lying #standing #walking\_staying – OUTSIDE #sitting/observing A voice invites at the beginning&end to breathe together – WHAT happens to the BodySpaceMaterial? Perspective & sounds COULD entice you to close your eyes – to „dream up“ a performance. Who chooses Which „channels of perception“ – experiences the event as: Concert. SoundFilm. DanceSound. Dance ? WHERE ends – begins WHAT for WHOM in the SoundSpaceTimeHumanMaterial?«
 
 Photo collage: Ka Dietze
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-2023-makhina-dzhuraeva.webp
+    alt: ""
+:::
 
 ## Makhina Dzhuraeva
 
@@ -55,6 +74,12 @@ The marionette was chosen as the artistic image to portray a person who has lack
 
 **\***RED HERRING is a term that defines something that distracts attention from something more important. As a matter of fact, there is no such a thing as RED HERRING in the nature; however, this expression became popular to define something that slipped the public attention or something that was deliberately hidden to throw off the scent.
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-2023-yoy-the-team-giampao-becherini.webp
+    alt: ""
+:::
+
 ## YoY collective - Emma Zani & Roberto Doveri
 
 YoY is a young collective born in 2020, consisting of Emma Zani and Roberto Doveri. (dancers and choreographers) and Timoteo Carbone (composer). A project that combines dance, music and contemporary art, in search of contamination and new forms of expression. YoY defines itself as a cultural organism with a common goal: to share ideas.
@@ -62,6 +87,12 @@ YoY is a young collective born in 2020, consisting of Emma Zani and Roberto Dove
 [aboutyoy.com](https://aboutyoy.com/)
 
 Header photo by Giampao Becherini
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-2023-inesorabilmenteunavia-performed-at-teatro-di-anghiari.webp
+    alt: ""
+:::
 
 ### INESORABILMENTEUNAVIA
 

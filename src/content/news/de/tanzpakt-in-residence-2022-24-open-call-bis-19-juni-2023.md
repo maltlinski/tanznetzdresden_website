@@ -3,6 +3,7 @@ title: TANZPAKT in residence 2022-24 • Open Call bis 19. Juni 2023
 date: 2023-05-08
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanzpakt-in-residence-2023-e1672847663293.webp
 deadline: 2023-06-19
 teaser: TANZPAKT in residence - eine Kooperation zwischen VILLA WIGMAN und TanzNetzDresden - realisiert in den Jahren 2022-24 ein umfangreiches Residenzprogramm für das Land Sachsen, das die künstlerische …
 ---

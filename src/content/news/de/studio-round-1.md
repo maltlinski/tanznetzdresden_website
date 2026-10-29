@@ -3,6 +3,8 @@ title: "TNDD STUDIO ROUND #1"
 date: 2021-08-28
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/alba-alvarez.webp
+alt: Alba Alvarez
 teaser: TNDD studio round bringt am 10. September zum ersten Mal lokale Künstler\innen und Gast\innen in einem Studioevent in der TENZA Schmiede in Dresden zusammen.
 ---
 

@@ -40,6 +40,8 @@ export function renderMarkdown(src: string, base = '/', opt: MarkdownOptionen = 
   const prefix = base.replace(/\/$/, '');
   const bildUrl = opt.bildUrl ?? ((d: string) => newsBildUrl(d, base));
   const fotoWort = (n: number) => (opt.lang === 'en' ? (n > 1 ? 'Photos' : 'Photo') : n > 1 ? 'Fotos' : 'Foto');
+  // Link zur Großansicht braucht einen Namen, wenn das Foto keine Bildbeschreibung hat
+  const vergroessern = opt.lang === 'en' ? 'Enlarge photo' : 'Foto vergrößern';
   const md = new Marked({ gfm: true, breaks: false });
   md.use({
     extensions: [
@@ -71,7 +73,8 @@ export function renderMarkdown(src: string, base = '/', opt: MarkdownOptionen = 
             .map((x) => {
               const url = escape(bildUrl(x.datei));
               const pos = x.fokus ? ` style="object-position:${x.fokus}"` : '';
-              return `<a class="nb__item" href="${url}" data-lightbox data-bild="${escape(x.datei)}"><img src="${url}" alt="${escape(x.alt)}" loading="lazy" decoding="async" sizes="${sizes}"${pos}></a>`;
+              const name = x.alt.trim() ? '' : ` aria-label="${vergroessern}"`;
+              return `<a class="nb__item" href="${url}" data-lightbox data-bild="${escape(x.datei)}"${name}><img src="${url}" alt="${escape(x.alt)}" loading="lazy" decoding="async" sizes="${sizes}"${pos}></a>`;
             })
             .join('');
           const cap = [

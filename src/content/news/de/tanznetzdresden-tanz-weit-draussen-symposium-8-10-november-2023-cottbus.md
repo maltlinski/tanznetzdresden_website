@@ -3,10 +3,18 @@ title: TanzNetzDresden zu Gast beim »tanz weit draußen«-Symposium • 8. bis 
 date: 2023-11-13
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanz-weit-draussen-cottbus-november-2023-e1699867766646.webp
 teaser: TanzNetzDresden-Mitglied Anna Till war drei Tage lang in Cottbus und nahm für das TNDD am Symposium »Empowerment, Zusammenhalten und Teilen!« des Netzwerks tanz weit draußen teil.
 ---
 
 TanzNetzDresden-Mitglied Anna Till war drei Tage lang in Cottbus und nahm für das TNDD am Symposium »Empowerment, Zusammenhalten und Teilen!« des Netzwerks [*tanz weit draußen*](https://aktiontanz.de/tanz-weit-draussen) teil. Worum es dabei ging, wie die Stimmung war und was erreicht wurde - all das gibt es im heutigen Blog-Beitrag.
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/img-3790.webp
+    alt: ""
+:::
 
 ## »Empowerment, Zusammenhalten und Teilen!« - Das tanz weit draußen-Symposium
 
@@ -23,6 +31,30 @@ Hintergrund der Partizipation des TNDD ist, dass das TanzNetzDresden gerade in K
 Danke für den extrem hilfreichen und kollegialen Austausch! Danke für den Mut, über Herausforderungen und politische Verschiebungen zu sprechen. Und auch Danke für das sorgsame Auswählen dieses Programms!
 
 ## Ein paar Impressionen des Treffens liefert die Galerie. Viel Spaß beim Durchklicken.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2023/img-3775.webp
+    alt: ""
+  - datei: /news/archiv/2023/img-3815.webp
+    alt: ""
+  - datei: /news/archiv/2023/img-3802.webp
+    alt: ""
+  - datei: /news/archiv/2023/img-3808.webp
+    alt: ""
+  - datei: /news/archiv/2023/img-3816.webp
+    alt: ""
+  - datei: /news/archiv/2023/img-3780.webp
+    alt: ""
+  - datei: /news/archiv/2023/img-3776.webp
+    alt: ""
+  - datei: /news/archiv/2023/img-3782.webp
+    alt: ""
+  - datei: /news/archiv/2023/img-3804.webp
+    alt: ""
+:::
 
 Mehr über das Symposium, das Programm und den Ansatz dahinter gibt es unter folgendem Link:  
 [aktiontanz.de/tanz-weit-draussen/symposium](https://aktiontanz.de/tanz-weit-draussen/symposium/%20sowie%20unter%20https://aktiontanz.de/tanz-weit-draussen) sowie unter [aktiontanz.de/tanz-weit-draussen](https://aktiontanz.de/tanz-weit-draussen)

@@ -3,6 +3,7 @@ title: "Jetzt bewerben! Für die TanzDialoge #4 im November 2023"
 date: 2023-01-26
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-ausschreibung-lafdk-2023-tanzdialoge-2022-gabriela-valdespino.webp
 teaser: "Frohe Botschaft: Das TanzNetzDresden beginnt ab dem März 2023 eine engere Kooperation mit dem tanz\\netzwerk\\bremen PROFESSIONAL, die ja bereits bei unserem ROUND TABLE ll im Dezember 2022 mit dabei …"
 ---
 
@@ -47,7 +48,7 @@ Die Bewerbung erfolgt über das unten stehende [Bewerbungsportal](https://lafdk-
 **+++ Die Bewerbungsfrist ist der 28. Februar 2023 (23:59 Uhr) +++**  
 Bei Fragen hilft das Team des LAFDK gerne weiter unter [tanzinitiative@lafdk-bremen.de](mailto:tanzinitiative@lafdk-bremen.de) oder 0421 69 68 04 32.
 
-Die Ausschreibung als zusammengefasste **PDF** gibt es hier.
+Die Ausschreibung als zusammengefasste [**PDF**](/news/archiv/dateien/2023/ausschreibung-tanzdialoge23.pdf) gibt es hier.
 
 Bei Fragen zur Ausschreibung kann gern der folgende Kontakt genutzt werden:
 
@@ -64,3 +65,9 @@ Tel. 0421 69 68 04 31
 In diesem Sinne sind alle Mitglieder:innen des Netzwerks des TanzNetzDresden sowie generell Künstler:innen aus Dresden und Sachsen aufgerufen, sich im Rahmen der Ausschreibung der neuen Kooperation zu bewerben und somit diese besondere und junge Zusammenarbeit mit Leben zu erfüllen und den überregionalen Austausch der Tanz- und Performance-Szene in Deutschland zu befördern.
 
 Headerfoto: TanzDialoge #3 (2022); Foto: Gabriela Valdespino
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/daku-logokombi-hellgrau-05.webp
+    alt: ""
+:::

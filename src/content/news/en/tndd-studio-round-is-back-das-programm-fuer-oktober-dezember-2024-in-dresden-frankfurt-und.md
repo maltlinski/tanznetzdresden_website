@@ -35,4 +35,14 @@ A project by TanzNetzDresden. Funded by the Office for Culture and Monument Prot
 
 Supported by the NATIONAL PERFORMANCE NETZ Impulsförderung Tanz & Theater, funded by the Federal Government Commissioner for Culture and the Media and the Ministries of Culture and the Arts of the federal states.
 
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+:::
+
 Header-Photo: Silvia Remigio & Veronica Parlagreco „Has Someone Seen Tyler Durden“ @TNDD studio round II (05.11.2021); Shot by Stephan Tautz

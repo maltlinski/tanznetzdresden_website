@@ -3,6 +3,7 @@ title: POP UP-Performance • »touching shame« (09/2023) • der Film im Nachg
 date: 2023-10-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-pop-up-performance-touching-shame-2023-e1696960082882.webp
 teaser: Unter dem Titel »touching shame« fand am 23. April diesen Jahres eine POP UP-Performance in der Dresdner Location »Der Halle« statt.
 ---
 

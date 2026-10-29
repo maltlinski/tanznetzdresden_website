@@ -3,6 +3,7 @@ title: Solidarität mit den Menschen in der Ukraine / Solidarity with the people
 date: 2022-02-28
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/wod-2022-tanznetzdresden-klubnetz-dresden-lars-p-krause-credit-stephan-boehlig-04.webp
 teaser: Solidarität mit den Menschen in der Ukraine / Solidarity with the people of Ukraine
 ---
 

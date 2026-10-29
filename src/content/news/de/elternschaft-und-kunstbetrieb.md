@@ -3,6 +3,7 @@ title: Elternschaft und Kunstbetrieb - Wege und Lösungen
 date: 2022-05-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-elternschaft-kunstbetrieb-digitale-konferenz-2022-e1653474510259.webp
 teaser: Die Vereinbarkeit von Familie und Beruf stellt oft eine große Herausforderung dar. Besonders im Kunstbetrieb tritt dies oftmals noch deutlicher als in anderen Branchen zutage.
 ---
 
@@ -28,7 +29,7 @@ Begleitend zur digitalen Konferenz wurde am 16. Mai außerdem eine Umfrage zur L
 
 Die Anmeldung zur Veranstaltung, weitere Informationen wie auch das Programm und Informationen zu den Referent:innen gibt es unter: [www.werkst.art/elternschaft](http://www.werkst.art/elternschaft).
 
-Die dazugehörige Pressemitteilung der Servicestelle FREIE SZENE vom 5. Mai 2022 gibt es hier.
+Die dazugehörige Pressemitteilung der Servicestelle FREIE SZENE vom 5. Mai 2022 gibt es [hier](/news/archiv/dateien/2022/pm-elternkunst-2022.pdf).
 
 Für Rückfragen steht die Leiterin der Servicestelle FREIE SZENE Heike Zadow unter [elternschaftkunst@gmail.com](mailto:elternschaftkunst@gmail.com) bzw. [zadow@soziokultur-sachsen.de](mailto:zadow@soziokultur-sachsen.de)  sowie unter der Telefonnummer 0176 - 55 06 29 34 zur Verfügung.
 

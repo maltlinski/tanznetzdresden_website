@@ -3,6 +3,7 @@ title: 15 Jahre TanzNetzDresden • der Rückblick zum 29.04.2025 von Rico Stehf
 date: 2025-05-09
 category: Verein
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tanznetzdresden-jubilaeum-2025-6-formatiert-e1746793229314.webp
 teaser: Das TanzNetzDresden feierte am 29. April 2025, dem diesjährigen Welttanztag, sein 15jähriges Bestehen.
 ---
 
@@ -14,10 +15,46 @@ Ein Partner auf Augenhöhe – so sieht André Schallenberg, Programmleiter Thea
 
 Den Welttag des Tanzes, der 29. April, nahm das TanzNetzDresden zum Anlass, den Geburtstag mit Partnern, Freunden und allen Tanzbegeisterten zu feiern. Mit seinen Worten des Lobes und der Betonung der Gemeinsamkeiten im Bestreben um den Tanz war Schallenberg dabei nicht der einzige Gratulant. Im Garten des Societaetstheaters lud dessen Künstlerischer Leiter Heiki Ikkola nicht nur zu gekühlten Getränken, sondern zeigte sich genauso als langjähriger Begleiter und Unterstützer der freien Szene. Seine Empfehlung: auch weiter das (Tanz-)Netz auszuwerfen, um das Publikum zu begeistern.
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-10-jahre-jubilaeum-3.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-10-jahre-jubilaeum-1.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-10-jahre-jubilaeum-2.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-10-jahre-jubilaeum-4.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-10-jahre-jubilaeum-5.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-10-jahre-jubilaeum-6.webp
+    alt: ""
+:::
+
 ### »Geh ich oder bleib ich?«
 
 Eine grundsätzlich wichtige Frage, die zum einen in die Geschichte des TanzNetzDresden blickt, zum anderen auch den Kern der Aktivitäten des Vereins trifft, stellte Josefine Wosahlo: „Geh ich oder bleib ich?“ Die Produzentin ist langjähriges Mitglied des TanzNetzDresden und gratulierte als Vertreterin des Vereins Villa Wigman. Ihre Frage stellte sich für sie selbst in der Vergangenheit als Künstlerin der freien Szene, zu einer Zeit, als die Strukturen und Arbeitsbedingungen für Freischaffende in den Darstellenden Künsten in Dresden alles andere als rosig waren. Genau an diesem Punkt hat das TanzNetzDresden angesetzt. Mit Erfolg.  
 Mit gut 80 Mitfeiernden startete die Geburtstagfeier noch im Garten des Societaetstheaters mit einem Solo von Laura Gary von der Tanzinitiative Brandenburg. Damit wurde auch ein klares Zeichen für die gewachsene Bedeutung des TanzNetzDresden gesetzt: Über die Initiative Tanzallianzen „Strukturen & Strategien für den Tanz“ ist der Verein auch bundesweit in größere Strukturen des Austauschs und der Förderung des Tanzes eingebunden.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-2025-6.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-2025-7.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-2025-2.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-2025-3.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-2025-4.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-jubilaeum-2025-5.webp
+    alt: ""
+:::
 
 ### Partner:innen, Kooperationen und jede Menge Performances
 

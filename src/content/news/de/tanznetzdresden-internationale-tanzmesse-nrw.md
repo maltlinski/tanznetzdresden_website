@@ -3,6 +3,7 @@ title: TanzNetzDresden zu Gast bei der internationalen tanzmesse nrw
 date: 2022-08-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-tanzmesse-nrw-logo-internationale-tanzmesse-nrw-2022-2.webp
 teaser: Nächste Woche ist es soweit und die internationale tanzmesse nrw öffnet vom 31. August bis zum 3. September 2022 ihre Pforten.
 ---
 

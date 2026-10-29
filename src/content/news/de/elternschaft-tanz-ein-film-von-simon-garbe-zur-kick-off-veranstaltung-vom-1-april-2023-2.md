@@ -3,6 +3,7 @@ title: »Elternschaft & Tanz« • ein Film von Simon Garbe zur Kick Off-Veranst
 date: 2023-08-15
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-elternschaft-kunstbetrieb-kick-off-april-2023.webp
 teaser: Unter dem Titel »Elternschaft & Tanz«fand am 1. April 2023 in der TENZA Schmiede die Kick Off-Veranstaltung des TanzNetzDresden statt, bei der es um die Vereinbarkeit von Familie und Beruf – speziell …
 ---
 

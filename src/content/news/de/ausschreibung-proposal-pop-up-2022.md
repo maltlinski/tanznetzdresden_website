@@ -3,6 +3,7 @@ title: Ausschreibung für POP UP 2022 gestartet / Call for proposals for POP UP 
 date: 2021-12-13
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetzdresden-pop-up-logo-quer-2022-scaled-e1674640375400.webp
 teaser: Auch im kommenden Jahr soll und wird es wieder die beliebten POP UP-Formate geben. Ab sofort und bis zum 6. Januar 2022 können sich Mitglieder:innen vom TanzNetzDresden bewerben und ihre Konzepte einreichen.
 ---
 
@@ -23,7 +24,7 @@ Ein Info-ZOOM für alle ausgewählten POP UPs planen wir für den **21\. Januar 
 
 Bei weiteren Fragen einfach eine Mail danielalehmann(at)gmx(.)info oder magdalenaweniger(at)gmail(.)com schicken.
 
-Alle weiteren Informationen zur Ausschreibung als PDF findet ihr in gebündelter Form **hier**.
+Alle weiteren Informationen zur Ausschreibung als PDF findet ihr in gebündelter Form [**hier**](/news/archiv/dateien/2021/2021-ausschreibung-fu-cc-88r-hosts-von-pop-up-salon-performance.pdf).
 
 ### Informations for the POP UP proposals (englisch)
 
@@ -38,7 +39,7 @@ We are planning an info-ZOOM for all selected POP UPs on **January 21, 2022** at
 
 For further questions just send an email to danielalehmann(at)gmx(.)info or magdalenaweniger(at)gmail(.)com.
 
-You can find all further information about the call for proposals as a PDF in bundled form **here**.
+You can find all further information about the call for proposals as a PDF in bundled form [**here**](/news/archiv/dateien/2021/announcement-pop-up-formats-2021.pdf).
 
 Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz. Gefördert von der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 

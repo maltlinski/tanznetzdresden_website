@@ -10,7 +10,7 @@
  * (nutzt einen eingestellten Proxy). Downloads landen im Zwischenspeicher und werden nur einmal geladen.
  * Fehlt eine Datei, bleibt sie weg und steht im Bericht.
  */
-import { existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, rmSync, statSync } from 'node:fs';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { dirname, join, extname, basename } from 'node:path';
@@ -45,14 +45,28 @@ export class Medien {
     return groesste ? join(dir, groesste[0]) : null;
   }
 
-  async holen(url) {
+  /** Original holen; fehlt es (z. B. Original war BMP), die Ersatzadressen (Fassung im Text, „Große URL“) */
+  async holen(url, ersatz = []) {
+    let fehler;
+    for (const u of [url, ...ersatz.filter((e) => e && e !== url)]) {
+      try { return await this.#holenEine(u); } catch (e) { fehler ??= e; }
+    }
+    throw fehler;
+  }
+
+  async #holenEine(url) {
     const hier = this.lokal(url);
     if (hier) return hier;
     const datei = join(this.cache, createHash('sha1').update(url).digest('hex').slice(0, 16) + extname(new URL(url).pathname).toLowerCase());
     if (existsSync(datei) && statSync(datei).size > 0) return datei;
     if (!this.laden) throw new Error(this.uploads ? 'nicht im Ordner uploads' : 'nicht im Zwischenspeicher (Laden ausgeschaltet)');
     mkdirSync(this.cache, { recursive: true });
-    await exec('curl', ['-sSfL', '--retry', '2', '--max-time', '120', '-o', datei, url]);
+    try {
+      await exec('curl', ['-sSfL', '--retry', '2', '--max-time', '120', '-o', datei, url]);
+    } catch (e) {
+      rmSync(datei, { force: true });
+      throw new Error(`nicht erreichbar (${/error: (\d{3})/.exec(e.stderr ?? '')?.[1] ?? 'Download fehlgeschlagen'})`);
+    }
     return datei;
   }
 
@@ -67,10 +81,10 @@ export class Medien {
   }
 
   /** art: 'titel' | 'text' | 'datei' → { pfad, breite, hoehe } oder null */
-  async aufbereiten(url, art) {
+  async aufbereiten(url, art, ersatz = []) {
     const key = `${art}:${url}`;
     if (this.fertig.has(key)) return this.fertig.get(key);
-    const p = this.#aufbereiten(url, art).catch((e) => {
+    const p = this.#aufbereiten(url, art, ersatz).catch((e) => {
       this.fehler.set(url, String(e.message ?? e).split('\n')[0].slice(0, 160));
       return null;
     });
@@ -78,8 +92,8 @@ export class Medien {
     return p;
   }
 
-  async #aufbereiten(url, art) {
-    const quelle = await this.holen(url);
+  async #aufbereiten(url, art, ersatz) {
+    const quelle = await this.holen(url, ersatz);
     if (art === 'datei') {
       const ziel = `news/archiv/dateien/${this.name(url, 'datei', extname(url).toLowerCase())}`;
       const voll = join(this.wurzel, 'public', ziel);

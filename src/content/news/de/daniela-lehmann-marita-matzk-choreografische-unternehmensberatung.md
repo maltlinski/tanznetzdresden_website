@@ -3,6 +3,7 @@ title: Daniela Lehmann und Marita Matzk starten choreografische Unternehmensbera
 date: 2022-06-02
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-daniela-lehmann-marita-matzk-choreografische-unternehmensberatung-scaled.webp
 teaser: Die beiden TNDD-Mitglieder:innen Daniela Lehmann und Marita Matzk haben eine gemeinsame Zusammenarbeit gestartet, bei der es darum geht, Unternehmen und deren Mitarbeiter:innen in punkto Haltung und Präsenz zu coachen.
 ---
 

@@ -3,6 +3,7 @@ title: TanzNetzDresden kooperiert mit dem TANZFORUM Leipzig • 3. bis 6. Oktobe
 date: 2024-09-04
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-2024-tanzforum-leipzig-header-e1725457691767.webp
 teaser: Das Workshop & Performance Festival TANZFORUM der 4fT Tanzplattform Leipzig findet in diesem Jahr vom 3. bis 6. Oktober statt.
 ---
 
@@ -25,7 +26,20 @@ Mehr zum Festival und seinem Programm und seinen Online-Auftritten gibt es unter
 [t.me/+VOjLVMxfBs5lM2Y6](https://t.me/+VOjLVMxfBs5lM2Y6)  
 #tanzforumleipzig
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-yamile-navarro-tanzforum-leipzig-2024.webp
+    alt: ""
+:::
+
 ## TNDD-Mitglied Yamile Navarro vor Ort
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-yamile-navarro-tanzforum-leipzig-2024-portrait.webp
+    alt: ""
+:::
 
 Als Teil des Programms des diesjährigen TANZFORUM wird Mitglied Yamile Navarro einen Workshop unter dem Titel "Voice-Body-Connection" anbieten, welcher am 4. Oktober von 10 bis 13 Uhr sowie am 6. Oktober von 14 bis 18 Uhr stattfinden wird. Darüber hinaus wird es am Sonntag des Festivals um 20 Uhr ein öffentliches Showing bzw. eine Performance von Yamile Navarro und ihrem Stück "Herz 1670" geben, zu dem natürlich auch alle Workshop-Teilnehmenden eingeladen sind. Im Anschluss daran findet ein Austausch mit den Künstler:innen statt, der von Angelika Waniek von [you are warmly invited](https://www.youarewarmlyinvited.com/) moderiert wird.
 
@@ -46,6 +60,12 @@ Preise und Informationen zur Anmeldung findet hier unter folgendem Link:
 **Performance von „Herz 1670“:**  
 Sonntag, dem 06.10. um 20 Uhr  
 Eintritt auf freiwilliger Spendenbasis. Es ist keine Anmeldung erforderlich.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/beitrag-tanzforum-tanznetzdresden-2024-tanzforum-leipzig-banner-gross-e1725454106153.webp
+    alt: ""
+:::
 
 Das TANZFORUM Festival ist ein Projekt von 4fT-Tanzplattform Leipzig e.V., in Kooperation mit der Residenz (Schauspiel Leipzig), *you are warmly invited*, LOFFT-DAS THEATER, Schaubühne Lindenfels, TanzNetzDresden und HEIZHAUS Leipzig, gefördert durch das Kulturamt der Stadt Leipzig, die Leipzig Stiftung und die Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinaziert durch Steuermittel auf Grundlage des von den Abgeordneten des Sächsischen Landtags beschlossenen Haushaltes.
 

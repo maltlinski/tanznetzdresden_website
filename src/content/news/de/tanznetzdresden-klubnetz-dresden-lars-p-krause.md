@@ -3,6 +3,8 @@ title: TanzNetzDresden, KLUBNETZ Dresden und Lars P. Krause machen gemeinsame Sa
 date: 2022-02-03
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-weltoffenes-dresden-lars-p-krause-gedenken-dresden-2022-e1643373089501.webp
+alt: Ausschnitt des Motivs von lars P. Krause, TanzNetzDresden und KLUBNETZ Dresden anlässlich der Plakataktion von Weltoffenes im Februar 2022
 teaser: TanzNetzDresden, das KLUBNETZ Dresden und Lars P. Krause beteiligen sich als Kollektiv bei der diesjährigen WOD Plakataktion von Weltoffenes Dresden (WOD).
 ---
 

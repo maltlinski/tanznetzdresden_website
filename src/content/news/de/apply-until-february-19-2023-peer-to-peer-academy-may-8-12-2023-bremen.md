@@ -3,6 +3,7 @@ title: "Apply until February 19, 2023: for the Peer to Peer-Academy • May 8 - 
 date: 2023-02-14
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-ausschreibung-peer-topeer-akademie-mai-2023-bremen-english-e1676379325311.webp
 deadline: 2023-02-19
 teaser: In cooperation with TanzNetzDresden and TanzXchange Münster, the Landesverband freie darstellende Künste Bremen is organizing a Peer to Peer-Academy in 2023.
 ---
@@ -57,3 +58,9 @@ A jury, staffed by one member of each of the three participating networks, will 
 *Supported by Fonds Darstellende Künste with funds from the Federal Government Commissioner for Culture and Media within the program NEUSTART KULTUR and by the Senator for Culture of the Free Hanseatic City of Bremen.*
 
 Header-Graphic: [lafdk-bremen.de](https://lafdk-bremen.de/)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/daku-logokombi-hellgrau-05.webp
+    alt: ""
+:::

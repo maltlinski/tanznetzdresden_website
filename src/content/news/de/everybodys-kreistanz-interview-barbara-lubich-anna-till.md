@@ -3,6 +3,7 @@ title: »Einfach wieder gemeinsam sein. Sich zu bewegen und zu tanzen. Das war e
 date: 2022-02-22
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-everybodys-kreistanz-barbara-lubich-2021-e1645528513449.webp
 teaser: Am 21. Oktober 2021 feierte der TanzNetzDresden-Kurzfilm „Everybody’s Kreistanz“ von Barbara Lubich in der Centrum Galerie Dresden im Rahmen der Kulturschaufenster Dresden seine Premiere.
 ---
 
@@ -12,11 +13,25 @@ Am 21. Oktober 2021 feierte der TanzNetzDresden-Kurzfilm „Everybody’s Kreist
 
 ### Anna Till, wie kam es denn zu der Anfrage für den TanzNetzDresden-Kurzfilm an Barbara Lubich?
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-anna-till-foto-volker-metzler.webp
+    alt: ""
+:::
+
 > Barbara hat in 2012 und 2014 schon zwei andere Filme mit Mitglieder:innen vom TanzNetzDresden gemacht. Der erste hieß »[15 Shots](https://youtu.be/FN_FyIfwq2A)« und der zweite Streifen trägt den Titel »[walzen](https://youtu.be/aXMpIyTwyhE)«. Beide Filme waren Einladungen an unsere Netzwerker:innen, um in ihrem künstlerischen Rechercheprozess mitzuwirken. 2020 konnten wir - mit finanziellen Mitteln ausgestattet - Barbara bitten, ein neues Konzept für unsere Netzwerke:innen zu entwerfen und umzusetzen. Die künstlerische Konzeption, Regie und Umsetzung lagen ja immer bei Barbara Lubich. Alle drei Tanzkurzfilmformate entstanden zudem in enger Zusammenarbeit mit dem Musiker [Nikolaus Woernle](http://nikolauswoernle.de/). Es ist also nicht wirklich ein Image-Film, der die Netzwerkarbeit aufbereitet und dokumentiert. Eher wird die Reichhaltigkeit und tänzerische Profession der einzelnen Teilhaber:innen abgebildet. Und ohne Zweifel ist Barbara eine langjährige Begleiterin, Netzwerkerin und Gründungsmitglied des TanznetzDresden Vereins.
 
 So erklärt sich auch die hohe Anzahl an Protagonist:innen, die in »Everybody's Kreistanz« zu sehen sind. Konkret sind das die folgenden Künstler:innen: Chiara Detscher, Seraphina Detscher, Ka Dietze, Cindy Hammer, Victoria Henneberg, David Hülsdoff, Antje Kaufmann, Kristin Mente, Martina Morasso, Jule Oeft, Johanna Roggan, Olimpia Scardi, Amy Schönheit, Susan Schubert, Romy Schwarzer, Anna Till, Magdalena Weniger & Heike Zadow.
 
 ### Welche Erinnerungen hat aber Barbara Lubich an die Zeit der Anfrage für »Everybody's Kreistanz«? Die Filmkünstlerin antwortet Folgendes:
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-barbara-lubich.webp
+    alt: ""
+:::
 
 > Der "Auftrag" kam aufgrund meiner langjährigen Verbindung mit dem TanzNetzDresden. »15shots « (2010) stand am Anfang der Geschichte vom TNDD und war eine Serie von Soli oder besser gesagt von Duetten mit der Kamera. Die Spielregeln beim Dreh waren: 1 Tänzer:in, 1 Stunde, 1 Minute Drehzeit, 1 shot. »walzen« (2014), die nächste Produktion über das TanzNetzDresden, basierte ebenfalls auf improvisierten Dialogen mit der Kamera, jedoch in Zweierkonstellationen, die mehrfach im Raum eine improvisierte Gesamtchoreographie ergaben.
 

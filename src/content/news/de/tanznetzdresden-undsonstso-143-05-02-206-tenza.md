@@ -3,6 +3,7 @@ title: "TanzNetzDresden und HTXSTHSTX zu Gast beim undsonstso #143 • 5. Februa
 date: 2026-01-29
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tanznetzdresden-undsonstso-143-tenza-2026-e1769703978278.webp
 teaser: "Der Winterschlaf scheint vorbei und zack beginnt auch das neue Jahr ganz im Zeichen von Get Together und Austausch. Denn: das am 5. Februar ist TanzNetzDresden ist zu Gast bei undsonstso. Und zwar in der TENZA."
 ---
 

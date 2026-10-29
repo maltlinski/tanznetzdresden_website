@@ -3,6 +3,7 @@ title: "residence plus • Showing von und mit Rika Yotsumoto: »MOTHERHOOD - a 
 date: 2026-05-27
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/residence-plus-2026-villa-wigman-juni-rika-yotsumoto-scaled-e1779894752196.webp
 teaser: Im heutigen Blog-Beitrag möchten wir euch einladen, denn die Künstlerin Rika Yotsumoto lädt im Rahmen ihrer Residenz von residence plus am 1. Juli 2026 zu einem Showing unter dem Titel "MOTHERHOOD - a body of work"
 ---
 
@@ -26,6 +27,13 @@ Weitere Informationen gibt es unter folgendem Link:
 [villawigman.de/residence-plus\_rika-yotsumoto](https://villawigman.de/residence-plus_rika-yotsumoto/)
 
 ### Rika Yotsumoto
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/rika-yotsumoto-2026.webp
+    alt: ""
+:::
 
 **[Rika Yotsumoto](https://www.instagram.com/rika.eln/)** ist zeitgenössische Tänzerin und Choreografin aus Dresden. Sie studierte zeitgenössischen Tanz in Portland und tanzte in dieser Zeit für Oriantheatre Dance Company in Frankreich und Deutschland. Seit 2018 lebt Rika in Dresden und ist besonders als Tänzerin in der Freien Szene tätig. Sie wirkt in genreübergreifenden Bühnenproduktionen, Videoprojekten, site-specific Performances und weiteren Tanzformaten mit. Ihre künstlerische Tätigkeit umfasst sowohl die Arbeit an festen Häusern wie der Semperoper und dem Staatsschauspiel Dresden als auch Zusammenarbeiten mit freien Choreograf:innen und Tanzkompanien, darunter go plastic company, Polymer DMT, KOMA&Ko, situation productions, Natalie Wagner und Joseph Hernandez. Darüber hinaus engagiert sie sich seit 2019 aktiv im TanzNetzDresden und ist seit 2026 Vorstandsmitglied des Netzwerks. Zu ihren eigenen choreografischen Arbeiten zählen „Porcelain Madness“ (2020) und „Peng! Peng!“ (2023, gefördert von explore dance – Netzwerk Tanz für junges Publikum).
 

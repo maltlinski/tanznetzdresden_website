@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Charles Washington »Exploring Low Energy Dance
 date: 2024-08-14
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-tanzpakt-in-residence-2024-charles-washington-villa-wigman-e1723620346734.webp
 teaser: Im Rahmen von TANZPAKT in residence arbeitet Charles Washington in diesem Jahr über zwei Zeiträume hinweg als Resident in Leipzig.
 ---
 
@@ -36,10 +37,16 @@ Weitere Informationen gibt es unter folgendem Link:
 
 ## Über Charles Washington
 
-Charles A. Washington, 1982 in Perth geboren, ist ein schottischer Tänzer und Choreograf, der seine Tanzreise im Alter von 21 Jahren begann, als er an der Rambert School in London aufgenommen wurde. Nach seinem Abschluss hatte Charles die Ehre, mit renommierten Choreograph:innen aus dem In- und Ausland zusammenzuarbeiten. Darunter waren Künstler:innen wie Ross Mckim, Fleur Darkin, Will Tucket, Lucy Burge, Cesc Gelabert, Jan Pauch, Yossi Berg & Oded Graf, Katrin Hall, Roy Assaf, Darren Ellis, Maxim Didenko und Vladimir Varnava. Im Jahr 2016 gründete Charles sein eigenes Unternehmen, Pinkmetalpetal Productions, mit dem er bereits viele Werke geschaffen hat, die an nationalen Theatern aufgeführt wurden. Dazu gehören „Witch way Macbeth?“ und „Content“ am Staatstheater Braunschweig, „The Spirit Bird“ und „ﬁnding now“ am LOT Theater sowie „ME“ in Zusammenarbeit mit der Hochschule für Bildende Künste Dresden und der Palucca Hochschule für Tanz Dresden. Mit dem Wunsch, sich künstlerisch noch einmal weiterzuentwickeln, erlangte Charles 2018 einen Master of Arts in Choreografie. Darüber hinaus hat er 2021 eine Meisterklasse an der Palucca Hochschule für Tanz Dresden mit dem Titel „Wir sind alle eine Subkultur?“  abgeschlossen.
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/charles-washington.webp
+    alt: ""
+:::
 
-**Mehr zu Charles Washington gibt es unter den folgenden Links:  
-**
+Charles A. Washington, 1982 in Perth geboren, ist ein schottischer Tänzer und Choreograf, der seine Tanzreise im Alter von 21 Jahren begann, als er an der Rambert School in London aufgenommen wurde. Nach seinem Abschluss hatte Charles die Ehre, mit renommierten Choreograph:innen aus dem In- und Ausland zusammenzuarbeiten. Darunter waren Künstler:innen wie Ross Mckim, Fleur Darkin, Will Tucket, Lucy Burge, Cesc Gelabert, Jan Pauch, Yossi Berg & Oded Graf, Katrin Hall, Roy Assaf, Darren Ellis, Maxim Didenko und Vladimir Varnava. Im Jahr 2016 gründete Charles sein eigenes Unternehmen, Pinkmetalpetal Productions, mit dem er bereits viele Werke geschaffen hat, die an nationalen Theatern aufgeführt wurden. Dazu gehören „Witch way Macbeth?“ und „Content“ am Staatstheater Braunschweig, „The Spirit Bird“ und „ﬁnding now“ am LOT Theater sowie „ME“ in Zusammenarbeit mit der Hochschule für Bildende Künste Dresden und der Palucca Hochschule für Tanz Dresden. Mit dem Wunsch, sich künstlerisch noch einmal weiterzuentwickeln, erlangte Charles 2018 einen Master of Arts in Choreografie. Darüber hinaus hat er 2021 eine Meisterklasse an der Palucca Hochschule für Tanz Dresden mit dem Titel „Wir sind alle eine Subkultur?“ abgeschlossen.
+
+**Mehr zu Charles Washington gibt es unter den folgenden Links:**
 
 [Website](https://pinkmetalpetalproductions.com/)  
 [Instagram](https://instagram.com/pinkmetalpetal/)

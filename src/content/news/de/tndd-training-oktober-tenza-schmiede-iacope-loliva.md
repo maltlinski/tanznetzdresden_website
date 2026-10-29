@@ -3,6 +3,7 @@ title: Das Oktober-KEEP UP Profi Training mit Iacopo Loliva
 date: 2022-09-26
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tenza-schmiede-dresden-tanznetzdresden-training-1080x720-1.webp
 teaser: Das KEEP UP Profi Training in der TENZA Schmiede ist nach der Sommerpause wieder voll durchgestartet.
 ---
 

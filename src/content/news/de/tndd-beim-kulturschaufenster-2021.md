@@ -3,6 +3,8 @@ title: TNDD beim Kulturschaufenster 2021
 date: 2021-08-24
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/wgd-kulturschaufenster-web-projekt-quer-e1694088837908.webp
+alt: Kulturschaufenster Dresden 2021
 teaser: Vom 26. August bis zum 21. Oktober 2021 wird sich die Centrum Galerie in der Dresdner Altstadt in ein Mekka unterschiedlicher künstlerischer Spielarten verwandeln.
 ---
 

@@ -3,6 +3,7 @@ title: "Wir präsentieren stolz: das Line up der sechsten TNDD studio round (14.
 date: 2023-03-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-studio-round-2023-inesorabilmenteunavia-performed-at-teatro-di-anghiari.webp
 teaser: Das komplette Line up der kommenden und nunmehr sechsten TNDD studio round Ausgabe, die am 14. April 2023 wie gewohnt ab 20 Uhr in der TENZA Schmiede stattfinden wird, ist nun online und kann durchstöbert werden.
 ---
 
@@ -14,15 +15,33 @@ Das komplette Line up der kommenden und nunmehr sechsten TNDD studio round Ausga
 
 Detaillierte Informationen zu den einzelnen Beiträgen der sechsten TNDD studio round folgen nun oder können direkt auf der [Unterseite der studio round](/#formate) eingesehen werden. Dort befinden sich alle Informationen auch in englischer Sprache. Ein zusätzlicher Blog-Beitrag in englischer Sprache gibt es [***hier***](/news/we-proudly-present-line-up-of-the-sixth-tndd-studio-round-april-14-2023/).
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/ka-dietze-tanznetzdresden-tndd.webp
+    alt: ""
+:::
+
 ## Ka Dietze (Deutschland)
 
 »musik . tanz I performance\_chorographie\_composition\_instant. teaching seit 1991 I musik ab 1970\_ ab 2009 konsequent Oberton I seit 2004 interaktiver Ausdruck &SyntheseForschung KlangTanzBewegungBegegnung – Switch&Schnittstellen. Auflösung von Zuordnungen I fernöstlicher Einflüsse bezüglich Philosophie, Körper- & Atemtechnik I eigene Formate. Zusammenarbeit mit anderen Disziplinen Practitioner TAO-Touch® & CHT® seit 2016 incl eigenes Forschen zu heilARTen, insbes. Schmerzen & HS«
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-2023-ka-dietze-collage.webp
+    alt: ""
+:::
 
 ### „# 2.1.2.1 I Wo beginnt Tanz … endet\_beginnt Klang … endet Tanz?“
 
 »instant Klang\_Tanz beginnt . endet . beginnt … das eine entsteht aus dem anderen – selten deutlich zuordenbar im Ursprung WO beginnt – endet WAS? im performativen Raum aus 2.1.2.1 ObertonInstrumenten – eine RaumInstallation zu der alle Anwesenden ihre Perspektive wählen: INNEN #Liegen #Stehen #Gehen\_Verweilen – AUSSEN #Sitzen/beobachten Eine Stimme lädt am Beginn&Ende zu gemeinsamem Atmen ein – WAS passiert dem KörperRaumGewebe? Perspektive & Klänge KÖNNTEN dazu verführen, die Augen zu schließen – sich eine Performance zu „erträumen“. Wer wählt Welche „Wahrnehmungskanäle“ – erlebt das Ereignis als: Konzert. KlangFilm. TanzKlang. Tanz ? WO endet – beginnt WAS für WEN im KlangRaumZeitMenschGewebe?«
 
 Foto-Collage: Ka Dietze
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-2023-makhina-dzhuraeva.webp
+    alt: ""
+:::
 
 ## Makhina Dzhuraeva (Deutschland)
 
@@ -53,6 +72,12 @@ Die Protagonistin der Geschichte ist eine Schauspielerin, eine Marionette, die v
 
 **\***RED HERRING bzw. Roter Hering ist ein Begriff, der etwas definiert, das die Aufmerksamkeit von etwas Wichtigerem ablenkt. Tatsächlich gibt es in der Natur keinen Roten Hering, aber dieser Ausdruck wurde populär, um etwas zu definieren, das der öffentlichen Aufmerksamkeit entgangen ist oder das absichtlich versteckt wurde, um von der Spur abzulenken.
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-2023-yoy-the-team-giampao-becherini.webp
+    alt: ""
+:::
+
 ## YoY Collective - Emma Zani & Roberto Doveri (Italien)
 
 YoY ist ein junges, 2020 gegründetes Kollektiv, bestehend aus Emma Zani und Roberto Doveri. (Tänzer und Choreographen) und Timoteo Carbone (Komponist). Ein Projekt, das Tanz, Musik und zeitgenössische Kunst verbindet, auf der Suche nach Kontamination und neuen Ausdrucksformen. YoY versteht sich als ein kultureller Organismus mit einem gemeinsamen Ziel: Ideen zu teilen.
@@ -60,6 +85,12 @@ YoY ist ein junges, 2020 gegründetes Kollektiv, bestehend aus Emma Zani und Rob
 [aboutyoy.com](https://aboutyoy.com/)
 
 Header-Foto von Giampao Becherini
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-2023-inesorabilmenteunavia-performed-at-teatro-di-anghiari.webp
+    alt: ""
+:::
 
 ### INESORABILMENTEUNAVIA
 

@@ -3,6 +3,8 @@ title: "Dis-tanzen SOLO #4"
 date: 2021-08-25
 category: Netzwerk
 author: Natalie
+image: ../../../assets/news/2021/dis-tanzen-scaled-e1630486982364.webp
+alt: dis tanzen
 teaser: Wiebke Bickhardt stellt das Programm allgemein vor und ihr könnt erste Fragen stellen. Bitte meldet euch dafür bei ihr.
 ---
 

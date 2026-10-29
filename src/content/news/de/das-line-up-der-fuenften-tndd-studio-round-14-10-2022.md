@@ -3,6 +3,7 @@ title: Ta-dah! - das Line up der fünften TNDD studio round (14.10.2022)
 date: 2022-10-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-studio-round-5-2022-elia-pangaro-5.webp
 teaser: Das komplette Line up der kommenden TNDD studio round Ausgabe, die am 14. Juli wie gewohnt ab 20 Uhr in der TENZA Schmiede stattfinden wird, ist nun online und kann durchstöbert werden.
 ---
 
@@ -21,6 +22,18 @@ Elia Pangaro wurde in Perugia, Italien, geboren. Eingefangen von der Ästhetik u
 2019 gründete Elia Pangaro zusammen mit Alexander De Vries das MITS Collective und begann, Aufführungen auf der ganzen Welt zu kreieren und mitzugestalten. Einige seiner Werke sind: „Anatomy of a Living Body“, eine Lecture-Performance, die gemeinsam mit dem Psychiater Maurizio Venezi für VID Art/Science in Bologna, Italien, entwickelt wurde. „MÊME-BRAIN“, ein 50-minütiges Stück, das gemeinsam mit den Mitgliedern des MITS-Kollektivs für ISB in Bangkok, Thailand, choreografiert wurde. „spiegarsi/spje’garsi“, ein von UNITY SPACE (Hongkong) produziertes und von MOVES (Mexiko) unterstütztes Stück, das in Guatemala und Mexiko aufgeführt wurde. Gegenwärtig arbeitet er als freischaffender Performer und Choreograph und kreiert mit verschiedenen Kollaborateuren integrative, interdisziplinäre Werke.
 
 [**Instagram-Kanal**](https://www.instagram.com/elia.pangaro/)
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-elia-pangaro-4.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-elia-pangaro-1.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-elia-pangaro-2.webp
+    alt: ""
+:::
 
 **AMOEBA**
 
@@ -41,6 +54,13 @@ Präsentiert in Oaxaca, Mexiko und in München bei TANZWERKSTATT EUROPA im Rahme
 Besonderen Dank an Hanna Schaar & Pierre d’Haveloose für die Zusammenarbeit.
 
 ## Jack Bannerman: "Baby Blue"
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-2.webp
+    alt: ""
+:::
 
 Ursprünglich aus Australien stammend, arbeitet Jack seit sieben Jahren professionell als Tänzer in Australien und Europa und tanzt zum Repertoire und den Choreographien von Bryan Arias, Jorge Pérez Martínez und Andris Plucis. Jack wurde eingeladen, seine erste choreografische Arbeit „Do you feel at home“ für die Tanzplattform Rhein-Main, das Vesuvius Film Festival, die Tanz Zentrale der Region Nürnberg und das Florence Dance Festival zu präsentieren. Sein jüngstes und größtes Werk „Hello, my old friend“ wurde am Landestheater Eisenach in Deutschland aufgeführt. Jack absolviert derzeit einen Master in Choreographie an der Palucca Hochschule für Tanz in Dresden.
 
@@ -63,6 +83,14 @@ Musik: Intro – Awfultune, It’s all over now, Baby Blue – Anohni & Seen –
 ### Fotos: Filmstill aus „Baby Blue“; gefilmt auf der Bühne des Landestheaters Eisenach, September 2021.
 
 ## Therese Bendjus & Daria Belous: Studies of Softening
+
+::: bilder
+darstellung: neben
+text: Therese Bendjus
+bilder:
+  - datei: /news/archiv/2022/tndd-studio-round-2022-therese-benjus-daria-belous-soft-2-kopie.webp
+    alt: ""
+:::
 
 Therese Bendjus, ursprünglich aus Dresden, ist eine Performance-Künstlerin, die sich für Laborexperimente rund um Verletzlichkeit, Berührung und Begegnung interessiert. In ihrem derzeitigen Studium am Hochschulübergreifenden Zentrum Tanz Berlin beschäftigt sie sich mit dem Material Mensch und Fragen der persönlichen Transparenz im Moment einer Performance.
 

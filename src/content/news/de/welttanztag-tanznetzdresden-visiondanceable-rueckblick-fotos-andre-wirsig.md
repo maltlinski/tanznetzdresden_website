@@ -3,6 +3,7 @@ title: "Welttanztag mit dem TanzNetzDresden & vision:danceable #5 • Rückblick
 date: 2026-05-07
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2026/20260429aw108m-1.webp
 teaser: Wow! Wir sind mega happy, denn am vergangenen Mittwoch, den 29. April 2026, gab es den wohl jüngsten Flashmob bei einem Welttanztag ever.
 ---
 
@@ -23,9 +24,79 @@ Welttanztag & vision:danceable #5 - die Fotos
 
 Hier seht ihr eine Auswahl von Fotos vom Flashmob vor der Dreikönigskirche. An dieser Stelle vielen Dank an [André Wirsig](https://www.instagram.com/bilder.wahn/) für die tollen Aufnahmen, die an diesem Tag entstanden sind.
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2026/20260429aw108m-1.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw102m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw104m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw106m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw105m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw107m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw103m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw109m.webp
+    alt: ""
+:::
+
 Im Anschluss ging es im Quittengarten des Societaetstheaters weiter...
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2026/20260429aw113m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw110m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw118m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw116m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw114m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw112m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw111m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw115m.webp
+    alt: ""
+:::
+
 ... bevor final die vision:danceable #5 ihre Türen öffnete.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2026/20260429aw200m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw300m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw305m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw307m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw311m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw402m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw406m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw620m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw617m.webp
+    alt: ""
+  - datei: /news/archiv/2026/20260429aw700m.webp
+    alt: ""
+:::
 
 ### An dieser Stelle bedanken wir uns noch einmal recht herzlich bei allen Gäst:innen dieses besonderen Welttanztages, bei allen jungen Menschen, die am Flashmob teilgenommen und vorher fleißig geübt haben und natürlich bei unseren Partnern: dem Societaetstheater, der Hochschule für Musik Carl Maria von Weber sowie der Crew von vision:danceable – ohne euch wäre dieser Welttanztag nicht so wundervoll geworden, wie er es war.
 

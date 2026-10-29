@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Sophie Hauenherm beginnt Residenz in der Dresdn
 date: 2023-07-07
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanzpakt-in-residenz-sophie-hauenherm.webp
 teaser: Am 19. Juni ist der Open Call für den dritten TANZPAKT in residence-Jahrgang zu Ende gegangen und wir freuen uns sehr, dass sich für die TANZPAKT-Residenzen 2024 insgesamt 27 Künstler:innen beworben haben. Am 10.
 ---
 
@@ -14,6 +15,18 @@ Sophie Hauenherm arbeitet freischaffend als Tänzerin, Choreographin und Tanzpä
 
 **Instagram:** [sophiehauenherm](https://www.instagram.com/sophiehauenherm/)  
 **Web:** [www.sophiehauenherm.com](https://www.sophiehauenherm.com/)
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residenz-sophie-hauenherm-4.webp
+    alt: ""
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residenz-sophie-hauenherm-3.webp
+    alt: ""
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residenz-sophie-hauenherm-2.webp
+    alt: ""
+:::
 
 ## Residenz zum Thema "Schmetterlingseffekt"
 

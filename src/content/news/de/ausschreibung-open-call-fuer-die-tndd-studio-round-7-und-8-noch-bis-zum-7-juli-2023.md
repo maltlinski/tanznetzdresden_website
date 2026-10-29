@@ -3,6 +3,7 @@ title: Ausschreibung / open call für die TNDD studio round 7 & 8 • Noch bis z
 date: 2023-06-09
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-studio-round-ausschreibung-2023.webp
 deadline: 2023-07-07
 teaser: "Unsere beliebte Reihe TNDD studio round geht in die nächste Runde. Großer Unterschied dieses Mal: ihr könnt euch mit künstlerischen Beiträge, die bei der siebenten und achten Edition gezeigt werden …"
 ---
@@ -38,7 +39,7 @@ Die Juryentscheidung wird bis Anfang August 2023 erfolgen und mitgeteilt. Vorab 
 
 Mehr über TNDD studio round gibt es [**hier**](/#formate).
 
-Die vollständige Ausschreibung kann ***hier*** heruntergeladen werden.
+Die vollständige Ausschreibung kann [***hier***](/news/archiv/dateien/2023/ausschreibung-open-call-tndd-studio-round-78.pdf) heruntergeladen werden.
 
 Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz. Gefördert von der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
@@ -69,7 +70,7 @@ The jury decision will be made and communicated by beginning of August. In advan
 
 [**Here**](/#formate) you find more about TNDD studio round.
 
-The complete announcement can be downloaded ***here***.
+The complete announcement can be downloaded [***here***](/news/archiv/dateien/2023/ausschreibung-open-call-tndd-studio-round-78.pdf).
 
 TNDD studio round is a project by TanzNetzDresden. Funded by the Office for Culture and Monument Protection and the Cultural Foundation of the Free State of Saxony. The measure is co-financed by tax funds on the basis of the budget passed by the Saxon State Parliament.
 

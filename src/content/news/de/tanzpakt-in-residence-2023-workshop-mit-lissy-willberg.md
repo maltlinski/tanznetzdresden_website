@@ -3,6 +3,7 @@ title: TANZPAKT in residence 2023 • Workshop mit Lissy Willberg
 date: 2022-09-09
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-tanzpakt-in-residence-lissy-willberg-2022.webp
 teaser: Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das eine Kooperation zwischen villa\\wigman und TanzNetzDresden ist, findet am 1. Oktober ein Workshop mit Lissy Willberg statt.
 ---
 
@@ -75,7 +76,7 @@ Residenzort und eine Werkstattpräsentation zum Abschluss der Residenzzeit.
 Weitere Informationen u TANZPAKT in residence gibt es unter:  
 [villawigman.de/tanzpakt-in-residence](https://villawigman.de/tanzpakt-in-residence/)
 
-Die vollständige Ausschreibungsunterlagen gibt es hier: **TANZPAKT-in-residence\_Ausschreibung-2023\_de.pdf**
+Die vollständige Ausschreibungsunterlagen gibt es hier: [**TANZPAKT-in-residence\_Ausschreibung-2023\_de.pdf**](/news/archiv/dateien/2022/tanzpakt-in-residence-ausschreibung-2023-de.pdf)
 
 oder direkt auf der Website der Villa Wigman unter:
 

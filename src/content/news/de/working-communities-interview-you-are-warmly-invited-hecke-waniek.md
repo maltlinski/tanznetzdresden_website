@@ -3,6 +3,7 @@ title: "WORKING COMMUNITIES: Interview mit Alisa Hecke und Angelika Waniek von Y
 date: 2021-11-04
 category: Stimme
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetzdresden-working-communties-you-are-warmly-invited-hecke-waniek-2021-falk.webp
 teaser: You Are Warmly Invited ist eine Initiative aus Leipzig, die im Rahmen von WORKING COMMUNITIES am 12. November 2021 mit einem Workshop unter dem Titel »Körperbezogenes Feedback in Arbeitsprozessen der Performing Arts«
 ---
 

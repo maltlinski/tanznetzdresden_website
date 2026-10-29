@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Etienne Aweh lädt am 14. Dezember zum Showing 
 date: 2023-12-11
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanzpakt-in-resindence-2023-etienne-aweh-david-pinzer-1-e1702295294330.webp
 teaser: Im Rahmen von TANZPAKT in residence arbeitete Etienne Aweh als Residentin in Kirschau. Nun lädt der Künstler im diesem Zuge der Residenz am 14. Dezember zu einem Showing in die Galerie Flox in Kirschau ein.
 ---
 
@@ -11,6 +12,12 @@ Im Rahmen von TANZPAKT in residence arbeitete Etienne Aweh als Residentin in Kir
 ## Etienne Aweh - They always have a story
 
 In Residenz-Vorhaben von Etienne Aweh geht es um die Entwicklung unterschiedlicher Methoden, um in einen künstlerischen Austausch mit den in Kirschau und Umgebung lebenden Menschen zu kommen, um deren Biografien als Ausgangspunkt für die künstlerische Arbeit zu nutzen. Etienne wird recherchieren, wie man auf Grundlage der Erzählungen der Menschen eigene tänzerische Solis entwickeln kann. Wie können auch Kunstwerke aus der Ausstellung der dort ansässigen Galerie Flox genutzt werden, um in den künstlerischen Austausch mit Menschen zu kommen? Lassen sich die Erzählungen und die Inspiration durch die Kunstwerke miteinander in Verbindung setzen?
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-resindence-2023-etienne-aweh.webp
+    alt: ""
+:::
 
 ## Etienne Aweh - das Showing am 14. Dezember 2023
 

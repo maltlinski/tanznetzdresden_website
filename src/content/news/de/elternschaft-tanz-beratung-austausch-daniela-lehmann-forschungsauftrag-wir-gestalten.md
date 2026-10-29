@@ -3,6 +3,7 @@ title: »Elternschaft & Tanz« • Beratung und Austausch mit Daniela Lehmann �
 date: 2023-08-29
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-elternschaft-tanz-2023-wir-gestalten-dresden-daniela-lehmann-1-scaled.webp
 teaser: Das TanzNetzDresden-Projekt »Elternschaft & Tanz« geht in die nächste Phase. Denn nachdem sich das TNDD dem Thema annahm und am 1.
 ---
 
@@ -14,6 +15,12 @@ Beim Projekt »Elternschaft & Tanz« des TanzNetzDresden geht es um die Vereinba
 **[tanznetzdresden.de/elternschaft-tanz-ein-film-von-simon-garbe-zur-kick-off-veranstaltung-vom-1-april-2023-2](/news/elternschaft-tanz-ein-film-von-simon-garbe-zur-kick-off-veranstaltung-vom-1-april-2023-2/)
 
 ## Austausch und ein offenes Ohr - mit Daniela Lehmann und Wir gestalten Dresden
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-elternschaft-tanz-2023-wir-gestalten-dresden-daniela-lehmann-4.webp
+    alt: ""
+:::
 
 Nun geht es an die Nacharbeit der reichhaltigen Gespräche und all der hilfreichen Informationen, die am 1. April 2023 in der TENZA zusammengetragen und ausgetauscht wurden. Und genau hierfür erhielt TNDD-Mitglied Daniela Lehmann, die auch Teil der TNDD-AG »Elternschaft & Tanz« ist, nun einen Forschungsauftrag von [Wir gestalten Dresden](https://www.wir-gestalten-dresden.de/). Und damit das Ganze auch räumlich verortet und aufgesucht werden kann, wurde im Rahmen der Initiative [KreativRaumBörse](https://www.wir-gestalten-dresden.de/kreativraum/) von Wir gestalten Dresden in der Wilsdruffer Str. 16 in der Altstadt von Dresden ein temporärer und öffentlicher Ort geschaffen, um die Arbeit und Präsentation des Projekts »Elternschaft & Tanz« konstruktiv voranzutreiben.
 

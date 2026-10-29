@@ -3,12 +3,19 @@ title: TanzNetzDresden bekam Besuch von Wir gestalten Dresden
 date: 2022-09-06
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-wir-gestalten-dresden-kurzfilmreihe-2022-e1662465786263.webp
 teaser: Anlässlich des 10. WGD-Geburtstags von Wir gestalten Dresden wurden das TanzNetzDresden sowie die TENZA Schmiede angefragt, um für eine Kurzfilmreihe über die Darstellende Künste in Dresden Rede und Antwort zu stehen.
 ---
 
 Anlässlich des 10. WGD-Geburtstags von [Wir gestalten Dresden](https://www.wir-gestalten-dresden.de/) wurden das TanzNetzDresden sowie die [TENZA Schmiede](https://www.tenza.de/) angefragt, um für eine Kurzfilmreihe über die Darstellende Künste in Dresden Rede und Antwort zu stehen. Da ließen wir uns natürlich nicht lange bitten. Schon allein, weil die TENZA Schmiede bereits seit Anfang 2017 und nun auch das TanzNetzDresden seit August 2022 offizielle Mitglieder des Branchenverbands der sächsischen Kreativ- und Kulturwirtschaft a.k.a. Wir gestalten Dresden sind.
 
 Und als solche lassen wir uns natürlich auch gern hinter die Kulissen blicken und öffneten zu diesem Zweck den Saal der TENZA Schmiede, während eines TanzNetzDresden Profi Trainings unter Anleitung von [Yuya Fujinami.](https://www.instagram.com/yuya.fujinami) Konkret mit ihrer Arbeit portraitiert wurden außerdem TENZA Geschäftsführer:in und TanzNetzDresden-Vorständ:in [Susan Schubert](/verein/) wie auch die TanzNetzDresden Mitglieder:innen [Rika Yotsumoto](https://www.staatsschauspiel-dresden.de/ensemble/rika-yotsumoto/), [Yamile Anaid Navarro Luna](/verein/) und [Daniela Lehmann](/verein/).
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-wir-gestalten-dresden-kurzfilmreihe-2022-2.webp
+    alt: ""
+:::
 
 ## Einblicke in die zeitgenössische Tanzszene Dresdens
 

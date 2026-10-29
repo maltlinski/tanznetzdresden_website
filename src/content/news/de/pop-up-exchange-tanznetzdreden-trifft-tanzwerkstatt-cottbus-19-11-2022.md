@@ -3,6 +3,7 @@ title: POP UP exchange • TanzNetzDresden trifft die TanzWERKSTATT Cottbus • 
 date: 2022-11-09
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tamara-kanfer-r1-08790-0004-copy-e1668075322590.webp
 teaser: Initiiert vom TanzNetzDresden, werden am Wochenende des 18. & 19. November 2022 vier Netzwerke der freien Tanz-/Performanceszene in Bremen, Essen, Freiburg und Cottbus im Rahmen von POP UP exchange …
 ---
 
@@ -50,10 +51,24 @@ Die Recherche wurde gefördert durch [Dance in Residence (DiR) Brandenburg](http
 
 ### Beatrix Joyce (Künstlerische Leitung & Performance)
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-pop-up-exchange-beatrix-joyce-2020-by-michela-filzi.webp
+    alt: ""
+:::
+
 Beatrix Joyce (UK/NL) ist eine in Berlin wohnhafte Choreografin und Tanzjournalistin. Sie arbeitet in den Bereichen Tanz, Text und Installation und kreiert ortsspezifische, intermediale und immersive Performances. Im Jahr 2021 kreierte sie die Tanzproduktionsreihe „WILD ACCESS“, ein hybrides Format zwischen Audiowalk und Performance, welches mit drei Produktionen in Berlin die an verschiedenen öffentlichen Räumen bereits konzipiert und aufgeführt wurde.
 
 **Website**: [beatrixjoyce.com](https://beatrixjoyce.com/)  
 **Instagram**: [beatrixjoyce](https://www.instagram.com/beatrixjoyce/)
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-pop-up-exchange-michela-filzi.webp
+    alt: ""
+:::
 
 ### Michela Filzi (Performance)
 

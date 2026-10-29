@@ -3,12 +3,20 @@ title: Special Week mit Amit Abend beim KEEP UP Profi-Training • 22. bis 26. J
 date: 2024-01-15
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanzpakt-in-residence-2023-amit-abend-sandro-kopp.webp
 teaser: Das Jahr 2024 beginnt auch in Sachen KEEP UP Profi-Traininng intensiv und spannend, denn vom 22. bis 26.
 ---
 
 *Das Jahr 2024 beginnt auch in Sachen KEEP UP Profi-Traininng intensiv und spannend, denn vom 22. bis 26. Januar wird es eine Special Week mit Amit Abend in der TENZA Schmiede geben, die professionellen Tänzer:innen ein breites Spektrum in Sachen Technik und Wahrnehmung eröffnet. Alles Weitere zu diesem Termin und zu Amit Abend findet ihr im heutigen Blog-Beitrag, der dieses Mal sowohl auf deutsch als auch auf [englisch](/en/news/special-week-amit-abend-keep-up-profi-training-22-bis-26-januar/) erscheint.*
 
 Amit Abend ist eine israelische Tanzkünstlerin, die derzeit in Dresden lebt. Sie studierte professionell Tanz an der Jerusalemer High School Academy for Music and Dance. Im Alter von 18 Jahren wurde Amit Abend in die Kibbutz Contemporary Dance Company II aufgenommen. Amit Abend arbeitete als Ensemblemitglied mit KCDC 2, Ephemera Dance Company, G-H-T und der verstorbenen Yaara Dolev. Sie arbeitete mit dem renommierten Künstler Sandro Kopp zusammen und war Gastchoreografin am Theater Görlitz. Ihr Tanzfilm "Stav" läuft derzeit auf Festivals in aller Welt.
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-profi-training-2023-amit-abend.webp
+    alt: ""
+:::
 
 Amit Abend erhielt im September 2023 einen vierwöchigen Forschungsaufenthalt im Rahmen des "[TANZPAKT in residence](/verein/)"-Programms in der historischen villa\\wigman in Dresden, der ehemaligen Wirkungsstätte der Tänzerin und Choreografin Mary Wigman.  
 Das Ergebnis von Amits Recherche war das Solostück Wayfaring Stranger, eine Erkundung von Identität und Zugehörigkeit. Das Stück wurde im Oktober 2023 in der villa\\wigman uraufgeführt. Es war auch in vision:danceable im Societätstheater zu sehen und kehrte als Teil von Solo² erfolgreich in die villa zurück.

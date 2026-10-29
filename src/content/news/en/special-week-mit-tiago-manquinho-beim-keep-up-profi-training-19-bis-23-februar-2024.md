@@ -7,6 +7,13 @@ teaser: Also this year's February is getting intense and exciting in terms of KE
 
 ## Tiago Manquinho
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-profi-training-february-2024-tiago-manquinha-1.webp
+    alt: ""
+:::
+
 Tiago Manquinho seeks to integrate the socially relevant issues present in his productions into the creative process and the relationship with the audience. For this, he seeks a coherent and consistent relationship between the values embodied on stage and the working conditions, actively confronting all forms of discrimination and exploitation, questioning privileges and the status quo.
 
 After a 20-year career as a dancer in various ensembles such as the Companhia National de Bailado, the Semperoper Ballett and the Tanztheater Bielefeld, Tiago Manquinho was the resident choreographer at the Staatstheater Braunschweig (2015/2017).

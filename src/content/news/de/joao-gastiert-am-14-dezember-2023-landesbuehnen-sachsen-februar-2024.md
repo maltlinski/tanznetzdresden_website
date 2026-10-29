@@ -3,12 +3,19 @@ title: JOAO gastiert am 14. Dezember 2023 an den Landesbühnen Sachsen • weite
 date: 2023-12-11
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-joao-landesbuehne-sachsen-demise-julius-zimmermann-scaled-e1702291806910.webp
 teaser: TanzNetzDresden Mitglied Joao Pedro de Paula gastiert im Dezember 2023 und im Februar 2024 mit seiner Choreografie »Demise, because we waited« an den Landesbühnen Sachsen.
 ---
 
 *TanzNetzDresden Mitglied Joao Pedro de Paula gastiert im Dezember 2023 und im Februar 2024 mit seiner Choreografie »Demise, because we waited« an den Landesbühnen Sachsen. Weitere Informationen zu den Terminen und dem Stück gibt es nun im heutigen Beitrag.*
 
 Das Anliegen von Natalie Wagner, der Chefchoreografin der Landesbühnen Sachen, die zugleich auch TanzNetzDresden Mitglied ist, ist klar: Sie möchte im Rahmen der Reihe »Choreografische Werkstatt – Ein dreiteiliger Abend« die Tanzcompagnie der Landesbühne Sachsen mit Gästen der freien Tanzszene zu vernetzen. Choreograf:innen aus Deutschland, Italien und Brasilien werden sich am Abend des 14. Dezember sowie am 4. und 10. Februar 2024 in zwei Trios und einer Gruppenchoreografie auf der Studiobühne des Landesbühnen mit dem mehrdeutigen Wort »Fall« auseinandersetzen. Mit dem Fallen als Bewegungsart bis hin zu »fall«, im Englischen »Herbst«, der hier als Herbst des Lebens verstanden werden kann. Man darf gespannt sein, auf welch vielfältige Weise Fall-Studien im Tanz eine Rolle spielen können.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-joao-landesbuehne-sachsen-demise-julius-zimmermann-2.webp
+    alt: ""
+:::
 
 Einer der Beiträge der kommenden Abende wird die Produktion »Demise, because we waited« von Joao Pedro de Paula sein, über die der Künstler Folgendes im Vorfeld verrät:
 

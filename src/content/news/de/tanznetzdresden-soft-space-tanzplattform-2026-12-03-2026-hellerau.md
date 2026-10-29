@@ -3,6 +3,7 @@ title: TanzNetzDresden zu Gast beim »Soft Space« der Tanzplattform 2026 • 12
 date: 2026-03-02
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tp26-wortmarke-pink-e1772443067858.webp
 teaser: Der »Soft Space« ist ein Willkommen der Jury der Tanzplattform Deutschland 2026 am 12. März 2026 in HELLERAU. Auch das TanzNetzDresden ist hier vertreten.
 ---
 
@@ -59,6 +60,14 @@ Alle zwei Jahre macht die [Tanzplattform](http://www.tanzplattform.de/home) die 
 In diesem Jahr ist HELLERAU die veranstaltende Institution, die die Tanzplattform Deutschland präsentiert und dabei die aktuellen Entwicklungen und innovativen Strömungen im zeitgenössischen Tanz ins Szene setzt.
 
 Eine unabhängige Jury hat die Produktionen für das Programm ausgewählt, das Mitte März 2026 in HELLERAU und weiteren Dresdner Institutionen gezeigt wird. Berücksichtigt wurden Produktionen, die zwischen September 2023 und August 2025 in Deutschland entstanden sind.
+
+::: bilder
+text: '"Spiegelneuronen" von Sasha Waltz & Guests mit Rimini Protokoll;'
+foto: Bernd Uhlig
+bilder:
+  - datei: /news/archiv/2026/tanznetzdresden-tanzplattform-deutschland-2026-spiegelneuronen-sasha-waltz-rimini.webp
+    alt: ""
+:::
 
 ### Das Programm der Tanzplattform 2026
 

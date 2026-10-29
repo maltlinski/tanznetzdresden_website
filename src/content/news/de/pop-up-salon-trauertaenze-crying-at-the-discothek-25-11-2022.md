@@ -3,6 +3,7 @@ title: "POP UP-Salon • »TRAUERTÄNZE: Crying At The Discothek« • 25.11.202
 date: 2022-11-12
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-pop-up-performance-2022-trauertaenze-scaled-e1668107903176.webp
 teaser: "Unter dem Titel »TRAUERTÄNZE: Crying At The Discothek« findet am Freitag, dem 25. November 2022 ein POP UP-Salon von und mit Lars Neupert, Anno Kirchner und Aurélie Strohmeier im Objekt Klein a statt."
 ---
 

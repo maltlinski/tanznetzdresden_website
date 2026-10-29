@@ -3,6 +3,7 @@ title: go plastic company veröffentlicht ASPHALTWELTEN App • 5. Juli 2023 •
 date: 2023-07-03
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/gp-aw-app-release1.webp
 teaser: "»Was haben Wolkenkratzer und Wolkenformationen gemeinsam? Ganz einfach: das, was Du selbst draus machst.« Dieser Satz begrüßt die Besucher:innen der SPAHLTWELTEN App-Website. Doch was genau verbirgt sich dahinter?"
 ---
 
@@ -29,6 +30,18 @@ Die beiden maßgeblichen Initiator:innen hierzu:
 ### Wichtig: Der Eintritt zum Release-Event ab 20 Uhr ist kostenfrei.
 
 ### Die anschließenden Party ab 22 Uhr kostet 6 Euro an der Abendkasse.
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2023/go-plastic-asphaltwelten-app-screenshot-3.webp
+    alt: ""
+  - datei: /news/archiv/2023/go-plastic-asphaltwelten-app-screenshot-2.webp
+    alt: ""
+  - datei: /news/archiv/2023/go-plastic-asphaltwelten-app-screenshot-1.webp
+    alt: ""
+:::
 
 ### Wie die App funktioniert
 

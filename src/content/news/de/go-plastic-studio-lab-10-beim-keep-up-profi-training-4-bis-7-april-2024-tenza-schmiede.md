@@ -3,6 +3,7 @@ title: "go plastic STUDIO LAB #10 beim KEEP UP Profi-Training • 4. bis 7. Apri
 date: 2024-03-09
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/studiolab-10-allgemein.webp
 teaser: Wir starten vom 4 . bis 7. April beim KEEP UP Profi Training in der TENZA Schmiede mit einer weiteren Ausgabe des go plastic STUDIO LAB, wobei es sich dieses Mal sogar um ein Jubiläum handelt, denn …
 ---
 
@@ -17,6 +18,13 @@ Weiter geht es von Freitag bis Sonntag mit einem täglichen Warm Up am Morgen mi
 **Die beteiligten Künstler:innen des go plastic STUDIO LAB #10 sind:**
 
 ### Patrick Niegsch
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/studiolab-10-patrick-3x.webp
+    alt: ""
+:::
 
 [Patrick Niegsch](http://www.patrick-niegsch.de/) ist seit 2016 als Erzähler, Dozent und Theatervermittler in verschiedensten Kontexten unterwegs. Geboren 1991 in Cottbus, folgte nach einem Studium der Sozialen Arbeit \[B.A.\] zunächst der Masterstudiengang Theaterpädagogik an der Hochschule für Musik und Theater Rostock. Niegsch arbeitete in Schulen und an Theatern in Koblenz, Bautzen und Leipzig, war Teil der künstlerischen Leitung der BÜHNE acht in Cottbus und schloss 2019 seine Ausbildung zum Geschichtenerzähler in München ab. Aktuell lebt er in Leipzig, ist Vorstandsmitglied von ERZÄHLRAUM e.V. und initiierte 2023 gemeinsam mit Maria Carmela Marinelli und Brit Magdon »IMAGINE!«, das erste internationale Festival für Erzählkunst in Leipzig & Dresden.
 
@@ -55,8 +63,7 @@ Der brasilianische Choreograf und Performer Joao hat einen MA in Choreografie an
 **»Morning Class Warm Up«  
 ***Freitag, den 5. April von 10 – 11:30 Uhr  
 Sonnabend, den 6. April von 11 – 12:30 Uhr  
-Sonntag, den 7. April von 11 – 12:30 Uhr  
-*
+Sonntag, den 7. April von 11 – 12:30 Uhr*
 
 Die Warm Up class möchte erforschen, wie wir unseren Körper nutzen können, um Gesagtes zu verstärken oder zu verändern, besonders durch Bewegungen, die wir machen, während wir sprechen. Wenn wir etwas betonen wollen, neigen wir oft den Kopf oder verwenden unsere Hände. In dieser Class werden wir dazu ermutigt, auch die Bewegungen unseres Körpers einzubeziehen, um das, was wir sagen, zu unterstützen oder zu verändern. Wir möchten ein tieferes Verständnis für unseren Körper entwickeln und ihn vollständig einsetzen, um die Kommunikation mit unserer Stimme zu ergänzen oder sogar zu kontrastieren. Somit stimmen wir uns auf die danach folgenden Workshops ein.
 

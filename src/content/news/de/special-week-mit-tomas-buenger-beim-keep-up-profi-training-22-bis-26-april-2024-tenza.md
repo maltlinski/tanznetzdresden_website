@@ -3,12 +3,20 @@ title: Special Week mit Tomas Bünger beim KEEP UP Profi-Training • 22. bis 26
 date: 2024-03-12
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-keep-up-profi-training-tomas-buenger-daniela-buchholz.webp
 teaser: Im April werden wir in der TENZA Schmiede vom 22. bis 26. April eine Special Week mit Tomas Bünger im Rahmen des KEEP UP Trainings anbieten.
 ---
 
 *Im April werden wir in der TENZA Schmiede vom 22. bis 26. April eine Special Week mit Tomas Bünger im Rahmen des KEEP UP Trainings anbieten. Mehr Informationen zu diesem ganz besonderen Angebot gibt es in unserem heutigen Blog-Beitrag, der wie immer in [deutscher](/news/special-week-with-tomas-buenger-at-keep-up-profi-training-april-22-to-26-2024-tenza/) und englischer Sprache erscheint.*
 
 ## Tomas Bünger
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-profi-training-2024-tenza-schmiede-tomas-buenger.webp
+    alt: ""
+:::
 
 **Tomas Bünger** hat klassischen und modernen Bühnentanz studiert und war langjähriges Mitglied des Tanztheater Bremen. Anschließend machte er eine integrative Tanzlehrerfortbildung in New York und war Gast-Dozent an der Universität der Künste in Buenos Aires. Er unterrichtet seit vielen Jahren mit Unterstützung des Goethe-Instituts in Bangladesh und war Resident in Togo und Rumänien. Er arbeitet regelmäßig mit dem Theater Bremen, tanzbar\_bremen und der Companny "of courious nature" zusammen. Im Mittelpunkt seiner choreografischen Arbeiten für Profis und Laien steht der tanzende Mensch und sein Verhältnis zur Welt.
 

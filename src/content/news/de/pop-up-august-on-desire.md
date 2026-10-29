@@ -3,6 +3,8 @@ title: "Pop Up im August: mit Caroline Beach & Iris Dankemeyer"
 date: 2021-08-12
 category: Netzwerk
 author: Erich
+image: ../../../assets/news/2021/pop-up-august-scaled-e1698394367310.webp
+alt: Pop Up Salon August On Desire
 teaser: Unter dem Titel »ON DESIRE - a dialogue and some magic« findet am 22. August ein Pop Up-Salon unter freiem Himmel mit Caroline Beach & Iris Dankemeyer statt.
 ---
 

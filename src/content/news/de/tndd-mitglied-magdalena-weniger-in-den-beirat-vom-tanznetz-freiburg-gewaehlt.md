@@ -3,6 +3,7 @@ title: TNDD-Mitglied Magdalena Weniger in den Beirat vom Tanznetz Freiburg gewä
 date: 2022-01-26
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-magdalena-weniger-groovegarden-festival-groovestation-dresden-beirat.webp
 teaser: Wir gratulieren unserem TanzNetzDresden-Mitglied Magdalena Weniger recht herzlich, denn die Sängerin, Performerin und Tanzschaffende ist nun zusätzlich zu ihren Funktionen als Vorstandsmitglied des …
 ---
 

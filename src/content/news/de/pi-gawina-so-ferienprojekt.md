@@ -3,6 +3,7 @@ title: PI-GaWiNa_SO - Ferienprojekt
 date: 2021-08-23
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/foto1-fyer-20210815-165033.webp
 teaser: Unter dem Titel »PI-GaWiNa\SO - Ferienprojekt« werden vom 29. August bis 4. September 4,5- bis 7-tägige Workshops angeboten. TNDD unterstützt dieses besondere Format, für das man noch Plätze buchen kann.
 ---
 

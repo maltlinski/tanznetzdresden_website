@@ -3,6 +3,7 @@ title: TNDD Training in der TENZA Schmiede startet wieder
 date: 2021-09-14
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2019/tanz-netz-dresden-training-e1663142484784.webp
 teaser: Das TNDD Training in der TENZA Schmiede startet wieder. Das vollständige Angebot für die Zeit vom 20. September bis 28.
 ---
 

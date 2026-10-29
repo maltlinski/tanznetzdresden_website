@@ -3,12 +3,13 @@ title: Zu Tisch mit dem TanzNetzDresden - beim Gastmahl 2022 auf der Augustusbr�
 date: 2022-09-02
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-gastmahl-september-2022-augustusbruecke-kopie-e1662119310473.webp
 teaser: Ihr wolltet schon immer mal mit interessante Leuten und spannenden Initiativen aus Dresden an einem Tisch sitzen und über Ideen und Erfahrungen reden? Am Montag, dem 5.
 ---
 
 Ihr wolltet schon immer mal mit interessante Leuten und spannenden Initiativen aus Dresden an einem Tisch sitzen und über Ideen und Erfahrungen reden? Am Montag, dem 5. September 2022 habt ihr nun unter freiem Himmel von 16 bis 20 Uhr die Gelegenheit dazu, denn die [Cellex Stiftung](https://www.cellex-stiftung.org/) aus Dresden hat wieder das Gastmahl auf der Augustusbrücke im Herzen der historischen Altstadt von Dresden organisiert und knapp 240 Tische konnte besetzt werden.
 
-Auch das TanzNetzDresden ist dabei und begrüßt euch herzlich an Tisch Nummer 26 (hier könnt ihr den vollständigen Lageplan des Gastmahl herunterladen). Überdies können auch Performances und Interventionen gezeigt werden, solange sie auf der Straße oder am Tisch funktionieren! Kommt am besten einfach schon ab 15 Uhr zu uns an den Tisch, denn das Netzwerk lebt und zeigt sich durch die Akteur:innen. Wer möchte, kann auch Informationsmaterial über sich selbst und die eigenen Projekte mitbringen und mit uns darüber sprechen. Und natürlich darf gern auch etwas zu essen beigesteuert werden.
+Auch das TanzNetzDresden ist dabei und begrüßt euch herzlich an Tisch Nummer 26 ([hier](/news/archiv/dateien/2022/tanznetzdresden-gastmahl-september-2022-augustusbruecke-lageplan.pdf) könnt ihr den vollständigen Lageplan des Gastmahl herunterladen). Überdies können auch Performances und Interventionen gezeigt werden, solange sie auf der Straße oder am Tisch funktionieren! Kommt am besten einfach schon ab 15 Uhr zu uns an den Tisch, denn das Netzwerk lebt und zeigt sich durch die Akteur:innen. Wer möchte, kann auch Informationsmaterial über sich selbst und die eigenen Projekte mitbringen und mit uns darüber sprechen. Und natürlich darf gern auch etwas zu essen beigesteuert werden.
 
 ### Vielfalt lebt durch Engagement
 

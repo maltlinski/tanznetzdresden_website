@@ -3,6 +3,7 @@ title: Archivalien des Monats - Gret Paluccas 120. Geburtstag
 date: 2022-01-06
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/gret-palucca-gu-cc-88nter-ackermann.webp
 teaser: Im heutigen Beitrag wollen wir auf den am 8. Januar 2022 anstehenden 120. Geburtstag der Tänzerin und Tanzpädagogin Gret Palucca hinweisen, die 1925 die in Dresden ansäßige "Palucca Hochschule für Tanz" gründete.
 ---
 

@@ -3,6 +3,7 @@ title: "Start der Ausschreibung / Start of open call für die TNDD studio round 
 date: 2022-08-29
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-studio-round-5-oktober-2022-scaled-e1661761589100.webp
 teaser: Die TNDD studio round feiert am 14. Oktober ihre nunmehr fünfte Auflage. Für dieses erste Jubiläum werden aktuell noch bis zum 18.
 ---
 
@@ -40,7 +41,7 @@ Die Juryentscheidung wird bis Ende September 2022 erfolgen und mitgeteilt. Vorab
 
 Mehr über TNDD studio round gibt es [**hier**](/#formate).
 
-Die vollständige Ausschreibung kann hier heruntergeladen werden.
+Die vollständige Ausschreibung kann [hier](/news/archiv/dateien/2022/ausschreibung-open-call-tndd-studio-round-5.pdf) heruntergeladen werden.
 
 Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz. Gefördert von der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
@@ -74,7 +75,7 @@ The jury decision will be made and communicated by end of September. In advance 
 
 [**Here**](/#formate) you find more about TNDD studio round.
 
-The complete announcement can be downloaded **here**.
+The complete announcement can be downloaded **[here](/news/archiv/dateien/2022/ausschreibung-open-call-tndd-studio-round-5.pdf)**.
 
 TNDD studio round is a project by TanzNetzDresden. Funded by the Office for Culture and Monument Protection and the Cultural Foundation of the Free State of Saxony. The measure is co-financed by tax funds on the basis of the budget passed by the Saxon State Parliament.
 

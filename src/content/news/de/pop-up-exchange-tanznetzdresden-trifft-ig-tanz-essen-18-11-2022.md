@@ -3,6 +3,7 @@ title: POP UP exchange • TanzNetzDresden trifft IG Tanz Essen • 18.11.2022
 date: 2022-11-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-pop-up-exchange-ig-tanz-essen-2022-e1668107866884.webp
 teaser: Initiiert vom TanzNetzDresden, werden am Wochenende des 18. und 19. November 2022 vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus im Rahmen von POP UP …
 ---
 
@@ -37,11 +38,25 @@ Der Eintritt ist frei
 
 ### Antonina Koluiartseva
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-pop-up-exchange-ig-tanz-essen-2022-antonina-koluiartseva.webp
+    alt: ""
+:::
+
 Antonina Koluiartseva studierte Ballett und zeitgenössischen Tanz im Tanzzentrum Prag und an der Universität Tallinn. Von 2007-2013 arbeitete sie als Tänzerin, Choreographin und Pädagogin am "OKNO-Tanzprojekt" in St. Petersburg und war Mitorganisatorin des jährlichen Tanzfestivals "OKNO dance festival". Für mehrere Jahre war sie als Tänzerin beim Aura Dance Theater (Kaunas, Litauen) beschäftigt. In Estland und Russland war sie als freischaffende Tänzerin und Choreografin tätig und kreierte eigene Choreographien, die ausgezeichnet und international aufgeführt wurden.
 
 Im September 2021 schloss sie an der Folkwang Universität der Künste ihr Master-Studium im Studiengang Tanzkomposition mit dem Schwerpunkt *Choreografie* ab. Während ihres Studiums arbeitete sie weiterhin als freischaffende Choreografin und Tänzerin.
 
 ### Marco Girardin
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-pop-up-exchange-marco-giradin-2022.webp
+    alt: ""
+:::
 
 Marco Girardin ist ein Italienischer Komponist, Flötist und seid 2017 musikalischer Leiter, der interdisziplinären Gruppe “Samadhyana Company”. Als Flötist ist er als Solist, in Kammermusikgruppen und mit Orchester (wie z.B. mit den “Essener Philharmoniker”, dem “Orchestra Lorenzo da Ponte” und der “Filarmonia Veneta”) im bekannten Theater und Saale wie im Teatro “La Fenice” in  
 Venedig, “Teatro Sociale” in Mantova, in der “Rudolf-Oetker- Halle” in Bielefeld, im “Aalto Theater” in Essen, im “Konzerthaus Dortmund” und im “Konzerthaus Berlin” aufgetreten.

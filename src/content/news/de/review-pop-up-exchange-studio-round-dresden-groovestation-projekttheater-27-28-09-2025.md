@@ -3,6 +3,7 @@ title: "Review: POP UP exchange & STUDIO ROUND Dresden • GrooveStation & proje
 date: 2025-11-03
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tndd-studioround2025-05.webp
 teaser: Am 27. und 28. September 2025 fanden in Dresden zwei weitere Ausgaben von POP UP exchange und STUDIO ROUND statt.
 ---
 
@@ -24,6 +25,32 @@ Der Eintritt war frei. Alle Interessierten war herzlich willkommen.
 TanzNetzDresden Vorständin Susan Schubert rückblickend zur nunmehr zehnten Ausgabe der STUDIO ROUND in Dresden:
 
 > Nach einem get together aller Künstler:innen, die an diesem Wochenende an den Formaten partizipierten, hatten wir einen warmherzigen und reichhaltigen Abend. Die Stücke des Abends der STUDIO ROUND waren sowohl Debüts von Choreografinnen nach ihrer Ausbildung im Übergang in die freischaffende Tätigkeit, Kurzstücke und Auszüge bis hin zu einem fertigen Stück. Die zehnte STUDIO ROUND war ein reiner female Artist Abend mit sehr nahbaren Gesprächen und intimen Details zur Entstehung und Motivation. Ein facettenreicher Austausch über die zeitgenössische Bearbeitung von menschlichen Zuständen - sei es allein oder zu zweit.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/tndd-studioround2025-06a.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-01.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-03.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-05.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-09.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-07.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-10.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-04.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-08.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-studioround2025-06.webp
+    alt: ""
+:::
 
 Alle Termine der STUDIO ROUND in 2025 sind die Folgenden:
 
@@ -50,6 +77,36 @@ Namentlich waren an der POP UP exchange Ausgabe in Dresden die folgenden Künstl
 - **Neus Ledesma Vidal** (Bremen)
 - **Dagmar Ottmann** (Freiburg im Breisgau)
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-11.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-09.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-02.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-08.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-06a.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-05.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-04.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-03.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-07.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-10.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-06.webp
+    alt: ""
+  - datei: /news/archiv/2025/tndd-popup-exchange2025-01.webp
+    alt: ""
+:::
+
 Für die POP UP exchange Performances wurden auch in diesem Jahr drei Dresdner:innen jeweils mit einer überregionalen Gäst:in zusammengebracht, mit der sie bisher noch nicht gearbeitet haben. Die drei daraus resultierenden Performance-Duos, inspirierend und überraschend durch den neuen künstlerischen Austausch, entwickelten kurze öffentlich aufgeführte POP UP Performances und präsentierten diese in der Dresdner [GrooveStation](https://groovestation.de/) sowie dem [projekttheater](https://projekttheater.de/). Es handelte sich explizit um keine erprobten Arbeiten, sondern um Improvisationen, die in gemeinsamer Absprache durch Scores, gewählte Musik oder ähnliches inspiriert waren.
 
 Der Eintritt war frei. Alle Interessierten war herzlich willkommen.
@@ -61,5 +118,11 @@ POP UP exchange und STUDIO ROUND sind Projekte im Rahmen der Maßnahme ROUNDABOU
 Gefördert durch das NATIONALE PERFORMANCE NETZ – Impulsförderung Tanz & Theater – gefördert von der Beauftragten der Bundesregierung für Kultur und Medien sowie den Kultur- und Kunstministerien der Länder.
 
 Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+:::
 
 Foto-Credit: Marco Prill

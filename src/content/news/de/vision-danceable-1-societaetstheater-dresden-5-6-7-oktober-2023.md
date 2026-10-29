@@ -3,6 +3,7 @@ title: "VISION DANCEABLE #1 • Societaetstheater Dresden • 5., 6. & 7. Oktobe
 date: 2023-10-04
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/vision-danceable-1-foto-andre-wirsig-e1696422093664.webp
 teaser: Im Oktober wird es im Dresdner Societaetstheater den Auftakt eines Formats unter dem Titel VISION DANCEABLE geben, bei der die Vielseitigkeit des Tanzes sowie der spartenübergreifenden künstlerischen …
 ---
 

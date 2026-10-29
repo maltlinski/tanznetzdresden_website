@@ -3,6 +3,7 @@ title: "Ta-dah!! • Wir präsentieren: der neue Vorstand des TanzNetzDresden f�
 date: 2026-10-08
 category: Verein
 author: TanzNetzDresden
+image: ../../../assets/news/2026/header-e1791459880915.webp
 teaser: "Manch eine:r hat es schon gehört, andere noch nicht: das TanzNetzDresden hat einen neuen Vorstand bestehend aus vier Personen gewählt, der in den kommenden Jahren das Netzwerk repräsentieren und …"
 ---
 
@@ -18,6 +19,13 @@ Mit dem neu gewählten Vorstand findet auch ein Generationswechsel statt, wie au
 
 ### Justine Rouquart
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/justine-rouquart.webp
+    alt: ""
+:::
+
 »Ich stamme aus Nancy im Osten Frankreichs, wo ich mein Abschlussdiplom in klassischem und zeitgenössischem Tanz erworben habe. Nach einem Jahr bei der Junior-Compagnie „Elephant in the black box“ in Madrid erhielt ich mein erstes professionelles Engagement als Tänzerin am Theater Plauen-Zwickau. Dort blieb ich drei Jahre, bevor ich mich 2021 in Dresden als Freiberuflerin selbstständig machte. Seitdem habe ich an Produktionen und Veranstaltungen in Dresden, in der Schweiz und in Luxemburg mitgewirkt. Ich unterrichte Jazz- und klassischen Tanz in der Region und habe kürzlich in Indien meine Ausbildung zur Yogalehrerin abgeschlossen.«
 
 Zu ihrer Motivation, sich für einen Posten im Vorstand des TanzNetzDresden zur Wahl zu stellen, sagt Justine Folgendes:
@@ -27,6 +35,13 @@ Zu ihrer Motivation, sich für einen Posten im Vorstand des TanzNetzDresden zur 
 [**Website**](https://tanzzentrum-dresden.de/trainer-innen/justine-rouquart/)
 
 ### Rika Yotsumoto
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/rika-yotsumoto.webp
+    alt: ""
+:::
 
 Rika Yotsumoto ist Tänzerin und Choreografin aus Dresden. Sie studierte zeitgenössischen Tanz in Portland und tanzte in dieser Zeit für Oriantheatre Dance Company in Frankreich und Deutschland. Seit 2018 lebt Rika in Dresden und ist besonders als Tänzerin in der Freien Szene tätig. Ihre künstlerische Tätigkeit umfasst sowohl die Arbeit an festen Häusern wie der Semperoper Dresden und dem StaatsschauspielDresden als auch Zusammenarbeiten mit freien Choreograf:innen und Tanzkompanien, darunter go plastic company, Polymer DMT, KOMA&Ko,situation productions, Natalie Wagner und Joseph Hernandez. Darüber hinaus engagiert sich Rika seit 2019 aktiv im TanzNetzDresden und ist seit 2026 Vorstandsmitglied des Netzwerks. Zu ihren eigenen choreografischen Arbeiten zählen „Porcelain Madness“ (2020) und „Peng! Peng!“ (2023, gefördert von explore dance – Netzwerk Tanz für junges Publikum).
 
@@ -38,6 +53,13 @@ Rika Yotsumoto ist bereits langjähriges TNDD-Mitglied und als solches in den ve
 
 ### Alina Lucifero
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/alina-lucifero.webp
+    alt: ""
+:::
+
 Alina Lucifero studierte nach ihrem Abitur in Mönchengladbach an der Palucca Hochschule für Tanz in Dresden Tanzpädagogik und ist als Pädagogin und Choreografin für das Heinrich–Schütz–Konservatorium in Dresden tätig. Sie entwickelt als freiberufliche Tänzerin und Choreografin eigene Stücke wie „Exogen“, „Ein halbes Pfund Hoffnung bitte“ und „touching shame". Sie schloss im Jahr 2021 eine Ausbildung am Tanztherapiezentrum Berlin mit Schwerpunkt Heilpädagogischer Tanz ab.
 
 Ihre Motivation im Rahmen des Vorstandes fasst Alina folgendermaßen zusammen:
@@ -47,6 +69,13 @@ Ihre Motivation im Rahmen des Vorstandes fasst Alina folgendermaßen zusammen:
 **Instagram**: [@alinalucifero](https://www.instagram.com/alinalucifero/)
 
 ### Malte Leonard Herz
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/malte-herz.webp
+    alt: ""
+:::
 
 > Ich bin Malte Leonard Herz und seit dem Vorstandswechsel einer der vier Neuen im Vorstand des TanzNetzDresden e.V. Ich tanze selbst, komme aus dem Turniertanz und war in den letzten Jahren in Produktionen u. a. an der Semperoper Dresden, der Deutschen Oper Berlin und den Bregenzer Festspielen beschäftigt. Nach meinem Psychologiestudium mache ich gerade meinen Master in Kultur- und Medienmanagement und verbringe dafür derzeit ein Auslandssemester in Bologna.
 >

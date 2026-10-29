@@ -3,6 +3,7 @@ title: "Was der Juni in Sachen Tanz und Performance in Dresden alles bereithält
 date: 2024-06-02
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-tanz-kalender-juni-2024.webp
 teaser: Der Tanzkalender Dresden befindet sich bereits in der nächsten Runde, denn auch im Monat Juni wurde das Programm aus den Bereichen Tanz und Performance gesammelt und im Tanzkalender Dresden gebündelt aufbereitet.
 ---
 

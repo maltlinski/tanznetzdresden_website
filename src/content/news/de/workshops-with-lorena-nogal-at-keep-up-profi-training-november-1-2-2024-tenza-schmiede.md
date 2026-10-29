@@ -3,6 +3,7 @@ title: Workshops with Lorena Nogal at KEEP UP Profi-Training • November 1 & 2,
 date: 2024-09-11
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-profi-training-lorena-nogal-2024-kopie-e1726053048693.webp
 draft: true
 teaser: In November, we will be offering two workshops with Lorena Nogal at the TENZA Schmiede at November 1 and 2 as part of our KEEP UP profi training.
 ---
@@ -10,6 +11,13 @@ teaser: In November, we will be offering two workshops with Lorena Nogal at the 
 *In November, we will be offering two workshops with Lorena Nogal at the [TENZA Schmiede](https://www.tenza.de/) at November 1 and 2 as part of our [KEEP UP profi training](/profitraining/). More information about this very special offer can be found in today's blog post.*
 
 ## Lorena Nogal
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-lorena-nogal-big.webp
+    alt: ""
+:::
 
 Born in Barcelona in 1984. Lorena Nogal trained as a dancer at the Institut del Teatre in Barcelona, where she graduated in 2005, and at the IT Dansa company, where she worked repertoire of internationally renowned choreographers: Ohad Naharin, Alexander Ekman , Jirí Kilyán, Stijn Celis or Nacho Duato.
 

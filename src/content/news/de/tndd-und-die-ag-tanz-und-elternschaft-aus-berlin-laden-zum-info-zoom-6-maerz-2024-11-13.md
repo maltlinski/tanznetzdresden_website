@@ -3,6 +3,7 @@ title: TNDD und die AG Tanz und Elternschaft aus Berlin laden zum Info-Zoom • 
 date: 2024-03-04
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/slieder-nummer-3-slide-e1709584522521.webp
 teaser: Das TanzNetzDresden und die Arbeitsgemeinschaft Tanz und Elternschaft aus Berlin pflegen schon seit längerem eine engen Austausch. Nun wird es am 6.
 ---
 

@@ -3,6 +3,7 @@ title: TNDD studio round Edition Nr. VII • 8. September 2023 • TENZA Schmied
 date: 2023-08-21
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-studio-round-6-2023-header-cut-scaled-e1692620321584.webp
 teaser: Das Line up der kommenden und mittlerweile siebenten TNDD studio round Ausgabe, die am 8. September 2023 wie gewohnt ab 20 Uhr in der TENZA Schmiede stattfinden wird, ist nun online.
 ---
 
@@ -17,6 +18,12 @@ Mehr denn je erwartet die Besuchenden der kommenden TNDD studio round drei spann
 - **Paco Ladrón de Guevara** (Ulm): "How noisy is too noisy?"
 
 Detaillierte Informationen zu den einzelnen Beiträgen der siebenten TNDD studio round folgen nun oder können direkt auf der [Unterseite der studio round](/#formate) eingesehen werden. Dort befinden sich alle Informationen auch in englischer Sprache. Einen zusätzlichen Blog-Beitrag in englischer Sprache gibt es [***hier***](/en/news/tndd-studio-round-vii-08-09-2023-tenza-schmiede-line-up/).
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-vii-2023-daniela-lehmann-dirk-skipa.webp
+    alt: ""
+:::
 
 ## Daniela Lehmann
 
@@ -33,6 +40,12 @@ Ihr derzeitiger Körper teilt Erlebnisse und Eindrücke vorzeitiger Körper mit.
 **Performerin:** Daniela Lehmann  
 **Foto:** Dirk Skiba
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-vii-2023-meggie-blanschkyn-gregory-batardon-2.webp
+    alt: ""
+:::
+
 ## Meggie Blankschyn
 
 Meggie Blankschyn wurde in Norddeutschland geboren und begann ihre Tanzausbildung an der Tanzfabrik Berlin e.V., gefolgt von einem Bachelor-Studium an der Budapest Contemporary Dance Academy und La Manufacture – Haute école des arts de la scène (Leitung Thomas Hauert) in Lausanne, wo sie kürzlich ihren Abschluss machte.  
@@ -46,6 +59,13 @@ Sie arbeitet weiterhin mit Judith Sanchez Ruiz (JSR Company), Tomáš Danielis &
 *„Ich habe Angst vor diesem schwarzen Ding, das in mir schläft, den ganzen Tag fühle ich seine Sanftheit, seine federleichten Drehungen, seine Bösartigkeit.“  
 *(Sylvia Plath)
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-vii-2023-meggie-blanschkyn-gregory-batardon-1.webp
+    alt: ""
+:::
+
 “The craftly uncanniness behind the semblance of things“ ist eine Solokreation, die auf meiner Bachelor-Arbeit bei La Manufacture basiert, die auf dem Bild des Schmerzes als schwarzer Masse basiert, die unsere Körper bewohnt, formt und transformiert. Ich erforsche die Körperlichkeit der Dunkelheit und der schwarzen Masse als Materialisierung der Bühne, auf der das Ich mit dem Gewicht seiner Irdischkeit und ungelebten Möglichkeiten konfrontiert wird, aber auch mit einer intimen und tiefen Kraft, dem Willen, in dieser Welt zu existieren.  
 Die Dunkelheit löscht alles aus, saugt alles auf: Formen und Feuer, Tiere und mich selbst, wie leicht vereint sie das Lebendige! Die Dunkelheit ist das allererste Stadium eines Fötus und vielleicht das letzte im menschlichen Leben. Sie enthält das Magische und ist die Quelle aller unbekannten, dämonischen Kräfte. Mein Körper ist das Gefäß, das diese Flüssigkeit an Ort und Stelle hält, er ist das Schlachtfeld, das all meinen Schmerz bündelt und mein Dasein in diesem Leben formt. Mein Körper ist ein Raum, den ich nie verlassen könnte. Ich trage diesen Raum und er trägt mich. Mein Herz dreht sich um sich selbst, trifft immer auf die gleichen Dämonen.  
 Was macht der Körper, wenn er sich musikalisch ausdrückt? Mein Körper stampft, mein Körper krampft, er explodiert, er schneidet, er sticht oder er dehnt, er webt zart. Jede einzelne Bewegung ist durch eine unbewusste Nabelschnur mit einer realen Erfahrung verbunden. Die Phantasie ist ein besonders gutes Gedächtnis für das Reale.«
@@ -54,6 +74,12 @@ Was macht der Körper, wenn er sich musikalisch ausdrückt? Mein Körper stampft
 **Musik:** Axel Kolb & Caterina de Nicola *„MHX Birthdaymix“*, Meredith Monk *„Cow Song“,* Hildegard Knef *„Hör’ nicht auf mich“  
 ***Unterstützt von:** [La Manufacture – Haute école des Arts de la Scène](https://www.manufacture.ch/) & [TANZKOOP](https://www.tanzkoop.com/)  
 **Fotos:** Gregory Batardon
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-vii-2023-paco-ladron-de-guevara-rodriguez-3.webp
+    alt: ""
+:::
 
 ## Paco Ladrón de Guevara Rodríguez
 
@@ -72,6 +98,13 @@ Raül Refree: "Que te vayas"
 Thomas Köner: "Tientos de la Luz 1"
 
 ## Satellite Art Network (SAN)
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/san-logo-w-q.webp
+    alt: ""
+:::
 
 [Satellite Art Network](https://linktr.ee/satellite_art_network) ist eine Initiative mit dem Ziel, überregionale Austauschstrukturen für Tanzschaffende zu ermöglichen. Durch Workshops, Performances, Podiumsdiskussionen und künstlerische Begegnungen kommen bestehende Kulturinitiativen und Einzelpersonen aus vier verschiedenen Bundesländern (Niedersachsen, Sachsen, Baden-Württemberg und Hamburg) zusammen, um über nachhaltige Möglichkeiten der Schaffung von Auftrittsmöglichkeiten und anderen künstlerischen Aktivitäten in der freien Tanzszene nachzudenken. Über einen Zeitraum von vier Monaten wird es in jeder Region eine zweitägige Veranstaltung geben, die sowohl für andere Tanzschaffende als auch für die Öffentlichkeit zugänglich ist.
 

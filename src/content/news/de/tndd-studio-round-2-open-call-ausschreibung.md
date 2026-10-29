@@ -3,6 +3,7 @@ title: "Ausschreibung / Open call für die TNDD studio round #2"
 date: 2021-09-21
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetz-studio-round-dresden-2021-tenza-schmiede.webp
 teaser: Die TNDD studio round geht nach einer erfolgreichen Premiere im September am 5. November in die zweite Runde und sucht ab sofort künstlerische Beiträge, die bei der kommenden Auflage in der TENZA Schmiede gezeigt werden.
 ---
 

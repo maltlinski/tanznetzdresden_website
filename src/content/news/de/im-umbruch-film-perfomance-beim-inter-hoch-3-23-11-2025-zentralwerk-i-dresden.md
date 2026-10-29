@@ -3,6 +3,7 @@ title: IM UMBRUCH • Film & Perfomance beim INTER HOCH 3 • 23.11.2025 • Zen
 date: 2025-10-21
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-barbara-lubich-im-umbruch-michael-sommermeyer-hechtfilm-scaled.webp
 teaser: Am 15. Mai 2022 feierte der Dokumentarfilm "IM UMBRUCH Go.Stay.Dance." von Barbara Lubich Premiere. Am 26.
 ---
 
@@ -25,6 +26,18 @@ Mit **Daniela Lehmann**, Jahrgang 1979, und Cindy Hammer, Jahrgang 1989, kamen z
 „Eine Gesellschaft im Umbruch. So lautet die Diagnose unserer Zeit und es ist schnell dahin gesagt. Doch wie fühlt sich ein gesellschaftlicher Umbruch an? Wie können die Künste darauf reagieren? Und wie gehen die Künstlerinnen und Künstler selbst mit ihren eigenen (Um-)Brüchen um?
 
 Für Regisseurin Barbara Lubich begann ihr Film IM UMBRUCH mit einer Forschungsarbeit zum subversiven Tanz in der DDR. Die gebürtige Italienerin ist 1998 in den Osten Deutschlands gezogen. Bei ihren Recherchen traf sie unter anderem die Tänzerin und Tanzpädagogin Hanne Wandtke, Malerin und Regisseurin Christine Schlegel sowie den Maler und Filmemacher Lutz Dammbeck. Alle drei gehörten schon in der DDR zu den anerkannten Koryphäen. In den Gesprächen kam immer wieder die Rede auf eine besondere Frau, die sie damals bewunderten und noch immer bewundern: Fine Kwiatkowski, Jahrgang 1956 – eine tanzende Ikone. Die Begegnung mit ihr wurde für Barbara Lubich zur Initialzündung für IM UMBRUCH.“ *(Text: Andreas Körner)*
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2025/2022-05-15-lubich-c2-a9peter-r-fiebig-85.webp
+    alt: ""
+  - datei: /news/archiv/2025/2022-05-15-lubich-c2-a9peter-r-fiebig-2.webp
+    alt: ""
+  - datei: /news/archiv/2025/premiere-hellerau-2022.webp
+    alt: ""
+:::
 
 *Fotos: Premiere von IM UMBRUCH am 15. Mai 2022 in HELLERAU -Europäisches Zentrum der Künste Dresden I Credit: Peter R. Fiebig*
 

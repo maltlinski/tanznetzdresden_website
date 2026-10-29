@@ -3,6 +3,7 @@ title: TNDD "All aRound" - Austausch auf allen Ebenen
 date: 2022-07-12
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-allaround-2022-e1657619567690.webp
 teaser: Wir freuen uns sehr, dass dank einer zusätzlichen und umfassenden TakeHeart Netzwerk- und Strukturförderung des Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur …
 ---
 

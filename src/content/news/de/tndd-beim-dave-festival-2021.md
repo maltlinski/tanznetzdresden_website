@@ -3,6 +3,7 @@ title: TNDD beim DAVE Festival 2021
 date: 2021-09-13
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/dave-2018-8x8-scheune-robert-arnold-tanznetzdresden-cindy-hammer-2021-e1631533688969.webp
 teaser: Das TanzNetzDresden wird beim diesjährigen Dresden Audio Visual Experience Festival, kurz DAVE, Rede und Antwort stehen. Konkret sind wir bei dem beliebten Talk-Format "8x8" am 12.
 ---
 

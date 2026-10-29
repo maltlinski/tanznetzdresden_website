@@ -3,6 +3,7 @@ title: Ausschreibung von TANZPAKT in residence 2022-24 läuft noch bis zum 1. Ap
 date: 2022-02-22
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-tanzpakt-ausschreibung-villa-wigman-2022jpg.webp
 deadline: 2022-04-01
 teaser: TANZPAKT in residence - eine Kooperation zwischen VILLA WIGMAN und TanzNetzDresden - realisiert in den Jahren 2022-24 ein umfangreiches Residenzprogramm für das Land Sachsen, das die künstlerische …
 ---
@@ -52,7 +53,7 @@ Eventuelle Fragen bitte an [info@villa-wigman.de](mailto:info@villa-wigman.de) r
 
 Die Residenzen werden von einer Jury ausgewählt und **Ende April 2022** bekannt gegeben.
 
-Die vollständige Ausschreibung kann auch hier als PDF heruntergeladen werden.
+Die vollständige Ausschreibung kann auch [hier](/news/archiv/dateien/2022/ausschreibung-tanzpakt-in-residence-2022-24-ke-3.pdf) als PDF heruntergeladen werden.
 
 »TANZPAKT in residence« ist ein Projekt von TanzNetzDresden und Villa Wigman für Tanz in Kooperation mit TanzART Kirschau, Mondstaubtheater Zwickau, TanzRaumGörlitz, KOMPLEX Off-Bühne für Darstellende Künste Chemnitz und 4fürTANZ Leipzig.
 

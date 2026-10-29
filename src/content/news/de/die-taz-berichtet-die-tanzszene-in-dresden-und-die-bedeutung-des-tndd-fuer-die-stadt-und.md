@@ -3,6 +3,7 @@ title: die taz berichtet • die Tanzszene in Dresden und die Bedeutung des TNDD
 date: 2024-09-01
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-taz-beitrag-maxie-liebscher-go-plastic-company-cindy-hammer.webp
 teaser: Die Journalistin Maxie Liebschner hat sich für die taz in einem kürzlich erschienenen Artikel zur Bedeutung des Tanzes in und für die Stadt Dresden und zum außergewöhnlichen Zusammenhalt zwischen den …
 ---
 

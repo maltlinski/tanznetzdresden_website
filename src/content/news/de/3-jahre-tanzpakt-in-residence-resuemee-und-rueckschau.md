@@ -3,6 +3,7 @@ title: 3 Jahre TANZPAKT in residence • Resümee und Rückschau
 date: 2025-04-28
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024.webp
 teaser: Das dreijährige Kooperationsprogramm »TANZPAKT in residence« ist abgeschlossen. Dazu fand bereits am 14. November 2024 die Veranstaltung »TANZPAKT in residence.re-preview«
 ---
 
@@ -16,6 +17,28 @@ der Tanzschaffenden in Sachsen zum Ziel hatte.
 Das Residenzprogramm und die investiven Maßnahmen des Programms TANZPAKT in residence (2022-2024) beförderte maßgeblich Künstler:innen aus Sachsen, mit ihren unterschiedlichen Biografien und künstlerischen Wegen in eine unverwechselbare und strahlkräftige Entwicklung, die auch überregional und international Bestand hat. Das öffentliche Sichtbarmachen der Residenzergebnisse ließ zum einen die regional Tanzinteressierten an diesen Prozessen teilhaben, wie es zum anderen die Möglichkeit bot, zukünftige überregionale Partner einzuladen, um den fortschreitenden Austausch über die Landesgrenzen hinweg voranzutreiben.
 
 In den Jahren 2022-24 wurden insgesamt 18 Residenzen ausgeschrieben. Eine Jury entschied über die Vergabe. Jede Residenz beinhaltete neben der eigenen Recherchearbeit einen Workshop der Residenzkünstler:innen für interessierte Profis und Amateur:innen und eine Werkstattpräsentation.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-1.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-10.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-3.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-9.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-8.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-2.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-7.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-5.webp
+    alt: ""
+:::
 
 ### TANZPAKT in residence - alle Resident:innen
 
@@ -48,6 +71,20 @@ Die Jury für die Resident:innen aus 2024 bestand aus **Melanie Suchy**, freie T
 - **Cindy Hammer** ([LOFFT Das Theater](https://www.lofft.de/), Leipzig)
 - **Mandy Unger** ([TanzRaum](https://trg.persona.co/) Görlitz)
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/131-20241114aw131.webp
+    alt: ""
+  - datei: /news/archiv/2025/7-20241114aw007.webp
+    alt: ""
+  - datei: /news/archiv/2025/6-20241114aw006.webp
+    alt: ""
+  - datei: /news/archiv/2025/2-20241114aw002.webp
+    alt: ""
+:::
+
 ### Jury 2022
 
 Die Jury für die Resident:innen aus 2022 bestand aus Dramaturgin und Kuratorin **Anna Bründl** sowie den Tänzerinnen und Choreografinnen **Anna Till** und **Rosalind Masson**. Aus allen Bewerbungen wurden die fünf Resident:innen am 8. April 2022 ausgewählt.
@@ -62,6 +99,13 @@ Die Jury für die Resident:innen aus 2022 bestand aus Dramaturgin und Kuratorin 
 
 ### TANZPAKT in residence.re-preview I 14.11.2024 I Villa Wigman I Dresden
 
+::: bilder
+text: Die Teilnehmenden von »TANZPAKT in residence.re-preview« I 14.11.2024 I villa/wigman I Dresden
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-tanzpakt-in-residence-2022-2024-6.webp
+    alt: ""
+:::
+
 Am 14. November 2024 fand in der villa/wigman die Veranstaltung »TANZPAKT in residence.re-preview«. Dabei wurden noch einmal alle Resident:innen eingeladen, Entstandenes aus den vergangenen drei Jahren besprochen und ausgewertet sowie die Relevanz und Notwendigkeit von Residenzprogrammen wie TANZPAKT in residence diskutiert. Die Moderation hatte Katja Großer inne. Ganz konkret wurden bei der Veranstaltung Impulse im Rahmen des Slots »Die essentielle Bedeutung von Residenzen im künstlerischen Schaffen und deren Auswirkungen auf die jeweiligen Orte und deren Publikum Gesprächsformat« gegeben. Hierbei gab es Beiträge von Sabine Chwalisz (Künstlerische Leitung der fabrik Potsdam; Tanzinitiative Brandenburg), Dr. Andrea Hensel (Vorständin des Kulturamt Leipzig sowie Fachreferentin für Transformation und Nachhaltigkeit in der Kultur) sowie von Madeline Ritter (Künstlerische Leitung und Geschäftsführung der Bureau Ritter gUG).
 
 Im Rahmen der Veranstaltung fand außerdem ein gemeinsamer Rundgang zu sechs verschiedenen Städte-Positionen statt. Acht Partnerorte und 18 Residenzkünstler:innen stellten sich vor. Gezeigt wurden Performances der TANZPAKT-Residentinnen Caroline Beach, Angelika Waniek und Alina Walter.
@@ -70,7 +114,29 @@ Abschließend wurde ein Parcours zu künstlerischen Installationen folgender Res
 
 Amit Abend, Etienne Aweh, Nicole Dietz, Helena Fernandino, Sophie Hauenherm, Valeriya Koptseva, Josefina Maro, Anna Till, Tran Xuan Nam, Mandy Unger, Charles Washington, Magdalena Weniger, Mono Welk & Lissy Willberg
 
-Das vollständige Programm von TANZPAKT in residence.re-preview kann ***hier*** eingesehen werden.
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/102-20241114aw090.webp
+    alt: ""
+  - datei: /news/archiv/2025/115-20241114aw103.webp
+    alt: ""
+  - datei: /news/archiv/2025/125-20241114aw113.webp
+    alt: ""
+  - datei: /news/archiv/2025/57-20241114aw045.webp
+    alt: ""
+  - datei: /news/archiv/2025/30-20241114aw018.webp
+    alt: ""
+  - datei: /news/archiv/2025/18-20241114aw119.webp
+    alt: ""
+  - datei: /news/archiv/2025/11-20241114aw011.webp
+    alt: ""
+  - datei: /news/archiv/2025/124-20241114aw112.webp
+    alt: ""
+:::
+
+Das vollständige Programm von TANZPAKT in residence.re-preview kann [***hier***](/news/archiv/dateien/2025/tanzpakt-re-preview-programm-14-11-2024.pdf) eingesehen werden.
 
 »TANZPAKT in residence« wurde gefördert von TANZPAKT Stadt-Land-Bund aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien, sowie kofinanziert durch das Staatsministerium für Wissenschaft, Kultur und Tourismus und der Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz. Die Maßnahme wurde mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
 

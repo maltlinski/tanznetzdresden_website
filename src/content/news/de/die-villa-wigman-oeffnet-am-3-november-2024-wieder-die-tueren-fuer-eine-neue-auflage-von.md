@@ -3,6 +3,7 @@ title: Die villa/wigman öffnet am 3. November 2024 wieder die Türen für eine 
 date: 2024-10-15
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-solo2-villa-wigman-andre-wirsig.webp
 teaser: Die villa\\wigman öffnet mit SOLO2 am 3. November 2024 erneut die Türen für Einblicke in die unterschiedlichen Perspektiven, Arbeitsansätze und Ästhetiken von freien Tanz- und Theaterschaffenden aus der Region.
 ---
 

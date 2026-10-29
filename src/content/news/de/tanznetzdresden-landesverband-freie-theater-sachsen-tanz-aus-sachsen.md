@@ -3,12 +3,19 @@ title: "TanzNetzDresden und der Landesverband der Freien Theater in Sachsen prä
 date: 2026-03-09
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/broschuere-coverfoto-fuer-web-01-scaled-e1773220546119.webp
 teaser: Die Broschüre TANZ AUS SACHSEN wurde vom TanzNetzDresden und dem Landesverband der Freien Theater in Sachsen erstellt und stellt die Vielfalt und Innovationskraft der aktuellen Tanzszene im Freistaat vor.
 ---
 
 *Die Broschüre [TANZ AUS SACHSEN](https://fts-vs.e-fork.net/sites/default/files/2024-09/tanz-aus-sachsen_lfts.pdf) wurde vom TanzNetzDresden und dem [Landesverband der Freien Theater in Sachsen](https://www.freie-theater-sachsen.de/ueber-uns) erstellt und stellt die Vielfalt und Innovationskraft der aktuellen Tanzszene im Freistaat vor. Die Broschüre portraitiert 21 herausragende Künstler\*innen und Ensembles, die traditionelle Tanzformen mit modernen, interdisziplinären Ansätzen verbinden und bietet einen Einblick in spannende, teils gesellschaftskritische, teils poetische Tanzproduktionen. Sie zeigt, wie Künstler\*innen in Städten wie Leipzig, Dresden und Chemnitz, aber auch in ländlichen Regionen, mit ihren Arbeiten neue künstlerische Perspektiven eröffnen und verschiedene Tanzstile wie zeitgenössischen Tanz, Tanztheater, Stepptanz und Breaking verschmelzen lassen.*
 
 ## TANZ AUS SACHSEN - Die Broschüre
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2026/publikation-mo-launch-4.webp
+    alt: ""
+:::
 
 **Die Broschüre TANZ AUS SACHSEN enthält Beiträge von:**
 

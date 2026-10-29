@@ -199,7 +199,9 @@ node scripts/wordpress-import/index.mjs export.xml --medien medien.csv
 `export.xml` aus *Werkzeuge → Daten exportieren → Beiträge*, `medien.csv` (freiwillig) aus dem Medien-Export mit
 Alternativtexten. Geladen wird von der alten Website, die dafür noch erreichbar sein muss. Alternativ den Ordner
 `wp-content/uploads` (z. B. vom Webhoster als ZIP) entpacken und mit `--uploads <ordner>` angeben; fehlt dort ein
-Original, nimmt das Skript `-scaled` oder die größte vorhandene Fassung. Originale landen in
+Original, nimmt das Skript `-scaled` oder die größte vorhandene Fassung. Ist ein Original nicht zu laden (z. B. als
+BMP hochgeladen, nur die verkleinerten JPGs gibt es), nimmt es die Fassung aus dem Text oder die „Große URL“ der
+Medienliste. SVG-Logos werden nicht übernommen. Originale landen in
 `.cache/wordpress/` (nicht im Repository) und werden nur einmal geladen. Mit `--ohne-laden` nur aus diesem
 Zwischenspeicher.
 

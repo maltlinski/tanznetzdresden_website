@@ -3,6 +3,7 @@ title: "TanzNetzDresden, villa\\wigman und das Societaetstheater präsentieren: 
 date: 2026-02-28
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tanznetzdresden-pitching-sessions-saxony-tanzplattform-2026.webp
 teaser: Im Rahmen der Tanzplattform Deutschland 2026 laden wir bei den »Pitching Sessions Saxony« gemeinsam mit der villa\\wigman und dem Societaetstheater Dresden Tanzschaffende aus Sachsen am 15.
 ---
 
@@ -18,6 +19,13 @@ Die erwähnte Jury der »Pitching Sessions Saxony« bestand aus: Josephine Bock 
 
 ### FORWARD DANCE COMPANY
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/opening-forward-dance-company-lofft-das-theater-kunstfest-weimar-c-candy-welz-731x1277-1.webp
+    alt: ""
+:::
+
 Die FORWARD DANCE COMPANY ist die mixed-abled Tanzcompany von LOFFT – DAS THEATER in Leipzig. Unter der künstlerischen Projektleitung von Gustavo Fijalkow bearbeitet sie mit wechselnden Choreograf\*innen gesellschafts-politische Themen. Dabei entstehen Tanzperformances sowohl für spezifische Orte im öffentlichen Raum als auch für die Bühne. Seit der Gründung 2020 bespielte die FORWARD DANCE COMPANY u.a. den Deutschen Pavillon auf der Biennale di Venezia 2023 und eröffnete das Kunstfest Weimar 2024.
 
 Die FORWARD DANCE COMPANY hinterfragt mit künstlerischen Mitteln des Tanzes ästhetisch und diskursiv etablierte Denkweisen, Machtverhältnisse sowie Körperbilder. Sie möchte unerforschtes Tanzvokabular entdecken und auf der Bühne sichtbar machen.
@@ -29,6 +37,13 @@ Die FORWARD DANCE COMPANY ist außerdem die erste und einzige dauerhaft in Sachs
 
 ### go plastic company
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/go-plastic-company-melancholic-marathon-jana-mila-lippitz-915x1280-1.webp
+    alt: ""
+:::
+
 Die go plastic company (Dresden / Leipzig) erforscht seit Jahren die Schnittstellen von zeitgenössischem Tanz, Performance und hybriden Formaten. Ihre Arbeiten verbinden körperliche Präzision mit markanten Klang- und Bildräumen und übersetzen diese in choreografische Denkbewegungen. Seit 2023 richtet sich der Fokus auf Audio-Deskription als ästhetische Kraft: als choreografische Stimme, dramaturgische Schicht und poetische Erweiterung der Bühne. Über sich selbst sagt go plastic:
 
 »Wir sind ein künstlerisches Kollektiv, das sich diskursiv und interdisziplinär, mit den Mitteln des zeitgenössischen Tanzes, der Cineastik ausdrückt und visuelle Welten entstehen lässt, deren textile Facetten dem Modedesign entstammen. Wir kollaborieren situativ, produktiv und transparent, um relevante, nachhaltige und inklusive Angebote zu schaffen. Hungrig nach sozialkritischen Diskursen holen wir euch ab von räumen, nicht-orten und von zuhause. Hinein in fantastische, utopische und ästhetische Zukunftsvisionen.«
@@ -37,6 +52,13 @@ Die go plastic company (Dresden / Leipzig) erforscht seit Jahren die Schnittstel
 Instagram:** [instagram.com/go\_plastic\_company](https://www.instagram.com/go_plastic_company)
 
 ### Irina Pauls
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/portrait-irina-pauls-jml-4-kopie-m.webp
+    alt: ""
+:::
 
 Irina Pauls entwickelte bisher mehr als 90 eigene Werke in den Bereichen Tanz, site-specific-performance, Musiktheater, Kinder-und Jugendtheater, Schauspiel. Ihre erste Inszenierung 1985 am Landestheater Altenburg als 25jährige Ballettdirektorin sollte gleich die Befreiung von einem vorgeprägten DDR-Verständnis von Tanztheater sein.
 
@@ -47,6 +69,13 @@ Irina Pauls entwickelte bisher mehr als 90 eigene Werke in den Bereichen Tanz, s
 
 ### Miller de Nobili
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/mdn-portrait-colour-alexander-miller-1845x2880-1.webp
+    alt: ""
+:::
+
 Miller de Nobili wurde während des Lockdowns 2020 als künstlerische Zusammenarbeit zwischen Maria Chiara de’ Nobili und Alexander Miller gegründet. Verbunden durch eine gemeinsame Vision, wollten sie eine Plattform entwickeln, die ihre gemeinsame Leidenschaft für Breaking, zeitgenössisches und urbanes Tanztheater sowie Schauspieltechniken nahtlos miteinander verbindet. Ihre erste Zusammenarbeit, „Momento“, wurde beim 35. Choreografie-Wettbewerb in Hannover mit dem renommierten Produktionspreis des Scapino Balletts ausgezeichnet. Angetrieben von ihrem Engagement für Innovation, Virtuosität und Liebe zum Detail erlangte Miller de Nobili durch eine Reihe faszinierender Kreationen stetig Anerkennung und Erfolg. Ihr abendfüllendes Werk „PACK“ wurde im September 2021 im Rahmen des Festivals „Dancing About“ als Koproduktion mit Tanzpakt Dresden im Hellerau – Europäisches Zentrum für die Künste uraufgeführt. Nach seinem erfolgreichen Debüt wurde „PACK“ auf der Tanzplattform Deutschland 2022 präsentiert.
 
 Miller de Nobili ist das gemeinsame künstlerische Projekt von Maria Chiara de’ Nobili und Alexander Miller. Mit Wurzeln im Breaking, urbanen Tanz, zeitgenössischem Tanz und Schauspiel verschmelzen ihre Arbeiten heterogene choreografische Sprachen zu einer gemeinsamen körperlichen Form. Das Ensemble versteht Tanz als künstlerische Sprache mit sozialer Verantwortung und schafft zugängliche Performances, die sich durch radikale Körperlichkeit und technische Präzision mit aktuellen Spannungen und unseren gemeinsamen sozialen Realitäten auseinandersetzen.
@@ -55,6 +84,13 @@ Miller de Nobili ist das gemeinsame künstlerische Projekt von Maria Chiara de�
 **Instagram**: [instagram.com/millerdenobili](https://www.instagram.com/millerdenobili)
 
 ### Sahar Damoni
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/portrait-sahar-dirk-rose-photographer-1-2-1-1559x2400-1.webp
+    alt: ""
+:::
 
 Sahar Damonis künstlerische Praxis entspringt verkörperter Forschung, zeitgenössischem Tanz und Physical Theatre. Sie erforscht Traumata, Psychologie und die Erfahrungen von Frauen in palästinensisch-arabisch-christlichen Kontexten. Durch somatisches Gedächtnis, Vibration, Zittern und eine „Archäologie des Fleisches“ enthüllt sie verschwiegene Erzählungen. Ihre Arbeit hinterfragt die dem Körper auferlegten soziopolitischen Beschränkungen und verwandelt Performance in Resilienz, Widerstand und verkörperte Freiheit.
 
@@ -82,6 +118,14 @@ Alle zwei Jahre macht die [Tanzplattform](http://www.tanzplattform.de/home) die 
 In diesem Jahr ist HELLERAU die veranstaltende Institution, die die Tanzplattform Deutschland präsentiert und dabei die aktuellen Entwicklungen und innovativen Strömungen im zeitgenössischen Tanz ins Szene setzt.
 
 Eine unabhängige Jury hat die Produktionen für das Programm ausgewählt, das Mitte März 2026 in HELLERAU und weiteren Dresdner Institutionen gezeigt wird. Berücksichtigt wurden Produktionen, die zwischen September 2023 und August 2025 in Deutschland entstanden sind.
+
+::: bilder
+text: '"Spiegelneuronen" von Sasha Waltz & Guests mit Rimini Protokoll;'
+foto: Bernd Uhlig
+bilder:
+  - datei: /news/archiv/2026/tanznetzdresden-tanzplattform-deutschland-2026-spiegelneuronen-sasha-waltz-rimini.webp
+    alt: ""
+:::
 
 ### Das Programm der Tanzplattform 2026
 

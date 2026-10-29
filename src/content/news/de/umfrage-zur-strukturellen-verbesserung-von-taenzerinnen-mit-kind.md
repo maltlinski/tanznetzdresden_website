@@ -3,6 +3,7 @@ title: Umfrage zur strukturellen Verbesserung von Tänzerinnen mit Kind
 date: 2021-09-20
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/juliane-bauer-tanznetzdresden-tndd-umfrage-taenzerinnen-kind-2021-e1632125285789.webp
 teaser: Juliane Bauer studierte Bühnentanz an der Palucca Hochschule für Tanz Dresden. Mit Abschluss ihres Diploms erhielt Sie das Ester-Arnhold-Seligmann Stipendium.
 ---
 

@@ -3,6 +3,7 @@ title: Ausschreibung für POP UP 2023 gestartet / Call for proposals for POP UP 
 date: 2023-01-25
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetzdresden-pop-up-logo-quer-2022-scaled-e1674640375400.webp
 teaser: Auch 2023 soll und wird es wieder die beliebten POP UP-Formate des TanzNetzDresden geben. Um ganz genau zu sein, sind es drei Termine, die für dieses Jahr geplant sind. Dafür können sich ab sofort und bis zum 12.
 ---
 
@@ -22,7 +23,7 @@ Ein Info ZOOM für alle ausgewählten POP UPs planen wir 17.03.2023 um 10Uhr - 
 
 p.s.: Dieses Jahr gibt es das Angebot, dass eine POP UP-Veranstaltung am 27.04.2023  im Rahmen der [Tanzwoche Dresden](http://www.tanzwoche.de/2020tw/index.php) in der Studiobühne/Landesbühne Sachsen stattfindet. Bitte schreibt in eure Einreichung, wenn ihr daran interessiert seid!
 
-Alle weiteren Informationen zur Ausschreibung und zum POP UP-Format als PDF findet ihr in gebündelter Form **hier** und **hier**.
+Alle weiteren Informationen zur Ausschreibung und zum POP UP-Format als PDF findet ihr in gebündelter Form **[hier](/news/archiv/dateien/2023/ausschreibung-pop-up-2023.pdf)** und **[hier](/news/archiv/dateien/2023/uebersicht-pop-up-formate-2023.pdf)**.
 
 - Mehr Information über POP UP gibt es außerdem unter  
     [tanznetzdresden.de/pop-up](/#formate)
@@ -41,7 +42,7 @@ On the other hand, if you would like to support the POP UP working group in the 
 
 p.s.: This year there is the offer that a POP UP event will take place on 27.04.2023 as part of the [Tanzwoche Dresden](http://www.tanzwoche.de/2020tw/index.php) at the Studiobühne/Landesbühne Sachsen. Please write in your submission if you are interested!
 
-You can find all further information about the call for proposals and for the POP UP format as a PDF in bundled form **here.**
+You can find all further information about the call for proposals and for the POP UP format as a PDF in bundled form **[here](/news/archiv/dateien/2023/popupenglisch2023.pdf).**
 
 - More information about POP UP can be also found under  
     [tanznetzdresden.de/pop-up](/#formate)

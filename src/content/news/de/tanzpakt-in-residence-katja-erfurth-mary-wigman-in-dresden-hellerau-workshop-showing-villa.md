@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Katja Erfurth »Mary Wigman in Dresden-Hellerau
 date: 2025-02-12
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2025/katjaerfurth-cvolkermetzler-2560x1707-1.webp
 teaser: Im Rahmen von TANZPAKT in residence arbeitet Katja Erfurth im Januar und Februar dieses Jahres hinweg als Residentin in der villa/wigman.
 ---
 
@@ -48,15 +49,28 @@ Weitere Informationen gibt es unter folgendem Link:
 
 ## Über Katja Erfurth
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2025/frauohneufer7-cvolkermetzler-1920x1280-1.webp
+    alt: ""
+:::
+
 Nach dem Tanzstudium an der Palucca Schule Dresden war Katja Erfurth im Ballettensemble der Sächsischen Staatsoper Dresden engagiert. Seit 1997 ist sie freiberuflich als Tänzerin und Choreographin tätig. Als Vorstandsvorsitzende des Vereins „Villa Wigman für Tanz“ engagiert sie sich für die Nutzung der ehemaligen Wigman-Schule als Produktionsort für die Freien Darstellenden Künste. Gemeinsam mit Julia Amme und Josefine Wosahlo ist sie im Leitungsteam der villa\\wigman tätig. 2020 erhielt sie den Kunstpreis der Landeshauptstadt Dresden.
 
-**Mehr zu Katja Erfurth gibt es unter den folgenden Links:  
-**
+**Mehr zu Katja Erfurth gibt es unter den folgenden Links:**
 
 [Website](https://katja-erfurth.de/)  
 [Instagram](https://www.instagram.com/katja_erfurth/)
 
 ## Über villa /wigman
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-villa-wigman-ausschreibung-geschaeftsfuehrung-2023-e1681244326818.webp
+    alt: ""
+:::
 
 Der Verein Villa Wigman für Tanz ist eine Initiative der Freien Tanzschaffenden und weiterer Unterstützer:innen in Dresden. Sein erklärtes Ziel war und ist es, die ehemalige Wirkungsstätte der Tänzerin und Choreographin Mary Wigman, Bautzner Straße 107 in Dresden, zu erhalten und den kulturhistorisch wertvollen Ort als Proben-, Produktions- und Vermittlungszentrum für den zeitgenössischen Tanz und weiterer Darstellender Künste zu betreiben. Der Verein Villa Wigman für Tanz umfasst mittlerweile über 60 Mitglieder, vor allem Tanz-, Theater- und anderweitig Kunstschaffende.
 

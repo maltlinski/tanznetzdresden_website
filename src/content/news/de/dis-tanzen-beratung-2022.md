@@ -3,6 +3,7 @@ title: TanzNetzDresden berät im August und September wieder im Rahmen von DIS-T
 date: 2022-08-23
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-dis-tanzen-beratung-wiebke-bickhardt-2022-e1661281811981.webp
 teaser: Wir freuen uns, mitteilen zu können, dass das TanzNetz Dresden im August und September 2022 erneut mit dem Dachverband Tanz kooperiert und wir abermals im Rahmen der fünften Auflage des …
 ---
 
@@ -43,3 +44,10 @@ Mehr Informationen gibt es unter
 [www.dis-tanzen.de](http://www.dis-tanzen.de/) & [www.dachverband-tanz.de](http://www.dachverband-tanz.de/)
 
 Foto: Filmstill aus dem Trailer zum DIS-TANZEN Festival 2022 (Quelle: [YouTube](https://youtu.be/ZCDFkdO5GJ8))
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/bkm-office-farbe-de.webp
+    alt: ""
+:::

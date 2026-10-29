@@ -3,12 +3,19 @@ title: »Die Kunst, viele zu bleiben« • COME TOGETHER auf dem Dresdner Altmar
 date: 2024-08-20
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-fonds-darstellende-kuenste-come-together-2024-august-e1724154574586.webp
 teaser: Der Fonds Darstellende Künste realisiert gemeinsam mit Partner:innen aus der vielgestaltigen Landschaft der Freien Darstellenden Künste bundesweit Foren an neun Stationen – mit Kunst, Aktion und Debatte.
 ---
 
 *Der Fonds Darstellende Künste realisiert gemeinsam mit Partner:innen aus der vielgestaltigen Landschaft der Freien Darstellenden Künste bundesweit Foren an neun Stationen – mit Kunst, Aktion und Debatte. Seit Mai ist der Theater-Truck unterwegs mit Stopps in Berlin, Leipzig, Düsseldorf, Bitterfeld-Wolfen, Potsdam, Erfurt (16. + 17. August) und Weimar (24. + 25. August) und einem vielseitigen Programm rund um Kunst, Freiheit und Demokratie. Alles zum geplanten Programm am 28. August auf dem Altmarkt in Dresden gibt es im heutigen Blog-Beitrag.*
 
 Folgendes lassen die Macher:innen für den 28. August 2024 und das geplante Programm von COME TOGETHER im Vorfeld der Veranstaltung verlauten: »Zum Finale laden wir unter dem Motto COME TOGETHER gemeinsam mit dem Europäischen Zentrum der Künste HELLERAU, dem Zirkustheater-Festival des Societaetstheaters und dem Zentralwerk e.V. am 28. August auf den Dresdener Altmarkt zu einem großen Fest der Kunst ein. Zwischen einem den öffentlichen Raum aktivierenden Chor und den Fahrrad-Akrobat\*innen der französischen Compagnie La Bande à Tyrex feiern wir im Vorfeld der anstehenden Wahlen die Gemeinschaft und den Zusammenhalt (der Vielen).«
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/240311-fd-foren-webkachel-1200x600-1.webp
+    alt: ""
+:::
 
 ## COME TOGETHER - Das Programm
 
@@ -103,6 +110,13 @@ Ein Link zum Live-Stream „Unser wunderschönes Sachsen“ wird zeitnah zur Ver
 
 Das ausführliche Programm ist auf der Homepage des Fonds unter folgendem Link zu finden:  
 [fonds-daku.de/events-und-diskurs/die-kunst-viele-zu-bleiben/dresden](https://www.fonds-daku.de/events-und-diskurs/die-kunst-viele-zu-bleiben/dresden/)
+
+::: bilder
+text: Screenshot
+bilder:
+  - datei: /news/archiv/2024/bildschirmfoto-2024-08-20-um-13-30-10.webp
+    alt: ""
+:::
 
 ## TanzNetzDresden unterstützt Petition
 

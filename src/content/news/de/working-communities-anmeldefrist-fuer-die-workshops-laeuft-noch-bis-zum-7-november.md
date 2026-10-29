@@ -3,6 +3,7 @@ title: "WORKING COMMUNITIES: Anmeldefrist für die Workshops läuft noch bis zum
 date: 2021-11-03
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetzdresden-working-communities-grafik-2021-e1635950502164.webp
 teaser: Vom 11. bis zum 13. November 2021 finden sowohl das Jubiläum des TanzNetzDresden als auch die Workshops von WORKING COMMUNITIES statt. Die Anmeldefrist für die drei Workshops läuft noch bis zum 7. November 2021.
 ---
 
