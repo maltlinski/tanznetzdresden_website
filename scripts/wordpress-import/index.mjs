@@ -2,11 +2,12 @@
 /**
  * Beiträge der alten WordPress-Website als News übernehmen (einmalige Migration, docs/wordpress-import.md).
  *
- *   node scripts/wordpress-import/index.mjs <export.xml> [--medien <medien.csv>] [--ohne-laden] [--cache <ordner>]
+ *   node scripts/wordpress-import/index.mjs <export.xml> [--medien <medien.csv>] [--uploads <ordner>] [--ohne-laden] [--cache <ordner>]
  *
  * - export.xml: WordPress → Werkzeuge → Daten exportieren → Beiträge
  * - medien.csv: Medienliste (Export-Plugin) mit Alternativtexten und Bildunterschriften (optional)
- * - --ohne-laden: keine Downloads, nur der Zwischenspeicher (Standard .cache/wordpress/)
+ * - --uploads: entpackter Ordner wp-content/uploads der alten Website (statt Download)
+ * - --ohne-laden: keine Downloads, nur --uploads und der Zwischenspeicher (Standard .cache/wordpress/)
  *
  * Schreibt (und ersetzt dabei alle bisherigen Datei-Beiträge):
  *   src/content/news/de|en/*.md, src/assets/news/, public/news/archiv/,
@@ -101,7 +102,7 @@ const nachSlug = new Map(weiter);
 
 // ---------- Medien ----------
 const laden = !args.includes('--ohne-laden');
-const m = new Medien({ wurzel: WURZEL, cache: resolve(opt('--cache') ?? join(WURZEL, '.cache/wordpress')), laden });
+const m = new Medien({ wurzel: WURZEL, cache: resolve(opt('--cache') ?? join(WURZEL, '.cache/wordpress')), laden, uploads: opt('--uploads') ? resolve(opt('--uploads')) : null });
 const quelleVon = (src) => {
   if (!src) return null;
   let abs;

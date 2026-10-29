@@ -6,10 +6,11 @@
  *   (schon fertig verkleinert, damit der Build nicht hunderte Fotos umrechnen muss)
  * - PDFs → public/news/archiv/dateien/<name>.pdf
  *
- * Geladen wird mit curl (nutzt einen eingestellten Proxy); Originale landen im Zwischenspeicher und werden nur einmal
- * geladen. Fehlt eine Datei, bleibt sie weg und steht im Bericht.
+ * Quelle: der Ordner wp-content/uploads (z. B. vom Webhoster als ZIP, Option --uploads), sonst Download mit curl
+ * (nutzt einen eingestellten Proxy). Downloads landen im Zwischenspeicher und werden nur einmal geladen.
+ * Fehlt eine Datei, bleibt sie weg und steht im Bericht.
  */
-import { existsSync, mkdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, readdirSync, statSync } from 'node:fs';
 import { execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { dirname, join, extname, basename } from 'node:path';
@@ -20,8 +21,9 @@ import { adresse } from './zuordnen.mjs';
 const exec = promisify(execFile);
 
 export class Medien {
-  constructor({ wurzel, cache, laden = true }) {
+  constructor({ wurzel, cache, laden = true, uploads = null }) {
     this.wurzel = wurzel;
+    this.uploads = uploads ? uploadsOrdner(uploads) : null;
     this.cache = cache;
     this.laden = laden;
     this.namen = new Set();
@@ -29,10 +31,26 @@ export class Medien {
     this.fehler = new Map();
   }
 
+  /** Datei im Ordner uploads: Original, sonst „-scaled“, sonst die größte Fassung (name-1024x768.jpg) */
+  lokal(url) {
+    const rel = decodeURIComponent(new URL(url).pathname).match(/uploads\/(.+)$/)?.[1];
+    if (!this.uploads || !rel) return null;
+    const voll = join(this.uploads, rel);
+    if (existsSync(voll)) return voll;
+    const ext = extname(rel), stamm = basename(rel, ext), dir = dirname(voll);
+    if (existsSync(join(dir, `${stamm}-scaled${ext}`))) return join(dir, `${stamm}-scaled${ext}`);
+    if (!existsSync(dir)) return null;
+    const re = new RegExp(`^${stamm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}-(\\d+)x\\d+${ext.replace('.', '\\.')}$`, 'i');
+    const groesste = readdirSync(dir).map((f) => [f, Number(re.exec(f)?.[1] ?? 0)]).filter(([, w]) => w).sort((a, b) => b[1] - a[1])[0];
+    return groesste ? join(dir, groesste[0]) : null;
+  }
+
   async holen(url) {
+    const hier = this.lokal(url);
+    if (hier) return hier;
     const datei = join(this.cache, createHash('sha1').update(url).digest('hex').slice(0, 16) + extname(new URL(url).pathname).toLowerCase());
     if (existsSync(datei) && statSync(datei).size > 0) return datei;
-    if (!this.laden) throw new Error('nicht im Zwischenspeicher (Laden ausgeschaltet)');
+    if (!this.laden) throw new Error(this.uploads ? 'nicht im Ordner uploads' : 'nicht im Zwischenspeicher (Laden ausgeschaltet)');
     mkdirSync(this.cache, { recursive: true });
     await exec('curl', ['-sSfL', '--retry', '2', '--max-time', '120', '-o', datei, url]);
     return datei;
@@ -87,4 +105,14 @@ export class Medien {
     await bild.clone().resize({ width: 800, height: 800, fit: 'inside', withoutEnlargement: true }).webp({ quality: 78 }).toFile(`${voll}-800.webp`);
     return { pfad: `/news/archiv/${rel}.webp`, breite: gross.width, hoehe: gross.height };
   }
+}
+
+/** Ordner mit den Jahresordnern (2021/, 2022/ …) finden: uploads selbst, wp-content/uploads oder eine Ebene tiefer */
+function uploadsOrdner(start) {
+  const istUploads = (d) => existsSync(d) && readdirSync(d).some((f) => /^\d{4}$/.test(f) && statSync(join(d, f)).isDirectory());
+  const suche = [start, join(start, 'uploads'), join(start, 'wp-content/uploads')];
+  for (const d of existsSync(start) ? readdirSync(start) : []) suche.push(join(start, d), join(start, d, 'uploads'), join(start, d, 'wp-content/uploads'));
+  const treffer = suche.find(istUploads);
+  if (!treffer) throw new Error(`Kein uploads-Ordner mit Jahresordnern in ${start}`);
+  return treffer;
 }

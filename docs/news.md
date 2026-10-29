@@ -197,7 +197,9 @@ node scripts/wordpress-import/index.mjs export.xml --medien medien.csv
 ```
 
 `export.xml` aus *Werkzeuge → Daten exportieren → Beiträge*, `medien.csv` (freiwillig) aus dem Medien-Export mit
-Alternativtexten. Geladen wird von der alten Website, die dafür noch erreichbar sein muss. Originale landen in
+Alternativtexten. Geladen wird von der alten Website, die dafür noch erreichbar sein muss. Alternativ den Ordner
+`wp-content/uploads` (z. B. vom Webhoster als ZIP) entpacken und mit `--uploads <ordner>` angeben; fehlt dort ein
+Original, nimmt das Skript `-scaled` oder die größte vorhandene Fassung. Originale landen in
 `.cache/wordpress/` (nicht im Repository) und werden nur einmal geladen. Mit `--ohne-laden` nur aus diesem
 Zwischenspeicher.
 
