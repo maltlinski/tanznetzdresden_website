@@ -64,6 +64,9 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 - [ ] **Termine**: Platzhalter aus dem Entwurf durch echte ersetzen (*Intern → Kalender*), alte löschen.
 - [ ] **Orte** (*Kooperationen → Orte*): Adressen prüfen und ergänzen (TENZA Schmiede, Palucca, Semperoper, Staatsoperette,
   HELLERAU fehlen noch). Der Tanzkalender zeigt sie unter dem Ort eines Termins.
+- [ ] **Alte Beiträge** (WordPress, docs/news.md#alte-beiträge-aus-wordpress): Bericht `docs/wordpress-import.md`
+      durchsehen (Rubriken, Fristen, Hinweise), Bildbeschreibungen der wichtigsten Titelbilder ergänzen. **Bilder und
+      PDFs übernehmen, solange die alte Website noch läuft** – danach gibt es sie nicht mehr.
 - [ ] **KEEP UP**: Dozent:innen einplanen, Beschreibungen anstoßen (*Intern → Kalender*, *Meine Trainings*).
 - [ ] **Fotos**: Formate *Welttanztag* und *Bodies & Textiles* nutzen fremde Fotos – eigene ergänzen.
 - [ ] **Kooperationen** (`src/content/kooperation/`): Partnerliste und Rollen mit den Partnern abstimmen,
@@ -79,6 +82,8 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 **Website**
 
 - [ ] Domain und HTTPS (docs/deployment.md); die Adresse kommt aus `SITE_URL` bzw. `astro.config.mjs`.
+      Beim Umzug der Domain leiten die alten Beitragsadressen (`/<beitrag>/`) automatisch auf `/news/<beitrag>/`
+      weiter (`src/content/news/weiterleitungen.json`).
 - [ ] **Workflow von Hand übernehmen**: `.github/workflows/deploy.yml` reagiert noch nicht auf `news-updated`. Die
       Fassung aus `docs/github-workflows/deploy.yml` hineinkopieren (docs/github-workflows/README.md), sonst
       erscheinen News aus dem internen Bereich erst nachts.

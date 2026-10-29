@@ -54,9 +54,19 @@
 }
 .ab__text h3 { font-size: 22px; }
 .ab__text h2::before { content: ''; flex: none; width: 10px; height: 10px; background: var(--magenta); }
-.ab__text a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
+.ab__text a { overflow-wrap: anywhere; color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
 .ab__text a:hover { color: var(--magenta); }
 .ab__text strong { font-weight: 700; color: var(--purple); }
+/* E-Mail-Adresse im Text (src/lib/news-email.ts): Knopf wie <ProtectedEmail>, nach dem Klick ein Link */
+.ab__text .protected-email { display: inline; }
+.ab__text .protected-email__btn {
+  display: inline-flex; align-items: baseline; padding: 0 0 1px; background: none; border: 0; border-bottom: 1.5px solid var(--magenta);
+  color: var(--purple); font: inherit; cursor: pointer; text-align: left;
+}
+.ab__text .protected-email__btn:hover { color: var(--magenta); }
+.ab__text .protected-email__btn[aria-busy='true'] { cursor: progress; opacity: 0.7; }
+.ab__text .protected-email__icon { flex: none; width: 7px; height: 7px; margin-right: 8px; background: var(--magenta); }
+.ab__text .protected-email__link { word-break: break-all; }
 .ab__text ul, .ab__text ol { margin: 0 0 1.3em; padding-left: 1.2em; }
 .ab__text ul li::marker { color: var(--magenta); }
 /* Zitat: „> Text“, darunter „> — Name“ */

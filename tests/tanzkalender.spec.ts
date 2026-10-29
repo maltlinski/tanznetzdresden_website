@@ -1,11 +1,15 @@
 /**
  * Tanzkalender (/termine/, Entwurf design/entwuerfe/2026-10-kalender/): Liste, Mini-Monat, Monatsansicht,
- * Filter, Suche, Kalenderdateien. Platzhalter-Termine Okt.–Dez. 2026, KEEP UP aus wochen.yaml.
+ * Filter, Suche, Kalenderdateien. Platzhalter-Termine Okt.–Dez. 2026, KEEP UP aus wochen.yaml, Fristen aus den News.
  */
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { readFileSync } from 'node:fs';
 import { buendeln, ics, monate, monatPlus, passt, raster, type KTermin } from '../src/lib/tanzkalender-modell';
+import { newsDateien } from './news-daten';
+
+/** Ausschreibung mit der spätesten Frist (Beiträge aus der alten Website, tests/news-daten.ts) */
+const ausschreibung = newsDateien().filter((p) => p.deadline && !p.draft).sort((a, b) => b.deadline!.localeCompare(a.deadline!))[0];
 
 async function oeffnen(page: Page, pfad = '/termine/') {
   await page.clock.install({ time: new Date('2026-10-12T08:00:00+02:00') });
@@ -48,16 +52,11 @@ test('Liste: Filter, Suche, leere Auswahl, Vergangene, Frist aus einer Ausschrei
   const l = liste(page);
   const chips = page.locator('[data-tk-chips]');
   await expect(chips.getByRole('button', { name: /^Bühne/ })).toContainText('2');
-  // Frist der Ausschreibung (News mit Bewerbungsfrist)
-  const frist = l.locator('[data-ev="frist-open-call-pop-up-2027"]');
-  await expect(frist.locator('.tk-zeit')).toHaveText('Frist');
-  await frist.getByRole('button').click();
-  await expect(frist.getByRole('link', { name: 'Zur Ausschreibung →' })).toHaveAttribute('href', /\/news\/open-call-pop-up-2027\/$/);
-
+  const frist = l.locator(`[data-ev="frist-${ausschreibung.id}"]`);
   await chips.getByRole('button', { name: /^Bühne/ }).click();
   await expect(chips.getByRole('button', { name: /^Bühne/ })).toHaveAttribute('aria-pressed', 'true');
   await expect(l.locator('.tk-ev .badge')).toHaveText(['Bühne', 'Bühne']);
-  await expect(frist).toHaveCount(0);
+  await expect(l.locator('[data-ev^="frist-"]')).toHaveCount(0);
 
   await page.getByRole('searchbox', { name: 'Termine durchsuchen' }).fill('vision');
   await expect(l.locator('[data-tk-treffer]')).toHaveText('1 Termin ab heute für „vision“');
@@ -71,6 +70,10 @@ test('Liste: Filter, Suche, leere Auswahl, Vergangene, Frist aus einer Ausschrei
   await past.click();
   await expect(l.locator('[data-tk-treffer]')).toHaveText(/^\d+ Termine$/);
   await expect(l.locator('[data-day="2026-09-07"]')).toBeVisible();
+  // Frist einer Ausschreibung (News mit Bewerbungsfrist), hier schon vorbei
+  await expect(frist.locator('.tk-zeit')).toHaveText('Frist');
+  await frist.getByRole('button').click();
+  await expect(frist.getByRole('link', { name: 'Zur Ausschreibung →' })).toHaveAttribute('href', new RegExp(`/news/${ausschreibung.id}/$`));
   await l.getByRole('button', { name: 'Vergangene ausblenden' }).click();
   await expect(l.locator('[data-day="2026-09-07"]')).toHaveCount(0);
 });
@@ -86,8 +89,8 @@ test('Mini-Monat: Tage mit Terminen, Blättern, Klick springt zum Tag', async ({
   await expect(mini.getByRole('button', { name: /^Montag, 12\. Oktober 2026, 1 Termin$/ })).toHaveClass(/is-heute/);
   await page.locator('[data-tk-mini-nach]').click();
   await expect(page.locator('[data-tk-mini-label]')).toHaveText('November 2026');
-  await mini.getByRole('button', { name: /^Sonntag, 15\. November 2026/ }).click();
-  await expect(liste(page).locator('[data-day="2026-11-15"]')).toBeInViewport();
+  await mini.getByRole('button', { name: /^Samstag, 14\. November 2026/ }).click();
+  await expect(liste(page).locator('[data-day="2026-11-14"]')).toBeInViewport();
   // vergangener Tag: blendet Vergangene ein
   await page.locator('[data-tk-mini-vor]').click();
   await page.locator('[data-tk-mini-vor]').click();

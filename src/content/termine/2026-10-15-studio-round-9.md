@@ -10,5 +10,4 @@ category: Diskurs
 teaser: "Showing und moderiertes Gespräch, mit Gästen aus Freiburg und Frankfurt"
 teaser_en: "Showing and moderated talk, with guests from Freiburg and Frankfurt"
 people: [alina-lucifero]
-news: studio-round-9
 ---

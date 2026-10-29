@@ -153,6 +153,54 @@ Build-Log warnt.
 Englisch ist überall freiwillig. Fehlt ein englisches Feld, steht auf der englischen Seite das deutsche. Fehlt der
 englische Haupttext, steht über dem deutschen Text der Hinweis „This post is only available in German so far.“
 
+## Alte Beiträge aus WordPress
+
+Die Beiträge der alten Website (2021–2026) sind als Dateien übernommen: `src/content/news/de/` (englische Fassungen
+in `en/`). Sie lassen sich wie alle Datei-Beiträge im CMS oder direkt bearbeiten. Der Bericht
+[wordpress-import.md](wordpress-import.md) listet jeden Beitrag mit Rubrik, Frist, englischer Fassung und Hinweisen
+(fehlende Bilder, entfernte Links); er ist zum Durchsehen gedacht.
+
+**So wurde übernommen** (`scripts/wordpress-import/`, einmalige Migration, kann beliebig oft wiederholt werden):
+
+- **Text:** Absätze, Zwischentitel, Listen, Zitate, Fett/Kursiv und Links wie im Original. Reste des alten
+  Seitenbaukastens und Shortcodes fallen weg. Video-Adressen (YouTube, Vimeo) werden Links „Video auf … ansehen ↗“,
+  eingebettet würde der Dienst ohne Einwilligung laden.
+- **Förderhinweis** am Ende (nach der letzten Trennlinie, „Gefördert durch …“) wird ein Hinweiskasten.
+- **Auf einen Blick:** Stehen am Stück beschriftete Zeilen wie „**Datum:** …“, „**Ort:** …“, „**Eintritt:** …“
+  im Text, wandern sie in den Kasten neben dem Text.
+- **Teaser:** Auszug aus WordPress, sonst der erste Absatz (gekürzt auf etwa 220 Zeichen).
+- **Rubrik** am Titel erkannt: Ausschreibung (Open Call, Bewerbung, Deadline …), Training (KEEP UP, Workshop …),
+  Verein (Vorstand, Jubiläum …), Rückblick, Stimme (Interview, Zitat als Titel), sonst Netzwerk.
+  **Frist** bei Ausschreibungen aus dem Titel oder der Zeile „Deadline/Frist“.
+- **Englisch:** Beiträge mit dem Schlagwort „english“, die auf Englisch geschrieben sind und ein deutsches
+  Gegenstück (höchstens vier Tage auseinander, ähnlicher Titel oder gleiches Titelbild) haben, sind dessen englische
+  Fassung. Gemischte Beiträge (deutsch und englisch in einem) bleiben, wie sie sind.
+- **Bilder:** Titelbild nach `src/assets/news/<jahr>/` (Astro erzeugt die Größen), Bilder im Text und Galerien
+  fertig verkleinert nach `public/news/archiv/<jahr>/` (1600 px und 800 px, Maße in
+  `src/content/news/archiv-bilder.json`), damit der Build nicht hunderte Fotos umrechnet. Bildbeschreibung und
+  Bildunterschrift aus der Mediathek der alten Website, „Foto: …“ wird Fotonachweis. Das Titelbild steht nicht noch
+  einmal im Text.
+- **PDFs** aus dem Text nach `public/news/archiv/dateien/`.
+- **E-Mail-Adressen** im Text werden beim Build geschützt wie `<ProtectedEmail>` (`src/lib/news-email.ts`), das gilt
+  für alle News.
+- **Links** auf andere Beiträge zeigen auf deren neue Adresse, Links auf alte Seiten auf die passende neue Seite
+  (Tabelle `SEITEN` im Skript), unbekannte alte Seiten werden zu Text.
+- **Alte Adressen** (`tanznetzdresden.de/<beitrag>/`) leiten auf den Beitrag weiter: `src/pages/[...alt].astro` mit
+  der Liste `src/content/news/weiterleitungen.json`. Die Seiten haben `noindex` und stehen nicht in der Sitemap.
+- E-Mail-Adressen der WordPress-Konten werden nicht übernommen. Autor:in ist „TanzNetzDresden“ (Konto „Presse“) oder
+  der Anzeigename.
+
+**Noch einmal übernehmen** (z. B. mit einem neueren Export): ersetzt **alle** Datei-Beiträge und Archivbilder.
+
+```bash
+node scripts/wordpress-import/index.mjs export.xml --medien medien.csv
+```
+
+`export.xml` aus *Werkzeuge → Daten exportieren → Beiträge*, `medien.csv` (freiwillig) aus dem Medien-Export mit
+Alternativtexten. Geladen wird von der alten Website, die dafür noch erreichbar sein muss. Originale landen in
+`.cache/wordpress/` (nicht im Repository) und werden nur einmal geladen. Mit `--ohne-laden` nur aus diesem
+Zwischenspeicher.
+
 ## Sofort online statt nachts
 
 Nach Veröffentlichen, Offline nehmen und Löschen stößt der Editor über die Funktion `inhalte` einen Neubau an
@@ -196,6 +244,8 @@ Die erste legt an:
 | Stile des Editors und der Mediathek | `src/styles/news-editor.css`, `src/styles/mediathek.css` |
 | Vorschau | `src/pages/intern/news/vorschau/` |
 | Startseiten-Abschnitt | `src/components/sections/Demnaechst.astro` |
+| E-Mail-Adressen im Text schützen | `src/lib/news-email.ts` |
+| Import der alten Website, Weiterleitungen | `scripts/wordpress-import/`, `src/pages/[...alt].astro` |
 | Übersicht / Beitrag | `src/views/NewsView.astro`, `src/views/NewsArticleView.astro` |
 | Editor | `src/pages/intern/news/bearbeiten/` |
 | Countdown im Browser | `src/scripts/deadline.ts` |

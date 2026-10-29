@@ -149,11 +149,14 @@ const jsonLd = {
 <script>
   import { introText } from '../scripts/intro-text';
   import { initLightbox } from '../scripts/lightbox';
+  import { initProtectedEmails } from '../scripts/protected-email';
   import '../scripts/deadline';
 
   const article = document.querySelector<HTMLElement>('[data-article]');
   introText(article?.querySelector('.ah') ?? null);
   if (article) initLightbox(article);
+  // E-Mail-Adressen im Text (src/lib/news-email.ts)
+  if (article) initProtectedEmails(article);
 
   // Lesefortschritt als Magenta-Linie unter dem Header
   const header = document.querySelector<HTMLElement>('[data-header]');

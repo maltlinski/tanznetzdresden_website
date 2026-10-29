@@ -13,6 +13,8 @@ import type { Lang } from './i18n';
 import { newsCategories } from '../content.config';
 import { renderMarkdown } from './markdown';
 import { ASSET, medienAnwenden, type MedienAngaben } from './news-bloecke';
+import { emailsSchuetzen } from './news-email';
+import archivBilder from '../content/news/archiv-bilder.json';
 
 import type { NewsCategory } from './news-format';
 export * from './news-format';
@@ -196,8 +198,14 @@ function fromRemote(r: RemoteNews, lang: Lang, medien: Map<string, MedienAngaben
   };
 }
 
-/** Alle veröffentlichten Beiträge einer Sprache, neueste zuerst. */
-export async function getNews(lang: Lang): Promise<NewsPost[]> {
+/** Alle veröffentlichten Beiträge einer Sprache, neueste zuerst. Beim Build nur einmal je Sprache berechnet. */
+const newsCache = new Map<Lang, Promise<NewsPost[]>>();
+export function getNews(lang: Lang): Promise<NewsPost[]> {
+  if (import.meta.env.DEV) return newsLaden(lang);
+  if (!newsCache.has(lang)) newsCache.set(lang, newsLaden(lang));
+  return newsCache.get(lang)!;
+}
+async function newsLaden(lang: Lang): Promise<NewsPost[]> {
   const [de, enAll, remote, medien] = await Promise.all([
     getCollection('news', ({ data }) => !data.draft),
     lang === 'en' ? getCollection('newsEn') : Promise.resolve([] as En[]),
@@ -217,7 +225,7 @@ export async function getNews(lang: Lang): Promise<NewsPost[]> {
   // Datum in der Zukunft = geplant: erscheint mit dem ersten Build an diesem Tag (nächtlich)
   const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
   const sichtbar = posts.filter((p) => p.date <= heute).sort((a, b) => b.date.localeCompare(a.date) || a.id.localeCompare(b.id));
-  await Promise.all(sichtbar.map(async (p) => (p.html = await bilderOptimieren(p.html, p.id))));
+  await Promise.all(sichtbar.map(async (p) => (p.html = await emailsSchuetzen(await bilderOptimieren(p.html, p.id), lang))));
   return sichtbar.map((p, i) => ({ ...p, nr: sichtbar.length - i }));
 }
 
@@ -237,12 +245,30 @@ async function bildVersionen(url: string | ImageMetadata) {
   ]);
   return { klein, gross };
 }
+/**
+ * Bilder aus der alten Website (scripts/wordpress-import/): liegen schon verkleinert unter public/news/archiv/
+ * (1600 px und -800), Maße in src/content/news/archiv-bilder.json – der Build muss sie nicht umrechnen.
+ */
+const ARCHIV = /^(?:.*?)(\/news\/archiv\/.+)\.webp$/;
+function archivBild(url: string) {
+  const m = ARCHIV.exec(url);
+  const masse = m && (archivBilder as Record<string, [number, number]>)[`${m[1]}.webp`];
+  if (!m || !masse) return null;
+  const voll = url, klein = url.replace(/\.webp$/, '-800.webp');
+  const [w, h] = masse;
+  const f = Math.min(1, 800 / w, 800 / h);
+  const kw = Math.round(w * f), kh = Math.round(h * f);
+  return (rest: string) =>
+    `<a class="nb__item" href="${voll}" data-lightbox><img src="${klein}" srcset="${klein} ${kw}w, ${voll} ${w}w" width="${kw}" height="${kh}"${rest}></a>`;
+}
 async function bilderOptimieren(html: string, id: string): Promise<string> {
   const treffer = [...html.matchAll(NB)];
   if (!treffer.length) return html;
   const ersatz = await Promise.all(
     treffer.map(async ([ganz, href, rest]) => {
       const url = href.replace(/&amp;/g, '&');
+      const archiv = archivBild(url);
+      if (archiv) return archiv(rest);
       const asset = url.match(ASSET)?.[1];
       if (!/^https:\/\//.test(url) && !asset) return ganz;
       if (!versionen.has(url)) {

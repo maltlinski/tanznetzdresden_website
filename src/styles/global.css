@@ -37,7 +37,7 @@
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header-h); }
 /* Lenis (src/scripts/smooth-scroll.ts) scrollt selbst – das Browser-Gleiten würde dagegen arbeiten */
 html.lenis { scroll-behavior: auto; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); hyphens: auto; }
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); hyphens: auto; overflow-wrap: break-word; }
 a { color: var(--magenta); text-decoration: none; }
 a:hover { color: var(--purple); }
 ::selection { background: var(--magenta); color: #fff; }
@@ -133,7 +133,7 @@ button { font: inherit; }
 }
 .chip:hover { border-color: var(--magenta); }
 .chip[aria-pressed='true'] { background: var(--purple); color: #fff; }
-.chip__count { opacity: 0.6; }
+.chip__count { opacity: 0.75; } /* 0.6 lag knapp unter 4,5 : 1 Kontrast */
 
 /* ---------- Section heads ---------- */
 .section-head {

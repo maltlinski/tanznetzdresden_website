@@ -267,6 +267,8 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
     font-family: var(--font-display); font-weight: 800; font-size: clamp(32px, 3.8vw, 56px); line-height: 0.98;
     letter-spacing: -0.03em; margin: 0; color: inherit; transition: color var(--dur-base); text-wrap: balance;
   }
+  /* lange Titel und Teaser (Beiträge der alten Website) kürzen, damit die Bühne so hoch bleibt wie überall */
+  .ni__lead-title, .ni__lead-teaser { display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 3; line-clamp: 3; overflow: hidden; }
   .ni__lead-teaser { margin: 0; max-width: 520px; font-size: 16.5px; line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
   .ni__lead-more {
     align-self: flex-start; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em;

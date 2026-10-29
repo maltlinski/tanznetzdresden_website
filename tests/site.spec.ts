@@ -1,13 +1,20 @@
 import { test, expect, type Page } from '@playwright/test';
+import { readFileSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
 import { supabase } from '../src/settings/supabase';
+import { galerie, newsDateien, veroeffentlicht } from './news-daten';
+
+// Beiträge aus der alten Website: neuester, eine Ausschreibung, einer mit englischer Fassung (tests/news-daten.ts)
+const neuester = veroeffentlicht()[0];
+const ausschreibung = veroeffentlicht().find((p) => p.deadline) ?? neuester;
+const englisch = newsDateien('en').find((e) => veroeffentlicht().some((p) => p.id === e.id))!;
 
 const pages = [
-  '/', '/termine/', '/termine/2026-10-15-studio-round-9/', '/profitraining/', '/news/', '/news/studio-round-9/', '/news/open-call-pop-up-2027/', '/news/stimme-rika-yotsumoto/', '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
+  '/', '/termine/', '/termine/2026-10-15-studio-round-9/', '/profitraining/', '/news/', `/news/${neuester.id}/`, `/news/${ausschreibung.id}/`, '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
   '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/mitglied/pruefen/', '/intern/',
   '/intern/news/', '/intern/news/bearbeiten/', '/intern/redaktion/', '/intern/redaktion/liste/', '/intern/redaktion/eintrag/', '/intern/redaktion/freigaben/',
-  '/en/', '/en/events/', '/en/events/2026-10-15-studio-round-9/', '/en/training/', '/en/news/', '/en/news/neues-koordinationsteam/', '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
+  '/en/', '/en/events/', '/en/events/2026-10-15-studio-round-9/', '/en/training/', '/en/news/', `/en/news/${englisch.id}/`, '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
   '/en/contact/', '/en/partners/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
 ];
 
@@ -188,27 +195,63 @@ test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
   await expect(page.locator('.event')).toContainText(['POP UP']);
 });
 
-test('News: Galerie mit Großansicht und Hinweiskasten, Fotos werden optimiert ausgeliefert', async ({ page }) => {
-  await page.goto('/news/keep-up-herbst/');
+test('News: Galerie mit Großansicht, Archivbilder in zwei Größen', async ({ page }) => {
+  const p = veroeffentlicht().find((x) => galerie(x));
+  test.skip(!p, 'kein Beitrag mit Galerie (Import ohne Bilder?)');
+  const g = galerie(p!)!;
+  await page.goto(`/news/${p!.id}/`);
   await dismissConsent(page);
-  const g = page.locator('figure.nb--galerie');
-  await expect(g.locator('img')).toHaveCount(4);
-  await expect(g.locator('img').first()).toHaveAttribute('srcset', /\/_astro\/.+\.webp/);
-  await expect(g.locator('figcaption')).toContainText('Fotos: Archiv TanzNetzDresden');
-  await expect(page.locator('.ab__text .nh')).toContainText('Gut zu wissen');
-  await g.locator('a').nth(1).click();
+  const fig = page.locator('figure.nb--galerie').first();
+  await expect(fig.locator('img')).toHaveCount(g.n);
+  // Bilder der alten Website liegen fertig verkleinert vor (800 px und 1600 px), neue werden beim Build optimiert
+  await expect(fig.locator('img').first()).toHaveAttribute('srcset', /-800\.webp \d+w, .+\.webp \d+w|\/_astro\/.+\.webp/);
+  await expect(fig.locator('img').first()).toHaveAttribute('width', /^\d+$/);
+  if (g.yaml.foto) await expect(fig.locator('figcaption')).toContainText(`Fotos: ${g.yaml.foto}`);
+  await fig.locator('a').nth(1).click();
   const lb = page.getByRole('dialog', { name: 'Foto' });
   await expect(lb).toBeVisible();
-  await expect(lb.locator('.lb__n')).toHaveText('2 von 4');
-  await expect(lb.locator('.lb__cap')).toContainText('Tänzer im Sprung');
+  await expect(lb.locator('.lb__n')).toHaveText(`2 von ${g.n}`);
   await page.keyboard.press('ArrowRight');
-  await expect(lb.locator('.lb__n')).toHaveText('3 von 4');
+  await expect(lb.locator('.lb__n')).toHaveText(`3 von ${g.n}`);
   await page.keyboard.press('Escape');
   await expect(lb).toBeHidden();
-  // englische Fassung mit eigener Bildbeschreibung
-  await page.goto('/en/news/keep-up-herbst/');
-  await expect(page.locator('figure.nb--galerie img').first()).toHaveAttribute('alt', 'A dancer in blue light on stage');
-  await expect(page.locator('figure.nb--galerie figcaption')).toContainText('Photos:');
+});
+
+test('News: Förderhinweis als Kasten, E-Mail-Adressen geschützt, Video als Link', async ({ page }) => {
+  const hinweis = veroeffentlicht().find((x) => /^::: hinweis$/m.test(x.body))!;
+  await page.goto(`/news/${hinweis.id}/`);
+  await expect(page.locator('.ab__text .nh')).toBeVisible();
+
+  const mail = veroeffentlicht().find((x) => /\(mailto:/.test(x.body))!;
+  const adresse = /\(mailto:([^)]+)\)/.exec(mail.body)![1];
+  await page.goto(`/news/${mail.id}/`);
+  // die Adresse steht nicht im HTML, erst der Klick zeigt sie
+  expect(await page.content()).not.toContain(adresse);
+  const knopf = page.locator('.ab__text [data-protected-email] button').first();
+  await knopf.click();
+  await expect(page.locator('.ab__text a[href^="mailto:"]').first()).toBeVisible({ timeout: 15000 });
+
+  const video = veroeffentlicht().find((x) => /\[Video auf (YouTube|Vimeo) ansehen ↗\]/.test(x.body))!;
+  const external: string[] = [];
+  page.on('request', (r) => !r.url().startsWith('http://localhost') && external.push(r.url()));
+  await page.goto(`/news/${video.id}/`);
+  await expect(page.getByRole('link', { name: /^Video auf (YouTube|Vimeo) ansehen ↗$/ }).first()).toHaveAttribute('target', '_blank');
+  expect(external).toEqual([]);
+});
+
+test('Alte Adressen der WordPress-Website leiten auf die neuen weiter', async ({ page, request }) => {
+  const weiter = JSON.parse(readFileSync('src/content/news/weiterleitungen.json', 'utf8')) as Record<string, string>;
+  const [alt, ziel] = Object.entries(weiter).find(([, z]) => z.startsWith('news/'))!;
+  const res = await request.get(`/${alt}/`);
+  expect(res.status()).toBe(200);
+  expect(await res.text()).toContain('<meta name="robots" content="noindex">');
+  await page.goto(`/${alt}/`);
+  await expect(page).toHaveURL(new RegExp(`/${ziel}$`));
+  await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+  // Weiterleitungen stehen nicht in der Sitemap
+  const sitemap = await (await request.get('/sitemap-0.xml')).text();
+  expect(sitemap).not.toContain(`/${alt}/<`);
+  expect(sitemap).toContain(`/${ziel}<`);
 });
 
 /** Kalender der Profitrainings-Seite mit festem Datum (Platzhalter-Termine Okt.–Dez. 2026) */
@@ -288,41 +331,51 @@ test('Kooperationen: Orte in Datei-Reihenfolge, Karte erst nach Klick', async ({
   await expect(page.locator('.venue').nth(2)).toHaveClass(/is-hot/);
 });
 
-test('News: Startseite zeigt Titelthema und offene Ausschreibung, Links führen zum Beitrag', async ({ page }) => {
+test('News: Startseite zeigt Titelthema und offene Ausschreibungen, Links führen zum Beitrag', async ({ page }) => {
+  const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
+  const lead = veroeffentlicht().find((p) => p.image) ?? neuester;
   await page.goto('/');
   const news = page.locator('#news');
   await expect(news.getByRole('heading', { name: 'Aus dem Netz' })).toBeVisible();
-  await expect(news.getByRole('link', { name: /Studio Round #9/ })).toHaveAttribute('href', /\/news\/studio-round-9\/$/);
-  await expect(news.getByText(/Frist 15\. Nov 2026/)).toBeVisible();
+  await expect(news.locator(`a[href$="/news/${lead.id}/"]`).first()).toBeVisible();
+  // offene Ausschreibungen (Frist noch nicht vorbei) stehen mit Frist darunter
+  const offen = veroeffentlicht().filter((p) => p.id !== lead.id && p.deadline && p.deadline >= heute);
+  if (offen.length) await expect(news.getByText(/Frist \d+\./).first()).toBeVisible();
   await news.getByRole('link', { name: 'Alle Beiträge →' }).click();
   await expect(page).toHaveURL(/\/news\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Aus dem');
 });
 
 test('News: Filter zeigt nur die gewählte Kategorie, „Alle“ blendet das Titelthema in der Chronik aus', async ({ page }) => {
+  const alle = veroeffentlicht();
   await page.goto('/news/');
   await dismissConsent(page);
   const posts = page.locator('[data-post]:visible');
-  const total = await page.locator('[data-post]').count();
-  await expect(posts).toHaveCount(total - 1);
+  await expect(page.locator('[data-post]')).toHaveCount(alle.length);
+  await expect(posts).toHaveCount(alle.length - 1);
   await page.getByRole('button', { name: /^Verein/ }).click();
   await expect(page.getByRole('button', { name: /^Verein/ })).toHaveAttribute('aria-pressed', 'true');
-  await expect(posts).toHaveCount(2);
-  await page.getByRole('button', { name: /^Netzwerk/ }).click();
-  await expect(posts.filter({ hasText: 'Studio Round #9' })).toHaveCount(1);
+  await expect(posts).toHaveCount(alle.filter((p) => p.category === 'Verein').length);
+  await page.getByRole('button', { name: /^Training/ }).click();
+  const training = alle.find((p) => p.category === 'Training')!;
+  await expect(posts.filter({ hasText: training.title })).toHaveCount(1);
 });
 
 test('News: englische Seite nutzt die Übersetzung und weist auf fehlende Übersetzungen hin', async ({ page }) => {
-  await page.goto('/en/news/open-call-pop-up-2027/');
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Open call: POP UP spring 2027');
+  await page.goto(`/en/news/${englisch.id}/`);
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText(englisch.title);
   await expect(page.getByText('This post is only available in German so far.')).toHaveCount(0);
   await expect(page.locator('html')).toHaveAttribute('lang', 'en');
   // Sprachumschalter führt zum selben Beitrag
-  await expect(page.locator('.site-header__lang')).toHaveAttribute('href', /\/news\/open-call-pop-up-2027\/$/);
+  await expect(page.locator('.site-header__lang')).toHaveAttribute('href', new RegExp(`/news/${englisch.id}/$`));
+  // ohne englische Fassung: deutscher Text mit Hinweis
+  const nurDeutsch = veroeffentlicht().find((p) => !newsDateien('en').some((e) => e.id === p.id) && / und /.test(p.body))!;
+  await page.goto(`/en/news/${nurDeutsch.id}/`);
+  await expect(page.getByText('This post is only available in German so far.')).toBeVisible();
 });
 
 test('News: RSS-Feeds sind gültig und verlinken die Beiträge', async ({ request }) => {
-  for (const [path, link] of [['/news.xml', '/news/studio-round-9/'], ['/en/news.xml', '/en/news/studio-round-9/']]) {
+  for (const [path, link] of [['/news.xml', `/news/${neuester.id}/`], ['/en/news.xml', `/en/news/${neuester.id}/`]]) {
     const res = await request.get(path);
     expect(res.status()).toBe(200);
     const xml = await res.text();
@@ -490,10 +543,9 @@ test('Startseite: Termine und News führen auf ihre eigene Seite', async ({ page
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(newsTitle);
 });
 
-test('Terminseite: Englisch, Kalenderdatei und passender Beitrag', async ({ page, request }) => {
+test('Terminseite: Englisch und Kalenderdatei', async ({ page, request }) => {
   await page.goto('/en/events/2026-10-15-studio-round-9/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Studio Round #9');
-  await expect(page.getByRole('link', { name: /Studio Round #9: / })).toHaveAttribute('href', /\/en\/news\/studio-round-9\/$/);
   const ics = await request.get('/termine/2026-10-15-studio-round-9.ics');
   expect(ics.status()).toBe(200);
   const body = await ics.text();

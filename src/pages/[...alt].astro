@@ -1,0 +1,30 @@
+---
+/**
+ * Weiterleitungen von Adressen der alten WordPress-Website (tanznetzdresden.de/<beitrag>/) auf die neuen Seiten.
+ * Liste: src/content/news/weiterleitungen.json (erzeugt von scripts/wordpress-import/, docs/news.md).
+ * Statische Seiten gehen vor; die Seiten stehen nicht in der Sitemap (astro.config.mjs).
+ */
+import weiterleitungen from '../content/news/weiterleitungen.json';
+import { href } from '../lib/url';
+
+export function getStaticPaths() {
+  return Object.entries(weiterleitungen as Record<string, string>).map(([alt, ziel]) => ({ params: { alt }, props: { ziel } }));
+}
+const { ziel } = Astro.props;
+const adresse = ziel.startsWith('#') ? href('') + ziel : href(ziel);
+const kanonisch = new URL(adresse, Astro.site).href;
+---
+<!doctype html>
+<html lang="de">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Weitergeleitet</title>
+    <meta name="robots" content="noindex" />
+    <link rel="canonical" href={kanonisch} />
+    <meta http-equiv="refresh" content={`0; url=${adresse}`} />
+  </head>
+  <body>
+    <p>Diese Seite ist umgezogen: <a href={adresse}>{kanonisch}</a></p>
+  </body>
+</html>

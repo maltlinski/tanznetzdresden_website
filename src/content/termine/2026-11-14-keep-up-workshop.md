@@ -12,5 +12,4 @@ timeLabel_en: "11:00–15:00"
 title_en: "KEEP UP · Floorwork workshop"
 people: [aurora-fradella]
 format: keep-up
-news: keep-up-herbst
 ---
