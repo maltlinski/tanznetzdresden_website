@@ -3,6 +3,7 @@ title: "tanz_netzwerk_bremen CONNECTION präsentiert: Hybrid-Workshop mit Jens S
 date: 2023-02-23
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanznetz-bremen-workshop-schoenenberg-jens-2023-e1677146253633.webp
 teaser: Das Projekt tanz\netzwerk\bremen CONNECTION ist die Intensivierung des 2022 begonnenen Austauschs zwischen dem tanz\netzwerk\bremen PROFESSIONAL des Landesverband freie darstellende Künste Bremen, …
 ---
 
@@ -45,3 +46,9 @@ Seitdem arbeitet er als selbständiger Finanz- und Versicherungsberater mit Spez
 *Ein Projekt in Kooperation mit TanzNetzDresden, gefördert durch das Amt für Kultur und Denkmalschutz Dresden und die Kulturstiftung des Freistaates Sachsen\*. \*Die Maßnahme wird aus Steuermitteln auf der Grundlage des von den Abgeordneten des Sächsischen Landtages beschlossenen Haushalts mitfinanziert.*
 
 Header-Foto: [YOU OMA Management GmbH](https://www.you-management.com/DE/aboutDE.html)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/daku-logokombi-hellgrau-05.webp
+    alt: ""
+:::

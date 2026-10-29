@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Amit Abend lädt im September & Oktober zu Show
 date: 2023-09-07
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanzpakt-in-residence-2023-amit-abend-sandro-kopp.webp
 teaser: Im Rahmen von TANZPAKT in residence arbeitet die zeitgenössische deutsch-israelische Tänzerin Amit Abend als Residentin in der villa/wigman und lädt in diesem Zuge im September und Oktober zu einem …
 ---
 

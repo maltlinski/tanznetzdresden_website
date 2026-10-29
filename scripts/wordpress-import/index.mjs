@@ -109,14 +109,17 @@ const quelleVon = (src) => {
   try { abs = new URL(src.replace(/&amp;/g, '&'), basis).href; } catch { return null; }
   if (!eigen(abs) || !/wp-content\/uploads\//.test(abs)) return null;
   const o = originalUrl(abs);
-  return { url: o, medium: medien.nachUrl.get(o) };
+  return { url: o, medium: medien.nachUrl.get(o), abs };
 };
 const gebraucht = { titel: new Set(), text: new Set(), datei: new Set() };
+// Ersatzadressen, falls das Original fehlt (z. B. als BMP hochgeladen): Fassung im Text, „Große URL“ der Medienliste
+const ersatz = new Map();
+const ersatzDazu = (url, ...u) => { const s = ersatz.get(url) ?? new Set(); for (const x of u) if (x) s.add(x.replace(/^http:\/\//, 'https://')); ersatz.set(url, s); };
 for (const b of beitraege) {
   const t = medien.nachId.get(b.titelbild);
-  if (t && !istEn.has(b.id)) gebraucht.titel.add(t.url);
-  for (const [, src] of b.p.inhalt.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/gi)) { const q = quelleVon(src); if (q) gebraucht.text.add(q.url); }
-  for (const [, ids] of b.p.inhalt.matchAll(/\[gallery\b[^\]]*ids="([^"]+)"/gi)) for (const id of ids.split(',')) { const x = medien.nachId.get(id.trim()); if (x) gebraucht.text.add(x.url); }
+  if (t && !istEn.has(b.id)) { gebraucht.titel.add(t.url); ersatzDazu(t.url, t.gross); }
+  for (const [, src] of b.p.inhalt.matchAll(/<img\b[^>]*\bsrc="([^"]+)"/gi)) { const q = quelleVon(src); if (q) { gebraucht.text.add(q.url); ersatzDazu(q.url, q.medium?.gross, q.abs); } }
+  for (const [, ids] of b.p.inhalt.matchAll(/\[gallery\b[^\]]*ids="([^"]+)"/gi)) for (const id of ids.split(',')) { const x = medien.nachId.get(id.trim()); if (x) { gebraucht.text.add(x.url); ersatzDazu(x.url, x.gross); } }
   for (const [, h] of b.p.inhalt.matchAll(/href="([^"]+)"/gi)) { const q = quelleVon(h); if (q && !/\.(jpe?g|png|gif|webp|svg)$/i.test(q.url)) gebraucht.datei.add(q.url); }
 }
 const aufgabe = [...[...gebraucht.titel].map((u) => [u, 'titel']), ...[...gebraucht.text].map((u) => [u, 'text']), ...[...gebraucht.datei].map((u) => [u, 'datei'])];
@@ -125,7 +128,7 @@ for (const d of ['src/assets/news', 'public/news/archiv']) rmSync(join(WURZEL, d
 const fertig = new Map();
 let n = 0;
 await parallel(aufgabe, 6, async ([u, art]) => {
-  fertig.set(`${art}:${u}`, await m.aufbereiten(u, art));
+  fertig.set(`${art}:${u}`, await m.aufbereiten(u, art, [...(ersatz.get(u) ?? [])]));
   if (++n % 50 === 0) console.log(`  … ${n}/${aufgabe.length}`);
 });
 const bildmasse = {};

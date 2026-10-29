@@ -3,6 +3,7 @@ title: POP UP-Salon • »Corporeality« • 04.12.2022
 date: 2022-11-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-pop-up-salon-dezember-2022-corporeality.webp
 teaser: Unter dem Titel »Corporeality« findet am Sonntag, dem 4. Dezember 2022 ein POP UP-Salon in Kooperation mit SomaticsLab und der TENZA Schmiede statt.
 ---
 

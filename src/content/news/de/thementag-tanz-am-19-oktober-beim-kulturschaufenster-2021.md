@@ -3,6 +3,8 @@ title: Thementag "Tanz" - am 19. Oktober beim Kulturschaufenster 2021
 date: 2021-10-18
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/wgd-kulturschaufenster-web-projekt-quer-e1694088837908.webp
+alt: Kulturschaufenster Dresden 2021
 teaser: Am 19. Oktober 2021 wird sich die Centrum Galerie in der Dresdner Altstadt in ein Mekka des zeitgenössischen Tanzes und der Performing Arts verwandeln, denn das TanzNetzDresden präsentiert drei …
 ---
 

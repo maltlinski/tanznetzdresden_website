@@ -3,6 +3,7 @@ title: Seid ihr dabei? Beim Welttanztag mit dem TanzNetzDresden & vision:danceab
 date: 2026-04-29
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/simongarbe-com-tndd-welttanztag-18.webp
 teaser: Zum diesjährigen Welttanztag verwandeln wir gemeinsam die Stadt in unsere Bühne. Konkret bedeutet das, dass das TanzNetzDresden und das Team von vision:danceable in Kooperation mit dem …
 ---
 

@@ -3,6 +3,7 @@ title: TanzNetzDresden zu Gast beim Impulse Theater Festival • 8.-18. Juni 202
 date: 2023-06-15
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-cheers-for-fears-header-logo-e1686843875911.webp
 teaser: Am kommenden Wochenende ist TanzNetzDresden-Vorständin Susan Schubert in Mühlheim an der Ruhr zu Gast, um bei der Akademie im Rahmen des Impulse Theater Festivals 2023 (8. bis 18. Juni 2023) am Sonntag, dem 18.
 ---
 

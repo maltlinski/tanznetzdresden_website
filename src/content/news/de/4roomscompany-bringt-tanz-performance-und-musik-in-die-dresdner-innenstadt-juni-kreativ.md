@@ -3,6 +3,7 @@ title: 4roomsCompany bringt Tanz, Performance und Musik in die Dresdner Innensta
 date: 2024-05-21
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-fensterblicke-juni-2024-dresden-innenstadt-e1716284825481.webp
 teaser: "Viele haben es ganz sicher schon bemerkt: in der Wilsdruffer Straße 16 befindet sich die Kreativ.Raum.Börse, in der die Innenstadt Dresdens durch immer wechselnde Angebote fortwährend belebt wird."
 ---
 

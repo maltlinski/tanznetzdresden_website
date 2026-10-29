@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Cindy Hammer • Showing in Leipzig am 26.05.20
 date: 2023-05-09
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/go-plastic-company-2021-get-it-out-andre-wirsing.webp
 teaser: Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das eine Kooperation zwischen villa\\wigman und TanzNetzDresden ist, arbeitet die Choreografin, Tänzerin und Performerin Cindy Hammer …
 ---
 
@@ -25,6 +26,12 @@ Weitere Infos gibt es in Kürze auf der Website von LOFFT – DAS THEATER Leipzi
 
 Mehr über Cindy Hammer gibt es unter  
 [goplasticcompany.de](https://www.goplasticcompany.de/)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residence-lofft.webp
+    alt: ""
+:::
 
 ## LOFFT- DAS THEATER Leipzig
 

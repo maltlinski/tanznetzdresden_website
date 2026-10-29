@@ -3,6 +3,7 @@ title: 31. Off Europa-Festival vom 16. - 22. Mai 2022 in Dresden, Leipzig & Chem
 date: 2022-04-08
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-off-europa-festival-2022-e1649664774190.webp
 teaser: 8Vom 16. bis 22. Mai 2022 findet in Dresden, Leipzig und Chemnitz das 31. »Off Europa« Festival unter dem Motto »Kunststücke«
 ---
 

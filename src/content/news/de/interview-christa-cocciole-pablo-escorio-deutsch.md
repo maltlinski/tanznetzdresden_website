@@ -3,6 +3,7 @@ title: »Eine tiefe Reflektion zwischen Emotionen und Bewegung.«
 date: 2021-11-08
 category: Stimme
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetzdresden-working-communities-tenza-schmiede-christa-cocciole-pablo-escorio-2021.webp
 teaser: Als Teil des Programms von WORKING COMMUNITIES werden am Freitag, dem 12. November 2021 Christa Cocciole und Pablo Escoria im Rahmen ihres Workshops »Embodiment für soziale Transformation / …
 ---
 

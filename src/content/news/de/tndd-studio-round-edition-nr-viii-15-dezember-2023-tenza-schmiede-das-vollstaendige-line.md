@@ -3,6 +3,7 @@ title: TNDD studio round Edition Nr. VIII • 15. Dezember 2023 • TENZA Schmie
 date: 2023-12-08
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tenza-studio-round-2022-darya-hauryk-studies-of-softening-therese-bendjus.webp
 teaser: Das Line up der kommenden und mittlerweile achten TNDD studio round Ausgabe, die am 15. Dezember 2023 wie gewohnt ab 20 Uhr in der TENZA Schmiede stattfinden wird, ist nun online.
 ---
 
@@ -18,6 +19,12 @@ Mehr denn je erwartet die Besuchenden der kommenden TNDD studio round drei spann
 
 Detaillierte Informationen zu den einzelnen Beiträgen der achten TNDD studio round folgen nun oder können direkt auf der [Unterseite der studio round](/#formate) eingesehen werden. Dort befinden sich alle Informationen auch in englischer Sprache. Einen zusätzlichen Blog-Beitrag in englischer Sprache gibt es [***hier***](/en/news/tndd-studio-round-edition-nr-viii-15-dezember-2023-tenza-schmiede-das-vollstaendige-line/).
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-15-12-2023-nuan-2.webp
+    alt: ""
+:::
+
 ## Yuexuan Gui & Shiyu Liu
 
 **Yuexuan Gui** ist eine chinesische freischaffende Tänzerin und Choreografin, die derzeit in Dresden lebt. Sie hat ihre eigenen Arbeiten bei Festivals, Theatern und Galerien in Deutschland und China präsentiert, wie z.B.: Theater Pforzheim, Beijing Dance Festival, CloudMove - International Online Dance Festival, SoloDuo Festival NRW, Oktogon HfBK Dresden, Zukunft Tanzt Festival 2022, Bauhaus Museum, Venice Biennale di Danza. Seit 2020 erforscht und hinterfragt sie den schmalen Grat der Absurdität und entdeckte ihr Interesse an interdisziplinärer Performance, in der sie ihre Tanzerfahrung mit theatralischen Ideen verbindet.
@@ -29,7 +36,20 @@ Mehr über Yeuxuan Gui gibt es unter:
 
 **Foto:** Brian Scalini
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-15-12-2023-romantic-mode.webp
+    alt: ""
+:::
+
 ## M.over X Rothe (Leipzig/Dresden)
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-15-12-2023-mandy-felix-adler.webp
+    alt: ""
+:::
 
 **Mandy Unger aka. [M.over](https://m-over.de/)** wirkt als Choreografin, Tänzerin, Netzwerkerin und DJ. 2019 gründet sie die M.over Company in Leipzig. Sie erhielt zahlreiche Stipendien und Förderungen u.a. von Tanzpakt in Residence, Theaterverband Thüringen; Kulturstiftung Sachsen sowie mehrere Recherchestipendien von Dachverband Tanz und Fonds Darstellende Künste. Ihre Bühnenproduktionen sind ein Konglomerat von Pop und Contemporary Art sowie soziologischen Feldstudien. Als Tänzerin erprobt sie die Foundation aus Floorwork, dem zeitgenössischen Tanz, den Social Dances (Hip Hop Freestyle, Experimental und House) und der Rave-Kultur.
 
@@ -37,6 +57,13 @@ Mehr über Mandy Unger a.k.a. M.over gibt es unter:
 [m-over.de](https://m-over.de/)
 
 Foto: Felix Adler
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-15-12-2023-theresa-rothe-jana-slaby-2.webp
+    alt: ""
+:::
 
 [**Theresa Rothe**](https://theresarothe.com/) (1990) arbeitet als bildende Künstlerin in Dresden und Leipzig. Im Jahr 2019 bekam sie die Auszeichnung des sächsischen Landesstipendiums und realisiert Werke für Ausstellungen im In- und Ausland.Ihre künstlerischen Arbeiten vereinen Skulptur, Installation, zeichnerische/malerische sowie performative Elemente. Dabei reflektiert und hinterfragt sie in der Auseinandersetzung mit dem eigenen Körper und diversen Materialien die Kuriositäten des Alltags, Tierbetrachtungen oder auch den voyeuristischen Blick. Traumbilder und Fantasien fungieren als Grundlage ihrer Auseinandersetzung mit dem Unbewussten.
 
@@ -50,6 +77,12 @@ Foto: Jana Slaby
 Umgeben von Theresa Rothes Objekten in einer Welt, die sich der Wirklichkeit entzieht, wird die Tänzerin Mandy Unger das Verhältnis von Nähe und Intimität mit dem eigenen Körper untersuchen. Angelehnt an Rothes Ausstellungsraum „Romantic Mode“ wird dabei eine Erfahrung zwischen Berührung, Andeutung und Erwartungen mit den Zuschauenden kreiert.
 
 **Performerin**: Mandy Unger a.k.a. M.over
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tndd-studio-round-sengle-ullrich-nicht-genuegend-15-12-2023-k-h-mierke-2.webp
+    alt: ""
+:::
 
 ## Sophie Sengle & Franziska Ullrich
 

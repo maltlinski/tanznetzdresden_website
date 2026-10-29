@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Alina Walter - Fluid • Residenz im TanzART Ki
 date: 2022-11-30
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-tanzpakt-residenz-alina-walter-2022-1.webp
 teaser: Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das eine Kooperation zwischen villa\\wigman und TanzNetzDresden ist, wird die Künstler:in Alina Walter im Dezember 2022 sowie im März …
 ---
 
@@ -11,6 +12,20 @@ Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das eine Kooper
 ## Alina Walter - Fluid
 
 Wasser spiegelt, es fließt, taucht ein und ruht. Es reist mit und verschwindet. Der menschliche Körper ist durchlässig für Wasser, lässt sich davon formen und besteht zum größten Teil daraus. Die innewohnende Intelligenz des Körpers versteht den Körper des Wassers und könnte somit seine Formen annehmen. Wie lassen sich die Attribute des Wassers und dessen Wandelbarkeit ausdrücken? Ein einzelner Mensch als vielgestaltiges Wesen. Die Residenz dient als poetisch-physische Recherche zu Wasser, seinen Eigenschaften & Metamorphosen wie auch der Übersetzung dieser in die Sprache der Kunst.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-residenz-alina-walter-2022-4-e1669802107670.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-residenz-alina-walter-2022-2.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-residenz-alina-walter-2022-3.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-residenz-alina-walter-2022-1.webp
+    alt: ""
+:::
 
 ## Über Alina Walter
 

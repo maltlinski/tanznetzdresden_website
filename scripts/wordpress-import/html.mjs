@@ -92,9 +92,10 @@ export function zuMarkdown(html, { bild, galerie, link, hinweise, sprache = 'de'
   const td = new TurndownService({ headingStyle: 'atx', hr: '', bulletListMarker: '-', strongDelimiter: '**', emDelimiter: '*', br: '  ' });
   td.use(tables);
   const marken = [];
-  const marke = (block) => {
+  // block: eigener Absatz (Galerie, Bild mit Unterschrift); sonst im Fließtext, bloeckeEinsetzen stellt es vor den Absatz
+  const marke = (block, imText = false) => {
     marken.push(block);
-    return `\n\n§§B${marken.length - 1}§§\n\n`;
+    return imText ? `§§B${marken.length - 1}§§` : `\n\n§§B${marken.length - 1}§§\n\n`;
   };
   const bildAus = (img) => {
     const src = img.getAttribute('src') || '';
@@ -125,7 +126,7 @@ export function zuMarkdown(html, { bild, galerie, link, hinweise, sprache = 'de'
     filter: 'img',
     replacement: (_, n) => {
       const b = bildAus(n);
-      return b ? marke({ bilder: [b] }) : '';
+      return b ? marke({ bilder: [b] }, true) : '';
     },
   });
   td.addRule('video', {
@@ -158,10 +159,12 @@ export function zuMarkdown(html, { bild, galerie, link, hinweise, sprache = 'de'
     filter: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
     replacement: (inhalt, n) => {
       let t = inhalt.replace(/\s*\n+\s*/g, ' ').replace(/\*\*/g, '').replace(/^\*(.*)\*$/, '$1').trim();
-      if (!t || /^[\s*_+–—-]*$/.test(t)) return '';
-      if (/§§B\d+§§/.test(t)) return `\n\n${t}\n\n`;
+      // Bild in der Überschrift: Überschrift bleibt, Bild danach
+      const bilder = (t.match(/§§B\d+§§/g) ?? []).map((b) => `\n\n${b}`).join('');
+      t = t.replace(/\s*§§B\d+§§\s*/g, ' ').trim();
+      if (!t || /^[\s*_+–—-]*$/.test(t)) return bilder ? `${bilder}\n\n` : '';
       const ebene = n.nodeName === 'H1' || n.nodeName === 'H2' ? '##' : '###';
-      return `\n\n${ebene} ${t}\n\n`;
+      return `\n\n${ebene} ${t}${bilder}\n\n`;
     },
   });
   td.addRule('dl', { filter: 'dt', replacement: (inhalt) => `\n\n**${inhalt.trim()}**  \n` });
@@ -177,6 +180,8 @@ export function zuMarkdown(html, { bild, galerie, link, hinweise, sprache = 'de'
 function aufraeumen(md) {
   return md
     .replace(/ /g, ' ')
+    // Zeilenumbruch am Ende von Fett/Kursiv („**Text:<br>**“)
+    .replace(/([^\s*])  \n(\*{1,3})(?=\n|$)/g, '$1$2')
     .replace(/\*\*\s*\*\*/g, '')
     .replace(/(^|[^*])\*[ \t]+\*(?!\*)/g, '$1 ')
     .replace(/^\s*(\/{3,}|\+{3,}|\*{3,}|•+)\s*$/gm, '')
@@ -196,7 +201,8 @@ function bloeckeEinsetzen(md, marken) {
   for (const a of absaetze) {
     const ms = [...a.matchAll(/§§B(\d+)§§/g)].map((m) => Number(m[1]));
     if (!ms.length) { out.push(a); continue; }
-    const rest = a.replace(/\s*§§B\d+§§\s*/g, ' ').replace(/^ +| +$/gm, '').trim();
+    // Leerzeichen um das Bild bleiben, wie sie sind (sonst „** Name**“); Zeilenumbrüche („  \n“) auch
+    const rest = a.replace(/§§B\d+§§/g, '').replace(/(\S)[ \t]{2,}(?=\S)/g, '$1 ').replace(/^[ \t]+/gm, '').trim();
     for (const i of ms) out.push(`§§B${i}§§`);
     if (rest && !/^(\*\*|\*)?\s*(\*\*|\*)?$/.test(rest)) out.push(rest);
   }

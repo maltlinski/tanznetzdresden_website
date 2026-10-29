@@ -3,6 +3,8 @@ title: Es gibt noch Plätze für den Fachtag am 29.09.2021 in Hellerau
 date: 2021-09-15
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/logo-working-final-blau-e1631711685664.webp
+alt: Logo Working Communties
 teaser: Am 29. September wird im Nancy-Spero-Saal des Festspielhauses Hellerau Dresden der Fachtag des Dachverband Tanz Deutschland e.V. stattfinden, den wir in gemeinsamer Kooperation veranstalten.
 ---
 

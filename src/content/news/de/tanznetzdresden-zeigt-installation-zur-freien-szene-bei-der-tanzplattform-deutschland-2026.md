@@ -3,6 +3,7 @@ title: TanzNetzDresden zeigt Installation zur Freien Szene bei der Tanzplattform
 date: 2026-02-24
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tndd-studio-round-ii-05112021-tenza-schmiede-32.webp
 teaser: Ein Schaufenster in die Freie Szene präsentiert das TanzNetzDresden bei der Tanzplattform Deutschland 2026. Ganz konkret handelt es sich hier bei um das Format "Spotlight Local Scene".
 ---
 

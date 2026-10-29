@@ -3,6 +3,7 @@ title: "TanzNetzDresden unterstützt Aufruf #100MeterKultur des Netzwerk Kultur 
 date: 2022-09-20
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-netzwerk-kultur-dresden-2022-e1663658077724.webp
 teaser: Das TanzNetzDresden ist Mitglied des Netzwerk Kultur Dresden und unterstützt an dieser Stelle ausdrücklich den Aufruf 100MeterKultur, der noch bis zum 13. Oktober läuft und von der Landeshauptstadt Dresden bzw.
 ---
 
@@ -27,6 +28,12 @@ Das Netzwerk Kultur Dresden, der Zusammenschluss der Freien Szenen Dresdens, for
 ## Faire Arbeitsbedingungen schaffen
 
 **[#100MeterKultur](https://www.dresden.de/de/leben/gesellschaft/buergebeteiligung/epetition.php?extForwardUrl=https%3A//apps.dresden.de/ords/f%3Fp%3D1610%3A3%3A%3A%3ANO%3A%3AP3_P_ID%3A16992)**, also in etwa 2 Millionen Euro zusätzlich zum derzeitigen Budget, sind das Mindeste, das es braucht, um die kulturelle Vielfalt Dresdens und somit das Renommee der Landeshauptstadt nachhaltig zu stärken und zu sichern.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-100meterkultur-banner.webp
+    alt: ""
+:::
 
 ## Wie kann man den Aufruf unterstützen?
 

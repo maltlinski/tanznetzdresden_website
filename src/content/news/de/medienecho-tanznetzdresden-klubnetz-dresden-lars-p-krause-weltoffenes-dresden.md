@@ -3,6 +3,7 @@ title: "Überwältigendes Medienecho auf die Teilnahme von TanzNetzDresden, KLUB
 date: 2022-02-11
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/wod-2022-tanznetzdresden-klubnetz-dresden-lars-p-krause-credit-stephan-boehlig-01.webp
 teaser: Wir freuen uns sehr über das rege Medieninteresse im Hinblick auf die Teilnahme von TanzNetzDresden, KLUBNETZ Dresden und Lars P. Krause beim WOD Weltoffenes Gedenken 2022.
 ---
 

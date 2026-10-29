@@ -3,6 +3,7 @@ title: "KEEP UP präsentiert: »Caring in Motion« • Workshop mit Alexandre Ma
 date: 2023-01-26
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-profi-training-workshop-2022-alexandre-may-2-e1674725299208.webp
 teaser: "Update: Wir freuen uns sehr, einen neuen Termin für den Workshop mit Alexandre May bekannt geben zu können, der nun am 4. und 5. Februar 2023 stattfinden wird."
 ---
 
@@ -16,7 +17,7 @@ Der englischsprachige Workshop “CARING IN MOTION” von Alexandre May beschäf
 
 Der Workshop richtet sich dabei sowohl an Profis als auch an Nicht-Profis und findet in englischer Sprache statt. Es wird empfohlen, eine warme Decke oder eine weiche Unterlage zum Liegen mitzubringen. Eine Teilnahme an beiden Tagen ist nicht zwingend erforderlich, jedoch empfohlen, da der Workshop aufbauend strukturiert ist.
 
-Mehr über den Workshop, das Konzept dahinter sowie zu Alexandre May gibt es **hier**.
+Mehr über den Workshop, das Konzept dahinter sowie zu Alexandre May gibt es [**hier**](/news/archiv/dateien/2022/caring-in-motion-description.pdf).
 
 ### Hardfacts:
 
@@ -31,6 +32,13 @@ Weitere Informationen zum Programm von KEEP UP gibt es unter:
 [tanznetzdresden.de/keep-up-profi-training-dresden](/profitraining/)
 
 ## Alexandre May über sich
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-profi-training-workshop-2022-alexandre-may.webp
+    alt: ""
+:::
 
 > Ich bin Alexandre May und bin achtundzwanzig Jahre alt. Ich tanze, unterrichte, war Probenleiter, alles mit dem Ziel, das Fenster zu feiern, das die Bewegung auf die Beziehung zwischen Körper und Geist öffnet. Ich bin von verschiedenen Tanztechniken und -ästhetiken beeinflusst und habe durch Body-Mind Centering®, das ich derzeit studiere, und andere somatische Methoden Wissen über meinen Körper erworben. Die Welt der Somatik und der Neurowissenschaften hat mir geholfen zu verstehen: Wir sind ein Körper-Geist mit faszinierenden Mechanismen zur Selbst- und Koregulierung, und indem wir diese kultivieren, können wir auf eine immense Weisheit zugreifen.
 

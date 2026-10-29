@@ -3,6 +3,7 @@ title: TNDD-Materialkooperationspartner Nytt stattet Musikvideo aus
 date: 2022-03-29
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-nytt-materialdepot-futurbae-musikvideo-e1648544444609.webp
 teaser: Der TNDD-Kooperationspartner Nytt ist ein Fundus für Requisiten, Bühnenbilder und Veranstaltungszubehör.
 ---
 

@@ -3,6 +3,7 @@ title: Das Programm im Detail von »CARE ABOUT your local scene« • 4. & 5. Ju
 date: 2024-06-04
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-care-about-kreativ-raum-boerse-juni-2024-e1713430607476.webp
 teaser: Heute starten wir in unser Zweitagesprogramm von »CARE ABOUT your local scene«, in dem das TanzNetzDresden in Zusammenarbeit mit dem tanz\netzwerk\bremen (LAFDK Bremen) und der regionalen Szene in …
 ---
 

@@ -3,6 +3,7 @@ title: "Open Call: SHOW UP! • Tanzplattform Deutschland 2026 • Deadline: 20.
 date: 2025-10-26
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tanznetzdresden-tanzplattform-deutschland-2026-header-scaled-e1761657704220.webp
 deadline: 2025-11-20
 teaser: Die Tanzplattform Deutschland (TPD) – das bedeutendste biennale Forum für zeitgenössischen Tanz – kommt 2026 nach Dresden.
 ---

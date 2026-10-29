@@ -3,6 +3,8 @@ title: Parcour Poetic d2clic
 date: 2021-08-21
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/parcour-poetic-forclic-e1688978497748.webp
+alt: Parcour Poetic forclic
 teaser: Unter dem Titel »Parcour Poetic d2clic« werden am 30. und 31. August zwei dynamische Wanderungen von jeweils sechs Stunden Länge in Hellerau angeboten.
 ---
 

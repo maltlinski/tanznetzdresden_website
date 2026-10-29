@@ -3,6 +3,7 @@ title: Tanzplattform Deutschland 2026 • Einladung zum Info-Zoom für die Freie
 date: 2025-11-14
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-tanzplattform-deutschland-2026-festspielhaus-hellerau-anja-schneider.webp
 teaser: Das künstlerischen Leitungsteam der Tanzplattform Deutschland in HELLERAU, Elisabeth Krefta und Christoph Bovermann, bieten in Sachsen aktiven Künstler:innen in dem Bereich Tanz und Performing Arts …
 ---
 

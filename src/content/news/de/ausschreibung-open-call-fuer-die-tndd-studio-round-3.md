@@ -3,6 +3,7 @@ title: "Ausschreibung / Open call für die TNDD studio round #3"
 date: 2022-02-08
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-studio-round-tenza-schmiede-stephan-tautz-2022-ausschreibung.webp
 teaser: Die TNDD studio round geht nach zwei erfolgreichen Auflagen im vergangenen Jahr in die dritte Runde. Aktuell werden noch bis 5. März 2022 künstlerische Beiträge gesucht, die bei der kommenden Auflage am 8.
 ---
 
@@ -40,7 +41,7 @@ Die Juryentscheidung wird bis Mitte März 2022 erfolgen und mitgeteilt. Vorab so
 
 Mehr über TNDD studio round gibt es [**hier**](/#formate).
 
-Die vollständige Ausschreibung kann **hier** heruntergeladen werden.
+Die vollständige Ausschreibung kann **[hier](/news/archiv/dateien/2022/ausschreibung-open-call-tndd-studio-round-3.pdf)** heruntergeladen werden.
 
 ### Open call for TNDD studio round #3
 
@@ -72,7 +73,7 @@ The jury decision will be made and communicated by mid-March. In advance there w
 
 [**Here**](/#formate) you find more about TNDD studio round.
 
-The complete announcement can be downloaded **hier**.
+The complete announcement can be downloaded **[hier](/news/archiv/dateien/2022/ausschreibung-open-call-tndd-studio-round-3.pdf)**.
 
 Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz. Gefördert von der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 

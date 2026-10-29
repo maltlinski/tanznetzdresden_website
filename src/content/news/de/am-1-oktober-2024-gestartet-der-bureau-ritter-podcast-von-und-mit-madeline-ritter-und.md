@@ -3,6 +3,7 @@ title: "Am 1. Oktober 2024 gestartet: der Bureau Ritter Podcast • Von und mit 
 date: 2024-10-24
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-bureau-ritter-podcast-e1729847723649.webp
 teaser: Madeline Ritter, Gründerin der gemeinnützigen Kulturorganisation Bureau Ritter, hat einen einen wöchentlichen Podcast ins Leben gerufen. Dieser trägt den Namen "Tanz trifft Politik"
 ---
 

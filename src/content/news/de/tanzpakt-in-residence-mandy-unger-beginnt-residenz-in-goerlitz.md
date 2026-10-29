@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Mandy Unger beginnt Residenz in Görlitz
 date: 2023-06-05
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanzpakt-in-residence-2023-goerlitz-mandy-unger-rave-turnaround.webp
 teaser: Im Rahmen des 2023er TANZPAKT in residence-Programms, das eine Kooperation zwischen villa\\wigman und TanzNetzDresden ist, arbeitet die Choreografin, Tänzerin und Performerin Mandy Unger a.k.a.
 ---
 
@@ -17,8 +18,7 @@ Mehr zum Projekt RAVE:TURNAROUND  gibt es unter:
 
 ## Termine im Juni
 
-**Workshop: PLAY:EXPERIMENTAL | 14. Juni, 17–18 Uhr  
-**
+**Workshop: PLAY:EXPERIMENTAL | 14. Juni, 17–18 Uhr**
 
 In dem Workshop werden die Teilnehmer:innen durch das Spiel mit musikalischen Strukturen, Groove und Improvisation angeregt, neue und eigene Bewegungsmuster kreativ zu nutzen.
 
@@ -27,8 +27,7 @@ Voranmeldung erwünscht unter [booking@zuvi-festival.de](mailto:booking@zuvi-fes
 **Sprache:** deutsch/english  
 Der Eintritt ist frei
 
-**Performance: Rave:Turnaround - Studie | 15. Juni, 19-20 Uhr  
-**
+**Performance: Rave:Turnaround - Studie | 15. Juni, 19-20 Uhr**
 
 Die feierliche Stimmung der Wiedervereinigung wurde vor allem in Berlin in Underground Raves konserviert und Zukunftsängste durften aufgeschoben werden. Die tänzerische Studie wird sich der spannungsgeladenen Stimmung des ostdeutschen Transformationsprozesses der 1990er Jahre widmen.
 
@@ -39,6 +38,18 @@ Der Workshop und die Performance finden beide im Rahmen des Zukunftsvisionen Fes
 
 Mehr zum Programm des Zukunftsvisionen Festival gibt es unter folgendem Link:  
 [zuvi-festival.de/festival\_2023/programm\_2023](https://www.zuvi-festival.de/festival_2023/programm_2023/)
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residence-2023-goerlitz-mandy-unger-rave-turnaround-4.webp
+    alt: ""
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residence-2023-goerlitz-mandy-unger-rave-turnaround-1.webp
+    alt: ""
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residence-2023-goerlitz-mandy-unger-rave-turnaround-3.webp
+    alt: ""
+:::
 
 ## Über Mandy Unger
 

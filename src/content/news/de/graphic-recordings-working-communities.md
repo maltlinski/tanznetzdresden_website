@@ -3,6 +3,7 @@ title: Die Graphic Recordings von Working Communities sind online
 date: 2022-01-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-working-communities-henrike-terheyden-graphic-recording-2021.webp
 teaser: Wir sind der Dresdner Illustratorin und Zeichnerin Henrike Terheyden über alle Maßen dankbar, denn sie hat in der spannenden Zeit unseres 2021er Projekts WORKING COMMUNITIES handgezeichnete …
 ---
 

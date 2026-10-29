@@ -3,6 +3,7 @@ title: "TNDD studio round #4: Programmänderung"
 date: 2022-07-06
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tndd-studio-round-2022-therese-benjus-daria-belous-soft-3-kopie.webp
 teaser: Die kommende TNDD studio round, die am 8. Juli ab 20 Uhr in der TENZA Schmiede stattfindet, muss leider eine Programmänderung vornehmen.
 ---
 

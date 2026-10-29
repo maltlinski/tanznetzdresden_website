@@ -7,6 +7,13 @@ teaser: In addition to the Special Week with Tiago Manquinho, there will be a sm
 
 ## Yamile Anaid Navarro Luna
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/221228-yamile-1-web.webp
+    alt: ""
+:::
+
 Yamile Anaid Navarro Luna, was born in Mexico City. She began her professional dance studies at the Agora Cultural Center Dance School in Villahermosa, Tabasco, Mexico. Years later, she moved to Spain to continue her professional dance education in Barcelona. She graduated as a Classical Dancer from the Institut del Teatre in 2009, the same year, she enrolled in the three-year Bachelor Program at the Palucca University of Dance in Dresden, Germany. She graduated in 2012 presenting her Practical Thesis Work “In Nirelurgenrewop…En la Nada” as her first professional choreography.
 
 She is now based in Dresden, and she works as a freelance dancer, guesting and collaborating with various companies and artists from all around the world. At the same time, she produces her dance  projects as a choreographer. For her choreographic work, she uses different dance styles and other scenic arts to give completeness to her work and enrich her ideas, not losing the focus on dance and movement as the main source of expression​.
@@ -25,6 +32,14 @@ More about Yamile Anaid Navarro Luna can be found at:
 Yamile Anaid Navarro Luna is offering a three-day series of workshops from February 15 to 17 as part of the KEEP UP professional training at [Ballettstudio Espiral](https://www.ballettstudio-espiral.de/). The workshops are entitled "Voice-Body Connection" and will be held in English and German. Yamile Navarro started diving deeper into the connection between the body and the voice in 2020. In 2022 thanks to a #TakeHeart residency she consolidated the Voice-Body Connection practices. In her journey, she has discovered that the more she gets to know her voice, the better she gets to know her movement and vice-versa.
 
 The Voice-Body Connection practices are open to anyone who wants to reconnect with their true powerful voice and explore the connection between the voice and the movement. The practice is one hour long; it starts with a full voice-body warm-up, followed by visualization games and embodiment practices going deeper into the discovery and the exploration of the connection between the voice and the body. Since the experience is unique to each person, the Voice-Body connection provides a base which will allow each individual to take the practice as far as they want.
+
+::: bilder
+text: Picture
+foto: Shi Yu
+bilder:
+  - datei: /news/archiv/2024/screenshot-2023-12-22-at-12-10-28.webp
+    alt: ""
+:::
 
 ### Who is this for?
 

@@ -3,6 +3,8 @@ title: Pop Up Salon im September mit KOMA & Ko / BOTANIK TALKS
 date: 2021-08-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/pop-up-september-e1629186872675.webp
+alt: Pop Up September Botanik Talks
 teaser: Auch für den September ist eine Ausgabe von Pop Up geplant. Dieses Mal laden KOMA & Ko im Rahmen ihrer derzeitigen Studien rund um die Botanik in einen Gemeinschaftsgarten ein.
 ---
 

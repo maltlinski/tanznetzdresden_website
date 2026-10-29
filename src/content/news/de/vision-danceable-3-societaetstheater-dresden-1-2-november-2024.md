@@ -3,6 +3,7 @@ title: "VISION DANCEABLE #3 • Societaetstheater Dresden • 1. & 2. November 2
 date: 2024-11-14
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tanznetzdresden-vision-danceable-amit-abend-andre-wirsig.webp
 teaser: Am 1. und 2. November fand im Dresdner Societaetstheater die dritte Auflage des Formats VISION DANCEABLE statt, bei der die Vielseitigkeit des Tanzes sowie der spartenübergreifenden künstlerischen …
 ---
 

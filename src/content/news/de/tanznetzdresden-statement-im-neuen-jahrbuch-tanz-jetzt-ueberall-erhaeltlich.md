@@ -3,6 +3,7 @@ title: TanzNetzDresden-Statement im neuen Jahrbuch tanz zu gerechterer Förderpo
 date: 2025-09-08
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tanz-jahrbuch-2025-e1757328490633.webp
 teaser: Die Zeitschrift tanz hat soeben ihr diesjähriges Jahrbuch unter dem Motto "flow" veröffentlicht und hat in diesem Zuge auch das TanzNetzDresden um eine Aussage hinsichtlich einer gerechteren …
 ---
 

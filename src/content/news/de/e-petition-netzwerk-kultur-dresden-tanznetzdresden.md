@@ -3,10 +3,18 @@ title: Dresden streich wovon es lebt • TanzNetzDresden unterstützt die Petiti
 date: 2025-11-27
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tanznetzdresden-e-petition-netzwerk-kultur-dresden.webp
 teaser: "Ihr habt es bestimm schon mitbekommen: Die Haushaltslage der Landeshauptstadt Dresden spitzt sich derzeit dramatisch zu: Für das Jahr 2026 sind massive Kürzungen im Kulturbereich angekündigt - sowohl …"
 ---
 
 *Ihr habt es bestimm schon mitbekommen: Die Haushaltslage der Landeshauptstadt Dresden spitzt sich derzeit dramatisch zu: Für das Jahr 2026 sind massive Kürzungen im Kulturbereich angekündigt - sowohl bei den kommunalen Einrichtungen als auch in der Freien Szene. Zahlreiche Einrichtungen, Vereine, Initiativen, Festivals, Kulturorte und Projekte sehen sich dadurch in ihrer Existenz bedroht.*
+
+::: bilder
+text: '"Dresden streicht, wovon es lebt" (e-Petition)'
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-e-petition-netzwerk-kultur-dresden-2.webp
+    alt: ""
+:::
 
 Wir unterstützen ausdrücklich die vom [Netzwerk Kultur Dresden](https://netzwerk-kultur-dresden.de/) eingereichte und aktuell laufende Petition mit dem Slogan "[Dresden streicht, wovon es lebt](https://www.dresden.de/de/leben/gesellschaft/buergebeteiligung/epetition.php?extForwardUrl=https%3A//apps.dresden.de/ords/f%3Fp%3D1610%3A3%3A%3A%3ANO%3A%3AP3_P_ID%3A24766)", um auf die Auswirkungen drohender Kürzungen aufmerksam zu machen und dem Stadtrat ein deutliches Signal zu senden: Dresden darf nicht an seiner Kultur sparen.
 

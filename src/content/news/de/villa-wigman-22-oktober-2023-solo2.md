@@ -3,6 +3,7 @@ title: Die villa/wigman öffnet am 22. Oktober 2023 die Türen für eine neue Au
 date: 2023-10-19
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-solo-2-villa-wigman-oktober2023-e1695805055227.webp
 teaser: Die villa\\wigman öffnet mit SOLO2 am 22. Oktober 2023 erneut die Türen für Einblicke in die unterschiedlichen Perspektiven, Arbeitsansätze und Ästhetiken von freien Tanz- und Theaterschaffenden aus der Region.
 ---
 

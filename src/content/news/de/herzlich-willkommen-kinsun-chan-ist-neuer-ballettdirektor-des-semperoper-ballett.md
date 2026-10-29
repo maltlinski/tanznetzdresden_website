@@ -3,6 +3,7 @@ title: Herzlich Willkommen • Kinsun Chan ist neuer Ballettdirektor des Sempero
 date: 2024-09-09
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-semperoper-ballett-kinsun-chan-theater-st-gallen-2024-e1726048453310.webp
 teaser: Mit Beginn der Spielzeit 2024/25 wird Kinsun Chan neuer Ballettdirektor des Semperoper Ballett. In der Position folgt er Aaron S.
 ---
 
@@ -13,6 +14,12 @@ teaser: Mit Beginn der Spielzeit 2024/25 wird Kinsun Chan neuer Ballettdirektor 
 Der schweizerisch-kanadische Choreograph und Designer wurde in Vancouver geboren und studierte Bildende Kunst und Grafikdesign, bevor er sich auf seine Ballettausbildung konzentrierte. Nach Engagements u. a. beim Ballett Zürich und Ballett Basel hat er sich international als Tänzer und Choreograf einen Namen gemacht. Zuletzt war er künstlerischer Leiter der Tanzkompanie am Theater St. Gallen.
 
 Kinsun Chan, der in den vergangenen Jahren der Leiter der Tanzkompanie am Theater St. Gallen, ist ein vielfältig interessierter und ausgebildeter Künstler. Seine choreografischen Arbeiten wurden u.a. vom Ballett Basel, vom Ballett Zürich, dem Ballett der Staatsoper Hannover, der Gauthier Dance Company, dem Singapore Ballet, dem Hong Kong Ballet, der John Cranko Schule, vom Stuttgarter Ballett für die Noverre-Gesellschaft und im Rahmen der Veranstaltungen der Heinz-Bosl-Stiftung aufgeführt. Chan war lange Jahre als Solist beim Ballett Zürich (Direktion: Heinz Spoerli) und beim Ballett Basel (Direktion: Richard Wherlock) engagiert. Er tanzte im klassischen Repertoire sowie u.a. in Arbeiten von Jiří Kylián, William Forsythe, Nacho Duato und Hans van Manen. Seine künstlerische Arbeit erstreckt sich auch auf die Gestaltung von Kostümen und Bühnenbildern. Überdies nahm er zahlreiche Lehraufträge und Jury-Tätigkeiten, z.B. beim Prix de Lausanne, wahr. Kinsun Chan ist auch als bildender Künstler und Designer tätig.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-kinsun-chan-premierenmotiv-wonderful-world-gregory-batardon-2024.webp
+    alt: ""
+:::
 
 ## Neue Herausforderungen und Potenziale in Dresden
 

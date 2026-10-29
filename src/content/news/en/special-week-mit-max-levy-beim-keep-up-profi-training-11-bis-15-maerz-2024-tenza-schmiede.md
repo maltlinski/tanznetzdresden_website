@@ -7,6 +7,13 @@ teaser: In March we will present a special week with Max Levy from March 11 to 1
 
 ## Max Levy
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/headshot-max-levy-iryna-rogava-portrait-small.webp
+    alt: ""
+:::
+
 **Max Levy’s** work focuses on the intersection of athletic concentration, meditative processes and laden atmospheres, utilizing the communication of performance to bridge the commitment of performers with the participation of observers; balancing a spectrum of active v. passive, conscious v. subconscious to redefine one's presence and enjoyment of dance.
 
 His processes produce a form of collaboration in which an artistic goal is formed not through a singular vision, but through the overlap of artistic contributors. He engages actively to reshape the hierarchy of dance creation and choreography encouraging interdisciplinary input at an early stage. All participants and performers are pushed to reclaim agency for their actions, as well as responsibility for their decisions and intentions. His works (and the processes therein) cements every member of a process to be essential.

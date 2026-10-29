@@ -3,6 +3,7 @@ title: "Jetzt eine Woche lang in der RTL-Mediathek anschauen: TNDD-Marita Matzk 
 date: 2022-03-02
 category: Stimme
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-marita-matzk-rtl-2022-scaled-e1646306711120.webp
 teaser: TNDD-Mitglied Marita Matzk ist vor wenigen Wochen von RTL besucht worden, um im Rahmen der Sendung »Ohne Filter - So sieht mein Leben aus!« gemeinsam mit Anett Lentwojt und Sebastian Girbig a.k.a.
 ---
 

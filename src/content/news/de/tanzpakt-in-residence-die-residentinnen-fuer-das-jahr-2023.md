@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Die Resident:innen für das Jahr 2023
 date: 2023-01-04
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanzpakt-in-residence-2023-e1672847663293.webp
 teaser: TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022-24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der …
 ---
 

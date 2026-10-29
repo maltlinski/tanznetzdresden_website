@@ -3,12 +3,20 @@ title: Special Week mit Tiago Manquinho beim KEEP UP Profi-Training • 19. bis 
 date: 2024-01-25
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-profi-training-february-2024-tiago-manquinha-2.webp
 teaser: Auch der Februar wird in Sachen KEEP UP Profi-Traininng intensiv und spannend, denn vom 19. bis 23.
 ---
 
 *Auch der Februar wird in Sachen KEEP UP Profi-Traininng intensiv und spannend, denn vom 19. bis 23. Februar wird es eine Special Week mit Tiago Manquinho in der TENZA Schmiede geben, die professionellen Tänzer:innen ein breites Spektrum in Sachen Technik und Wahrnehmung auf Basis von Vertrauen eröffnet. Alles Weitere zu diesem Termin und zu Tiago Manquinho findet ihr im heutigen Blog-Beitrag, der erneut sowohl auf deutsch als auch auf [englisch](/en/news/special-week-mit-tiago-manquinho-beim-keep-up-profi-training-19-bis-23-februar-2024/) erscheint.*
 
 ## Tiago Manquinho
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-profi-training-february-2024-tiago-manquinha-1.webp
+    alt: ""
+:::
 
 Nach einer 20-jährigen Tänzerkarriere in verschiedenen Ensembles wie der Companhia National de Bailado, dem Semperoper Ballett, dem Tanztheater Bielefeld, war Tiago Manquinho (2015/2017) Hauschoreograf am Staatstheater Braunschweig.
 

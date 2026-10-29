@@ -3,12 +3,20 @@ title: TanzNetzDresden lädt am 12.12. zum ROUND TABLE der Netzwerke nach HELLER
 date: 2022-12-08
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-allaround-2022-e1657619567690.webp
 teaser: Nach einer erfolgreichen ROUND TABLE-Premiere im vergangenen Jahr sowie unseren ebenfalls 2021 initiierten WORKING COMMUNITIES\-Angeboten lädt das TanzNetzDresden am 12.
 ---
 
 Nach einer erfolgreichen ROUND TABLE-Premiere im vergangenen Jahr sowie unseren ebenfalls 2021 initiierten [WORKING COMMUNITIES](/verein/)\-Angeboten lädt das TanzNetzDresden am 12. Dezember 2022 zum zweiten „ROUND TABLE der Netzwerke“ nach HELLERAU ein. Bei diesem Treffen kommen abermals bundesweite Netzwerke aus dem Bereich Tanz und Performing Arts zusammen, um ihre Expertise zu teilen und sich wirksam zu vernetzen. Zugleich ist der ROUND TABLE der Netzwerke ein elementarer Bestandteil von "All aRound", einem Konzept des TNDD, das die Fortführung und Intensivierung der 11-jährigen Arbeit des TanzNetzDresden vorantreibt. Alle Infos zum anstehenden ROUND TABLE sowie zu "All aRound" gibt es im heutigen Beitrag.
 
 ## ROUND TABLE der Netzwerke, 12.12.2022, HELLERAU
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-round-table-2022-logo.webp
+    alt: ""
+:::
 
 Wir spüren es deutlich und freuen uns sehr, dass der Bedarf an Vernetzung und Austausch in der Tanz- und Performing Arts Szene groß und bundesweit vorhanden ist. Und wir freuen uns umso mehr über den regen Zuspruch und die zahlreichen Anmeldungen aus ganz Deutschland im Hinblick auf unsere zweite Ausgabe des ROUND TABLES der Netzwerke, weswegen wir an dieser Stelle auch bekanntgeben dürfen, dass die kommende Ausgabe unseres Vernetzungsformats bereits ausgebucht ist.
 

@@ -3,14 +3,30 @@ title: you are warmly invited präsentiert watch me work - am 17. November in Le
 date: 2022-09-28
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-you-are-warmly-invited-cindy-hammer.webp
 teaser: you are warmly invited beschäftigt sich nicht nur mit Reflexion und Feedback zu Arbeitsständen zeitgenössischer Performing Arts in Sachsen, sondern hat auch die Vernetzung unter Künstler:innen, ihre …
 ---
 
 you are warmly invited beschäftigt sich nicht nur mit Reflexion und Feedback zu Arbeitsständen zeitgenössischer Performing Arts in Sachsen, sondern hat auch die Vernetzung unter Künstler:innen, ihre Professionalisierung und kollegialen Austausch zum Ziel. Nun geht die Initiative aus Leipzig einen Schritt weiter und startet ein neues Dialogformat namens *watch me work*. Dieses wird am 17. November 2022 in der Alte Handelsbörse in Leipzig öffentlich präsentiert. Alle Informationen zu dem anstehenden Termin mitsamt der Einladung an alle Interessierten gibt es im heutigen Beitrag.
 
+::: bilder
+text: you are warmly invited-Team (2022);
+foto: Mim Schneider
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-you-are-warmly-invited-team-mim-schneider.webp
+    alt: ""
+:::
+
 ## Neues Dialogformat von you are warmly invited
 
 [you are warmly invited](https://www.youarewarmlyinvited.com/initiative) ist eine Initiative für Reflexion und Feedback zu Arbeitsständen zeitgenössischer Performing Arts in Sachsen und stellt in diesen Herbst das neue Dialogformat *watch me work* vor. Nach acht Versionen der Plattform für Reflexion und Feedback zu Arbeitsständen aus den Performing Arts in Leipzig, Dresden und Chemnitz (2020-2022), in denen sich über 150 Künstler:innen kennengelernt, ausgetauscht und vernetzt haben, macht you are warmly invited mit watch me work die Arbeitsweisen und Diskurse der Performing Arts nun auch öffentlich zugänglich.
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-you-are-warmly-invited-watch-me-work-plakat-2022.webp
+    alt: ""
+:::
 
 ## watch me work - Worum es geht?
 

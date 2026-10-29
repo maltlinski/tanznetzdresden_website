@@ -3,6 +3,7 @@ title: Ausschreibung für POP UP 2023 "touching shame" gestartet • Call for pr
 date: 2023-06-09
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-pop-up-open-call-2023-mimomse.webp
 teaser: Für den 23. September 2023 ist im Dresdner Industriegelände eine POP UP-Performance unter dem Motto "touching shame" geplant, für die sich Interessierte ab sofort bis zum 30.
 ---
 
@@ -26,12 +27,18 @@ Möglich sind Solo, Duett, max. Trio Konstellationen, die mit Performenden des P
 
 **Vergütung:** Vorstellungshonorar entsprechend der Honoraruntergrenze (beinhaltet eine Vorstellung und ein Probentag).
 
-Eine Übersicht über die verfügbaren Bühnenmaterialien, die bei Bedarf genutzt werden können gibt es in der Ausschreibung, die ihr ***hier*** nachlesen und runterladen könnt.
+Eine Übersicht über die verfügbaren Bühnenmaterialien, die bei Bedarf genutzt werden können gibt es in der Ausschreibung, die ihr [***hier***](/news/archiv/dateien/2023/details-open-call-touching-shame.pdf) nachlesen und runterladen könnt.
 
 ## Reicht eure Bewerbungen (max. 1 A4-Seite) bitte bis spätestens zum 30\. Juni 2023 unter [touchingshame@gmail.com](mailto:touchingshame@gmail.com) ein.
 
 - Mehr Information über das POP UP-Format des TanzNetzDresden gibt es unter  
     [tanznetzdresden.de/pop-up](/#formate)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-pop-up-open-call-2023.webp
+    alt: ""
+:::
 
 ## "touching shame" - the POP UP Open Call for 2023
 
@@ -51,7 +58,7 @@ Possible are Solo, Duet, max. trio constellations that have to be put into pract
 
 **Payment:** Performance fee according to the Honoraruntergrenze (includes one performance and one rehearsal day).
 
-An overview of the available stage materials, which can be used if required, can be found in the announcement, which you can read and download ***here***.
+An overview of the available stage materials, which can be used if required, can be found in the announcement, which you can read and download [***here***](/news/archiv/dateien/2023/details-open-call-touching-shame.pdf).
 
 ## Please submit your applications (max. 1 A4 page) to [touchingshame@gmail.com](mailto:touchingshame@gmail.com) not later than June 30, 2023.
 

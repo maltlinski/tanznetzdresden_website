@@ -15,7 +15,7 @@ The workshop is open to professionals and non-professionals and will be held in 
 
 Workshop spots are limited and registration via email to [training@tanznetzdresden.de](mailto:training@tanznetzdresden.de) is required.
 
-More about the workshop, the idea behind and about Alexandre May can be found **here**.
+More about the workshop, the idea behind and about Alexandre May can be found [**here**](/news/archiv/dateien/2022/caring-in-motion-description.pdf).
 
 ### Hardfacts:
 
@@ -30,6 +30,13 @@ More informationen about KEEP UP can be found here:
 [tanznetzdresden.de/keep-up-profi-training-dresden](/profitraining/)
 
 ## Alexandre May about himself
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-profi-training-workshop-2022-alexandre-may.webp
+    alt: ""
+:::
 
 > I am Alexandre May and I am twenty-eight years old. I dance, teach, have been a rehearsal director, all with the goal of celebrating the window that movement opens on the relationship between body and mind. I am influenced by various dance techniques and aesthetics and have gained knowledge of my body through Body-Mind Centering®, which I am currently studying, and other somatic methods. The world of somatics and neuroscience has helped me understand: We are a body-mind with fascinating mechanisms for self- and co-regulation, and by cultivating these, we can access immense wisdom.
 

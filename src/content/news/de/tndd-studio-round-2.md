@@ -3,6 +3,7 @@ title: "TNDD STUDIO ROUND #2"
 date: 2021-10-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetz-studio-round-dresden-2021-tenza-schmiede.webp
 teaser: TNDD studio round bringt am 5. November zum zweiten Mal lokale Künstler\innen und Gast\innen in einem Studioevent in der TENZA Schmiede in Dresden zusammen.
 ---
 

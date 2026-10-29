@@ -3,6 +3,7 @@ title: Die Tanzplattform Deutschland 2026 findet in Dresden statt • 11. bis 15
 date: 2024-06-17
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-tanzplattform-deutschland-2026-festspielhaus-hellerau-anja-schneider.webp
 teaser: Wir freuen uns sehr, dass die nächste Tanzplattform Deutschland im Jahr 2026 in Dresden stattfinden wird und HELLERAU – Europäisches Zentrum der Künste hierbei als Veranstalter fungiert.
 ---
 

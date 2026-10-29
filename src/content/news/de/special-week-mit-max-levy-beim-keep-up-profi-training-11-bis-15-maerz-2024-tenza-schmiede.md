@@ -3,12 +3,20 @@ title: Special Week mit Max Levy beim KEEP UP Profi-Training • 11. bis 15. Mä
 date: 2024-03-07
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-profi-training-max-levy.webp
 teaser: Im März werden wir vom 11. bis 15. März eine special week mit Max Levy im Rahmen des KEEP UP Trainings anbieten.
 ---
 
 *Im März werden wir vom 11. bis 15. März eine special week mit Max Levy im Rahmen des KEEP UP Trainings anbieten. Mehr Informationen zu diesem ganz besonderen Angebot gibt es in unserem heutigen Blog-Beitrag, der wie immer in deutscher und [englischer Sprache](/en/news/special-week-mit-max-levy-beim-keep-up-profi-training-11-bis-15-maerz-2024-tenza-schmiede/) erscheint.*
 
 ## Max Levy
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/headshot-max-levy-iryna-rogava-portrait-small.webp
+    alt: ""
+:::
 
 **Max Levys** Arbeit konzentriert sich auf die Überschneidung von sportlicher Konzentration, meditativen Prozessen und aufgeladenen Atmosphären. Er nutzt die Kommunikation der Performance, um das Engagement der Performer mit der Teilnahme der Zuschauer zu verbinden; er balanciert ein Spektrum von aktiv vs. passiv, bewusst vs. unbewusst, um die eigene Präsenz und Freude am Tanz neu zu definieren.
 

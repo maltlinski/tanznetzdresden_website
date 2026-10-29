@@ -3,6 +3,7 @@ title: "Gratulation, die Zweite! Einladung für Magdalena Weniger zu den TanzDia
 date: 2023-11-02
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-theater-bremen-young-won-song.webp
 teaser: Eine Nachricht, die für viel Freude gesorgt hat. Ganz besonders bei TanzNetzDresden-Mitglied Magdalena Weniger, denn sie wurde nach Bremen zu den diesjährigen TanzDialogen eingeladen, wo sie aktuell …
 ---
 

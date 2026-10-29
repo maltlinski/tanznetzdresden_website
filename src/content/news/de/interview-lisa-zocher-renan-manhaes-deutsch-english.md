@@ -3,6 +3,7 @@ title: »It flows.«
 date: 2021-11-09
 category: Stimme
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetzdresden-forward-dance-company-leipzig-working-communities-2021-lisa-zocher-renan.webp
 teaser: Heute gibt es ein Interview mit Lisa Zocher und Renan Manhaes von der FORWARD DANCE COMPANY aus Leipzig. Beide sind im Rahmen von WORKING COMMUNITIES am Samstag, dem 13.
 ---
 
@@ -35,8 +36,7 @@ Beide: *»Wir hoffen, dass sich die Teilnehmerinnen und Teilnehmer das Funkeln i
 **What else can be expected from you and the FORWARD DANCE COMPANY in the future?Was ist in Zukunft noch alles so von euch und der FORWARD DANCE COMPANY zu erwarten?**
 
 Both: *»Still good dance, interesting art, dedicated research...«  
-*Beide: *»Weiterhin guter Tanz, interessante Kunst, engagierte Recherchen...«  
-*
+*Beide: *»Weiterhin guter Tanz, interessante Kunst, engagierte Recherchen...«*
 
 **Do you have a few more things you'd like to share?Habt ihr noch ein paar Dinge, die ihr gern mitteilen möchtet?**
 

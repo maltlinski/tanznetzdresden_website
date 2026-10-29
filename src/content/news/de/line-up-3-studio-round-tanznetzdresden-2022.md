@@ -3,6 +3,7 @@ title: Line up der TNDD studio round am 8. April / Line up of the TNDD studio ro
 date: 2022-03-30
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tndd-studio-round-ii-05112021-tenza-schmiede-12.webp
 teaser: Wir freuen uns sehr, euch nun das komplette und online vollständig abgebildetes Line up für die kommenden TNDD studio round vorzustellen, die am 8.
 ---
 

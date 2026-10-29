@@ -3,6 +3,7 @@ title: »Jetzt macht endlich alles Sinn«
 date: 2022-01-19
 category: Stimme
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-natalie-wagner-landesbu-cc-88hnen-sachsen-freie-szene-2022-scaled.webp
 teaser: In Radebeul wird ein neues Kapitel im Bereich Tanz aufgeschlagen, denn das TNDD-Mitglied Natalie Wagner übernimmt ab 1. August 2022 die künstlerische Leitung der hiesigen Tanzcompagnie.
 ---
 

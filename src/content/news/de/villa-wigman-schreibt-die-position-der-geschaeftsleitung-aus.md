@@ -3,6 +3,7 @@ title: villa/wigman schreibt die Position der Geschäftsleitung aus
 date: 2023-04-11
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-villa-wigman-ausschreibung-geschaeftsfuehrung-2023-e1681244326818.webp
 teaser: Der Verein Villa Wigman für TANZ sucht zum 1. Juni 2023 eine Person, die die geschäftsleitende Tätigkeit für die villa/wigman übernimmt. Alle weiteren Details zur aktuell laufenden Ausschreibung gibt es im Beitrag.
 ---
 
@@ -46,6 +47,6 @@ Die villa\\wigman ist ein Produktionshaus der professionellen Darstellenden Kü
 Weitere Informationen gibt es unter  
 [villawigman.de](https://villawigman.de/)
 
-Die vollständige Ausschreibung als PDF gibt es ***hier***.
+Die vollständige Ausschreibung als PDF gibt es [***hier***](/news/archiv/dateien/2023/wigman-2023.pdf).
 
 Header Foto: Villa Wigman für Tanz e.V.

@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Mono Welk Online-Screening, 31.01.2023
 date: 2023-01-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-tanzpakt-in-residence-mono-welk-4-e1664967374305.webp
 teaser: Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das eine Kooperation zwischen villa\\wigman und TanzNetzDresden ist, arbeitete Choreograph:in, Performer:in und Kurator:in Mono Welk …
 ---
 
@@ -21,6 +22,13 @@ via Zoom
 - Mehr zur Residenz von Mono Welk gibt es unter:  
     [villawigman.de/residenz-mono-welk](https://villawigman.de/residenz-mono-welk/)
 
+::: bilder
+foto: "collage: Mono Welk"
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-in-residence-nachmittag-eines-fauns-mono-welk.webp
+    alt: ""
+:::
+
 ## Mono Welk: »Nachmittag eines Fauns«
 
 Die Recherche-Residenz von Mono Welk im Rahmen von TANZPAKT in Residence stand unter dem Titel »Nachmittag eines Fauns« und beschäftigte sich mit Lust und Erotik im Spannungsfeld zwischen Tanz und Aktivismus. Das über hundert Jahre alte Werk „L’apres midi d’un faune“ von Vaslav Nijinsky beleuchtete Mono Welk während seiner Residenz in einem queeren Kontext kritisch und resinszenierte es mit folgenden Fragen:
@@ -28,6 +36,20 @@ Die Recherche-Residenz von Mono Welk im Rahmen von TANZPAKT in Residence stand u
 Wann ist die Darstellung von Lust und Erotik eine provokante gehypte Sensation? Wann ein authentisches Element einer emanzipatorischen Praxis?Wie kann die normative Matrix an Orten der Hochkultur mittels Lust und Queerness gehackt werden?
 
 Neben der Analyse des Werks machte Mono Welk sich ein genaueres Bild von der Person Vaslav Nijinsky und untersuchte, welche Normen in der darstellenden Kunst zu der Zeit vorherrschten. Vaslav Nijinsky war eine bisexuelle Person, die später an Schizophrenie erkrankte und durch seine künstlerische Arbeit immer wieder Tabubrüche hervorbrachte. Ausserdem soll die Analyse von „L’apres midi d’un faune“ mit Therorien/Praktiken post-moderner und zeitgenössischer Künstler:innen, Theoretiker:innen und Aktivist:innen in Verbindung bringen, die sich intensiv mit Körperpolitiken, Unterdrückungsstrukturen und Strategien gegen eine weiße, cis-hetero, ableistische und klassistische Norm in der kulturellen Praxis beschäftigen. Literatur als Recherche-Grundlage: „Tagebücher“ Vaslav Nijinsky, „Testo Junkie“ von Paul B. Preciado und „Pleasure Activism“ von Adrienne Maree Brown.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-in-residence-mono-welk-5.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-in-residence-mono-welk-3.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-in-residence-mono-welk-2.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-tanzpakt-in-residence-mono-welk.webp
+    alt: ""
+:::
 
 ## Über Mono Welk
 

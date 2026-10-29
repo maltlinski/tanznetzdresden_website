@@ -3,6 +3,7 @@ title: explore dance beim Deutschen Tanzpreis ausgezeichnet • 12. Oktober 2024
 date: 2024-10-13
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/deutschertanzpreis2024-kultursalon-c2-a9ursula-kaufmann.webp
 teaser: Am 12. Oktober wurde im Rahmen des Deutschen Tanzpreises 2024 in Essen explore dance, das Netzwerk Tanz für junges Publikum, geehrt.
 ---
 
@@ -14,9 +15,25 @@ Am 12. Oktober wurde [explore dance](https://explore-dance.de/) – Netzwerk Tan
 
 Die sechsjährige Erfolgsgeschichte von explore dance mit den vier Partnerstädten Dresden, Hamburg, München und Potsdam umfasst inzwischen 34 eigens produzierte Tanzstücke für junges Publikum. Bühnenproduktionen und mobile Pop Ups wurden bereits in über 500 Vorstellungen bundesweit und international, in Schulen, Jugendzentren, auf Bühnen und im öffentlichen Raum gezeigt und von hunderten Vermittlungsangeboten flankiert. Damit bringt explore dance den zeitgenössischen Tanz direkt zu Kindern und Jugendlichen und verschafft ihnen nachhaltig und unabhängig von ihrem Wohnort oder sozialen Kontext Teilhabe an künstlerischem Erleben. Das wertschätzen auch die Länder und Kommunen der vier Partnerorte, die das bundesweite Netzwerk tragen und zur herausragenden Auszeichnung im Rahmen des Deutschen Tanzpreises aus Sachsen, Hamburg, München, Brandenburg und Potsdam gratulieren.
 
+::: bilder
+text: Kulturstaatsministerin Claudia Roth;
+foto: Kristian Schuller
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-deutscher-kulturrat-claudia-roth-kristian-schuller.webp
+    alt: ""
+:::
+
 Hierfür fand auch Kulturstaatsministerin Claudia Roth in einer Video-Botschaft die passenden Worte, indem sie über die Initiative explore dance Folgendes sagte:
 
 > »Mit großer Freude gratuliere ich explore dance zur Auszeichnung mit dem Deutschen Tanzpreis. Dieser Preis ist eine tolle Anerkennung für die intensiven Bestrebungen des Netzwerkes, Kinder und Jugendliche für die Kunstform Tanz zu begeistern. Junge Menschen für die Vielfalt der Kultur zu begeistern und ihnen einen Zugang zu kultureller Teilhabe zu ermöglichen, ist eine enorm wichtige Aufgabe. Ich danke daher allen, die am Erfolg von explore dance Anteil haben, für ihr bedeutsames Engagement.«
+
+::: bilder
+text: Barbara Klepsch, Sächsische Staatsministerin für Soziales und Verbraucherschutz;
+foto: Christian Hüller
+bilder:
+  - datei: /news/archiv/2024/pressefoto-quer-staatsministerin-barbara-klepsch.webp
+    alt: ""
+:::
 
 Im Falle der Partnerstadt Dresden würdigt die sächsische Staatsministerin für Kultur und Tourismus Barbara Klepsch die Initiative explore dance mit folgenden Worten**:**
 
@@ -24,6 +41,13 @@ Im Falle der Partnerstadt Dresden würdigt die sächsische Staatsministerin für
 
 Mehr zur Ehrung von explore dance beim Deutschen Tanzpreis 2024 gibt es unter folgendem Link:  
 [deutschertanzpreis.de/preistraegerinnen/preistraegerinnen-2024](https://www.deutschertanzpreis.de/preistraegerinnen/preistraegerinnen-2024#c395)
+
+::: bilder
+text: "Anna Till; Tänzerin, Choreografin und TanzNetzDresden-Vorständin; Quelle: www.annatill.de"
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-anna-till-tanzpakt-in-residence-kirschau-2024.webp
+    alt: ""
+:::
 
 Im Rahmen von explore dance und gemeinsam mit Nora Otte, Konstanze Grotkopp und Johannes Till entwickelte auch Künstlerin und TanzNetzDresden-Vorständin Anna Till ihre letzte Produktion »[Schwanensee in Sneakers](https://www.annatill.de/schwanensee-in-sneakers/)«. Nicht nur aus diesem Grund findet sie für das Netzwerk auch nur lobende Worte, wenn sie sagt:
 
@@ -35,6 +59,20 @@ Mehr Informationen gibt es unter den folgenden Links:
 [goplasticcompany.de/fight-for-your-fairytale](https://www.goplasticcompany.de/fight-for-your-fairytale/)  
 [annatill.de/schwanensee-in-sneakers](https://www.annatill.de/schwanensee-in-sneakers/)  
 [carolinebeach.com](https://www.carolinebeach.com/)
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2024/csm-deutschertanzpreis2024-tanzgala-ursula-kaufmann-11-826ddcc171.webp
+    alt: ""
+  - datei: /news/archiv/2024/csm-deutschertanzpreis2024-tanzgala-ursula-kaufmann-21-c47820f10d.webp
+    alt: ""
+  - datei: /news/archiv/2024/csm-deutschertanzpreis2024-tanzgala-ursula-kaufmann-7-92a704f833.webp
+    alt: ""
+  - datei: /news/archiv/2024/csm-deutschertanzpreis2024-tanzgala-ursula-kaufmann-5-0f98d077a9.webp
+    alt: ""
+:::
 
 ## Deutscher Tanzpreis 2024
 

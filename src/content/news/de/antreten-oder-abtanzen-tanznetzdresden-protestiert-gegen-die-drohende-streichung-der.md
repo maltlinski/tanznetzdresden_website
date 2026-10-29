@@ -3,6 +3,7 @@ title: Antreten oder Abtanzen?! • TanzNetzDresden protestiert gegen die drohen
 date: 2025-11-24
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2025/unbenannt-8.webp
 teaser: Aufgrund der aktuellen Situation, dass das TanzNetzDresden ab 2026 von einer gänzlichen Streichung der institutionellen Förderung bedroht ist, wird am Dienstag, den 25.
 ---
 
@@ -14,7 +15,7 @@ Wir rufen heute alle Mitglieder:innen des TanzNetzDresden sowie all jene, denen 
 
 Frei nach dem Motto: Mit Dir antreten oder abtanzen?!
 
-Wir möchten an dieser Stelle auch deutlich betonen: Wenn die kommunale Förderung von TanzNetzDresden gestrichen wird (so wie aus der letzten Veröffentlichung der Stadt Dresden zu jenem Thema zu entnehmen ist), dann ist das nicht nur ein finanzielles Problem, sondern auch ein strukturelles Problem für die freie Tanzszene in Dresden, für ihre Sichtbarkeit, ihre Teilhabe, ihre Infrastruktur und ihre Lobby‐Fähigkeit. Es schwächt eine wichtige Brücke zwischen freien Akteuren und kommunaler Kulturpolitik und sendet ein Signal, dass Kulturförderung – auch über Jahre hinweg – nicht dauerhaft verlässlich ist.
+Wir möchten an dieser Stelle auch deutlich betonen: Wenn die kommunale Förderung von TanzNetzDresden gestrichen wird ([so wie aus der letzten Veröffentlichung der Stadt Dresden zu jenem Thema zu entnehmen ist](/news/archiv/dateien/2025/v0571-25-anlage-1-auflistung-fuer-die-institutionelle-foerderung-2026-oeffentlich.pdf)), dann ist das nicht nur ein finanzielles Problem, sondern auch ein strukturelles Problem für die freie Tanzszene in Dresden, für ihre Sichtbarkeit, ihre Teilhabe, ihre Infrastruktur und ihre Lobby‐Fähigkeit. Es schwächt eine wichtige Brücke zwischen freien Akteuren und kommunaler Kulturpolitik und sendet ein Signal, dass Kulturförderung – auch über Jahre hinweg – nicht dauerhaft verlässlich ist.
 
 Über den weiteren Verlauf der Ereignisse werden wir hier und an anderer Stelle berichten. Außerdem möchten wir uns herzlich und ausdrücklich über all die Unterstützungsschreiben befreundeter Partnerinstitutionen bedanken, die wir aus dem gesamten deutschsprachigen Raum erhalten und die wir in Kürze und nach Individueller Absprache in Auszügen ebenfalls veröffentlichen werden.
 

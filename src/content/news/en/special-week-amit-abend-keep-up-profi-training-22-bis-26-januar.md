@@ -7,6 +7,13 @@ teaser: The year 2024 is also getting off to an intense and exciting start in te
 
 Amit Abend is an Israeli dance artist currently based in Dresden. She studied dance professionally at the Jerusalem high- school Academy for Music and Dance. At the age of 18, Amit was accepted into the Kibbutz Contemporary Dance Company II. Amit Abend worked as a company member with KCDC 2, Ephemera Dance Company, G-H-T, and the late Yaara Dolev. She collaborated with renowned artist Sandro Kopp and was a guest choreographer at Theater Görlitz. Her dance film „Stav“ is currently screening in festivals around the world.
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-profi-training-2023-amit-abend.webp
+    alt: ""
+:::
+
 Amit Abend was granted a four-week research residency in September 2023 as part of the “[TANZPAKT in residence](/verein/)” program at the historic villa\\wigman in Dresden, the former domain of dancer and choreographer Mary Wigman. The result of Amit’s research was the solo piece Wayfaring Stranger, an exploration of identity and belonging. The piece premiered in October 2023 at villa\\wigman. It was also featured in vision:danceable at Societätstheater and had a successful return to the villa as part of Solo².
 
 More about Amit Abend can be found at:  

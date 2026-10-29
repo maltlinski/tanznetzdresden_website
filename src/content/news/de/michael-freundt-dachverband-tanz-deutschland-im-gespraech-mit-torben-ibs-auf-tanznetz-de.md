@@ -3,6 +3,7 @@ title: MIchael Freundt (Dachverband tanz Deutschland im Gespräch mit Torben Ibs
 date: 2025-12-15
 category: Stimme
 author: TanzNetzDresden
+image: ../../../assets/news/2025/michael-freundt.webp
 teaser: Im Zuge der deutschlandweiten Debatte um die Kürzungen im Kulturbereich hat Torbien Ibs für tanznetz.de in der vergangenen Woche ein Gespräch mit Michael Freundt, Geschäftsführer des Dachverband Tanz Deutschland geführt.
 ---
 
@@ -33,6 +34,13 @@ Der Bund steht da leider gar nicht im Dialog mit den Ländern. Auf Bundesebene h
 Mit der Petition setzen wir ein gemeinsames Zeichen für den Erhalt einer vielfältigen, lebendigen und solidarischen Kulturlandschaft in Dresden. Gemeinsam können wir den Druck erhöhen, Öffentlichkeit schaffen und deutlich machen, wie zentral Kultur für das Leben und die Zukunft unserer Stadt ist.«
 
 ### Den vollständigen Beitrag gibt es unter folgendem Link zu lesen: [tanznetz.de/de/article/2025/michael-freundt-im-gespraech-ueber-die-herben-rueckschlaege-fuer-den-tanz](https://www.tanznetz.de/de/article/2025/michael-freundt-im-gespraech-ueber-die-herben-rueckschlaege-fuer-den-tanz-bei-der)
+
+::: bilder
+text: Screenshot
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-e-petition-netzwerk-kultur-dresden-2.webp
+    alt: ""
+:::
 
 ## Petition "Dresden streicht, wovon es lebt!"
 

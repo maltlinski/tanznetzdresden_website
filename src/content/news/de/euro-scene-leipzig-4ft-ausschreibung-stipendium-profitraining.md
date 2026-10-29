@@ -3,6 +3,7 @@ title: euro-scene & 4fT Leipzig vergeben Stipendien für Profitrainings • jetz
 date: 2022-10-18
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-euroscene-profitraining-workshops-c-walther-lekon.webp
 teaser: Um die Vernetzung der sächsischen Tanzszene zu fördern vergibt die euro-scene Leipzig in Kooperation mit 4fT Tanzplattform Leipzig in diesem Jahr erstmalig Stipendien an Tänzer:innen aus Sachsen.
 ---
 

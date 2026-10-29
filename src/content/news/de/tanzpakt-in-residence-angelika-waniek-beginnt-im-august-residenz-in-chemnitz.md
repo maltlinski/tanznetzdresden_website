@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Angelika Waniek beginnt im August Residenz am K
 date: 2023-07-10
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanzpakt-in-residence-2023-angelika-waniek-fotograf-waltherlekon.webp
 teaser: Im Rahmen von TANZPAKT in residence wird die Leipziger Performance-Künstlerin Angelika Waniek unterstützt vom Taupunkt e.V. an der Off-Bühne Komplex im Rahmen einer Residenz arbeiten. In diesem Zuge wird es am 10.
 ---
 

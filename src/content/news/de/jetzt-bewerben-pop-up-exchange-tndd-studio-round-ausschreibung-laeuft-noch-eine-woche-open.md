@@ -3,6 +3,7 @@ title: "JETZT BEWERBEN: POP UP exchange & TNDD studio round • Ausschreibung l�
 date: 2024-08-27
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tndd-studio-round-ii-05112021-tenza-schmiede-10.webp
 teaser: Die beiden Ausschreibungen für die kommenden Editionen von POP UP exchange und TNDD studio round laufen noch bis zum 3. September 2024.
 ---
 
@@ -37,6 +38,16 @@ Mehr über TNDD studio round gibt es [**hier**](/#formate).
 Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz. Gefördert von der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
 Unterstützt durch das NATIONALE PERFORMANCE NETZ Impulsförderung Tanz & Theater, gefördert von der Beauftragten der Bundesregierung für Kultur und Medien, sowie den Kultur- und Kunstministerien der Länder.
+
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+:::
 
 ## POP UP exchange & TNDD studio round 2024 (en)
 
@@ -74,5 +85,15 @@ More information is available under:
 TNDD studio round is a project by TanzNetzDresden. Funded by the Office for Culture and Monument Protection and the Cultural Foundation of the Free State of Saxony. The measure is co-financed by tax funds on the basis of the budget passed by the Saxon State Parliament.
 
 Supported by the NATIONAL PERFORMANCE NETZ Impulsförderung Tanz & Theater, funded by the Federal Government Commissioner for Culture and the Media and the Ministries of Culture and the Arts of the federal states.
+
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+:::
 
 Header-Photo: Marcin Motyl „TEN" @TNDD studio round II (05.11.2021); Shot by Stephan Tautz

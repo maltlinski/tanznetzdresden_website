@@ -3,6 +3,7 @@ title: Gratulation! explore dance-Produktion »Schwanensee in Sneakers« zur Tan
 date: 2023-10-27
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-anna-till-exploredance-schwanensee-sneakers-stephan-floss.webp
 teaser: Eine Nachricht, die für viel Freude gesorgt hat. Ganz besonders bei TanzNetzDresden-Mitglied Anna Till, denn sie ist mit Nora Otte und dem gemeinsamen Stück »Schwanensee in Sneakers«
 ---
 
@@ -10,9 +11,21 @@ teaser: Eine Nachricht, die für viel Freude gesorgt hat. Ganz besonders bei Tan
 
 Die [Tanzplattform Deutschland](http://www.tanzplattform.de/home) 2024 hat ihre Auswahl bekannt gegeben und das in [HELLERAU – Europäisches Zentrum der Künste](https://www.hellerau.org/) produzierte Tanzstück »[Schwanensee in Sneakers](https://www.annatill.de/schwanensee-in-sneakers/)« von [Anna Till](https://www.annatill.de/) und Nora Otte ist von einer unabhängigen Jury als eines von insgesamt 10 Stücken für die [Tanzplattform Deutschland 2024](https://tanzplattform2024.de/) im kommenden Februar in Freiburg ausgewählt worden.
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tanzplattform-deutschland-2024.webp
+    alt: ""
+:::
+
 ## Tanzplattform Deutschland 2024
 
 Die mobile Pop Up-Produktion des bundesweiten Netzwerks »explore dance« hatte im März 2023 Premiere in HELLERAU. Die Tanzplattform ist das wichtigste Festival für zeitgenössischen Tanz in Deutschland. Sie findet alle zwei Jahre an wechselnden Orten statt. Die Jury hat für die Auswahl über 550 Stücke gesichtet, die zwischen September 2021 und September 2023 entstanden sind und in diesem Zeitraum ihre Ur-/Erstaufführung hatten.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-anna-till-exploredance-schwanensee-sneakers-stephan-floss-2.webp
+    alt: ""
+:::
 
 ## »Schwanensee in Sneakers«
 

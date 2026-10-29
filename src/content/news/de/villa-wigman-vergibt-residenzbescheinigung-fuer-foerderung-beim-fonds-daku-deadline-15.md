@@ -3,6 +3,7 @@ title: "villa/wigman vergibt Residenzbescheinigung für Förderung beim Fonds Da
 date: 2026-02-05
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-solo2-villa-wigman-andre-wirsig.webp
 deadline: 2026-02-15
 teaser: Die villa\\wigman vergibt zwei Residenzbescheinigungen für eine Residenzförderung des Fonds Darstellende Künste. Was dafür nötig ist und wie der Open Call abläuft - all das erfahrt ihr im heutigen Blog-Beitrag.
 ---

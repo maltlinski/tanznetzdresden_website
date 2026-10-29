@@ -3,6 +3,7 @@ title: TanzNetzDresden unterstützt gestartete Petition gegen die Halbierung der
 date: 2024-08-01
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tndd-studio-round-ii-05112021-tenza-schmiede-12.webp
 teaser: Wie gestern von uns berichtet, sieht der von Kulturstaatsministerin Claudia Roth (Bündnis 90/Die Grünen) vorgelegte Haushaltsentwurf eine massive Kürzung des Bundeskulturfonds im Bereich der …
 ---
 

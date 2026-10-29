@@ -3,12 +3,19 @@ title: "Ab morgen bei der Tanzplattform Deutschland 2024 zu sehen: »Schwanensee
 date: 2024-02-21
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/anna-till-schwanensee-e1708514904396.webp
 teaser: Im Oktober 2023 haben wir bereits darüber berichtet, dass TanzNetzDresden-Mitglied Anna Till mit ihrem, gemeinsam mit Nora Otte entwickelten Stück »Schwanensee in Sneakers«
 ---
 
 *Im Oktober 2023 haben wir bereits darüber berichtet, dass TanzNetzDresden-Mitglied Anna Till mit ihrem, gemeinsam mit Nora Otte entwickelten Stück »Schwanensee in Sneakers« für die Tanzplattform Deutschland 2024 ausgewählt wurde. Nun ist es soweit und die Produktion wird an ganzen vier Tagen des Festivals in Freiburg gezeigt. Alle Informationen dazu gibt es im heutigen Beitrag.*
 
 Die [Tanzplattform Deutschland](https://tanzplattform2024.de/) 2024 gab im Oktober vergangenes Jahres ihre Auswahl bekannt und teilte unter anderem mit, dass das in [HELLERAU – Europäisches Zentrum der Künste](https://www.hellerau.org/) produzierte Tanzstück »[Schwanensee in Sneakers](https://www.annatill.de/schwanensee-in-sneakers/)« von [Anna Till](https://www.annatill.de/) und Nora Otte von einer unabhängigen Jury als eines von insgesamt 10 Stücken für die Tanzplattform Deutschland 2024 in Freiburg ausgewählt worden. Besonders dabei: Das Stück der Choreographinnen Anna Till und Nora Otte ist das einzige aus Sachsen, Sachsen-Anhalt und Thüringen auf dem Festival.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tanzplattform-deutschland-2024.webp
+    alt: ""
+:::
 
 ## Tanzplattform Deutschland 2024
 
@@ -21,6 +28,12 @@ Gegründet wurde die Tanzplattform 1994 von Nele Hertling, Walter Heun und Diete
 ## »Schwanensee in Sneakers«
 
 Die Solo-Performance »[Schwanensee in Sneakers](https://www.annatill.de/schwanensee-in-sneakers/)« öffnet den Blick für die facettenreichen Formen von Tanz und die Kraft der Verwandlung, die jedem Körper innewohnt. In diesem Sinne begreift sich das Stück als lustvoller und kreativer Wissenstransfer für alle Zuschauer:innen ab 12 Jahren und vermittelt unterschiedliche Perspektiven auf Tanz und Bewegung. Die Tänzerin Anna Till bewegt sich in einem Crossover aus Stilen, die vom Alltäglichen zum Grotesken, vom Klassischen zum Experimentellen wechseln. Historisches Bewegungsmaterial trifft auf zeitgenössische Form. Innerhalb der Produktion werden auch namhafte Choreographen wie Xavier Le Roy, William Forsythe oder Lia Rodrigues zitiert. Und imitiert wird natürlich auch der „Tanz der kleinen Schwäne“ aus dem berühmten "Schwanensee"-Ballett.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-anna-till-exploredance-schwanensee-sneakers-stephan-floss-2.webp
+    alt: ""
+:::
 
 Im Hinblick auf die kommenden Tage ist die Freude auf Seiten der beiden künstlerischen Initiatorinnen riesig oder wie [Anna Till](https://www.annatill.de/) und Nora Otte es ins eigene Worte fassen:
 

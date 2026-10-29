@@ -3,6 +3,7 @@ title: "Frauenkulturbüro NRW präsentiert: der »Policy Baukasten - Familie und
 date: 2024-10-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-theater-policy-baukasten-e1730295686298.webp
 teaser: Der »Policy Baukasten Familie und Care am Theater« ist ein Projekt des Frauenkulturbüros NRW und des Cultural Policy Lab aus München. Unter der wissenschaftlichen Leitung von Dr.
 ---
 
@@ -13,6 +14,13 @@ Der »Policy Baukasten Familie und Care am Theater« ist ein Projekt des [Frauen
 ### 4 Kategorien, 20 Operatoren & 86 Indikatoren
 
 Der Baukasten selbst ist eine Art Werkzeugkiste gedacht, aus der sich bedient werden kann. Dieser Baukasten ist in Voraussetzungen und Aktionsfelder unterteilt. In jeder Ebene des Baukastens finden sich Themen. Ein Klick auf ein Thema öffnet Indikatoren, die die jeweiligen Themen um spezifische Policy-Maßnahmen ergänzen.
+
+::: bilder
+text: Screenshot aus dem »Policy Baukasten Familie und Care am Theater« des Frauenkulturbüros NRW
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-theater-policy-baukasten-screenshot.webp
+    alt: ""
+:::
 
 Der Policy Baukasten ist ein Impuls für evidenz-basierte Entscheidungen in Kulturpolitik und -management. In einer emotional aufgeheizten Debatte bietet er eine systematische Orientierung und demokratisiert Handlungswissen.
 

@@ -3,6 +3,7 @@ title: "TANZPAKT in residence • Magdalena Weniger: Moosweib Reloaded • villa
 date: 2024-06-08
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-tanzpakt-in-residence-2024-magdalena-weniger-stephan-floss.webp
 teaser: Im Rahmen von TANZPAKT in residence arbeitet TanzNetzDresden-Vorständin Magdalena Weniger im Mai und August 2024 als Residentin in der villa/wigman in Dresden.
 ---
 
@@ -15,6 +16,12 @@ teaser: Im Rahmen von TANZPAKT in residence arbeitet TanzNetzDresden-Vorständin
 Das Moosweiblein ist ganz eins mit ihrem Lebensraum, dem Wald, kleidet sich in Moos, ist kräuterkundig, gesellig und weise – es besitzt Wissen um die Zukunft. Die Beziehung dieser Sagenﬁgur zu den Menschen ist abhängig von der Begegnung und gegenseitigen Anerkennung: die Waldwesen können helfen, heilen, schenken, aber auch Krankheiten senden oder Furcht einﬂößen.
 
 Magdalena Weniger möchte dieses Moosweib umfassender erforschen und daraus eine Kunstﬁgur entwickeln, ein Alter Ego für performative Soloarbeiten. Die Residenz möchte sie dazu nutzen, um Bewegungsmaterial für dieses Wesen zu entwerfen, Klang- und Stimmrecherchen zu begehen und gemeinsam mit ihrer Dresdner Kollegin Bettina Kletzsch Ausstattungsideen für diese Figur zu skizzieren.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-tanzpakt-in-resindece-2024-magdalena-weniger-layers-of-ash-manja-herrmann.webp
+    alt: ""
+:::
 
 ## Magdalena Weniger
 

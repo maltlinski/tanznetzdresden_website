@@ -3,6 +3,7 @@ title: Tanzplattform Deutschland 2026 • Trailer & Informationen zum Programm �
 date: 2026-02-15
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tp26-wortmarke-pink-e1772443067858.webp
 teaser: im März versetzt die Tanzplattform Deutschland 2026 ganz Dresden ins Tanzfieber. Ausgerichtet von HELLERAU – Europäisches Zentrum der Künste und auf verschiedenen Bühnen der Stadt sind in der Zeit vom 11. bis zum 15.
 ---
 
@@ -15,6 +16,14 @@ Alle zwei Jahre macht die [Tanzplattform](http://www.tanzplattform.de/home) die 
 In diesem Jahr ist HELLERAU die veranstaltende Institution, die die Tanzplattform Deutschland präsentiert und dabei die aktuellen Entwicklungen und innovativen Strömungen im zeitgenössischen Tanz ins Szene setzt.
 
 Eine unabhängige Jury hat die Produktionen für das Programm ausgewählt, das Mitte März 2026 in HELLERAU und weiteren Dresdner Institutionen gezeigt wird. Berücksichtigt wurden Produktionen, die zwischen September 2023 und August 2025 in Deutschland entstanden sind.
+
+::: bilder
+text: '"Spiegelneuronen" von Sasha Waltz & Guests mit Rimini Protokoll;'
+foto: Bernd Uhlig
+bilder:
+  - datei: /news/archiv/2026/tanznetzdresden-tanzplattform-deutschland-2026-spiegelneuronen-sasha-waltz-rimini.webp
+    alt: ""
+:::
 
 ### Die Jury der Tanzplattform 2026
 
@@ -30,6 +39,13 @@ HELLERAU – Europäisches Zentrum der Künste hat als Veranstalter eine Stimme,
 - **Carena Schlewitt** (Intendantin)
 - **André Schallenberg** (Programmleitung Tanz und Theater)
 - **Christoph Bovermann** (Künstlerische Projektleitung | EDN – European Dance Development Network, Berlin)
+
+::: bilder
+foto: "-Credit: Stephan Floss"
+bilder:
+  - datei: /news/archiv/2026/tanznetzdresden-2026-tanzplattform-deutschland-hellerau-jury-stephan-floss.webp
+    alt: ""
+:::
 
 ### Das Programm der Tanzplattform 2026
 

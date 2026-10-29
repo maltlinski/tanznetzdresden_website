@@ -3,6 +3,7 @@ title: »TRANSFORMATION« Performances & Workshop • März & April 2024 • Dre
 date: 2024-03-14
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-kirschau-transformation-tanzart-foto-roland-kersting.webp
 teaser: Die Tanzperformance »TRANSFORMATION« wird im März und April 2024 sowohl in der Dresdner Yenidze als auch Kirschau im Rahmen des zehnjährigen Jubiläums von TanzART Kirschau zu erleben sein.
 ---
 
@@ -26,6 +27,12 @@ teaser: Die Tanzperformance »TRANSFORMATION« wird im März und April 2024 sowo
 
 **Hinweis**: Für die Termine in der Dresdner Yenidze gibt Steuerkarten für Tänzer:innen. Bitte hierfür im Vorfeld unter [info@yenidze-theater.de](mailto:info@yenidze-theater.de) melden.
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-kirschau-kathak-mit-livemusik-foto-roland-kersting.webp
+    alt: ""
+:::
+
 ## Kathak-Workshop mit Live-Tabla-Musik
 
 Dieser Workshop stellt eine optionale Ergänzung zum ersten Teil von »TRANSFORMATION« und richtet sich an erfahrene Tänzer:innen, die gerne einen Einblick in den nordindischen Kathak-Tanz erhalten möchten. Ihr erlernt Grundkenntnisse der Tanztechnik, die sich durch intensive rhythmische Fußarbeit, sanfte Armmomente und Mudras (Handgesten) auszeichnen. Begleitet wird der Workshop von dem erfahrenen Tablaspieler und Sänger Ravi Srinivasan (Indien/Malaysia).
@@ -37,6 +44,12 @@ Dieser Workshop stellt eine optionale Ergänzung zum ersten Teil von »TRANSFORM
 **Dozent:innen**: Anne Dietrich (Kathaktänzerin) & Ravi Srinivasan (Tablaspieler)  
 **Ort**: [TanzART Atelier](https://www.tanzart-kirschau.de/), Friesestr. 31, 02681 Schirgiswalde-Kirschau  
 **Tickets**: 35 Euro; eine Anmeldung muss via Mail unter [info@tanzart-kirschau.de](mailto:info@tanzart-kirschau.de) vorgenommen werden.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-kirschau-kurzstrecke-roland-kersting.webp
+    alt: ""
+:::
 
 ## »Kurzstrecke - Einblicke in den zeitgenössischen Tanz«
 

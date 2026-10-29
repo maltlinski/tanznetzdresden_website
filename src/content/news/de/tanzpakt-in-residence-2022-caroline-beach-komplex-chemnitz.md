@@ -3,12 +3,25 @@ title: TANZPAKT in residence 2023 • Caroline Beach im Komplex Chemnitz
 date: 2022-09-14
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach.webp
 teaser: Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das eine Kooperation zwischen villa\\wigman und TanzNetzDresden ist, wird Choreografin und Künstlerin Caroline Beach in der Zeit vom 15. September bis 15.
 ---
 
 Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das eine Kooperation zwischen villa\\wigman und TanzNetzDresden ist, wird Choreografin und Künstlerin Caroline Beach in der Zeit vom 15. September bis 15. Oktober 2022 im Rahmen einer Recherche-Residenz am [Komplex Chemnitz](https://www.chemnitzkomplex.de/) arbeiten. Weitere Informationen zu ihrem Aufenthalt gibt es nun im Beitrag.
 
 Caroline Beach sucht in dieser vierwöchigen Zeit nach Möglichkeiten, Partituren für Misserfolge zu schreiben oder „Schiffswracks“ zu archivieren. Mit einer Sammlung von Werkzeugen und naiven Strategien geht sie in diese Residenz, um zu untersuchen, wie wir Katastrophen internalisieren und wie wir Brüche und Bruchstellen nutzen können, um uns eine Vielzahl von Zukünften in der Gegenwart vorzustellen.
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach-4.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach-3.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach-2.webp
+    alt: ""
+:::
 
 ### Über Caroline Beach
 
@@ -77,7 +90,7 @@ Residenzort und eine Werkstattpräsentation zum Abschluss der Residenzzeit.
 Weitere Informationen u TANZPAKT in residence gibt es unter:  
 [villawigman.de/tanzpakt-in-residence](https://villawigman.de/tanzpakt-in-residence/)
 
-Die vollständige Ausschreibungsunterlagen gibt es hier: **TANZPAKT-in-residence\_Ausschreibung-2023\_de.pdf**
+Die vollständige Ausschreibungsunterlagen gibt es hier: [**TANZPAKT-in-residence\_Ausschreibung-2023\_de.pdf**](/news/archiv/dateien/2022/tanzpakt-in-residence-ausschreibung-2023-de.pdf)
 
 oder direkt auf der Website der Villa Wigman unter:
 

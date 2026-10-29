@@ -3,6 +3,7 @@ title: POP UP exchange • TanzNetzDresden trifft das tanz_netzwerk_bremen PROFE
 date: 2022-11-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-pop-up-exchange-tanznetzwerk-bremen-professional-2022.webp
 teaser: Initiiert vom TanzNetzDresden, werden am Wochenende des 18. und 19. November 2022 vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus im Rahmen von POP UP …
 ---
 
@@ -11,6 +12,13 @@ Initiiert vom TanzNetzDresden, werden am Wochenende des 18. und 19. November 202
 Am 18. November 2022 sind wir zu Gast in Bremen. Wir lernen die junge Initiative tanz\_netzwerk\_bremen kennen und erleben die POP UP Performance »Wer bin ich WO?« der Pretty Playful Productions. Die POP UP Performance wird ermöglicht durch das TanzNetzDresden in Kooperation mit RESIDANCE von Quartier gGmbH. Alles weitere zu unserem anstehenden Besuch steht im heutigen POP UP exchange-Blog-Beitrag.
 
 ## tanz\_netzwerk\_bremen PROFESSIONAL
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2022/tanznetzwerk-bremen-logo-v22.webp
+    alt: ""
+:::
 
 Das von Bureau Ritter im Rahmen von Tanzpakt Reconnect geförderte Projekt tanz\_netzwerk\_bremen PROFESSIONAL vernetzt lokal und überregional Akteur:innen der freien Tanzszene und fördert den szenenübergreifenden Austausch. Ziel ist die Verbesserung von Arbeits- und Produktionsbedingungen sowie die Weiterqualifizierung von Tanzschaffenden.
 
@@ -32,6 +40,13 @@ Eine POP UP exchange PERFORMANCE für drinnen und draußen von und mit: Johanna 
 Ort & Zeit: werden noch bekanntgegeben
 
 [*Hier geht's zum Facebook-Event*](https://www.facebook.com/events/431482725854507)
+
+::: bilder
+text: Pretty Playful Productions (c) Beate C. Koehler
+bilder:
+  - datei: /news/archiv/2022/c-beate-c-koehler-2021-10-11-moving-cube-shooting-prettyplayfulproductions-99.webp
+    alt: ""
+:::
 
 ### Pretty Playful Productions
 

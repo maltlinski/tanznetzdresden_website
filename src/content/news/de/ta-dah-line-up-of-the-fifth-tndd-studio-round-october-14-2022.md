@@ -3,6 +3,7 @@ title: Ta-dah! - Line up of the fifth TNDD studio round (October 14, 2022)
 date: 2022-10-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-studio-round-5-2022-1-e1665414384923.webp
 teaser: The complete line up of the upcoming TNDD studio round edition, which will take place on October 14th as usual from 8pm at the TENZA Schmiede, is now online and can be browsed.
 ---
 
@@ -16,12 +17,30 @@ Detailed information on the individual contributions to the fifth TNDD studio ro
 
 ## Elia Pangaro "AMOEBA"
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-elia-pangaro-6.webp
+    alt: ""
+:::
+
 Elia Pangaro was born in Perugia, Italy. Captured by the aesthetics of urban techniques He started dancing at the age of 10. Through his training with various teachers, he began to form his movement signature.  
 He started his professional career as a dancer at 16 dancing in INC innprogress\_collective directed by Afshin Varjavandi. Since then he started freelancing as a performer with many choreographers, directors and in theaters such as: Michele Merola, Stefano Poda, Giuseppe Tornatore, Teatro Regio di Torino, Opera Royal De Wallonie, Paolo Rosini, Vangelis Legakis, Jose Agudo and others.
 
 In 2019 he founded MITS Collective with Alexander De Vries and he started creating and co- creating performances around the world. Some of his works are: “Anatomy of a Living Body”, lecture-performance co-created with the psychiatrist Maurizio Venezi for VID Art/Science in Bologna, Italy. “MÊME-BRAIN”, 50 minutes piece co-choreographed with the members of MITS Collective for ISB in Bangkok, Thailand. “spiegarsi/spje’garsi”, piece produced by UNITY SPACE (Hong Kong) and supported by MOVES (Mexico), presented in Guatemala and Mexico. “AMOEBA”, solo produced by UNITY SPACE (HK) and supported by Invernadero Danza (MX) presented in Oaxaca, Mexico and in Munich at TANZWERSTATT EUROPA in the context of the Open Stage 2022. He is currently working as a freelance performer and choreographer, creating inclusive, interdisciplinary works with different collaborators.
 
 [**Instagram-channel**](https://www.instagram.com/elia.pangaro/)
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-elia-pangaro-4.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-elia-pangaro-2.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-elia-pangaro-3.webp
+    alt: ""
+:::
 
 **AMOEBA**
 
@@ -45,6 +64,12 @@ Photos: Michael Rennecke
 
 ## Jack Bannerman: "Baby Blue"
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-studio-round-5-2022-2.webp
+    alt: ""
+:::
+
 Originally from Australia, Jack has worked professionally as a dancer in both Australia and Europe for 7 years, dancing repertoire from choreographers such as Bryan Arias, Jorge Pérez Martínez, and Andris Plucis. Jack has been invited to present his first choreographic work “Do you feel at home” for the Tanzplattform Rhein-Main, the Vesuvius Film festival, the Tanz Zentrale der Region Nürnberg, and the Florence Dance festival. His latest and largest work Hello, my old friend, was presented at the Landestheater Eisenach in Germany. Jack is currently completing an MA in Choreography at the Palucca University for dance in Dresden, Germany.
 
 **[Instagram-channel](https://www.instagram.com/jackbannerman)Baby Blue**
@@ -64,6 +89,13 @@ Costume design and creation: Philipp Fritsche
 Music: intro – Awfultune, It’s all over now, Baby Blue – Anohni & lakes – Gia Margaret
 
 Photo: Filmstill of „Baby Blue“; filmed on the stage of the Landestheater Eisenach, September 2021.
+
+::: bilder
+text: Therese Bendjus
+bilder:
+  - datei: /news/archiv/2022/tndd-studio-round-2022-therese-benjus-daria-belous-soft-2-kopie.webp
+    alt: ""
+:::
 
 ## Therese Bendjus & Daria Belous: Studies of Softening
 

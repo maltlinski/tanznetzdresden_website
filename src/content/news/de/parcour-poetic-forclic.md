@@ -3,6 +3,8 @@ title: Parcour Poetic forclic
 date: 2021-08-19
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/parcour-poetic-forclic-e1688978497748.webp
+alt: Parcour Poetic forclic
 teaser: Unter dem Titel »Parcour Poetic forclic« werden am 11. und 19. September jeweils zwei dynamische Wanderungen pro Termin in Hellerau angeboten.
 ---
 

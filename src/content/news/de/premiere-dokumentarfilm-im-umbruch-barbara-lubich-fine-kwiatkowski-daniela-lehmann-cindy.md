@@ -3,6 +3,7 @@ title: Woher weiß man, wann ein neuer Akt beginnt?
 date: 2022-05-13
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-barbara-lubich-im-umbruch-michael-sommermeyer-hechtfilm-scaled.webp
 teaser: Am 15. Mai 2022 feiert "IM UMBRUCH", Barbara Lubichs neuer Dokumentarfilm, in Hellerau Premiere.
 ---
 
@@ -11,6 +12,20 @@ teaser: Am 15. Mai 2022 feiert "IM UMBRUCH", Barbara Lubichs neuer Dokumentarfil
 Es ist der Abschluss einer langen Recherche, die für Regisseurin [Barbara Lubich](http://www.barbara-lubich.net/) einst mit einer Forschungsarbeit zum subversiven Tanz in der DDR begann. Entstanden ist nun ein 76 Minuten langer Dokumentarfilm, der die Tänzerinnen und Choreografinnen [Fine Kwiatkowski,](http://www.fine-k.de/home) [Daniela Lehmann](/verein/) und [Cindy Hammer](https://www.goplasticcompany.de/portfolio-item/cindy-hammer/) filmisch beobachtet und Fragen über Vergangenes, Gegenwart und Künftiges stellt.
 
 ## »Der Tanz erzählt nur von seiner Gegenwart«
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2022/tanznetzdresden-barbara-lubich-im-umbruch-evelyn-krull.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-barbara-lubich-im-umbruch-fine-kwiatkowski.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-barbara-lubich-im-umbruch.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetzdresden-barbara-lubich-im-umbruch-2.webp
+    alt: ""
+:::
 
 **Fine Kwiatkowski** galt in den Achtzigern als extrem, experimentierfreudig, provokativ und unangepasst. Für Szene und Publikum diente sie zugleich als Projektionsfläche für politisches Aufbegehren. IM UMBRUCH zeigt, wie sie auch darüber spricht. Begleitet von bewegten und unbewegten Archivaufnahmen sowie aktuellen Improvisationen geht es Fine aber vor allem um das, was sie heute ausmacht. Wie hat sie einmal gesagt? „Ich war in den 80ern im Jetzt. Ich war in den 90ern im Jetzt. Ich bin Jetzt im Jetzt.“
 

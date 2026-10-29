@@ -3,6 +3,7 @@ title: »Fantasia steht Kopf« - neue Produktion von Natalie Wagner & Wiebke Bic
 date: 2025-05-06
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2025/fantasia-steht-kopf-1-landesbuehnen-sachsen-1200x800.webp
 teaser: Am 10. Mai 2025 wird die neue Produktion »Fantasia steht Kopf« an den Landesbühnen Sachsen uraufgeführt und verspricht "magisches Tanztheater für die ganze Familie".
 ---
 
@@ -11,6 +12,12 @@ teaser: Am 10. Mai 2025 wird die neue Produktion »Fantasia steht Kopf« an den 
 ### Wie ist die Idee zu diesem magischen Tanztheaterstück entstanden und was war euch in der Entwicklung des Konzepts besonders wichtig?
 
 **Natalie Wagner & Wiebke Bickhardt** »Die Idee entstand aus dem gemeinsamen Wunsch heraus, ein Tanzstück mit Orchester zu kreieren. Eine erste Anfrage an die Elbland Philharmonie wurde erfreulicherweise positiv aufgenommen. Uns war es wichtig, Kindern die Kunstform Tanz in ihrer nonverbalen Ausdruckskraft nahezubringen, Emotionen und Beziehungen durch Bewegung zu erzählen. Im Gespräch vertieften wir die Idee für ein gemeinsames Kindertanzstück mit Orchester. Anfänglich von zeitgenössischen, storylosen Ansätzen inspiriert, erkannten wir jedoch schnell, dass die Zusammenarbeit mit dem Orchester einen klaren Handlungsrahmen erforderte, um dessen Musikdramaturgie zu ermöglichen und den gegebenen Zeit- und Arbeitsaufwand optimal zu nutzen. So stellten wir uns dieser Herausforderung und arbeiteten die Geschichte bis ins letzte Detail aus, wobei wir besonders die Figuren in ihrem Wesen und ihren Beziehungen zueinander entwickelten. Dabei halfen uns Methoden aus dem Produktdesign. Ein wichtiges Anliegen war es uns, Tanz in einem Gesamtkunstwerk zu präsentieren, das alle Gewerke eines institutionellen Theaters auf die Bühne bringt und die besondere Kraft der nonverbalen Kommunikation bewusst als Stilmittel entfaltet. Jeder und jede im Publikum die das Stück besuchen werden aus der eigenen Perspektive die Beziehungen und Emotionen der Figuren erleben.«
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2025/fantasia-steht-kopf-7-landesbuehnen-sachsen-1200x800.webp
+    alt: ""
+:::
 
 ### Eure Zusammenarbeit scheint sehr harmonisch zu sein – wie ergänzt ihr euch im kreativen Prozess, und was schätzt ihr besonders aneinander?
 
@@ -24,6 +31,20 @@ In unserer Zusammenarbeit ergänzten wir uns gut durch unterschiedliche Herangeh
 Die erste Probe mit dem Live-Orchester war ein besonderes Erlebnis und unterstrich die wesentliche Bedeutung der Live-Musik für das Stück. Die Zusammenarbeit mit dem Orchester erforderte eine frühzeitige und detaillierte Planung. Wir mussten Thomas Herm eine genaue Vorstellung der Geschichte vermitteln, damit er auf seinem musikalischen Wissen basierend die passende Musik auswählen konnte. Dadurch stand der musikalische und zeitliche Rahmen lange vor der ersten Tanzbewegung fest, was kurzfristige Änderungen erschwerte.
 
 Wir empfanden dies jedoch als eine Bereicherung für den choreografischen Prozess. Die Tänzer:innen erhielten bewusst nicht alle Details der Figuren und der Konzeption, um Raum für eigene Impulse aus der Bewegung heraus zu schaffen, die nicht allein auf unserer ursprünglichen Vision basierten. Dieser klare Weg führte uns dynamisch zu einem gemeinsamen Ziel. Da wir die Geschichte und die Figuren im Detail kannten, konnten wir in den letzten Wochen gemeinsam mit dem gesamten Produktionsteam viele Details ausarbeiten.«
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/fantasia-steht-kopf-6-landesbuehnen-sachsen-1200x800.webp
+    alt: ""
+  - datei: /news/archiv/2025/fantasia-steht-kopf-8-landesbuehnen-sachsen-1200x800.webp
+    alt: ""
+  - datei: /news/archiv/2025/fantasia-steht-kopf-1-landesbuehnen-sachsen-1200x800.webp
+    alt: ""
+  - datei: /news/archiv/2025/fantasia-steht-kopf-3-landesbuehnen-sachsen-1200x800.webp
+    alt: ""
+:::
 
 ### Informationen
 

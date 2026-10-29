@@ -3,6 +3,7 @@ title: Bewerbt euch jetzt für residence plus • Open Call bis 22. Dezember 202
 date: 2025-12-04
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tanznetzdresden-residence-plus-2026.webp
 deadline: 2025-12-22
 teaser: Wir freuen uns, euch heute auf die neuste Ausschreibung des residence plus Programms aufmerksam zu machen, an der ihr bis zum 22. Dezember 2025 (13 Uhr) teilnehmen könnt.
 ---

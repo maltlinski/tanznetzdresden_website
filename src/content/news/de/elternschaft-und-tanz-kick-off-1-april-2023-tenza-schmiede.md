@@ -3,6 +3,7 @@ title: Elternschaft und Tanz • Kick Off am 1. April 2023 in der TENZA Schmiede
 date: 2023-02-17
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-elternschaft-tanz-e1676719259523.webp
 teaser: Die Vereinbarkeit von Familie und Beruf - speziell im Kunstbetrieb - stellt nach wie vor eine große Herausforderung dar. Auch im Bereich des Tanzes tritt dies deutlich zutage.
 ---
 

@@ -3,6 +3,7 @@ title: TanzNetzDresden unterzeichnet Dresdens Nachhaltigkeitscharta
 date: 2022-03-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-nachhaltigkeitscharta-2022-dresden-rene-cc-81-zieger.webp
 teaser: Auch das TNDD bekennt sich eindeutig zur Nachhaltigkeit und unterzeichnete daher die Nachhaltigkeitscharta der Stadt Dresden und bekennt sich nun öffentlich zur Nachhaltigkeit im Kultursektor.
 ---
 

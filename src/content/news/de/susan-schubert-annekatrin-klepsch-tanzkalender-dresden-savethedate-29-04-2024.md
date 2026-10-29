@@ -3,12 +3,20 @@ title: "Susan Schubert und Annekatrin Klepsch über den #Tanzkalender Dresden �
 date: 2024-04-24
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-pop-up-performance-leave-me-a-message-simon-garbe-4-scaled-e1713983463812.webp
 teaser: Am kommenden Montag, dem 29. April findet nicht nur der diesjährige Welttanztages, sondern auch die öffentliche Präsentation des TanzNetzDresden Tanzkalenders vor der Dresdner Semperoper sowie hinter …
 ---
 
 *Am kommenden Montag, dem 29. April findet nicht nur der diesjährige Welttanztages, sondern auch die öffentliche Präsentation des TanzNetzDresden Tanzkalenders vor der Dresdner Semperoper sowie hinter dem Societaetstheater und an vielen anderen Orten dazwischen. Was TNDD-Vorständin Susan Schubert und Bürgermeisterin Annekatrin Klepsch, Beigeordnete für Kultur, Wissenschaft und Tourismus, über das künftige monatliche Format zu sagen haben, erfahrt ihr im heutigen Blog-Beitrag.*
 
 ## TanzNetzDresden präsentiert: der Tanzkalender Dresden - ab sofort jeden Monat
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/susan-schubert-002-tanznetzdresden.webp
+    alt: ""
+:::
 
 »Es wurde Zeit, Tanz in der Stadt an einem Ort zu versammeln und die Vielfältigkeit, die Reichhaltigkeit, die es in Dresden gibt, gebündelt auf ein Blatt Papier zu bringen. Die Szene ist schon lange verknüpft, es war nur einfach mal Zeit, diese Einheit auch nach außen zu tragen und zu feiern. Der Tanzkalender ist hierbei ein Versuch, Tanz in all seinen Facetten in Dresden abzubilden und zugänglich zu machen. Das ist neu, das ist gut und es ist einfach. Einfach Tanz.«
 
@@ -17,6 +25,13 @@ Susan Schubert vom Vorstand des TanzNetzDresden e.V.
 Die Plakatierung des kommenden Tanzkalenders umfasst gegenwärtig Indoor-Präsentationen bei allen beteiligten Partner-Spielstätten sowie Aufhängungen in privaten Tanzschulen sowie der Palucca Hochschule für Tanz Dresden. Über weitere Präsentationsmöglichkeiten wird derzeit nochmal verhandelt.
 
 Auch Bürgermeisterin Annekatrin Klepsch, Beigeordnete für Kultur, Wissenschaft und Tourismus, begrüßt das zukünftige Angebot, an dem zahlreiche Institutionen der Stadt Dresden teilhaben, mit folgenden Worten:
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/annekathrin-klepsch-klaus-gigga.webp
+    alt: ""
+:::
 
 »Die Einführung eines Tanzkalenders für Dresden als Stadt des Tanzes ist eine wunderbare Ergänzung, um den Tanz als besonderen Teil unseres kulturellen Erbes wie der zeitgenössischen performativen Kunst noch mehr Sichtbarkeit zu verleihen. Zudem bietet er Companies sowie Künstlerinnen und Künstlern eine weitere mediale Plattform, um neues Publikum und Unterstützer zu gewinnen.«
 

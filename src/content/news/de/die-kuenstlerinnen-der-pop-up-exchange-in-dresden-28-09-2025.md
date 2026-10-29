@@ -3,6 +3,7 @@ title: Die Künstler:innen der POP UP exchange in Dresden • GrooveStation & pr
 date: 2025-09-15
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2025/tanznetzdresden-pop-up-exchange-2025-e1757961186193.webp
 teaser: Wir freuen uns sehr, euch heute die Künstler:innen nennen zu können, die am 28. September 2025 in Dresden bei der nächsten Ausgabe von POP UP exchange in der Dresdner GroveStation sowie dem …
 ---
 
@@ -45,5 +46,11 @@ POP UP exchange ist ein Projekt im Rahmen der Maßnahme ROUNDABOUT von TanzNetzD
 Gefördert durch das NATIONALE PERFORMANCE NETZ – Impulsförderung Tanz & Theater – gefördert von der Beauftragten der Bundesregierung für Kultur und Medien sowie den Kultur- und Kunstministerien der Länder.
 
 Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+:::
 
 Header-Foto: Filmstill einer Performance von Magdalena Weniger bei POP UP exchange 2024 (Quelle: Simon Garbe)

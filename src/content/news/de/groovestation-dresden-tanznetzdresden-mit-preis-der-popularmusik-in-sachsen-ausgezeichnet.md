@@ -3,6 +3,7 @@ title: GrooveStation Dresden & TanzNetzDresden mit Preis der Popularmusik in Sac
 date: 2024-06-11
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-kreatives-sachsen-preisverleihung-groovestation-mittweida-jacob-golde.webp
 teaser: Im Rahmen des Wettbewerbs für Popularmusik in Sachsen 2024 von KREATIVES SACHSEN wurden die GrooveStation Dresden und das TanzNetzDresden mit einer interdisziplinären Kooperation in der Kategorie …
 ---
 

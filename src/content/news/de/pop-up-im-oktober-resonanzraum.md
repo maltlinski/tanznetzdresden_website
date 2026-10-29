@@ -3,6 +3,8 @@ title: "POP UP im Oktober: »RESONANZRAUM«"
 date: 2021-09-11
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetzdresden-popup-oktober-daniela-lehmann-heidi-morgenstern-charlottenpraxis-dresden.webp
+alt: Pop Up Salon Oktober TanzNetzDresden
 teaser: Unter dem Titel »RESONANZRAUM« findet am Samstag, dem 9. Oktober 2021 ein POP UP-Salon für Ausdruckskünstler:innen und Heilkünstler:innen von Heidi Morgenstern und Daniela Lehmann in der Charlottenpraxis statt.
 ---
 

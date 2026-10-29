@@ -3,6 +3,7 @@ title: Haushaltsentwurf 2025 der Bundesregierung bedroht Förderung von Tanz in 
 date: 2024-07-31
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tndd-studio-round-10092021-09.webp
 teaser: Der von Kulturstaatsministerin Claudia Roth (Bündnis 90/Die Grünen) vorgelegte Haushaltsentwurf sieht eine massive Kürzung des Bundeskulturfonds im Bereich der Darstellende Künste für 2025 vor.
 ---
 

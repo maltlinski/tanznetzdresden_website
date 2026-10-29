@@ -3,6 +3,7 @@ title: "Saisonstart für Tanz und Performance in Dresden • der neue #Tanzkalen
 date: 2024-08-21
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanzkalender-teaser-2.webp
 teaser: Der Tanzkalender Dresden hat gerufen und unsere beteiligten Institutionen sowie Vertreter:innen der Freien Szene haben ihr Programm aus Tanz und Performance für den Monat September gesammelt und in …
 ---
 

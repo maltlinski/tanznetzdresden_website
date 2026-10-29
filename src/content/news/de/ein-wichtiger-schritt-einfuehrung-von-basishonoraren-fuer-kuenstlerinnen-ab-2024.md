@@ -3,6 +3,7 @@ title: "Ein wichtiger Schritt: Einführung von Basishonoraren für Künstler:inn
 date: 2023-10-26
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-deutscher-kulturrat-claudia-roth-kristian-schuller.webp
 teaser: "Es ist definitiv ein wichtiger, aber vor allem ein längst überfälliger Schritt: die Einführung von Basishonoraren für selbstständige Künstler:innen."
 ---
 

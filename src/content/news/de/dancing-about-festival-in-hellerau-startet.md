@@ -3,6 +3,7 @@ title: Dancing About Festival in Hellerau startet
 date: 2021-09-23
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/dancing-about-tanzpakt-hellerau-working-communties-2021.webp
 teaser: Das Festival „Dancing About“ präsentiert 10 Uraufführungen von Künstler:innen und Choreograf:innen aus Dresden, Görlitz und Leipzig, die im Rahmen des Langzeit-Programms TANZPAKT Dresden (2019-2021) entstanden sind.
 ---
 

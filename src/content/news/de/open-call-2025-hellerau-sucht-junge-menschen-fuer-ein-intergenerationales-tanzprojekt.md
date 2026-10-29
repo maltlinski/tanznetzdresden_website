@@ -3,6 +3,7 @@ title: Open Call für 2025 • HELLERAU sucht junge Menschen für ein intergener
 date: 2024-12-04
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-open-call-hellerau-2025-klaus-gigga-e1733313657752.webp
 teaser: Wie ist es eigentlich, wenn sich der Körper verändert, und sind die Unterschiede zwischen alt und jung so groß wie die Zeitspanne dazwischen?
 ---
 

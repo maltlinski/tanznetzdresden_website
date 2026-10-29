@@ -3,6 +3,7 @@ title: Chance nutzen! Die TANZPAKT in residence-Ausschreibung läuft noch bis zu
 date: 2022-03-08
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-tanzpakt-residence-ausschreibung-elena-cencetti-therese-wielepp.webp
 deadline: 2022-04-01
 teaser: Wir möchten heute nochmals darauf hinweisen, dass die Frist der Ausschreibung der aktuellen TANZPAKT in residence noch nicht abgelaufen ist. Konkret können noch bis zum 1\. April 2022 Anträge eingereicht werden.
 ---
@@ -56,7 +57,7 @@ Eventuelle Fragen bitte an [info@villa-wigman.de](mailto:info@villa-wigman.de) r
 
 Die Residenzen werden von einer Jury ausgewählt und **Ende April 2022** bekannt gegeben.
 
-Die vollständige Ausschreibung kann auch hier als PDF heruntergeladen werden.
+Die vollständige Ausschreibung kann auch [hier](/news/archiv/dateien/2022/ausschreibung-tanzpakt-in-residence-2022-24-ke-3.pdf) als PDF heruntergeladen werden.
 
 »TANZPAKT in residence« ist ein Projekt von TanzNetzDresden und Villa Wigman für Tanz in Kooperation mit TanzART Kirschau, Mondstaubtheater Zwickau, TanzRaumGörlitz, KOMPLEX Off-Bühne für Darstellende Künste Chemnitz und 4fürTANZ Leipzig.
 

@@ -3,6 +3,7 @@ title: "WGD präsentiert: »Software & Games meets Performing Arts«"
 date: 2023-04-19
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-wir-gestalten-dresden-cross-innovation-maerz-2023.webp
 teaser: Unter dem Motto »Cross Innovation Made in Saxony!« präsentierte Wir gestalten Dresden – Branchenverband der Dresdner Kultuir- und Kreativwirtschaft e. V.
 ---
 

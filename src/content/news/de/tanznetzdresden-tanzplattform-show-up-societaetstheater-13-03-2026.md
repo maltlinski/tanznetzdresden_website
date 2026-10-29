@@ -3,6 +3,7 @@ title: TanzNetzDresden lädt bei der Tanzplattform 2026 zum »SHOW UP!« • 13.
 date: 2026-03-02
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2026/tp26-wortmarke-e1772443004352.webp
 teaser: Im Rahmen der Tanzplattform Deutschland 2026 laden wir bei »SHOW UP« gemeinsam mit dem villa\\wigman e.V. und dem Societaetstheater Dresden Tanzschaffende aus Sachsen am 15.
 ---
 
@@ -20,6 +21,13 @@ Die Jury bestand aus: Josephine Bock (Landesverband der Freien Theater in Sachse
 
 ### Becky & Marty: „Sterne steigen“ - eine künstlerische Recherche
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/copy-of-sterne-steigen-auf-becky-und-marty-marten-academy.webp
+    alt: ""
+:::
+
 Becky und Marty, erstmals gemeinsam zu erleben, nicht verpassen! Nach Rechercheaufenthalten in privaten Wohnzimmern, staatlichen Archiven und geheimen Dokumentenkellern geben die beiden Einblick in ihre Spurensuche zu Travestie und queerer Subkultur in der DDR – unterhaltsam, historisch ungenau und künstlerisch präzise wie eh und je!
 
 **Marten Flegel**, possibly known as Marty Damour, wurde in Jena geboren, ist Teil der Theatergruppe Die Soziale Fiktion und arbeitet als Performer\*in und Theatermacher\*in in Leipzig. **Mathias Becker** a.k.a. Becky ist Regisseur, Puppenspieler, Drag-Performer, Musiker und Mitgründer des Theaterkollektivs MANUFAKTOR. Ihr geteiltes Interesse gilt queerer ostdeutscher Geschichte und deren Verbindung zu heute.
@@ -28,6 +36,13 @@ Becky und Marty, erstmals gemeinsam zu erleben, nicht verpassen! Nach Recherchea
 
 ### Felix Chang: Ausschnitte aus „WÚ | YĪ 無 壹“
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/copy-of-wu-yi-e7-84-a1-e5-a3-b9-felix-chang-foto-edith-van-den-elzen-3-felix-chang.webp
+    alt: ""
+:::
+
 Eine Tanzperformance über öffentliche Einsamkeit und die Geschichte von Shih Ru-Zhen, der während Taiwans „Weißem Terror“ 18 Jahre lang unter Spionageverdacht im Versteck lebte. Durch Bewegung und das Spiel mit Raum vermittelt die Performance die Kraft der Freiheit, die Last der Erinnerung und die Widerstandsfähigkeit des menschlichen Geistes.
 
 **Felix Chang** ist ein zeitgenössischer Tanzkünstler und Choreograf, der sich mit der Schnittstelle zwischen Tradition, Spiritualität und Moderne auseinandersetzt. Verwurzelt in der taiwanesischen Tempeltradition und der taoistischen Philosophie, verbindet sein Tanztheater klassische chinesische Ästhetik mit zeitgenössischer Sensibilität und untersucht Rituale, den zeitgenössischen Körper und die transformative Kraft kultureller Kontinuität.
@@ -35,6 +50,13 @@ Eine Tanzperformance über öffentliche Einsamkeit und die Geschichte von Shih R
 **Instagram:** [instagram.com/felixchang.art](https://www.instagram.com/felixchang.art/)
 
 ### Jack Bannerman: „Choreographic Studies“
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/jack-bannerman-mark-pallas.webp
+    alt: ""
+:::
 
 Eine interaktive Installation, in der zwei Tänzerinnen aus getrennten Studios live auftreten und nebeneinander projiziert werden. Das Publikum sendet per Laptop Echtzeit-Impulse an beide Performerinnen, die diese individuell interpretieren. Unerwartete Übereinstimmungen entstehen und werfen Fragen danach auf, was Choreografie ist, welche Strukturen sie prägen und ob sie rein zufällig entstehen kann.
 
@@ -47,16 +69,37 @@ Der in Australien geborene Choreograf **Jack Bannerman** arbeitete acht Jahre al
 
 Zwei Menschen durchdringen die Räume des Theaters, entschleunigt, fast gleitend und unentwegt... bis sie schließlich einander finden. Yotsumoto und Albancando Tuntaquimba arbeiten zwischen zeitgenössischem Tanz und den Funk-Styles Waving und Popping und erforschen die Narration persönlicher Geschichten und Erfahrungen migrantischer Identität.
 
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/kevinalbancando-jenniferrohrbacher.webp
+    alt: ""
+:::
+
 **Kevin Albancando Tuntaquimba** ist ein in Freiburg geborener Tänzer, Choreograf und Tanzvermittler, der heute in Leipzig lebt. Autodidaktisch in Popping und Breaking ausgebildet, begann er 2011 seine Arbeit als Performer mit dem Tanz- und Aktionstheater Pan.Optikum. Seit 2019 wirkt er als Performer in zahlreichen Projekten in Baden-Württemberg und seit 2024 auch in Sachsen mit. Seine jüngste choreografische Arbeit „Soft War“ wurde 2024 am Schauspiel Leipzig uraufgeführt.
 
 **Web:** [kevin-albancando.de](https://www.kevin-albancando.de/)  
 **Instagram:** [instagram.com/kevboogz](https://www.instagram.com/kevboogz/)
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/photorika-credit-stephan-tautz.webp
+    alt: ""
+:::
 
 **Rika Yotsumoto** ist eine in München geborene Tänzerin und Choreografin. Sie studierte zeitgenössischen Tanz am Reed College in Portland (USA) und absolvierte zusätzlich Trainings am Gibney Dance Center in New York sowie an der IWANSON in München. Sie tanzte für die Oriantheatre Dance Company unter der Leitung von Mehdi Farajpour in Frankreich und Deutschland. Heute lebt sie in Dresden und arbeitet freischaffend in Bühnenproduktionen, Videoprojekten und ortsspezifischen Performances.
 
 **Instagram**: [instagram.com/motowskymotors](https://www.instagram.com/motowskymotors/)
 
 ### Svea Duwe: „ATMEN“ - ein Happening
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/sveaduwe-300dpi-credit-aniko-margareta-duwe.webp
+    alt: ""
+:::
 
 Score: Materialisiere deine Atemluft, indem du 1 Minute lang deinen Atem in Plastiktüten verschließt. Nimm wahr, welche Masse durch deine und die Atemobjekte der anderen im Raum entsteht. Schaffe Strukturen. Untersagt ist nur die Zerstörung. „ATMEN“ ist eine choreografische Baustelle für alle im Raum.
 
@@ -66,6 +109,13 @@ Score: Materialisiere deine Atemluft, indem du 1 Minute lang deinen Atem in Plas
 **Instagram**: [instagram.com/sveaduwe](https://www.instagram.com/sveaduwe/)
 
 ### tanzART.company: Ausschnitte aus „Metamorphose III“
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2026/copy-of-rkp-ta-138-anne-dietrich.webp
+    alt: ""
+:::
 
 Die tanzART.company arbeitet aus der Philosophie der Begegnung. Im Fokus steht die Forschung zur Beziehung mit dem Anderen und zwischen Performenden und Publikum: Wie entstehen Nähe, Resonanz und Austausch? Die Produktion nutzt Alltags- und Gemeinschaftsorte, um Tanz unmittelbar erfahrbar zu machen.
 
@@ -93,6 +143,14 @@ Alle zwei Jahre macht die [Tanzplattform](http://www.tanzplattform.de/home) die 
 In diesem Jahr ist HELLERAU die veranstaltende Institution, die die Tanzplattform Deutschland präsentiert und dabei die aktuellen Entwicklungen und innovativen Strömungen im zeitgenössischen Tanz ins Szene setzt.
 
 Eine unabhängige Jury hat die Produktionen für das Programm ausgewählt, das Mitte März 2026 in HELLERAU und weiteren Dresdner Institutionen gezeigt wird. Berücksichtigt wurden Produktionen, die zwischen September 2023 und August 2025 in Deutschland entstanden sind.
+
+::: bilder
+text: '"Spiegelneuronen" von Sasha Waltz & Guests mit Rimini Protokoll;'
+foto: Bernd Uhlig
+bilder:
+  - datei: /news/archiv/2026/tanznetzdresden-tanzplattform-deutschland-2026-spiegelneuronen-sasha-waltz-rimini.webp
+    alt: ""
+:::
 
 ### Das Programm der Tanzplattform 2026
 

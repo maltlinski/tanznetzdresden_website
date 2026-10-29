@@ -3,6 +3,7 @@ title: »Wir arbeiten dran« - das Magazin von you are warmly invited
 date: 2021-12-17
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/tanznetzdresden-you-are-warmly-invited-magazin-wir-arbeiten-dran-2021.webp
 teaser: Im heutigen Beitrag geht es um die aktuelle Ausgabe von »Wir arbeiten dran«, dem Magazin von you are warmly invited.
 ---
 
@@ -16,7 +17,7 @@ Das nun veröffentlichte Magazin aus der *you are warmly invited*\-Kampagne »Wi
 
 Wir verlinken die PDF-Version des Magazins an dieser Stelle und bedanken uns abermals für die inspirierende Zusammenarbeit und den Workshop im November und freuen uns ebenfalls auf kommende Zusammenarbeiten. Wer sich für ein gedrucktes Exemplar interessiert, kann gern eine Mail an [presse@tanznetzdresden.de](mailto:presse@tanznetzdresden.de) schreiben. Wir haben einige Exemplare vorrätig und können daher auf Nachfragen eingehen.
 
-## Klickt hier, um zum Magazin von *you are warmly invited* zu gelangen
+## [Klickt hier, um zum Magazin von *you are warmly invited* zu gelangen](/news/archiv/dateien/2021/yawi-magazin-wir-arbeiten-dran-2021.pdf)
 
 Mehr von *you are warmly invited* gibt es auf der Website des Kollektivs:  
 [https://www.youarewarmlyinvited.com/wirarbeitendran](https://www.youarewarmlyinvited.com/wirarbeitendran)

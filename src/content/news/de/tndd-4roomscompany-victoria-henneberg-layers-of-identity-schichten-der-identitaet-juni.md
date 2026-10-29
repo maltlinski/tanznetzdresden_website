@@ -3,6 +3,7 @@ title: "TNDD/4roomsCompany-Mitglied Victoria Henneberg präs.: »Layers of Ident
 date: 2024-05-28
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-victoria-henneberg-layers-of-identity-juni-2024-e1716883751941.webp
 teaser: TanzNetzDresden & 4roomsCompany-Mitglied Victoria Henneberg und ihr Künstler:innen-Team präsentieren am 15. Juni im Rahmen von »Fensterblicke« die neue Produktion »Layers of Identity / Schichten der Identität«
 ---
 

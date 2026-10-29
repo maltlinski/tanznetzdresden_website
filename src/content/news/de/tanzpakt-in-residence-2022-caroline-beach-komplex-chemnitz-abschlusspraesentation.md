@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Abschlusspräsentation von Caroline Beach am 13
 date: 2022-10-09
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach-2.webp
 teaser: Am 13. Oktober wird Caroline Beach im Rahmen ihres TANZPAKT in residence-Stipendiums am KOMPLEX Chemnitz ein Abschlusspräsentation unter dem Titel "Schiffswracks" zeigen. Alle Info hierzu im aktuellen Blog-Beitrag
 ---
 
@@ -11,6 +12,18 @@ teaser: Am 13. Oktober wird Caroline Beach im Rahmen ihres TANZPAKT in residence
 Caroline Beach ist eine in Texas geborene Choreografin und Künstlerin und seit Mitte September Tanzpakt-Residentin am Komplex Chemnitz. Sie hat einen Master in Choreografie von der Palucca Hochschule für Tanz in Dresden und absolviert derzeit einen Master an der Akademie der Bildenden Künste Nürnberg bei Johannes Paul Raether. Ihre Arbeit ist interdisziplinär, findet ihre Wurzeln jedoch in den gelebten Erfahrungen des Körpers.
 
 Mehr über Caroline Beach gibt es unter: [carolinebeach.com](https://www.carolinebeach.com/) & auf [Instagram](https://www.instagram.com/_beach_ball._/)
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach-4.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach-3.webp
+    alt: ""
+  - datei: /news/archiv/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach-2.webp
+    alt: ""
+:::
 
 ### Schiffswracks
 

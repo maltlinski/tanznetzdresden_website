@@ -3,12 +3,35 @@ title: "TanzNetzDresden und HTXSTHSTX zu Gast beim undsonstso #143 • Ein Rück
 date: 2026-02-18
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2026/undsonstso-tenza-byjudithziegenthaler33.webp
 teaser: Die 143. Ausgabe vom undsonstso am 5. Februar in der TENZA war ein schöner, spannender und wirklich inspirierender Abend.
 ---
 
 *Die 143. Ausgabe vom undsonstso am 5. Februar in der TENZA war ein schöner, spannender und wirklich inspirierender Abend. Daniela Lehmann gab einen umfassenden Einblick in die Entstehung und die Mission vom TanzNetzDresden und auch die Gründer:innen des Dresdner Musik-Labels [HTXSTHSTX](https://undsonstso.us6.list-manage.com/track/click?u=300e54c69b65ea0dbacdfab53&id=f606429f38&e=1eeec7f2aa) lieferten Einblicke in den musikalischen Kosmos ihres Schaffens. Sehr gefreut haben wir uns daher, dass Judith Ziegenthaler tolle Fotos gemacht hat, die wir euch in dem heutigen Beitrag präsentieren möchten.*
 
 ## undsonstso #143 - der Fotorückblick von Judith Ziegenthaler
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler1.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler9.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler28.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler10.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler12.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler15.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler13.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler26.webp
+    alt: ""
+:::
 
 Weitere Informationen zur Fotografin Judith Ziegenthaler findet ihr unter folgenden Links:
 
@@ -18,6 +41,20 @@ Weitere Informationen zur Fotografin Judith Ziegenthaler findet ihr unter folgen
 
 Weitere Informationen zur Ausgabe von undsonstso mit dem TanzNetzDresden gibt es unter folgendem Link:  
 tanznetzdresden.de/tanznetzdresden-undsonstso-143-05-02-206-tenza
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler8.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler2.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler24.webp
+    alt: ""
+  - datei: /news/archiv/2026/undsonstso-tenza-byjudithziegenthaler16.webp
+    alt: ""
+:::
 
 ### undsonstso - Das Format
 

@@ -3,6 +3,7 @@ title: TanzNetzDresden wieder in der Jury von »LAUT MUSIKVIDEOS GUCKEN« • Be
 date: 2023-12-07
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-wgd-grafik-e1701980141771.webp
 draft: true
 teaser: Auch bei der nächsten Ausgabe von »LAUT MUSIKVIDEOS GUCKEN« wird das TanzNetzDresden in der Jury vertreten sein, wenn es darum geht, die besten und kreativsten Musikvideos zu ermitteln.
 ---
@@ -16,6 +17,12 @@ Das Event selbst vermischt Showreel und Austausch der Szene untereinander: Zum e
 ### OPEN CALL zur Sachsen-Edition 2024
 
 Für die dritte Ausgabe von »[LAUT MUSIKVIDEOS GUCKEN](https://www.wir-gestalten-dresden.de/projekt/musikvideos/)« werden Team und Leinwand noch größer, denn im Rahmen von Bandstand 2024 wird erstmals eine „Sachsen Edition“ am 23. Februar 2024 im großen Saal des Festspielhaus Hellerau präsentiert, bei der bis zu 20 Videos gezeigt werden. Infos zum Open Call, den Teilnahmebedingungen und der Jury finden sich im [Bewerbungsformular](https://www.wir-gestalten-dresden.de/aktuelles/bewerbungsformular-fuer-open-call-musikvideos-aus-sachsen/).
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-laut-musikvideos-gucken-2023.webp
+    alt: ""
+:::
 
 ### TanzNetzDresden in der Jury
 

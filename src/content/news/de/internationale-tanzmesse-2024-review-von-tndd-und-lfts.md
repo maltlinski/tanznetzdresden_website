@@ -3,6 +3,7 @@ title: internationale tanzmesse 2024 • Rückblicke, Eindrücke, O-Töne und Fo
 date: 2024-09-10
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-tanzmesse-2024-review-1-e1725957179873.webp
 teaser: Die internationale tanzmesse 2024 ist vorüber und viele Eindrücke sind geblieben. Für das TanzNetzDresden waren Anna Till, Seraphine Detscher und Charles Washington vor Ort in Düsseldorf.
 ---
 
@@ -32,6 +33,28 @@ Die Broschüre "TANZ AUS SACHSEN" kann man kostenfrei unter folgendem Link herun
 [freie-theater-sachsen.de/tanz-aus-sachsen.pdf](https://freie-theater-sachsen.de/wp-content/uploads/2024/08/Tanz-aus-Sachsen_LFTS.pdf)
 
 Und nun präsentieren wir euch noch ein paar visuelle Eindrücke von der internationalen tanzmesse 2024:
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-9.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-8.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-7.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-6.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-3-1.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-4-1.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-5-1.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-2-1.webp
+    alt: ""
+:::
 
 Mehr Informationen zur diesjährigen internationalen tanzmesse findet ihr unter:  
 [tanzmesse.com](https://www.tanzmesse.com/)

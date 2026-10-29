@@ -3,6 +3,7 @@ title: Fang's birthday speech on the occasion of TanzNetzDresden's anniversary.
 date: 2021-12-10
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/fang-yun-lo-portrait-2021-tanznetzdresden-scaled-e1664356325671.webp
 teaser: On November 11, 2021, artist Fang Yun Lo gave a short birthday speech at the TENZA Schmiede on the occasion of TanzNetzDresden's anniversary.
 ---
 

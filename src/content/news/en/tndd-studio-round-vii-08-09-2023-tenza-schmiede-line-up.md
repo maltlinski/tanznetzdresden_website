@@ -15,6 +15,12 @@ More than ever, visitors to the upcoming TNDD studio round can expect three exci
 
 Detailed information on the individual contributions to the seventh TNDD studio round will now follow or can be viewed directly on the [studio round subpage](/#formate). There, all information is also available in English. An additional blog post in German is available [***here***](/news/tndd-studio-round-vii-08-09-2023-tenza-schmiede-line-up/).
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-vii-2023-daniela-lehmann-dirk-skipa.webp
+    alt: ""
+:::
+
 ## Daniela Lehmann
 
 Daniela Lehmann (\*1979) studied dance, philosophy and choreography in Dresden, Freiburg im Breisgau and Berlin and specialized in instant composing. In 2005 she was awarded the prize for "The Best German Dance Solo" for her performance "Mina" at the Festival Euroscene in Leipzig. Her extensive repertoire includes cross-disciplinary stage pieces and site-specific dance compositions. In 2020, she graduated with honors from her master's degree in choreography at the Palucca University of Dance. In her choreographic work, she explores the tension between fulfilling defined social roles and revealing the pure human self.
@@ -30,6 +36,12 @@ Her present body shares experiences and impressions of previous bodies. Spaces o
 **Performer:** Daniela Lehmann  
 **Photo:** Dirk Skiba
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-vii-2023-meggie-blanschkyn-gregory-batardon-2.webp
+    alt: ""
+:::
+
 ## Meggie Blankschyn
 
 Meggie Blankschyn was born in Northern Germany and started her dance training at Tanzfabrik Berlin e.V. followed by the Bachelor course at the Budapest Contemporary Dance Academy and La Manufacture - Haute école des arts de la scène (direction Thomas Hauert) in Lausanne from where she graduated recently. During her studies she got in touch with various contemporary dance techniques, Hungarian folk dance and Shaolim Kung Fu. She met and worked with several choreographers and dancers, including David Zambrano, Jonathan Burrows, Krisa Parkinson, Shelly Senter (Trisha Brown Company), Horacio Macuacua, Yasmine Hugonnet, Loïc Touzé. For the graduation tour she performed in two creations by Salva Sanchis (Les Noces - Stravinsky) and Alma Söderberg (Piece of Ensemble). She continues working with Judith Sanchez Ruiz (JSR Company), Tomáš Danielis & Radical Empathy (SK), Bloom Bloom Company (CH) and dives into her own creations.
@@ -38,6 +50,13 @@ Meggie Blankschyn was born in Northern Germany and started her dance training at
 
 *“I am terrified by this black thing that sleeps in me, all day I feel its softness, its feathery turnings; its malignity.”*  
 (Sylvia Plath)
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-vii-2023-meggie-blanschkyn-gregory-batardon-1.webp
+    alt: ""
+:::
 
 »The craftly uncanniness behind the semblance of things is a solo creation based on my Bachelor work at La Manufacture which grounds in the image of pain as a black mass that inhabits, shapes and transforms our bodies. I explore the physicality of darkness and the black mass as the materialisation of the stage in which the ego is confronted with the weight of its earthliness and unlived possibilities, but also with an intimate and deep force, the will to exist in this world.  
 Darkness quenches everything, absorbs everything: forms and fire, animals and myself, how easily it unites the living! Darkness is a fetus' very first stadium and perhaps the last in human life. It contains the magical and is the source of all unknown, demonic powers.  
@@ -49,6 +68,12 @@ What does the body do when it expresses itself musically? My body stomps, my bod
 ***Supported by:** [La Manufacture – Haute école des Arts de la Scène](https://www.manufacture.ch/) & [TANZKOOP](https://www.tanzkoop.com/)
 
 **Fotos:** Gregory Batardon
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-studio-round-vii-2023-paco-ladron-de-guevara-rodriguez-3.webp
+    alt: ""
+:::
 
 ## Paco Ladrón de Guevara Rodríguez
 
@@ -67,6 +92,13 @@ Raül Refree: "Que te vayas“
 Thomas Köner: "Tientos de la Luz 1“
 
 ## Satellite Art Network (SAN)
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2023/san-logo-w-q.webp
+    alt: ""
+:::
 
 [Satellite Art Network](https://linktr.ee/satellite_art_network) is an initiative that enables a cross-regional exchange structure for dance practitioners. Through workshops, performances, panel talks and artistic gatherings, existing cultural initiatives and individuals from four different states (Lower Saxony, Saxony, Baden-Wuerttemberg and Hamburg), come together to reflect on sustainable possibilities of creating touring and exchange of activities in the independent dance scene. Over a period of four months, each region will host a 2-days event which is open for other dance practitioners, as well as for the public.
 

@@ -3,6 +3,7 @@ title: '"KÖRPERRÄUME - Gleich aber anders" • Workshop mit Daniela Lehmann & 
 date: 2024-02-28
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-2024-societaetstheater-dresden-fiete-kwiatkowski-willehad-grafenhorst.webp
 teaser: "Am 24. März 2024 werden TNDD-Mitglied Daniela Lehmann und Künstlerin Fine Kwiatkowski einen Workshop im Societaetstheater mit anschließender kostenfreier Filmvorführung von »IM UMBRUCH: Go. Stay. Dance«"
 ---
 
@@ -18,6 +19,13 @@ Daniela Lehmann und Fine Kwiatkowski haben sich seit vielen Jahren der Improvisa
 
 Mehr zu Fine Kwiatkowski gibt es unter  
 [www.fine-k.de](http://www.fine-k.de/home)
+
+::: bilder
+darstellung: neben
+bilder:
+  - datei: /news/archiv/2024/danielalehmann-foto-konradbehr.webp
+    alt: ""
+:::
 
 [**Daniela Lehmann**](/verein/) ist Choreografin und Performance-Künstlerin. Sie hat einen Master-Abschluss an der Palucca Hochschule für Tanz. Sie lebt in Dresden und arbeitet mit Vorliebe spartenübergreifend und ortsspezifisch. Tanzimprovisation ist für sie sowohl eine präzise komponierende Kunstform, als auch ein Experimentierraum, in dem wir neugierig und sensibel unserer Körperlichkeit und Wahrnehmung kennen lernen. Daniela liebt es, tanzend zu erforschen, wie wir mit Leichtigkeit klare Entscheidungen treffen und gemeinsam Möglichkeiten kreieren können. So erfahren wir spielerisch mehr über unsere innere und äußere Beweglichkeit, die wir im besten Fall mit in unser alltägliches Leben nehmen.
 

@@ -3,6 +3,7 @@ title: »CARE ABOUT« • Der große TanzNetzDresden-Rückblick • 2023/24
 date: 2024-10-23
 category: Rückblick
 author: TanzNetzDresden
+image: ../../../assets/news/2024/simongarbe-com-tndd-welttanztag-2.webp
 teaser: Heute möchten wir die Gelegenheit nutzen und einen Rückblick auf das große TanzNetzDresden Projekt »CARE ABOUT«
 ---
 
@@ -27,6 +28,32 @@ Bereits 2022 und 2023 wurde der Austausch zwischen dem [tanz\_netzwerk\_bremen](
 Die Teilnahme an der Veranstaltung war kostenlos. Die Veranstaltung fand auf englischer Lautsprache im kleinen Saal des [Zentrum für Kunst](https://zentrum-fuer-kunst.de/) in Bremen statt und richtete sich an Tanzschaffende der freien Szene.
 
 Fotograf [Frank Scheffka](https://raum-fotografie.de/) aus Bremen hat die visuelle Dokumentation der beiden Termine übernommen, von der einige Auszüge nun Eindrücke der Zeit in Bremen vermitteln sollen.
+
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2024/lafdk-care-14.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-34.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-56.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-161.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-198.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-211.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-82.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-85.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-150.webp
+    alt: ""
+  - datei: /news/archiv/2024/lafdk-care-143.webp
+    alt: ""
+:::
 
 *Weitere Informationen zu den beiden Terminen von »CARE ABOUT Empowering the local scene« in Bremen sowie alle detaillierten Informationen zum Programm gibt es unter:  
 *[tanznetzdresden.de/tanz\_netzwerk\_bremen-tndd-care-connect-empowering-local-dance-scene-11-12-april-bremen](/news/tanz-netzwerk-bremen-tndd-care-connect-empowering-local-dance-scene-11-12-april-bremen/)
@@ -76,6 +103,36 @@ Nach einem öffentlichen Walking Act mit zahlreichen Performances fand der Launc
 
 Auch zugegen war Fotograf [Simon Garbe](https://www.simongarbe.com/), der die Veranstaltung dokumentierte. Eine Auswahl jener Bilder soll nun die Stimmung jenes Tages zeigen.
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-2.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-27.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-21.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-22.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-19.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-9.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-5.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-16.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-17.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-18.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-4.webp
+    alt: ""
+  - datei: /news/archiv/2024/simongarbe-com-tndd-welttanztag-33.webp
+    alt: ""
+:::
+
 *Mehr zu diesem Termin sowie zum Tanzkalender gibt es unter:*  
 [tanznetzdresden.de/tanzkalender](/termine/)  
 [tanznetzdresden.de/tanznetzdresden-praesentiert-zum-welttanztag-den-tanzkalender-savethedate-29-04-2024](/news/tanznetzdresden-praesentiert-zum-welttanztag-den-tanzkalender-savethedate-29-04-2024/)  
@@ -91,8 +148,32 @@ Einen Rückblick unseres Besuchs in Düsseldorf mit Beiträgen von Charles Washi
 
 Eine kleine Galerie mit Eindrücken jener Tage möchten wir hier ebenfalls zeigen und uns herzlich für die Bereitstellung der Bilder beim Landesverband der Freien Theater in Sachsen e.V. bedanken.
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-2-1.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-5-1.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-4-1.webp
+    alt: ""
+  - datei: /news/archiv/2024/tanznetzdresden-tanzmesse-2024-review-3-1.webp
+    alt: ""
+:::
+
 CARE ABOUT ist ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz und der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
 Außerdem gefördert vom Fonds Darstellende Künste und der Beauftragten der Bundesregierung für Kultur und Medien sowie den Kultur- und Kunstministerien der Länder.
+
+::: bilder
+format: quer
+spalten: 2
+bilder:
+  - datei: /news/archiv/2024/fondsdaku-foerderlogo-sw.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+:::
 
 Header-Foto: Simon Garbe

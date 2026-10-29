@@ -3,6 +3,7 @@ title: "psst: Kulturgeflüster wird aktiv • HELLERAU sucht junge Redakteur:inn
 date: 2022-09-13
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-kulturgefluster-header-2022-e1663072898295.webp
 teaser: Um eine junge Redaktion für die Bereiche Tanz und Medien unter dem Titel Kulturgeflüster aufzubauen und den Journalismus in Dresden in genau diesen Bereichen zu verstärken, sucht HELLERAU - Zentrum …
 ---
 

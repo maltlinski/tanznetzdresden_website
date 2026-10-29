@@ -3,6 +3,7 @@ title: Netzwerk hilft Netzwerk • Jetzt bei Kompliz* mitmachen
 date: 2024-01-23
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-kompliz-de-header.webp
 teaser: Im heutigen Blog-Beitrag teilen wir den Aufruf von Kompliz. Hierbei handelt es sich um einem Zusammenschluss von Künstler:innen und Kulturschaffenden in Sachsen, die sich für die Demokratie einzusetzen.
 ---
 

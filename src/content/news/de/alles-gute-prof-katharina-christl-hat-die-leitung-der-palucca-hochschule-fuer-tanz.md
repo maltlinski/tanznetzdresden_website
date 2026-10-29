@@ -3,6 +3,7 @@ title: Alles Gute! • Prof. Katharina Christl hat die Leitung der Palucca Hochs
 date: 2024-09-11
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-palucca-schule-katharina-christl-e1726049732875.webp
 teaser: Professorin Katharina Christl leitet künftig die Geschicke der renommierten Palucca Hochschule für Tanz in Dresden.
 ---
 

@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Valeriya Koptseva »I always make myself move.�
 date: 2023-01-25
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2023/tanznetzdresden-tanzpakt-in-residence-2023-koptseva-2.webp
 teaser: Im Januar 2023 begrüßen wir die ukrainische Choreografin Valeriya Koptseva. Sie musste bereits 2014 und nun mit dem 24.02.2022 ein zweites Mal ihre Heimat, den Donbass, verlassen.
 ---
 
@@ -10,10 +11,22 @@ Im Januar 2023 begrüßen wir die ukrainische Choreografin Valeriya Koptseva. Si
 
 ## TANZPAKT in residence mit Valeriya Koptseva
 
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residence-2023-koptseva-3.webp
+    alt: ""
+:::
+
 Valeriya Koptseva ist eine ukrainische Tänzerin, Choreografin und Tanzlehrerin. Ihre Lehrtätigkeit hat sie 2011 begonnen. Es begann alles mit dem Gedanken: »Wie tanzt mein Körper, obwohl ihm das Tanzen beigebracht wurde«. Valeriya Koptseva hat Stunden, Tage und Wochen damit verbracht, ihre Bewegungen zu entdecken, sich Aufgaben und neuen Herausforderungen zu stellen. All diese Prozesse führten sie zu ihrem eigenen Stil. Dann zog sie in die ukrainische Hauptstadt und begann ihre professionelle Karriere als Tänzerin. Shootings, Musikvideos für ukrainischen Künstler:innen, Auftritte und Aufträge für Bühnen-Choreographien folgten. Vor sechs Jahren hat sie mit Kolleg:innen das Atmosphere Dance Camp gegründet – eine große internationale Veranstaltung für Tänzer:innen aus der ganzen Welt, die in der Ukraine stattfindet.
 
 - Mehr über Valeriya Koptseva und ihre Residenz gibt es unter:  
     [instagram.com/lerakoptseva](https://www.instagram.com/lerakoptseva/) & [villawigman.de/residenz-valeriya-koptseva](https://villawigman.de/residenz-valeriya-koptseva/)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2023/tanznetzdresden-tanzpakt-in-residence-2023-koptseva-1.webp
+    alt: ""
+:::
 
 ## Open Classes  – 16.–20.01.2023, jeweils 10 Uhr
 

@@ -3,10 +3,18 @@ title: TanzNetzDresden verlängert Materialkooperationen mit nytt und ZÜNDSTOFF
 date: 2024-09-08
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-materialkooperationen-2025-e1725804070165.webp
 teaser: Wir freuen uns mitteilen zu können, dass wir die seit 2021 laufenden Materialkooperationen mit dem nytt Materialdepot sowie mit ZÜNDSTOFFE / Konglomerat e.V. bis Ende 2025 verlängert haben.
 ---
 
 *Wir freuen uns mitteilen zu können, dass wir die seit 2021 laufenden Materialkooperationen mit dem nytt Materialdepot sowie mit ZÜNDSTOFFE / Konglomerat e.V. bis Ende 2025 verlängert haben. Konkrete Informationen zu den beiden Anbietern sowie zum genauen Umfang der Kooperationen, die den Mitglieder:innen des TanznetzDresden vorbehalten ist, gibt es im folgenden Blog-Beitrag.*
+
+::: bilder
+text: Screenshot
+bilder:
+  - datei: /news/archiv/2024/logo-zuendstoffe.webp
+    alt: ""
+:::
 
 ## ZÜNDSTOFFE / Konglomerat e.V.
 
@@ -30,6 +38,12 @@ Mehr über das Materialdepot ZÜNDSTOFFE gibt es hier:
 5.  Bring das Material zurück; gegebenenfalls müsst ihr euch hierfür mit ZÜNDSTOFFE absprechen
 
 ### Fragen? Melde Dich bei Anna Till unter [kontakt@tanznetzdresden.de](mailto:kontakt@tanznetzdresden.de)
+
+::: bilder
+bilder:
+  - datei: /news/archiv/2024/logo-nytt.webp
+    alt: ""
+:::
 
 ## nytt Materialdepot gUG
 

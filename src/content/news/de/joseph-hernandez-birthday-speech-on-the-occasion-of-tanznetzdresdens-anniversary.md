@@ -3,6 +3,7 @@ title: The speech of Joseph Hernandez on the occasion of TanzNetzDresden's anniv
 date: 2021-12-02
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2021/joseph-hernandez-alice-blangero-e1639390295268.webp
 teaser: On November 11, 2021, artist Joseph Hernandez presented an intensive and empathic birthday speech at the TENZA Schmiede on the occasion of TanzNetzDresden's anniversary. We were very moved and entertained as well.
 ---
 

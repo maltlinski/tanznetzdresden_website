@@ -3,6 +3,7 @@ title: "TanzNetzDresden & LAFDK Bremen präs.: CARE ABOUT your local scene • 4
 date: 2024-04-18
 category: Netzwerk
 author: TanzNetzDresden
+image: ../../../assets/news/2024/tanznetzdresden-care-about-kreativ-raum-boerse-juni-2024-e1713430607476.webp
 teaser: Im Juni gibt es gleich zwei Termine, an denen das TanzNetzDresden in Zusammenarbeit mit dem tanz\netzwerk\bremen (LAFDK Bremen) und der regionalen Szene in Sachsen die Bedürfnisse von Künstler:innen …
 ---
 

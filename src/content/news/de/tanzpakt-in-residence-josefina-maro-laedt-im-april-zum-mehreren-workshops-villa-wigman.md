@@ -3,6 +3,7 @@ title: TANZPAKT in residence • Josefina Maro lädt im April zum mehreren Works
 date: 2024-04-10
 category: Training
 author: TanzNetzDresden
+image: ../../../assets/news/2024/josefina-maro.webp
 teaser: Im Rahmen von TANZPAKT in residence arbeitete Josefina Maro als Residentin in der villa/wigman in Dresden. Nun lädt die Künstlerin im Zuge der Residenz im April zu mehreren Workshops in die villa/wigman in Dresden ein.
 ---
 

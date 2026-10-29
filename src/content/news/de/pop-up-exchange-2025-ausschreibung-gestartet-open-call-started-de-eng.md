@@ -3,6 +3,7 @@ title: Jetzt bewerben / Apply now • POP UP exchange 2025 • Ausschreibung ges
 date: 2025-06-17
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2025/web-tndd-studio-round-7402338-c2-a9fotojenniferrohrbacher.webp
 teaser: Wir sind sehr glücklich, mitteilen zu können, dass unser Kooperationsformat POP UP exchange in diesem Jahr wieder stattfinden kann und wir heute den Open Call veröffentlichen und uns auf alle Einreichungen sehr freuen.
 ---
 
@@ -68,9 +69,37 @@ The calls for applications in German and English can be found at the following t
 
 [**Here**](/#formate) you find more about POP UP exchange.
 
+::: bilder
+format: quer
+spalten: 4
+bilder:
+  - datei: /news/archiv/2025/tanznetzdresden-logo-black-rgb.webp
+    alt: ""
+  - datei: /news/archiv/2025/weiss-schwarz-print.webp
+    alt: ""
+  - datei: /news/archiv/2025/logo-lafdk.webp
+    alt: ""
+  - datei: /news/archiv/2025/tanznetzfr-logo-rgb-220831.webp
+    alt: ""
+  - datei: /news/archiv/2025/thfrm-logo-schrift-100k.webp
+    alt: ""
+:::
+
 Dieses Format – POP UP exchange – ist ein Projekt im Rahmen der Maßnahme ROUNDABOUT von TanzNetzDresden, ID\_Tanzhaus Frankfurt Rhein-Main, Tanznetz Freiburg, tanz\_netzwerk\_bremen und der Tanzzentrale der Region Nürnberg.  
 Gefördert durch das NATIONALE PERFORMANCE NETZ – Impulsförderung Tanz & Theater – gefördert von der Beauftragten der Bundesregierung für Kultur und Medien sowie den Kultur- und Kunstministerien der Länder.
 
 Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
+
+::: bilder
+format: quer
+spalten: 3
+bilder:
+  - datei: /news/archiv/2024/npn-schwarz.webp
+    alt: ""
+  - datei: /news/archiv/2024/bkm-office-farbe-de.webp
+    alt: ""
+  - datei: /news/archiv/2023/kdfs-logowappentext-2020-rgb.webp
+    alt: ""
+:::
 
 Header-Photo: ID\_Tanzhaus Frankfurt Rhein-Main

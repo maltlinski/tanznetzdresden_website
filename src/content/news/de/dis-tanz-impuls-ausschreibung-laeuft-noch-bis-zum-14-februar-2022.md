@@ -3,6 +3,7 @@ title: DIS-TANZ-IMPULS-Ausschreibung läuft noch bis zum 14. Februar 2022
 date: 2022-01-25
 category: Ausschreibung
 author: TanzNetzDresden
+image: ../../../assets/news/2022/tanznetzdresden-dis-tanzen-ausschreibung-2022.webp
 deadline: 2022-02-14
 teaser: Tanzschulen und kulturelle Einrichtungen mit tanzpädagogischem Angebot können sich noch bis zum 14. Februar 2022 an der neuen Ausschreibung für DIS-TANZ-IMPULS teilnehmen.
 ---
