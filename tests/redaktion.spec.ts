@@ -262,7 +262,7 @@ test('Formate: neues Format mit Foto-Upload', async ({ page }) => {
   await page.goto('/intern/redaktion/eintrag/?b=formate&neu=1');
   await feld(page, 'Name').fill('Tanz im Park');
   await feld(page, 'Seit').fill('seit 2027');
-  await feld(page, 'Beschreibung').fill('Draußen tanzen, für alle.');
+  await feld(page, 'Kurzbeschreibung').fill('Draußen tanzen, für alle.');
   await page.locator('input[type=file]').setInputFiles('src/assets/photos/duo-rot.jpg');
   await expect(page.getByText('„duo-rot-2.jpg“ wird beim Speichern hochgeladen.')).toBeVisible();
   await expect(page.locator('.rf-bild__frame img')).toBeVisible();
@@ -375,8 +375,8 @@ test('Texte: ändern, Englisch prüfen, Regeln, ursprünglicher Text', async ({ 
   // auf dem Handy ist die Liste ausgeblendet (dort das Auswahlfeld), daher ohne Rolle gesucht
   const seiten = page.locator('.tx-seiten');
   // alle Seiten der Website in Gruppen, in der Reihenfolge des Menüs
-  const titel = ['Menü, Fuß und Hinweise', 'Startseite', 'Tanzkalender und Termine', 'News', 'Profitraining (KEEP UP)', 'Über uns', 'Spenden',
-    'Netzwerk', 'Profil einer Person', 'Mitglied werden', 'Kooperationen', 'Kontakt', 'Barrierefreiheit und Textseiten',
+  const titel = ['Menü, Fuß und Hinweise', 'Startseite', 'Tanzkalender und Termine', 'Formate', 'News', 'Profitraining (KEEP UP)', 'Über uns', 'Spenden',
+    'Netzwerk', 'Profil einer Person', 'Mitglied werden', 'Kooperationen', 'Tanzkalender-Archiv', 'Kontakt', 'Barrierefreiheit und Textseiten',
     'Seite nicht gefunden (404)', 'Mitgliedsausweis prüfen', 'Rechtliches (nur Vorstand)'];
   await expect(seiten.locator('[data-seite-wahl] span:first-child')).toHaveText(titel);
   await expect(seiten.locator('.tx-seiten__gruppe')).toHaveText(['Auf jeder Seite', 'Seiten im Menü', 'Weitere Seiten', 'Selten gebraucht']);

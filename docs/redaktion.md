@@ -27,7 +27,9 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 | **News-Bausteine** | wiederkehrende Texte wie Förderhinweise für den News-Editor | im Formular |
 | **Termine** | Tanzkalender, Startseite, eigene Terminseite; neue Termine besser unter *Intern → Kalender* (docs/kalender.md) | nach Datum, automatisch |
 | **Freigaben** | Profile und Fotos, die Mitglieder selbst pflegen (docs/profile.md) | – |
-| **Formate** | KEEP UP, POP UP … auf der Startseite | von Hand |
+| **Formate** | KEEP UP, POP UP …: Formate-Seite und Startseite (docs/formate.md) | von Hand |
+| **Archiv der Formate**, **Chronik der Formate** | abgeschlossene Projekte und „Seit 2010 in Bewegung“ auf der Formate-Seite | von Hand / nach Jahr |
+| **Tanzkalender-Archiv** | Ausgaben des Monatsplakats 2024–2026 (`/formate/tanzkalender/`) | nach Monat, automatisch |
 | **News-Archiv** | ältere Beiträge, die als Datei vorliegen | nach Datum |
 | **Trainingsplan** | KEEP UP: wer wann unterrichtet, älterer Weg; besser *Intern → Kalender* (docs/keep-up.md) | nach Datum, automatisch |
 | **Dozent:innen** | die Kacheln im Foto-Mosaik auf /profitraining/ (Name und Foto aus dem Profil) | von Hand = Reihenfolge im Mosaik |

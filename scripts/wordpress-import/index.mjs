@@ -35,11 +35,12 @@ if (!exportDatei) {
 /** Seiten der alten Website → Seiten der neuen (für Links im Text und Weiterleitungen) */
 const SEITEN = {
   '': '', news: 'news/', blog: 'news/', category: 'news/', tag: 'news/',
-  tanzkalender: 'termine/', termine: 'termine/', kalender: 'termine/',
+  tanzkalender: 'formate/tanzkalender/', termine: 'termine/', kalender: 'termine/',
   'keep-up-profi-training-dresden': 'profitraining/', 'keep-up': 'profitraining/', profitraining: 'profitraining/', 'profi-training': 'profitraining/',
-  'studio-round': '#formate', 'pop-up': '#formate', 'pop-up-exchange': '#formate', 'vision-danceable': '#formate', formate: '#formate',
-  'working-communities': 'verein/', 'staff-member': 'verein/', about: 'verein/', 'ueber-uns': 'verein/', team: 'verein/', verein: 'verein/', vorstand: 'verein/',
-  'elternschaft-und-kunstbetrieb': 'verein/', 'tanzpakt-in-residence': 'verein/', tanzpakt: 'verein/',
+  'studio-round': 'formate/#studio-round', 'pop-up': 'formate/#pop-up', 'pop-up-exchange': 'formate/#pop-up', 'vision-danceable': 'formate/#vision-danceable',
+  formate: 'formate/', welttanztag: 'formate/#welttanztag', 'linie-8': 'formate/#archiv-linie-08', 'chance-tanz': 'formate/#archiv-chancetanz',
+  'working-communities': 'formate/#archiv-working-communities', 'staff-member': 'verein/', about: 'verein/', 'ueber-uns': 'verein/', team: 'verein/', verein: 'verein/', vorstand: 'verein/',
+  'elternschaft-und-kunstbetrieb': 'verein/', 'tanzpakt-in-residence': 'formate/#tanzpakt-in-residence', tanzpakt: 'formate/#tanzpakt-in-residence',
   kontakt: 'kontakt/', contact: 'kontakt/', impressum: 'impressum/', datenschutz: 'datenschutz/', datenschutzerklaerung: 'datenschutz/',
   'mitglied-werden': 'mitglied-werden/', mitgliedschaft: 'mitglied-werden/', mitglieder: 'netzwerk/', netzwerk: 'netzwerk/',
   kooperationen: 'kooperationen/', partner: 'kooperationen/', spenden: 'spenden/',

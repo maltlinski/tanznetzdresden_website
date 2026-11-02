@@ -788,8 +788,8 @@ test('Profitraining: englische Fassung und Verlinkung aus Menü und Formaten', a
   await page.goto('/');
   if (!isMobile) await expect(page.locator('.site-nav').getByRole('link', { name: 'Training' })).toHaveAttribute('href', /\/profitraining\/$/);
   await expect(page.locator('#formate a[data-format="keep-up"]')).toHaveAttribute('href', /\/profitraining\/$/);
-  // Formate ohne eigene Seite sind keine Links
-  await expect(page.locator('#formate article[data-format="studio-round"]')).toHaveCount(1);
+  // Formate ohne eigene Seite führen zur Formate-Seite
+  await expect(page.locator('#formate a[data-format="studio-round"]')).toHaveAttribute('href', /\/formate\/#studio-round$/);
 });
 
 test('Gestaltung: Name im Fuß, im Impressum und in den Metadaten', async ({ page }) => {

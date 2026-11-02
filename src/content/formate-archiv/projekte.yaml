@@ -1,0 +1,41 @@
+# Abgeschlossene Projekte im Archiv der Formate-Seite (/formate/#archiv). Reihenfolge = Anzeige.
+# Links: genau eins von news (Beitrag), seite (Route), datei (unter public/) oder url.
+# Dateien der alten Website (tanznetzdresden.de/wp-content/uploads/…) lädt `npm run archiv:laden` herunter.
+- id: linie-08
+  titel: "LINIE 08"
+  jahre: "2011–2018"
+  art: "Aufführungsreihe"
+  art_en: "Performance series"
+  text: "Die Aufführungsreihe der freien Tanzszene Dresdens im Festspielhaus HELLERAU. Pro Abend zwei bis drei Neuproduktionen oder Wiederaufnahmen von 20 bis 30 Minuten, danach ein Publikumsgespräch. Der Name kommt von der Straßenbahnlinie 8, die das Stadtzentrum mit Hellerau verbindet."
+  text_en: "The performance series of Dresden's independent dance scene at Festspielhaus HELLERAU. Each evening two to three new productions or revivals of 20 to 30 minutes, followed by a talk with the audience. The name comes from tram line 8, which connects the city centre with Hellerau."
+  partner: "HELLERAU – Europäisches Zentrum der Künste"
+  links:
+    - { text: "Pressespiegel (PDF)", text_en: "Press review (PDF, German)", url: "https://tanznetzdresden.de/wp-content/uploads/2021/03/Pressespiegel-L08.pdf" }
+- id: chancetanz
+  titel: "ChanceTanz"
+  jahre: "2015–2020"
+  art: "Tanzvermittlung"
+  art_en: "Dance education"
+  text: "Tanzprojekte für bildungsbenachteiligte Kinder und Jugendliche im Förderprogramm „Kultur macht stark!“, getragen von lokalen Bündnissen aus Horten, Schulen und Kulturträgern. Entstanden sind 16 Projekte, darunter MAGIC MOVES, PLANETEN STORIES und MATAMUTAMA."
+  text_en: "Dance projects for educationally disadvantaged children and young people in the funding programme “Kultur macht stark!”, run by local alliances of after-school centres, schools and cultural organisations. 16 projects were created, among them MAGIC MOVES, PLANETEN STORIES and MATAMUTAMA."
+  partner: "Bundesverband Tanz in Schulen e.V. · JugendKunstschule Dresden · Kultopia gGmbH · Projektschmiede gGmbH"
+- id: working-communities
+  titel: "WORKING COMMUNITIES"
+  jahre: "2021"
+  art: "Fachtag · Jubiläum"
+  art_en: "Symposium · anniversary"
+  text: "Überregionaler Fachtag Tanz im September 2021 mit dem Round Table zu Netzwerkstrukturen in den freien Darstellenden Künsten, im November das Jubiläum des TanzNetzDresden mit drei kostenfreien Workshops zum gemeinschaftlichen Handeln im Tanz."
+  text_en: "Supra-regional dance symposium in September 2021 with a round table on network structures in the independent performing arts; in November the TanzNetzDresden anniversary with three free workshops on acting together in dance."
+  partner: "TENZA Schmiede · HELLERAU – Europäisches Zentrum der Künste · Dachverband Tanz Deutschland"
+  links:
+    - { text: "Programm und Graphic Recordings", text_en: "Programme and graphic recordings", news: "graphic-recordings-working-communities" }
+- id: tanzkalender
+  titel: "Tanzkalender Dresden"
+  jahre: "2024–2026"
+  art: "Monatsplakat"
+  art_en: "Monthly poster"
+  text: "Der Tanzkalender bündelte die Tanzangebote in Dresden auf einem monatlichen Plakat: Bühnen, Hochschule und freie Szene an einem Ort. Von Mai 2024 bis April 2026 erschienen 18 Ausgaben, zum Herbst 2026 wurde der Kalender eingestellt."
+  text_en: "The Tanzkalender gathered the dance events in Dresden on a monthly poster: stages, university and independent scene in one place. 18 issues appeared from May 2024 to April 2026; the calendar was discontinued in autumn 2026."
+  partner: "Kulturstiftung des Freistaates Sachsen · Landeshauptstadt Dresden · SAX"
+  links:
+    - { text: "Alle 18 Ausgaben", text_en: "All 18 issues", seite: tanzkalenderArchiv }

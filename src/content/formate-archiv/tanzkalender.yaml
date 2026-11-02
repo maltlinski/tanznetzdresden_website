@@ -1,0 +1,21 @@
+# Ausgaben des Tanzkalenders (Monatsplakat). id = erster Monat (JJJJ-MM); die Seite zeigt die neueste zuerst.
+# bild/pdf: Dateien auf der alten Website. `npm run archiv:laden` legt sie in src/assets/tanzkalender/
+# und public/downloads/tanzkalender/ ab; danach nutzt die Seite die eigenen Dateien.
+- { id: "2026-04", monate: [4], bild: "https://tanznetzdresden.de/wp-content/uploads/2026/03/TanzNetzDresden_Tanzkalender_0426.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2026/03/Tanzkalender_0426.pdf", kopf: true }
+- { id: "2026-03", monate: [3], bild: "https://tanznetzdresden.de/wp-content/uploads/2026/03/TanzNetzDresden_Tanzkalender_0326.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2026/03/Tanzkalender_0326.pdf" }
+- { id: "2025-12", monate: [12], bild: "https://tanznetzdresden.de/wp-content/uploads/2026/03/TanzNetzDresden_Tanzkalender_1225.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2026/03/Tanzkalender_1225.pdf", kopf: true }
+- { id: "2025-11", monate: [11], bild: "https://tanznetzdresden.de/wp-content/uploads/2025/10/TanzNetzDresden_Tanzkalender_1125.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2025/10/Tanzkalender_1125.pdf" }
+- { id: "2025-10", monate: [10], bild: "https://tanznetzdresden.de/wp-content/uploads/2025/09/TanzNetzDresden_Tanzkalender_1025.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2025/09/Tanzkalender_1025.pdf" }
+- { id: "2025-08", monate: [8, 9], bild: "https://tanznetzdresden.de/wp-content/uploads/2025/07/TanzNetzDresden_Tanzkalender_080925.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2025/07/Tanzkalender_080925.pdf" }
+- { id: "2025-06", monate: [6], bild: "https://tanznetzdresden.de/wp-content/uploads/2025/05/TanzNetzDresden_Tanzkalender_0625.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2025/05/Tanzkalender_0625.pdf" }
+- { id: "2025-05", monate: [5], bild: "https://tanznetzdresden.de/wp-content/uploads/2025/04/TanzNetzDresden_Tanzkalender_0525.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2025/04/Tanzkalender_0525.pdf" }
+- { id: "2025-04", monate: [4], bild: "https://tanznetzdresden.de/wp-content/uploads/2025/03/TanzNetzDresden_Tanzkalender_0425.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2025/03/Tanzkalender_0425.pdf" }
+- { id: "2025-03", monate: [3], bild: "https://tanznetzdresden.de/wp-content/uploads/2025/02/TanzNetzDresden_Tanzkalender_0325.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2025/02/Tanzkalender_0325.pdf" }
+- { id: "2025-02", monate: [2], bild: "https://tanznetzdresden.de/wp-content/uploads/2025/01/TanzNetzDresden_Tanzkalender_0225.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2025/01/Tanzkalender_0225.pdf", kopf: true }
+- { id: "2024-12", monate: [12], bild: "https://tanznetzdresden.de/wp-content/uploads/2024/11/TanzNetzDresden_Tanzkalender_1124.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2024/11/Tanzkalender_1224.pdf" }
+- { id: "2024-11", monate: [11], bild: "https://tanznetzdresden.de/wp-content/uploads/2024/10/TanzNetzDresden_Tanzkalender_1124.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2024/10/Tanzkalender_1124.pdf" }
+- { id: "2024-10", monate: [10], bild: "https://tanznetzdresden.de/wp-content/uploads/2024/10/TanzNetzDresden_Tanzkalender_1024.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2024/10/Tanzkalender_1024.pdf" }
+- { id: "2024-09", monate: [9], bild: "https://tanznetzdresden.de/wp-content/uploads/2024/08/TanzNetzDresden_Tanzkalender_0924.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2024/08/TNDD_Tanzkalender_0924.pdf" }
+- { id: "2024-07", monate: [7, 8], bild: "https://tanznetzdresden.de/wp-content/uploads/2024/07/TanzNetzDresden_Tanzkalender_070824.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2024/07/Tanzkalender_070824.pdf", breit: true }
+- { id: "2024-06", monate: [6], bild: "https://tanznetzdresden.de/wp-content/uploads/2024/05/TanzNetzDresden_Tanzkalender_0624.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2024/05/Tanzkalender_0624.pdf" }
+- { id: "2024-05", monate: [5], bild: "https://tanznetzdresden.de/wp-content/uploads/2024/04/TanzNetzDresden_Tanzkalender_0524-scaled.jpg", pdf: "https://tanznetzdresden.de/wp-content/uploads/2024/04/TanzNetzDresden_Tanzkalender_0524.pdf" }

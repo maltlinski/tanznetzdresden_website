@@ -1,0 +1,18 @@
+# Chronik „Seit 2010 in Bewegung“ auf der Formate-Seite. id = Jahr, Reihenfolge = Anzeige.
+- id: "2010"
+  punkte: ["Das Netzwerk entsteht"]
+  punkte_en: ["The network is founded"]
+- id: "2019"
+  punkte: ["POP UP"]
+- id: "2020"
+  punkte: ["Gründung als gemeinnütziger Verein"]
+  punkte_en: ["Registered as a non-profit association"]
+- id: "2021"
+  punkte: ["Studio Round"]
+- id: "2022"
+  punkte: ["KEEP UP Training", "POP UP exchange", "TANZPAKT in residence"]
+- id: "2024"
+  punkte: ["vision:danceable", "Studio Round überregional"]
+  punkte_en: ["vision:danceable", "Studio Round beyond Dresden"]
+- id: "2027"
+  punkte: ["Bodies & Textiles"]

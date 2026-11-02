@@ -28,6 +28,9 @@ export const routes = {
   home: { de: '', en: '' },
   termine: { de: 'termine/', en: 'events/' },
   news: { de: 'news/', en: 'news/' },
+  formate: { de: 'formate/', en: 'formats/' },
+  // abgeschlossenes Projekt im Archiv der Formate-Seite (Monatsplakat 2024–2026)
+  tanzkalenderArchiv: { de: 'formate/tanzkalender/', en: 'formats/dance-calendar/' },
   profitraining: { de: 'profitraining/', en: 'training/' },
   netzwerk: { de: 'netzwerk/', en: 'network/' },
   kooperationen: { de: 'kooperationen/', en: 'partners/' },

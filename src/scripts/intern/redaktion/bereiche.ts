@@ -117,6 +117,26 @@ const TAGE = [
 const URL_HILFE = 'Vollständige Adresse mit https://';
 const BILD_ALT = 'Was ist zu sehen? Für Menschen, die das Bild nicht sehen können.';
 
+const SEITEN_OPTIONEN: Option[] = Object.entries(routes)
+  .filter(([k]) => !['home', 'intern', 'spendenNachweis', 'ausweisPruefen'].includes(k))
+  .map(([k, r]) => ({ wert: k, label: `/${r.de}` }));
+const RUBRIKEN: Option[] = [
+  { wert: 'buehne', label: 'Bühne' }, { wert: 'training', label: 'Training' }, { wert: 'diskurs', label: 'Diskurs' },
+  { wert: 'stadt', label: 'Stadtraum' }, { wert: 'residenz', label: 'Residenz' },
+];
+/** Links auf der Formate-Seite (src/content.config.ts → formatLink): Text und genau ein Ziel */
+const LINK_FELDER: Feld[] = [
+  { typ: 'text', key: 'text', label: 'Linktext', pflicht: true, en: true },
+  { typ: 'verweis', key: 'news', label: 'Ziel: News-Beitrag', quelle: 'news' },
+  { typ: 'auswahl', key: 'seite', label: 'Ziel: Seite der Website', optionen: SEITEN_OPTIONEN },
+  { typ: 'pdf', key: 'datei', label: 'Ziel: Datei (PDF)' },
+  { typ: 'url', key: 'url', label: 'Ziel: Adresse', hilfe: `${URL_HILFE} Genau ein Ziel ausfüllen.` },
+];
+const linksPruefen = (links: unknown): Record<string, string> => {
+  const falsch = ((links as Daten[] | undefined) ?? []).some((l) => [l.news, l.seite, l.datei, l.url].filter(Boolean).length !== 1);
+  return falsch ? { links: 'Jeder Link braucht genau ein Ziel: News-Beitrag, Seite, Datei oder Adresse.' } : {};
+};
+
 const seitenRouten: Record<string, keyof typeof routes> = {
   impressum: 'impressum', datenschutz: 'datenschutz', transparenz: 'transparenz', barrierefreiheit: 'barrierefreiheit', 'leichte-sprache': 'leichteSprache',
 };
@@ -172,30 +192,107 @@ export const bereiche: Bereich[] = [
     label: 'Formate',
     einzahl: 'Format',
     gruppe: 'Programm',
-    beschreibung: 'Die Reihen des Vereins (KEEP UP, POP UP …) auf der Startseite. Reihenfolge per Sortieren.',
+    beschreibung: 'Die Reihen des Vereins (KEEP UP, POP UP …): Formate-Seite und Streifen auf der Startseite. Reihenfolge per Sortieren. Nächste Termine kommen aus dem Kalender (Feld „Gehört zum Format“).',
     ordner: 'src/content/formate',
     anlegen: true,
     loeschen: true,
+    braucht: ['news'],
     neueId: (d) => slugify(String(d.title ?? 'format')),
     sortierung: 'order',
     titel: (e) => e.data.title ?? e.id,
-    info: (e) => [e.data.since, e.data.seite ? `eigene Seite: /${routes[e.data.seite as keyof typeof routes]?.de ?? ''}` : ''].filter(Boolean).join(' · '),
-    seite: (e) => (e.data.seite ? (routes[e.data.seite as keyof typeof routes]?.de ?? null) : ''),
+    info: (e) => [e.data.since, e.data.beendet ? 'beendet' : '', e.data.seite ? `eigene Seite: /${routes[e.data.seite as keyof typeof routes]?.de ?? ''}` : ''].filter(Boolean).join(' · '),
+    seite: (e) => `formate/#${e.id}`,
+    pruefen: (e) => linksPruefen(e.data.links),
     felder: [
       { typ: 'text', key: 'title', label: 'Name', pflicht: true, en: true },
-      { typ: 'text', key: 'since', label: 'Seit', pflicht: true, en: true, platzhalter: 'z. B. seit 2022' },
-      { typ: 'textlang', key: 'summary', label: 'Beschreibung', pflicht: true, en: true, zeilen: 3, max: 400 },
-      { typ: 'bild', key: 'image', label: 'Foto', pflicht: true, ordner: 'photos', form: 'relativ' },
+      { typ: 'text', key: 'since', label: 'Seit', pflicht: true, en: true, platzhalter: 'z. B. seit 2022', hilfe: 'Bei beendeten Formaten der Zeitraum, z. B. 2022–2024.' },
+      { typ: 'mehrfach', key: 'rubriken', label: 'Rubriken', optionen: RUBRIKEN, hilfe: 'Die erste steht als Badge am Format. Danach filtert „Ich möchte …“ auf der Formate-Seite. Ohne Auswahl: Bühne.' },
+      { typ: 'textlang', key: 'summary', label: 'Kurzbeschreibung', pflicht: true, en: true, zeilen: 2, max: 400, hilfe: 'Ein bis zwei Sätze für die Startseite und den Kopf der Formate-Seite.' },
+      { typ: 'textlang', key: 'text', label: 'Beschreibung', en: true, zeilen: 4, max: 900, hilfe: 'Ausführlich für die Formate-Seite. Leer = Kurzbeschreibung.' },
+      { typ: 'bild', key: 'image', label: 'Foto', pflicht: true, ordner: 'photos', form: 'relativ', hilfe: 'Der freigestellte Körper im Kopf der Formate-Seite entsteht mit „npm run formate:freisteller“ (docs/formate.md); bis dahin steht dort das Foto.' },
       { typ: 'text', key: 'alt', label: 'Bildbeschreibung', pflicht: true, en: true, hilfe: BILD_ALT },
+      { typ: 'liste', key: 'fakten', label: 'Eckdaten', neu: 'Eckdatum hinzufügen', titel: (v) => [v.label, v.wert].filter(Boolean).join(': '), felder: [
+        { typ: 'text', key: 'label', label: 'Bezeichnung', pflicht: true, en: true, platzhalter: 'z. B. Ort, Partner, Projektleitung' },
+        { typ: 'text', key: 'wert', label: 'Angabe', pflicht: true, en: true },
+      ] },
+      { typ: 'liste', key: 'links', label: 'Links', neu: 'Link hinzufügen', titel: (v) => v.text ?? '', felder: LINK_FELDER },
+      { typ: 'janein', key: 'beendet', label: 'Beendet', standard: false, hilfe: 'Statt des nächsten Termins steht dann der Rückblick.' },
+      { typ: 'verweis', key: 'rueckblick', label: 'Rückblick (bei beendeten Formaten)', quelle: 'news' },
       {
         typ: 'auswahl',
         key: 'seite',
         label: 'Eigene Seite',
-        hilfe: 'Optional: Seite der Website, auf die „Mehr zu …“ verlinkt.',
-        optionen: Object.entries(routes)
-          .filter(([k]) => !['home', 'intern', 'spendenNachweis'].includes(k))
-          .map(([k, r]) => ({ wert: k, label: `/${r.de}` })),
+        hilfe: 'Optional: eigene Seite der Website, z. B. KEEP UP → Profitraining. Die Karte auf der Startseite führt dann dorthin.',
+        optionen: SEITEN_OPTIONEN,
       },
+    ],
+  },
+  {
+    id: 'projekte',
+    art: 'liste',
+    label: 'Archiv der Formate',
+    einzahl: 'Projekt',
+    gruppe: 'Programm',
+    beschreibung: 'Abgeschlossene Projekte im Archiv der Formate-Seite.',
+    datei: 'src/content/formate-archiv/projekte.yaml',
+    anlegen: true,
+    loeschen: true,
+    braucht: ['news'],
+    sortierung: 'hand',
+    neueId: (d) => slugify(String(d.titel ?? 'projekt')),
+    titel: (e) => e.data.titel ?? e.id,
+    info: (e) => [e.data.jahre, e.data.art].filter(Boolean).join(' · '),
+    seite: () => 'formate/#archiv',
+    pruefen: (e) => linksPruefen(e.data.links),
+    felder: [
+      { typ: 'text', key: 'titel', label: 'Name', pflicht: true },
+      { typ: 'text', key: 'jahre', label: 'Jahre', pflicht: true, platzhalter: 'z. B. 2011–2018' },
+      { typ: 'text', key: 'art', label: 'Art', pflicht: true, en: true, platzhalter: 'z. B. Aufführungsreihe' },
+      { typ: 'textlang', key: 'text', label: 'Beschreibung', pflicht: true, en: true, zeilen: 4, max: 900 },
+      { typ: 'text', key: 'partner', label: 'Partner', en: true, hilfe: 'Mit „ · “ getrennt.' },
+      { typ: 'liste', key: 'links', label: 'Links', neu: 'Link hinzufügen', titel: (v) => v.text ?? '', felder: LINK_FELDER },
+    ],
+  },
+  {
+    id: 'chronik',
+    art: 'liste',
+    label: 'Chronik der Formate',
+    einzahl: 'Jahr',
+    gruppe: 'Programm',
+    beschreibung: 'Die Chronik „Seit 2010 in Bewegung“ auf der Formate-Seite.',
+    datei: 'src/content/formate-archiv/chronik.yaml',
+    anlegen: true,
+    loeschen: true,
+    sortierung: 'id',
+    neueId: (d) => String(d.jahr ?? ''),
+    titel: (e) => `${e.id}: ${(e.data.punkte ?? []).join(', ')}`,
+    seite: () => 'formate/',
+    felder: [
+      { typ: 'text', key: 'id', label: 'Jahr', pflicht: true, nurNeu: true, muster: [/^\d{4}$/, 'Vier Ziffern, z. B. 2027'] },
+      { typ: 'werte', key: 'punkte', label: 'Was geschah', pflicht: true, en: true, art: 'text', neu: 'Ereignis hinzufügen' },
+    ],
+  },
+  {
+    id: 'tanzkalender',
+    art: 'liste',
+    label: 'Tanzkalender-Archiv',
+    einzahl: 'Ausgabe',
+    gruppe: 'Programm',
+    beschreibung: 'Die Ausgaben des Tanzkalenders (Monatsplakat 2024–2026). Plakate und PDFs übernimmt „npm run archiv:laden“ von der alten Website (docs/formate.md).',
+    datei: 'src/content/formate-archiv/tanzkalender.yaml',
+    anlegen: true,
+    loeschen: true,
+    sortierung: 'id',
+    titel: (e) => e.id,
+    info: (e) => [(e.data.monate ?? []).join('/'), e.data.breit ? 'Doppelplakat' : '', e.data.kopf ? 'im Kopf' : ''].filter(Boolean).join(' · '),
+    seite: () => 'formate/tanzkalender/',
+    felder: [
+      { typ: 'text', key: 'id', label: 'Erster Monat', pflicht: true, nurNeu: true, muster: [/^\d{4}-\d{2}$/, 'Format: JJJJ-MM'] },
+      { typ: 'werte', key: 'monate', label: 'Monate', pflicht: true, art: 'zahl', neu: 'Monat hinzufügen', hilfe: '1–12, z. B. 7 und 8 für Juli/August.' },
+      { typ: 'url', key: 'bild', label: 'Plakat (Adresse auf der alten Website)', pflicht: true, hilfe: URL_HILFE },
+      { typ: 'url', key: 'pdf', label: 'PDF (Adresse auf der alten Website)', pflicht: true, hilfe: URL_HILFE },
+      { typ: 'janein', key: 'breit', label: 'Doppelplakat (doppelt so breit)', standard: false },
+      { typ: 'janein', key: 'kopf', label: 'Im Kopf der Seite zeigen', standard: false, hilfe: 'Drei Ausgaben.' },
     ],
   },
   {

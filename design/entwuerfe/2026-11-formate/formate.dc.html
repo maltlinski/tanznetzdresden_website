@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>TanzNetzDresden · Formate</title>
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/base.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/styles.css">
+  <script src="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/_ds_bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <style>
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);hyphens:auto}
+    a{color:var(--magenta);text-decoration:none}
+    a:hover{color:var(--purple)}
+    *{box-sizing:border-box}
+    ::selection{background:var(--magenta);color:#fff}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:#fff">
+
+  <header style="position:sticky;top:0;z-index:30;background:var(--purple);border-bottom:1px solid rgba(255,255,255,0.12)">
+    <div style="max-width:1320px;margin:0 auto;padding:18px clamp(20px,4vw,48px);display:flex;align-items:center;flex-wrap:wrap;gap:16px 40px">
+      <a href="TanzNetzDresden Website v5.dc.html" style="display:flex;align-items:center;color:#fff">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="76px" hint-size="76px,36px"></x-import>
+      </a>
+      <div style="margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:12px clamp(16px,2.4vw,36px)">
+        <nav style="display:flex;flex-wrap:wrap;gap:6px clamp(14px,2vw,28px)">
+          <a href="Kalender.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Kalender</a>
+          <a href="#top" aria-current="page" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);padding:6px 0;border-bottom:2px solid var(--magenta)">Formate</a>
+          <a href="KEEP UP Profitraining.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Training</a>
+          <a href="News.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Journal</a>
+          <a href="TanzNetzDresden Website v5.dc.html#netz" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Über uns</a>
+        </nav>
+        <a href="Mitgliedsstatus.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Login</a>
+        <a href="#mitmachen" style="display:flex">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="sm" marker="{{ true }}" hint-size="160px,32px">Mitglied werden</x-import>
+        </a>
+      </div>
+    </div>
+    <div ref="{{ progRef }}" style="position:absolute;left:0;bottom:-3px;height:3px;width:0;background:var(--magenta)"></div>
+  </header>
+
+  <!-- HERO · Bühne mit Ausbruch -->
+  <section id="top" ref="{{ heroRef }}" onMouseMove="{{ onHeroMove }}" data-screen-label="Formate · Kopf" style="position:relative;background:var(--purple);color:#fff;overflow:hidden">
+    {{ heroNet }}
+    <div onMouseEnter="{{ pause }}" onMouseLeave="{{ resume }}" style="position:relative;max-width:1320px;margin:0 auto;padding:clamp(28px,4vw,48px) clamp(20px,4vw,48px) 0">
+      <div style="display:grid;grid-template-columns:{{ stageCols }};height:{{ stageH }};column-gap:clamp(16px,2vw,28px)">
+
+        <div style="position:relative;z-index:5;display:flex;flex-direction:column;justify-content:space-between;gap:28px;min-width:0;padding-bottom:clamp(20px,3vw,36px)">
+          <div>
+            <div data-in="0" style="margin-bottom:16px">
+              <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" hint-size="220px,16px">Was wir machen · 08 Formate</x-import>
+            </div>
+            <h1 data-in="0.1" style="font-family:var(--font-display);font-weight:800;font-size:clamp(28px,3vw,44px);line-height:1;letter-spacing:-0.03em;color:#fff;margin:0"><span style="white-space:nowrap">Acht Formate.</span> <span style="color:var(--cyan);white-space:nowrap">Ein Netz.</span></h1>
+          </div>
+          <a href="#{{ cur.id }}" onClick="{{ cur.go }}" aria-live="polite" style="display:flex;flex-direction:column;align-items:flex-start;min-width:0;color:#fff">
+            <div style="display:flex;align-items:flex-end;gap:14px;margin-bottom:18px">
+              <span aria-hidden="true" style="display:flex;font-family:var(--font-display);font-weight:800;font-size:clamp(104px,11vw,176px);line-height:0.8;letter-spacing:-0.06em;color:var(--cyan)">
+                <sc-for list="{{ cur.nChars }}" as="ch" hint-placeholder-count="2">
+                  <span style="display:inline-block;overflow:hidden;padding:0.04em 0.02em 0"><span data-ch="" style="display:inline-block">{{ ch }}</span></span>
+                </sc-for>
+              </span>
+              <span style="padding-bottom:6px;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.18em;color:rgba(255,255,255,0.7);white-space:nowrap">/ 08</span>
+            </div>
+            <div data-out="" style="display:flex;align-items:center;gap:12px;margin-bottom:14px">
+              <span style="width:10px;height:10px;background:var(--magenta);flex:none"></span>
+              <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);display:flex;flex-wrap:wrap;column-gap:0.6em"><span style="white-space:nowrap">{{ cur.catLabel }} ·</span><span style="white-space:nowrap">{{ cur.since }}</span></span>
+            </div>
+            <h2 style="display:flex;flex-wrap:wrap;column-gap:0.24em;font-family:var(--font-display);font-weight:800;font-size:clamp(34px,3.8vw,58px);line-height:0.96;letter-spacing:-0.035em;color:#fff;margin:0 0 14px">
+              <sc-for list="{{ cur.words }}" as="wd" hint-placeholder-count="2">
+                <span style="display:inline-block;overflow:hidden;padding-bottom:0.08em"><span data-w="" style="display:inline-block">{{ wd }}</span></span>
+              </sc-for>
+            </h2>
+            <p data-out="" style="max-width:440px;margin:0 0 22px;font-size:clamp(15px,1.25vw,17px);line-height:1.55;color:rgba(255,255,255,0.88);text-wrap:pretty">{{ cur.short }}</p>
+            <div data-out="" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 22px">
+              <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:#fff;border-bottom:1.5px solid var(--magenta);padding-bottom:4px">Format entdecken ↓</span>
+              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:rgba(255,255,255,0.72)">{{ cur.ctaLabel }} · <span style="color:#fff">{{ cur.nextDate }}</span></span>
+            </div>
+          </a>
+        </div>
+
+        <div style="position:relative;min-width:0;aspect-ratio:{{ cellAR }}">
+          <div aria-hidden="true" style="position:absolute;inset:0;z-index:3;pointer-events:none">
+            <sc-for list="{{ shots }}" as="s" hint-placeholder-count="1">
+              <img data-cut="{{ s.i }}" src="{{ s.cut }}" alt="{{ s.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:50% 100%;display:block;opacity:0">
+            </sc-for>
+          </div>
+        </div>
+      </div>
+
+      <div role="tablist" aria-label="Formate" style="position:relative;z-index:5;display:grid;grid-template-columns:repeat(8,minmax(0,1fr));gap:8px;margin-top:clamp(24px,3vw,40px);padding:0 0 34px;background:var(--purple)">
+        <sc-for list="{{ segs }}" as="g" hint-placeholder-count="8">
+          <button role="tab" aria-selected="{{ g.sel }}" aria-label="{{ g.t }}" onClick="{{ g.pick }}" style="position:relative;display:flex;align-items:baseline;gap:10px;min-width:0;padding:14px 0 4px;background:transparent;border:0;border-radius:0;text-align:left;cursor:pointer;color:{{ g.col }};transition:color 200ms" style-hover="color:var(--cyan)">
+            <span style="position:absolute;left:0;right:0;top:0;height:2px;background:rgba(255,255,255,0.22)"></span>
+            <span data-fill="{{ g.i }}" style="position:absolute;left:0;right:0;top:0;height:2px;background:var(--magenta);transform-origin:0 50%;transform:scaleX(0)"></span>
+            <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;flex:none">{{ g.n }}</span>
+            <sc-if value="{{ wideSegs }}" hint-placeholder-val="{{ true }}">
+              <span style="font-family:var(--font-display);font-weight:700;font-size:14px;line-height:1.2;letter-spacing:-0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ g.t }}</span>
+            </sc-if>
+          </button>
+        </sc-for>
+      </div>
+    </div>
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 10 }}" style="position:absolute;left:0;bottom:0;width:34%;z-index:6" hint-size="34%,10px"></x-import>
+  </section>
+
+  <!-- KAPITEL -->
+  <section data-screen-label="Formate im Detail" style="background:var(--tint);padding:clamp(40px,6vw,80px) 0 clamp(64px,8vw,104px)">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;padding-bottom:8px">
+        <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">Ich möchte</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+            <button onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="display:flex;align-items:center;gap:8px;padding:9px 14px;border:1.5px solid var(--purple);background:{{ f.bg }};color:{{ f.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;border-radius:0;transition:background 200ms, color 200ms" style-hover="border-color:var(--magenta)">{{ f.label }}<span style="color:{{ f.cc }}">{{ f.count }}</span></button>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px);display:grid;grid-template-columns:{{ chapterCols }};gap:clamp(32px,5vw,72px);align-items:start">
+      <sc-if value="{{ showRail }}" hint-placeholder-val="{{ true }}">
+        <nav aria-label="Formate" style="position:sticky;top:110px;padding-top:56px">
+          <span style="display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:18px"><span style="width:8px;height:8px;background:var(--magenta)"></span>Im Detail</span>
+          <div style="position:relative;display:flex;flex-direction:column;border-left:1px solid var(--rule)">
+            <span style="position:absolute;left:-1px;top:0;width:3px;height:{{ railFill }};background:var(--magenta);transition:height 400ms cubic-bezier(0.16,1,0.3,1)"></span>
+            <sc-for list="{{ rail }}" as="k" hint-placeholder-count="7">
+              <a href="#{{ k.id }}" onClick="{{ k.go }}" style="display:flex;align-items:baseline;gap:12px;padding:9px 0 9px 18px;color:{{ k.col }};transition:color 200ms" style-hover="color:var(--magenta)">
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em">{{ k.n }}</span>
+                <span style="font-family:var(--font-display);font-weight:{{ k.fw }};font-size:17px;letter-spacing:-0.01em;line-height:1.2">{{ k.t }}</span>
+              </a>
+            </sc-for>
+          </div>
+        </nav>
+      </sc-if>
+
+      <div style="min-width:0">
+        <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="3">
+          <article id="{{ c.id }}" data-chapter="{{ c.id }}" style="scroll-margin-top:96px;padding:56px 0;border-bottom:1px solid var(--rule)">
+            <div style="display:flex;flex-wrap:wrap;flex-direction:{{ c.dir }};gap:32px clamp(32px,4vw,56px);align-items:flex-start">
+              <div style="flex:1 1 320px;min-width:0;position:relative;aspect-ratio:4/3;background:var(--purple);clip-path:polygon(0 0,100% 0,100% 86%,88% 100%,0 100%)">
+                <div data-wipe="" style="position:absolute;inset:0">
+                  <img src="{{ c.img }}" alt="{{ c.alt }}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block">
+                </div>
+                <div style="position:absolute;top:0;left:0;width:22px;height:22px;background:var(--magenta)"></div>
+              </div>
+              <div style="flex:1.25 1 380px;min-width:0;display:flex;flex-direction:column">
+                <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:14px">
+                  <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(44px,5vw,72px);line-height:0.85;letter-spacing:-0.04em;color:var(--magenta)">{{ c.n }}</span>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ c.badge }}" size="sm" hint-size="72px,22px">{{ c.catLabel }}</x-import>
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ c.since }}</span>
+                </div>
+                <h2 data-in="0" style="font-family:var(--font-display);font-weight:800;font-size:clamp(34px,3.8vw,54px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0 0 18px;overflow-wrap:anywhere">{{ c.t }}</h2>
+                <p style="margin:0 0 26px;max-width:560px;font-size:16px;line-height:1.6;color:var(--ink);text-wrap:pretty">{{ c.d }}</p>
+                <dl style="margin:0 0 26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:0 24px">
+                  <sc-for list="{{ c.facts }}" as="f" hint-placeholder-count="3">
+                    <div style="padding:12px 0 14px;border-top:1px solid var(--rule)">
+                      <dt style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:4px">{{ f.k }}</dt>
+                      <dd style="margin:0;font-size:15px;line-height:1.45;color:var(--purple)">{{ f.v }}</dd>
+                    </div>
+                  </sc-for>
+                </dl>
+                <a href="{{ c.nextHref }}" style="display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;background:var(--purple);color:#fff;padding:18px 22px;transition:background 200ms" style-hover="background:var(--magenta);color:#fff">
+                  <span style="display:flex;flex-direction:column;gap:5px;min-width:0">
+                    <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan)">{{ c.ctaLabel }}</span>
+                    <span style="font-family:var(--font-display);font-weight:700;font-size:20px;line-height:1.15;letter-spacing:-0.015em">{{ c.nextDate }}</span>
+                    <span style="font-size:14px;line-height:1.45;color:rgba(255,255,255,0.86)">{{ c.nextWhere }}</span>
+                  </span>
+                  <span style="font-family:var(--font-display);font-size:28px;line-height:1">→</span>
+                </a>
+                <div style="display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:20px">
+                  <sc-for list="{{ c.links }}" as="l" hint-placeholder-count="1">
+                    <a href="{{ l.href }}" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);border-bottom:1.5px solid var(--magenta);padding-bottom:3px" style-hover="color:var(--purple);border-color:var(--purple)">{{ l.label }}</a>
+                  </sc-for>
+                </div>
+              </div>
+            </div>
+          </article>
+        </sc-for>
+        <sc-if value="{{ filtered }}" hint-placeholder-val="{{ false }}">
+          <button onClick="{{ resetFilter }}" style="margin-top:28px;background:transparent;border:0;padding:0;cursor:pointer;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)" style-hover="color:var(--magenta)">Alle 8 Formate zeigen →</button>
+        </sc-if>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHRONIK -->
+  <section data-screen-label="Chronik" style="position:relative;background:var(--purple);color:#fff;padding:clamp(72px,9vw,120px) 0 clamp(64px,8vw,104px);overflow:hidden">
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--cyan)" height="{{ 12 }}" flip="{{ true }}" style="position:absolute;right:0;top:0;width:40%" hint-size="40%,12px"></x-import>
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div data-in="0" style="margin-bottom:22px">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" hint-size="160px,16px">Chronik</x-import>
+      </div>
+      <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(44px,6vw,88px);line-height:0.92;letter-spacing:-0.035em;margin:0 0 clamp(40px,5vw,64px)">
+        <span data-in="0.05" style="display:block">Seit 2010</span>
+        <span data-in="0.2" style="display:block;color:var(--cyan)">in Bewegung.</span>
+      </h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));border-top:2px solid rgba(255,255,255,0.3)">
+        <sc-for list="{{ miles }}" as="m" hint-placeholder-count="7">
+          <div onMouseEnter="{{ m.on }}" onMouseLeave="{{ m.off }}" style="position:relative;padding:30px 20px 24px 0">
+            <span style="position:absolute;left:0;top:-1px;transform:translateY(-50%);width:{{ m.sq }};height:{{ m.sq }};background:var(--magenta);transition:width 400ms cubic-bezier(0.16,1,0.3,1), height 400ms cubic-bezier(0.16,1,0.3,1)"></span>
+            <div style="font-family:var(--font-display);font-weight:800;font-size:clamp(34px,3.4vw,50px);line-height:1;letter-spacing:-0.035em;color:{{ m.yc }};margin-bottom:12px;transition:color 200ms">{{ m.y }}</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <sc-for list="{{ m.items }}" as="it" hint-placeholder-count="1">
+                <span style="font-size:15px;line-height:1.4;color:rgba(255,255,255,0.88)">{{ it }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHIV -->
+  <section id="archiv" data-screen-label="Archiv" style="scroll-margin-top:70px;background:#fff;padding:clamp(64px,8vw,104px) 0">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 48px;margin-bottom:clamp(32px,4vw,48px)">
+        <div>
+          <div data-in="0" style="margin-bottom:18px">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--magenta)" hint-size="120px,16px">Archiv</x-import>
+          </div>
+          <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,4.6vw,60px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">
+            <span data-in="0.05" style="display:block">Abgeschlossene</span>
+            <span data-in="0.15" style="display:block;color:var(--magenta)">Projekte.</span>
+          </h2>
+        </div>
+        <p style="max-width:420px;margin:0;font-size:16px;line-height:1.6;color:var(--ink);text-wrap:pretty">Diese Projekte laufen nicht mehr. Programme, Beteiligte und Pressestimmen bleiben hier abrufbar.</p>
+      </div>
+      <div style="border-top:2px solid var(--purple)">
+        <sc-for list="{{ archive }}" as="a" hint-placeholder-count="3">
+          <article style="border-bottom:1px solid var(--rule)">
+            <button onClick="{{ a.toggle }}" aria-expanded="{{ a.open }}" aria-controls="{{ a.pid }}" style="width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px clamp(24px,4vw,56px);padding:clamp(20px,2.6vw,30px) 0;background:transparent;border:0;border-radius:0;text-align:left;cursor:pointer;color:var(--purple)" style-hover="color:var(--magenta)">
+              <span style="flex:0 0 180px;font-family:var(--font-display);font-weight:800;font-size:clamp(24px,2.2vw,30px);line-height:1;letter-spacing:-0.03em;color:var(--magenta)">{{ a.years }}</span>
+              <span style="flex:1 1 300px;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px">
+                <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(24px,2.6vw,34px);line-height:1.05;letter-spacing:-0.025em;color:inherit;transition:color 200ms">{{ a.t }}</span>
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ a.kind }}</span>
+              </span>
+              <span aria-hidden="true" style="flex:none;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1.5px solid {{ a.bc }};background:{{ a.bg }};color:{{ a.ic }};font-family:var(--font-display);font-weight:700;font-size:22px;line-height:1;transition:background 200ms, color 200ms">{{ a.sign }}</span>
+            </button>
+            <sc-if value="{{ a.open }}" hint-placeholder-val="{{ false }}">
+              <div id="{{ a.pid }}" data-acc="" style="display:flex;flex-wrap:wrap;gap:16px clamp(24px,4vw,56px);padding:0 0 clamp(24px,3vw,36px)">
+                <div style="flex:0 0 180px"></div>
+                <div style="flex:1 1 380px;min-width:0">
+                  <p style="max-width:620px;margin:0 0 14px;font-size:16px;line-height:1.6;color:var(--ink);text-wrap:pretty">{{ a.d }}</p>
+                  <div style="display:flex;flex-wrap:wrap;gap:4px 10px;font-size:14px;line-height:1.5;color:var(--ink-soft);margin-bottom:22px"><span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);padding-top:2px">Mit</span><span>{{ a.partner }}</span></div>
+                  <div style="display:flex;flex-wrap:wrap;gap:12px 28px">
+                  <sc-for list="{{ a.links }}" as="l" hint-placeholder-count="1">
+                    <a href="{{ l.href }}" target="{{ l.target }}" rel="noopener" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);border-bottom:1.5px solid var(--magenta);padding-bottom:3px" style-hover="color:var(--purple);border-color:var(--purple)">{{ l.label }}</a>
+                  </sc-for>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- MITMACHEN -->
+  <section id="mitmachen" data-screen-label="Mitmachen" style="scroll-margin-top:70px;position:relative;background:var(--cyan);color:var(--purple)">
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--purple)" height="{{ 14 }}" flip="{{ true }}" style="position:absolute;right:0;top:0;width:42%" hint-size="42%,14px"></x-import>
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(64px,8vw,104px) clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:56px clamp(32px,6vw,96px)">
+      <div>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--purple)" style="margin-bottom:18px" hint-size="160px,16px">Mitmachen</x-import>
+        <h2 data-in="0" style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,4.6vw,60px);line-height:0.98;letter-spacing:-0.03em;margin:0 0 22px">Zeig deine Arbeit.<br>Gestalte mit.</h2>
+        <p style="max-width:480px;margin:0 0 28px;font-size:16px;line-height:1.6">Die Formate leben von den Menschen im Netz. Bewirb dich auf einen Open Call oder bring dich in einer Arbeitsgruppe ein.</p>
+        <a href="Open Calls.dc.html" style="display:flex;flex-direction:column;gap:10px;max-width:520px;background:#fff;border-top:3px solid var(--magenta);padding:20px 22px 22px;color:var(--purple)" style-hover="color:var(--magenta)">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--magenta)">Open Call · Frist 15. Nov 2026</span>
+          <span style="font-family:var(--font-display);font-weight:800;font-size:24px;line-height:1.1;letter-spacing:-0.02em;color:inherit;transition:color 150ms">POP UP Frühjahr 2027: Kurzstücke bis 20 Minuten gesucht</span>
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple)">Zur Ausschreibung →</span>
+        </a>
+      </div>
+      <div style="align-self:end;border-top:2px solid var(--purple);padding-top:26px">
+        <div style="font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:-0.02em;margin-bottom:8px">Arbeitsgruppen</div>
+        <p style="margin:0 0 20px;font-size:15px;line-height:1.6">Hinter jedem Format steht eine AG. Mitglieder:innen können jederzeit einsteigen.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px">
+          <sc-for list="{{ ags }}" as="ag" hint-placeholder-count="9">
+            <span style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid var(--purple);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple)"><span style="width:6px;height:6px;background:var(--magenta)"></span>{{ ag }}</span>
+          </sc-for>
+        </div>
+        <a href="TanzNetzDresden Website v5.dc.html#mitglied" style="display:inline-flex">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" size="lg" marker="{{ true }}" hint-size="220px,46px">Mitglied werden</x-import>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:var(--purple);color:#fff">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,88px) clamp(20px,4vw,48px) 28px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px 48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.16)">
+        <div style="min-width:0">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="full" color="#ffffff" width="220px" hint-size="220px,74px"></x-import>
+          <p style="margin:22px 0 0;max-width:340px;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.78)">Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit 2010, seit 2020 als gemeinnütziger Verein.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Formate</span>
+          <sc-for list="{{ footFormats }}" as="ff" hint-placeholder-count="7">
+            <a href="#{{ ff.id }}" onClick="{{ ff.go }}" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">{{ ff.t }}</a>
+          </sc-for>
+          <a href="#archiv" style="font-size:14px;color:rgba(255,255,255,0.78)" style-hover="color:var(--cyan)">Archiv</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Kontakt</span>
+          <span style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.86)">Pfotenhauer Straße 59 HH<br>01307 Dresden</span>
+          <a href="mailto:kontakt@tanznetzdresden.de" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">kontakt@tanznetzdresden.de</a>
+          <a href="tel:+4915771520512" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">+49 1577 1520 512</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px 28px;padding-top:22px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7)">
+        <span>© 2026 TanzNetzDresden e.V.</span>
+        <a href="#top" style="color:rgba(255,255,255,0.7);margin-left:auto" style-hover="color:var(--cyan)">Impressum</a>
+        <a href="#top" style="color:rgba(255,255,255,0.7)" style-hover="color:var(--cyan)">Datenschutz</a>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;autoplay&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Kopf&quot;,&quot;label&quot;:&quot;Formate laufen automatisch durch&quot;},&quot;interval&quot;:{&quot;editor&quot;:&quot;range&quot;,&quot;default&quot;:6.5,&quot;min&quot;:3,&quot;max&quot;:12,&quot;step&quot;:0.5,&quot;unit&quot;:&quot;s&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Kopf&quot;,&quot;label&quot;:&quot;Standzeit pro Format&quot;},&quot;alternate&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Detail&quot;,&quot;label&quot;:&quot;Fotos wechselnd links/rechts&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Animationen&quot;}}">
+const P = 'assets/photos/';
+const CAT = { buehne: ['Bühne', 'magenta'], training: ['Training', 'cyan'], diskurs: ['Diskurs', 'purple'], stadt: ['Stadtraum', 'outline'], residenz: ['Residenz', 'outline'] };
+const TBD = { nextDate: 'Termin folgt', nextWhere: 'Wir kündigen ihn im Newsletter an.', nextHref: 'TanzNetzDresden Website v5.dc.html#mitglied' };
+const FORMATS = [
+  { id: 'studio-round', t: 'Studio Round', since: 'seit 2021', cats: ['diskurs', 'buehne'], img: P + 'duo-silhouette-stage.jpg', alt: 'Duo als Silhouette auf der Bühne',
+    short: 'Offenes Showing mit moderiertem Gespräch. Überregional mit Freiburg und Frankfurt.',
+    d: 'Ein offenes Showing mit anschließendem moderiertem Gespräch: Künstler:innen zeigen Arbeiten im Prozess, das Publikum spricht mit. Seit 2024 überregional mit dem Tanznetz Freiburg und dem ID Frankfurt, gefördert durch die NPN-Impulsförderung.',
+    facts: [['Ort', 'Villa Wigman für Tanz'], ['Partner', 'Tanznetz Freiburg · ID Frankfurt'], ['Projektleitung', 'Alina Lucifero']], ...TBD },
+  { id: 'pop-up', t: 'POP UP', since: 'seit 2019', cats: ['buehne'], img: P + 'ensemble-curtain-call.jpg', alt: 'Ensemble beim Schlussapplaus',
+    short: 'Niedrigschwelliges Aufführungsformat für neue Arbeiten aus dem Netzwerk.',
+    d: 'Unser niedrigschwelliges Aufführungsformat für neue Arbeiten aus dem Netzwerk. Kurze Stücke, ein Abend, ein offenes Publikum. Seit 2022 auch als POP UP exchange.',
+    facts: [['Ort', 'Wechselnde Orte, u. a. Zentralwerk'], ['Ableger', 'POP UP exchange, seit 2022'], ['Projektleitung', 'Justine Rouquart']],
+    nextDate: 'Heute · Sa 31. Okt · 20:00', nextWhere: 'Zentralwerk · Neue Kurzstücke aus dem Netzwerk', nextHref: 'Kalender.dc.html',
+    links: [['Open Call Frühjahr 2027', 'Open Calls.dc.html']] },
+  { id: 'keep-up', t: 'KEEP UP', since: 'seit 2022', cats: ['training'], img: P + 'headstand-solo.jpg', alt: 'Solo-Tänzerin im Kopfstand',
+    short: 'Profitraining drei- bis fünfmal pro Woche in der TENZA, dazu Workshops.',
+    d: 'Profitraining für Tanzschaffende, drei- bis fünfmal pro Woche in der TENZA. Lokale und internationale Dozent:innen wechseln sich ab. Dazu kommen regelmäßige Workshops.',
+    facts: [['Ort', 'TENZA Schmiede'], ['Rhythmus', '3–5× pro Woche'], ['Projektleitung', 'Rika Yotsumoto']],
+    nextDate: 'Mo · 2. Nov · 10:00', nextWhere: 'TENZA Schmiede · Contemporary', nextHref: 'KEEP UP Profitraining.dc.html',
+    links: [['Trainingsplan', 'KEEP UP Profitraining.dc.html']] },
+  { id: 'vision-danceable', t: 'vision:danceable', since: 'seit 2024', cats: ['buehne'], img: P + 'duo-orange-blue.jpg', alt: 'Zwei Tanzende in orangem und blauem Licht',
+    short: 'Kurzstückreihe am Societaetstheater mit 4 rooms company und about blank collective.',
+    d: 'Kurzstückreihe am Societaetstheater, gemeinsam mit der 4 rooms company und dem about blank collective. Mehrere Positionen der freien Szene an einem Abend.',
+    facts: [['Ort', 'Societaetstheater'], ['Partner', '4 rooms company · about blank collective'], ['Projektleitung', 'Malte Leonard Herz']],
+    nextDate: 'Do · 26. Nov · 20:00', nextWhere: 'Societaetstheater · vision:danceable #6', nextHref: 'Kalender.dc.html' },
+  { id: 'welttanztag', t: 'Welttanztag', since: 'jährlich · 29. April', cats: ['stadt'], img: P + 'sprung.jpg', alt: 'Tänzer:in im Sprung',
+    short: 'Tanz im öffentlichen Raum: spontan, einladend und für alle zugänglich.',
+    d: 'Am 29. April tanzt Dresden im öffentlichen Raum. Wir bringen den Tanz direkt ins Stadtbild: spontan, einladend und für alle zugänglich.',
+    facts: [['Ort', 'Öffentlicher Raum, Dresden'], ['Rhythmus', 'jährlich am 29. April'], ['Organisation', 'AG Welttanztag']],
+    nextDate: 'Do · 29. April 2027', nextWhere: 'Programm und Orte folgen', nextHref: 'Kalender.dc.html' },
+  { id: 'bodies-textiles', t: 'Bodies & Textiles', since: 'ab 2027', cats: ['buehne'], img: P + 'duo-rot.jpg', alt: 'Duo in rotem Licht',
+    short: 'Neues Format mit Wir Gestalten Dresden und dem Slow Fashion Festival.',
+    d: 'Neues Format ab 2027, gemeinsam mit Wir Gestalten Dresden und dem Slow Fashion Festival.',
+    facts: [['Partner', 'Wir Gestalten Dresden · Slow Fashion Festival'], ['Start', '2027'], ['Projektleitung', 'Justine Rouquart']], ...TBD },
+  { id: 'dresdance', t: 'Dresdance Gala', since: 'Beteiligung', cats: ['buehne'], img: P + 'solo-blau.jpg', alt: 'Solo in blauem Licht',
+    short: 'Das Netz ist bei der Dresdance Gala vertreten.',
+    d: 'Das TanzNetzDresden ist bei der Dresdance Gala vertreten. Die AG Dresdance koordiniert die Beteiligung aus dem Netzwerk.',
+    facts: [['Organisation', 'AG Dresdance'], ['Projektleitung', 'Malte Leonard Herz']], ...TBD },
+  { id: 'tanzpakt', t: 'TANZPAKT in residence', since: '2022–2024', sinceK: 'Laufzeit', cats: ['residenz'], img: P + 'kopfstand.jpg', alt: 'Tänzer im Kopfstand auf dunkler Bühne',
+    short: 'Residenzprogramm für Tanzschaffende in Sachsen. 18 Residenzen an sieben Partnerorten.',
+    d: 'Mit der Villa Wigman für Tanz und sieben Partnerorten in Sachsen haben wir von 2022 bis 2024 das Residenzprogramm TANZPAKT in residence getragen. 18 Residenzen wurden ausgeschrieben, eine Jury entschied über die Vergabe. Jede Residenz verband eigene Recherche mit einem Workshop für Profis und Amateur:innen und einer Werkstattpräsentation.',
+    facts: [['Umfang', '18 Residenzen · Dresden, Kirschau, Zwickau, Görlitz, Chemnitz, Leipzig'], ['Partner', 'Villa Wigman für Tanz · TanzART Kirschau · Mondstaubtheater Zwickau · TanzRaumGörlitz · KOMPLEX Chemnitz · LOFFT · 4fürTANZ Leipzig · TENZA schmiede'], ['Förderung', 'TANZPAKT Stadt-Land-Bund']],
+    ctaLabel: 'Programm abgeschlossen', nextDate: 'Resümee und Rückschau', nextWhere: '3 Jahre TANZPAKT in residence · 28. April 2025', nextHref: 'https://tanznetzdresden.de/3-jahre-tanzpakt-in-residence-resuemee-und-rueckschau/', noCal: true,
+    links: [['Resident:innen 2024', 'https://tanznetzdresden.de/tanzpakt-in-residence/'], ['Open Call 2024 (Archiv)', 'https://tanznetzdresden.de/tanzpakt-in-residence-2022-24-open-call-bis-19-juni-2023/']] },
+];
+const FILTERS = [['alle', 'Alle'], ['buehne', 'Tanz sehen'], ['training', 'Trainieren'], ['diskurs', 'Mitreden'], ['stadt', 'Draußen tanzen']];
+const MILES = [
+  ['2010', ['Das Netzwerk entsteht']], ['2019', ['POP UP']], ['2020', ['Gründung als gemeinnütziger Verein']], ['2021', ['Studio Round']],
+  ['2022', ['KEEP UP Training', 'POP UP exchange', 'TANZPAKT in residence']], ['2024', ['vision:danceable', 'Studio Round überregional']], ['2027', ['Bodies & Textiles']],
+];
+const ARCHIVE = [
+  { t: 'LINIE 08', years: '2011–2018', kind: 'Aufführungsreihe',
+    d: 'Die Aufführungsreihe der freien Tanzszene Dresdens im Festspielhaus HELLERAU. Pro Abend zwei bis drei Neuproduktionen oder Wiederaufnahmen von 20 bis 30 Minuten, danach ein Publikumsgespräch. Der Name kommt von der Straßenbahnlinie 8, die das Stadtzentrum mit Hellerau verbindet.',
+    partner: 'HELLERAU – Europäisches Zentrum der Künste',
+    links: [['Programme 2011–2018', 'https://tanznetzdresden.de/linie-8/'], ['Pressespiegel (PDF)', 'https://tanznetzdresden.de/wp-content/uploads/2021/03/Pressespiegel-L08.pdf']] },
+  { t: 'ChanceTanz', years: '2015–2020', kind: 'Tanzvermittlung',
+    d: 'Tanzprojekte für bildungsbenachteiligte Kinder und Jugendliche im Förderprogramm „Kultur macht stark!“, getragen von lokalen Bündnissen aus Horten, Schulen und Kulturträgern. Entstanden sind 16 Projekte, darunter MAGIC MOVES, PLANETEN STORIES und MATAMUTAMA.',
+    partner: 'Bundesverband Tanz in Schulen e.V. · JugendKunstschule Dresden · Kultopia gGmbH · Projektschmiede gGmbH',
+    links: [['Alle Projekte', 'https://tanznetzdresden.de/chance-tanz/']] },
+  { t: 'WORKING COMMUNITIES', years: '2021', kind: 'Fachtag · Jubiläum',
+    d: 'Überregionaler Fachtag Tanz im September 2021 mit dem Round Table zu Netzwerkstrukturen in den freien Darstellenden Künsten, im November das Jubiläum des TanzNetzDresden mit drei kostenfreien Workshops zum gemeinschaftlichen Handeln im Tanz.',
+    partner: 'TENZA Schmiede · HELLERAU – Europäisches Zentrum der Künste · Dachverband Tanz Deutschland',
+    links: [['Programm und Graphic Recordings', 'https://tanznetzdresden.de/working-communities/']] },
+  { t: 'Tanzkalender Dresden', years: '2024–2026', kind: 'Monatsplakat',
+    d: 'Der Tanzkalender bündelte die Tanzangebote in Dresden auf einem monatlichen Plakat: Bühnen, Hochschule und freie Szene an einem Ort. Von Mai 2024 bis April 2026 erschienen 18 Ausgaben, zum Herbst 2026 wurde der Kalender eingestellt.',
+    partner: 'Kulturstiftung des Freistaates Sachsen · Landeshauptstadt Dresden · SAX',
+    links: [['Alle 18 Ausgaben', 'Tanzkalender Archiv.dc.html']] },
+];
+const AGS = ['POP UP', 'Welttanztag', 'Studio Round', 'vision:danceable', 'Bodies & Textiles', 'Dresdance', 'Newcomer:innen', 'Elternschaft in Tanz', 'Sharing'];
+const E = 'cubic-bezier(0.16,1,0.3,1)';
+
+const CROPS = {
+  'studio-round': [0, 540, 610, 780, { floor: 0.8, drop: 'blue' }], 'pop-up': [0, 480, 2000, 853], 'keep-up': [295, 0, 1210, 1333],
+  'vision-danceable': [60, 120, 1560, 1000, { floor: 0.4, drop: 'blue' }], 'welttanztag': [240, 60, 820, 900], 'bodies-textiles': [0, 60, 1333, 1466],
+  'dresdance': [678, 330, 745, 820, { floor: 0.86, drop: 'grey' }], 'tanzpakt': [250, 0, 1100, 1333],
+};
+const CUT_IMG = { 'studio-round': 'ensemble-curtain-call.jpg' };
+const CLIP_ON = 'polygon(2% 15%,100% 15%,100% 88%,90% 100%,2% 100%)';
+const CLIP_OFF = 'polygon(2% 15%,2% 15%,2% 100%,2% 100%,2% 100%)';
+
+class Component extends DCLogic {
+  state = { filter: 'alle', cur: 0, active: 0, w: 1280, proc: {}, arch: -1 };
+  progRef = React.createRef();
+  heroRef = React.createRef();
+  netRef = React.createRef();
+
+  componentDidMount() {
+    this.reduced = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || this.props.motion === false;
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+    this.onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => this.tick()); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.onVis = () => this.applyPause();
+    document.addEventListener('visibilitychange', this.onVis);
+    this.tick();
+    if ('IntersectionObserver' in window) {
+      this.io = new IntersectionObserver((en) => en.forEach((e) => { if (e.isIntersecting) { this.io.unobserve(e.target); this.reveal(e.target); } }), { threshold: 0.15 });
+      this.observe();
+      this.heroIO = new IntersectionObserver((en) => { this._off = !en[0].isIntersecting; this.applyPause(); }, { threshold: 0.25 });
+      if (this.heroRef.current) this.heroIO.observe(this.heroRef.current);
+    }
+    this._z = 10;
+    this.photoIn(0, true);
+    this.processAll();
+    this.whenGsap(() => { this.gsapReady = true; this.drawNet(); this.animIn(0.5); this.startCycle(); });
+  }
+  componentDidUpdate() { this.observe(); }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('scroll', this.onScroll);
+    document.removeEventListener('visibilitychange', this.onVis);
+    if (this.io) this.io.disconnect();
+    if (this.heroIO) this.heroIO.disconnect();
+    clearTimeout(this._to);
+    if (this._fill) this._fill.kill();
+    if (this._netTw) this._netTw.forEach((t) => t.kill());
+    document.querySelectorAll('[data-in],[data-wipe]').forEach((el) => { el.style.opacity = ''; });
+  }
+  gsapOk() { return !!window.gsap && !this.reduced; }
+  whenGsap(cb) {
+    let n = 0;
+    const t = () => { if (window.gsap && window.ScrollTrigger) { window.gsap.registerPlugin(window.ScrollTrigger); (document.fonts ? document.fonts.ready : Promise.resolve()).then(cb); } else if (n++ < 40) setTimeout(t, 100); else cb(); };
+    t();
+  }
+
+  // ---- Hero-Netz (wie Kalender)
+  netEl() {
+    if (this._net) return this._net;
+    const W = 1600, H = 760;
+    let a = 41;
+    const r = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; };
+    // jittered grid: even spread, no clusters, no edge rows
+    const C = 9, R = 5, cw = W / C, rh = H / R, P = [];
+    for (let y = 0; y < R; y++) for (let x = 0; x < C; x++) {
+      if (r() < 0.18) continue;
+      P.push([(x + 0.15 + r() * 0.7) * cw, (y + 0.15 + r() * 0.7) * rh]);
+    }
+    const seen = {}, Ed = [], maxD = Math.hypot(cw, rh) * 1.15;
+    P.forEach((p, i) => {
+      P.map((q, j) => [Math.hypot(q[0] - p[0], q[1] - p[1]), j, Math.abs(q[1] - p[1])]).filter((x) => x[1] !== i && x[0] < maxD)
+        .sort((x, y) => x[0] - y[0]).slice(0, 3).forEach(([d, j]) => {
+          const k = i < j ? i + '-' + j : j + '-' + i; if (seen[k]) return; seen[k] = 1;
+          const dy = Math.abs(P[j][1] - p[1]), dx = Math.abs(P[j][0] - p[0]);
+          if (dx > 0 && dy / dx < 0.18 && d > cw * 0.9) return; // keine langen Waagerechten
+          Ed.push([i, j, r() < 0.1]);
+        });
+    });
+    Ed.sort((e1, e2) => Math.min(P[e1[0]][0], P[e1[1]][0]) - Math.min(P[e2[0]][0], P[e2[1]][0]));
+    const ce = React.createElement, f = (n) => +n.toFixed(1);
+    const lines = Ed.map(([i, j, th], n) => ce('line', { key: 'l' + n, x1: f(P[i][0]), y1: f(P[i][1]), x2: f(P[j][0]), y2: f(P[j][1]), pathLength: 1, strokeDasharray: 1, stroke: '#48C6D7', strokeOpacity: th ? 0.26 : 0.14, strokeWidth: th ? 1.5 : 1 }));
+    const rects = P.map((p, i) => i).sort((i, j) => P[i][0] - P[j][0]).map((i) => {
+      const p = P[i], mg = r() < 0.25, sz = mg ? (r() < 0.25 ? 16 : 11) : 6;
+      return ce('rect', { key: 'r' + i, x: f(p[0] - sz / 2), y: f(p[1] - sz / 2), width: sz, height: sz, fill: mg ? '#DA1A6A' : '#48C6D7', fillOpacity: mg ? 0.65 : 0.4 });
+    });
+    this._net = ce('svg', { key: 'net', ref: this.netRef, viewBox: '0 0 ' + W + ' ' + H, preserveAspectRatio: 'xMidYMid slice', 'aria-hidden': 'true', style: { position: 'absolute', inset: '-4% 0', width: '100%', height: '108%', display: 'block', pointerEvents: 'none', opacity: 0.75 } }, lines, rects);
+    return this._net;
+  }
+  drawNet() {
+    const svg = this.netRef.current; if (!svg || !this.gsapOk()) return;
+    const g = window.gsap;
+    this._netTw = [
+      g.fromTo(svg.querySelectorAll('line'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.2, ease: 'expo.out', stagger: 0.0035 }),
+      g.fromTo(svg.querySelectorAll('rect'), { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.6, ease: 'expo.out', stagger: 0.005, delay: 0.3, clearProps: 'transform' }),
+      g.to(svg, { yPercent: 12, ease: 'none', scrollTrigger: { trigger: this.heroRef.current, start: 'top top', end: 'bottom top', scrub: true } }),
+    ];
+    this._qx = g.quickTo(svg, 'x', { duration: 1.4, ease: 'expo.out' });
+    this._qy = g.quickTo(svg, 'y', { duration: 1.4, ease: 'expo.out' });
+  }
+  heroMove(e) {
+    if (!this._qx) return;
+    const r = e.currentTarget.getBoundingClientRect();
+    this._qx(((e.clientX - r.left) / r.width - 0.5) * -24);
+    this._qy(((e.clientY - r.top) / r.height - 0.5) * -14);
+  }
+
+  // ---- Durchlauf
+  q(sel) { const h = this.heroRef.current; return h ? Array.from(h.querySelectorAll(sel)) : []; }
+  interval() { return Math.max(3, this.props.interval ?? 6.5); }
+  startCycle() {
+    if (this._fill) { this._fill.kill(); this._fill = null; }
+    clearTimeout(this._to);
+    const cur = this.state.cur, fills = this.q('[data-fill]'), g = window.gsap;
+    const auto = (this.props.autoplay ?? true) && !this.reduced;
+    fills.forEach((el, i) => { const v = i < cur ? 1 : 0; if (g) g.set(el, { scaleX: v }); else el.style.transform = 'scaleX(' + v + ')'; });
+    const el = fills[cur]; if (!el) return;
+    const next = () => this.show((this.state.cur + 1) % FORMATS.length);
+    if (!auto) { if (g) g.set(el, { scaleX: 1 }); else el.style.transform = 'scaleX(1)'; return; }
+    if (g) { this._fill = g.fromTo(el, { scaleX: 0 }, { scaleX: 1, duration: this.interval(), ease: 'none', onComplete: next }); this.applyPause(); }
+    else { el.style.transform = 'scaleX(1)'; this._to = setTimeout(next, this.interval() * 1000); }
+  }
+  applyPause() {
+    if (!this._fill) return;
+    if (this._hover || this._off || document.hidden) this._fill.pause(); else this._fill.resume();
+  }
+  show(i) {
+    if (i === this.state.cur || this._busy) return;
+    const g = window.gsap;
+    this.photoIn(i);
+    if (!this.gsapOk()) { this.setState({ cur: i }, () => this.startCycle()); return; }
+    this._busy = true;
+    if (this._fill) this._fill.kill();
+    g.timeline({ onComplete: () => this.setState({ cur: i }, () => { this._busy = false; this.animIn(0); this.startCycle(); }) })
+      .to(this.q('[data-ch]'), { yPercent: -110, duration: 0.34, ease: 'power3.in', stagger: 0.04 }, 0)
+      .to(this.q('[data-w]'), { yPercent: -110, duration: 0.3, ease: 'power3.in', stagger: 0.03 }, 0.04)
+      .to(this.q('[data-out]'), { x: 40, opacity: 0, duration: 0.26, ease: 'power3.in', stagger: 0.025 }, 0);
+  }
+  animIn(delay) {
+    if (!this.gsapOk()) return;
+    const g = window.gsap;
+    g.fromTo(this.q('[data-ch]'), { yPercent: 110 }, { yPercent: 0, duration: 0.95, ease: 'expo.out', stagger: 0.07, delay });
+    g.fromTo(this.q('[data-w]'), { yPercent: 110 }, { yPercent: 0, duration: 0.85, ease: 'expo.out', stagger: 0.06, delay: delay + 0.08 });
+    g.fromTo(this.q('[data-out]'), { x: -60, opacity: 0 }, { x: 0, opacity: 1, duration: 0.8, ease: 'expo.out', stagger: 0.06, delay: delay + 0.14, clearProps: 'transform,opacity' });
+  }
+  photoIn(i, instant) {
+    const cuts = this.q('[data-cut]'), cut = cuts[i]; if (!cut) return;
+    const g = window.gsap, old = cuts.filter((c, k) => k !== i);
+    cut.style.zIndex = String(++this._z);
+    if (instant || !this.gsapOk()) { old.forEach((c) => { c.style.opacity = '0'; }); cut.style.opacity = this.state.proc[i] ? '1' : '0'; return; }
+    // Keil-Schnitt: diagonale Kante öffnet die neue Figur, die alte kippt in den Schatten
+    const K0 = 'polygon(-40% 0%, 0% 0%, -40% 100%, -40% 100%)', K1 = 'polygon(-40% 0%, 140% 0%, 100% 100%, -40% 100%)';
+    g.to(old, { opacity: 0, x: 60, duration: 0.45, ease: 'power3.in', overwrite: true });
+    g.fromTo(cut, { opacity: 1, x: -60, clipPath: K0 },
+      { x: 0, clipPath: K1, duration: 1.15, ease: 'expo.out', delay: 0.18, overwrite: true, onComplete: () => g.set(cut, { clipPath: 'none' }) });
+  }
+  processAll() {
+    FORMATS.forEach((f, i) => {
+      const cr = CROPS[f.id]; if (!cr) return;
+      const im = new Image();
+      im.onload = () => {
+        try {
+          const k = Math.min(1, 900 / cr[3]), W = Math.round(cr[2] * k), H = Math.round(cr[3] * k);
+          const cv = document.createElement('canvas'); cv.width = W; cv.height = H;
+          const x = cv.getContext('2d'); x.drawImage(im, cr[0], cr[1], cr[2], cr[3], 0, 0, W, H);
+          const photo = cv.toDataURL('image/jpeg', 0.88);
+          const id = x.getImageData(0, 0, W, H), d = id.data;
+          for (let j = 0; j < d.length; j += 4) { const mx = Math.max(d[j], d[j + 1], d[j + 2]); let al = mx < 60 ? 0 : mx < 120 ? ((mx - 60) / 60) * 255 : 255; const o = cr[4]; if (o && al && ((j / 4) / W | 0) > o.floor * H) { const r = d[j], gg = d[j + 1], bb = d[j + 2], mn = Math.min(r, gg, bb); if (o.drop === 'blue' && r < 0.62 * Math.max(gg, bb)) al = 0; if (o.drop === 'grey' && mx - mn < 45 && mx < 215) al = 0; } d[j + 3] = al; }
+          // remove specks: keep only large connected shapes (bodies), drop lights/rigging
+          const N = W * H, lab = new Int32Array(N), st = new Int32Array(N), minA = N * 0.012;
+          for (let p = 0; p < N; p++) {
+            if (lab[p] || d[p * 4 + 3] < 40) continue;
+            let sp = 0, n = 0, side = false; st[sp++] = p; lab[p] = 1; const list = [];
+            while (sp) { const q = st[--sp]; list.push(q); n++; const qx = q % W; if (qx === 0 || qx === W - 1) side = true; const nb = [qx > 0 ? q - 1 : -1, qx < W - 1 ? q + 1 : -1, q - W, q + W];
+              for (const r of nb) if (r >= 0 && r < N && !lab[r] && d[r * 4 + 3] >= 40) { lab[r] = 1; st[sp++] = r; } }
+            if (n < minA || (side && cr[4] && cr[4].edge)) for (const q of list) d[q * 4 + 3] = 0;
+          }
+          for (let p = 0; p < N; p++) if (!lab[p]) d[p * 4 + 3] = 0;
+          x.putImageData(id, 0, 0);
+          const cut = cv.toDataURL('image/png');
+          this.setState((s) => ({ proc: { ...s.proc, [i]: { photo, cut } } }), () => {
+            if (i === this.state.cur) { const c = this.q('[data-cut="' + i + '"]')[0]; if (c) { if (this.gsapOk()) window.gsap.fromTo(c, { opacity: 0, x: -50 }, { opacity: 1, x: 0, duration: 0.9, ease: 'expo.out' }); else c.style.opacity = '1'; } }
+          });
+        } catch (e) {}
+      };
+      im.src = CUT_IMG[f.id] ? P + CUT_IMG[f.id] : f.img;
+    });
+  }
+
+  // ---- Seite
+  observe() {
+    if (!this.io || this.reduced) return;
+    this._seen = this._seen || new WeakSet();
+    document.querySelectorAll('[data-in],[data-wipe]').forEach((el) => {
+      if (this._seen.has(el)) return; this._seen.add(el);
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) { this.reveal(el); return; }
+      this.io.observe(el);
+    });
+  }
+  reveal(el) {
+    el.style.opacity = '';
+    if (!el.animate) return;
+    if (el.hasAttribute('data-wipe')) {
+      el.animate([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 1000, easing: E, fill: 'backwards' });
+    } else {
+      el.animate([{ opacity: 0, transform: 'translateX(-60px)' }, { opacity: 1, transform: 'none' }], { duration: 800, delay: (+el.dataset.in || 0) * 1000, easing: E, fill: 'backwards' });
+    }
+  }
+  tick() {
+    this._raf = null;
+    const el = this.progRef.current;
+    const d = document.documentElement.scrollHeight - window.innerHeight;
+    if (el) el.style.width = (d > 0 ? Math.min(100, (window.scrollY / d) * 100) : 0) + '%';
+    const arts = document.querySelectorAll('[data-chapter]');
+    let a = 0; const line = window.innerHeight * 0.4;
+    arts.forEach((x, i) => { if (x.getBoundingClientRect().top < line) a = i; });
+    if (a !== this.state.active) this.setState({ active: a });
+  }
+  visible() { const f = this.state.filter; return FORMATS.filter((x) => f === 'alle' || x.cats.includes(f)); }
+  go(id) {
+    return (e) => {
+      const el = document.getElementById(id); if (!el) return;
+      e.preventDefault();
+      if (!this.visible().some((x) => x.id === id)) { this.setState({ filter: 'alle' }, () => this.go(id)(e)); return; }
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: this.reduced ? 'auto' : 'smooth' });
+    };
+  }
+
+  renderVals() {
+    const { filter, cur, active, w } = this.state;
+    const narrow = w < 720, railOff = w < 960;
+    const vis = this.visible();
+    const alt = this.props.alternate ?? true;
+    const num = (i) => String(i + 1).padStart(2, '0');
+    const cat = (x) => CAT[x.cats[0]];
+    const filters = FILTERS.map(([k, label]) => {
+      const on = filter === k;
+      return { label, on, count: k === 'alle' ? FORMATS.length : FORMATS.filter((x) => x.cats.includes(k)).length,
+        bg: on ? 'var(--purple)' : 'transparent', fg: on ? '#fff' : 'var(--purple)', cc: on ? 'var(--cyan)' : 'var(--ink-muted)',
+        pick: () => this.setState({ filter: k }) };
+    });
+    const c = FORMATS[cur];
+    const chapters = vis.map((x, j) => {
+      const i = FORMATS.indexOf(x);
+      return { ...x, n: num(i), catLabel: cat(x)[0], badge: cat(x)[1],
+        dir: alt && j % 2 ? 'row-reverse' : 'row',
+        ctaLabel: x.ctaLabel || 'Nächster Termin',
+        facts: [[x.sinceK || 'Seit', x.since], ...x.facts].map(([k, v]) => ({ k, v })),
+        links: [...(x.links || []), ...(x.noCal ? [] : [['Alle Termine', 'Kalender.dc.html']])].map(([label, href]) => ({ label: label + ' →', href })) };
+    });
+    const act = Math.min(active, vis.length - 1);
+    const rail = vis.map((x, j) => ({ id: x.id, t: x.t, n: num(FORMATS.indexOf(x)), col: j === act ? 'var(--magenta)' : 'var(--purple)', fw: j === act ? 800 : 600, go: this.go(x.id) }));
+    const miles = MILES.map(([y, items], i) => ({ y, items, sq: i === this.state.mile ? '22px' : '12px', yc: i === this.state.mile ? 'var(--cyan)' : '#fff',
+      on: () => this.setState({ mile: i }), off: () => this.setState({ mile: -1 }) }));
+    return {
+      progRef: this.progRef, heroRef: this.heroRef, filters,
+      heroNet: this.netEl(), onHeroMove: (e) => this.heroMove(e),
+      pause: () => { this._hover = true; this.applyPause(); }, resume: () => { this._hover = false; this.applyPause(); },
+      stageCols: narrow ? 'minmax(0,1fr)' : 'minmax(0,0.72fr) minmax(0,1.28fr)', stageH: narrow ? 'auto' : 'clamp(480px, calc(100vh - 190px), 640px)', cellAR: narrow ? '1 / 1' : 'auto', wideSegs: w >= 760,
+      cur: { n: num(cur), id: c.id, t: c.t, short: c.short, ctaLabel: c.ctaLabel || 'Nächster Termin', since: c.since, catLabel: cat(c)[0], nextDate: c.nextDate, nextWhere: c.nextWhere,
+        nChars: num(cur).split(''), words: c.t.split(' '), go: this.go(c.id) },
+      shots: FORMATS.map((x, i) => { const p = this.state.proc[i]; return { i, alt: x.alt, photo: p ? p.photo : x.img, cut: p ? p.cut : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }; }),
+      segs: FORMATS.map((x, i) => ({ i, n: num(i), t: x.t, sel: i === cur, col: i === cur ? '#fff' : 'rgba(255,255,255,0.62)', pick: () => this.show(i) })),
+      chapters, rail, showRail: !railOff,
+      chapterCols: railOff ? 'minmax(0,1fr)' : '220px minmax(0,1fr)',
+      railFill: vis.length ? ((act + 1) / vis.length * 100) + '%' : '0%',
+      filtered: filter !== 'alle', resetFilter: () => this.setState({ filter: 'alle' }),
+      miles, ags: AGS,
+      archive: ARCHIVE.map((a, i) => { const open = this.state.arch === i; return { ...a, open, pid: 'archiv-' + i, sign: open ? '−' : '+',
+        bc: 'var(--purple)', bg: open ? 'var(--purple)' : 'transparent', ic: open ? '#fff' : 'var(--purple)',
+        toggle: () => this.setState({ arch: open ? -1 : i }, () => { const el = document.querySelector('#archiv-' + i); if (el && el.animate && !this.reduced) el.animate([{ opacity: 0, transform: 'translateX(-40px)' }, { opacity: 1, transform: 'none' }], { duration: 600, easing: E }); }),
+        links: a.links.map(([label, href]) => ({ label: label + ' →', href, target: /^https?:/.test(href) ? '_blank' : '_self' })) }; }),
+      footFormats: FORMATS.map((x) => ({ id: x.id, t: x.t, go: this.go(x.id) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

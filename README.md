@@ -11,6 +11,7 @@ zwei Bühnenfotos durch das Netz.
 | Bereich | Was | Wo |
 |---|---|---|
 | Startseite | Netz-Hero mit drei Einstiegen (Fotos in `src/settings/hero.ts`), Termine und Journal, Formate, Netz mit Mitgliedern, Mitgliedschaft | `src/views/HomeView.astro` |
+| **Formate** | die Reihen des Vereins als Bühne zum Durchschalten, jedes Format mit nächstem Termin, Chronik, Archiv abgeschlossener Projekte, Tanzkalender-Archiv mit allen Plakaten | `/formate/`, docs/formate.md |
 | **News** | „Aus dem Netz“: Titelthema, Ausschreibungen mit Countdown, Chronik mit Filter, Beitragsseiten, RSS; Presse schreibt im internen Bereich | `/news/`, docs/news.md |
 | **Zweisprachig** | Deutsch und Englisch (`/en/…`), Sprachumschalter, hreflang | `src/lib/i18n.ts` |
 | Tanzkalender | ein Monatskalender für alle Termine und das Profitraining, Filter nach Kategorie, **Kalender-Abo (.ics)**; derselbe Kalender auf `/profitraining/` | `/termine/`, `/termine.ics`, `src/components/Kalender.astro` |
@@ -75,6 +76,7 @@ docs/                 Anleitungen
 - [Design ändern](design/README.md): Designsystem aus Claude Design übernehmen
 - [Inhalte bearbeiten](docs/inhalte.md): Termine, Formate, Personen, Texte, CMS
 - [News](docs/news.md): Beiträge schreiben (intern oder als Datei), Rolle Presse, sofort online
+- [Formate](docs/formate.md): Formate-Seite, nächster Termin, Freisteller, Archiv und Tanzkalender-Archiv
 - [Profile](docs/profile.md): öffentliche Profile, Freigabe von Profilen und Fotos, wo sie erscheinen, Demo-Ansicht
 - [Deutsch und Englisch](docs/mehrsprachigkeit.md): Übersetzen, neue Seiten in beiden Sprachen
 - [Interner Bereich einrichten](docs/intern.md): Supabase, Einladungen, Rollen

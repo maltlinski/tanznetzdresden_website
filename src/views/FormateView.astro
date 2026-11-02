@@ -1,0 +1,512 @@
+---
+/**
+ * Formate (Entwurf Formate, November 2026): Kopf als Bühne – die Formate laufen nacheinander durch, der
+ * freigestellte Körper bricht aus dem Bild aus –, darunter jedes Format im Detail (Filter „Ich möchte …“,
+ * Leiste zum Springen, nächster Termin aus dem Kalender), die Chronik, das Archiv abgeschlossener Projekte
+ * und „Mitmachen“ mit der nächsten Ausschreibung und den Arbeitsgruppen.
+ * Inhalte: src/content/formate/ und src/content/formate-archiv/ (docs/formate.md). Bewegung: src/scripts/formate.ts.
+ */
+import { Image } from 'astro:assets';
+import Page from '../layouts/Page.astro';
+import Tag from '../components/ui/Tag.astro';
+import Badge from '../components/ui/Badge.astro';
+import Button from '../components/ui/Button.astro';
+import KeilBar from '../components/ui/KeilBar.astro';
+import { formatFilter, getChronik, getFormatSeite, getProjekte, gitterNetz, rubrikBadge, zahlwort } from '../lib/formate';
+import { naechster, terminText } from '../lib/formate-termin';
+import { getNews, dateShort } from '../lib/news';
+import { arbeitsgruppen } from '../settings/arbeitsgruppen';
+import { dateLocale, getLang, tr, url } from '../lib/i18n';
+import { fuellen, texte, zeilen } from '../lib/texte';
+
+const lang = getLang(Astro);
+const k = texte(lang, 'formate', 'kopf');
+const d = texte(lang, 'formate', 'detail');
+const c = texte(lang, 'formate', 'chronik');
+const ar = texte(lang, 'formate', 'archiv');
+const m = texte(lang, 'formate', 'mitmachen');
+// nur für Screenreader
+const sr = tr(lang, {
+  de: { tabs: 'Formate', rail: 'Formate im Detail', filter: 'Formate filtern', neu: 'öffnet in neuem Tab' },
+  en: { tabs: 'Formats', rail: 'Formats in detail', filter: 'Filter formats', neu: 'opens in a new tab' },
+});
+
+const formate = await getFormatSeite(lang);
+const projekte = await getProjekte(lang);
+const chronik = await getChronik(lang);
+const netz = gitterNetz();
+const locale = dateLocale[lang];
+const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
+const gesamt = String(formate.length).padStart(2, '0');
+const [h1a, h1b] = zeilen(fuellen(k.titel, { zahlwort: zahlwort(lang, formate.length) }));
+
+const rubrikText = { buehne: d.buehne, training: d.training, diskurs: d.diskurs, stadt: d.stadt, residenz: d.residenz };
+const newsletter = url(lang, 'home', '#newsletter');
+/** Kasten unter einem Format: nächster Termin, sonst „Termin folgt“, bei beendeten Formaten der Rückblick */
+const kasten = (f: (typeof formate)[number]) => {
+  if (f.beendet && f.rueckblick) return { k: d.abgeschlossen, t: f.rueckblick.titel, w: dateShort(f.rueckblick.datum, lang), href: f.rueckblick.link };
+  const n = naechster(f.termine, heute);
+  return n ? { k: k.naechster, t: terminText(n, locale, k.heute, heute), w: n.wo, href: n.link } : { k: k.naechster, t: k.folgt, w: d.folgtText, href: newsletter };
+};
+const filter = [
+  { key: '', label: d.alle, n: formate.length },
+  ...formatFilter.map(([text, rubrik]) => ({ key: rubrik, label: d[text], n: formate.filter((f) => f.rubriken.includes(rubrik)).length })),
+].filter((x) => x.n > 0);
+
+// nächste Ausschreibungen (News mit Frist); der Browser blendet abgelaufene aus
+const calls = (await getNews(lang))
+  .filter((p) => p.deadline && p.deadline >= heute)
+  .sort((a, b) => a.deadline!.localeCompare(b.deadline!))
+  .slice(0, 3);
+const [m1, m2] = zeilen(m.titel);
+
+const daten = JSON.stringify({
+  locale,
+  heute: k.heute,
+  folgt: k.folgt,
+  folgtText: d.folgtText,
+  newsletter,
+  termine: Object.fromEntries(formate.filter((f) => !f.beendet).map((f) => [f.id, f.termine])),
+  anhalten: k.anhalten,
+  weiter: k.weiter,
+}).replace(/</g, '\\u003c');
+---
+<Page title={k.title} description={k.desc} route="formate" fortschritt>
+  <section class="fo-kopf" data-hero data-fo-kopf>
+    <svg class="fo-netz" viewBox={`0 0 ${netz.breite} ${netz.hoehe}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-fo-netz>
+      {netz.linien.map((l) => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} pathLength="1" class:list={[l.dick && 'dick']} />)}
+      {netz.punkte.map((p) => <rect x={p.x} y={p.y} width={p.s} height={p.s} class:list={[p.magenta && 'mg']} />)}
+    </svg>
+    <div class="wrap fo-kopf__inner">
+      <div class="fo-buehne">
+        <div class="fo-text">
+          <div>
+            <Tag color="cyan" class="fo-kopf__tag">{fuellen(k.kicker, { zahl: gesamt })}</Tag>
+            <h1 class="fo-h1"><span>{h1a}</span> <span class="fo-h1__akzent">{h1b}</span></h1>
+          </div>
+          <div class="fo-panels" aria-live="off" data-fo-live>
+            {formate.map((f, i) => {
+              const r = f.rubriken[0];
+              return (
+                <div class="fo-panel" id={`fo-panel-${i}`} role="tabpanel" aria-labelledby={`fo-tab-${i}`} hidden={i > 0} data-fo-panel={i}>
+                  <a class="fo-panel__link" href={`#${f.id}`}>
+                  <span class="fo-panel__nr">
+                    <span class="fo-panel__ziffern" aria-hidden="true">
+                      {f.n.split('').map((z) => <span class="fo-maske"><span data-ch>{z}</span></span>)}
+                    </span>
+                    <span class="fo-panel__von" aria-hidden="true">/ {gesamt}</span>
+                  </span>
+                  <span class="fo-panel__meta" data-out>
+                    <span class="fo-quadrat" aria-hidden="true"></span>
+                    <span class="fo-panel__rubrik"><span>{rubrikText[r]} ·</span> <span>{f.seit}</span></span>
+                  </span>
+                  <span class="fo-panel__titel">
+                    {f.titel.split(' ').map((w) => <><span class="fo-maske"><span data-w>{w}</span></span>{' '}</>)}
+                  </span>
+                  <span class="fo-panel__kurz" data-out>{f.kurz}</span>
+                  <span class="fo-panel__cta" data-out>
+                    <span class="fo-panel__entdecken">{k.entdecken}</span>
+                    <span class="fo-panel__termin">
+                      {f.beendet ? d.abgeschlossen : <>{k.naechster} · <span class="fo-panel__datum" data-fo-termin={f.id}>{kasten(f).t}</span></>}
+                    </span>
+                  </span>
+                  </a>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div class="fo-figur" aria-hidden="true">
+          {formate.map((f, i) =>
+            f.freisteller ? (
+              <Image src={f.freisteller} alt="" class:list={['fo-cut', i === 0 && 'is-an']} widths={[480, 900, 1400]} sizes="(min-width: 720px) 60vw, 100vw" loading={i === 0 ? 'eager' : 'lazy'} data-cut={i} />
+            ) : (
+              <Image src={f.bild} alt="" class:list={['fo-cut', 'fo-cut--foto', i === 0 && 'is-an']} widths={[480, 900, 1400]} sizes="(min-width: 720px) 60vw, 100vw" loading={i === 0 ? 'eager' : 'lazy'} data-cut={i} />
+            ),
+          )}
+        </div>
+      </div>
+      <div class="fo-leiste">
+        <div class="fo-tabs" role="tablist" aria-label={sr.tabs} style={`--n:${formate.length}`}>
+          {formate.map((f, i) => (
+            <button type="button" class="fo-tab" role="tab" id={`fo-tab-${i}`} aria-controls={`fo-panel-${i}`} aria-selected={i === 0 ? 'true' : 'false'} tabindex={i === 0 ? 0 : -1} data-fo-tab={i}>
+              <span class="fo-tab__fill" data-fill aria-hidden="true"></span>
+              <span class="fo-tab__n">{f.n}</span>
+              <span class="fo-tab__t">{f.titel}</span>
+            </button>
+          ))}
+        </div>
+        <button type="button" class="fo-pause" aria-pressed="false" hidden data-fo-pause>{k.anhalten}</button>
+      </div>
+    </div>
+    <KeilBar color="var(--magenta)" height={10} class="fo-kopf__keil" />
+  </section>
+
+  <section class="fo-detail" aria-label={sr.rail}>
+    <div class="wrap">
+      <div class="fo-filter" role="group" aria-label={sr.filter} hidden data-fo-filter>
+        <span class="fo-filter__k" aria-hidden="true">{d.ichMoechte}</span>
+        <div class="fo-chips">
+          {filter.map((x) => (
+            <button type="button" class="fo-chip" aria-pressed={x.key === '' ? 'true' : 'false'} data-rubrik={x.key}>
+              {x.label} <span class="fo-chip__n">{x.n}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+    <div class="wrap fo-detail__grid">
+      <nav class="fo-rail" aria-label={sr.rail}>
+        <span class="fo-rail__k"><span class="fo-quadrat fo-quadrat--klein" aria-hidden="true"></span>{d.imDetail}</span>
+        <div class="fo-rail__liste">
+          <span class="fo-rail__fill" aria-hidden="true" data-rail-fill></span>
+          {formate.map((f) => (
+            <a href={`#${f.id}`} class="fo-rail__link" data-rail={f.id}><span class="fo-rail__n">{f.n}</span><span class="fo-rail__t">{f.titel}</span></a>
+          ))}
+        </div>
+      </nav>
+      <div class="fo-kapitel">
+        {formate.map((f, i) => {
+          const b = kasten(f);
+          return (
+            <article id={f.id} class:list={['fo-kap', i % 2 === 1 && 'fo-kap--rechts']} data-kap={f.id} data-rubriken={f.rubriken.join(' ')} aria-labelledby={`${f.id}-h`}>
+              <div class="fo-kap__bild" data-wipe>
+                <Image src={f.bild} alt={f.alt} widths={[480, 760, 1100]} sizes="(min-width: 1100px) 480px, (min-width: 720px) 45vw, 100vw" />
+                <span class="fo-kap__ecke" aria-hidden="true"></span>
+              </div>
+              <div class="fo-kap__text">
+                <div class="fo-kap__meta">
+                  <span class="fo-kap__n" aria-hidden="true">{f.n}</span>
+                  <Badge variant={rubrikBadge[f.rubriken[0]]}>{rubrikText[f.rubriken[0]]}</Badge>
+                  <span class="fo-kap__seit">{f.seit}</span>
+                </div>
+                <h2 class="fo-kap__h" id={`${f.id}-h`} data-reveal>{f.titel}</h2>
+                <p class="fo-kap__d">{f.text}</p>
+                <dl class="fo-fakten">
+                  <div><dt>{f.beendet ? d.laufzeit : d.seit}</dt><dd>{f.seit}</dd></div>
+                  {f.fakten.map((x) => <div><dt>{x.k}</dt><dd>{x.v}</dd></div>)}
+                </dl>
+                <a class="fo-cta" href={b.href} data-fo-cta={f.beendet ? undefined : f.id}>
+                  <span class="fo-cta__text">
+                    <span class="fo-cta__k">{b.k}</span>
+                    <span class="fo-cta__t" data-t>{b.t}</span>
+                    <span class="fo-cta__w" data-w>{b.w}</span>
+                  </span>
+                  <span class="fo-cta__pfeil" aria-hidden="true">→</span>
+                </a>
+                <div class="fo-links">
+                  {f.links.map((l) => (
+                    <a class="fo-link" href={l.href} target={l.extern ? '_blank' : undefined} rel={l.extern ? 'noopener' : undefined}>
+                      {l.text} →{l.extern && <span class="visually-hidden"> ({sr.neu})</span>}
+                    </a>
+                  ))}
+                  {!f.beendet && <a class="fo-link" href={url(lang, 'termine')}>{d.alleTermine} →</a>}
+                </div>
+              </div>
+            </article>
+          );
+        })}
+        <button type="button" class="fo-alle" hidden data-fo-alle>{fuellen(d.alleZeigen, { zahl: formate.length })}</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="fo-chronik" aria-labelledby="fo-chronik-h">
+    <KeilBar color="var(--cyan)" height={12} flip class="fo-chronik__keil" />
+    <div class="wrap">
+      <Tag color="cyan" class="fo-chronik__tag">{c.kicker}</Tag>
+      <h2 class="fo-chronik__h" id="fo-chronik-h" data-split>{zeilen(c.titel)[0]}<br /><span>{zeilen(c.titel)[1]}</span></h2>
+      <ol class="fo-meilensteine">
+        {chronik.map((x) => (
+          <li class="fo-meilenstein">
+            <span class="fo-meilenstein__q" aria-hidden="true"></span>
+            <span class="fo-meilenstein__j">{x.jahr}</span>
+            <ul>{x.punkte.map((p) => <li>{p}</li>)}</ul>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="fo-archiv" id="archiv" aria-labelledby="fo-archiv-h">
+    <div class="wrap">
+      <div class="fo-archiv__kopf">
+        <div>
+          <Tag class="fo-archiv__tag">{ar.kicker}</Tag>
+          <h2 class="fo-archiv__h" id="fo-archiv-h" data-split>{zeilen(ar.titel)[0]}<br /><span>{zeilen(ar.titel)[1]}</span></h2>
+        </div>
+        <p class="fo-archiv__lead">{ar.lead}</p>
+      </div>
+      <div class="fo-projekte">
+        {projekte.map((p) => (
+          <details class="fo-projekt" id={`archiv-${p.id}`} data-projekt>
+            <summary class="fo-projekt__kopf">
+              <span class="fo-projekt__jahre">{p.jahre}</span>
+              <span class="fo-projekt__name"><span class="fo-projekt__t">{p.titel}</span><span class="fo-projekt__art">{p.art}</span></span>
+              <span class="fo-projekt__zeichen" aria-hidden="true"></span>
+            </summary>
+            <div class="fo-projekt__inhalt" data-inhalt>
+              <p class="fo-projekt__text">{p.text}</p>
+              {p.partner && <p class="fo-projekt__partner"><span>{ar.mit}</span><span>{p.partner}</span></p>}
+              {p.links.length > 0 && (
+                <div class="fo-links">
+                  {p.links.map((l) => (
+                    <a class="fo-link" href={l.href} target={l.extern ? '_blank' : undefined} rel={l.extern ? 'noopener' : undefined}>
+                      {l.text} →{l.extern && <span class="visually-hidden"> ({sr.neu})</span>}
+                    </a>
+                  ))}
+                </div>
+              )}
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="fo-mit" id="mitmachen" aria-labelledby="fo-mit-h">
+    <KeilBar color="var(--purple)" height={14} flip class="fo-mit__keil" />
+    <div class="wrap fo-mit__grid">
+      <div>
+        <Tag color="purple" class="fo-mit__tag">{m.kicker}</Tag>
+        <h2 class="fo-mit__h" id="fo-mit-h" data-split>{m1}<br />{m2}</h2>
+        <p class="fo-mit__lead">{m.lead}</p>
+        <div data-fo-calls>
+          {calls.map((p, i) => (
+            <a class="fo-call" href={url(lang, 'news', `${p.id}/`)} hidden={i > 0} data-frist={p.deadline}>
+              <span class="fo-call__k">{fuellen(m.call, { datum: dateShort(p.deadline!, lang) })}</span>
+              <span class="fo-call__t">{p.title}</span>
+              <span class="fo-call__l">{m.zurCall}</span>
+            </a>
+          ))}
+          <a class="fo-call" href={url(lang, 'news')} hidden={calls.length > 0} data-fo-keine>
+            <span class="fo-call__k">{m.calls}</span>
+            <span class="fo-call__t">{m.callsText}</span>
+            <span class="fo-call__l">{m.zuCalls}</span>
+          </a>
+        </div>
+      </div>
+      <div class="fo-ags">
+        <h3 class="fo-ags__h">{m.ags}</h3>
+        <p class="fo-ags__text">{m.agsText}</p>
+        <ul class="fo-ags__liste">
+          {arbeitsgruppen.map((ag) => <li><span class="fo-quadrat fo-quadrat--mini" aria-hidden="true"></span>{ag.name}</li>)}
+        </ul>
+        <Button href={url(lang, 'mitglied')} size="lg" marker>{m.join}</Button>
+      </div>
+    </div>
+  </section>
+
+  <script type="application/json" id="fo-daten" set:html={daten} />
+</Page>
+
+<script>
+  import { initFormate } from '../scripts/formate';
+  initFormate();
+</script>
+
+<style>
+  /* ---------- Kopf: Bühne ---------- */
+  .fo-kopf { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
+  .fo-netz { position: absolute; inset: -4% 0; width: 100%; height: 108%; display: block; pointer-events: none; opacity: 0.75; }
+  .fo-netz line { stroke: var(--cyan); stroke-opacity: 0.14; stroke-width: 1; stroke-dasharray: 1; }
+  .fo-netz line.dick { stroke-opacity: 0.26; stroke-width: 1.5; }
+  .fo-netz rect { fill: var(--cyan); fill-opacity: 0.4; }
+  .fo-netz rect.mg { fill: var(--magenta); fill-opacity: 0.65; }
+  @media (prefers-reduced-motion: no-preference) { :global(.js) .fo-netz:not(.is-da) { opacity: 0; } }
+  .fo-kopf__inner { position: relative; padding-top: clamp(28px, 4vw, 48px); }
+  .fo-buehne { display: grid; grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr); column-gap: clamp(16px, 2vw, 28px); height: clamp(480px, calc(100vh - 190px), 640px); }
+  .fo-text { position: relative; z-index: 5; display: flex; flex-direction: column; justify-content: space-between; gap: 28px; min-width: 0; padding-bottom: clamp(20px, 3vw, 36px); }
+  .fo-kopf :global(.fo-kopf__tag) { margin-bottom: 16px; }
+  .fo-h1 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 3vw, 44px); line-height: 1; letter-spacing: -0.03em; color: #fff; }
+  .fo-h1 span { white-space: nowrap; }
+  .fo-h1__akzent { color: var(--cyan); }
+
+  .fo-panel[hidden] { display: none; }
+  .fo-panel__link { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; color: #fff; }
+  .fo-panel__link:hover { color: #fff; }
+  .fo-panel__link:hover .fo-panel__entdecken { color: var(--cyan); }
+  .fo-panel__nr { display: flex; align-items: flex-end; gap: 14px; margin-bottom: 18px; }
+  .fo-panel__ziffern { display: flex; font-family: var(--font-display); font-weight: 800; font-size: clamp(104px, 11vw, 176px); line-height: 0.8; letter-spacing: -0.06em; color: var(--cyan); }
+  .fo-maske { display: inline-block; overflow: hidden; padding: 0.04em 0.02em 0; vertical-align: top; }
+  .fo-maske > span { display: inline-block; }
+  .fo-panel__von { padding-bottom: 6px; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.18em; color: rgba(255, 255, 255, 0.7); white-space: nowrap; }
+  .fo-panel__meta { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+  .fo-quadrat { width: 10px; height: 10px; background: var(--magenta); flex: none; }
+  .fo-quadrat--klein { width: 8px; height: 8px; }
+  .fo-quadrat--mini { width: 6px; height: 6px; }
+  .fo-panel__rubrik { display: flex; flex-wrap: wrap; column-gap: 0.6em; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+  .fo-panel__rubrik span { white-space: nowrap; }
+  .fo-panel__titel { display: block; margin: 0 0 14px; font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 3.8vw, 58px); line-height: 0.96; letter-spacing: -0.035em; }
+  .fo-panel__titel .fo-maske { padding: 0 0 0.08em; }
+  .fo-panel__kurz { display: block; max-width: 440px; margin: 0 0 22px; font-size: clamp(15px, 1.25vw, 17px); line-height: 1.55; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
+  .fo-panel__cta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 22px; }
+  .fo-panel__entdecken { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: #fff; border-bottom: 1.5px solid var(--magenta); padding-bottom: 4px; transition: color var(--dur-base); }
+  .fo-panel__termin { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72); }
+  .fo-panel__datum { color: #fff; }
+
+  .fo-figur { position: relative; z-index: 3; min-width: 0; pointer-events: none; }
+  .fo-cut { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; object-position: 50% 100%; display: block; opacity: 0; }
+  .fo-cut.is-an { opacity: 1; }
+  /* Format ohne Freisteller: Foto im Keil-Rahmen */
+  .fo-cut--foto { object-fit: cover; clip-path: polygon(2% 15%, 100% 15%, 100% 88%, 90% 100%, 2% 100%); }
+
+  .fo-leiste { position: relative; z-index: 5; display: flex; align-items: flex-start; gap: 16px; margin-top: clamp(24px, 3vw, 40px); padding-bottom: 34px; background: var(--purple); }
+  .fo-tabs { flex: 1; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); gap: 8px; }
+  .fo-tab {
+    position: relative; display: flex; align-items: baseline; gap: 10px; min-width: 0; padding: 14px 0 4px; background: transparent; border: 0; border-radius: 0;
+    text-align: left; cursor: pointer; color: rgba(255, 255, 255, 0.62); transition: color var(--dur-base);
+  }
+  .fo-tab::before { content: ''; position: absolute; left: 0; right: 0; top: 0; height: 2px; background: rgba(255, 255, 255, 0.22); }
+  .fo-tab:hover { color: var(--cyan); }
+  .fo-tab[aria-selected='true'] { color: #fff; }
+  .fo-tab__fill { position: absolute; left: 0; right: 0; top: 0; height: 2px; background: var(--magenta); transform-origin: 0 50%; transform: scaleX(0); }
+  .fo-tab[aria-selected='true'] .fo-tab__fill { transform: scaleX(1); }
+  .fo-tab__n { flex: none; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; }
+  .fo-tab__t { font-family: var(--font-display); font-weight: 700; font-size: 14px; line-height: 1.2; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .fo-pause {
+    flex: none; margin-top: 8px; padding: 6px 0; background: transparent; border: 0; border-bottom: 1.5px solid rgba(255, 255, 255, 0.3); border-radius: 0; cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.72);
+  }
+  .fo-pause:hover { color: var(--cyan); border-color: var(--cyan); }
+  .fo-kopf :global(.fo-kopf__keil) { position: absolute; left: 0; bottom: 0; width: 34%; z-index: 6; }
+
+  @media (max-width: 759px) {
+    .fo-tab__t { display: none; }
+  }
+  @media (max-width: 719px) {
+    .fo-buehne { grid-template-columns: minmax(0, 1fr); height: auto; }
+    .fo-figur { aspect-ratio: 1 / 1; }
+  }
+
+  /* ---------- Formate im Detail ---------- */
+  .fo-detail { background: var(--tint); padding: clamp(40px, 6vw, 80px) 0 clamp(64px, 8vw, 104px); }
+  .fo-filter { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; padding-bottom: 8px; }
+  .fo-filter[hidden] { display: none; }
+  .fo-filter__k { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .fo-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .fo-chip {
+    display: flex; align-items: center; gap: 8px; padding: 9px 14px; border: 1.5px solid var(--purple); border-radius: 0; background: transparent; color: var(--purple); cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; transition: background var(--dur-base), color var(--dur-base);
+  }
+  .fo-chip:hover { border-color: var(--magenta); }
+  .fo-chip__n { color: var(--ink-muted); }
+  .fo-chip[aria-pressed='true'] { background: var(--purple); color: #fff; }
+  .fo-chip[aria-pressed='true'] .fo-chip__n { color: var(--cyan); }
+
+  .fo-detail__grid { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .fo-rail { position: sticky; top: calc(var(--header-h) + 40px); padding-top: 56px; }
+  .fo-rail__k { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .fo-rail__liste { position: relative; display: flex; flex-direction: column; border-left: 1px solid var(--rule); }
+  .fo-rail__fill { position: absolute; left: -1px; top: 0; width: 3px; height: 0; background: var(--magenta); transition: height 400ms var(--ease-out); }
+  .fo-rail__link { display: flex; align-items: baseline; gap: 12px; padding: 9px 0 9px 18px; color: var(--purple); transition: color var(--dur-base); }
+  .fo-rail__link[hidden] { display: none; }
+  .fo-rail__link:hover, .fo-rail__link.is-aktiv { color: var(--magenta-2); }
+  .fo-rail__n { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; }
+  .fo-rail__t { font-family: var(--font-display); font-weight: 600; font-size: 17px; line-height: 1.2; letter-spacing: -0.01em; }
+  .fo-rail__link.is-aktiv .fo-rail__t { font-weight: 800; }
+
+  .fo-kapitel { min-width: 0; }
+  .fo-kap { display: flex; flex-wrap: wrap; gap: 32px clamp(32px, 4vw, 56px); align-items: flex-start; padding: 56px 0; border-bottom: 1px solid var(--rule); scroll-margin-top: 18px; }
+  .fo-kap[hidden] { display: none; }
+  .fo-kap--rechts { flex-direction: row-reverse; }
+  .fo-kap__bild { position: relative; flex: 1 1 320px; min-width: 0; aspect-ratio: 4 / 3; background: var(--purple); clip-path: var(--keil-corner); overflow: hidden; }
+  .fo-kap__bild :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .fo-kap__ecke { position: absolute; top: 0; left: 0; width: 22px; height: 22px; background: var(--magenta); }
+  .fo-kap__text { flex: 1.25 1 380px; min-width: 0; display: flex; flex-direction: column; }
+  .fo-kap__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; margin-bottom: 14px; }
+  .fo-kap__n { font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 5vw, 72px); line-height: 0.85; letter-spacing: -0.04em; color: var(--magenta); }
+  .fo-kap__seit { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .fo-kap__h { margin: 0 0 18px; font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 3.8vw, 54px); line-height: 0.98; letter-spacing: -0.03em; color: var(--purple); overflow-wrap: anywhere; }
+  .fo-kap__d { margin: 0 0 26px; max-width: 560px; font-size: 16px; line-height: 1.6; color: var(--ink); text-wrap: pretty; }
+  .fo-fakten { margin: 0 0 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 0 24px; }
+  .fo-fakten div { padding: 12px 0 14px; border-top: 1px solid var(--rule); }
+  .fo-fakten dt { margin-bottom: 4px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .fo-fakten dd { margin: 0; font-size: 15px; line-height: 1.45; color: var(--purple); }
+  .fo-cta { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; background: var(--purple); color: #fff; padding: 18px 22px; transition: background var(--dur-base); }
+  .fo-cta:hover { background: var(--magenta); color: #fff; }
+  .fo-cta__text { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+  .fo-cta__k { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+  .fo-cta:hover .fo-cta__k { color: #fff; }
+  .fo-cta__t { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.15; letter-spacing: -0.015em; }
+  .fo-cta__w { font-size: 14px; line-height: 1.45; color: rgba(255, 255, 255, 0.86); }
+  .fo-cta__pfeil { font-family: var(--font-display); font-size: 28px; line-height: 1; }
+  .fo-links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 20px; }
+  .fo-link { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--magenta-2); border-bottom: 1.5px solid var(--magenta); padding-bottom: 3px; }
+  .fo-link:hover { color: var(--purple); border-color: var(--purple); }
+  .fo-alle { margin-top: 28px; padding: 0; background: transparent; border: 0; cursor: pointer; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft); }
+  .fo-alle:hover { color: var(--magenta-2); }
+
+  @media (max-width: 959px) {
+    .fo-detail__grid { grid-template-columns: minmax(0, 1fr); }
+    .fo-rail { display: none; }
+  }
+
+  /* ---------- Chronik ---------- */
+  .fo-chronik { position: relative; background: var(--purple); color: #fff; padding: clamp(72px, 9vw, 120px) 0 clamp(64px, 8vw, 104px); overflow: hidden; }
+  .fo-chronik :global(.fo-chronik__keil) { position: absolute; right: 0; top: 0; width: 40%; }
+  .fo-chronik :global(.fo-chronik__tag) { margin-bottom: 22px; }
+  .fo-chronik__h { margin: 0 0 clamp(40px, 5vw, 64px); font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6vw, 88px); line-height: 0.92; letter-spacing: -0.035em; color: #fff; }
+  .fo-chronik__h span { color: var(--cyan); }
+  .fo-meilensteine { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 150px), 1fr)); margin: 0; padding: 0; list-style: none; border-top: 2px solid rgba(255, 255, 255, 0.3); }
+  .fo-meilenstein { position: relative; padding: 30px 20px 24px 0; }
+  .fo-meilenstein__q { position: absolute; left: 0; top: -1px; transform: translateY(-50%); width: 12px; height: 12px; background: var(--magenta); transition: width 400ms var(--ease-out), height 400ms var(--ease-out); }
+  .fo-meilenstein:hover .fo-meilenstein__q { width: 22px; height: 22px; }
+  .fo-meilenstein__j { display: block; margin-bottom: 12px; font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 3.4vw, 50px); line-height: 1; letter-spacing: -0.035em; transition: color var(--dur-base); }
+  .fo-meilenstein:hover .fo-meilenstein__j { color: var(--cyan); }
+  .fo-meilenstein ul { display: flex; flex-direction: column; gap: 6px; margin: 0; padding: 0; list-style: none; font-size: 15px; line-height: 1.4; color: rgba(255, 255, 255, 0.88); }
+
+  /* ---------- Archiv ---------- */
+  .fo-archiv { background: #fff; padding: clamp(64px, 8vw, 104px) 0; }
+  .fo-archiv__kopf { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 24px 48px; margin-bottom: clamp(32px, 4vw, 48px); }
+  .fo-archiv :global(.fo-archiv__tag) { margin-bottom: 18px; }
+  .fo-archiv__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 4.6vw, 60px); line-height: 0.98; letter-spacing: -0.03em; color: var(--purple); }
+  .fo-archiv__h span { color: var(--magenta-2); }
+  .fo-archiv__lead { max-width: 420px; margin: 0; font-size: 16px; line-height: 1.6; color: var(--ink); text-wrap: pretty; }
+  .fo-projekte { border-top: 2px solid var(--purple); }
+  .fo-projekt { border-bottom: 1px solid var(--rule); }
+  .fo-projekt__kopf { display: flex; flex-wrap: wrap; align-items: center; gap: 8px clamp(24px, 4vw, 56px); padding: clamp(20px, 2.6vw, 30px) 0; cursor: pointer; color: var(--purple); list-style: none; }
+  .fo-projekt__kopf::-webkit-details-marker { display: none; }
+  .fo-projekt__kopf:hover { color: var(--magenta-2); }
+  .fo-projekt__jahre { flex: 0 0 180px; font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.2vw, 30px); line-height: 1; letter-spacing: -0.03em; color: var(--magenta-2); }
+  .fo-projekt__name { flex: 1 1 300px; min-width: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; }
+  .fo-projekt__t { font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.05; letter-spacing: -0.025em; color: inherit; transition: color var(--dur-base); }
+  .fo-projekt__art { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .fo-projekt__zeichen {
+    position: relative; flex: none; width: 40px; height: 40px; border: 1.5px solid var(--purple); background: transparent; color: var(--purple);
+    transition: background var(--dur-base), color var(--dur-base);
+  }
+  /* Plus aus zwei Strichen; offen wird es zum Minus */
+  .fo-projekt__zeichen::before, .fo-projekt__zeichen::after { content: ''; position: absolute; left: 50%; top: 50%; width: 14px; height: 2px; margin: -1px 0 0 -7px; background: currentColor; }
+  .fo-projekt__zeichen::after { transform: rotate(90deg); transition: transform var(--dur-slow) var(--ease-out); }
+  .fo-projekt[open] .fo-projekt__zeichen { background: var(--purple); color: #fff; }
+  .fo-projekt[open] .fo-projekt__zeichen::after { transform: rotate(0deg); }
+  .fo-projekt__inhalt { padding: 0 0 clamp(24px, 3vw, 36px) calc(180px + clamp(24px, 4vw, 56px)); }
+  .fo-projekt__text { max-width: 620px; margin: 0 0 14px; font-size: 16px; line-height: 1.6; color: var(--ink); text-wrap: pretty; }
+  .fo-projekt__partner { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 22px; font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+  .fo-projekt__partner span:first-child { padding-top: 2px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .fo-projekt .fo-links { margin-top: 0; }
+  @media (max-width: 719px) {
+    .fo-projekt__jahre { flex-basis: 100%; }
+    .fo-projekt__inhalt { padding-left: 0; }
+  }
+
+  /* ---------- Mitmachen ---------- */
+  .fo-mit { position: relative; background: var(--cyan); color: var(--purple); }
+  .fo-mit :global(.fo-mit__keil) { position: absolute; right: 0; top: 0; width: 42%; }
+  .fo-mit__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr)); gap: 56px clamp(32px, 6vw, 96px); padding-top: clamp(64px, 8vw, 104px); padding-bottom: clamp(64px, 8vw, 104px); }
+  .fo-mit :global(.fo-mit__tag) { margin-bottom: 18px; }
+  .fo-mit__h { margin: 0 0 22px; font-family: var(--font-display); font-weight: 800; font-size: clamp(38px, 4.6vw, 60px); line-height: 0.98; letter-spacing: -0.03em; color: var(--purple); }
+  .fo-mit__lead { max-width: 480px; margin: 0 0 28px; font-size: 16px; line-height: 1.6; }
+  .fo-call { display: flex; flex-direction: column; gap: 10px; max-width: 520px; padding: 20px 22px 22px; background: #fff; border-top: 3px solid var(--magenta); color: var(--purple); }
+  .fo-call[hidden] { display: none; }
+  .fo-call:hover { color: var(--magenta-2); }
+  .fo-call__k { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta-2); }
+  .fo-call__t { font-family: var(--font-display); font-weight: 800; font-size: 24px; line-height: 1.1; letter-spacing: -0.02em; color: inherit; transition: color var(--dur-fast); }
+  .fo-call__l { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
+  .fo-ags { align-self: end; padding-top: 26px; border-top: 2px solid var(--purple); }
+  .fo-ags__h { margin: 0 0 8px; font-family: var(--font-display); font-weight: 800; font-size: 28px; letter-spacing: -0.02em; color: var(--purple); }
+  .fo-ags__text { margin: 0 0 20px; font-size: 15px; line-height: 1.6; }
+  .fo-ags__liste { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 30px; padding: 0; list-style: none; }
+  .fo-ags__liste li { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1.5px solid var(--purple); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; }
+</style>

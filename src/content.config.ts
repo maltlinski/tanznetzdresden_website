@@ -52,6 +52,27 @@ const termine = defineCollection({
   }),
 });
 
+const routeKey = z.enum(Object.keys(routes) as [RouteKey, ...RouteKey[]]);
+
+/**
+ * Link auf der Formate-Seite: zu einem News-Beitrag, einer Seite der Website, einer Datei
+ * (unter public/, z. B. "downloads/pressespiegel.pdf") oder einer Adresse außerhalb – genau eins davon.
+ */
+const formatLink = z
+  .object({
+    text: z.string(),
+    text_en: z.string().optional(),
+    /** Dateiname ohne .md aus src/content/news/de/ */
+    news: z.string().optional(),
+    seite: routeKey.optional(),
+    datei: z.string().optional(),
+    url: z.url().optional(),
+  })
+  .refine((l) => [l.news, l.seite, l.datei, l.url].filter(Boolean).length === 1, 'Genau ein Ziel: news, seite, datei oder url');
+
+/** Rubriken der Formate (erste = Badge); die Filter „Ich möchte …“ fassen sie zusammen (src/lib/formate.ts) */
+export const formatRubriken = ['buehne', 'training', 'diskurs', 'stadt', 'residenz'] as const;
+
 const formate = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/formate' }),
   schema: ({ image }) =>
@@ -61,14 +82,77 @@ const formate = defineCollection({
       order: z.number(),
       since: z.string(),
       since_en: z.string().optional(),
+      /** ein bis zwei Sätze: Startseite und Kopf der Formate-Seite */
       summary: z.string(),
       summary_en: z.string().optional(),
+      /** ausführlich: Formate-Seite (sonst summary) */
+      text: z.string().optional(),
+      text_en: z.string().optional(),
+      /** ohne Angabe: Bühne */
+      rubriken: z
+        .array(z.enum(formatRubriken))
+        .default([])
+        .transform((r): (typeof formatRubriken)[number][] => (r.length ? r : ['buehne'])),
       image: image(),
       alt: z.string(),
       alt_en: z.string().optional(),
+      /** Eckdaten unter dem Text, z. B. Ort, Partner, Projektleitung */
+      fakten: z.array(z.object({ label: z.string(), label_en: z.string().optional(), wert: z.string(), wert_en: z.string().optional() })).default([]),
+      links: z.array(formatLink).default([]),
+      /** Format ist beendet: „Laufzeit“ statt „Seit“, statt des nächsten Termins der Rückblick */
+      beendet: z.boolean().default(false),
+      /** Rückblick (News-Beitrag) für beendete Formate */
+      rueckblick: z.string().optional(),
       /** Eigene Seite des Formats (Route aus src/lib/i18n.ts), z. B. "profitraining" */
-      seite: z.enum(Object.keys(routes) as [RouteKey, ...RouteKey[]]).optional(),
+      seite: routeKey.optional(),
     }),
+});
+
+/** Abgeschlossene Projekte im Archiv der Formate-Seite. Reihenfolge = Anzeige. */
+const projekte = defineCollection({
+  loader: file('./src/content/formate-archiv/projekte.yaml'),
+  schema: z.object({
+    titel: z.string(),
+    /** z. B. "2011–2018" */
+    jahre: z.string(),
+    art: z.string(),
+    art_en: z.string().optional(),
+    text: z.string(),
+    text_en: z.string().optional(),
+    /** Partner, mit „ · “ getrennt */
+    partner: z.string().optional(),
+    partner_en: z.string().optional(),
+    links: z.array(formatLink).default([]),
+  }),
+});
+
+/** Chronik „Seit 2010 in Bewegung“: je Jahr ein oder mehrere Ereignisse */
+const chronik = defineCollection({
+  loader: file('./src/content/formate-archiv/chronik.yaml'),
+  schema: z.object({
+    punkte: z.array(z.string()).min(1),
+    punkte_en: z.array(z.string()).optional(),
+  }),
+});
+
+/**
+ * Ausgaben des Tanzkalenders (Monatsplakat 2024–2026). id = erster Monat, z. B. "2026-04".
+ * Plakat und PDF liegen nach `npm run tanzkalender:laden` in src/assets/tanzkalender/ und
+ * public/downloads/tanzkalender/; bis dahin zeigt die Seite die Dateien der alten Website.
+ */
+const tanzkalenderAusgaben = defineCollection({
+  loader: file('./src/content/formate-archiv/tanzkalender.yaml'),
+  schema: z.object({
+    /** Monate der Ausgabe (1–12), z. B. [7, 8] für Juli/August */
+    monate: z.array(z.number().int().min(1).max(12)).min(1),
+    /** Plakat und PDF auf der alten Website (Quelle zum Laden) */
+    bild: z.url(),
+    pdf: z.url(),
+    /** Doppelplakat (doppelt so breit) */
+    breit: z.boolean().default(false),
+    /** im Kopf der Seite zeigen (drei Ausgaben) */
+    kopf: z.boolean().default(false),
+  }),
 });
 
 /**
@@ -249,4 +333,4 @@ const newsEn = defineCollection({
   schema: ({ image }) => z.object(newsTranslatable(image)).partial(),
 });
 
-export const collections = { termine, formate, keepUpDozentinnen, keepUpWochen, personen, seiten, orte, partnergruppen, news, newsEn };
+export const collections = { termine, formate, projekte, chronik, tanzkalenderAusgaben, keepUpDozentinnen, keepUpWochen, personen, seiten, orte, partnergruppen, news, newsEn };

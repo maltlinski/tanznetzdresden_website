@@ -265,6 +265,88 @@
       }
     }
   },
+  "formate": {
+    "titel": "Formate",
+    "gruppe": "Seiten im Menü",
+    "pfad": "formate/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf mit wechselnden Formaten",
+        "auch": [{ "text": "Die Formate selbst", "ziel": "redaktion:formate" }],
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Formate", "en": "Formats", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Was das TanzNetzDresden macht: Showings, Aufführungsreihen, Profitraining, Tanz im Stadtraum und Residenzen. Mit nächsten Terminen, Chronik und Archiv.", "en": "What TanzNetzDresden does: showings, performance series, professional training, dance in public space and residencies. With upcoming dates, history and archive.", "max": 160 },
+          "kicker": { "wo": "Kleine Zeile über der Überschrift ({zahl} = Anzahl)", "de": "Was wir machen · {zahl} Formate", "en": "What we do · {zahl} formats", "max": 40 },
+          "titel": { "wo": "Überschrift ({zahlwort} = Anzahl als Wort), zweiter Teil in Cyan", "zeilen": 2, "de": "{zahlwort} Formate.\nEin Netz.", "en": "{zahlwort} formats.\nOne network.", "max": 40 },
+          "entdecken": { "wo": "Link unter dem Format", "de": "Format entdecken ↓", "en": "Discover the format ↓", "max": 30 },
+          "naechster": { "wo": "Vor dem nächsten Termin", "de": "Nächster Termin", "en": "Next date", "max": 30 },
+          "folgt": { "wo": "Wenn noch kein Termin feststeht", "de": "Termin folgt", "en": "Date to follow", "max": 30 },
+          "heute": { "wo": "Vor dem Datum, wenn der Termin heute ist", "de": "Heute", "en": "Today", "max": 12 },
+          "anhalten": { "wo": "Knopf: automatischen Wechsel anhalten", "de": "Anhalten", "en": "Pause", "max": 16 },
+          "weiter": { "wo": "Knopf: automatischen Wechsel fortsetzen", "de": "Weiter", "en": "Play", "max": 16 }
+        }
+      },
+      "detail": {
+        "titel": "Formate im Detail",
+        "auch": [{ "text": "Die Formate selbst", "ziel": "redaktion:formate" }],
+        "texte": {
+          "ichMoechte": { "wo": "Filter: Zeile davor", "de": "Ich möchte", "en": "I want to", "max": 20 },
+          "alle": { "wo": "Filter: alle Formate", "de": "Alle", "en": "All", "max": 16 },
+          "tanzSehen": { "wo": "Filter: Formate der Rubrik Bühne", "de": "Tanz sehen", "en": "See dance", "max": 24 },
+          "trainieren": { "wo": "Filter: Formate der Rubrik Training", "de": "Trainieren", "en": "Train", "max": 24 },
+          "mitreden": { "wo": "Filter: Formate der Rubrik Diskurs", "de": "Mitreden", "en": "Join the talk", "max": 24 },
+          "draussen": { "wo": "Filter: Formate der Rubrik Stadtraum", "de": "Draußen tanzen", "en": "Dance outdoors", "max": 24 },
+          "imDetail": { "wo": "Leiste links: Überschrift", "de": "Im Detail", "en": "In detail", "max": 24 },
+          "buehne": { "wo": "Rubrik (Badge)", "de": "Bühne", "en": "Stage", "max": 16 },
+          "training": { "wo": "Rubrik (Badge)", "de": "Training", "en": "Training", "max": 16 },
+          "diskurs": { "wo": "Rubrik (Badge)", "de": "Diskurs", "en": "Discourse", "max": 16 },
+          "stadt": { "wo": "Rubrik (Badge)", "de": "Stadtraum", "en": "Public space", "max": 16 },
+          "residenz": { "wo": "Rubrik (Badge)", "de": "Residenz", "en": "Residency", "max": 16 },
+          "seit": { "wo": "Eckdaten: Beginn", "de": "Seit", "en": "Since", "max": 20 },
+          "laufzeit": { "wo": "Eckdaten: Zeitraum eines beendeten Formats", "de": "Laufzeit", "en": "Duration", "max": 20 },
+          "folgtText": { "wo": "Kasten ohne Termin: Text", "de": "Wir kündigen ihn im Newsletter an.", "en": "We will announce it in the newsletter.", "max": 80 },
+          "abgeschlossen": { "wo": "Kasten bei beendeten Formaten", "de": "Programm abgeschlossen", "en": "Programme completed", "max": 30 },
+          "alleTermine": { "wo": "Link zum Kalender", "de": "Alle Termine", "en": "All dates", "max": 30 },
+          "alleZeigen": { "wo": "Knopf unter gefilterten Formaten ({zahl} = Anzahl)", "de": "Alle {zahl} Formate zeigen →", "en": "Show all {zahl} formats →", "max": 40 }
+        }
+      },
+      "chronik": {
+        "titel": "Chronik",
+        "auch": [{ "text": "Die Ereignisse", "ziel": "redaktion:chronik" }],
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Chronik", "en": "History", "max": 30 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Cyan", "zeilen": 2, "de": "Seit 2010\nin Bewegung.", "en": "In motion\nsince 2010.", "max": 40 }
+        }
+      },
+      "archiv": {
+        "titel": "Archiv: abgeschlossene Projekte",
+        "auch": [{ "text": "Die Projekte", "ziel": "redaktion:projekte" }],
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Archiv", "en": "Archive", "max": 30 },
+          "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Abgeschlossene\nProjekte.", "en": "Completed\nprojects.", "max": 40 },
+          "lead": { "wo": "Text neben der Überschrift", "de": "Diese Projekte laufen nicht mehr. Programme, Beteiligte und Pressestimmen bleiben hier abrufbar.", "en": "These projects have ended. Programmes, participants and press coverage remain available here.", "max": 200 },
+          "mit": { "wo": "Vor den Partnern eines Projekts", "de": "Mit", "en": "With", "max": 12 }
+        }
+      },
+      "mitmachen": {
+        "titel": "Mitmachen",
+        "auch": [{ "text": "Die Arbeitsgruppen", "ziel": "redaktion:arbeitsgruppen" }],
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitmachen", "en": "Get involved", "max": 30 },
+          "titel": { "wo": "Überschrift", "zeilen": 2, "de": "Zeig deine Arbeit.\nGestalte mit.", "en": "Show your work.\nShape it with us.", "max": 50 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Die Formate leben von den Menschen im Netz. Bewirb dich auf einen Open Call oder bring dich in einer Arbeitsgruppe ein.", "en": "The formats live from the people in the network. Apply to an open call or join a working group.", "max": 240 },
+          "call": { "wo": "Kasten: Ausschreibung ({datum} = Frist)", "de": "Open Call · Frist {datum}", "en": "Open call · deadline {datum}", "max": 40 },
+          "zurCall": { "wo": "Kasten: Link", "de": "Zur Ausschreibung →", "en": "To the call →", "max": 30 },
+          "calls": { "wo": "Kasten ohne offene Ausschreibung: Überschrift", "de": "Ausschreibungen", "en": "Open calls", "max": 40 },
+          "callsText": { "wo": "Kasten ohne offene Ausschreibung: Text", "de": "Neue Open Calls erscheinen im Journal.", "en": "New open calls are published in the journal.", "max": 80 },
+          "zuCalls": { "wo": "Kasten ohne offene Ausschreibung: Link", "de": "Zum Journal →", "en": "To the journal →", "max": 30 },
+          "ags": { "wo": "Überschrift rechts", "de": "Arbeitsgruppen", "en": "Working groups", "max": 30 },
+          "agsText": { "wo": "Text unter „Arbeitsgruppen“", "de": "Hinter jedem Format steht eine AG. Mitglieder:innen können jederzeit einsteigen.", "en": "Each format is run by a working group. Members can join at any time.", "max": 160 },
+          "join": { "wo": "Knopf", "de": "Mitglied werden", "en": "Become a member", "max": 30 }
+        }
+      }
+    }
+  },
   "news": {
     "titel": "News",
     "gruppe": "Seiten im Menü",
@@ -735,6 +817,53 @@
           "coopP": { "wo": "Text", "de": "Spielorte, Festivals, Netzwerke und Initiativen: Schreibt uns, wir melden uns mit einem Vorschlag für ein erstes Gespräch.", "en": "Venues, festivals, networks and initiatives: write to us and we will get back to you with a suggestion for a first conversation.", "max": 300 },
           "coopBtn": { "wo": "Knopf, der die E-Mail-Adresse zeigt", "de": "E-Mail schreiben", "en": "Send an email", "max": 30 },
           "coopSubject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Kooperationsanfrage", "en": "Cooperation enquiry", "max": 80 }
+        }
+      }
+    }
+  },
+  "tanzkalenderArchiv": {
+    "titel": "Tanzkalender-Archiv",
+    "gruppe": "Weitere Seiten",
+    "pfad": "formate/tanzkalender/",
+    "abschnitte": {
+      "kopf": {
+        "titel": "Kopf",
+        "auch": [{ "text": "Die Ausgaben", "ziel": "redaktion:tanzkalender" }],
+        "texte": {
+          "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Tanzkalender-Archiv", "en": "Tanzkalender archive", "max": 60 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Alle Ausgaben des Tanzkalenders Dresden (2024–2026) zum Ansehen und Herunterladen.", "en": "All issues of the Tanzkalender Dresden (2024–2026) to view and download.", "max": 160 },
+          "formate": { "wo": "Pfad oben: erster Schritt", "de": "Formate", "en": "Formats", "max": 24 },
+          "archiv": { "wo": "Pfad oben: zweiter Schritt", "de": "Archiv", "en": "Archive", "max": 24 },
+          "hier": { "wo": "Pfad oben: diese Seite", "de": "Tanzkalender", "en": "Tanzkalender", "max": 24 },
+          "titel": { "wo": "Überschrift (zwei Zeilen, darunter die Zahl der Ausgaben)", "zeilen": 2, "de": "Tanzkalender\nDresden.", "en": "Tanzkalender\nDresden.", "max": 40 },
+          "anzahl": { "wo": "Dritte Zeile der Überschrift in Cyan ({zahl} = Anzahl)", "de": "{zahl} Ausgaben.", "en": "{zahl} issues.", "max": 30 },
+          "lead": { "wo": "Erster Absatz", "de": "Von Mai 2024 bis April 2026 erschien der Tanzkalender als Monatsplakat. Er versammelte die Tanzangebote in Dresden an einem Ort: große Bühnen, Hochschule und freie Szene.", "en": "From May 2024 to April 2026 the Tanzkalender appeared as a monthly poster. It gathered the dance events in Dresden in one place: big stages, university and independent scene.", "max": 300 },
+          "lead2": { "wo": "Zweiter Absatz", "de": "Zum Herbst 2026 haben wir den Kalender eingestellt. Alle Ausgaben bleiben hier zum Ansehen und Herunterladen.", "en": "We discontinued the calendar in autumn 2026. All issues remain here to view and download.", "max": 300 },
+          "alle": { "wo": "Knopf", "de": "Alle Ausgaben", "en": "All issues", "max": 30 },
+          "kalender": { "wo": "Link zum Kalender", "de": "Aktuelle Termine im Kalender →", "en": "Current dates in the calendar →", "max": 40 }
+        }
+      },
+      "liste": {
+        "titel": "Ausgaben",
+        "auch": [{ "text": "Die Ausgaben", "ziel": "redaktion:tanzkalender" }],
+        "texte": {
+          "jahrgang": { "wo": "Filter: Zeile davor", "de": "Jahrgang", "en": "Year", "max": 20 },
+          "alle": { "wo": "Filter: alle Jahrgänge", "de": "Alle", "en": "All", "max": 16 },
+          "ausgabe": { "wo": "Zahl unter dem Jahr (eine)", "de": "Ausgabe", "en": "issue", "max": 20 },
+          "ausgaben": { "wo": "Zahl unter dem Jahr (mehrere)", "de": "Ausgaben", "en": "issues", "max": 20 },
+          "nr": { "wo": "Über dem Monat ({nr} = Nummer)", "de": "Nr. {nr}", "en": "No. {nr}", "max": 16 },
+          "ansehen": { "wo": "Knopf: Großansicht", "de": "Ansehen", "en": "View", "max": 20 },
+          "pdf": { "wo": "Link: PDF", "de": "PDF ↓", "en": "PDF ↓", "max": 16 },
+          "dank": { "wo": "Text unter der Liste", "de": "Gefördert von der Kulturstiftung des Freistaates Sachsen und der Landeshauptstadt Dresden. Danke an alle Häuser und Künstler:innen, die ihre Termine geteilt haben.", "en": "Funded by the Kulturstiftung des Freistaates Sachsen and the City of Dresden. Thanks to all venues and artists who shared their dates.", "max": 300 },
+          "zurueck": { "wo": "Link zurück", "de": "← Zurück zum Archiv", "en": "← Back to the archive", "max": 40 }
+        }
+      },
+      "ansicht": {
+        "titel": "Großansicht",
+        "texte": {
+          "kopf": { "wo": "Zeile oben ({nr} = Nummer, {gesamt} = Anzahl)", "de": "Tanzkalender · Nr. {nr} / {gesamt}", "en": "Tanzkalender · No. {nr} / {gesamt}", "max": 50 },
+          "pdf": { "wo": "Knopf", "de": "PDF laden", "en": "Download PDF", "max": 24 },
+          "hinweis": { "wo": "Zeile unten", "de": "← → blättern · Esc schließen", "en": "← → browse · Esc close", "max": 50 }
         }
       }
     }
