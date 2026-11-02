@@ -423,7 +423,7 @@
         "titel": "Haltung & Wirkung",
         "auch": [{ "text": "Überschrift, Säulen, Auszeichnungen und Foto", "ziel": "redaktion:haltung" }],
         "texte": {
-          "awards": { "wo": "Überschrift über den Auszeichnungen", "de": "Ausgezeichnet mit", "en": "Awarded", "max": 30 },
+          "awards": { "wo": "Überschrift über den Auszeichnungen", "de": "Test", "en": "", "max": 30, "ursprung": { "de": "Ausgezeichnet mit", "en": "Awarded" } },
           "with": { "wo": "Überschrift über den Partnern", "de": "Gemeinsam mit", "en": "Together with", "max": 30 },
           "all": { "wo": "Link zu allen Partnern", "de": "Alle Partner →", "en": "All partners →", "max": 30 }
         }
