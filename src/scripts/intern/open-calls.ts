@@ -188,7 +188,7 @@ function baender(g: Gruppen) {
       : tage === 1 ? t('Eine deiner Fristen läuft morgen ab.', 'One of your deadlines ends tomorrow.')
         : t(`Eine deiner Fristen läuft in ${tage} Tagen ab.`, `One of your deadlines ends in ${tage} days.`)
     : t(`${dringend.length} deiner Fristen laufen in den nächsten ${DRINGEND} Tagen ab.`, `${dringend.length} of your deadlines end in the next ${DRINGEND} days.`);
-  $('[data-oc-dringend-namen]').textContent = dringend.map((c) => `${c.titel} (${datumKurz(c.frist, sprache)})`).join(' · ');
+  $('[data-oc-dringend-namen]').replaceChildren(...dringend.flatMap((c, i) => [i ? ' · ' : '', `${c.titel} (`, h('span', { class: 'datum', text: datumKurz(c.frist, sprache) }), ')']));
   const b = $<HTMLButtonElement>('[data-oc-dringend-knopf]');
   b.textContent = t('Nächste öffnen', 'Open next');
   b.onclick = () => oeffnen(erste.id);

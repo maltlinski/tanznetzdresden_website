@@ -53,7 +53,10 @@ function termineAktualisieren(d: Daten) {
     const cta = document.querySelector<HTMLAnchorElement>(`[data-fo-cta="${id}"]`);
     if (!cta) continue;
     cta.href = n?.link ?? d.newsletter;
-    cta.querySelector('[data-t]')!.textContent = text;
+    const t = cta.querySelector('[data-t]')!;
+    t.textContent = text;
+    // Termin in der Datumsschrift (src/lib/datum-schrift.ts), „Termin folgt“ nicht
+    t.classList.toggle('datum', !!n);
     cta.querySelector('[data-w]')!.textContent = n?.wo ?? d.folgtText;
   }
 }

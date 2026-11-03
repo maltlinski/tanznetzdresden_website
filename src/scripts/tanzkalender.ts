@@ -507,7 +507,7 @@ export function initTanzkalender(): void {
             'a',
             { href: e.link, 'data-id': e.id },
             h('span', { class: 'tk-next__d' }, h('span', { text: wtKurz(e.datum) }), h('strong', { text: tagNr(e.datum) }), h('span', { text: moKurz(e.datum) })),
-            h('span', { class: 'tk-next__t' }, h('strong', { text: e.titel }), h('span', { text: [e.kat === 'Frist' ? T.frist : uhr(e.von), e.ort].filter(Boolean).join(' · ') })),
+            h('span', { class: 'tk-next__t' }, h('strong', { text: e.titel }), h('span', { class: 'datum', text: [e.kat === 'Frist' ? T.frist : uhr(e.von), e.ort].filter(Boolean).join(' · ') })),
             h('span', { class: 'tk-next__pfeil', 'aria-hidden': 'true', text: '→' }),
           ),
         ),

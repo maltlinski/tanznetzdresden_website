@@ -21,6 +21,7 @@ design/
 | Abstände, Keil-Form, Bewegung (`tokens/spacing.css`) | überall, wo die Tokens benutzt werden |
 | Open-Sans-Dateien, Logo | sofort |
 | **Neue** Schriftfamilie | `npm run design:check` meldet es – Schrift muss einmal in `src/styles/fonts.css` eingebunden werden (wir laden nichts von Google) |
+| Schrift für Datum und Uhrzeit | bleibt JetBrains Mono (`--font-datum` in `src/styles/global.css`), auch wenn ein Entwurf anderes zeigt – Hausregel „Datumsschrift“ (docs/entwicklung.md), geprüft von `tests/datum-schrift.spec.ts` |
 | Aussehen einzelner Komponenten (Button, Tag …) oder neue Seitenentwürfe | nicht automatisch: Die Website hat eigene Astro-Bausteine. Entwurf in `entwuerfe/` ablegen und umsetzen lassen. |
 
 ## Neues Designsystem aus Claude Design übernehmen

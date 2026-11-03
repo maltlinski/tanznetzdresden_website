@@ -191,7 +191,10 @@ const t = tr(lang, {
       document.querySelector(`.rd-nav a[href="${href('intern/kalender/')}"]`)?.setAttribute('aria-current', 'page');
     }
     $('[data-art-badge]').replaceChildren(badge(artText(t), t.art === 'workshop' ? 'magenta' : 'cyan'));
-    $('[data-was-name]').textContent = `${person()?.name ?? t.dozent} · ${zeitraum(t)}`;
+    const wann = document.createElement('span');
+    wann.className = 'datum';
+    wann.textContent = zeitraum(t);
+    $('[data-was-name]').replaceChildren(`${person()?.name ?? t.dozent} · `, wann);
     $('[data-was-meta]').textContent = [artText(t), tageText(t), t.zeit, t.ort || standardOrt].join(' · ');
     $('[data-notiz-box]').hidden = !t.notiz;
     $('[data-notiz]').textContent = t.notiz;
@@ -533,7 +536,7 @@ const t = tr(lang, {
   .ed-vorschau { flex: 1 1 440px; min-width: 0; max-width: 620px; position: sticky; top: 96px; display: flex; flex-direction: column; gap: 16px; }
   .pv { background: var(--paper); padding: 22px 22px 20px; border-top: 3px solid var(--magenta); }
   .pv__dow { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
-  .pv__datum { margin: 8px 0 18px; font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 2.6vw, 36px); line-height: 1; letter-spacing: -0.03em; color: var(--purple); }
+  .pv__datum { margin: 8px 0 18px; font-family: var(--font-datum); font-weight: 600; font-size: clamp(19px, 1.8vw, 24px); line-height: 1.15; letter-spacing: 0; color: var(--purple); }
   .pv__inhalt { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 200px), 1fr)); gap: 18px 20px; align-items: stretch; }
   .pv__item { min-width: 0; padding-top: 16px; border-top: 1px solid var(--rule); display: flex; flex-direction: column; gap: 9px; }
   .pv__top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }

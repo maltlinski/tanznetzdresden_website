@@ -89,7 +89,7 @@ const jsonLd = {
         </div>
         <aside class="tb__aside">
           <dl class="tb__facts">
-            <div><dt>{t.when}</dt><dd>{date.long}<br />{time}</dd></div>
+            <div><dt>{t.when}</dt><dd class="datum">{date.long}<br />{time}</dd></div>
             <div><dt>{t.where}</dt><dd>{d.venue}</dd></div>
             <div><dt>{t.what}</dt><dd>{categoryLabel[lang][d.category]}</dd></div>
             {eintritt && <div><dt>{texte(lang, 'termine', 'eintrag').eintritt}</dt><dd>{eintritt}</dd></div>}

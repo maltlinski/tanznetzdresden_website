@@ -102,13 +102,13 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
     <Fragment slot="liste">
       <h3 class="ku-list__h">{t.weeks}</h3>
       <ul class="ku-list">
-        {wochen.map(({ w, d }) => <li><strong>{weekLabel(lang, w)}</strong> · {d.name} · {d.stil}</li>)}
+        {wochen.map(({ w, d }) => <li><strong class="datum">{weekLabel(lang, w)}</strong> · {d.name} · {d.stil}</li>)}
       </ul>
       {workshops.length > 0 && (
         <>
           <h3 class="ku-list__h">{t.workshops}</h3>
           <ul class="ku-list">
-            {workshops.map(({ date, e }) => <li><strong>{longDay.format(new Date(`${date}T00:00:00Z`))}</strong> · {e.time} · <a href={e.links[0].href}>{e.sub}</a></li>)}
+            {workshops.map(({ date, e }) => <li><strong class="datum">{longDay.format(new Date(`${date}T00:00:00Z`))}</strong> · <span class="datum">{e.time}</span> · <a href={e.links[0].href}>{e.sub}</a></li>)}
           </ul>
         </>
       )}
@@ -126,7 +126,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
       <dl class="ku-infos__grid">
         <div class="ku-info">
           <dt>{t.when}</dt>
-          <dd><span class="ku-info__big">{s.wann}</span><span class="ku-info__text">{s.wannText}</span></dd>
+          <dd><span class="ku-info__big ku-info__big--datum">{s.wann}</span><span class="ku-info__text">{s.wannText}</span></dd>
         </div>
         <div class="ku-info">
           <dt>{t.where}</dt>
@@ -204,7 +204,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
     letter-spacing: 0.2em; text-transform: uppercase;
   }
   .ku-next__sq { width: 10px; height: 10px; background: var(--magenta); }
-  .ku-next__date { font-family: var(--font-display); font-weight: 800; font-size: clamp(20px, 2vw, 26px); letter-spacing: -0.02em; color: var(--cyan); }
+  .ku-next__date { font-family: var(--font-datum); font-weight: 600; font-size: clamp(16px, 1.6vw, 20px); letter-spacing: 0.02em; color: var(--cyan); }
   .ku-next__info { font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.86); }
   .ku-hero :global(.ku-hero__keil) { position: absolute; left: 0; bottom: 0; width: 34%; }
 
@@ -222,6 +222,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
     display: block; font-family: var(--font-display); font-weight: 800; font-size: 28px; line-height: 1.05;
     letter-spacing: -0.025em; color: var(--purple); margin: 10px 0 12px;
   }
+  .ku-info__big--datum { font-family: var(--font-datum); font-weight: 600; font-size: 22px; line-height: 1.2; letter-spacing: 0; }
   .ku-info__big em { font-style: normal; color: var(--magenta-2); }
   .ku-info__text { display: block; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
 

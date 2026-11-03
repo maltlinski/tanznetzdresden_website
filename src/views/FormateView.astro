@@ -14,6 +14,7 @@ import Button from '../components/ui/Button.astro';
 import KeilBar from '../components/ui/KeilBar.astro';
 import { formatFilter, getChronik, getFormatSeite, getProjekte, gitterNetz, rubrikBadge, zahlwort } from '../lib/formate';
 import { naechster, terminText } from '../lib/formate-termin';
+import { istDatum } from '../lib/datum-schrift';
 import { getNews, dateShort } from '../lib/news';
 import { arbeitsgruppen } from '../settings/arbeitsgruppen';
 import { dateLocale, getLang, tr, url } from '../lib/i18n';
@@ -44,9 +45,9 @@ const rubrikText = { buehne: d.buehne, training: d.training, diskurs: d.diskurs,
 const newsletter = url(lang, 'home', '#newsletter');
 /** Kasten unter einem Format: nächster Termin, sonst „Termin folgt“, bei beendeten Formaten der Rückblick */
 const kasten = (f: (typeof formate)[number]) => {
-  if (f.beendet && f.rueckblick) return { k: d.abgeschlossen, t: f.rueckblick.titel, w: dateShort(f.rueckblick.datum, lang), href: f.rueckblick.link };
+  if (f.beendet && f.rueckblick) return { k: d.abgeschlossen, t: f.rueckblick.titel, w: dateShort(f.rueckblick.datum, lang), href: f.rueckblick.link, datum: 'w' };
   const n = naechster(f.termine, heute);
-  return n ? { k: k.naechster, t: terminText(n, locale, k.heute, heute), w: n.wo, href: n.link } : { k: k.naechster, t: k.folgt, w: d.folgtText, href: newsletter };
+  return n ? { k: k.naechster, t: terminText(n, locale, k.heute, heute), w: n.wo, href: n.link, datum: 't' } : { k: k.naechster, t: k.folgt, w: d.folgtText, href: newsletter, datum: '' };
 };
 const filter = [
   { key: '', label: d.alle, n: formate.length },
@@ -183,14 +184,14 @@ const daten = JSON.stringify({
                 <h2 class="fo-kap__h" id={`${f.id}-h`} data-reveal>{f.titel}</h2>
                 <p class="fo-kap__d">{f.text}</p>
                 <dl class="fo-fakten">
-                  <div><dt>{f.beendet ? d.laufzeit : d.seit}</dt><dd>{f.seit}</dd></div>
-                  {f.fakten.map((x) => <div><dt>{x.k}</dt><dd>{x.v}</dd></div>)}
+                  <div><dt>{f.beendet ? d.laufzeit : d.seit}</dt><dd class:list={[{ datum: istDatum(f.seit) }]}>{f.seit}</dd></div>
+                  {f.fakten.map((x) => <div><dt>{x.k}</dt><dd class:list={[{ datum: istDatum(x.v) }]}>{x.v}</dd></div>)}
                 </dl>
                 <a class="fo-cta" href={b.href} data-fo-cta={f.beendet ? undefined : f.id}>
                   <span class="fo-cta__text">
                     <span class="fo-cta__k">{b.k}</span>
-                    <span class="fo-cta__t" data-t>{b.t}</span>
-                    <span class="fo-cta__w" data-w>{b.w}</span>
+                    <span class:list={['fo-cta__t', { datum: b.datum === 't' }]} data-t>{b.t}</span>
+                    <span class:list={['fo-cta__w', { datum: b.datum === 'w' }]} data-w>{b.w}</span>
                   </span>
                   <span class="fo-cta__pfeil" aria-hidden="true">→</span>
                 </a>
@@ -429,6 +430,7 @@ const daten = JSON.stringify({
   .fo-cta__k { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
   .fo-cta:hover .fo-cta__k { color: #fff; }
   .fo-cta__t { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.15; letter-spacing: -0.015em; }
+  .fo-cta__t.datum { font-family: var(--font-datum); font-weight: 600; font-size: 17px; line-height: 1.3; letter-spacing: 0.01em; }
   .fo-cta__w { font-size: 14px; line-height: 1.45; color: rgba(255, 255, 255, 0.86); }
   .fo-cta__pfeil { font-family: var(--font-display); font-size: 28px; line-height: 1; }
   .fo-links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 20px; }

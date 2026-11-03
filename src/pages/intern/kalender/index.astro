@@ -396,7 +396,8 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
     box.hidden = !faellig.length;
     if (!faellig.length) return;
     $('[data-erinnern-titel]').textContent = `KEEP UP: ${faellig.length} ${faellig.length === 1 ? 'Training' : 'Trainings'} bis ${tagLang(grenze)} ohne veröffentlichte Beschreibung`;
-    $('[data-erinnern-namen]').textContent = faellig.map((t) => `${nameVon(t.dozent)} (${zeitraum(t)})`).join(' · ');
+    // Zeitraum in der Datumsschrift (src/lib/datum-schrift.ts)
+    $('[data-erinnern-namen]').replaceChildren(...faellig.flatMap((t, i) => [i ? ' · ' : '', `${nameVon(t.dozent)} (`, h('span', { class: 'datum', text: zeitraum(t) }), ')']));
     const knopf = $<HTMLButtonElement>('[data-erinnern-alle]');
     knopf.textContent = faellig.every((t) => t.erinnert_am) ? 'Erneut erinnern' : 'Alle erinnern';
     knopf.onclick = () => erinnern(faellig);
@@ -943,7 +944,7 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
   .pl-personen :global(.pl-person__text) { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
   .pl-personen :global(.pl-person__name) { font-family: var(--font-display); font-weight: 700; font-size: 14px; line-height: 1.15; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .pl-personen :global(.pl-person__stil) { font-family: var(--font-mono); font-size: 9.5px; letter-spacing: 0.1em; text-transform: uppercase; opacity: 0.75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .pl-woche__name { flex: 1; text-align: center; font-family: var(--font-display); font-weight: 800; font-size: 19px; letter-spacing: -0.015em; color: var(--purple); }
+  .pl-woche__name { flex: 1; text-align: center; font-family: var(--font-datum); font-weight: 600; font-size: 15px; letter-spacing: 0.02em; color: var(--purple); }
   .pl-tage { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
   .pl-tage :global(.pl-tagwahl) { height: 56px; padding: 6px; border: 1.5px solid var(--rule); background: var(--paper); color: var(--purple); }
   .pl-tage :global(.pl-tagwahl.is-an) { border-color: transparent; background: var(--cyan); }

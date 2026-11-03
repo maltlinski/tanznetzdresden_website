@@ -36,8 +36,9 @@ test('Formate: Menü, Kopf mit Reitern, nächster Termin aus dem Kalender', asyn
   await expect(reiter.nth(2)).toHaveAttribute('aria-selected', 'true');
   const panel = page.getByRole('tabpanel');
   await expect(panel).toContainText('KEEP UP');
-  // KEEP UP: das nächste Training (wochen.yaml) – heute
-  await expect(panel).toContainText(/Nächster Termin · Heute · Mo 2\. Nov · \d\d:\d\d/);
+  // KEEP UP: das nächste Training (wochen.yaml) – je nach Build-Tag heute oder an einem der nächsten Tage
+  await expect(panel).toContainText(/Nächster Termin · (Heute · )?\p{L}{2} (· )?\d{1,2}\. \p{L}{3} · \d\d:\d\d/u);
+  await expect(panel.locator('.fo-panel__datum')).toHaveCSS('font-family', /JetBrains Mono/);
   await expect(panel.getByRole('link')).toHaveAttribute('href', '#keep-up');
   // Pfeiltasten wechseln den Reiter
   await reiter.nth(2).press('ArrowRight');

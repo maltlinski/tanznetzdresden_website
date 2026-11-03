@@ -32,6 +32,7 @@ Tokens (`var(--purple)`, `var(--space-4)` …) statt fester Werte schreiben, dan
 - Magenta ist Akzent (Marker-Quadrate, Linien, zweite Headline-Zeile), nie Fläche.
 - Lila = Anker (Headlines, dunkle Bänder), Cyan = Auftakt (Felder, Buttons).
 - Work Sans 800 für Headlines, Open Sans für Text, JetBrains Mono in Versalien für Kicker.
+- **Datumsschrift:** jedes Datum, jede Uhrzeit, jede Terminangabe in der Schrift des Kalenders (siehe unten).
 - Der „Keil“ (diagonaler Schnitt) als Abschluss von Bändern und Fotos.
 - Bewegung schnell und entschieden (`--ease-out`), kein Federn.
 
@@ -43,6 +44,26 @@ Kopfleiste, 560–940 px) in `src/styles/global.css`, erste Zeile im Abstand `--
 das von selbst; eigene Köpfe (Kooperationen, News, Profitraining, Spenden, Profil, 404) setzen
 `min-height: var(--buehne-h)`. Rechtstexte bekommen `<PageIntro kompakt>`, Beiträge und Termine behalten
 ihren kurzen Kopf. Im Test „Lila Kopf der Unterseiten …“ (tests/site.spec.ts) wird die Höhe verglichen.
+
+### Datumsschrift (Regel)
+
+Gleiche Information, gleiche Schrift: Datums-, Uhrzeit- und Terminangaben stehen überall – Website, interner
+Bereich, Redaktion – in der Schrift des Kalenders, **JetBrains Mono** (Token `--font-datum`). So erfasst man
+Termine schneller, und die Seiten sehen einheitlich aus. Der Schnitt darf dünner sein als im Kalender (Regular
+im Text, 500–600 in Listen und Kästen), nie Open Sans oder Work Sans.
+
+- Umsetzen: Klasse `datum` (oder `<time>`) setzen; beides bekommt die Schrift aus `src/styles/global.css`, Größe
+  0,92 em, Schnitt und Farbe von der Umgebung. Eigene Größen in Komponenten mit `font-family: var(--font-datum)`.
+  Frei eingegebene Werte (z. B. Eckdaten der Formate) prüft `istDatum()` aus `src/lib/datum-schrift.ts`.
+- Ausnahmen, wie im Kalender selbst: **große Tageszahlen, Monats- und Jahresköpfe** („14“, „November 2026“,
+  „2010“) bleiben Work Sans fett. Ein Datum **im Titel** (Beitrag, Ausgabe) oder **mitten im Satz** (Fließtext,
+  Anreißer) behält die Schrift des Titels bzw. Satzes.
+- Geprüft wird das in `tests/datum-schrift.spec.ts`: Der Test liest alle sichtbaren Datumsangaben der Seiten aus
+  der Sitemap (je Bereich bis zu drei, Desktop und Handy) und des internen Bereichs und meldet jede, die nicht
+  in JetBrains Mono steht. Die Muster und die Liste der Titel- und Fließtext-Stellen liegen in
+  `src/lib/datum-schrift.ts`; eine neue Ausnahme dort nur mit Begründung eintragen.
+- **Neue Entwürfe aus Claude Design:** Datumsangaben beim Umsetzen auf die Datumsschrift bringen, auch wenn der
+  Entwurf eine andere Schrift zeigt, und die Abweichung in der README des Entwurfs notieren.
 
 Bewusste Abweichungen stehen gesammelt in `src/styles/overrides.css` (derzeit nur `--ink-muted`, dunkler für
 WCAG-Kontrast).

@@ -23,11 +23,20 @@
   --buehne-oben: clamp(28px, 6vh, 72px);
   --on-dark-soft: rgba(255, 255, 255, 0.78);
   --on-dark-rule: rgba(255, 255, 255, 0.16);
+  /* Datumsschrift: Datum, Uhrzeit und Termin stehen überall in der Schrift des Kalenders (src/lib/datum-schrift.ts) */
+  --font-datum: var(--font-mono);
   color-scheme: light;
 }
 @supports (height: 100svh) {
   :root { --buehne-h: clamp(560px, calc(100svh - 72px), 940px); }
 }
+
+/* Datumsschrift (Regel in docs/entwicklung.md): jede Datums-, Uhrzeit- oder Terminangabe in der Schrift des
+   Kalenders. Schnitt und Farbe erbt sie von der Umgebung – im Text gern Regular, in Listen wie im Kalender 600.
+   Große Tageszahlen, Monats- und Jahresköpfe bleiben Work Sans fett. Geprüft von tests/datum-schrift.spec.ts. */
+time { font-family: var(--font-datum); }
+.datum { font-family: var(--font-datum); font-size: 0.92em; letter-spacing: 0.01em; }
+.datum .datum { font-size: inherit; }
 
 /* Flächen in Tint: Magenta für kleine Schrift eine Stufe dunkler (Kontrast). */
 .surface-tint { --tag-color: var(--magenta-2); }

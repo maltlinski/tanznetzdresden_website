@@ -194,7 +194,7 @@ const t = tr(lang, {
           </div>
           <div class="wp__daten">
             <div><span>{t.nummer}</span><strong data-ms-nr-roh></strong></div>
-            <div><span>{t.gueltig}</span><strong data-ms-gueltig-roh></strong></div>
+            <div><span>{t.gueltig}</span><strong class="datum" data-ms-gueltig-roh></strong></div>
           </div>
           <div class="wp__qr"><span data-ms-qr></span></div>
           <div class="wp__bild">
@@ -214,6 +214,7 @@ const t = tr(lang, {
   import { getSupabase } from '../../lib/supabase';
   import { initIntern, errorText, showMessage, internUrl, type InternContext } from '../../scripts/intern/session';
   import { freigabenHinweis } from '../../scripts/intern/freigaben';
+  import { istDatum } from '../../lib/datum-schrift';
   import { photoUrl } from '../../lib/supabase';
   import { status, gueltigBis, ausweisJahr, kurz as kurzDe, lang as langDe, monat as monatDe, pruefUrl, artName, BEITRAG_FAELLIG, type Mitgliedschaft, type Status } from '../../lib/mitgliedschaft';
   import { sprache, t, locale } from '../../scripts/intern/sprache';
@@ -322,7 +323,7 @@ const t = tr(lang, {
         const dd = document.createElement('dd');
         dt.textContent = k;
         dd.textContent = w;
-        if (rot) dd.className = 'is-offen';
+        dd.className = [rot && 'is-offen', istDatum(w) && 'datum'].filter(Boolean).join(' ');
         div.append(dt, dd);
         return div;
       }),

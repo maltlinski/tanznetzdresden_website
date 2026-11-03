@@ -49,7 +49,7 @@ let lastMonth = '';
             </time>
             <div class="event__body">
               <h3 class="event__title">{e.title}</h3>
-              <p class="event__meta">{e.venue} · {e.timeLabel ?? e.time}{!kompakt && ` · ${e.teaser}`}</p>
+              <p class="event__meta"><span class="datum">{e.venue} · {e.timeLabel ?? e.time}</span>{!kompakt && ` · ${e.teaser}`}</p>
             </div>
             <div class="event__side">
               <Badge variant={badgeVariant[e.category]}>{categoryLabel[lang][e.category]}</Badge>
