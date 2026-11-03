@@ -508,7 +508,7 @@ const hId = `${id}-h`;
   .kcal__items :global(.kcal__item-top) { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .kcal__items :global(.kcal__time) { font-family: var(--font-mono); font-size: 13px; font-weight: 600; letter-spacing: 0.12em; color: var(--purple); }
   .kcal__items :global(.kcal__who) { font-family: var(--font-display); font-weight: 800; font-size: 22px; line-height: 1.1; letter-spacing: -0.02em; color: var(--purple); }
-  .kcal__items :global(.kcal__what) { font-size: 14px; line-height: 1.5; color: var(--ink-soft); }
+  .kcal__items :global(.kcal__what) { font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); }
   .kcal__items :global(.kcal__links) { display: flex; flex-wrap: wrap; gap: 10px 24px; margin-top: 4px; }
   .kcal__items :global(.kcal__link) {
     padding-bottom: 3px; border-bottom: 1.5px solid var(--magenta); font-family: var(--font-mono); font-size: 11px;
@@ -528,26 +528,26 @@ const hId = `${id}-h`;
   }
   .kcal__items :global(.kcal__sq) { flex: none; width: 8px; height: 8px; background: var(--magenta); transform: translateY(-2px); }
   .kcal__items :global(.kcal__text p) { margin: 0; text-wrap: pretty; }
-  .kcal__items :global(.kcal__kurz) { font-size: 15px; line-height: 1.55; color: var(--ink); }
-  .kcal__items :global(.kcal__absatz) { font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+  .kcal__items :global(.kcal__kurz) { font-size: 15px; line-height: var(--lh-text); color: var(--ink); }
+  .kcal__items :global(.kcal__absatz) { font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); }
   .kcal__items :global(.kcal__text .kcal__who) { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; line-height: 1.2; }
-  .kcal__items :global(.kcal__folgt) { font-size: 14px; line-height: 1.6; color: var(--ink-muted); }
+  .kcal__items :global(.kcal__folgt) { font-size: 14px; line-height: var(--lh-text); color: var(--ink-muted); }
   .kcal__items :global(.kcal__fokus) { display: flex; flex-wrap: wrap; gap: 5px; }
   .kcal__items :global(.kcal__fokus span) {
     padding: 4px 7px; background: var(--tint); color: var(--purple); font-family: var(--font-mono); font-size: 9.5px;
     font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
   }
-  .kcal__items :global(.kcal__bring) { font-size: 13.5px; line-height: 1.5; color: var(--ink-soft); }
+  .kcal__items :global(.kcal__bring) { font-size: 13.5px; line-height: var(--lh-text); color: var(--ink-soft); }
   .kcal__items :global(.kcal__bring-k) {
     margin-right: 8px; font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em;
     text-transform: uppercase; color: var(--magenta-2);
   }
   .kcal__items :global(.kcal__item:has(.kcal__text) .kcal__link) { font-size: 10.5px; }
-  .kcal__items :global(.kcal__none) { margin: 0; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .kcal__items :global(.kcal__none) { margin: 0; padding-top: 18px; border-top: 1px solid var(--rule); font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
 
   .kcal__note { margin-top: 32px; padding: 20px; background: var(--tint); display: flex; flex-direction: column; gap: 10px; }
   .kcal__note :global(.kcal__note-k) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--purple); }
-  .kcal__note :global(p) { margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+  .kcal__note :global(p) { margin: 0; font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); }
   .kcal__note :global(a) { align-self: flex-start; font-size: 11px; letter-spacing: 0.14em; color: var(--magenta-2); }
   .kcal__note :global(a:hover) { color: var(--purple); }
   .kcal__empty-all { margin: 0; padding: 24px 0; border-top: 2px solid var(--purple); color: var(--ink-soft); }

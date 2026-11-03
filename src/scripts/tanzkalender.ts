@@ -51,6 +51,8 @@ export function initTanzkalender(): void {
   let suche = '';
   let vergangene = false;
   let offen: string | null = null;
+  /** Tag, an dem der geöffnete Termin angeklickt wurde (im Mini-Monat dunkel, die übrigen Tage der Reihe hell) */
+  let offenTag: string | null = null;
   const heuteMonat = heute.slice(0, 7);
   let mm = heuteMonat;
   let vm = heuteMonat;
@@ -144,12 +146,12 @@ export function initTanzkalender(): void {
   const pastKnopf = $<HTMLButtonElement>('[data-tk-past]');
   const leerEl = $('[data-tk-leer]');
 
-  function eintrag(e: Zeile) {
+  function eintrag(e: Zeile, tag: string) {
     const id = `tk-d-${e.id}`;
     const auf = offen === e.id;
     const knopf = h(
       'button',
-      { type: 'button', class: 'tk-ev__knopf', 'aria-expanded': String(auf), 'aria-controls': id, 'data-fokus': `ev-${e.id}`, onclick: () => umschalten(e.id) },
+      { type: 'button', class: 'tk-ev__knopf', 'aria-expanded': String(auf), 'aria-controls': id, 'data-fokus': `ev-${e.id}`, onclick: () => umschalten(e.id, tag) },
       h('span', { class: 'tk-zeit', text: zeitSpalte(e) }),
       h('span', { class: 'tk-ev__titel' }, h('strong', { text: e.titel }), h('span', { class: 'tk-zeile2', text: zeile2(e) })),
       h('span', { class: badgeKlasse(e.kat), text: e.badge }),
@@ -190,9 +192,11 @@ export function initTanzkalender(): void {
           h('div', { class: 'tk-mo__kopf' }, h('h2', { text: monatName(m.key) }), h('span', { text: anzahl(m.anzahl) })),
           ...m.tage.map((t) => {
             const istHeute = t.datum === heute;
+            // Feedback 02: der Tag mit dem geöffneten Termin ist bis zur Tageszahl hellila hinterlegt
+            const istOffen = !!offen && t.zeilen.some((z) => z.id === offen);
             return h(
               'div',
-              { class: `tk-tagzeile${istHeute ? ' is-heute' : ''}${t.datum < heute ? ' is-vergangen' : ''}`, 'data-day': t.datum },
+              { class: `tk-tagzeile${istHeute ? ' is-heute' : ''}${t.datum < heute ? ' is-vergangen' : ''}${istOffen ? ' is-offen' : ''}`, 'data-day': t.datum },
               h(
                 'div',
                 { class: 'tk-tagzeile__in' },
@@ -203,7 +207,7 @@ export function initTanzkalender(): void {
                   h('span', { class: 'tk-datum__n', text: tagNr(t.datum) }),
                   istHeute && h('span', { class: 'tk-heute-mk', text: T.heute }),
                 ),
-                h('div', { class: 'tk-items' }, ...(t.zeilen.length ? t.zeilen.map(eintrag) : [h('p', { class: 'tk-items__leer', text: T.heuteLeer })])),
+                h('div', { class: 'tk-items' }, ...(t.zeilen.length ? t.zeilen.map((z) => eintrag(z, t.datum)) : [h('p', { class: 'tk-items__leer', text: T.heuteLeer })])),
               ),
             );
           }),
@@ -224,20 +228,26 @@ export function initTanzkalender(): void {
     miniZeichnen();
   }
 
-  function umschalten(id: string) {
+  function umschalten(id: string, tag: string) {
     const zu = offen ? monateEl.querySelector<HTMLElement>(`[data-detail="${CSS.escape(offen)}"]`) : null;
     const auf = () => {
       offen = offen === id ? null : id;
+      offenTag = offen ? tag : null;
+      // Mini-Monat zeigt den Monat des angeklickten Tags
+      if (offenTag && offenTag.slice(0, 7) !== mm) mm = offenTag.slice(0, 7);
       listeZeichnen();
       const d = offen ? monateEl.querySelector<HTMLElement>(`[data-detail="${CSS.escape(offen)}"]`) : null;
       if (d && bewegung) gsap.from(d, { height: 0, opacity: 0, duration: 0.5, ease: EASE, clearProps: 'height,opacity' });
       ScrollTrigger.refresh();
     };
-    if (zu && bewegung) gsap.to(zu, { height: 0, opacity: 0, duration: 0.26, ease: 'power3.in', onComplete: offen === id ? () => { offen = null; listeZeichnen(); } : auf });
-    else if (offen === id) {
+    const schliessen = () => {
       offen = null;
+      offenTag = null;
       listeZeichnen();
-    } else auf();
+    };
+    if (zu && bewegung) gsap.to(zu, { height: 0, opacity: 0, duration: 0.26, ease: 'power3.in', onComplete: offen === id ? schliessen : auf });
+    else if (offen === id) schliessen();
+    else auf();
   }
 
   // Scroll-Spion: der Tag in der Mitte des Fensters ist im Mini-Monat markiert
@@ -248,6 +258,8 @@ export function initTanzkalender(): void {
       (es) => {
         for (const e of es) {
           if (!e.isIntersecting) continue;
+          // ein geöffneter Termin bestimmt die Markierung, nicht die Scroll-Lage
+          if (offen) continue;
           const key = (e.target as HTMLElement).dataset.day!;
           if (key === spy) continue;
           spy = key;
@@ -275,8 +287,18 @@ export function initTanzkalender(): void {
     for (const e of list) m.set(e.datum, [...(m.get(e.datum) ?? []), e]);
     return m;
   }
+  /** Tage des geöffneten Termins: angeklickter Tag und die übrigen Tage derselben Reihe */
+  function offeneTage(): { an: string | null; reihe: Set<string> } {
+    if (!offen || !offenTag) return { an: spy, reihe: new Set() };
+    // wie in listeZeichnen(): dieselben Termine, gebündelt nur ohne Kategorie-Filter
+    const basis = gezeigt().filter((e) => vergangene || e.datum >= heute);
+    const z: Zeile | undefined = (kat ? basis : buendeln(basis)).find((x) => x.id === offen);
+    const reihe = new Set<string>((z?.sitzungen ?? []).map((x: KTermin) => x.datum).filter((d: string) => d !== offenTag));
+    return { an: offenTag, reihe };
+  }
   function miniZeichnen(dir = 0) {
     const tage = proTag(gezeigt());
+    const { an, reihe } = offeneTage();
     $('[data-tk-mini-label]').textContent = monatName(mm);
     miniVor.disabled = mm <= erster;
     miniNach.disabled = mm >= letzter;
@@ -285,7 +307,7 @@ export function initTanzkalender(): void {
         if (!imMonat) return h('span', { class: 'leer', 'aria-hidden': 'true' });
         const list = tage.get(datum) ?? [];
         const kats = [...new Set(list.map((e) => e.kat))].slice(0, 3);
-        const cls = [datum === heute && 'is-heute', datum < heute && 'is-vergangen', datum === spy && 'is-an'].filter(Boolean).join(' ');
+        const cls = [datum === heute && 'is-heute', datum < heute && 'is-vergangen', datum === an && 'is-an', reihe.has(datum) && 'is-reihe'].filter(Boolean).join(' ');
         return h(
           'button',
           {

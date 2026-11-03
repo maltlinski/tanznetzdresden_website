@@ -53,7 +53,7 @@ const wege = [
   { href: url(lang, 'home', '#mitglied'), k: t.mitmachen[0], t: t.mitmachen[1] },
 ];
 ---
-<section id="top" class="hero" aria-label={verein.name} data-hero>
+<section id="top" class="hero kopf" aria-label={verein.name} data-hero>
   <canvas
     class="hero__canvas"
     data-hero-canvas
@@ -264,12 +264,15 @@ const wege = [
 
   @media (min-width: 640px) {
     .claim__word { white-space: nowrap; overflow-wrap: normal; }
+    /* Feedback 01 (Startseite): die Einstiege stehen mit Luft über dem Keil, der Termin rückt mit nach oben */
+    .weg { padding: 24px clamp(16px, 2vw, 28px) max(var(--kopf-unten), 6vh) 0; }
+    .up { top: 57%; }
   }
   @media (max-width: 639px) {
     /* kein Platz neben der Überschrift; ohne Maus ist das Netz ohnehin ruhig */
     .replay { display: none; }
     /* Einstiege kompakt untereinander, der Termin steht direkt darüber */
-    .hero__floor-inner { padding-bottom: 18px; }
+    .hero__floor-inner { padding-bottom: calc(var(--kopf-unten) - 12px); }
     .weg { flex-direction: row; align-items: baseline; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid var(--on-dark-rule); }
     .weg__t { font-size: 19px; }
     .up { position: relative; z-index: 3; left: auto; top: auto; transform: none; max-width: none; margin: 0 var(--gutter) 22px; }

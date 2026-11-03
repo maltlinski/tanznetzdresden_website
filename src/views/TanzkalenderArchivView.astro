@@ -40,10 +40,10 @@ const daten = JSON.stringify(
 ).replace(/</g, '\\u003c');
 ---
 <Page title={k.title} description={k.desc} route="tanzkalenderArchiv">
-  <section class="tka-kopf">
+  <section class="tka-kopf kopf">
     <div class="wrap tka-kopf__grid">
       <div class="tka-kopf__text">
-        <nav class="tka-pfad" aria-label={sr.pfad}>
+        <nav class="tka-pfad kopf__kicker" aria-label={sr.pfad}>
           <a href={url(lang, 'formate')}>{k.formate}</a>
           <span aria-hidden="true">·</span>
           <a href={url(lang, 'formate', '#archiv')}>{k.archiv}</a>
@@ -155,11 +155,13 @@ const daten = JSON.stringify(
   /* ---------- Kopf ---------- */
   .tka-kopf { position: relative; background: var(--purple); color: #fff; overflow: hidden; }
   .tka-kopf__grid {
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px clamp(32px, 6vw, 96px); align-items: center;
-    padding-top: clamp(40px, 6vw, 80px); padding-bottom: clamp(56px, 7vw, 96px);
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px clamp(32px, 6vw, 96px); align-items: start;
+    padding-top: var(--buehne-oben); padding-bottom: clamp(56px, 7vw, 96px);
   }
   .tka-kopf__text { min-width: 0; }
-  .tka-pfad { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: 28px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
+  /* Regel „Köpfe“: der Pfad steht als erste Zeile, die Headline --kopf-kicker darunter */
+  .tka-pfad { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin-bottom: var(--kopf-kicker); font-family: var(--font-mono); font-size: var(--t-tag); line-height: 1; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
+  @media (max-width: 520px) { .tka-pfad { line-height: 1.5; } }
   .tka-pfad a { color: rgba(255, 255, 255, 0.72); }
   .tka-pfad a:hover { color: var(--cyan); }
   .tka-pfad span[aria-hidden] { color: rgba(255, 255, 255, 0.5); }
@@ -215,7 +217,7 @@ const daten = JSON.stringify(
   .tka-pdf { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--magenta-2); border-bottom: 1.5px solid var(--magenta); padding-bottom: 2px; }
   .tka-pdf:hover { color: var(--purple); border-color: var(--purple); }
   .tka-fuss { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px 40px; padding-top: 28px; border-top: 1px solid var(--rule); }
-  .tka-fuss p { max-width: 620px; margin: 0; font-size: 14px; line-height: 1.6; color: var(--ink-soft); }
+  .tka-fuss p { max-width: 620px; margin: 0; font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); }
   .tka-zurueck { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--magenta-2); border-bottom: 1.5px solid var(--magenta); padding-bottom: 3px; }
   .tka-zurueck:hover { color: var(--purple); border-color: var(--purple); }
   @media (max-width: 759px) {

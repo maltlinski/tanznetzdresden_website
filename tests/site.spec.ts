@@ -150,6 +150,27 @@ test('Mobiles Menü öffnet und schließt', async ({ page, isMobile }) => {
   await expect(toggle).toHaveAttribute('aria-expanded', 'false');
 });
 
+test('Menü auf dem Handy: Unterstrich sitzt dicht unter dem aktiven Punkt und ist so breit wie das Wort', async ({ page, isMobile }) => {
+  // Feedback 2026-11-01 (Menü mobil)
+  test.skip(!isMobile, 'nur mobil');
+  for (const [i, pfad] of ['/formate/', '/profitraining/', '/en/news/'].entries()) {
+    await page.goto(pfad);
+    if (i === 0) await dismissConsent(page);
+    await page.getByRole('button', { name: /^(Menü|Menu)$/ }).click();
+    const m = await page.locator('.site-nav a[aria-current]').evaluate((a) => {
+      const r = document.createRange();
+      r.selectNodeContents(a);
+      const text = r.getBoundingClientRect();
+      const box = a.getBoundingClientRect();
+      const strich = parseFloat(getComputedStyle(a).borderBottomWidth);
+      return { abstand: box.bottom - strich - text.bottom, breite: box.width - text.width, farbe: getComputedStyle(a).borderBottomColor };
+    });
+    expect(m.farbe, pfad).not.toBe('rgba(0, 0, 0, 0)');
+    expect(m.abstand, pfad).toBeLessThanOrEqual(3);
+    expect(Math.abs(m.breite), pfad).toBeLessThanOrEqual(2);
+  }
+});
+
 test('Sprachumschalter führt zur passenden Seite in der anderen Sprache', async ({ page, isMobile }) => {
   await page.goto('/termine/');
   await dismissConsent(page);
@@ -722,9 +743,21 @@ test('Profitraining: Dozent:innen-Mosaik läuft, hält an und führt in den Kale
   const mosaik = page.locator('[data-mosaik]');
   await expect(mosaik).toHaveClass(/is-laufend/);
   await expect(mosaik.locator('.mosaik__teil:not(.mosaik__teil--kopie) .kachel')).toHaveCount(6);
-  // die zweite Hälfte ist nur für die Endlosschleife da
-  await expect(mosaik.locator('.mosaik__teil--kopie')).toHaveAttribute('aria-hidden', 'true');
+  // die Kopien sind nur für die Endlosschleife da: für Screenreader und Tastatur verborgen …
+  const kopien = mosaik.locator('.mosaik__teil--kopie');
+  for (const k of await kopien.all()) {
+    await expect(k).toHaveAttribute('aria-hidden', 'true');
+    await expect(k).not.toHaveAttribute('inert', /.*/);
+  }
+  await expect(kopien.locator('.kachel').first()).toHaveAttribute('tabindex', '-1');
   const spur = mosaik.locator('[data-mosaik-spur]');
+  // … und füllen immer den ganzen Bildschirm (Feedback 2026-11-01: rechts verschwanden die Bilder)
+  for (let i = 0; i < 4; i++) {
+    const [m, sp] = await Promise.all([mosaik.boundingBox(), spur.boundingBox()]);
+    expect(sp!.x).toBeLessThanOrEqual(m!.x + 1);
+    expect(sp!.x + sp!.width).toBeGreaterThanOrEqual(m!.x + m!.width - 1);
+    await page.waitForTimeout(400);
+  }
   const lage = () => spur.evaluate((e) => getComputedStyle(e).transform);
 
   // läuft …
@@ -759,6 +792,27 @@ test('Profitraining: Dozent:innen-Mosaik läuft, hält an und führt in den Kale
   await expect(page.locator('#dozentin-leon-borgens')).toHaveClass(/is-hl/);
   await expect(page.locator('#dozentin-leon-borgens')).toBeFocused();
   await expect(page.locator('#dozentin-leon-borgens')).toBeInViewport();
+});
+
+test('Profitraining: auf breiten Bildschirmen ist das Mosaik voll und jede Kachel anklickbar', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'breiter Bildschirm');
+  await page.setViewportSize({ width: 1920, height: 1000 });
+  await openTraining(page);
+  const mosaik = page.locator('[data-mosaik]');
+  await mosaik.scrollIntoViewIfNeeded();
+  await page.locator('[data-mosaik-pause]').click();
+  await page.waitForTimeout(700);
+  const [m, sp] = await Promise.all([mosaik.boundingBox(), mosaik.locator('[data-mosaik-spur]').boundingBox()]);
+  expect(sp!.x + sp!.width).toBeGreaterThanOrEqual(m!.x + m!.width - 1);
+  // eine Kachel aus einer Kopie, die gerade ganz zu sehen ist
+  const kachel = await mosaik.locator('.mosaik__teil--kopie .kachel').evaluateAll((els, rand) => {
+    const i = els.findIndex((e) => { const r = e.getBoundingClientRect(); return r.left >= rand.l && r.right <= rand.r && r.top >= 0 && r.bottom <= innerHeight; });
+    return i < 0 ? null : { i, name: els[i].getAttribute('aria-label')!.split(',')[0] };
+  }, { l: m!.x, r: m!.x + m!.width });
+  expect(kachel).not.toBeNull();
+  await mosaik.locator('.mosaik__teil--kopie .kachel').nth(kachel!.i).click();
+  await expect(page).toHaveURL(/#kalender$/);
+  await expect(page.locator('#kalender').getByRole('button', { name: kachel!.name, exact: true })).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('Profitraining: ohne JavaScript und bei „Bewegung reduzieren“ ist das Mosaik ein Streifen zum Wischen', async ({ browser, page, isMobile }) => {

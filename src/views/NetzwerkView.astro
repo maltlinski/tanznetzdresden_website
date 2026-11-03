@@ -112,9 +112,9 @@ const t = {
   .card__name { font-family: var(--font-display); font-weight: 800; font-size: 22px; line-height: 1.1; letter-spacing: -0.02em; transition: color var(--dur-base); }
   .card__meta, .card__tags { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
   .card__tags { color: var(--magenta-2); }
-  .card__bio { font-size: 14px; line-height: 1.5; color: var(--ink-soft); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .card__bio { font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
   .net-empty { color: var(--ink-soft); }
   .net-own { margin-top: 64px; padding: 28px 30px; background: var(--tint); border-left: 4px solid var(--magenta); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 32px; }
-  .net-own p { margin: 0; max-width: 60ch; color: var(--ink-soft); line-height: 1.6; }
+  .net-own p { margin: 0; max-width: 60ch; color: var(--ink-soft); line-height: var(--lh-text); }
   .net-own a { color: var(--magenta-2); }
 </style>

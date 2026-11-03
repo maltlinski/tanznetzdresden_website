@@ -57,10 +57,10 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
 );
 ---
 <Page title={t.title} description={t.desc} route="profitraining" ogImage={foto.default}>
-  <section class="ku-hero" aria-labelledby="ku-h1">
+  <section class="ku-hero kopf" aria-labelledby="ku-h1">
     <div class="wrap ku-hero__grid">
-      <div>
-        <Tag color="cyan">{s.kicker}{since && ` · ${since}`}</Tag>
+      <div class="ku-hero__text">
+        <Tag color="cyan" class="kopf__kicker">{s.kicker}{since && ` · ${since}`}</Tag>
         <h1 id="ku-h1" class="ku-hero__title" data-split>{s.l1}<br /><em>{s.l2}</em></h1>
         <p class="ku-hero__lead">{s.lead}</p>
         <div class="ku-hero__actions">
@@ -181,10 +181,10 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
   .ku-hero { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
   .ku-hero__grid {
     flex: 1; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
-    gap: 48px clamp(32px, 6vw, 96px); align-items: end; align-content: center;
+    gap: 48px clamp(32px, 6vw, 96px); align-items: start; align-content: start;
     padding-block: var(--buehne-oben) clamp(40px, 6vh, 72px);
   }
-  .ku-hero :global(.tag) { margin-bottom: 24px; }
+  /* Regel „Köpfe“: Kicker oben im Abstand --buehne-oben, Foto ab derselben Linie */
   .ku-hero__title {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(56px, min(8vw, 14vh), 128px); line-height: 0.9;
     letter-spacing: -0.035em; margin: 0 0 24px; color: #fff;
@@ -224,7 +224,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
   }
   .ku-info__big--datum { font-family: var(--font-datum); font-weight: 600; font-size: 22px; line-height: 1.2; letter-spacing: 0; }
   .ku-info__big em { font-style: normal; color: var(--magenta-2); }
-  .ku-info__text { display: block; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .ku-info__text { display: block; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
 
   .ku-cta { position: relative; background: var(--cyan); color: var(--purple); }
   .ku-cta :global(.ku-cta__keil) { position: absolute; right: 0; top: 0; width: 42%; }

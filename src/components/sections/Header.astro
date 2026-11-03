@@ -311,8 +311,11 @@ const nav = [
       display: none; width: 100%; margin: 0; flex-direction: column; align-items: flex-start; gap: 18px;
       padding: 8px 0 18px; border-top: 1px solid rgba(255, 255, 255, 0.12);
     }
-    .site-nav { flex-direction: column; gap: 2px; padding-top: 10px; }
-    .site-nav a { font-family: var(--font-display); font-size: 30px; font-weight: 800; letter-spacing: -0.02em; text-transform: none; }
+    .site-nav { flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 10px; }
+    /* Feedback 2026-11-01 (Menü mobil): der Unterstrich des aktiven Punkts sitzt dicht unter der Schrift –
+       und genau so breit wie das Wort: Zeilenhöhe knapp, kein Innenabstand unten, Punkte nicht gestreckt
+       (geprüft in tests/site.spec.ts „Menü auf dem Handy: Unterstrich …“) */
+    .site-nav a { font-family: var(--font-display); font-size: 30px; font-weight: 800; letter-spacing: -0.02em; text-transform: none; line-height: 1.1; padding: 2px 0 1px; }
     .site-header.is-open .site-header__right { display: flex; }
     .site-header.is-open .menu-toggle__icon span:first-child { transform: translateY(3.5px) rotate(45deg); }
     .site-header.is-open .menu-toggle__icon span:last-child { width: 22px; transform: translateY(-3.5px) rotate(-45deg); }

@@ -158,7 +158,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
 ---
 <Page title={p.name} description={description} route="netzwerk" rest={`${p.id}/`} ogImage={typeof p.photo === 'object' ? p.photo : undefined}>
   <div class="profil" data-profil>
-    <section class="ph" data-ph>
+    <section class="ph kopf" data-ph data-kopf-frei>
       {(heroEcht || heroDemo) && (
         <div class:list={['ph__bild', !heroEcht && 'demo-an']} data-wipe data-ph-bild>
           <div class="ph__bild-in" data-parallax>
@@ -456,7 +456,8 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   .pgross--hell { color: #fff; }
   .pgross--hell span { color: var(--magenta); }
 
-  /* Kopf mit großem Namen */
+  /* Kopf mit großem Namen – Ausnahme der Regel „Köpfe“ (data-kopf-frei): der Name steht unten am Porträt;
+     erste Zeile und Abstand zum Abschnitt danach gelten trotzdem */
   .ph { position: relative; background: var(--purple); color: #fff; overflow: hidden; min-height: var(--buehne-h); }
   .ph__bild { position: absolute; top: 0; right: 0; bottom: 0; width: min(54%, 760px); overflow: hidden; background: #000; clip-path: polygon(18% 0, 100% 0, 100% 100%, 0 100%); }
   .ph__bild-in { position: absolute; inset: -6% 0; will-change: transform; }
@@ -472,7 +473,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   }
   .ph__inhalt {
     position: relative; z-index: 2; min-height: var(--buehne-h); display: flex; flex-direction: column;
-    justify-content: space-between; gap: 48px; padding-block: clamp(28px, 4vw, 48px) clamp(72px, 9vw, 112px); pointer-events: none;
+    justify-content: space-between; gap: 48px; padding-block: var(--buehne-oben) clamp(72px, 9vw, 112px); pointer-events: none;
   }
   .ph__inhalt a, .ph__inhalt :global(.tag) { pointer-events: auto; }
   .ph__top { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 28px; }
@@ -659,7 +660,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   .pueber__grid { display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 48px clamp(40px, 6vw, 104px); }
   .pueber__text { flex: 1 1 520px; min-width: 0; max-width: 720px; display: flex; flex-direction: column; gap: clamp(28px, 3vw, 40px); }
   .pueber__seite { flex: 1 1 340px; min-width: 0; max-width: 440px; position: sticky; top: calc(var(--header-h) + 80px); }
-  .pueber__bio p { margin: 0 0 1.2em; font-size: 18px; line-height: 1.75; text-wrap: pretty; }
+  .pueber__bio p { margin: 0 0 1.2em; font-size: 18px; line-height: var(--lh-lesetext); text-wrap: pretty; }
   .pueber__bio p:first-child {
     margin-bottom: 1em; font-family: var(--font-display); font-weight: 700; font-size: clamp(22px, 2.2vw, 30px); line-height: 1.3;
     letter-spacing: -0.015em; color: var(--purple);
@@ -670,7 +671,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   :global(html.demo) .pfakten--demo + .pfakten { border-top: 0; }
   .pfakten__z { display: grid; grid-template-columns: minmax(110px, 150px) minmax(0, 1fr); gap: 16px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
   .pfakten dt { padding-top: 3px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
-  .pfakten dd { margin: 0; font-size: 15.5px; line-height: 1.5; font-weight: 600; color: var(--purple); overflow-wrap: anywhere; }
+  .pfakten dd { margin: 0; font-size: 15.5px; line-height: var(--lh-text); font-weight: 600; color: var(--purple); overflow-wrap: anywhere; }
   .pfakten a { color: var(--purple); }
   .pfakten a:hover { color: var(--magenta-2); }
 

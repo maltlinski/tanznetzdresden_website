@@ -33,6 +33,10 @@ Tokens (`var(--purple)`, `var(--space-4)` …) statt fester Werte schreiben, dan
 - Lila = Anker (Headlines, dunkle Bänder), Cyan = Auftakt (Felder, Buttons).
 - Work Sans 800 für Headlines, Open Sans für Text, JetBrains Mono in Versalien für Kicker.
 - **Datumsschrift:** jedes Datum, jede Uhrzeit, jede Terminangabe in der Schrift des Kalenders (siehe unten).
+- **Köpfe:** Kicker und Headline stehen auf allen Seiten an derselben Stelle, der erste Textblock danach im
+  gleichen Abstand (siehe unten).
+- **Zeilenabstand:** Fließtext dunkel auf hell mit `--lh-text`, lange Lesetexte mit `--lh-lesetext`, nie feste
+  Werte (siehe unten).
 - Der „Keil“ (diagonaler Schnitt) als Abschluss von Bändern und Fotos.
 - Bewegung schnell und entschieden (`--ease-out`), kein Federn.
 
@@ -40,10 +44,67 @@ Bausteine: `Tag`, `Button`, `Badge`, `KeilBar`, `Logo` in `src/components/ui/`, 
 Unterseiten.
 
 Der lila Kopf jeder Unterseite ist so hoch wie der Kopf der Startseite: `--buehne-h` (Bildschirm minus
-Kopfleiste, 560–940 px) in `src/styles/global.css`, erste Zeile im Abstand `--buehne-oben`. `PageIntro` nutzt
-das von selbst; eigene Köpfe (Kooperationen, News, Profitraining, Spenden, Profil, 404) setzen
-`min-height: var(--buehne-h)`. Rechtstexte bekommen `<PageIntro kompakt>`, Beiträge und Termine behalten
-ihren kurzen Kopf. Im Test „Lila Kopf der Unterseiten …“ (tests/site.spec.ts) wird die Höhe verglichen.
+Kopfleiste, 560–940 px) in `src/styles/global.css`. `PageIntro` nutzt das von selbst; eigene Köpfe
+(Kooperationen, News, Profitraining, Spenden, Profil, 404) setzen `min-height: var(--buehne-h)`. Rechtstexte
+bekommen `<PageIntro kompakt>`, Beiträge und Termine behalten ihren kurzen Kopf. Im Test „Lila Kopf der
+Unterseiten …“ (tests/site.spec.ts) wird die Höhe verglichen. Wo darin Kicker und Headline stehen, regelt die
+Regel „Köpfe“.
+
+### Köpfe (Regel)
+
+Beim Wechsel zwischen den Menüpunkten steht alles an derselben Stelle – man findet sich schneller zurecht
+(Design-Feedback vom 1. November 2026). Die Werte stehen als Tokens in `src/styles/global.css`:
+
+| Token | Wert | Bedeutung |
+|---|---|---|
+| `--buehne-oben` | 28–72 px (6 vh) | Kopfleiste → erste Zeile des Kopfs (Kicker; auf der Startseite der Claim) |
+| `--kopf-kicker` | 24 px | Kicker → Headline |
+| `--nach-kopf` | 24–40 px (3 vw) | Unterkante des Kopfs → erster Textblock danach |
+| `--kopf-unten` | 32 px | mindestens zwischen letzter Zeile im Kopf und dem Keil |
+
+- Jeder lila Kopf trägt die Klasse **`kopf`**, der Kicker die Klasse **`kopf__kicker`** (macht ihn zum eigenen
+  Block mit `--kopf-kicker` Abstand). Der Inhalt beginnt **oben**, nicht senkrecht mittig: kein
+  `margin-block: auto`, `align-content: center` oder `justify-content: center` für den Textblock. Bilder,
+  Kästen und Listen daneben dürfen anders stehen (z. B. „Als Nächstes“ im Kalender unten in der Zeile).
+- Den Abstand zum ersten Abschnitt danach setzt `global.css` selbst (`main > .kopf + …`, mit `!important`):
+  der Abschnitt darf oben keinen eigenen Abstand haben. Eine mitlaufende Leiste direkt am Kopf trägt
+  `kopf-leiste` (Kalender) und rückt mit dem Außenabstand ab. Folgt ein dunkles Band (Über uns: Haltung), gilt
+  derselbe Abstand bis zu dessen erstem Text.
+- Ausnahme `data-kopf-frei`: Profilseiten (der Name steht unten am Porträt) – dort gelten nur erste Zeile und
+  Abstand danach.
+- Geprüft in `tests/koepfe.spec.ts` auf allen Menüseiten und den Seiten der Sitemap (Deutsch, Englisch,
+  Desktop, Handy): erste Zeile, Abstand Kicker → Headline, Headline auf allen Seiten auf gleicher Höhe, Abstand
+  zum ersten Textblock und zum Keil. Neue Seite mit Kopf: Klassen setzen, Test laufen lassen.
+
+### Zeilenabstand (Regel)
+
+Fließtext – dunkle Schrift auf hellem Grund (Weiß, Tint, Cyan) – steht kompakt: besser lesbar und
+platzsparend, vor allem auf dem Handy (Design-Feedback vom 1. November 2026).
+
+| Token | Desktop | Handy (≤ 700 px) | für |
+|---|---|---|---|
+| `--lh-text` | 1,5 | 1,45 | Absätze, Anreißer, Beschreibungen, Listen, Bildunterschriften |
+| `--lh-lesetext` | 1,6 | 1,55 | lange Lesetexte: Beitragstext (`.ab__text`), Rechtstexte (`.prose`), Termintext, Profil-Bio |
+
+- Immer `line-height: var(--lh-text)` (bzw. `--lh-lesetext`), nie feste Werte wie `1.6`. Überschriften,
+  Knöpfe, Kicker und Zahlen haben ihre eigenen, engeren Werte.
+- Heller Text auf dunklem Grund (lila Köpfe und Bänder, Fuß) ist ausgenommen und behält etwas mehr Luft.
+- Geprüft in `tests/zeilenabstand.spec.ts`: jeder mehrzeilige Absatz in Open Sans auf den Seiten der Sitemap
+  und im aufgeklappten Kalendertermin, Desktop und Handy.
+
+### Weitere Festlegungen aus dem Design-Feedback (1. November 2026)
+
+- **Menü auf dem Handy:** Der Unterstrich des aktiven Punkts sitzt direkt unter der Schrift und ist so breit
+  wie das Wort (`src/components/sections/Header.astro`, Test „Menü auf dem Handy: Unterstrich …“).
+- **Kalender:** Ein geöffneter Termin hinterlegt den ganzen Tag bis zur Tageszahl; im Mini-Monat ist der
+  angeklickte Tag dunkel, die übrigen Tage der Reihe hell ([kalender.md](kalender.md), Test „Geöffneter Termin …“
+  in `tests/tanzkalender.spec.ts`).
+- **Startseite:** Die drei Einstiege unten im Hero stehen mit Luft über dem Keil (`--kopf-unten`).
+- **Laufende Streifen (Mosaik):** Für eine Endlosschleife so viele Kopien anlegen, dass der Streifen immer
+  breiter ist als der Bildschirm, und Kopien nie `inert` machen – mit der Maus müssen sie funktionieren wie das
+  Original (für Tastatur und Screenreader: `aria-hidden` und `tabindex="-1"`). Test „… auf breiten Bildschirmen
+  ist das Mosaik voll …“ in `tests/site.spec.ts`.
+- Übersicht aller Punkte und wo sie umgesetzt sind: [design-feedback-2026-11.md](design-feedback-2026-11.md).
 
 ### Datumsschrift (Regel)
 
@@ -63,7 +124,8 @@ im Text, 500–600 in Listen und Kästen), nie Open Sans oder Work Sans.
   in JetBrains Mono steht. Die Muster und die Liste der Titel- und Fließtext-Stellen liegen in
   `src/lib/datum-schrift.ts`; eine neue Ausnahme dort nur mit Begründung eintragen.
 - **Neue Entwürfe aus Claude Design:** Datumsangaben beim Umsetzen auf die Datumsschrift bringen, auch wenn der
-  Entwurf eine andere Schrift zeigt, und die Abweichung in der README des Entwurfs notieren.
+  Entwurf eine andere Schrift zeigt, und die Abweichung in der README des Entwurfs notieren. Das gilt genauso
+  für die Regeln „Köpfe“ und „Zeilenabstand“.
 
 Bewusste Abweichungen stehen gesammelt in `src/styles/overrides.css` (derzeit nur `--ink-muted`, dunkler für
 WCAG-Kontrast).
@@ -112,7 +174,7 @@ Wo GSAP läuft:
 | Kategorie-Filter | `EventFilter.astro` | Liste gleitet in die neue Ordnung (Flip) |
 | Kalender (Tanzkalender und Profitraining) | `Kalender.astro` | Tage laufen ein, Monatswechsel in Blätterrichtung, Filter-Markierungen animiert; in der Tagesansicht steigt das Datum aus einer Maske, Texte folgen, das Bild der KEEP UP-Beschreibung zoomt hinein |
 | Intern → KEEP UP | `pages/intern/keep-up/` | Wochen und Karten laufen ein, Schublade zum Einplanen gleitet von rechts, Bild im Editor wischt auf, Balken beim Veröffentlichen |
-| Profitraining: Dozent:innen | `keep-up/Mosaik.astro` | Foto-Mosaik, das endlos nach rechts läuft (GSAP); läuft auch unter der Maus weiter, hält nur über den Knopf „Anhalten“ oder bei Tastatur-Fokus; Klick filtert den Kalender, „Zur Dozent:in →“ holt die Kachel ins Bild; Tempo in `src/settings/keep-up.ts`; bei „Bewegung reduzieren“ ein Streifen zum Wischen |
+| Profitraining: Dozent:innen | `keep-up/Mosaik.astro` | Foto-Mosaik, das endlos nach rechts läuft (GSAP, so viele Kopien wie der Bildschirm braucht, alle anklickbar); läuft auch unter der Maus weiter, hält nur über den Knopf „Anhalten“ oder bei Tastatur-Fokus; Klick filtert den Kalender, „Zur Dozent:in →“ holt die Kachel ins Bild; Tempo in `src/settings/keep-up.ts`; bei „Bewegung reduzieren“ ein Streifen zum Wischen |
 | Profitraining: Kopf | `views/ProfitrainingView.astro` | Überschrift mit SplitText (Buchstaben aus einer Maske), Foto als Keil |
 | Menü im Kopf | `sections/Header.astro` (Web Animations, ohne GSAP) | Ein magentafarbener Strich unter dem aktiven Punkt gleitet beim Wechsel zum neuen Punkt, auch über den Seitenwechsel (Lage beim Klick in `sessionStorage`); im aufklappbaren Menü und bei „Bewegung reduzieren“ die einfache Unterstreichung |
 | „Login“ → interner Bereich | `scripts/blende.ts` (Web Animations, ohne GSAP) | Blende aus Magenta und Lila wischt über die Website; im internen Bereich (`layouts/Intern.astro`) schrumpft sie auf die Seitenleiste, Logo und Schriftzug gleiten an ihren Platz; verbunden über `sessionStorage` |

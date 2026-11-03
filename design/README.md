@@ -22,6 +22,8 @@ design/
 | Open-Sans-Dateien, Logo | sofort |
 | **Neue** Schriftfamilie | `npm run design:check` meldet es – Schrift muss einmal in `src/styles/fonts.css` eingebunden werden (wir laden nichts von Google) |
 | Schrift für Datum und Uhrzeit | bleibt JetBrains Mono (`--font-datum` in `src/styles/global.css`), auch wenn ein Entwurf anderes zeigt – Hausregel „Datumsschrift“ (docs/entwicklung.md), geprüft von `tests/datum-schrift.spec.ts` |
+| Lage von Kicker und Headline im Kopf, Abstand zum ersten Textblock | bleibt nach der Regel „Köpfe“ (`--buehne-oben`, `--kopf-kicker`, `--nach-kopf`, `--kopf-unten` in `src/styles/global.css`), auch wenn ein Entwurf anderes zeigt; geprüft von `tests/koepfe.spec.ts` |
+| Zeilenabstand im Fließtext | bleibt nach der Regel „Zeilenabstand“ (`--lh-text`, `--lh-lesetext`), auch wenn ein Entwurf größere Abstände zeigt; geprüft von `tests/zeilenabstand.spec.ts` |
 | Aussehen einzelner Komponenten (Button, Tag …) oder neue Seitenentwürfe | nicht automatisch: Die Website hat eigene Astro-Bausteine. Entwurf in `entwuerfe/` ablegen und umsetzen lassen. |
 
 ## Neues Designsystem aus Claude Design übernehmen

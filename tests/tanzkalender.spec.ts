@@ -100,6 +100,35 @@ test('Mini-Monat: Tage mit Terminen, Blättern, Klick springt zum Tag', async ({
   await expect(liste(page).locator('[data-day="2026-09-07"]')).toBeInViewport();
 });
 
+test('Geöffneter Termin: Tag bis zur Tageszahl hellila, im Mini-Monat der angeklickte Tag dunkel, die Reihe hell', async ({ page, isMobile }) => {
+  // Feedback 2026-11-01 (Kalender): die Markierung springt nicht mehr mit der Scroll-Lage auf einen anderen Tag
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await oeffnen(page);
+  const tag = liste(page).locator('.tk-tagzeile[data-day="2026-10-12"]');
+  await tag.getByRole('button', { name: /KEEP UP · Profitraining/ }).click();
+  await expect(tag).toHaveClass(/is-offen/);
+  // die Fläche reicht bis zur Tageszahl: Tageszahl steht auf Tint
+  const flaeche = await tag.locator('.tk-tagzeile__in').evaluate((el) => {
+    const r = el.getBoundingClientRect();
+    const n = el.querySelector('.tk-datum__n')!.getBoundingClientRect();
+    return { farbe: getComputedStyle(el).backgroundColor, links: n.left - r.left };
+  });
+  expect(flaeche.farbe).toBe('rgb(244, 242, 247)');
+  expect(flaeche.links).toBeGreaterThanOrEqual(8);
+  const mini = page.locator('[data-tk-mini]');
+  await expect(mini.locator('.is-an')).toHaveText(/^12/);
+  await expect(mini.locator('.is-reihe')).toHaveText([/^13/, /^14/, /^16/]);
+  if (!isMobile) {
+    // Scrollen verschiebt die Markierung nicht, solange der Termin offen ist
+    await page.mouse.wheel(0, 900);
+    await page.waitForTimeout(300);
+    await expect(mini.locator('.is-an')).toHaveText(/^12/);
+  }
+  await tag.getByRole('button', { name: /KEEP UP · Profitraining/ }).click();
+  await expect(tag).not.toHaveClass(/is-offen/);
+  await expect(mini.locator('.is-reihe')).toHaveCount(0);
+});
+
 test('Monat: Raster, Tag wählen, blättern, nächster Termin, Heute; Ansicht per Tastatur', async ({ page }) => {
   await oeffnen(page);
   const tab = page.getByRole('tab', { name: 'Liste' });

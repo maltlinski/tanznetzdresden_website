@@ -74,11 +74,11 @@ const t = {
   .contact { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding: 32px 0 40px; border-top: 1px solid var(--rule); scroll-margin-top: calc(var(--header-h) + 24px); }
   .contact :global(.tag) { margin-bottom: 6px; }
   .contact h2 { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 2.6vw, 34px); letter-spacing: -0.025em; line-height: 1.05; color: var(--purple); margin: 0; }
-  .contact p { margin: 0 0 6px; max-width: 46ch; font-size: 15.5px; line-height: 1.6; color: var(--ink-soft); }
+  .contact p { margin: 0 0 6px; max-width: 46ch; font-size: 15.5px; line-height: var(--lh-text); color: var(--ink-soft); }
   .contact :global(.protected-email) { font-size: 17px; color: var(--purple); }
   .contact__tel { color: var(--purple); font-size: 15px; }
   .map-section { background: var(--tint); }
   .map-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 40px clamp(32px, 6vw, 96px); align-items: start; }
   .map-grid :global(.tag) { margin-bottom: 16px; }
-  .map-addr { font-style: normal; margin: 20px 0 18px; font-size: 17px; line-height: 1.6; color: var(--purple); }
+  .map-addr { font-style: normal; margin: 20px 0 18px; font-size: 17px; line-height: var(--lh-text); color: var(--purple); }
 </style>

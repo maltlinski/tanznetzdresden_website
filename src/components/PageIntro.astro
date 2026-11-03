@@ -17,9 +17,9 @@ interface Props {
 }
 const { kicker, title, accent, lead, kompakt = false } = Astro.props;
 ---
-<section class:list={['intro', kompakt && 'intro--kompakt']}>
+<section class:list={['intro', 'kopf', kompakt && 'intro--kompakt']}>
   <div class="wrap intro__inner">
-    <Tag color="cyan">{kicker}</Tag>
+    <Tag color="cyan" class="kopf__kicker">{kicker}</Tag>
     <h1 class="intro__title">{title}{accent && <><br /><em>{accent}</em></>}</h1>
     {lead && <p class="intro__lead">{lead}</p>}
     <slot />
@@ -29,11 +29,10 @@ const { kicker, title, accent, lead, kompakt = false } = Astro.props;
 
 <style>
   .intro { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
-  /* Inhalt mittig in der Fläche, mindestens im Abstand des Startseiten-Claims */
-  .intro__inner { width: 100%; margin-block: auto; padding-block: var(--buehne-oben) clamp(64px, 8vw, 104px); }
+  /* Regel „Köpfe“: Inhalt oben, erste Zeile im Abstand --buehne-oben (wie der Claim der Startseite) */
+  .intro__inner { width: 100%; padding-block: var(--buehne-oben) clamp(64px, 8vw, 104px); }
   .intro--kompakt { min-height: 0; }
-  .intro--kompakt .intro__inner { padding-block: clamp(56px, 8vw, 112px) clamp(48px, 6vw, 80px); }
-  .intro :global(.tag) { margin-bottom: 24px; }
+  .intro--kompakt .intro__inner { padding-block: var(--buehne-oben) clamp(48px, 6vw, 80px); }
   .intro__title {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6.4vw, 96px);
     line-height: 0.92; letter-spacing: -0.035em; margin: 0; max-width: 14ch; text-wrap: balance;

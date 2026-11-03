@@ -55,14 +55,14 @@ const json = JSON.stringify({
 }).replace(/</g, '\\u003c');
 ---
 <Page title={k.title} description={k.desc} route="termine" fortschritt>
-  <section class="tk-kopf" data-hero data-tk-kopf>
+  <section class="tk-kopf kopf" data-hero data-tk-kopf>
     <svg class="tk-netz" viewBox={`0 0 ${n.breite} ${n.hoehe}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" data-tk-netz>
       {n.linien.map((l) => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} pathLength="1" class:list={[l.dick && 'dick']} />)}
       {n.punkte.map((p) => <rect x={p.x} y={p.y} width={p.s} height={p.s} class:list={[p.magenta && 'mg']} />)}
     </svg>
     <div class="wrap tk-kopf__inner">
-      <div>
-        <Tag color="cyan">{k.kicker}</Tag>
+      <div class="tk-kopf__text">
+        <Tag color="cyan" class="kopf__kicker">{k.kicker}</Tag>
         <h1 class="tk-kopf__h1" data-split>{h1}{accent && <><br /><span>{accent}</span></>}</h1>
         <p class="tk-kopf__lead" data-tk-rise>{k.lead}</p>
       </div>
@@ -94,7 +94,7 @@ const json = JSON.stringify({
     <KeilBar class="tk-kopf__keil" />
   </section>
 
-  <div class="tk-leiste" data-tk-leiste>
+  <div class="tk-leiste kopf-leiste" data-tk-leiste>
     <div class="wrap tk-leiste__inner">
       <div class="tk-tabs" role="tablist" aria-label={sr.ansicht}>
         <button type="button" role="tab" id="tk-tab-liste" aria-controls="tk-liste" aria-selected="true" data-tk-ansicht="liste">{a.liste}</button>
@@ -194,10 +194,11 @@ const json = JSON.stringify({
   /* bis das Skript das Netz einzeichnet */
   @media (prefers-reduced-motion: no-preference) { :global(.js) .tk-netz:not(.is-da) { opacity: 0; } }
   .tk-kopf__inner {
-    position: relative; width: 100%; margin-block: auto; padding-block: var(--buehne-oben) clamp(64px, 8vw, 104px);
+    position: relative; width: 100%; padding-block: var(--buehne-oben) clamp(64px, 8vw, 104px);
     display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 48px clamp(32px, 6vw, 96px); align-items: end;
   }
-  .tk-kopf :global(.tag) { margin-bottom: 24px; }
+  /* Regel „Köpfe“: Text oben, die nächsten Termine unten in der Zeile */
+  .tk-kopf__text { align-self: start; }
   .tk-kopf__h1 {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(52px, 7vw, 104px); line-height: 0.92;
     letter-spacing: -0.035em; margin: 0 0 28px; color: #fff;
@@ -228,6 +229,7 @@ const json = JSON.stringify({
   :global(.tk-next__pfeil) { font-family: var(--font-display); font-size: 24px; color: var(--magenta); }
 
   /* ---------- Leiste ---------- */
+  /* Regel „Köpfe“: erster Block nach dem Kopf; der Abstand --nach-kopf kommt aus global.css (.kopf-leiste) */
   .tk-leiste { position: sticky; top: var(--tk-kopf-h); z-index: 20; background: var(--paper); border-bottom: 1px solid var(--rule); }
   .tk-leiste__inner { padding-block: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
   .tk-tabs { display: flex; border: 1.5px solid var(--purple); }
@@ -322,6 +324,8 @@ const json = JSON.stringify({
   .tk-mini__tage :global(.is-vergangen) { color: var(--ink-soft); }
   .tk-mini__tage :global(.is-heute) { outline: 1.5px solid var(--magenta); outline-offset: -1.5px; }
   .tk-mini__tage :global(.is-an) { background: var(--purple); color: #fff; outline: 0; }
+  /* Feedback 02: die übrigen Tage der Reihe des geöffneten Termins hellila */
+  .tk-mini__tage :global(.is-reihe) { background: var(--purple-tint); }
   .tk-mini__tage :global(.is-an .tk-sq[data-kat='Diskurs']) { background: #fff; }
   .tk-mini__tage :global(.punkte) { display: flex; gap: 2px; height: 5px; }
   .tk-mini__tage :global(.punkte .tk-sq) { width: 5px; height: 5px; }
@@ -337,7 +341,11 @@ const json = JSON.stringify({
   .tk-spalte :global(.tk-mo__kopf h2) { font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 3vw, 40px); line-height: 1; letter-spacing: -0.03em; color: var(--purple); margin: 0; }
   .tk-spalte :global(.tk-mo__kopf span) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
   .tk-spalte :global(.tk-tagzeile) { border-bottom: 1px solid var(--rule); scroll-margin-top: calc(var(--tk-oben) + 70px); }
-  .tk-spalte :global(.tk-tagzeile__in) { display: grid; grid-template-columns: clamp(58px, 7vw, 84px) minmax(0, 1fr); gap: clamp(12px, 2vw, 28px); padding: 14px 0; }
+  .tk-spalte :global(.tk-tagzeile__in) { display: grid; grid-template-columns: clamp(58px, 7vw, 84px) minmax(0, 1fr); gap: clamp(12px, 2vw, 28px); padding: 14px 0; transition: background var(--dur-base); }
+  /* Feedback 02: geöffneter Termin – der ganze Tag bis zur Tageszahl hellila (wie die Fläche des Termins);
+     der Rand steht links über, damit nichts verrutscht */
+  .tk-spalte :global(.is-offen .tk-tagzeile__in) { background: var(--tint); margin-inline: -12px; padding-inline: 12px; }
+  .tk-spalte :global(.is-offen .tk-ev__knopf:hover:not([aria-expanded='true'])) { background: var(--purple-tint); }
   .tk-spalte :global(.tk-datum) { display: flex; flex-direction: column; gap: 4px; padding-top: 8px; }
   .tk-spalte :global(.tk-datum__wt) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
   .tk-spalte :global(.tk-datum__n) { font-family: var(--font-display); font-weight: 800; font-size: clamp(34px, 3.4vw, 46px); line-height: 0.88; letter-spacing: -0.04em; color: var(--purple); }
@@ -370,7 +378,7 @@ const json = JSON.stringify({
   .tk-spalte :global(.tk-detail__in) {
     padding: 4px 8px 22px calc(clamp(84px, 8.4vw, 108px) + clamp(18px, 2.4vw, 28px)); display: flex; flex-direction: column; gap: 16px;
   }
-  :global(.tk-text) { margin: 0; max-width: 620px; font-size: 15px; line-height: 1.6; color: var(--ink); text-wrap: pretty; }
+  :global(.tk-text) { margin: 0; max-width: 620px; font-size: 15px; line-height: var(--lh-text); color: var(--ink); text-wrap: pretty; }
   :global(.tk-tage) { display: flex; flex-wrap: wrap; gap: 6px; }
   :global(.tk-tage span) {
     background: var(--paper); border: 1px solid var(--rule); padding: 5px 9px; font-family: var(--font-mono); font-size: 11px;
@@ -379,7 +387,7 @@ const json = JSON.stringify({
   :global(.tk-fakten) { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 0; }
   :global(.tk-fakten div) { display: flex; flex-direction: column; gap: 4px; }
   :global(.tk-fakten dt) { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
-  :global(.tk-fakten dd) { margin: 0; font-size: 14px; line-height: 1.5; color: var(--purple); }
+  :global(.tk-fakten dd) { margin: 0; font-size: 14px; line-height: var(--lh-text); color: var(--purple); }
   :global(.tk-fakten dd + dd) { color: var(--ink-soft); }
   :global(.tk-links) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
   :global(.tk-links a.tk-mono) { color: var(--magenta-2); }
@@ -426,7 +434,7 @@ const json = JSON.stringify({
   .tk-tag :global(.tk-text) { font-size: 14.5px; }
   .tk-tag :global(.tk-eintritt) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
   .tk-tag :global(.tk-tag__leer) { border-top: 1px solid var(--rule); padding: 18px 0; display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
-  .tk-tag :global(.tk-tag__leer p) { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .tk-tag :global(.tk-tag__leer p) { margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .tk-tag :global(.tk-tag__leer button) { line-height: 1.6; }
 
   /* ohne JavaScript: einfache Liste */

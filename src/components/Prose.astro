@@ -4,11 +4,13 @@
 <div class="prose"><slot /></div>
 
 <style>
-  .prose { max-width: 760px; font-size: 16px; line-height: 1.7; color: var(--ink); }
+  .prose { max-width: 760px; font-size: 16px; line-height: var(--lh-lesetext); color: var(--ink); }
   .prose :global(h2) {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 3vw, 34px); line-height: 1.1;
     letter-spacing: -0.025em; color: var(--purple); margin: 2.2em 0 0.6em; scroll-margin-top: calc(var(--header-h) + 16px);
   }
+  /* Regel „Köpfe“: die erste Überschrift steht direkt am Anfang (Abstand zum Kopf kommt von --nach-kopf) */
+  .prose > :global(:first-child), .prose > :global(:first-child > :first-child) { margin-top: 0; }
   .prose :global(h2::before) { content: ''; display: block; width: 10px; height: 10px; background: var(--magenta); margin-bottom: 14px; }
   .prose :global(h3) { font-family: var(--font-display); font-weight: 700; font-size: 20px; color: var(--purple); margin: 1.8em 0 0.4em; }
   .prose :global(p), .prose :global(ul), .prose :global(ol) { margin: 0 0 1em; }

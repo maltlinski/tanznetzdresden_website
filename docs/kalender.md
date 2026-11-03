@@ -14,6 +14,10 @@ springt mit **Heute** zum heutigen Tag.
   Woche in einer Zeile. Aufklappen zeigt Text, Wann, Wo (mit Adresse), Eintritt, „In Kalender speichern“, Route und
   den Link zur Terminseite. Links der Mini-Monat (Klick springt zum Tag), die Legende, „Auswahl als .ics laden“
   (alle gezeigten kommenden Termine), das Kalender-Abo und „Termin einreichen“.
+- **Geöffneter Termin:** Der ganze Tag ist bis zur Tageszahl hellila hinterlegt (`--tint`). Im Mini-Monat ist der
+  angeklickte Tag dunkellila, die übrigen Tage derselben Reihe (z. B. einer KEEP UP-Woche) hellila
+  (`--purple-tint`); solange der Termin offen ist, verschiebt das Scrollen die Markierung nicht. Ohne geöffneten
+  Termin markiert der Mini-Monat den Tag, der gerade in der Mitte der Liste steht.
 - **Monat:** Raster mit bis zu drei Einträgen je Tag, daneben der gewählte Tag.
 - **Fristen:** Ein News-Beitrag mit Bewerbungsfrist (Ausschreibung) steht am Tag der Frist als „Frist“ im Kalender.
 - **Eintritt:** Feld „Eintritt“ beim Termin (Intern → Kalender unter *Mehr Angaben*, in Dateien `eintritt`/`eintritt_en`).

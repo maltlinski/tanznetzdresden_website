@@ -4,7 +4,10 @@
  * Kacheln einzeln oder zu zweit übereinander, jede Spalte leicht versetzt. Ein Klick filtert den Kalender auf
  * diese Dozent:in und springt hin; „Zur Dozent:in →“ im Kalender hebt die Kachel hervor.
  *
- * Läuft nur mit JavaScript und ohne „Bewegung reduzieren“; sonst ist es ein Streifen zum Wischen.
+ * Läuft nur mit JavaScript und ohne „Bewegung reduzieren“; sonst ist es ein Streifen zum Wischen. Für die
+ * Endlosschleife legt das Skript so viele Kopien an, dass die Spur immer breiter ist als der Bildschirm. Die
+ * Kopien sind für Screenreader und Tastatur verborgen (aria-hidden, tabindex -1), mit der Maus aber
+ * anklickbar wie das Original – sonst wäre die Hälfte des Mosaiks ohne Funktion (Feedback 2026-11-01).
  * Läuft auch unter der Maus und beim Klick weiter. Anhalten nur über den Knopf „Anhalten“ (WCAG 2.2.2) und
  * solange die Tastatur auf einer Kachel steht (sonst liefe sie unter dem Fokus davon).
  */
@@ -54,7 +57,7 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
   <div class="mosaik" data-mosaik data-tempo={TEMPO[mosaikTempo]}>
     <div class="mosaik__spur" data-mosaik-spur>
       {[0, 1].map((kopie) => (
-        <ul class:list={['mosaik__teil', kopie && 'mosaik__teil--kopie']} aria-label={kopie ? undefined : t.h} aria-hidden={kopie ? 'true' : undefined} inert={kopie ? true : undefined}>
+        <ul class:list={['mosaik__teil', kopie && 'mosaik__teil--kopie']} aria-label={kopie ? undefined : t.h} aria-hidden={kopie ? 'true' : undefined}>
           {spalten.map((sp) => (
             <li class="mosaik__spalte" style={`--dy: ${sp.dy}px`}>
               {sp.d.map((d) => (
@@ -65,6 +68,7 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
                   data-cal-filter={d.id}
                   data-kachel={d.id}
                   aria-label={`${d.name}, ${d.stil}: ${t.toCal}`}
+                  tabindex={kopie ? -1 : undefined}
                 >
                   {typeof d.photo === 'string'
                     ? <Image src={d.photo} alt="" inferSize widths={[300, 560]} sizes="280px" />
@@ -107,11 +111,25 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
       else gsap.to(lauf, { timeScale: tempo(), duration: 0.5, overwrite: true });
     };
 
+    // Breite eines Durchlaufs (eine Kopie samt Abstand) – um so viel verschiebt sich die Spur je Runde
+    const original = spur.querySelector<HTMLElement>('.mosaik__teil:not(.mosaik__teil--kopie)')!;
+    const vorlage = spur.querySelector<HTMLElement>('.mosaik__teil--kopie')!;
+    const runde = () => original.offsetWidth + parseFloat(getComputedStyle(spur).columnGap || '0');
+    // so viele Kopien, dass die Spur auch bei der größten Verschiebung den ganzen Bildschirm füllt
+    const auffuellen = () => {
+      const r = runde();
+      const noetig = Math.max(1, Math.ceil(root.clientWidth / r));
+      const kopien = [...spur.querySelectorAll<HTMLElement>('.mosaik__teil--kopie')];
+      for (let i = kopien.length; i < noetig; i++) spur.append(vorlage.cloneNode(true));
+      for (let i = kopien.length - 1; i >= noetig; i--) kopien[i].remove();
+    };
+
     const starten = () => {
       const p = lauf ? lauf.progress() : 0;
       lauf?.kill();
-      const halb = spur.scrollWidth / 2;
-      lauf = gsap.fromTo(spur, { x: -halb }, { x: 0, duration: halb / Number(root.dataset.tempo || 48), ease: 'none', repeat: -1 });
+      auffuellen();
+      const r = runde();
+      lauf = gsap.fromTo(spur, { x: -r }, { x: 0, duration: r / Number(root.dataset.tempo || 48), ease: 'none', repeat: -1 });
       lauf.progress(p);
       anpassen(true);
     };
@@ -154,11 +172,11 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
       else scrollTo({ top: y, behavior: motionOk() ? 'smooth' : 'auto' });
       if (lauf) {
         // Spur so stellen, dass die Kachel mittig steht (gleiche Lage in der Schleife)
-        const halb = spur.scrollWidth / 2;
+        const r = runde();
         let x = root.clientWidth / 2 - (kachel.offsetLeft + kachel.offsetWidth / 2);
-        while (x > 0) x -= halb;
-        while (x < -halb) x += halb;
-        gsap.to(lauf, { progress: (x + halb) / halb, duration: motionOk() ? 0.8 : 0, ease: 'expo.out' });
+        while (x > 0) x -= r;
+        while (x < -r) x += r;
+        gsap.to(lauf, { progress: (x + r) / r, duration: motionOk() ? 0.8 : 0, ease: 'expo.out' });
       } else {
         root.scrollTo({ left: kachel.offsetLeft - (root.clientWidth - kachel.offsetWidth) / 2, behavior: 'smooth' });
       }
@@ -181,7 +199,7 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
   .dz { background: var(--tint); padding-top: var(--section-y); scroll-margin-top: var(--header-h); overflow: hidden; }
   .dz__head { margin-bottom: 0; }
   .dz__rechts { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; max-width: 420px; }
-  .dz__intro { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .dz__intro { margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .dz__pause {
     display: inline-flex; align-items: center; gap: 10px; padding: 0 0 3px; border: 0; border-bottom: 1.5px solid var(--magenta); border-radius: 0;
     background: none; cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple);

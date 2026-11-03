@@ -59,10 +59,10 @@ const kopieren = [
 ];
 ---
 <Page title={t.title} description={t.desc} route="spenden">
-  <section class="sk" aria-labelledby="spenden-h">
+  <section class="sk kopf" aria-labelledby="spenden-h">
     <div class="wrap sk__grid">
       <div class="sk__links">
-        <div class="sk__tag"><Tag color="cyan">{t.kicker}</Tag></div>
+        <Tag color="cyan" class="kopf__kicker">{t.kicker}</Tag>
         <h1 id="spenden-h" class="sk__h">{t.h1}{' '}<br /><span>{t.accent}</span></h1>
         <p class="sk__lead">{t.lead}</p>
         <div class="sk__foto">
@@ -206,10 +206,10 @@ const kopieren = [
   .sk { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
   .sk__grid {
     flex: 1; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 48px clamp(32px, 5vw, 80px);
-    align-items: center; align-content: center; padding-block: var(--buehne-oben) clamp(48px, 7vh, 72px);
+    align-items: start; align-content: start; padding-block: var(--buehne-oben) clamp(48px, 7vh, 72px);
   }
+  /* Regel „Köpfe“: Inhalt oben, Headline --kopf-kicker unter dem Kicker */
   .sk__links { display: flex; flex-direction: column; }
-  .sk__tag { margin-bottom: 24px; display: flex; }
   .sk__h { margin: 0 0 26px; font-family: var(--font-display); font-weight: 800; font-size: clamp(48px, 6.4vw, 96px); line-height: 0.92; letter-spacing: -0.035em; text-wrap: balance; }
   .sk__h span { color: var(--magenta); }
   .sk__lead { margin: 0 0 32px; max-width: 460px; font-size: 17px; line-height: 1.6; color: rgba(255, 255, 255, 0.88); text-wrap: pretty; }
@@ -242,27 +242,27 @@ const kopieren = [
   .konto__code :global(svg) { display: block; width: 100%; height: 100%; }
   .konto__code :global(svg path:last-child) { stroke: var(--purple); }
   .konto__qr-h { margin: 0 0 6px; font-family: var(--font-display); font-weight: 700; font-size: 17px; letter-spacing: -0.01em; color: var(--purple); }
-  .konto__qr-p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink-soft); text-wrap: pretty; }
+  .konto__qr-p { margin: 0; font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); text-wrap: pretty; }
   .konto__ohne { padding: 20px 22px; border: 1.5px dashed var(--rule); }
-  .konto__ohne p { margin: 0 0 14px; line-height: 1.6; color: var(--ink-soft); }
+  .konto__ohne p { margin: 0 0 14px; line-height: var(--lh-text); color: var(--ink-soft); }
   .konto__ohne :global(.protected-email) { color: var(--purple); }
   .konto__beleg {
     display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 14px; align-items: baseline; margin: 0; padding-top: 20px;
-    border-top: 1px solid var(--rule); font-size: 14px; line-height: 1.55; color: var(--ink-soft); text-wrap: pretty;
+    border-top: 1px solid var(--rule); font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); text-wrap: pretty;
   }
   .konto__sq { width: 10px; height: 10px; background: var(--magenta); }
   .konto__beleg :global(.protected-email) { display: inline; color: var(--purple); font-weight: 600; }
   .konto__beleg :global(.protected-email__icon) { display: none; }
 
   /* Deine Spende wird Bewegung */
-  .note { max-width: 420px; margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .note { max-width: 420px; margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .bewegung { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: 48px clamp(28px, 4vw, 56px); }
   .bw { display: flex; flex-direction: column; gap: 14px; }
   .bw__bild { position: relative; aspect-ratio: 4 / 3; background: var(--purple); overflow: hidden; clip-path: polygon(0 0, 100% 0, 100% 86%, 88% 100%, 0 100%); }
   .bw__bild :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .bw__meta { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta-2); }
   .bw__t { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.05; letter-spacing: -0.02em; color: var(--purple); }
-  .bw__p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
+  .bw__p { margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); text-wrap: pretty; }
   .bw__link { align-self: flex-start; color: var(--magenta-2); }
   .bw__link:hover { color: var(--purple); }
 
@@ -274,7 +274,7 @@ const kopieren = [
   .anders__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 4.4vw, 56px); line-height: 0.98; letter-spacing: -0.03em; }
   .weg { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 20px; border-top: 2px solid var(--purple); }
   .weg h3 { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em; }
-  .weg p { margin: 0; font-size: 15px; line-height: 1.6; }
+  .weg p { margin: 0; font-size: 15px; line-height: var(--lh-text); }
   .weg__link, .weg :global(.protected-email__btn), .weg :global(.protected-email__link) {
     margin-top: 4px; padding: 6px 0; border-bottom: 1.5px solid var(--magenta); color: var(--purple);
     font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
@@ -286,9 +286,9 @@ const kopieren = [
   .fragen { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 32px clamp(32px, 5vw, 80px); align-items: start; }
   .fragen :global(.tag) { margin-bottom: 16px; }
   .fragen__h { margin-bottom: 18px; }
-  .fragen__p { margin: 0 0 16px; max-width: 380px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .fragen__p { margin: 0 0 16px; max-width: 380px; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .fragen__p :global(.protected-email) { color: var(--purple); }
-  .fragen__klein { margin: 0 0 8px; max-width: 380px; font-size: 13.5px; line-height: 1.6; color: var(--ink-soft); }
+  .fragen__klein { margin: 0 0 8px; max-width: 380px; font-size: 13.5px; line-height: var(--lh-text); color: var(--ink-soft); }
   .fragen__klein a, .faq__el a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
   .fragen__klein a:hover, .faq__el a:hover { color: var(--magenta-2); }
   .faq { border-top: 1px solid var(--rule); }
@@ -301,7 +301,7 @@ const kopieren = [
   .faq__el summary:hover { color: var(--magenta-2); }
   .faq__zeichen::before { content: '+'; display: block; text-align: right; font-family: var(--font-mono); font-size: 20px; font-weight: 600; color: var(--magenta-2); }
   .faq__el[open] .faq__zeichen::before { content: '–'; }
-  .faq__el p { margin: 0; padding: 0 40px 22px 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
+  .faq__el p { margin: 0; padding: 0 40px 22px 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); text-wrap: pretty; }
 
   @media (max-width: 560px) {
     .konto__qr { grid-template-columns: 1fr; }

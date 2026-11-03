@@ -65,7 +65,7 @@ const missing = [tx.office, tx.taxNumber, tx.noticeDate, tx.period].some((s) => 
   .toolbar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 28px; }
   .toolbar a { color: var(--magenta-2); }
   .warn { margin: 0 0 24px; padding: 12px 16px; border-left: 4px solid var(--magenta); background: var(--magenta-tint); color: var(--purple); }
-  .doc { max-width: 760px; padding: clamp(28px, 5vw, 56px); border: 1px solid var(--rule); border-top: 6px solid var(--purple); background: var(--paper); line-height: 1.65; }
+  .doc { max-width: 760px; padding: clamp(28px, 5vw, 56px); border: 1px solid var(--rule); border-top: 6px solid var(--purple); background: var(--paper); line-height: var(--lh-text); }
   .doc__kicker { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta-2); }
   .doc__title { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 4vw, 44px); line-height: 1; letter-spacing: -0.03em; color: var(--purple); margin: 10px 0 8px; }
   .doc__sub { margin: 0 0 28px; color: var(--ink-soft); font-size: 14px; }

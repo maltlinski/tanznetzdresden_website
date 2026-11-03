@@ -103,14 +103,14 @@ const t = {
   .board__card { display: flex; flex-direction: column; gap: 10px; height: 100%; padding: 24px 22px 28px; background: var(--paper); border: 1px solid var(--rule); border-top: 3px solid var(--magenta); color: var(--purple); transition: background var(--dur-base); }
   .board__card:hover { background: var(--tint); color: var(--purple); }
   .board__name { font-family: var(--font-display); font-weight: 800; font-size: 26px; line-height: 1.05; letter-spacing: -0.025em; }
-  .board__role { font-size: 14.5px; line-height: 1.55; color: var(--ink-soft); }
+  .board__role { font-size: 14.5px; line-height: var(--lh-text); color: var(--ink-soft); }
   .ags { background: var(--tint); }
-  .ags__intro { max-width: 400px; margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .ags__intro { max-width: 400px; margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .ags__list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); border-top: 1px solid var(--rule); }
   .ags__list li { padding: 24px 24px 28px 0; border-bottom: 1px solid var(--rule); }
   .ags__n { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; color: var(--magenta-2); }
   .ags__list h3 { font-family: var(--font-display); font-weight: 800; font-size: 26px; letter-spacing: -0.025em; color: var(--purple); margin: 8px 0 6px; }
-  .ags__list p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); max-width: 36ch; }
+  .ags__list p { margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); max-width: 36ch; }
   .people { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); border-top: 1px solid var(--rule); }
   .people li { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 14px 16px 14px 0; border-bottom: 1px solid var(--rule); }
   .people__name { font-family: var(--font-display); font-weight: 700; font-size: 19px; color: var(--purple); }

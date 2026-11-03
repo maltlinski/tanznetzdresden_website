@@ -62,14 +62,14 @@ const t = {
   .benefits { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: 20px; }
   .benefits li { padding: 24px 22px 28px; border: 1px solid var(--rule); border-top: 3px solid var(--magenta); }
   .benefits h3 { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; color: var(--purple); margin: 0 0 8px; }
-  .benefits p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .benefits p { margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .steps-wrap { background: var(--tint); }
   .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 48px clamp(32px, 6vw, 96px); align-items: start; }
   .steps { list-style: none; margin: 36px 0 0; padding: 0; border-top: 1px solid var(--rule); }
   .steps li { display: grid; grid-template-columns: 56px 1fr; gap: 16px; padding: 22px 0; border-bottom: 1px solid var(--rule); }
   .steps__n { font-family: var(--font-display); font-weight: 800; font-size: 44px; line-height: 0.9; color: var(--magenta); }
   .steps h3 { font-family: var(--font-display); font-weight: 700; font-size: 22px; color: var(--purple); margin: 0 0 4px; }
-  .steps p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .steps p { margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .card { position: sticky; top: 100px; display: flex; flex-direction: column; gap: 8px; padding: 30px 28px; background: var(--purple); color: #fff; clip-path: var(--keil-corner); }
   .card__label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
   .card__big { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: -0.03em; }

@@ -43,10 +43,10 @@ const t = {
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 <Page title={t.title} description={t.desc} route="kooperationen">
-  <section class="khero">
+  <section class="khero kopf">
     <div class="wrap khero__grid">
       <div class="khero__text">
-        <Tag color="cyan" class="khero__tag">{t.kicker}</Tag>
+        <Tag color="cyan" class="khero__tag kopf__kicker">{t.kicker}</Tag>
         <h1 class="khero__title">{t.h1}<br /><em>{t.accent}</em></h1>
         <p class="khero__lead">{t.lead}</p>
         <h2 class="khero__places-h" id="orte-h">{t.places}</h2>
@@ -175,8 +175,8 @@ const pad = (n: number) => String(n).padStart(2, '0');
     display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr));
     gap: 40px clamp(32px, 5vw, 72px); align-items: stretch;
   }
-  .khero__text { display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 2; }
-  .khero :global(.khero__tag) { margin-bottom: 24px; }
+  /* Regel „Köpfe“: Inhalt oben, Headline --kopf-kicker unter dem Kicker */
+  .khero__text { display: flex; flex-direction: column; justify-content: flex-start; position: relative; z-index: 2; }
   .khero__title {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(48px, 6.4vw, 96px); line-height: 0.92;
     letter-spacing: -0.035em; margin: 0 0 26px; color: #fff; text-wrap: balance;
@@ -234,7 +234,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
 
   /* ---------- Partnergruppen ---------- */
   .groups__head { margin-bottom: 48px; }
-  .groups__intro { max-width: 420px; margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .groups__intro { max-width: 420px; margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .groups { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 48px clamp(28px, 4vw, 56px); }
   .group { border-top: 3px solid var(--magenta); padding-top: 20px; }
   .group__head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 6px; }
@@ -242,7 +242,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .group__count { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; color: var(--ink-muted); }
   .group__list { list-style: none; margin: 0; padding: 0; }
   .group__list li { display: flex; flex-direction: column; gap: 4px; padding: 14px 0; border-bottom: 1px solid var(--rule); }
-  .group__name { font-size: 16px; font-weight: 600; line-height: 1.35; color: var(--purple); }
+  .group__name { font-size: 16px; font-weight: 600; line-height: var(--lh-text); color: var(--purple); }
   a.group__name:hover { color: var(--magenta); }
   .group__role { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
   .groups__funders { margin: 40px 0 0; font-size: 14px; color: var(--ink-soft); }
@@ -259,5 +259,5 @@ const pad = (n: number) => String(n).padStart(2, '0');
   .coop__text { max-width: 620px; }
   .coop :global(.tag) { margin-bottom: 18px; }
   .coop__title { font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 4.4vw, 56px); line-height: 0.98; letter-spacing: -0.03em; margin: 0 0 18px; color: var(--purple); }
-  .coop__text p { margin: 0; font-size: 16px; line-height: 1.6; }
+  .coop__text p { margin: 0; font-size: 16px; line-height: var(--lh-text); }
 </style>

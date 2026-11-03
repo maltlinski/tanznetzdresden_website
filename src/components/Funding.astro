@@ -73,7 +73,7 @@ const notices = funders.map((f) => f.notice).filter(Boolean);
   .funding__item:hover { opacity: 0.75; }
   .funding__item :global(.funding__logo) { display: block; max-width: none; }
   .funding__name { font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--purple); border-bottom: 1.5px solid var(--magenta); }
-  .funding__notices { grid-column: 2; display: grid; gap: 4px; max-width: 760px; font-size: 12.5px; line-height: 1.5; color: var(--ink-soft); }
+  .funding__notices { grid-column: 2; display: grid; gap: 4px; max-width: 760px; font-size: 12.5px; line-height: var(--lh-text); color: var(--ink-soft); }
   .funding__notices p { margin: 0; }
   @media (max-width: 760px) {
     .funding__inner { grid-template-columns: 1fr; }

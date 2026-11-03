@@ -79,10 +79,10 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
 <Page route="news" title={t.title} description={t.description}>
   <link slot="head" rel="alternate" type="application/rss+xml" title={`${verein.name} – News`} href={feed} />
 
-  <section class="ni" aria-labelledby="news-title" data-news-intro>
+  <section class="ni kopf" aria-labelledby="news-title" data-news-intro>
     <div class="wrap ni__inner">
       <div class="ni__top">
-        <div data-rise="0.05"><Tag color="cyan">{t.kicker}</Tag></div>
+        <div data-rise="0.05"><Tag color="cyan" class="kopf__kicker">{t.kicker}</Tag></div>
         <span class="ni__place" data-rise="0.15">Dresden · {year}</span>
       </div>
       <h1 id="news-title" class="ni__title">
@@ -300,8 +300,9 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
   /* ---------- Intro ---------- */
   /* so hoch wie der Kopf der Startseite (--buehne-h) */
   .ni { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
-  .ni__inner { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: center; padding-top: var(--buehne-oben); }
-  .ni__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 32px; margin-bottom: 20px; }
+  /* Regel „Köpfe“: Inhalt oben, erste Zeile im Abstand --buehne-oben, Headline --kopf-kicker darunter */
+  .ni__inner { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: flex-start; padding-top: var(--buehne-oben); }
+  .ni__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 32px; }
   .ni__place, .ni__lead-meta, .ni__call-d {
     font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-dark-soft);
   }
@@ -312,7 +313,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
   .ni__title em { font-style: normal; color: var(--magenta); }
   .ni__lead {
     display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 28px clamp(28px, 4vw, 64px);
-    align-items: end; color: #fff; padding-bottom: clamp(28px, 4vh, 48px);
+    align-items: end; color: #fff; padding-bottom: clamp(var(--kopf-unten), 4vh, 48px);
   }
   .ni__lead:hover { color: var(--cyan); }
   .ni__lead-img {
@@ -355,7 +356,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
   }
   .stay__text { max-width: 560px; }
   .stay__h { margin: 0 0 8px; font-family: var(--font-display); font-weight: 800; font-size: 28px; letter-spacing: -0.02em; color: var(--purple); }
-  .stay__p { margin: 0; font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .stay__p { margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
   .stay__actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 28px; }
   .stay__rss { color: var(--ink-soft); letter-spacing: 0.14em; }
   .stay__rss:hover { color: var(--magenta); }
@@ -427,7 +428,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
   .journal .jleer[hidden] { display: none; }
   .journal .jleer p { margin: 0; }
   .journal .jleer__h { font-family: var(--font-display); font-weight: 800; font-size: clamp(26px, 3vw, 36px); letter-spacing: -0.02em; color: var(--purple); }
-  .journal .jleer__p { font-size: 15px; line-height: 1.6; color: var(--ink-soft); }
+  .journal .jleer__p { font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); }
 
   /* Jahr → Monat */
   .journal .jjahr { margin-top: clamp(28px, 4vw, 48px); }
@@ -465,7 +466,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
     font-family: var(--font-display); font-weight: 800; font-size: clamp(24px, 2.6vw, 34px); line-height: 1.04;
     letter-spacing: -0.025em; margin: 0; color: inherit; transition: color var(--dur-fast); text-wrap: balance;
   }
-  .journal .post__teaser { margin: 0; max-width: 680px; font-size: 15px; line-height: 1.6; color: var(--ink-soft); text-wrap: pretty; }
+  .journal .post__teaser { margin: 0; max-width: 680px; font-size: 15px; line-height: var(--lh-text); color: var(--ink-soft); text-wrap: pretty; }
   .journal .post__more { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2); }
 
   .journal .post--photo, .journal .post--text { border-bottom: 1px solid var(--rule); }
@@ -535,6 +536,8 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
 
   /* Handy: Leiste nicht kleben lassen (sie wäre halb so hoch wie der Bildschirm), Rubriken und Jahre wischen */
   @media (max-width: 640px) {
+    /* Regel „Köpfe“: Ort und Jahr würden unter den Kicker rutschen und die Headline nach unten schieben */
+    .ni__place { display: none; }
     .journal .jt { position: static; }
     .journal .jt__chips, .journal .jt__jahre { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); }
     .journal .jt__chips .chip { flex: none; }

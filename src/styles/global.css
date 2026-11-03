@@ -19,13 +19,29 @@
   --header-h: 70px;
   /* Lila Kopf der Startseite und der Unterseiten: gleich hoch (Bildschirm minus Kopfleiste) */
   --buehne-h: clamp(560px, calc(100vh - 72px), 940px);
-  /* Abstand vom oberen Rand des Kopfs zur ersten Zeile, wie der Claim auf der Startseite */
+  /* Regel „Köpfe“ (docs/entwicklung.md#köpfe-regel, geprüft von tests/koepfe.spec.ts):
+     erste Zeile jedes Kopfs (Kicker bzw. Claim) im Abstand --buehne-oben unter der Kopfleiste, oben statt mittig;
+     Headline --kopf-kicker unter dem Kicker – so steht die Headline auf allen Menüseiten auf gleicher Höhe;
+     der erste Textblock nach dem Kopf steht überall --nach-kopf darunter; die letzte Zeile im Kopf hält
+     mindestens --kopf-unten Abstand zum unteren Rand. */
   --buehne-oben: clamp(28px, 6vh, 72px);
+  --kopf-kicker: 24px;
+  --nach-kopf: clamp(24px, 3vw, 40px);
+  /* Schrift im Kopf steht nie direkt auf dem Keil: mindestens so viel Abstand zum unteren Rand */
+  --kopf-unten: 32px;
   --on-dark-soft: rgba(255, 255, 255, 0.78);
   --on-dark-rule: rgba(255, 255, 255, 0.16);
+  /* Regel „Zeilenabstand“ (docs/entwicklung.md#zeilenabstand-regel, geprüft von tests/zeilenabstand.spec.ts):
+     Fließtext dunkel auf hell kompakt, lange Lesetexte (Beiträge, Rechtstexte) etwas luftiger; auf dem Handy
+     je eine Stufe enger. Heller Text auf dunklem Grund behält seinen eigenen Abstand. */
+  --lh-text: 1.5;
+  --lh-lesetext: 1.6;
   /* Datumsschrift: Datum, Uhrzeit und Termin stehen überall in der Schrift des Kalenders (src/lib/datum-schrift.ts) */
   --font-datum: var(--font-mono);
   color-scheme: light;
+}
+@media (max-width: 700px) {
+  :root { --lh-text: 1.45; --lh-lesetext: 1.55; }
 }
 @supports (height: 100svh) {
   :root { --buehne-h: clamp(560px, calc(100svh - 72px), 940px); }
@@ -64,6 +80,18 @@ button { font: inherit; }
 
 .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }
 .section { padding: var(--section-y) 0; }
+/* Regel „Köpfe“: jeder lila Kopf trägt die Klasse `kopf`; der Abschnitt danach beginnt überall im gleichen Abstand
+   (--nach-kopf). Mit !important, damit kein Abschnitt den Abstand aus Versehen überschreibt (tests/koepfe.spec.ts).
+   Eine mitlaufende Leiste direkt am Kopf (`kopf-leiste`, Kalender) hält ihren schmalen Innenabstand und rückt
+   stattdessen mit dem Außenabstand ab.
+   Skripte, die Astro hinter den Kopf setzt, zählen nicht mit. */
+main > .kopf + :not(script, style, .kopf-leiste),
+main > .kopf + :is(script, style) + :not(script, style, .kopf-leiste),
+main > .kopf + :is(script, style) + :is(script, style) + :not(script, style, .kopf-leiste) { padding-top: var(--nach-kopf) !important; margin-top: 0 !important; }
+/* Kicker als erste Zeile des Kopfs: eigener Block ohne Zeilenhöhe der Umgebung – so steht die Headline auf jeder
+   Seite gleich hoch, egal wie der Kicker eingebunden ist */
+.kopf .kopf__kicker { display: flex; width: fit-content; margin-bottom: var(--kopf-kicker); }
+main > .kopf + .kopf-leiste, main > .kopf + :is(script, style) + .kopf-leiste { margin-top: calc(var(--nach-kopf) - 14px) !important; /* 14px: Innenabstand der Leiste */ }
 /* Auftritt von Überschriften (src/scripts/intro-text.ts) */
 [data-sweep] { display: inline-block; position: relative; }
 .sweep-bar { position: absolute; left: -0.04em; right: -0.04em; top: 0.1em; bottom: 0.02em; pointer-events: none; }
