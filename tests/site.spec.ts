@@ -4,6 +4,7 @@ import AxeBuilder from '@axe-core/playwright';
 import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
 import { supabase } from '../src/settings/supabase';
 import { galerie, newsDateien, veroeffentlicht } from './news-daten';
+import { dozentin, kcalTage, monatLabel, plusTage, profileMitTerminen, tagLabel, trainingstage } from './kalender-daten';
 
 // Beiträge aus der alten Website: neuester, eine Ausschreibung, einer mit englischer Fassung (tests/news-daten.ts)
 const neuester = veroeffentlicht()[0];
@@ -212,8 +213,13 @@ test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
   await expect(page.locator('[data-net-list] .card:visible')).toHaveCount(1);
   await page.locator('[data-net-list] .card:visible a').click();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Justine Rouquart');
+  // Profil mit kommenden Terminen: welches, hängt vom Tag des Builds ab (tests/kalender-daten.ts)
+  const slug = profileMitTerminen()[0];
+  test.skip(!slug, 'beim Build hat kein Profil kommende Termine');
+  await page.goto(`/netzwerk/${slug}/`);
   await expect(page.getByRole('heading', { name: 'Nächste Termine' })).toBeVisible();
-  await expect(page.locator('.event')).toContainText(['POP UP']);
+  const titel = readFileSync(`dist/netzwerk/${slug}/index.html`, 'utf8').match(/class="event__title"[^>]*>([^<]+)</)![1];
+  await expect(page.locator('.event').first()).toContainText(titel.replace(/&amp;/g, '&'));
 });
 
 test('News: Galerie mit Großansicht, Archivbilder in zwei Größen', async ({ page }) => {
@@ -690,52 +696,88 @@ test('Weiches Scrollen: Lenis aktiv, Sprungmarke landet unter dem Header; aus be
   await expect(page.locator('html')).not.toHaveClass(/\blenis\b/);
 });
 
-/** Profitraining-Seite mit festem Datum (Platzhalter-Trainingsplan Sep.–Dez. 2026) */
+/**
+ * Trainingstage der gebauten Seite (tests/kalender-daten.ts): Der Kalender zeigt nur Monate ab dem Build, deshalb
+ * stellen die Tests die Uhr auf den ersten Trainingstag im Plan statt auf ein festes Datum.
+ */
+const TAGE = trainingstage();
+const ERSTER = TAGE[0];
+
+/** Profitraining-Seite, Uhr auf dem ersten Trainingstag im Plan (Uhr läuft weiter, wegen der Animationen) */
 async function openTraining(page: Page, path = '/profitraining/') {
-  await page.clock.install({ time: new Date('2026-10-12T08:00:00+02:00') }); // Uhr läuft weiter (Animationen)
+  const tag = ERSTER?.datum ?? new Date().toISOString().slice(0, 10);
+  await page.clock.install({ time: new Date(`${tag}T08:00:00+01:00`) });
   await page.goto(path);
   await dismissConsent(page);
 }
+const ohneTraining = () => test.skip(!ERSTER, 'kein Trainingstag im Plan ab dem Build-Monat (Platzhalter-Plan abgelaufen?)');
+const tagKnopf = (page: Page, datum: string) => page.locator(`#kalender [data-date="${datum}"]`);
 
 test('Profitraining: Kalender mit Tagesansicht, Monaten und Filter nach Dozent:in', async ({ page }) => {
+  ohneTraining();
   await openTraining(page);
   const cal = page.locator('#kalender');
-  await expect(cal.locator('[data-kcal-label]')).toHaveText('Oktober 2026');
+  await expect(cal.locator('[data-kcal-label]')).toHaveText(monatLabel(ERSTER.datum));
   // nächster Trainingstag ist vorgewählt
-  await expect(cal.getByRole('button', { name: /^Montag, 12\. Oktober 2026: Training mit Leon Börgens/ })).toHaveAttribute('aria-pressed', 'true');
-  await expect(cal.locator('[data-kcal-items]')).toContainText('Leon Börgens');
-  await expect(page.locator('[data-next-date]')).toHaveText('Mo · 12. Oktober');
+  await expect(tagKnopf(page, ERSTER.datum)).toHaveAttribute('aria-pressed', 'true');
+  await expect(cal.locator('[data-kcal-items]')).toContainText(dozentin(ERSTER));
+  await expect(page.locator('[data-next-date]')).toHaveText(new RegExp(`^\\p{L}{2} · ${tagLabel(ERSTER.datum)}$`, 'u'));
 
-  // Tag wählen
-  await cal.getByRole('button', { name: /^Montag, 19\. Oktober 2026/ }).click();
-  await expect(cal.locator('[data-kcal-date]')).toHaveText('19. Oktober');
-  await expect(cal.locator('[data-kcal-items]')).toContainText('Alexandre May');
+  // Tag wählen: ein Trainingstag desselben Monats mit einer anderen Dozent:in
+  const anderer = TAGE.find((t) => t.datum.slice(0, 7) === ERSTER.datum.slice(0, 7) && t.keys[0] !== ERSTER.keys[0]);
+  if (anderer) {
+    await tagKnopf(page, anderer.datum).click();
+    await expect(cal.locator('[data-kcal-date]')).toHaveText(tagLabel(anderer.datum));
+    await expect(cal.locator('[data-kcal-items]')).toContainText(dozentin(anderer));
+  }
 
-  // Monat weiter: Workshop im November
-  await cal.getByRole('button', { name: 'Nächster Monat' }).click();
-  await expect(cal.locator('[data-kcal-label]')).toHaveText('November 2026');
-  await cal.getByRole('button', { name: /^Samstag, 14\. November 2026: KEEP UP · Workshop Floorwork mit Aurora Fradella/ }).click();
-  await expect(cal.locator('[data-kcal-items] a', { hasText: 'Zum Workshop' })).toHaveAttribute('href', /\/termine\/2026-11-14-keep-up-workshop\/$/);
+  // Monat weiter
+  const spaeter = TAGE.find((t) => t.datum.slice(0, 7) > ERSTER.datum.slice(0, 7));
+  if (spaeter) {
+    await cal.getByRole('button', { name: 'Nächster Monat' }).click();
+    await expect(cal.locator('[data-kcal-label]')).toHaveText(monatLabel(plusTage(`${ERSTER.datum.slice(0, 7)}-28`, 7)));
+  }
 
-  // Filter: nur Charles – andere Tage sind gesperrt, Auswahl springt auf den nächsten Termin von Charles
-  await cal.getByRole('button', { name: 'Charles Washington', exact: true }).click();
-  await expect(cal.getByRole('button', { name: 'Charles Washington', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  await expect(cal.locator('[data-kcal-label]')).toHaveText('November 2026');
-  await expect(cal.locator('[data-kcal-date]')).toHaveText('2. November');
-  await expect(cal.getByRole('button', { name: /^Montag, 9\. November 2026/ })).toBeDisabled();
+  // Filter: nur eine Dozent:in – andere Tage sind gesperrt, die Auswahl springt auf einen Tag dieser Dozent:in
+  const key = TAGE.find((t) => t.keys[0] !== ERSTER.keys[0])?.keys[0] ?? ERSTER.keys[0];
+  const name = dozentin(TAGE.find((t) => t.keys[0] === key)!);
+  await cal.getByRole('button', { name, exact: true }).click();
+  await expect(cal.getByRole('button', { name, exact: true })).toHaveAttribute('aria-pressed', 'true');
+  const gewaehlt = cal.locator('.kcal__month:not([hidden]) .kcal__day[aria-pressed="true"]');
+  await expect(gewaehlt).toHaveAttribute('data-keys', new RegExp(`\\b${key}\\b`));
+  const fremd = cal.locator(`.kcal__month:not([hidden]) .kcal__day:not([data-keys~="${key}"])`).first();
+  if (await fremd.count()) await expect(fremd).toBeDisabled();
+});
+
+test('Profitraining: Workshop im Kalender führt zur Terminseite', async ({ page }) => {
+  const ws = kcalTage().find((t) => /Workshop/.test(t.label));
+  test.skip(!ws, 'kein Workshop im Plan ab dem Build-Monat');
+  await openTraining(page);
+  const cal = page.locator('#kalender');
+  for (let i = 0; i < 12 && (await cal.locator('[data-kcal-label]').textContent()) !== monatLabel(ws!.datum); i++) {
+    await cal.getByRole('button', { name: 'Nächster Monat' }).click();
+  }
+  await tagKnopf(page, ws!.datum).click();
+  await expect(cal.locator('[data-kcal-items] a', { hasText: 'Zum Workshop' })).toHaveAttribute('href', new RegExp(`/termine/${ws!.datum}-[^/]+/$`));
 });
 
 test('Profitraining: Pfeiltasten wandern durch die Trainingstage', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Tastatur');
+  // ein Trainingstag, an dem der nächste Tag und derselbe Wochentag eine Woche später auch Training haben
+  const hat = (d: string) => TAGE.some((t) => t.datum === d);
+  const start = TAGE.find((t) => hat(plusTage(t.datum, 1)) && hat(plusTage(t.datum, 8)) && plusTage(t.datum, 8).slice(0, 7) === t.datum.slice(0, 7));
+  test.skip(!start, 'keine passende Trainingswoche im Plan');
   await openTraining(page);
-  const cal = page.locator('#kalender');
-  await cal.getByRole('button', { name: /^Montag, 12\. Oktober 2026/ }).focus();
+  for (let i = 0; i < 12 && (await page.locator('#kalender [data-kcal-label]').textContent()) !== monatLabel(start!.datum); i++) {
+    await page.locator('#kalender').getByRole('button', { name: 'Nächster Monat' }).click();
+  }
+  await tagKnopf(page, start!.datum).focus();
   await page.keyboard.press('ArrowRight');
-  await expect(cal.getByRole('button', { name: /^Dienstag, 13\. Oktober 2026/ })).toBeFocused();
+  await expect(tagKnopf(page, plusTage(start!.datum, 1))).toBeFocused();
   await page.keyboard.press('ArrowDown');
-  await expect(cal.getByRole('button', { name: /^Dienstag, 20\. Oktober 2026/ })).toBeFocused();
+  await expect(tagKnopf(page, plusTage(start!.datum, 8))).toBeFocused();
   await page.keyboard.press('Enter');
-  await expect(cal.locator('[data-kcal-date]')).toHaveText('20. Oktober');
+  await expect(page.locator('#kalender [data-kcal-date]')).toHaveText(tagLabel(plusTage(start!.datum, 8)));
 });
 
 test('Profitraining: Dozent:innen-Mosaik läuft, hält an und führt in den Kalender', async ({ page }) => {
@@ -781,17 +823,30 @@ test('Profitraining: Dozent:innen-Mosaik läuft, hält an und führt in den Kale
   await page.waitForTimeout(500);
   expect(await lage()).toBe(b);
 
-  // Kachel: Kalender auf diese Dozent:in filtern
-  await page.locator('#dozentin-leon-borgens').click();
+  // Kachel: Kalender auf diese Dozent:in filtern (eine, die im Plan ab dem Build-Monat unterrichtet)
+  if (!ERSTER) return;
+  const key = ERSTER.keys[0];
+  const kachel = page.locator(`#dozentin-${key}`);
+  const name = dozentin(ERSTER);
+  // das Mosaik steht: die Kachel dieser Dozent:in anklicken, die gerade im Bild ist (Original oder Kopie)
+  const alle = mosaik.locator(`[data-kachel="${key}"]`);
+  const sichtbar = await alle.evaluateAll((els, m) => {
+    const anteil = els.map((e) => { const r = e.getBoundingClientRect(); return Math.max(0, Math.min(r.right, m.r) - Math.max(r.left, m.l)); });
+    return anteil.indexOf(Math.max(...anteil));
+  }, { l: box.x, r: box.x + box.width });
+  // auf dem Handy steht die Kachel womöglich nur halb im Bild: in ihre sichtbare Hälfte klicken
+  const kb = (await alle.nth(sichtbar).boundingBox())!;
+  const links = Math.max(kb.x, box.x), rechts = Math.min(kb.x + kb.width, box.x + box.width);
+  await alle.nth(sichtbar).click({ position: { x: (links + rechts) / 2 - kb.x, y: kb.height / 3 } });
   await expect(page).toHaveURL(/#kalender$/);
-  await expect(page.locator('#kalender').getByRole('button', { name: 'Leon Börgens', exact: true })).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('#kalender [data-kcal-items]')).toContainText('Leon Börgens');
+  await expect(page.locator('#kalender').getByRole('button', { name, exact: true })).toHaveAttribute('aria-pressed', 'true');
+  await expect(page.locator('#kalender [data-kcal-items]')).toContainText(name);
 
   // „Zur Dozent:in →“ im Kalender hebt die Kachel hervor
   await page.locator('#kalender [data-kcal-items] a', { hasText: 'Zur Dozent:in' }).click();
-  await expect(page.locator('#dozentin-leon-borgens')).toHaveClass(/is-hl/);
-  await expect(page.locator('#dozentin-leon-borgens')).toBeFocused();
-  await expect(page.locator('#dozentin-leon-borgens')).toBeInViewport();
+  await expect(kachel).toHaveClass(/is-hl/);
+  await expect(kachel).toBeFocused();
+  await expect(kachel).toBeInViewport();
 });
 
 test('Profitraining: auf breiten Bildschirmen ist das Mosaik voll und jede Kachel anklickbar', async ({ page, isMobile }) => {
@@ -836,7 +891,7 @@ test('Profitraining: ohne JavaScript und bei „Bewegung reduzieren“ ist das M
 
 test('Profitraining: englische Fassung und Verlinkung aus Menü und Formaten', async ({ page, isMobile }) => {
   await openTraining(page, '/en/training/');
-  await expect(page.locator('#kalender [data-kcal-label]')).toHaveText('October 2026');
+  if (ERSTER) await expect(page.locator('#kalender [data-kcal-label]')).toHaveText(monatLabel(ERSTER.datum, 'en-GB'));
   await expect(page.getByRole('heading', { name: 'Who teaches' })).toBeVisible();
 
   await page.goto('/');

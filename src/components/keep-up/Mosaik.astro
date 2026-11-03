@@ -108,7 +108,8 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
     const anpassen = (sofort = false) => {
       if (!lauf) return;
       if (sofort) lauf.timeScale(tempo());
-      else gsap.to(lauf, { timeScale: tempo(), duration: 0.5, overwrite: true });
+      // nur das Tempo ersetzen – eine laufende Verschiebung ("Zur Dozent:in") nicht abbrechen
+      else gsap.to(lauf, { timeScale: tempo(), duration: 0.5, overwrite: 'auto' });
     };
 
     // Breite eines Durchlaufs (eine Kopie samt Abstand) – um so viel verschiebt sich die Spur je Runde
@@ -171,14 +172,16 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
       if (lenis) lenis.scrollTo(y);
       else scrollTo({ top: y, behavior: motionOk() ? 'smooth' : 'auto' });
       if (lauf) {
-        // Spur so stellen, dass die Kachel mittig steht (gleiche Lage in der Schleife)
+        // Spur so stellen, dass das Original (es bekommt den Fokus) möglichst mittig und immer im Bild steht;
+        // die Spur läuft zwischen -Runde und 0, weiter geht es nicht, ohne dass links eine Lücke entsteht
         const r = runde();
-        let x = root.clientWidth / 2 - (kachel.offsetLeft + kachel.offsetWidth / 2);
-        while (x > 0) x -= r;
-        while (x < -r) x += r;
+        // Lage in der Spur aus den Rechtecken (offsetLeft hängt vom offsetParent ab und enthält dann die Verschiebung)
+        const l = kachel.getBoundingClientRect().left - spur.getBoundingClientRect().left;
+        const x = Math.min(0, Math.max(-r, root.clientWidth / 2 - (l + kachel.offsetWidth / 2)));
         gsap.to(lauf, { progress: (x + r) / r, duration: motionOk() ? 0.8 : 0, ease: 'expo.out' });
       } else {
-        root.scrollTo({ left: kachel.offsetLeft - (root.clientWidth - kachel.offsetWidth) / 2, behavior: 'smooth' });
+        const l = kachel.getBoundingClientRect().left - spur.getBoundingClientRect().left;
+        root.scrollTo({ left: l - (root.clientWidth - kachel.offsetWidth) / 2, behavior: 'smooth' });
       }
       root.querySelectorAll(`[data-kachel="${CSS.escape(id)}"]`).forEach((k) => k.classList.add('is-hl'));
       kachel.focus({ preventScroll: true });
