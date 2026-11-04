@@ -7,15 +7,18 @@
  */
 import Redaktion from '../../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
-import { href } from '../../../../lib/url';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
+import Seitenplan from '../../../../components/intern/Seitenplan.astro';
 import '../../../../styles/redaktion.css';
 ---
-<Redaktion title="Redaktion" current="inhalte">
-  <a class="r-back" href={href('intern/redaktion/')} data-zurueck>← Redaktion</a>
+<Redaktion title="Redaktion" current="seiten">
+  <Seitenplan />
+  <Brotkrumen pfad={[{ label: 'Seiten' }]} />
   <div class="r-head">
     <div>
       <p class="r-kicker" data-kicker></p>
       <h1 class="i-h1" data-titel>Bearbeiten</h1>
+      <p class="r-wo" data-wo hidden></p>
     </div>
     <div class="r-head__side">
       <RedaktionStatus />
@@ -60,7 +63,8 @@ import '../../../../styles/redaktion.css';
   import { aenderungenFuer, dateiPfad, freieId, laden, leer, loeschAenderungen, type Eintrag, type Geladen } from '../../../../scripts/intern/redaktion/daten';
   import { base64, dateiName, formular, verkleinern, type FormKontext } from '../../../../scripts/intern/redaktion/formular';
   import type { Aenderung } from '../../../../scripts/intern/redaktion/api';
-  import { $, meldung, namenLaden, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
+  import { $, bereichOrt, brotkrumen, erscheintAuf, meldung, namenLaden, ortsKrumen, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
+  import { planLesen } from '../../../../scripts/intern/redaktion/seitenplan';
 
   const params = new URLSearchParams(location.search);
   const b = bereichNach(params.get('b'));
@@ -71,13 +75,15 @@ import '../../../../styles/redaktion.css';
     const neu = b.art !== 'einstellung' && params.get('neu') === '1';
     const kopie = params.get('kopie');
     const idParam = b.art === 'einstellung' ? b.id : (params.get('id') ?? '');
-    const listeUrl = b.art === 'einstellung' ? redaktionUrl() : redaktionUrl('liste/', { b: b.id });
-    if (b.art !== 'einstellung') {
-      const zurueck = $<HTMLAnchorElement>('[data-zurueck]')!;
-      zurueck.href = listeUrl;
-      zurueck.textContent = `← ${b.label}`;
-    }
+    const ort = bereichOrt(planLesen(), b);
+    const listeUrl = b.art === 'einstellung' ? redaktionUrl('seiten/', { s: ort.ort?.seite.id }) : redaktionUrl('liste/', { b: b.id, von: ort.von });
+    erscheintAuf($('[data-wo]'), ort.alle);
     $<HTMLAnchorElement>('[data-abbrechen]')!.href = listeUrl;
+    // Neue Einträge nur, wo es vorgesehen ist (ältere Termine und Wochen: nur noch im Kalender)
+    if (neu && !b.anlegen) {
+      meldung(`Hier lässt sich nichts Neues anlegen. ${b.beschreibung}`);
+      throw new Error('Anlegen nicht vorgesehen');
+    }
     $('[data-kicker]')!.textContent = b.art === 'einstellung' ? b.gruppe : b.label;
 
     let g: Geladen;
@@ -116,6 +122,7 @@ import '../../../../styles/redaktion.css';
       const t = neu ? `${b.einzahl} anlegen` : titelVon(b, e, namen);
       $('[data-titel]')!.textContent = t;
       document.title = `${t} · Redaktion · Intern`;
+      brotkrumen([...ortsKrumen(ort.ort), ...(b.art === 'einstellung' ? [{ label: b.label }] : [{ label: b.label, href: listeUrl }, { label: t }])]);
     };
     setzeTitel();
     const seite = !neu ? b.seite?.(e) : null;
@@ -176,6 +183,8 @@ import '../../../../styles/redaktion.css';
 
     const form = formular(b, e, k);
     $('[data-felder]')!.append(form.el);
+    // Sprung zu einem Abschnitt, z. B. #abschnitt-kontakt-und-bankverbindung (aus der Verwaltung)
+    if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ block: 'start' });
     const speichernBtn = $<HTMLButtonElement>('[data-speichern]')!;
     speichernBtn.hidden = gesperrt;
     if (neu) speichernBtn.textContent = `${b.einzahl} anlegen`;

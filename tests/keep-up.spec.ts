@@ -27,10 +27,10 @@ test('Planung: Wochen mit Einplanungen, Hinweis auf fehlende Beschreibungen, Fil
   // die alte Adresse der Planung führt in den Kalender
   await page.goto('/intern/keep-up/');
   await expect(page).toHaveURL(/\/intern\/kalender\/$/);
-  await expect(nav(page).getByRole('link', { name: /^Kalender/ })).toHaveAttribute('aria-current', 'page');
-  await expect(nav(page).getByRole('link', { name: /^Kalender/ })).toContainText('2');
+  await expect(nav(page).getByRole('link', { name: /^Termine/ })).toHaveAttribute('aria-current', 'page');
+  await expect(nav(page).getByRole('link', { name: /^Termine/ })).toContainText('2');
   await expect(nav(page).getByRole('link', { name: /Meine Trainings/ })).toBeHidden();
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Kalender');
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Termine');
 
   // diese Woche: Aurora (ohne Beschreibung) und Charles (Entwurf)
   const woche = page.locator(`[data-woche="${mo}"]`);
@@ -111,7 +111,7 @@ test('Meine Trainings: anstehend mit Notiz und Prüfliste, vergangen, ohne Zuord
   await redaktion(page, { profil: aurora, keepup: zeilen(), keepupIch: 'aurora-fradella' });
   await page.goto('/intern/keep-up/meine/');
   await expect(nav(page).getByRole('link', { name: /Meine Trainings/ })).toHaveAttribute('aria-current', 'page');
-  await expect(nav(page).getByRole('link', { name: /^Kalender/ })).toBeHidden();
+  await expect(nav(page).getByRole('link', { name: /^Termine/ })).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Hallo Aurora.');
   await expect(page.locator('[data-todo-text]')).toHaveText('Ein Termin braucht noch eine Beschreibung.');
   const karten = page.locator('.mt-karte');

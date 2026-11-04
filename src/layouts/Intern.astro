@@ -16,7 +16,7 @@ import { getLang, tr, url } from '../lib/i18n';
 import { gegenstueck, internPfad, SPRACHE_KEY } from '../lib/intern-sprache';
 import '../styles/intern.css';
 
-type Punkt = 'status' | 'profil' | 'opencalls' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine';
+type Punkt = 'status' | 'profil' | 'opencalls' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'seiten' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine' | 'verwaltung';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
@@ -34,14 +34,16 @@ const ziel = (pfad: string) => href(internPfad(lang, pfad));
 const t = tr(lang, {
   de: {
     bereich: 'Interner Bereich', logo: 'Interner Bereich: Mein Status', status: 'Mein Status', profil: 'Mein Profil', mitglieder: 'Mitglieder',
-    dokumente: 'Dokumente', trainings: 'Meine Trainings', redaktion: 'Redaktion', kalender: 'Kalender', beitraege: 'Beiträge', medien: 'Medien',
-    inhalte: 'Website-Inhalte', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung ↗', web: 'Website ansehen →', aus: 'Abmelden',
+    dokumente: 'Dokumente', trainings: 'Meine Trainings', kalender: 'Termine', beitraege: 'Beiträge', medien: 'Medien',
+    inhalte: 'Website-Inhalte', uebersicht: 'Übersicht', seiten: 'Seiten', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung',
+    supabase: 'Datenbank ↗', web: 'Website ansehen →', aus: 'Abmelden',
     zurWebsite: '← Zur Website', moment: 'Einen Moment …', setupH: 'Noch nicht eingerichtet', sprache: 'Sprache',
   },
   en: {
     bereich: 'Members area', logo: 'Members area: My status', status: 'My status', profil: 'My profile', mitglieder: 'Members',
-    dokumente: 'Documents', trainings: 'My classes', redaktion: 'Editorial', kalender: 'Calendar', beitraege: 'Posts', medien: 'Media',
-    inhalte: 'Website content', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Admin ↗', web: 'View website →', aus: 'Log out',
+    dokumente: 'Documents', trainings: 'My classes', kalender: 'Events', beitraege: 'Posts', medien: 'Media',
+    inhalte: 'Website content', uebersicht: 'Overview', seiten: 'Pages', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Administration',
+    supabase: 'Database ↗', web: 'View website →', aus: 'Log out',
     zurWebsite: '← To the website', moment: 'One moment …', setupH: 'Not set up yet', sprache: 'Language',
   },
 });
@@ -56,13 +58,15 @@ const mitglied: { id: Punkt; label: string; path: string; n?: string }[] = [
 const keepup: { id: Punkt; label: string; path: string; n: string }[] = [
   { id: 'keepup-meine', label: t.trainings, path: 'keep-up/meine/', n: 'keepup-meine' },
 ];
-// nur für Presse, Vorstand und Admin (nur deutsch)
+// Website-Inhalte: nur für Presse, Vorstand und Admin (nur deutsch). Startseite „Was möchtest du ändern?“,
+// darunter alles, was auf der Website steht (Aufbau: docs/redaktion.md)
 const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
-  { id: 'kalender', label: t.kalender, path: 'kalender/', n: 'kalender' },
-  { id: 'beitraege', label: t.beitraege, path: 'news/', n: 'beitraege' },
-  { id: 'medien', label: t.medien, path: 'news/medien/', n: 'medien' },
-  { id: 'inhalte', label: t.inhalte, path: 'redaktion/' },
+  { id: 'inhalte', label: t.uebersicht, path: 'redaktion/' },
+  { id: 'seiten', label: t.seiten, path: 'redaktion/seiten/' },
   { id: 'texte', label: t.texte, path: 'redaktion/texte/' },
+  { id: 'medien', label: t.medien, path: 'news/medien/', n: 'medien' },
+  { id: 'beitraege', label: t.beitraege, path: 'news/', n: 'beitraege' },
+  { id: 'kalender', label: t.kalender, path: 'kalender/', n: 'kalender' },
   { id: 'freigaben', label: t.freigaben, path: 'redaktion/freigaben/', n: 'freigaben' },
 ];
 // Umschalter Deutsch/English, nur auf Seiten, die es in beiden Sprachen gibt
@@ -121,7 +125,7 @@ const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : nu
             <span class="rd-nav__n" data-nav-n={i.n}></span>
           </a>
         ))}
-        <span class="rd-nav__gruppe" data-redaktion-only hidden>{t.redaktion}</span>
+        <span class="rd-nav__gruppe" data-redaktion-only hidden>{t.inhalte}</span>
         {redaktion.map((i) => (
           <a href={ziel(i.path)} aria-current={i.id === current ? 'page' : undefined} data-redaktion-only hidden>
             <span class="rd-nav__m" aria-hidden="true"></span>
@@ -129,9 +133,15 @@ const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : nu
             {i.n && <span class="rd-nav__n" data-nav-n={i.n}></span>}
           </a>
         ))}
-        <a href="https://supabase.com/dashboard" target="_blank" rel="noopener" data-vorstand-only hidden>
+        <!-- Technisches (Rechtliches, Status, Demo, Datenbank): nur Vorstand und Admin, ganz unten -->
+        <span class="rd-nav__gruppe" data-vorstand-only hidden>{t.verwaltung}</span>
+        <a href={ziel('redaktion/verwaltung/')} aria-current={current === 'verwaltung' ? 'page' : undefined} data-vorstand-only hidden>
           <span class="rd-nav__m" aria-hidden="true"></span>
           <span class="rd-nav__l">{t.verwaltung}</span>
+        </a>
+        <a href="https://supabase.com/dashboard" target="_blank" rel="noopener" data-vorstand-only hidden>
+          <span class="rd-nav__m" aria-hidden="true"></span>
+          <span class="rd-nav__l">{t.supabase}</span>
         </a>
       </nav>
       <div class="rd-side__fuss" data-when="ready" data-side-teil>

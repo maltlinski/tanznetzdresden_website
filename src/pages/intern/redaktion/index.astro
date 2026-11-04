@@ -1,25 +1,36 @@
 ---
 /**
- * Redaktion: Übersicht über alles, was Presse, Vorstand und Admin an der Website bearbeiten können.
- * Gespeichert wird über die Supabase-Funktion „inhalte“ direkt im Repository (docs/redaktion.md).
+ * Website-Inhalte: Startseite der Redaktion (Presse, Vorstand, Admin) – „Was möchtest du ändern?“ mit großen Kacheln,
+ * darunter die Seiten der Website zum direkten Hinspringen, der Zustand der Website und was zuletzt geändert wurde.
+ * Aufbau des Bereichs: docs/redaktion.md. Gespeichert wird über die Supabase-Funktion „inhalte“.
+ * Technisches (Rechtliches, Demo-Ansicht, Datenbank) steht unter Verwaltung (nur Vorstand/Admin).
  */
 import Redaktion from '../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../components/intern/RedaktionStatus.astro';
 import { href } from '../../../lib/url';
-import { bereiche, gruppen } from '../../../scripts/intern/redaktion/bereiche';
+import texte from '../../../settings/texte.json';
+import { seitenplan } from '../../../scripts/intern/redaktion/seitenplan';
 import '../../../styles/redaktion.css';
 
-const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `intern/redaktion/eintrag/?b=${b.id}` : `intern/redaktion/liste/?b=${b.id}`);
+const plan = seitenplan(texte);
+const gruppen = [...new Set(plan.map((s) => s.gruppe))];
+const kacheln = [
+  { titel: 'Texte ändern', text: 'Überschriften, Einleitungen, Knöpfe und Hinweise. Seite für Seite, auf Deutsch und Englisch.', ziel: href('intern/redaktion/texte/'), id: 'texte' },
+  { titel: 'Seite für Seite', text: 'Alles, was auf einer Seite steht: Texte, Fotos, Listen. So aufgebaut wie die Website.', ziel: href('intern/redaktion/seiten/'), id: 'seiten' },
+  { titel: 'Beitrag schreiben', text: 'News mit Foto, Frist oder Zitat anlegen und veröffentlichen.', ziel: href('intern/news/'), id: 'beitraege' },
+  { titel: 'Termin eintragen', text: 'Vorstellungen, Workshops und KEEP UP-Trainings für den Tanzkalender.', ziel: href('intern/kalender/'), id: 'termine' },
+  { titel: 'Medien verwalten', text: 'Fotos hochladen, beschreiben und sehen, wo sie verwendet werden.', ziel: href('intern/news/medien/'), id: 'medien' },
+  { titel: 'Freigaben', text: 'Profile und Fotos, die Mitglieder selbst pflegen, für die Website freigeben.', ziel: href('intern/redaktion/freigaben/'), id: 'freigaben' },
+];
 ---
 <Redaktion title="Website-Inhalte" current="inhalte">
   <div class="r-head">
     <div>
-      <h1 class="i-h1">Website-Inhalte</h1>
+      <p class="r-kicker">Website-Inhalte</p>
+      <h1 class="i-h1">Was möchtest du ändern?</h1>
       <p class="i-lead">
-        Hier pflegst du die Website: die Texte der Seiten, dazu Termine, Formate, Profitraining, Personen, Partner und
-        Vereinsdaten, und du gibst Mitgliederprofile frei. Was du
-        speicherst, ist nach 2–3 Minuten online. Jede Änderung wird mit deinem Namen festgehalten und lässt sich
-        zurückholen.
+        Hier pflegst du alles, was auf der Website steht. Was du speicherst, ist nach 2–3 Minuten online. Jede Änderung
+        wird mit deinem Namen festgehalten und lässt sich zurückholen.
       </p>
     </div>
     <RedaktionStatus />
@@ -33,93 +44,52 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
   <p class="i-hint" data-loading hidden>Inhalte werden geladen …</p>
 
   <div data-access hidden>
-    <section class="r-gruppe" aria-labelledby="g-texte">
-      <h2 class="r-gruppe__h" id="g-texte">Texte der Website</h2>
-      <ul class="r-tiles">
+    <ul class="r-start" aria-label="Was möchtest du ändern?">
+      {kacheln.map((k) => (
         <li>
-          <a href={href('intern/redaktion/texte/')}>
-            <strong>Texte</strong>
-            <span>Alle Überschriften, Knöpfe und Hinweise, Seite für Seite, Deutsch und Englisch.</span>
+          <a href={k.ziel} data-kachel={k.id}>
+            <strong>{k.titel}{k.id === 'freigaben' && <span class="r-tiles__n" data-freigaben-n></span>}</strong>
+            <span>{k.text}</span>
           </a>
         </li>
-        <li>
-          <a href={href('intern/redaktion/texte/textbuch/')}>
-            <strong>Textbuch</strong>
-            <span>Alle Texte am Stück zum Durchlesen, Abstimmen und Drucken.</span>
-          </a>
-        </li>
-      </ul>
+      ))}
+      <li>
+        <a href={href('')} target="_blank" rel="noopener" data-kachel="website">
+          <strong>Website ansehen <span aria-hidden="true">↗</span></strong>
+          <span>Die Website, wie sie gerade online ist. Öffnet in einem neuen Fenster.</span>
+        </a>
+      </li>
+    </ul>
+
+    <section class="r-gruppe" aria-labelledby="g-seiten">
+      <h2 class="r-gruppe__h" id="g-seiten">Oder direkt zu einer Seite</h2>
+      <div class="r-seitenwahl">
+        {gruppen.map((g) => (
+          <div>
+            <p class="r-seitenwahl__g">{g}</p>
+            <ul>
+              {plan.filter((s) => s.gruppe === g).map((s) => (
+                <li><a href={href(`intern/redaktion/seiten/?s=${s.id}`)}>{s.titel}</a></li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
     </section>
-    {gruppen.map((g, gi) => (
-      <section class="r-gruppe" aria-labelledby={`g-${gi}`}>
-        <h2 class="r-gruppe__h" id={`g-${gi}`}>{g}</h2>
-        <ul class="r-tiles">
-          {g === 'Netzwerk & Partner' && (
-            <li>
-              <a href={href('intern/redaktion/freigaben/')}>
-                <strong>Freigaben<span class="r-tiles__n" data-freigaben-n></span></strong>
-                <span>Profile und Fotos, die Mitglieder selbst pflegen, für die Website freigeben.</span>
-              </a>
-            </li>
-          )}
-          {g === 'Programm' && (
-            <li>
-              <a href={href('intern/news/')}>
-                <strong>News schreiben</strong>
-                <span>Beiträge für „Aus dem Netz“ mit Foto, Frist oder Zitat anlegen und veröffentlichen.</span>
-              </a>
-            </li>
-          )}
-          {bereiche.filter((b) => b.gruppe === g).map((b) => (
-            <li>
-              <a href={ziel(b)} data-bereich={b.id}>
-                <strong>{b.label}<span class="r-tiles__n" data-anzahl={b.art === 'ordner' ? b.ordner : undefined}></span></strong>
-                <span>{b.beschreibung}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </section>
-    ))}
 
     <section class="r-gruppe" aria-labelledby="g-verlauf">
       <h2 class="r-gruppe__h" id="g-verlauf">Zuletzt geändert</h2>
       <ol class="rs-verlauf" data-verlauf></ol>
       <p class="i-hint r-hilfe">
-        Fragen zur Redaktion? Die Anleitung steht in <code>docs/redaktion.md</code>. Etwas ist schiefgegangen? Jede
-        Änderung lässt sich auf GitHub rückgängig machen. Das macht der Admin.
+        Etwas ist schiefgegangen? Jede Änderung lässt sich zurückholen. Gib dafür dem Vorstand oder Admin Bescheid.
       </p>
     </section>
   </div>
-
-  <section class="r-gruppe demo" data-redaktion-only hidden aria-labelledby="g-demo">
-    <h2 class="r-gruppe__h" id="g-demo">Ausprobieren</h2>
-    <label class="i-check"><input type="checkbox" data-demo-schalter />Demo-Ansicht</label>
-    <p class="i-hint">
-      Füllt leere Profile auf der Website mit Beispielfoto, -text und Schwerpunkten, damit sich Gestaltung und
-      Abläufe ausprobieren lassen. Gilt nur in diesem Browser, echte Angaben bleiben unverändert. Ein Band unten links
-      zeigt, dass sie an ist. Ohne Anmeldung: Adresse mit <code>?demo=1</code> öffnen, <code>?demo=0</code> schaltet aus.
-    </p>
-  </section>
 </Redaktion>
 
 <script>
   import { $, starten, statusAnzeigen } from '../../../scripts/intern/redaktion/seite';
   import { offeneFreigaben } from '../../../scripts/intern/freigaben';
-  import { DEMO_KEY } from '../../../lib/demo';
-
-  // Demo-Ansicht an/aus (src/lib/demo.ts)
-  const demo = document.querySelector<HTMLInputElement>('[data-demo-schalter]');
-  if (demo) {
-    demo.checked = document.documentElement.classList.contains('demo');
-    demo.addEventListener('change', () => {
-      try {
-        if (demo.checked) localStorage.setItem(DEMO_KEY, '1');
-        else localStorage.removeItem(DEMO_KEY);
-      } catch {}
-      document.documentElement.classList.toggle('demo', demo.checked);
-    });
-  }
 
   const r = await starten();
   if (r) {
@@ -128,17 +98,5 @@ const ziel = (b: (typeof bereiche)[number]) => href(b.art === 'einstellung' ? `i
       if (el) el.textContent = n ? String(n) : '';
     });
     statusAnzeigen(r, $('[data-website-status]'), $('[data-verlauf]'));
-    // Anzahl je Ordner (Dateien im Repository)
-    document.querySelectorAll<HTMLElement>('[data-anzahl]').forEach((el) => {
-      const prefix = `${el.dataset.anzahl}/`;
-      const n = r.stand.dateien.filter((d) => d.pfad.startsWith(prefix) && d.pfad.endsWith('.md') && !d.pfad.slice(prefix.length).includes('/')).length;
-      el.textContent = String(n);
-    });
   }
 </script>
-
-<style>
-  .demo { display: grid; gap: 6px; max-width: 70ch; }
-  .demo[hidden] { display: none; }
-  .demo .i-hint { margin: 0; }
-</style>

@@ -6,10 +6,12 @@
  */
 import Redaktion from '../../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
 import { href } from '../../../../lib/url';
 import '../../../../styles/redaktion.css';
 ---
 <Redaktion title="Texte" current="texte">
+  <Brotkrumen pfad={[{ label: 'Texte' }]} />
   <div class="r-head">
     <div>
       <h1 class="i-h1">Texte</h1>
@@ -66,8 +68,7 @@ import '../../../../styles/redaktion.css';
 
 <script>
   import { h } from '../../../../scripts/intern/news/dom';
-  import { $, meldung, redaktionUrl, starten, statusAnzeigen, websiteUrl } from '../../../../scripts/intern/redaktion/seite';
-  import { bereich } from '../../../../scripts/intern/redaktion/bereiche';
+  import { $, brotkrumen, meldung, redaktionUrl, starten, statusAnzeigen, websiteUrl, zielName, zielUrl } from '../../../../scripts/intern/redaktion/seite';
   import { alleTexte, dateiText, platzhalter, textId, textPruefen, uebernehmen, type TextEintrag, type TextSeite } from '../../../../lib/texte-regeln';
 
   const PFAD = 'src/settings/texte.json';
@@ -101,16 +102,6 @@ import '../../../../styles/redaktion.css';
 
     const seiten = () => Object.entries(datei).filter(([k]) => !k.startsWith('_')) as [string, TextSeite][];
     const abschnittId = (s: string, a: string) => `abschnitt-${s}-${a}`;
-    /** „redaktion:<bereich>“ → Website-Inhalte, sonst Pfad im internen Bereich */
-    const zielUrl = (ziel: string) => {
-      if (!ziel.startsWith('redaktion:')) return websiteUrl(ziel);
-      const b = bereich(ziel.slice(10));
-      return !b ? redaktionUrl() : b.art === 'einstellung' ? redaktionUrl('eintrag/', { b: b.id }) : redaktionUrl('liste/', { b: b.id });
-    };
-    const zielName = (ziel: string) => {
-      if (!ziel.startsWith('redaktion:')) return ({ 'intern/kalender/': 'Kalender', 'intern/news/': 'Beiträge', 'intern/redaktion/freigaben/': 'Freigaben' } as Record<string, string>)[ziel] ?? 'Interner Bereich';
-      return `Website-Inhalte → ${bereich(ziel.slice(10))?.label ?? ''}`;
-    };
     const geaendert = (f: Feld) => f.de.value !== f.e.de || f.en.value !== f.e.en || (f.englischPasst && !!f.e.enPruefen);
     const offen = () => felder.filter(geaendert);
 
@@ -243,7 +234,7 @@ import '../../../../styles/redaktion.css';
             h('h3', { class: 'tx-abschnitt__h', id: abschnittId(x.seite, x.abschnitt) }, x.a.titel),
             x.a.auch?.length
               ? h('p', { class: 'tx-auch' }, 'Außerdem auf dieser Seite: ',
-                ...x.a.auch.flatMap((a, i) => [i > 0 ? ' · ' : '', h('a', { href: zielUrl(a.ziel) }, a.text), h('span', { class: 'tx-auch__wo' }, ` (${zielName(a.ziel)})`)]))
+                ...x.a.auch.flatMap((a, i) => [i > 0 ? ' · ' : '', h('a', { href: zielUrl(a.ziel, `${x.seite}.${x.abschnitt}`) }, a.text), h('span', { class: 'tx-auch__wo' }, ` (${zielName(a.ziel)})`)]))
               : null));
         }
         const f = karte(x.seite, x.abschnitt, x.key, x.e, !!x.s.nurVorstand && !vorstand);
@@ -289,6 +280,9 @@ import '../../../../styles/redaktion.css';
       seitenListe.querySelectorAll<HTMLButtonElement>('[data-seite-wahl]').forEach((b) =>
         b.dataset.seiteWahl === seite && !alleSeiten ? b.setAttribute('aria-current', 'page') : b.removeAttribute('aria-current'));
       seitenWahl.value = seite;
+      // Breadcrumbs: Texte › Seite (bei Suche oder Filter: über alle Seiten)
+      const titel = (datei[seite] as TextSeite | undefined)?.titel ?? '';
+      brotkrumen(alleSeiten || !titel ? [{ label: 'Texte' }] : [{ label: 'Texte', href: redaktionUrl('texte/') }, { label: titel }]);
       seitenListe.querySelectorAll<HTMLElement>('[data-abschnitte-von]').forEach((ul) => (ul.hidden = alleSeiten || ul.dataset.abschnitteVon !== seite));
       inhalt.querySelector('.tx-leer')?.remove();
       if (!sichtbar.size) inhalt.append(h('p', { class: 'r-leer tx-leer' }, q ? `Kein Text mit „${suche.value.trim()}“.` : 'Hier gibt es gerade nichts.'));
@@ -342,6 +336,8 @@ import '../../../../styles/redaktion.css';
     try {
       await laden();
       aufbauen();
+      // Sprung zum Abschnitt (aus „Seiten“: ?seite=…#abschnitt-…)
+      if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ block: 'start' });
     } catch (e) {
       meldung((e as Error).message);
     }

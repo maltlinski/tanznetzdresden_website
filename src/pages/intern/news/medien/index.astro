@@ -5,12 +5,13 @@
  * Logik: src/scripts/intern/news/medien.ts · Daten: Tabelle news_medien, Bucket newsbilder.
  */
 import Redaktion from '../../../../layouts/Redaktion.astro';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
 import '../../../../styles/mediathek.css';
 ---
 <Redaktion title="Mediathek" current="medien">
   <div class="md-kopf">
     <div class="md-kopf__titel">
-      <span class="tag">Website · Medien</span>
+      <Brotkrumen pfad={[{ label: 'Medien' }]} />
       <h1 class="i-h1">Mediathek</h1>
     </div>
     <span class="md-kopf__stat" data-stat></span>

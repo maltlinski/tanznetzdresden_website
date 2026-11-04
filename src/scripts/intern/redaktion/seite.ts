@@ -6,6 +6,7 @@ import { initIntern, internUrl, type InternContext } from '../session';
 import { api, type Api, type Stand, type WebsiteStatus } from './api';
 import { bereich as bereichNach, type Bereich, type Kontext, type Option } from './bereiche';
 import { laden, verweisFelder, type Eintrag, type Geladen } from './daten';
+import { INTERN_ZIELE, orte, ortNach, type Ort, type PlanSeite } from './seitenplan';
 
 export interface Redaktion {
   ctx: InternContext;
@@ -55,6 +56,81 @@ export const redaktionUrl = (pfad = '', params: Record<string, string | undefine
 
 /** Öffentliche Adresse einer Seite der Website */
 export const websiteUrl = (pfad: string) => `${import.meta.env.BASE_URL.replace(/\/?$/, '/')}${pfad}`;
+
+/** Adresse eines Bereichs (Liste oder, bei Einstellungen, gleich das Formular); von = „seite.abschnitt“ für die Breadcrumbs */
+export const bereichUrl = (b: Bereich, von?: string) =>
+  b.art === 'einstellung' ? redaktionUrl('eintrag/', { b: b.id, von }) : redaktionUrl('liste/', { b: b.id, von });
+
+/** Ziel aus dem Seitenplan („redaktion:<bereich>“ oder Pfad im internen Bereich) → Adresse */
+export function zielUrl(ziel: string, von?: string): string {
+  if (!ziel.startsWith('redaktion:')) return internUrl(ziel.replace(/^intern\//, ''));
+  const b = bereichNach(ziel.slice(10));
+  return b ? bereichUrl(b, von) : redaktionUrl();
+}
+/** Name des Ziels, z. B. „Formate“ oder „Termine“ */
+export const zielName = (ziel: string) =>
+  ziel.startsWith('redaktion:') ? (bereichNach(ziel.slice(10))?.label ?? '') : (INTERN_ZIELE[ziel] ?? 'Interner Bereich');
+
+/** Adresse der Seite „Seiten“ (optional mit Seite und Abschnitt) */
+export const seitenUrl = (seite?: string, abschnitt?: string) =>
+  `${redaktionUrl('seiten/', { s: seite })}${seite && abschnitt ? `#abschnitt-${seite}-${abschnitt}` : ''}`;
+
+// ---------- Breadcrumbs und „Erscheint auf …“ ----------
+
+export interface Krume {
+  label: string;
+  href?: string;
+}
+
+/** Breadcrumbs neu setzen (Website-Inhalte kommt immer davor; components/intern/Brotkrumen.astro) */
+export function brotkrumen(pfad: Krume[]) {
+  const ol = document.querySelector('[data-brotkrumen] ol');
+  if (!ol) return;
+  const voll: Krume[] = [{ label: 'Website-Inhalte', href: redaktionUrl() }, ...pfad];
+  ol.replaceChildren(
+    ...voll.map((k, i) => {
+      const li = document.createElement('li');
+      const letzte = i === voll.length - 1;
+      const el = document.createElement(!letzte && k.href ? 'a' : 'span');
+      el.textContent = k.label;
+      if (el instanceof HTMLAnchorElement) el.href = k.href!;
+      if (letzte) el.setAttribute('aria-current', 'page');
+      li.append(el);
+      return li;
+    }),
+  );
+}
+
+/** Krumen bis zum Abschnitt: Seiten › Startseite › Kopf */
+export const ortsKrumen = (o: Ort | null): Krume[] =>
+  o
+    ? [{ label: 'Seiten', href: seitenUrl() }, { label: o.seite.titel, href: seitenUrl(o.seite.id) }, { label: o.abschnitt.titel, href: seitenUrl(o.seite.id, o.abschnitt.id) }]
+    : [{ label: 'Seiten', href: seitenUrl() }];
+
+/** Wo ein Bereich erscheint: aus ?von= (woher man kommt), sonst die erste Stelle im Seitenplan */
+export function bereichOrt(plan: PlanSeite[], b: Bereich): { ort: Ort | null; alle: Ort[]; von: string | undefined } {
+  const alle = orte(plan, `redaktion:${b.id}`);
+  const vonParam = new URLSearchParams(location.search).get('von');
+  const gewaehlt = ortNach(plan, vonParam);
+  const ort = gewaehlt && alle.some((o) => o.seite.id === gewaehlt.seite.id && o.abschnitt.id === gewaehlt.abschnitt.id) ? gewaehlt : (alle[0] ?? null);
+  return { ort, alle, von: ort ? `${ort.seite.id}.${ort.abschnitt.id}` : undefined };
+}
+
+/** „Erscheint auf der Website: Startseite › Kopf · Über uns › Haltung“ mit Links in den Seitenplan */
+export function erscheintAuf(el: HTMLElement | null, alle: Ort[]) {
+  if (!el) return;
+  el.replaceChildren();
+  el.hidden = !alle.length;
+  if (!alle.length) return;
+  el.append('Erscheint auf der Website: ');
+  alle.forEach((o, i) => {
+    if (i) el.append(' · ');
+    const a = document.createElement('a');
+    a.href = seitenUrl(o.seite.id, o.abschnitt.id);
+    a.textContent = `${o.seite.titel} › ${o.abschnitt.titel}`;
+    el.append(a);
+  });
+}
 
 // ---------- Namen und Optionen aus anderen Bereichen ----------
 

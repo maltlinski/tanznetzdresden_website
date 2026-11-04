@@ -4,15 +4,18 @@
  */
 import Redaktion from '../../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
-import { href } from '../../../../lib/url';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
+import Seitenplan from '../../../../components/intern/Seitenplan.astro';
 import '../../../../styles/redaktion.css';
 ---
-<Redaktion title="Redaktion" current="inhalte">
-  <a class="r-back" href={href('intern/redaktion/')}>← Redaktion</a>
+<Redaktion title="Redaktion" current="seiten">
+  <Seitenplan />
+  <Brotkrumen pfad={[{ label: 'Seiten' }]} />
   <div class="r-head">
     <div>
       <h1 class="i-h1" data-titel>Redaktion</h1>
       <p class="i-lead" data-beschreibung></p>
+      <p class="r-wo" data-wo hidden></p>
     </div>
     <div class="r-head__side">
       <a class="btn btn--primary btn--marker" data-neu hidden>Neu</a>
@@ -64,7 +67,8 @@ import '../../../../styles/redaktion.css';
 <script>
   import { bereich as bereichNach } from '../../../../scripts/intern/redaktion/bereiche';
   import { laden, loeschAenderungen, reihenfolgeAenderungen, type Eintrag, type Geladen } from '../../../../scripts/intern/redaktion/daten';
-  import { $, meldung, namenLaden, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
+  import { $, bereichOrt, brotkrumen, erscheintAuf, meldung, namenLaden, ortsKrumen, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
+  import { planLesen } from '../../../../scripts/intern/redaktion/seitenplan';
 
   const b = bereichNach(new URLSearchParams(location.search).get('b'));
   const r = await starten();
@@ -75,6 +79,9 @@ import '../../../../styles/redaktion.css';
     document.title = `${b.label} · Redaktion · Intern`;
     $('[data-titel]')!.textContent = b.label;
     $('[data-beschreibung]')!.textContent = b.beschreibung;
+    const ort = bereichOrt(planLesen(), b);
+    brotkrumen([...ortsKrumen(ort.ort), { label: b.label }]);
+    erscheintAuf($('[data-wo]'), ort.alle);
     const neuBtn = $<HTMLAnchorElement>('[data-neu]')!;
     if (b.art !== 'einstellung' && b.anlegen) {
       neuBtn.hidden = false;
@@ -159,7 +166,7 @@ import '../../../../styles/redaktion.css';
       const gesperrt = !!b!.nurVorstand?.(e.id) && !r!.vorstand;
       const link = document.createElement('a');
       link.className = 'r-zeile__link';
-      link.href = redaktionUrl('eintrag/', { b: b!.id, id: e.id });
+      link.href = redaktionUrl('eintrag/', { b: b!.id, id: e.id, von: ort.von });
       link.innerHTML = '<span class="r-zeile__t"></span><span class="r-zeile__m"></span>';
       link.querySelector('.r-zeile__t')!.textContent = titel;
       link.querySelector('.r-zeile__m')!.textContent = [b!.info?.(e, namen), gesperrt ? 'nur Vorstand' : ''].filter(Boolean).join(' · ');

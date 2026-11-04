@@ -4,12 +4,13 @@
  * (Entwürfe, Geplant, Online). Ein Klick öffnet den Editor.
  */
 import Redaktion from '../../../layouts/Redaktion.astro';
+import Brotkrumen from '../../../components/intern/Brotkrumen.astro';
 import { href } from '../../../lib/url';
 ---
 <Redaktion title="Beiträge" current="beitraege">
   <div class="bl-kopf">
     <div class="bl-kopf__titel">
-      <span class="tag">Website · News</span>
+      <Brotkrumen pfad={[{ label: 'Beiträge' }]} />
       <h1 class="i-h1">Beiträge</h1>
     </div>
     <div class="bl-kopf__aktionen" data-access hidden>
@@ -35,8 +36,8 @@ import { href } from '../../../lib/url';
     <ul class="bl" data-list aria-live="polite"></ul>
     <p class="bl-leer" data-empty hidden></p>
     <p class="i-hint bl-fuss">
-      Ältere Beiträge, die als Datei im Repository liegen, erscheinen hier nicht. Sie stehen unter
-      <a href={href('intern/redaktion/liste/?b=news')}>Website-Inhalte → News-Archiv</a>.
+      Ältere Beiträge von der früheren Website stehen unter <a href={href('intern/redaktion/liste/?b=news')}>Ältere Beiträge</a>.
+      Wiederkehrende Texte wie Förderhinweise: <a href={href('intern/redaktion/eintrag/?b=news-bausteine')}>Bausteine für Beiträge</a>.
     </p>
   </div>
 </Redaktion>

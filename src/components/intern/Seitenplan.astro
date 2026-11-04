@@ -1,0 +1,9 @@
+---
+/**
+ * Gibt den Seitenplan (Seite → Abschnitt → Element, src/scripts/intern/redaktion/seitenplan.ts) als JSON in die Seite,
+ * für Breadcrumbs und „Erscheint auf …“ im Browser. Stand: texte.json beim Build.
+ */
+import texte from '../../settings/texte.json';
+import { planJson, seitenplan } from '../../scripts/intern/redaktion/seitenplan';
+---
+<script type="application/json" data-seitenplan set:html={planJson(seitenplan(texte))} />

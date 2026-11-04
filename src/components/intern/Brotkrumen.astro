@@ -1,0 +1,23 @@
+---
+/**
+ * Breadcrumbs der Redaktion: „Website-Inhalte › Seiten › Startseite › Kopf › …“, damit man immer weiß, wo man ist.
+ * Der erste Punkt (Website-Inhalte) kommt immer dazu. Seiten, die erst im Browser wissen, was sie zeigen
+ * (Liste, Eintrag, Texte), ersetzen die Punkte mit brotkrumen() aus src/scripts/intern/redaktion/seite.ts.
+ */
+import { href } from '../../lib/url';
+
+interface Props {
+  pfad?: { label: string; href?: string }[];
+}
+const { pfad = [] } = Astro.props;
+const voll = [{ label: 'Website-Inhalte', href: href('intern/redaktion/') }, ...pfad];
+---
+<nav class="r-krumen" aria-label="Du bist hier" data-brotkrumen>
+  <ol>
+    {voll.map((p, i) => (
+      <li>
+        {i < voll.length - 1 && p.href ? <a href={p.href}>{p.label}</a> : <span aria-current={i === voll.length - 1 ? 'page' : undefined}>{p.label}</span>}
+      </li>
+    ))}
+  </ol>
+</nav>

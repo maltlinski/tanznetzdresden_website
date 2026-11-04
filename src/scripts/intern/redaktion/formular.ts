@@ -576,11 +576,12 @@ function baue(f: Feld, bind: Bindung, k: FormKontext, bereich: Bereich, o: BauOp
   // Listen und lange Texte: englische Fassung aufklappbar darunter, sonst zweispaltig
   if (f.typ === 'liste' || f.typ === 'werte' || f.typ === 'markdown') {
     const en = f.typ === 'liste' ? listenFeld(f, eb, k, true, gesperrt, bereich) : einzeln(f, eb, k, bereich, true, gesperrt);
-    const details = h('details', { class: 'rf-en' }, h('summary', { text: `${f.label}: englische Fassung` }), en.el);
+    const details = h('details', { class: 'rf-en', 'data-en-teil': true }, h('summary', { text: `${f.label}: englische Fassung` }), en.el);
     if (leer(eb.lesen()) === false) details.open = true;
     return [de, { el: details, pruefen: () => { const x = en.pruefen(); if (x) details.open = true; return x; }, fokus: () => { details.open = true; en.fokus(); } }];
   }
   const en = einzeln(f, eb, k, bereich, true, gesperrt);
+  en.el.setAttribute('data-en-teil', '');
   const paar = h('div', { class: 'rf-paar' }, de.el, en.el);
   return [{ el: paar, pruefen: () => de.pruefen() ?? en.pruefen(), fokus: () => (de.pruefen() ? de.fokus() : en.fokus()) }];
 }
@@ -648,26 +649,90 @@ export interface Formular {
   pruefen(extra?: Record<string, string>): number;
 }
 
+/** Englische Felder ein-/ausblenden: Wahl gilt für alle Formulare in diesem Browser */
+const EN_KEY = 'tndd-redaktion-englisch';
+const hatEnglisch = (felder: Feld[]): boolean => felder.some((f) => (f.typ !== 'abschnitt' && !!f.en) || (f.typ === 'liste' && hatEnglisch(f.felder)));
+const gefuellt = (el: Element) => [...el.querySelectorAll<HTMLInputElement | HTMLTextAreaElement>('input:not([type=file]):not([type=checkbox]), textarea')].some((x) => x.value.trim() !== '');
+
 export function formular(b: Bereich, e: Eintrag, k: FormKontext): Formular {
   const el = h('div', { class: 'rf-form' });
   const alle: { key?: string; baustein: Baustein }[] = [];
   let abschnitt: HTMLElement = el;
   let abschnittVorstand = false;
   const gesperrtGanz = !!b.nurVorstand?.(e.id) && !k.vorstand;
+
+  // Kopf: Englisch zeigen (die englischen Felder sind freiwillig und sonst eingeklappt)
+  const enSchalter = h('input', { type: 'checkbox', 'data-englisch-zeigen': true });
+  const enZahl = h('span', { class: 'rf-kopf__n', 'aria-live': 'polite' });
+  const enZeigen = (an: boolean, merken = false) => {
+    enSchalter.checked = an;
+    el.toggleAttribute('data-en-aus', !an);
+    if (merken) {
+      try {
+        if (an) localStorage.setItem(EN_KEY, '1');
+        else localStorage.removeItem(EN_KEY);
+      } catch {}
+    }
+  };
+  const enZaehlen = () => {
+    const teile = [...el.querySelectorAll('[data-en-teil]')];
+    enZahl.textContent = teile.length ? `Englisch: ${teile.filter(gefuellt).length} von ${teile.length} ausgefüllt` : '';
+  };
+  if (hatEnglisch(b.felder)) {
+    el.append(h('div', { class: 'rf-kopf' }, h('label', { class: 'i-check' }, enSchalter, 'Englische Fassung zeigen'), enZahl));
+    enSchalter.addEventListener('change', () => enZeigen(enSchalter.checked, true));
+    el.addEventListener('input', enZaehlen);
+    let gemerkt = false;
+    try {
+      gemerkt = localStorage.getItem(EN_KEY) === '1';
+    } catch {}
+    enZeigen(gemerkt);
+  }
+
+  // Selten Gebrauchtes je Abschnitt unter „Erweitert“ (am Ende des Abschnitts)
+  const erweitert = new Map<HTMLElement, { details: HTMLDetailsElement; innen: HTMLElement; n: number; voll: number }>();
+  const erweitertVon = (a: HTMLElement) => {
+    let x = erweitert.get(a);
+    if (!x) {
+      const innen = h('div', { class: 'rf-erweitert__in' });
+      x = { details: h('details', { class: 'rf-erweitert', 'data-erweitert': true }, h('summary', {}), innen), innen, n: 0, voll: 0 };
+      erweitert.set(a, x);
+    }
+    return x;
+  };
+  const abschnittId = (label: string) => `abschnitt-${slugify(label)}`;
+
   for (const f of b.felder) {
     if (f.typ === 'abschnitt') {
       abschnittVorstand = !!f.nurVorstand;
-      abschnitt = h('fieldset', { class: 'rf-abschnitt' }, h('legend', { class: 'rf-abschnitt__h', text: f.label }), f.hilfe ? h('p', { class: 'i-hint', text: f.hilfe }) : null);
+      abschnitt = h('fieldset', { class: 'rf-abschnitt', id: abschnittId(f.label) }, h('legend', { class: 'rf-abschnitt__h', text: f.label }), f.hilfe ? h('p', { class: 'i-hint', text: f.hilfe }) : null);
       el.append(abschnitt);
       continue;
     }
     const { de, en } = bindungen(b, e, f);
     const gesperrt = gesperrtGanz || (abschnittVorstand && !k.vorstand);
+    const ziel = f.erweitert ? erweitertVon(abschnitt) : null;
+    if (ziel) {
+      ziel.n++;
+      if (!leer(de.lesen())) ziel.voll++;
+    }
     for (const baustein of baue(f, de, k, b, { gesperrt }, en)) {
-      abschnitt.append(baustein.el);
+      (ziel?.innen ?? abschnitt).append(baustein.el);
       alle.push({ key: f.key, baustein });
     }
   }
+  for (const [a, x] of erweitert) {
+    x.details.querySelector('summary')!.append('Erweitert', h('span', { text: ` · selten gebraucht, ${x.voll} von ${x.n} ausgefüllt` }));
+    a.append(x.details);
+  }
+  enZaehlen();
+
+  /** Feld mit Fehler sichtbar machen: „Erweitert“ und englische Fassung aufklappen */
+  const aufdecken = (baustein: Baustein) => {
+    const falsch = baustein.el.querySelector('[aria-invalid="true"]') ?? baustein.el;
+    if (falsch.closest('[data-en-teil]')) enZeigen(true);
+    for (let d = falsch.closest('details'); d; d = d.parentElement?.closest('details') ?? null) d.open = true;
+  };
   return {
     el,
     pruefen(extra = {}) {
@@ -686,6 +751,7 @@ export function formular(b: Bereich, e: Eintrag, k: FormKontext): Formular {
         if (fehler) {
           n++;
           erster ??= baustein;
+          aufdecken(baustein);
         }
       }
       erster?.fokus();

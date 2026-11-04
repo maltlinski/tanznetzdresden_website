@@ -1,0 +1,120 @@
+---
+/**
+ * Verwaltung (nur Vorstand und Admin): das Technische und Rechtliche, getrennt von den Website-Inhalten –
+ * Impressum, Datenschutz, rechtliche Vereinsdaten, Rollen, Zustand der Website, Demo-Ansicht, Datenbank.
+ * Presse sieht hier nur einen Hinweis. Die Rechte prüft zusätzlich die Funktion „inhalte“ auf dem Server.
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
+import { href } from '../../../../lib/url';
+import '../../../../styles/redaktion.css';
+
+const rechtliches = [
+  { titel: 'Impressum', text: 'Der Text des Impressums.', ziel: href('intern/redaktion/eintrag/?b=seiten&id=impressum') },
+  { titel: 'Datenschutz', text: 'Die Datenschutzerklärung.', ziel: href('intern/redaktion/eintrag/?b=seiten&id=datenschutz') },
+  { titel: 'Rechtliche Vereinsdaten', text: 'Name laut Register, Vertretung, Steuer und Freistellungsbescheid.', ziel: href('intern/redaktion/eintrag/?b=verein#abschnitt-rechtliches-impressum-transparenz') },
+  { titel: 'Kontakt und Bankverbindung', text: 'Anschrift, E-Mail-Adressen, Telefon, Spendenkonto.', ziel: href('intern/redaktion/eintrag/?b=verein#abschnitt-kontakt-und-bankverbindung') },
+  { titel: 'Texte der Rechtsseiten', text: 'Überschriften und feste Texte auf Impressum, Datenschutz, Transparenz und Spendennachweis.', ziel: href('intern/redaktion/texte/?seite=rechtliches') },
+];
+---
+<Redaktion title="Verwaltung" current="verwaltung">
+  <div class="r-head">
+    <div>
+      <p class="r-kicker">Nur Vorstand und Admin</p>
+      <h1 class="i-h1">Verwaltung</h1>
+      <p class="i-lead">Rechtliches, Rollen und Technisches. Für die Inhalte der Website reicht die Übersicht unter Website-Inhalte.</p>
+    </div>
+    <RedaktionStatus />
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Verwaltung ist für den <strong>Vorstand</strong> und den <strong>Admin</strong>. Inhalte der Website pflegst du unter
+      <a href={href('intern/redaktion/')}>Website-Inhalte</a>.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <p class="i-hint" data-loading hidden>Wird geladen …</p>
+
+  <div data-access hidden>
+    <section class="r-gruppe" aria-labelledby="v-recht">
+      <h2 class="r-gruppe__h" id="v-recht">Rechtliches</h2>
+      <ul class="r-tiles">
+        {rechtliches.map((k) => (
+          <li><a href={k.ziel}><strong>{k.titel}</strong><span>{k.text}</span></a></li>
+        ))}
+      </ul>
+    </section>
+
+    <section class="r-gruppe" aria-labelledby="v-leute">
+      <h2 class="r-gruppe__h" id="v-leute">Mitglieder und Rollen</h2>
+      <ul class="r-tiles">
+        <li>
+          <a href={href('intern/mitglieder/')}>
+            <strong>Mitglieder</strong>
+            <span>Einladen, Rollen vergeben (Presse, Vorstand), Mitgliedschaft und Beitrag pflegen.</span>
+          </a>
+        </li>
+        <li>
+          <a href="https://supabase.com/dashboard" target="_blank" rel="noopener">
+            <strong>Datenbank <span aria-hidden="true">↗</span></strong>
+            <span>Supabase: Anmeldungen, Tabellen, Funktionen und Schlüssel. Öffnet in einem neuen Fenster.</span>
+          </a>
+        </li>
+      </ul>
+    </section>
+
+    <section class="r-gruppe" aria-labelledby="v-verlauf">
+      <h2 class="r-gruppe__h" id="v-verlauf">Zustand der Website und Verlauf</h2>
+      <ol class="rs-verlauf" data-verlauf></ol>
+      <p class="i-hint r-hilfe">
+        Jede Änderung der Redaktion ist ein Commit auf GitHub mit dem Namen der Person. Zurücknehmen: auf GitHub unter
+        <em>Commits</em> den Commit öffnen und <em>Revert</em>. Einrichtung und Fehlersuche: <code>docs/redaktion.md</code>.
+      </p>
+    </section>
+
+    <section class="r-gruppe demo" aria-labelledby="v-demo">
+      <h2 class="r-gruppe__h" id="v-demo">Ausprobieren</h2>
+      <label class="i-check"><input type="checkbox" data-demo-schalter />Demo-Ansicht</label>
+      <p class="i-hint">
+        Füllt leere Profile auf der Website mit Beispielfoto, -text und Schwerpunkten, damit sich Gestaltung und
+        Abläufe ausprobieren lassen. Gilt nur in diesem Browser, echte Angaben bleiben unverändert. Ein Band unten links
+        zeigt, dass sie an ist. Ohne Anmeldung: Adresse mit <code>?demo=1</code> öffnen, <code>?demo=0</code> schaltet aus.
+      </p>
+    </section>
+  </div>
+</Redaktion>
+
+<script>
+  import { initIntern } from '../../../../scripts/intern/session';
+  import { api } from '../../../../scripts/intern/redaktion/api';
+  import { $, meldung, statusAnzeigen } from '../../../../scripts/intern/redaktion/seite';
+  import { DEMO_KEY } from '../../../../lib/demo';
+
+  const ctx = await initIntern(true);
+  if (ctx && !ctx.isVorstand) $('[data-no-access]')!.hidden = false;
+  if (ctx?.isVorstand) {
+    $('[data-access]')!.hidden = false;
+    // Demo-Ansicht an/aus (src/lib/demo.ts)
+    const demo = $<HTMLInputElement>('[data-demo-schalter]')!;
+    demo.checked = document.documentElement.classList.contains('demo');
+    demo.addEventListener('change', () => {
+      try {
+        if (demo.checked) localStorage.setItem(DEMO_KEY, '1');
+        else localStorage.removeItem(DEMO_KEY);
+      } catch {}
+      document.documentElement.classList.toggle('demo', demo.checked);
+    });
+    try {
+      const a = api(ctx.sb);
+      const stand = await a.stand();
+      statusAnzeigen({ ctx, a, stand, vorstand: true }, $('[data-website-status]'), $('[data-verlauf]'));
+    } catch (e) {
+      meldung((e as Error).message);
+    }
+  }
+</script>
+
+<style>
+  .demo { display: grid; gap: 6px; max-width: 70ch; }
+  .demo[hidden] { display: none; }
+  .demo .i-hint { margin: 0; }
+</style>

@@ -10,20 +10,23 @@
  */
 import Intern from '../../../layouts/Intern.astro';
 import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
+import Brotkrumen from '../../../components/intern/Brotkrumen.astro';
+import { href } from '../../../lib/url';
 ---
-<Intern title="Kalender" current="kalender">
+<Intern title="Termine" current="kalender">
   <KeepUpDaten kalender />
   <div class="ku-kopf">
     <div class="ku-kopf__titel">
-      <span class="tag">Website · Tanzkalender</span>
-      <h1 class="i-h1">Kalender</h1>
+      <Brotkrumen pfad={[{ label: 'Termine' }]} />
+      <h1 class="i-h1">Termine</h1>
     </div>
     <div class="kal-neu" data-neu-box hidden>
       <button type="button" class="ku-ghost" data-neu-keepup>KEEP UP einplanen</button>
       <button type="button" class="btn btn--primary btn--marker" data-neu-termin>Termin eintragen</button>
     </div>
   </div>
-  <p class="kal-lead">Alles, was hier steht, erscheint im Tanzkalender auf der Website und im Kalender-Abo. KEEP UP-Trainings beschreiben die Dozent:innen selbst.</p>
+  <p class="kal-lead">Alles, was hier steht, erscheint im Tanzkalender auf der Website und im Kalender-Abo. KEEP UP-Trainings beschreiben die Dozent:innen selbst.
+    Ältere Termine von vor dem Kalender stehen unter <a href={href('intern/redaktion/liste/?b=termine')}>Ältere Termine</a>.</p>
 
   <p class="i-msg" role="alert" data-msg hidden></p>
 
@@ -983,6 +986,7 @@ import KeepUpDaten from '../../../components/intern/KeepUpDaten.astro';
   .kal-neu[hidden] { display: none; }
   .kal-neu :disabled { opacity: 0.45; cursor: not-allowed; }
   .kal-lead { max-width: 64ch; margin: -12px 0 28px; color: var(--ink-soft); line-height: 1.6; }
+  .kal-lead a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
   :global(.pl-tag__unten) { display: flex; align-items: flex-end; justify-content: space-between; gap: 4px; width: 100%; }
   :global(.pl-tag__marks) { display: flex; flex-direction: column; gap: 2px; }
   :global(.pl-mk) { display: block; width: 12px; height: 4px; }

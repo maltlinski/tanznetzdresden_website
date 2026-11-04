@@ -1,11 +1,31 @@
-# Redaktion (Intern → Redaktion)
+# Redaktion (Intern → Website-Inhalte)
 
 Mit der Redaktion pflegen Presse und Vorstand die Website selbst, im Browser und ohne GitHub-Konto. Jede Änderung
 landet als Commit im Repository. Danach baut sich die Website neu und ist nach 2–3 Minuten online.
 
-Die Redaktion hat eine eigene Oberfläche mit lila Seitenleiste (`src/layouts/Redaktion.astro`): **Beiträge**
-(News schreiben), **Medien** (Mediathek für News-Fotos), **Website-Inhalte** (diese Übersicht) und **Freigaben**.
-„← Interner Bereich“ führt zurück zu Profil, Mitgliedern und Dokumenten. Beiträge und Medien beschreibt docs/news.md.
+Alles, was auf der Website steht, liegt im internen Bereich unter **Website-Inhalte** (nur Presse, Vorstand, Admin):
+
+```
+Website-Inhalte
+├─ Übersicht        „Was möchtest du ändern?“: große Kacheln, Seiten zum Hinspringen, Zustand, Zuletzt geändert
+├─ Seiten           die Website Seite für Seite: Seite › Abschnitt › Element (Texte und was dort sonst steht)
+├─ Texte            alle festen Texte mit Suche und Filtern, dazu das Textbuch (docs/texte.md)
+├─ Medien           Fotos hochladen, beschreiben, sehen, wo sie verwendet werden
+├─ Beiträge         News schreiben (docs/news.md); ältere Beiträge und Bausteine sind dort verlinkt
+├─ Termine          Kalender: Termine und KEEP UP (docs/kalender.md); ältere Termine sind dort verlinkt
+└─ Freigaben        Profile und Fotos der Mitglieder
+Verwaltung (nur Vorstand/Admin, ganz unten): Impressum, Datenschutz, rechtliche Vereinsdaten, Mitglieder und Rollen,
+Zustand und Verlauf, Demo-Ansicht, Datenbank
+```
+
+Jede Seite zeigt oben Breadcrumbs („Website-Inhalte › Seiten › Startseite › Kopf › …“), jeder Bereich, wo er auf der
+Website erscheint („Erscheint auf der Website: …“). Selten gebrauchte Felder stehen im Formular unter **Erweitert**,
+die englischen Felder blendet „Englische Fassung zeigen“ ein (die Wahl merkt sich der Browser).
+
+**Seitenplan:** Seiten und Abschnitte kommen aus `src/settings/texte.json` (Reihenfolge wie auf der Website), was in
+einem Abschnitt sonst steht, aus dessen Liste `auch` (`redaktion:<bereich>` oder ein Pfad wie `intern/kalender/`).
+Logik in `src/scripts/intern/redaktion/seitenplan.ts`. **Neuer Bereich in `bereiche.ts` → beim passenden Abschnitt in
+`texte.json` unter `auch` eintragen**, sonst ist er unter „Seiten“ nicht zu finden (`tests/redaktion.spec.ts` prüft das).
 
 ## Für die Redaktion
 
@@ -21,38 +41,32 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 
 ### Was steht wo?
 
-| Bereich | Was | Sortieren |
+| Bereich | Was | Wo in der Redaktion |
 |---|---|---|
-| **News schreiben** (= Beiträge) | neue Beiträge mit Titelbild, Blöcken, Frist oder Zitat (docs/news.md) | nach Datum |
-| **News-Bausteine** | wiederkehrende Texte wie Förderhinweise für den News-Editor | im Formular |
-| **Termine** | Tanzkalender, Startseite, eigene Terminseite; neue Termine besser unter *Intern → Kalender* (docs/kalender.md) | nach Datum, automatisch |
-| **Freigaben** | Profile und Fotos, die Mitglieder selbst pflegen (docs/profile.md) | – |
-| **Formate** | KEEP UP, POP UP …: Formate-Seite und Startseite (docs/formate.md) | von Hand |
-| **Archiv der Formate**, **Chronik der Formate** | abgeschlossene Projekte und „Seit 2010 in Bewegung“ auf der Formate-Seite | von Hand / nach Jahr |
-| **Tanzkalender-Archiv** | Ausgaben des Monatsplakats 2024–2026 (`/formate/tanzkalender/`) | nach Monat, automatisch |
-| **News-Archiv** | ältere Beiträge, die als Datei vorliegen | nach Datum |
-| **Trainingsplan** | KEEP UP: wer wann unterrichtet, älterer Weg; besser *Intern → Kalender* (docs/keep-up.md) | nach Datum, automatisch |
-| **Dozent:innen** | die Kacheln im Foto-Mosaik auf /profitraining/ (Name und Foto aus dem Profil) | von Hand = Reihenfolge im Mosaik |
-| **Seite Profitraining** | Überschrift, Einleitung, Infos, Kopffoto | – |
-| **Personen** | Mitglieder:innen und Trainer:innen mit Profil | von Hand = Anzeige |
-| **Orte auf der Karte**, **Partner** | Kooperationsseite | von Hand |
-| **Arbeitsgruppen** | Vereinsseite | im Formular |
-| **Startseite: Kopf**, **Über uns: Haltung** | „Tanz für …“; Säulen, Auszeichnungen, Foto | im Formular |
-| **Vereinsdaten** | Claim, Zahlen, Training, Mitgliedschaft, Presse, Partner, Förderer, Spenden, Rechtliches | im Formular |
-| **Textseiten** | Transparenz, Barrierefreiheit, Leichte Sprache, Impressum, Datenschutz | – |
-| **Texte** (eigener Menüpunkt) | Überschriften, Knöpfe und Hinweise der Seiten, Deutsch und Englisch; dazu das Textbuch zum Durchlesen ([texte.md](texte.md)) | wie auf der Seite |
+| **Beiträge** | neue Beiträge mit Titelbild, Blöcken, Frist oder Zitat (docs/news.md) | Website-Inhalte → Beiträge |
+| **Ältere Beiträge**, **Bausteine für Beiträge** | Beiträge von der früheren Website (nur bearbeiten), wiederkehrende Texte wie Förderhinweise | Seiten → News, Links unter Beiträge |
+| **Termine** | Tanzkalender, Startseite, Terminseiten, KEEP UP (docs/kalender.md) | Website-Inhalte → Termine |
+| **Ältere Termine**, **Älterer Trainingsplan** | Termine und KEEP UP-Wochen aus der Zeit vor dem Kalender: bearbeiten und löschen, nichts Neues | Seiten → Tanzkalender bzw. Profitraining |
+| **Freigaben** | Profile und Fotos, die Mitglieder selbst pflegen (docs/profile.md) | Website-Inhalte → Freigaben |
+| **Formate**, **Archiv**, **Chronik**, **Tanzkalender-Archiv** | Formate-Seite und Startseite (docs/formate.md) | Seiten → Formate |
+| **Dozent:innen**, **Seite Profitraining** | Foto-Mosaik, Überschrift, Einleitung, Infos, Kopffoto | Seiten → Profitraining |
+| **Personen** | Mitglieder:innen und Trainer:innen mit Profil | Seiten → Netzwerk, Über uns |
+| **Orte auf der Karte**, **Partner** | Kooperationsseite | Seiten → Kooperationen |
+| **Arbeitsgruppen**, **Über uns: Haltung** | Vereinsseite | Seiten → Über uns |
+| **Startseite: Kopf** | „Tanz für …“ mit den wechselnden Wörtern | Seiten → Startseite → Kopf |
+| **Vereinsdaten** | Claim, Zahlen, Training, Mitgliedschaft, Presse, Partner, Förderer, Spenden; Rechtliches nur Vorstand | Seiten → Auf jeder Seite, Verwaltung |
+| **Textseiten** | Transparenz, Barrierefreiheit, Leichte Sprache; Impressum und Datenschutz (nur Vorstand) | Seiten → Barrierefreiheit und Textseiten, Verwaltung |
+| **Texte** | Überschriften, Knöpfe und Hinweise aller Seiten, Deutsch und Englisch, Textbuch ([texte.md](texte.md)) | Website-Inhalte → Texte |
 
 ### So geht's
 
-- **Neu:** In der Liste oben rechts „… anlegen“. Pflichtfelder sind markiert. Fehlt etwas, springt der Cursor
+- **Neu:** In der Liste oben rechts „… anlegen“ (nicht bei älteren Terminen und Wochen: die entstehen im Kalender). Pflichtfelder sind markiert. Fehlt etwas, springt der Cursor
   dorthin und die Meldung steht direkt am Feld.
 - **Bearbeiten:** Eintrag in der Liste anklicken, ändern, „Speichern“.
-- **Kopieren:** Bei Terminen legt „Kopieren“ einen neuen Termin mit denselben Angaben an, zunächst als Entwurf.
-  So geht eine Reihe (z. B. Studio Round) schnell.
 - **Sortieren:** Mit ↑ und ↓ oder per Ziehen mit der Maus, danach „Reihenfolge speichern“.
 - **Löschen:** ✕ in der Liste oder „Löschen“ im Formular, mit Rückfrage. Wird ein Eintrag noch woanders gebraucht,
   zum Beispiel eine Person in einem Termin, sagt die Redaktion wo. Dann zuerst dort entfernen.
-- **Englisch:** Neben vielen Feldern steht ein englisches Feld (hell hinterlegt, „Englisch“). Es ist freiwillig.
+- **Englisch:** „Englische Fassung zeigen“ oben im Formular blendet die englischen Felder ein (hell hinterlegt, „Englisch“). Sie sind freiwillig.
   Fehlt es, zeigt die englische Seite den deutschen Text. Lange Texte haben darunter „englische Fassung“ zum
   Aufklappen.
 - **Fotos:** „Neues Foto hochladen“ verkleinert das Foto im Browser und lädt es beim Speichern mit hoch. Vorhandene

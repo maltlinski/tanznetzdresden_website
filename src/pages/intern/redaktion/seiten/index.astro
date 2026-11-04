@@ -1,0 +1,169 @@
+---
+/**
+ * Website-Inhalte → Seiten: die Website Seite für Seite, so wie sie aufgebaut ist (Seite → Abschnitt → Element).
+ * Je Abschnitt: seine Texte (→ Texte) und was dort sonst steht und anderswo gepflegt wird (Formate, Termine,
+ * Personen …). Quelle: src/settings/texte.json über src/scripts/intern/redaktion/seitenplan.ts.
+ *   ?s=startseite              eine Seite
+ *   ?s=startseite#abschnitt-startseite-kopf  springt zum Abschnitt
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
+import { href } from '../../../../lib/url';
+import texte from '../../../../settings/texte.json';
+import { bereich, bereiche } from '../../../../scripts/intern/redaktion/bereiche';
+import { INTERN_ZIELE, orte, seitenplan, type PlanZiel } from '../../../../scripts/intern/redaktion/seitenplan';
+import '../../../../styles/redaktion.css';
+
+const plan = seitenplan(texte);
+const gruppen = [...new Set(plan.map((s) => s.gruppe))];
+const ziel = (z: PlanZiel, von: string) => {
+  if (!z.ziel.startsWith('redaktion:')) return { href: href(z.ziel), kicker: INTERN_ZIELE[z.ziel] ?? 'Interner Bereich', info: '' };
+  const b = bereich(z.ziel.slice(10));
+  if (!b) return { href: href('intern/redaktion/'), kicker: '', info: '' };
+  const pfad = b.art === 'einstellung' ? 'eintrag' : 'liste';
+  return { href: href(`intern/redaktion/${pfad}/?b=${b.id}&von=${von}`), kicker: b.label, info: b.beschreibung };
+};
+const textUrl = (s: string, a: string) => href(`intern/redaktion/texte/?seite=${s}#abschnitt-${s}-${a}`);
+const anzahl = (n: number) => (n === 1 ? '1 Text' : `${n} Texte`);
+// alle Bereiche von A bis Z, mit der ersten Stelle, an der sie erscheinen
+const az = [...bereiche]
+  .sort((x, y) => x.label.localeCompare(y.label, 'de'))
+  .map((b) => {
+    const o = orte(plan, `redaktion:${b.id}`)[0];
+    const von = o ? `${o.seite.id}.${o.abschnitt.id}` : '';
+    return { b, href: href(`intern/redaktion/${b.art === 'einstellung' ? 'eintrag' : 'liste'}/?b=${b.id}${von ? `&von=${von}` : ''}`), wo: o ? `${o.seite.titel} › ${o.abschnitt.titel}` : '' };
+  });
+---
+<Redaktion title="Seiten" current="seiten">
+  <Brotkrumen pfad={[{ label: 'Seiten' }]} />
+  <div class="r-head">
+    <div>
+      <h1 class="i-h1" data-titel>Seiten</h1>
+      <p class="i-lead" data-lead>
+        Die Website Seite für Seite, von oben nach unten. Wähle eine Seite und dann, was du ändern möchtest.
+      </p>
+    </div>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Redaktion ist für Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.</p>
+  </div>
+
+  <div data-access hidden>
+    <div class="sp">
+      <nav class="sp-nav" aria-label="Seiten der Website">
+        {gruppen.map((g) => (
+          <>
+            <p class="sp-nav__g">{g}</p>
+            {plan.filter((s) => s.gruppe === g).map((s) => <a href={href(`intern/redaktion/seiten/?s=${s.id}`)} data-seite-link={s.id}>{s.titel}</a>)}
+          </>
+        ))}
+      </nav>
+      <div class="sp-wahl i-field">
+        <label for="sp-wahl">Seite der Website</label>
+        <select id="sp-wahl" data-seite-wahl>
+          <option value="">Alle Seiten</option>
+          {gruppen.map((g) => (
+            <optgroup label={g}>
+              {plan.filter((s) => s.gruppe === g).map((s) => <option value={s.id}>{s.titel}</option>)}
+            </optgroup>
+          ))}
+        </select>
+      </div>
+
+      <div>
+        <section data-uebersicht aria-label="Alle Seiten">
+          {gruppen.map((g) => (
+            <div class="r-gruppe">
+              <h2 class="r-gruppe__h">{g}</h2>
+              <ul class="r-tiles">
+                {plan.filter((s) => s.gruppe === g).map((s) => (
+                  <li>
+                    <a href={href(`intern/redaktion/seiten/?s=${s.id}`)}>
+                      <strong>{s.titel}</strong>
+                      <span>{s.abschnitte.map((a) => a.titel).join(' · ')}</span>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+
+          <section class="sp-az" aria-labelledby="sp-az-h">
+            <h2 class="r-gruppe__h" id="sp-az-h">Von A bis Z</h2>
+            <ul>
+              {az.map((x) => (
+                <li><a href={x.href} data-bereich={x.b.id}>{x.b.label}</a>{x.wo && <span>{x.wo}</span>}</li>
+              ))}
+            </ul>
+          </section>
+        </section>
+
+        {plan.map((s) => (
+          <section data-seite={s.id} aria-labelledby={`sp-${s.id}`} hidden>
+            <header class="sp-seite">
+              <h2 id={`sp-${s.id}`} class="visually-hidden">{s.titel}</h2>
+              <a class="mono-link" href={href(s.pfad)} target="_blank" rel="noopener">Auf der Website ansehen ↗</a>
+            </header>
+            {s.nurVorstand && <p class="i-msg" data-nur-vorstand>Diese Seite ändert nur der Vorstand.</p>}
+            {s.abschnitte.map((a) => (
+              <div class="sp-abschnitt" id={`abschnitt-${s.id}-${a.id}`} data-abschnitt={`${s.id}.${a.id}`}>
+                <h3>{a.titel}</h3>
+                <ul class="sp-elemente">
+                  <li>
+                    <a href={textUrl(s.id, a.id)}>
+                      <span class="sp-el__k">Texte</span>
+                      <span class="sp-el__t">{anzahl(a.texte)}</span>
+                      <span class="sp-el__m">{a.beispiele.join(' · ')}{a.texte > a.beispiele.length ? ' …' : ''}</span>
+                    </a>
+                  </li>
+                  {a.auch.map((z) => {
+                    const x = ziel(z, `${s.id}.${a.id}`);
+                    return (
+                      <li>
+                        <a href={x.href}>
+                          <span class="sp-el__k">{x.kicker}</span>
+                          <span class="sp-el__t">{z.text}</span>
+                          {x.info && <span class="sp-el__m">{x.info}</span>}
+                        </a>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+          </section>
+        ))}
+      </div>
+    </div>
+  </div>
+</Redaktion>
+
+<script>
+  import { initIntern } from '../../../../scripts/intern/session';
+  import { $, brotkrumen, seitenUrl } from '../../../../scripts/intern/redaktion/seite';
+
+  const ctx = await initIntern(true);
+  if (ctx && !ctx.isRedaktion) $('[data-no-access]')!.hidden = false;
+  if (ctx?.isRedaktion) {
+    $('[data-access]')!.hidden = false;
+    const s = new URLSearchParams(location.search).get('s') ?? '';
+    const sektion = s ? $(`[data-seite="${CSS.escape(s)}"]`) : null;
+    const wahl = $<HTMLSelectElement>('[data-seite-wahl]')!;
+    wahl.value = sektion ? s : '';
+    wahl.addEventListener('change', () => location.assign(seitenUrl(wahl.value || undefined)));
+    if (sektion) {
+      $('[data-uebersicht]')!.hidden = true;
+      sektion.hidden = false;
+      const titel = sektion.querySelector('h2')!.textContent ?? '';
+      // die Seite steht als Überschrift oben; „Auf der Website ansehen“ rechts
+      document.querySelector(`[data-seite-link="${CSS.escape(s)}"]`)?.setAttribute('aria-current', 'page');
+      $('[data-titel]')!.textContent = titel;
+      $('[data-lead]')!.textContent = 'Von oben nach unten, so wie auf der Website. Wähle, was du ändern möchtest.';
+      document.title = `${titel} · Seiten · Redaktion · Intern`;
+      brotkrumen([{ label: 'Seiten', href: seitenUrl() }, { label: titel }]);
+      // Sprung zum Abschnitt (war beim Laden noch versteckt)
+      if (location.hash) document.getElementById(location.hash.slice(1))?.scrollIntoView({ block: 'start' });
+    }
+  }
+</script>

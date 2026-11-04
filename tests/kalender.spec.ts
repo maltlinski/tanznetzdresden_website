@@ -23,7 +23,7 @@ test('Termin eintragen: Tag anklicken, ausfüllen, Website baut neu', async ({ p
   const m = await redaktion(page, { profil: pia, kalender: [], keepup: [] });
   await page.goto('/intern/kalender/');
   const nav = page.getByRole('navigation', { name: 'Interner Bereich' });
-  await expect(nav.getByRole('link', { name: /^Kalender/ })).toHaveAttribute('aria-current', 'page');
+  await expect(nav.getByRole('link', { name: /^Termine/ })).toHaveAttribute('aria-current', 'page');
 
   // Donnerstag dieser Woche
   await woche(page).locator('.pl-tag').nth(3).click();

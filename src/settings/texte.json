@@ -170,7 +170,7 @@
     "abschnitte": {
       "kopf": {
         "titel": "Kopf der Seite Tanzkalender",
-        "auch": [{ "text": "Termine eintragen", "ziel": "intern/kalender/" }],
+        "auch": [{ "text": "Termine eintragen", "ziel": "intern/kalender/" }, { "text": "Ältere Termine von vor dem Kalender", "ziel": "redaktion:termine" }],
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Tanzkalender", "en": "Dance calendar", "max": 60 },
           "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Alle Termine der freien Tanzszene Dresden: Bühne, Training und Diskurs, dazu das Profitraining KEEP UP.", "en": "All events of Dresden's independent dance scene: stage, training and discourse, plus the KEEP UP professional training.", "max": 160 },
@@ -354,7 +354,7 @@
     "abschnitte": {
       "uebersicht": {
         "titel": "Übersicht aller Beiträge",
-        "auch": [{ "text": "Beiträge schreiben", "ziel": "intern/news/" }],
+        "auch": [{ "text": "Beiträge schreiben", "ziel": "intern/news/" }, { "text": "Ältere Beiträge von der früheren Website", "ziel": "redaktion:news" }, { "text": "Wiederkehrende Texte wie Förderhinweise", "ziel": "redaktion:news-bausteine" }],
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "News", "en": "News", "max": 60 },
           "description": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Neues aus der freien Tanzszene in Dresden: Ausschreibungen, Formate, Stimmen und Neuigkeiten aus dem Verein.", "en": "News from Dresden's independent dance scene: open calls, formats, voices and updates from the association.", "max": 160 },
@@ -452,7 +452,7 @@
       },
       "kalender": {
         "titel": "Kalender",
-        "auch": [{ "text": "Trainings einplanen", "ziel": "intern/kalender/" }],
+        "auch": [{ "text": "Trainings einplanen", "ziel": "intern/kalender/" }, { "text": "Älterer Trainingsplan", "ziel": "redaktion:wochen" }],
         "texte": {
           "calKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Kalender", "en": "Calendar", "max": 30 },
           "calH": { "wo": "Überschrift", "de": "Wann wir trainieren", "en": "When we train", "max": 40 },

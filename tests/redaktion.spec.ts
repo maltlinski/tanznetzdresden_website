@@ -113,18 +113,35 @@ async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' =
 const feld = (page: Page, name: string) => page.getByLabel(new RegExp(`^${name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}( Pflicht)?$`));
 const frontmatter = (text: string) => parse(text.match(/^---\n([\s\S]*?)---\n/)![1]);
 const aktuell = (p: string) => sha(readFileSync(p));
+/** Englische Felder einblenden (sind sonst eingeklappt) */
+const englisch = (page: Page) => page.getByLabel('Englische Fassung zeigen').check();
+/** „Erweitert“ (selten gebrauchte Felder) aufklappen */
+async function erweitert(page: Page) {
+  for (const d of await page.locator('details[data-erweitert]:not([open]) > summary').all()) await d.click();
+}
 
-test('Übersicht: alle Bereiche, Website-Status und Verlauf', async ({ page }) => {
+test('Übersicht: „Was möchtest du ändern?“, Seiten, Website-Status und Verlauf', async ({ page }) => {
   await redaktion(page);
   await page.goto('/intern/redaktion/');
-  await expect(page.getByRole('heading', { name: 'Website-Inhalte', exact: true })).toBeVisible();
-  for (const name of ['News schreiben', 'Termine', 'Formate', 'Trainingsplan', 'Dozent:innen', 'Personen', 'Partner', 'Vereinsdaten', 'Textseiten']) {
-    await expect(page.locator('[data-access]').getByRole('link', { name: new RegExp(`^${name}`) })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Was möchtest du ändern?', level: 1 })).toBeVisible();
+  const kacheln = page.getByRole('list', { name: 'Was möchtest du ändern?' });
+  for (const [name, ziel] of [['Texte ändern', /redaktion\/texte\/$/], ['Seite für Seite', /redaktion\/seiten\/$/], ['Beitrag schreiben', /intern\/news\/$/],
+    ['Termin eintragen', /intern\/kalender\/$/], ['Medien verwalten', /news\/medien\/$/], ['Freigaben', /redaktion\/freigaben\/$/]] as const) {
+    await expect(kacheln.getByRole('link', { name: new RegExp(`^${name}`) })).toHaveAttribute('href', ziel);
   }
+  // direkt zu einer Seite der Website
+  await expect(page.getByRole('link', { name: 'Startseite', exact: true })).toHaveAttribute('href', /redaktion\/seiten\/\?s=startseite$/);
   await expect(page.getByRole('status').filter({ hasText: 'Die Website ist aktuell' })).toBeVisible();
   await expect(page.getByText('Termin „POP UP“ geändert')).toBeVisible();
-  // Menü im internen Bereich führt hierher
-  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Website-Inhalte' })).toHaveAttribute('aria-current', 'page');
+  // Seitenleiste: „Website-Inhalte“ mit Übersicht, Seiten, Texte, Medien, Beiträge, Termine, Freigaben
+  const nav = page.getByRole('navigation', { name: 'Interner Bereich' });
+  await expect(nav.getByRole('link', { name: 'Übersicht' })).toHaveAttribute('aria-current', 'page');
+  await expect(nav.getByText('Website-Inhalte', { exact: true })).toBeVisible();
+  for (const name of ['Seiten', 'Texte', 'Medien', 'Beiträge', 'Termine', 'Freigaben']) await expect(nav.getByRole('link', { name: new RegExp(`^${name}`) })).toBeVisible();
+  // Verwaltung nur für Vorstand und Admin
+  await expect(nav.getByRole('link', { name: 'Verwaltung' })).toBeHidden();
+  // keine Fachbegriffe in der Oberfläche
+  expect(await page.locator('main').innerText()).not.toMatch(/GitHub|Repository|Commit|Markdown|YAML|JSON|Slug|Payload/);
 });
 
 test('Ohne Rolle Presse/Vorstand kein Zugang', async ({ page }) => {
@@ -134,50 +151,46 @@ test('Ohne Rolle Presse/Vorstand kein Zugang', async ({ page }) => {
   await expect(page.getByRole('link', { name: /^Termine/ })).toBeHidden();
 });
 
-test('Termin anlegen: Pflichtfelder, Verweise, gespeicherte Datei', async ({ page }) => {
+test('Ältere Termine: kein Anlegen mehr, Bearbeiten mit Prüfung, Verweisen und „Erweitert“', async ({ page }) => {
   const gespeichert = await redaktion(page);
   await page.goto('/intern/redaktion/liste/?b=termine');
-  await expect(page.getByRole('heading', { name: 'Termine', exact: true })).toBeVisible();
-  await page.getByRole('link', { name: 'Termin anlegen' }).click();
-  await expect(page.getByRole('heading', { name: 'Termin anlegen' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Ältere Termine', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Termin anlegen' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: /^Kopieren/ })).toHaveCount(0);
+  // Neu nur noch unter Termine (Kalender)
+  await page.goto('/intern/redaktion/eintrag/?b=termine&neu=1');
+  await expect(page.getByText(/Hier lässt sich nichts Neues anlegen\. .*Neue Termine trägst du unter „Termine“ ein\./)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Termin anlegen' })).toBeHidden();
 
-  // Leer speichern: Fehler am Feld, Fokus auf dem ersten
-  await page.getByRole('button', { name: 'Termin anlegen' }).click();
-  await expect(page.getByText('Felder brauchen noch deine Aufmerksamkeit')).toBeVisible();
-  await expect(feld(page, 'Titel')).toBeFocused();
-  expect(gespeichert).toEqual([]);
-
-  await feld(page, 'Titel').fill('Offenes Sharing im Dezember');
-  await feld(page, 'Titel Englisch').fill('Open sharing in December');
-  await page.getByLabel('Beginn: Datum').fill('2026-12-20');
-  await page.getByLabel('Beginn: Uhrzeit').fill('19:30');
-  await feld(page, 'Ort').fill('Zentralwerk');
-  await feld(page, 'Kategorie').selectOption('Diskurs');
-  await feld(page, 'Kurzbeschreibung').fill('Wir zeigen, woran wir gerade arbeiten.');
+  await page.goto('/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9');
+  await expect(page.getByRole('heading', { name: 'Studio Round #9' })).toBeVisible();
+  // Selten Gebrauchtes ist eingeklappt
+  const mehr = page.locator('details[data-erweitert]');
+  await expect(mehr).not.toHaveAttribute('open', '');
+  await expect(mehr.locator('summary')).toContainText('Erweitert');
+  await expect(page.getByLabel('Passender News-Beitrag')).toBeHidden();
   await page.getByLabel('Link für Tickets oder Anmeldung').fill('javascript:alert(1)');
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect(page.getByText('Bitte eine vollständige Adresse mit https:// eintragen.')).toBeVisible();
+  expect(gespeichert).toEqual([]);
+  await page.getByLabel('Link für Tickets oder Anmeldung').fill('https://example.org/tickets');
+  await erweitert(page);
   // freigegebene Mitgliederprofile stehen mit zur Auswahl
   await page.getByRole('searchbox', { name: 'Mitwirkende aus dem Netzwerk: suchen' }).fill('mira');
   await expect(page.getByRole('checkbox', { name: 'Mira Mitglied (Mitgliederprofil)' })).toBeVisible();
-  await page.getByRole('searchbox', { name: 'Mitwirkende aus dem Netzwerk: suchen' }).fill('alina');
-  await page.getByRole('checkbox', { name: 'Alina Lucifero' }).check();
+  await page.getByRole('searchbox', { name: 'Mitwirkende aus dem Netzwerk: suchen' }).fill('aurora');
+  await page.getByRole('checkbox', { name: 'Aurora Fradella' }).check();
   await page.getByLabel('Gehört zum Format').selectOption({ label: 'POP UP' });
   await page.getByLabel('Passender News-Beitrag').selectOption({ label: 'Beitrag aus News schreiben (News schreiben)' });
-  await page.getByRole('button', { name: 'Termin anlegen' }).click();
-  await expect(page.getByText('Bitte eine vollständige Adresse mit https:// eintragen.')).toBeVisible();
-  await page.getByLabel('Link für Tickets oder Anmeldung').fill('https://example.org/tickets');
-  await page.getByRole('button', { name: 'Termin anlegen' }).click();
+  await page.getByRole('button', { name: 'Speichern' }).click();
 
   await expect.poll(() => gespeichert.length).toBe(1);
   const [{ nachricht, aenderungen }] = gespeichert;
-  expect(nachricht).toBe('Termin „Offenes Sharing im Dezember“ angelegt');
+  expect(nachricht).toBe('Termin „Studio Round #9“ geändert');
   expect(aenderungen).toHaveLength(1);
-  expect(aenderungen[0]).toMatchObject({ pfad: 'src/content/termine/2026-12-20-offenes-sharing-im-dezember.md', alt: null });
-  const text = aenderungen[0].text!;
-  expect(text).toContain('start: "2026-12-20 19:30"');
-  expect(frontmatter(text)).toEqual({
-    title: 'Offenes Sharing im Dezember', title_en: 'Open sharing in December', start: '2026-12-20 19:30', venue: 'Zentralwerk',
-    category: 'Diskurs', teaser: 'Wir zeigen, woran wir gerade arbeiten.', link: 'https://example.org/tickets',
-    people: ['alina-lucifero'], format: 'pop-up', news: 'aus-supabase',
+  expect(aenderungen[0]).toMatchObject({ pfad: 'src/content/termine/2026-10-15-studio-round-9.md', alt: aktuell('src/content/termine/2026-10-15-studio-round-9.md') });
+  expect(frontmatter(aenderungen[0].text!)).toMatchObject({
+    title: 'Studio Round #9', link: 'https://example.org/tickets', people: ['alina-lucifero', 'aurora-fradella'], format: 'pop-up', news: 'aus-supabase',
   });
 });
 
@@ -186,6 +199,7 @@ test('Termin ändern: nur das Geänderte, Kommentare bleiben', async ({ page }) 
   const pfad = 'src/content/termine/2026-11-14-keep-up-workshop.md';
   await page.goto('/intern/redaktion/eintrag/?b=termine&id=2026-11-14-keep-up-workshop');
   await expect(page.getByRole('heading', { name: 'KEEP UP · Workshop Floorwork' })).toBeVisible();
+  await erweitert(page);
   await expect(page.getByRole('checkbox', { name: 'Aurora Fradella' })).toBeChecked();
   await feld(page, 'Ort').fill('Villa Wigman');
   await page.getByRole('button', { name: 'Speichern' }).click();
@@ -238,23 +252,15 @@ test('Löschen: verwendete Einträge sind geschützt, andere werden entfernt', a
   expect(gespeichert[0].nachricht).toBe('Person „Alba T Álvarez“ gelöscht');
 });
 
-test('Trainingswoche: nur Montage, wird nach Datum einsortiert', async ({ page }) => {
-  const gespeichert = await redaktion(page);
+test('Älterer Trainingsplan: neue Wochen nur noch im Kalender', async ({ page }) => {
+  await redaktion(page);
+  await page.goto('/intern/redaktion/liste/?b=wochen');
+  await expect(page.getByRole('heading', { name: 'Älterer Trainingsplan', exact: true })).toBeVisible();
+  await expect(page.getByText('Neue KEEP UP-Trainings planst du unter „Termine“.')).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Trainingswoche anlegen' })).toHaveCount(0);
   await page.goto('/intern/redaktion/eintrag/?b=wochen&neu=1');
-  await feld(page, 'Woche ab Montag').fill('2026-12-23');
-  await feld(page, 'Dozent:in').selectOption({ label: 'Laura Gary' });
-  await page.getByRole('checkbox', { name: 'Di' }).check();
-  await page.getByRole('checkbox', { name: 'Do' }).check();
-  await page.getByRole('button', { name: 'Trainingswoche anlegen' }).click();
-  await expect(page.getByText('Bitte den Montag der Woche wählen.')).toBeVisible();
-  await feld(page, 'Woche ab Montag').fill('2026-12-21');
-  await page.getByRole('button', { name: 'Trainingswoche anlegen' }).click();
-  await expect.poll(() => gespeichert.length).toBe(1);
-  const text = gespeichert[0].aenderungen[0].text!;
-  expect(text).toContain('- { id: "2026-12-21", dozent: laura-gary, tage: [di, do] }');
-  const ids = (parse(text) as { id: string }[]).map((w) => w.id);
-  expect(ids).toEqual([...ids].sort());
-  expect(text.split('\n')[0]).toMatch(/^# KEEP UP · Trainingswochen/);
+  await expect(page.getByText(/Hier lässt sich nichts Neues anlegen/)).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Trainingswoche anlegen' })).toBeHidden();
 });
 
 test('Formate: neues Format mit Foto-Upload', async ({ page }) => {
@@ -283,6 +289,10 @@ test('Einstellungen: Texte ändern, rechtliche Angaben nur für den Vorstand', a
   await page.goto('/intern/redaktion/eintrag/?b=keep-up-texte');
   await expect(feld(page, 'Saison')).toHaveValue('Herbst 2026');
   await feld(page, 'Saison').fill('Winter 2026/27');
+  // Englisch ist eingeklappt, bis man es einblendet
+  await expect(page.getByLabel('Saison Englisch')).toBeHidden();
+  await expect(page.getByText(/^Englisch: \d+ von \d+ ausgefüllt$/)).toBeVisible();
+  await englisch(page);
   await page.getByLabel('Saison Englisch').fill('Winter 2026/27');
   await page.getByRole('button', { name: 'Speichern' }).click();
   await expect.poll(() => gespeichert.length).toBe(1);
@@ -307,6 +317,7 @@ test('Vorstand darf Impressum bearbeiten, Presse nur lesen', async ({ page }) =>
 test('Textseite mit englischer Fassung bearbeiten', async ({ page }) => {
   const gespeichert = await redaktion(page, 'vorstand');
   await page.goto('/intern/redaktion/eintrag/?b=seiten&id=transparenz');
+  await englisch(page);
   // vorhandene englische Fassung ist aufgeklappt
   const en = page.locator('.rf-en textarea');
   await expect(en).toHaveValue(/Statutes|statutes|purpose/i);
@@ -390,7 +401,7 @@ test('Texte: ändern, Englisch prüfen, Regeln, ursprünglicher Text', async ({ 
   await textSeite(page, isMobile, 'Startseite');
   // Abschnitte als Sprungmarken (Liste links) und Wegweiser zu dem, was anderswo gepflegt wird
   if (!isMobile) await expect(seiten.locator('[data-abschnitte-von="startseite"]').getByRole('link')).toHaveText(['Kopf', 'Termine und News', 'Formate', 'Eine Stadt. Ein Netz.', 'Mitglied werden']);
-  await expect(page.locator('.tx-auch', { hasText: 'Tanz für' }).getByRole('link', { name: '„Tanz für …“ mit den wechselnden Wörtern' })).toHaveAttribute('href', /intern\/redaktion\/eintrag\/\?b=hero$/);
+  await expect(page.locator('.tx-auch', { hasText: 'Tanz für' }).getByRole('link', { name: '„Tanz für …“ mit den wechselnden Wörtern' })).toHaveAttribute('href', /intern\/redaktion\/eintrag\/\?b=hero&von=startseite\.kopf$/);
   await expect(page.locator('.tx-auch', { hasText: 'Die Termine selbst' }).getByRole('link', { name: 'Die Termine selbst' })).toHaveAttribute('href', /intern\/kalender\/$/);
 
   // Überschrift „Werde Teil / des Netzes.“: zwei Zeilen, nur Deutsch ändern
@@ -501,9 +512,82 @@ test('Texte: Regeln (Platzhalter, Zeilen, Format der Datei)', async ({}, info) =
   expect(datei.startseite.abschnitte.formate.texte.titel.enPruefen).toBeUndefined();
 });
 
-for (const pfad of ['/intern/redaktion/texte/', '/intern/redaktion/texte/textbuch/', '/intern/redaktion/freigaben/', '/intern/redaktion/', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9', '/intern/redaktion/eintrag/?b=verein']) {
+test('Seiten: Seite → Abschnitt → Element, mit Breadcrumbs bis zum Eintrag', async ({ page }) => {
+  await redaktion(page);
+  await page.goto('/intern/redaktion/seiten/');
+  await expect(page.getByRole('heading', { name: 'Seiten', level: 1 })).toBeVisible();
+  const krumen = page.getByRole('navigation', { name: 'Du bist hier' });
+  await expect(krumen.getByRole('listitem')).toHaveText(['Website-Inhalte', 'Seiten']);
+  // eine Seite: Abschnitte in der Reihenfolge der Website, je Abschnitt Texte und was dort sonst steht
+  await page.getByRole('link', { name: 'Startseite' }).first().click();
+  await expect(page.getByRole('heading', { name: 'Startseite', level: 1 })).toBeVisible();
+  await expect(krumen.getByRole('listitem')).toHaveText(['Website-Inhalte', 'Seiten', 'Startseite']);
+  const seite = page.locator('[data-seite="startseite"]');
+  await expect(seite.locator('.sp-abschnitt h3')).toHaveText(['Kopf', 'Termine und News', 'Formate', 'Eine Stadt. Ein Netz.', 'Mitglied werden']);
+  const kopf = seite.locator('[data-abschnitt="startseite.kopf"]');
+  await expect(kopf.getByRole('link', { name: /^Texte 5 Texte/ })).toHaveAttribute('href', /redaktion\/texte\/\?seite=startseite#abschnitt-startseite-kopf$/);
+  await kopf.getByRole('link', { name: /„Tanz für …“ mit den wechselnden Wörtern/ }).click();
+  // Einstellung „Startseite: Kopf“: Breadcrumbs mit Seite und Abschnitt, „Erscheint auf …“
+  await expect(page.getByRole('heading', { name: 'Startseite: Kopf', level: 1 })).toBeVisible();
+  await expect(krumen.getByRole('listitem')).toHaveText(['Website-Inhalte', 'Seiten', 'Startseite', 'Kopf', 'Startseite: Kopf']);
+  await expect(page.getByText('Erscheint auf der Website:')).toContainText('Startseite › Kopf');
+
+  // Liste mit Eintrag: Formate erscheint an mehreren Stellen, die Breadcrumbs folgen dem Weg
+  await page.goto('/intern/redaktion/liste/?b=formate&von=formate.detail');
+  await expect(krumen.getByRole('listitem')).toHaveText(['Website-Inhalte', 'Seiten', 'Formate', 'Formate im Detail', 'Formate']);
+  await expect(page.getByText('Erscheint auf der Website:')).toContainText('Startseite › Formate');
+  await page.locator('.r-zeile__link').first().click();
+  await expect(krumen.getByRole('listitem')).toHaveCount(6);
+  await expect(krumen.getByRole('listitem').nth(4)).toHaveText('Formate');
+  await expect(krumen.getByRole('link', { name: 'Formate', exact: true }).last()).toHaveAttribute('href', /liste\/\?b=formate&von=formate\.detail$/);
+  await expect(page).toHaveURL(/von=formate\.detail/);
+
+  // Texte: Breadcrumbs mit der gewählten Seite
+  await page.goto('/intern/redaktion/texte/?seite=formate');
+  await expect(krumen.getByRole('listitem')).toHaveText(['Website-Inhalte', 'Texte', 'Formate']);
+});
+
+test('Seiten: jeder Bereich der Redaktion ist von einer Seite aus erreichbar', async () => {
+  // Bereiche in src/scripts/intern/redaktion/bereiche.ts, Seitenplan aus texte.json („auch“ je Abschnitt)
+  const ids = [...readFileSync('src/scripts/intern/redaktion/bereiche.ts', 'utf8').matchAll(/^ {4}id: '([a-z-]+)',$/gm)].map((m) => m[1]);
+  expect(ids.length).toBeGreaterThan(15);
+  const texte = JSON.parse(readFileSync('src/settings/texte.json', 'utf8')) as Record<string, { abschnitte?: Record<string, { auch?: { ziel: string }[] }> }>;
+  const ziele = new Set(Object.values(texte).flatMap((s) => Object.values(s.abschnitte ?? {}).flatMap((a) => (a.auch ?? []).map((x) => x.ziel))));
+  expect(ids.filter((id) => !ziele.has(`redaktion:${id}`))).toEqual([]);
+  // und jedes Ziel gibt es
+  for (const z of ziele) if (z.startsWith('redaktion:')) expect(ids, z).toContain(z.slice(10));
+});
+
+test('Verwaltung: nur Vorstand und Admin, mit Rechtlichem, Demo-Ansicht und Verlauf', async ({ page }) => {
+  await redaktion(page);
+  await page.goto('/intern/redaktion/verwaltung/');
+  await expect(page.getByText('Die Verwaltung ist für den Vorstand und den Admin.')).toBeVisible();
+  await expect(page.getByRole('link', { name: /^Impressum/ })).toBeHidden();
+
+  await page.context().clearCookies();
+  const p2 = await page.context().newPage();
+  await redaktion(p2, 'vorstand');
+  await p2.goto('/intern/redaktion/verwaltung/');
+  await expect(p2.getByRole('heading', { name: 'Verwaltung', level: 1 })).toBeVisible();
+  await expect(p2.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Verwaltung' })).toHaveAttribute('aria-current', 'page');
+  await expect(p2.getByRole('link', { name: /^Impressum/ })).toHaveAttribute('href', /eintrag\/\?b=seiten&id=impressum$/);
+  await expect(p2.getByLabel('Demo-Ansicht')).toBeVisible();
+  await expect(p2.getByText('Termin „POP UP“ geändert')).toBeVisible();
+  // Sprung in den Abschnitt der Vereinsdaten
+  await p2.getByRole('link', { name: /^Kontakt und Bankverbindung/ }).click();
+  await expect(p2.locator('#abschnitt-kontakt-und-bankverbindung')).toBeInViewport();
+  await expect(feld(p2, 'IBAN')).toBeEnabled();
+});
+
+const AXE: [string, 'presse' | 'vorstand'][] = [
+  ...['/intern/redaktion/texte/', '/intern/redaktion/texte/textbuch/', '/intern/redaktion/freigaben/', '/intern/redaktion/', '/intern/redaktion/seiten/',
+    '/intern/redaktion/seiten/?s=startseite', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9',
+    '/intern/redaktion/eintrag/?b=verein'].map((p): [string, 'presse'] => [p, 'presse']),
+  ['/intern/redaktion/verwaltung/', 'vorstand'],
+];
+for (const [pfad, rolle] of AXE) {
   test(`${pfad} ist barrierearm (axe)`, async ({ page }) => {
-    await redaktion(page);
+    await redaktion(page, rolle);
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(pfad);
     await expect(page.locator('[data-access]')).toBeVisible();

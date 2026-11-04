@@ -5,6 +5,7 @@
  * Geändert wird auf der Seite „Texte“.
  */
 import Redaktion from '../../../../../layouts/Redaktion.astro';
+import Brotkrumen from '../../../../../components/intern/Brotkrumen.astro';
 import { href } from '../../../../../lib/url';
 import { alleTexte, platzhalter, type TextAbschnitt, type TextEintrag, type TextSeite } from '../../../../../lib/texte-regeln';
 import daten from '../../../../../settings/texte.json';
@@ -19,7 +20,7 @@ const absaetze = (t: string) => t.split('\n');
 const eintraege = (a: TextAbschnitt) => Object.entries(a.texte) as [string, TextEintrag][];
 ---
 <Redaktion title="Textbuch" current="texte">
-  <a class="r-back tb-weg" href={href('intern/redaktion/texte/')}>← Texte</a>
+  <div class="tb-weg"><Brotkrumen pfad={[{ label: 'Texte', href: href('intern/redaktion/texte/') }, { label: 'Textbuch' }]} /></div>
   <div class="r-head">
     <div>
       <h1 class="i-h1">Textbuch</h1>

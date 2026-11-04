@@ -34,3 +34,15 @@
   text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px;
 }
 :is(.intern, dialog) .i-linkbtn:hover { color: var(--magenta); }
+
+/* ---------- Breadcrumbs der Redaktion (components/intern/Brotkrumen.astro) ---------- */
+.r-krumen { margin: 0 0 14px; }
+.r-krumen ol { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 0; }
+.r-krumen li {
+  display: inline-flex; align-items: baseline; font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
+  letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-muted);
+}
+.r-krumen li + li::before { content: '›'; margin: 0 9px; color: var(--magenta-2); }
+.r-krumen a { color: var(--purple); text-decoration: none; }
+.r-krumen a:hover { color: var(--magenta-2); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+.r-krumen [aria-current] { color: var(--ink-soft); }

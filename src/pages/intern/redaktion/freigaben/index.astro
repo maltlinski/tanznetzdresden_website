@@ -5,6 +5,7 @@
  * GitHub-Schlüssel. Nach einer Freigabe wird die Website neu gebaut, falls die Redaktion eingerichtet ist.
  */
 import Redaktion from '../../../../layouts/Redaktion.astro';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
 import { getPersonen } from '../../../../lib/content';
 import { href } from '../../../../lib/url';
 import '../../../../styles/redaktion.css';
@@ -13,7 +14,7 @@ import '../../../../styles/redaktion.css';
 const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, name: p.data.name }))).replace(/</g, '\\u003c');
 ---
 <Redaktion title="Freigaben" current="freigaben">
-  <a class="r-back" href={href('intern/redaktion/')}>← Redaktion</a>
+  <Brotkrumen pfad={[{ label: 'Freigaben' }]} />
   <h1 class="i-h1">Profile und Fotos freigeben</h1>
   <p class="i-lead">
     Mitglieder pflegen ihr Profil selbst unter <a href={href('intern/profil/')}>Mein Profil</a>. Auf der Website (Netzwerk,
