@@ -79,6 +79,25 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
   Mitgliederprofile zur Auswahl, gekennzeichnet als „(Mitgliederprofil)“. Eine Person muss also nicht doppelt unter
   *Personen* angelegt werden.
 
+### Ausblenden
+
+Statt zu löschen lässt sich fast alles **ausblenden**: Schalter „Auf der Website anzeigen“ aus, speichern. Ausgeblendetes
+bleibt in der Redaktion erhalten und bearbeitbar, ist dort ausgegraut und mit „Ausgeblendet“ markiert, und lässt sich
+jederzeit wieder einblenden. Auf der Website fehlt es ganz, auch im Quelltext der Seiten. Listen haben den Filter
+„Alle / Sichtbar / Ausgeblendet“.
+
+| Was | Wo der Schalter steht |
+|---|---|
+| Einträge: Termine, ältere Beiträge, Formate, Archiv, Chronik, Tanzkalender-Ausgaben, Dozent:innen, Trainingswochen, Personen, Orte, Partnergruppen | oben im Formular |
+| Listeneinträge: Eckdaten und Links der Formate, Galerie und Arbeiten einer Person, Partner, Säulen, Zahlen, Förderer, Spenden-Formate, Arbeitsgruppen | im jeweiligen Listeneintrag |
+| einzelne Wörter: wechselnde Wörter, Auszeichnungen, Partner auf der Startseite, Ereignisse der Chronik | „Ausblenden“ neben dem Wort (gilt je Sprache) |
+| Texte: Einleitungen und Hinweise, z. B. der Text unter einer Überschrift | Texte → am Text |
+| ganze Abschnitte: Startseite (Netz, Mitglied werden), Formate (Chronik, Archiv, Mitmachen), Über uns (Das Netz), Spenden (Fragen), Kooperationen (Anfrage) | Texte → am Abschnitt |
+| Fotos der Mediathek | Medien → am Foto: fehlt dann in allen Beiträgen |
+
+Nicht ausblenden lassen sich Überschriften, Menüpunkte und Knöpfe (die Seite sähe sonst kaputt aus), Impressum,
+Datenschutz und die übrigen Pflichtseiten. Ein ausgeblendeter Termin ist dasselbe wie ein Entwurf.
+
 ### Freigaben
 
 Mitglieder pflegen ihr Profil und Foto unter *Mein Profil*. Unter *Redaktion → Freigaben* steht, was wartet:
@@ -189,6 +208,18 @@ löschen.
   weiter den vorherigen Stand.
 
 ## Für Entwickler:innen
+
+**Ausblenden (Regel):** Feld `sichtbar` (Standard `true`, fehlt = sichtbar) in Schemas und Listeneinträgen; Termine und
+News nutzen `draft`. Gefiltert wird **in den Ladern** (`src/lib/content.ts`, `formate.ts`, `keep-up.ts`, `settings.ts`,
+`src/settings/*.ts`, `news.ts`), nie erst in der Ansicht, damit nichts im HTML landet; Regeln in `src/lib/sichtbar.ts`.
+Wortlisten: Text oder `{ text, sichtbar: false }`. Texte und Abschnitte in `texte.json`: `ausblendbar` legt die
+Entwicklung fest (die Funktion `inhalte` lehnt anderes ab), `aus` setzt die Redaktion; `texte()` liefert dann `''`,
+`abschnittZeigen()` false, die Ansicht lässt das Element samt Abständen weg. Neuer ausblendbarer Abschnitt: in
+`texte.json` `ausblendbar: true` und in der Ansicht `abschnittZeigen('seite', 'abschnitt')` (`tests/sichtbar.spec.ts`
+prüft beides). Neues Schema mit Einträgen: `sichtbar` ins Schema, Lader filtern, in `bereiche.ts` das Feld `SICHTBAR`.
+Mediathek: Spalte `news_medien.sichtbar` (Migration `20261104000000_sichtbar.sql`), ausgeblendete Fotos fallen in
+`medienAnwenden()` heraus. Die Datei eines ausgeblendeten Fotos bleibt über ihre direkte Adresse erreichbar.
+
 
 | Was | Wo |
 |---|---|

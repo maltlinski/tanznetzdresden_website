@@ -150,7 +150,27 @@ export function textePruefen(alt: string, neu: string): string | null {
   const n = JSON.parse(neu) as Record<string, { titel?: string; nurVorstand?: boolean }>;
   const geschuetzt = [...new Set([...Object.keys(a), ...Object.keys(n)])].filter((k) => a[k]?.nurVorstand || n[k]?.nurVorstand);
   const geaendert = geschuetzt.filter((k) => JSON.stringify(a[k]) !== JSON.stringify(n[k]));
-  return geaendert.length ? `Diese Texte ändert nur der Vorstand: ${geaendert.map((k) => a[k]?.titel ?? k).join(', ')}.` : null;
+  if (geaendert.length) return `Diese Texte ändert nur der Vorstand: ${geaendert.map((k) => a[k]?.titel ?? k).join(', ')}.`;
+  // Ausblenden nur, wo es vorgesehen ist: „ausblendbar“ legt die Entwicklung fest, nicht die Redaktion
+  type Teil = { ausblendbar?: boolean; aus?: boolean; abschnitte?: Record<string, Teil>; texte?: Record<string, Teil> };
+  const teile = (d: Record<string, unknown>) => {
+    const out = new Map<string, Teil>();
+    for (const [s, seite] of Object.entries(d)) {
+      if (s.startsWith('_') || !seite || typeof seite !== 'object') continue;
+      for (const [ab, abschnitt] of Object.entries((seite as Teil).abschnitte ?? {})) {
+        out.set(`${s}.${ab}`, abschnitt);
+        for (const [k, t] of Object.entries(abschnitt.texte ?? {})) out.set(`${s}.${ab}.${k}`, t);
+      }
+    }
+    return out;
+  };
+  const vorher = teile(a);
+  for (const [id, t] of teile(n)) {
+    const v = vorher.get(id);
+    if (!!t.ausblendbar !== !!v?.ausblendbar) return `„${id}“: Ob sich etwas ausblenden lässt, legt die Website fest, nicht die Redaktion.`;
+    if (t.aus && !t.ausblendbar) return `„${id}“ lässt sich nicht ausblenden.`;
+  }
+  return null;
 }
 
 function github(env: Env, f: typeof fetch) {

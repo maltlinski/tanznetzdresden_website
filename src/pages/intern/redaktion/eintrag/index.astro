@@ -17,7 +17,7 @@ import '../../../../styles/redaktion.css';
   <div class="r-head">
     <div>
       <p class="r-kicker" data-kicker></p>
-      <h1 class="i-h1" data-titel>Bearbeiten</h1>
+      <h1 class="i-h1"><span data-titel>Bearbeiten</span> <span class="r-aus r-aus--gross" data-aus-label hidden>Ausgeblendet</span></h1>
       <p class="r-wo" data-wo hidden></p>
     </div>
     <div class="r-head__side">
@@ -65,6 +65,7 @@ import '../../../../styles/redaktion.css';
   import type { Aenderung } from '../../../../scripts/intern/redaktion/api';
   import { $, bereichOrt, brotkrumen, erscheintAuf, meldung, namenLaden, ortsKrumen, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
   import { planLesen } from '../../../../scripts/intern/redaktion/seitenplan';
+  import { istSichtbar } from '../../../../lib/sichtbar';
 
   const params = new URLSearchParams(location.search);
   const b = bereichNach(params.get('b'));
@@ -125,7 +126,12 @@ import '../../../../styles/redaktion.css';
       brotkrumen([...ortsKrumen(ort.ort), ...(b.art === 'einstellung' ? [{ label: b.label }] : [{ label: b.label, href: listeUrl }, { label: t }])]);
     };
     setzeTitel();
-    const seite = !neu ? b.seite?.(e) : null;
+    // Ausgeblendet: Label am Titel, kein „Auf der Website ansehen“
+    const ausLabel = (an: boolean) => {
+      $('[data-aus-label]')!.hidden = an;
+    };
+    ausLabel(istSichtbar(e.data));
+    const seite = !neu && istSichtbar(e.data) ? b.seite?.(e) : null;
     if (seite !== undefined && seite !== null) {
       const a = $<HTMLAnchorElement>('[data-ansehen]')!;
       a.href = websiteUrl(seite);
@@ -179,6 +185,7 @@ import '../../../../styles/redaktion.css';
         geaendert = true;
         setzeTitel();
       },
+      sichtbarkeit: ausLabel,
     };
 
     const form = formular(b, e, k);

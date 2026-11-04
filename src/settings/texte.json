@@ -139,10 +139,11 @@
       "netz": {
         "titel": "Eine Stadt. Ein Netz.",
         "auch": [{ "text": "Die Zahlen und das Gründungsjahr", "ziel": "redaktion:verein" }],
+        "ausblendbar": true,
         "texte": {
           "kicker": { "wo": "Kleine Zeile über der Überschrift ({jahr} = Gründungsjahr aus den Vereinsdaten)", "de": "Freie Tanzszene · Dresden · seit {jahr}", "en": "Independent dance · Dresden · since {jahr}", "max": 60 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Eine Stadt.\nEin Netz.", "en": "One city.\nOne network.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene. Wir organisieren Training, Bühnenformate, Diskurs und Residenzen und machen den zeitgenössischen Tanz in Dresden sichtbar.", "en": "TanzNetzDresden connects more than 70 dance artists of the independent scene. We organise training, stage formats, discourse and residencies and make contemporary dance in Dresden visible.", "max": 400 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "TanzNetzDresden verbindet über 70 Tanzschaffende der freien Szene. Wir organisieren Training, Bühnenformate, Diskurs und Residenzen und machen den zeitgenössischen Tanz in Dresden sichtbar.", "en": "TanzNetzDresden connects more than 70 dance artists of the independent scene. We organise training, stage formats, discourse and residencies and make contemporary dance in Dresden visible.", "max": 400, "ausblendbar": true },
           "vorstand": { "wo": "Link zu Vorstand und Arbeitsgruppen", "de": "Vorstand & AGs →", "en": "Board & working groups →", "max": 40 },
           "partner": { "wo": "Link zu den Partnern", "de": "Partner →", "en": "Partners →", "max": 40 },
           "wer": { "wo": "Überschrift über den Namen", "de": "Wer im Netz tanzt", "en": "Who dances in the network", "max": 40 },
@@ -151,10 +152,11 @@
       },
       "mitglied": {
         "titel": "Mitglied werden",
+        "ausblendbar": true,
         "texte": {
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitglied werden", "en": "Become a member", "max": 40 },
           "titel": { "wo": "Überschrift in zwei Zeilen", "zeilen": 2, "de": "Werde Teil\ndes Netzes.", "en": "Become part\nof the network.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.", "en": "As a member you train at a reduced rate, join working groups and shape the formats of the association. For professional dance artists in and around Dresden.", "max": 400 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Als Mitglied trainierst du günstiger, bringst dich in Arbeitsgruppen ein und gestaltest die Formate des Vereins mit. Für professionell arbeitende Tanzschaffende in Dresden und Umgebung.", "en": "As a member you train at a reduced rate, join working groups and shape the formats of the association. For professional dance artists in and around Dresden.", "max": 400, "ausblendbar": true },
           "antrag": { "wo": "Großer Knopf", "de": "Mitgliedsantrag", "en": "How to join", "max": 30 },
           "spende": { "wo": "Link neben dem Knopf", "de": "Oder mit einer Spende helfen →", "en": "Or help with a donation →", "max": 50 },
           "newsletterTitel": { "wo": "Überschrift über der Newsletter-Anmeldung", "de": "Newsletter", "en": "Newsletter", "max": 30 },
@@ -176,7 +178,7 @@
           "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Alle Termine der freien Tanzszene Dresden: Bühne, Training und Diskurs, dazu das Profitraining KEEP UP.", "en": "All events of Dresden's independent dance scene: stage, training and discourse, plus the KEEP UP professional training.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Tanzkalender · Dresden", "en": "Dance calendar · Dresden", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Cyan", "zeilen": 2, "de": "Tanz in Dresden.\nAlle Termine.", "en": "Dance in Dresden.\nEvery date.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Bühne, Training und Diskurs aus dem Netz an einem Ort. Nach Format filtern, im Monat blättern und Termine direkt in den eigenen Kalender übernehmen.", "en": "Stage, training and discourse from the network in one place. Filter by format, browse by month and add dates straight to your own calendar.", "max": 400 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Bühne, Training und Diskurs aus dem Netz an einem Ort. Nach Format filtern, im Monat blättern und Termine direkt in den eigenen Kalender übernehmen.", "en": "Stage, training and discourse from the network in one place. Filter by format, browse by month and add dates straight to your own calendar.", "max": 400, "ausblendbar": true },
           "next": { "wo": "Kasten rechts: Überschrift über den nächsten drei Terminen", "de": "Als Nächstes", "en": "Up next", "max": 30 },
           "ics": { "wo": "Spalte links: Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to calendar (.ics)", "max": 40 },
           "submit": { "wo": "Spalte links: Link „Termin einreichen“", "de": "Termin einreichen →", "en": "Submit an event →", "max": 40 }
@@ -313,6 +315,7 @@
       "chronik": {
         "titel": "Chronik",
         "auch": [{ "text": "Die Ereignisse", "ziel": "redaktion:chronik" }],
+        "ausblendbar": true,
         "texte": {
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Chronik", "en": "History", "max": 30 },
           "titel": { "wo": "Überschrift, zweite Zeile in Cyan", "zeilen": 2, "de": "Seit 2010\nin Bewegung.", "en": "In motion\nsince 2010.", "max": 40 }
@@ -321,20 +324,22 @@
       "archiv": {
         "titel": "Archiv: abgeschlossene Projekte",
         "auch": [{ "text": "Die Projekte", "ziel": "redaktion:projekte" }],
+        "ausblendbar": true,
         "texte": {
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Archiv", "en": "Archive", "max": 30 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Abgeschlossene\nProjekte.", "en": "Completed\nprojects.", "max": 40 },
-          "lead": { "wo": "Text neben der Überschrift", "de": "Diese Projekte laufen nicht mehr. Programme, Beteiligte und Pressestimmen bleiben hier abrufbar.", "en": "These projects have ended. Programmes, participants and press coverage remain available here.", "max": 200 },
+          "lead": { "wo": "Text neben der Überschrift", "de": "Diese Projekte laufen nicht mehr. Programme, Beteiligte und Pressestimmen bleiben hier abrufbar.", "en": "These projects have ended. Programmes, participants and press coverage remain available here.", "max": 200, "ausblendbar": true },
           "mit": { "wo": "Vor den Partnern eines Projekts", "de": "Mit", "en": "With", "max": 12 }
         }
       },
       "mitmachen": {
         "titel": "Mitmachen",
         "auch": [{ "text": "Die Arbeitsgruppen", "ziel": "redaktion:arbeitsgruppen" }],
+        "ausblendbar": true,
         "texte": {
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitmachen", "en": "Get involved", "max": 30 },
           "titel": { "wo": "Überschrift", "zeilen": 2, "de": "Zeig deine Arbeit.\nGestalte mit.", "en": "Show your work.\nShape it with us.", "max": 50 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Die Formate leben von den Menschen im Netz. Bewirb dich auf einen Open Call oder bring dich in einer Arbeitsgruppe ein.", "en": "The formats live from the people in the network. Apply to an open call or join a working group.", "max": 240 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Die Formate leben von den Menschen im Netz. Bewirb dich auf einen Open Call oder bring dich in einer Arbeitsgruppe ein.", "en": "The formats live from the people in the network. Apply to an open call or join a working group.", "max": 240, "ausblendbar": true },
           "call": { "wo": "Kasten: Ausschreibung ({datum} = Frist)", "de": "Open Call · Frist {datum}", "en": "Open call · deadline {datum}", "max": 40 },
           "zurCall": { "wo": "Kasten: Link", "de": "Zur Ausschreibung →", "en": "To the call →", "max": 30 },
           "calls": { "wo": "Kasten ohne offene Ausschreibung: Überschrift", "de": "Ausschreibungen", "en": "Open calls", "max": 40 },
@@ -498,7 +503,7 @@
           "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden e.V.: self-organised network of Dresden's independent dance scene. Board, working groups and members.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift ({jahr} = Gründungsjahr)", "de": "Über uns · seit {jahr}", "en": "About us · since {jahr}", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Dezentrale Kulturinstitution.\nUnd Bildungsort.", "en": "A decentralised cultural institution.\nAnd a place of learning.", "max": 80 },
-          "lead": { "wo": "Text unter der Überschrift ({jahr} = Gründungsjahr)", "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.", "en": "Since {jahr}, dance artists of Dresden's independent scene have been building this network, since 2020 as a registered non-profit association. We organise formats, training, discourse and residencies and advocate for better working conditions in dance.", "max": 400 }
+          "lead": { "wo": "Text unter der Überschrift ({jahr} = Gründungsjahr)", "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.", "en": "Since {jahr}, dance artists of Dresden's independent scene have been building this network, since 2020 as a registered non-profit association. We organise formats, training, discourse and residencies and advocate for better working conditions in dance.", "max": 400, "ausblendbar": true }
         }
       },
       "haltung": {
@@ -527,18 +532,19 @@
         "texte": {
           "agKicker": { "wo": "Kleine Zeile über der Überschrift ({anzahl} = Zahl der AGs)", "de": "{anzahl} Arbeitsgruppen", "en": "{anzahl} working groups", "max": 40 },
           "agH": { "wo": "Überschrift", "de": "Wer die Arbeit trägt", "en": "Who carries the work", "max": 40 },
-          "agIntro": { "wo": "Text unter der Überschrift", "de": "Jedes Format hat eine eigene AG. Mitglieder:innen können jederzeit einsteigen.", "en": "Each format has its own working group. Members can join at any time.", "max": 200 }
+          "agIntro": { "wo": "Text unter der Überschrift", "de": "Jedes Format hat eine eigene AG. Mitglieder:innen können jederzeit einsteigen.", "en": "Each format has its own working group. Members can join at any time.", "max": 200, "ausblendbar": true }
         }
       },
       "netz": {
         "titel": "Das Netz",
+        "ausblendbar": true,
         "texte": {
           "netKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitglieder:innen & Trainer:innen", "en": "Members & teachers", "max": 40 },
           "netH": { "wo": "Überschrift", "de": "Das Netz", "en": "The network", "max": 40 },
           "member": { "wo": "Kennzeichen auf einer Karte", "de": "Mitglied", "en": "Member", "max": 20 },
           "trainer": { "wo": "Kennzeichen auf einer Karte", "de": "Training", "en": "Training", "max": 20 },
           "allProfiles": { "wo": "Link", "de": "Alle Profile ansehen →", "en": "See all profiles →", "max": 40 },
-          "transparency": { "wo": "Hinweis ganz unten", "de": "Wie wir arbeiten und uns finanzieren, steht auf unserer Transparenz-Seite.", "en": "How we work and how we are funded is on our transparency page.", "max": 200 },
+          "transparency": { "wo": "Hinweis ganz unten", "de": "Wie wir arbeiten und uns finanzieren, steht auf unserer Transparenz-Seite.", "en": "How we work and how we are funded is on our transparency page.", "max": 200, "ausblendbar": true },
           "transparencyCta": { "wo": "Link daneben", "de": "Transparenz →", "en": "Transparency →", "max": 30 }
         }
       }
@@ -556,7 +562,7 @@
           "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Unterstütze die freie Tanzszene in Dresden: mit einer Spende an TanzNetzDresden e.V. – steuerlich absetzbar.", "en": "Support Dresden's independent dance scene with a donation to TanzNetzDresden e.V. – tax-deductible in Germany.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Spenden", "en": "Donate", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Tanz braucht\nRückhalt.", "en": "Dance needs\nbacking.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Seit über 15 Jahren verbinden wir die freie Tanzszene Dresdens. Mit deiner Spende bleiben Training, Bühnen und Austausch für über 70 Tanzschaffende offen und bezahlbar.", "en": "For more than 15 years we have connected Dresden's independent dance scene. Your donation keeps training, stages and exchange open and affordable for more than 70 dance artists.", "max": 400 }
+          "lead": { "wo": "Text unter der Überschrift", "de": "Seit über 15 Jahren verbinden wir die freie Tanzszene Dresdens. Mit deiner Spende bleiben Training, Bühnen und Austausch für über 70 Tanzschaffende offen und bezahlbar.", "en": "For more than 15 years we have connected Dresden's independent dance scene. Your donation keeps training, stages and exchange open and affordable for more than 70 dance artists.", "max": 400, "ausblendbar": true }
         }
       },
       "konto": {
@@ -611,6 +617,7 @@
       },
       "fragen": {
         "titel": "Fragen (je Frage: Zeile 1 Frage, Zeile 2 Antwort)",
+        "ausblendbar": true,
         "texte": {
           "faqKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Fragen", "en": "Questions", "max": 40 },
           "faqH": { "wo": "Überschrift", "de": "Gut zu wissen", "en": "Good to know", "max": 40 },
@@ -618,7 +625,7 @@
           "faqMail": { "wo": "Knopf", "de": "E-Mail an uns", "en": "Email us", "max": 40 },
           "faqSubject": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Frage zur Spende", "en": "Question about donating", "max": 80 },
           "status": { "wo": "Hinweis zur Gemeinnützigkeit ({amt} und {datum} aus den Vereinsdaten)", "de": "Wir sind als gemeinnützig anerkannt ({amt}, Bescheid vom {datum}).", "en": "We are recognised as a non-profit organisation ({amt}, notice dated {datum}).", "max": 200 },
-          "transparency": { "wo": "Hinweis auf die Transparenz-Seite", "de": "Wofür wir unser Geld ausgeben:", "en": "What we spend our money on:", "max": 100 },
+          "transparency": { "wo": "Hinweis auf die Transparenz-Seite", "de": "Wofür wir unser Geld ausgeben:", "en": "What we spend our money on:", "max": 100, "ausblendbar": true },
           "transparencyCta": { "wo": "Link dazu", "de": "Transparenz →", "en": "Transparency →", "max": 30 },
           "frage1": { "wo": "Frage 1", "zeilen": 2, "de": "Ist meine Spende steuerlich absetzbar?\nJa. TanzNetzDresden e.V. ist als gemeinnützig anerkannt. Bis 300 € reicht dem Finanzamt dein Kontoauszug zusammen mit unserem vereinfachten Spendennachweis. Für höhere Beträge oder auf Wunsch stellen wir dir eine Zuwendungsbestätigung aus.", "en": "Is my donation tax-deductible?\nYes, in Germany. TanzNetzDresden e.V. is recognised as a non-profit. Up to €300, your bank statement together with our simplified donation receipt is enough for the tax office. For higher amounts or on request we issue an official donation receipt.", "max": 600 },
           "frage1Link": { "wo": "Frage 1: Link zum Spendennachweis", "de": "Spendennachweis öffnen →", "en": "Open simplified receipt (German) →", "max": 50 },
@@ -640,7 +647,7 @@
           "beschreibung": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Die Tanzschaffenden im TanzNetzDresden: Profile von Mitglieder:innen und Trainer:innen.", "en": "The dance artists of TanzNetzDresden: profiles of members and teachers.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Netzwerk", "en": "Network", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Wer im Netz\ntanzt.", "en": "Who dances\nin the network.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Tänzer:innen, Choreograf:innen und Dozent:innen der freien Szene in Dresden. Finde Menschen für dein nächstes Projekt, dein Training oder einen Austausch.", "en": "Dancers, choreographers and teachers of Dresden's independent scene. Find people for your next project, your training or an exchange.", "max": 400 }
+          "lead": { "wo": "Text unter der Überschrift", "de": "Tänzer:innen, Choreograf:innen und Dozent:innen der freien Szene in Dresden. Finde Menschen für dein nächstes Projekt, dein Training oder einen Austausch.", "en": "Dancers, choreographers and teachers of Dresden's independent scene. Find people for your next project, your training or an exchange.", "max": 400, "ausblendbar": true }
         }
       },
       "liste": {
@@ -739,7 +746,7 @@
           "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Werde Mitglied bei TanzNetzDresden e.V.: günstiger trainieren, Formate mitgestalten, die freie Tanzszene stärken.", "en": "Become a member of TanzNetzDresden e.V.: train at a reduced rate, shape formats, strengthen the independent dance scene.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitglied werden", "en": "Membership", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Werde Teil\ndes Netzes.", "en": "Become part\nof the network.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Für professionell arbeitende Tanzschaffende in Dresden und Umgebung: Tänzer:innen, Choreograf:innen, Dozent:innen und alle, die den zeitgenössischen Tanz hier mittragen.", "en": "For professional dance artists in and around Dresden: dancers, choreographers, teachers and everyone who carries contemporary dance here.", "max": 400 }
+          "lead": { "wo": "Text unter der Überschrift", "de": "Für professionell arbeitende Tanzschaffende in Dresden und Umgebung: Tänzer:innen, Choreograf:innen, Dozent:innen und alle, die den zeitgenössischen Tanz hier mittragen.", "en": "For professional dance artists in and around Dresden: dancers, choreographers, teachers and everyone who carries contemporary dance here.", "max": 400, "ausblendbar": true }
         }
       },
       "vorteile": {
@@ -792,7 +799,7 @@
           "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Mit wem TanzNetzDresden arbeitet: Spielorte, Hochschulen, Förderer und Netzwerke in Dresden und darüber hinaus.", "en": "Who TanzNetzDresden works with: venues, universities, funders and networks in Dresden and beyond.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Kooperationspartner", "en": "Partners", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Ein Netz\naus Orten.", "en": "A network\nof places.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Unsere Formate entstehen mit Spielorten, Hochschulen, Förderern und Netzwerken in Dresden und darüber hinaus. Hier zeigen wir, mit wem wir arbeiten.", "en": "Our formats are created together with venues, universities, funders and networks in Dresden and beyond. Here is who we work with.", "max": 400 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Unsere Formate entstehen mit Spielorten, Hochschulen, Förderern und Netzwerken in Dresden und darüber hinaus. Hier zeigen wir, mit wem wir arbeiten.", "en": "Our formats are created together with venues, universities, funders and networks in Dresden and beyond. Here is who we work with.", "max": 400, "ausblendbar": true },
           "places": { "wo": "Karte: Überschrift", "de": "Orte in Dresden", "en": "Places in Dresden", "max": 40 },
           "tilesBtn": { "wo": "Karte: Knopf für die Stadtkarte", "de": "Stadtkarte einblenden", "en": "Show city map", "max": 40 },
           "tilesHint": { "wo": "Karte: Hinweis zum Datenschutz", "de": "Kartenbilder von OpenStreetMap – dabei wird deine IP-Adresse übertragen.", "en": "Map images from OpenStreetMap – this transmits your IP address.", "max": 160 },
@@ -805,12 +812,13 @@
         "texte": {
           "allKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Alle Partner", "en": "All partners", "max": 40 },
           "allH": { "wo": "Überschrift", "de": "Mit wem wir arbeiten", "en": "Who we work with", "max": 40 },
-          "allIntro": { "wo": "Text unter der Überschrift", "de": "Von der Probebühne bis zur bundesweiten Förderung. Sortiert danach, was wir gemeinsam machen.", "en": "From rehearsal stages to national funding. Grouped by what we do together.", "max": 200 },
+          "allIntro": { "wo": "Text unter der Überschrift", "de": "Von der Probebühne bis zur bundesweiten Förderung. Sortiert danach, was wir gemeinsam machen.", "en": "From rehearsal stages to national funding. Grouped by what we do together.", "max": 200, "ausblendbar": true },
           "funders": { "wo": "Hinweis unter der Liste", "de": "Unsere Förderer stehen unten auf jeder Seite.", "en": "Our funders are listed at the bottom of every page.", "max": 120 }
         }
       },
       "anfrage": {
         "titel": "Kooperation anfragen",
+        "ausblendbar": true,
         "texte": {
           "coopKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Kooperation", "en": "Cooperation", "max": 40 },
           "coopTitel": { "wo": "Überschrift in zwei Zeilen", "zeilen": 2, "de": "Ihr wollt mit uns\narbeiten?", "en": "Want to work\nwith us?", "max": 50 },

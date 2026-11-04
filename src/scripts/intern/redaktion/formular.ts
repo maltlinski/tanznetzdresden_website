@@ -22,6 +22,8 @@ export interface FormKontext {
   /** Datei vormerken (wird mit dem Eintrag gespeichert); gibt den Pfad im Repository zurück */
   hochladen(ordner: string, datei: File): Promise<string>;
   geaendert(): void;
+  /** der ganze Eintrag wurde ein- oder ausgeblendet (Schalter „Auf der Website anzeigen“) */
+  sichtbarkeit?(an: boolean): void;
 }
 
 interface Bindung {
@@ -281,6 +283,31 @@ function mehrfachFeld(f: Extract<Feld, { typ: 'mehrfach' | 'verweis' }>, optione
   };
 }
 
+/** „Auf der Website anzeigen“: Schalter; aus = bleibt gespeichert und bearbeitbar, die Website zeigt es nicht */
+function sichtbarFeld(f: Extract<Feld, { typ: 'sichtbar' }>, bind: Bindung, k: FormKontext, gesperrt: boolean): Baustein {
+  const an = () => (f.umgekehrt ? bind.lesen() !== true : bind.lesen() !== false);
+  const box = h('input', { type: 'checkbox', role: 'switch', checked: an(), disabled: gesperrt, 'data-sichtbar': true });
+  const zustand = h('span', { class: 'rf-sichtbar__z', 'aria-hidden': 'true' });
+  const el = h('div', { class: 'rf-feld rf-sichtbar' },
+    h('label', { class: 'i-check rf-sichtbar__l' }, box, h('span', { text: f.label }), zustand),
+    h('span', { class: 'i-hint', text: f.hilfe ?? 'Aus: bleibt hier gespeichert und bearbeitbar, erscheint aber nicht auf der Website.' }));
+  const zeigen = () => {
+    zustand.textContent = box.checked ? 'Wird angezeigt' : 'Ausgeblendet';
+    el.classList.toggle('is-aus', !box.checked);
+    // Listeneintrag ausgrauen (Förderer, Partner …), ganze Einträge meldet das Formular weiter
+    el.closest('.rf-item')?.classList.toggle('is-aus', !box.checked);
+    if (!el.closest('.rf-item')) k.sichtbarkeit?.(box.checked);
+  };
+  box.addEventListener('change', () => {
+    // Standard (sichtbar) steht nicht in der Datei
+    bind.schreiben(box.checked ? undefined : f.umgekehrt ? true : false);
+    k.geaendert();
+    zeigen();
+  });
+  requestAnimationFrame(zeigen);
+  return { el, pruefen: () => null, fokus: () => box.focus() };
+}
+
 function janeinFeld(f: Extract<Feld, { typ: 'janein' }>, bind: Bindung, k: FormKontext, gesperrt: boolean): Baustein {
   const box = h('input', { type: 'checkbox', checked: bind.lesen() ?? f.standard ?? false, disabled: gesperrt });
   box.addEventListener('change', () => {
@@ -451,26 +478,41 @@ function dateiFeld(f: Extract<Feld, { typ: 'bild' | 'pdf' }>, bind: Bindung, k: 
 /** Liste einfacher Werte (Wörter, Beträge) */
 function werteFeld(f: Extract<Feld, { typ: 'werte' }>, bind: Bindung, k: FormKontext, en: boolean, gesperrt: boolean): Baustein {
   const id = neueId();
-  let werte: (string | number)[] = [...((bind.lesen() as (string | number)[] | undefined) ?? [])];
+  // Wortlisten mit Ausblenden: Text oder { text, sichtbar: false } (src/lib/sichtbar.ts)
+  type Wert = string | number | { text: string; sichtbar: false };
+  let werte: Wert[] = [...((bind.lesen() as Wert[] | undefined) ?? [])];
+  const text = (w: Wert) => (typeof w === 'object' && w ? w.text : w);
+  const aus = (w: Wert) => typeof w === 'object' && !!w && w.sichtbar === false;
   const liste = h('ol', { class: 'rf-werte' });
   const neu = h('button', { type: 'button', class: 'i-linkbtn', text: `+ ${f.neu}`, disabled: gesperrt });
   const fehlerZeile = { set: (_: string | null) => {} };
   const speichern = () => {
-    schreibe(bind, f, werte.filter((w) => w !== '' && !(typeof w === 'number' && Number.isNaN(w))), k);
+    schreibe(bind, f, werte.filter((w) => text(w) !== '' && !(typeof w === 'number' && Number.isNaN(w))), k);
     k.geaendert();
   };
   const render = (fokusIndex?: number, fokusAuf?: string) => {
     liste.replaceChildren(
       ...werte.map((w, i) => {
         const inp = h('input', { type: f.art === 'zahl' ? 'number' : 'text', 'aria-label': `${f.label}${en ? ' (Englisch)' : ''} ${i + 1}`, disabled: gesperrt, lang: en ? 'en' : undefined });
-        inp.value = String(w ?? '');
+        inp.value = String(text(w) ?? '');
         inp.addEventListener('input', () => {
-          werte[i] = f.art === 'zahl' ? (inp.value === '' ? '' : Number(inp.value)) : inp.value.trim();
+          const v = f.art === 'zahl' ? (inp.value === '' ? '' : Number(inp.value)) : inp.value.trim();
+          werte[i] = aus(werte[i]) ? { text: String(v), sichtbar: false } : v;
           speichern();
         });
-        const knopf = (text: string, label: string, fn: () => void, aus = false) =>
-          h('button', { type: 'button', class: 'rf-mini', 'aria-label': `${label}: ${w || i + 1}`, title: label, disabled: gesperrt || aus, onclick: fn, 'data-k': text }, text);
-        return h('li', {}, inp,
+        const name = text(w) || i + 1;
+        const knopf = (zeichen: string, label: string, fn: () => void, deaktiviert = false, klasse = 'rf-mini') =>
+          h('button', { type: 'button', class: klasse, 'aria-label': `${label}: ${name}`, title: label, disabled: gesperrt || deaktiviert, onclick: fn, 'data-k': zeichen }, zeichen);
+        const umschalten = f.ausblendbar
+          ? knopf(aus(w) ? 'Einblenden' : 'Ausblenden', aus(w) ? 'Einblenden' : 'Ausblenden', () => {
+            const t = String(text(werte[i]));
+            werte[i] = aus(werte[i]) ? t : { text: t, sichtbar: false };
+            speichern();
+            render(i, aus(werte[i]) ? 'Einblenden' : 'Ausblenden');
+          }, false, 'rf-mini rf-mini--text')
+          : null;
+        return h('li', { class: aus(w) ? 'is-aus' : undefined }, inp,
+          umschalten,
           knopf('↑', 'Nach oben', () => { [werte[i - 1], werte[i]] = [werte[i], werte[i - 1]]; speichern(); render(i - 1, '↑'); }, i === 0),
           knopf('↓', 'Nach unten', () => { [werte[i + 1], werte[i]] = [werte[i], werte[i + 1]]; speichern(); render(i + 1, '↓'); }, i === werte.length - 1),
           knopf('✕', 'Entfernen', () => { werte.splice(i, 1); speichern(); render(Math.min(i, werte.length - 1), 'input'); }));
@@ -494,7 +536,7 @@ function werteFeld(f: Extract<Feld, { typ: 'werte' }>, bind: Bindung, k: FormKon
   return {
     el: r.el,
     pruefen: () => {
-      const fehler = !en && f.pflicht && !werte.some((w) => w !== '') ? 'Bitte mindestens einen Eintrag.' : null;
+      const fehler = !en && f.pflicht && !werte.some((w) => text(w) !== '') ? 'Bitte mindestens einen Eintrag.' : null;
       r.zeigen(fehler);
       return fehler;
     },
@@ -600,6 +642,8 @@ function einzeln(f: Feld, bind: Bindung, k: FormKontext, bereich: Bereich, en: b
       return mehrfachFeld(f, f.optionen, bind, k, gesperrt);
     case 'janein':
       return janeinFeld(f, bind, k, gesperrt);
+    case 'sichtbar':
+      return sichtbarFeld(f, bind, k, gesperrt);
     case 'zahl':
       return zahlFeld(f, bind, k, gesperrt);
     case 'datum':

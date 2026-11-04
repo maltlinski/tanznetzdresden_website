@@ -9,6 +9,7 @@ import type { ImageMetadata } from 'astro';
 import { getFormate, getTermine, inFileOrder } from './content';
 import { getKeepUp } from './keep-up';
 import { getNews } from './news';
+import { istSichtbar, nurSichtbare, sichtbareWorte } from './sichtbar';
 import { loc, url, type Lang } from './i18n';
 import { href } from './url';
 import type { FormatTermin } from './formate-termin';
@@ -80,9 +81,8 @@ export async function getFormatSeite(lang: Lang) {
   const nachId = new Map(news.map((p) => [p.id, p]));
   return formate.map((f, i) => {
     const d = f.data;
+    // Verweise auf ausgeblendete oder fehlende Beiträge entfallen (die Redaktion wählt sie aus einer Liste)
     const rueckblick = d.rueckblick ? nachId.get(d.rueckblick) : undefined;
-    if (d.rueckblick && !rueckblick) throw new Error(`formate/${f.id}.md: Rückblick „${d.rueckblick}“ gibt es nicht.`);
-    for (const l of d.links) if (l.news && !nachId.has(l.news)) throw new Error(`formate/${f.id}.md: News-Beitrag „${l.news}“ gibt es nicht.`);
     return {
       id: f.id,
       n: String(i + 1).padStart(2, '0'),
@@ -94,8 +94,8 @@ export async function getFormatSeite(lang: Lang) {
       bild: d.image,
       alt: loc(d, 'alt', lang),
       freisteller: ausDatei(freisteller, f.id),
-      fakten: d.fakten.map((x) => ({ k: loc(x, 'label', lang), v: loc(x, 'wert', lang) })),
-      links: d.links.map((l) => ({ text: loc(l, 'text', lang), ...linkZiel(lang, l) })),
+      fakten: nurSichtbare(d.fakten).map((x) => ({ k: loc(x, 'label', lang), v: loc(x, 'wert', lang) })),
+      links: nurSichtbare(d.links).filter((l) => !l.news || nachId.has(l.news)).map((l) => ({ text: loc(l, 'text', lang), ...linkZiel(lang, l) })),
       beendet: d.beendet,
       rueckblick: rueckblick && { titel: rueckblick.title, datum: rueckblick.date, link: url(lang, 'news', `${rueckblick.id}/`) },
       termine: termine.get(f.id) ?? [],
@@ -106,8 +106,7 @@ export type FormatDaten = Awaited<ReturnType<typeof getFormatSeite>>[number];
 
 export async function getProjekte(lang: Lang) {
   const news = new Set((await getNews(lang)).map((p) => p.id));
-  return inFileOrder(await getCollection('projekte'), projekteRaw).map((p) => {
-    for (const l of p.data.links) if (l.news && !news.has(l.news)) throw new Error(`projekte.yaml: News-Beitrag „${l.news}“ gibt es nicht.`);
+  return inFileOrder(await getCollection('projekte', istSichtbar), projekteRaw).map((p) => {
     return {
       id: p.id,
       titel: p.data.titel,
@@ -115,22 +114,25 @@ export async function getProjekte(lang: Lang) {
       art: loc(p.data, 'art', lang),
       text: loc(p.data, 'text', lang),
       partner: loc(p.data, 'partner', lang),
-      links: p.data.links.map((l) => ({ text: loc(l, 'text', lang), ...linkZiel(lang, l) })),
+      links: nurSichtbare(p.data.links).filter((l) => !l.news || news.has(l.news)).map((l) => ({ text: loc(l, 'text', lang), ...linkZiel(lang, l) })),
     };
   });
 }
 
 export async function getChronik(lang: Lang) {
-  return inFileOrder(await getCollection('chronik'), chronikRaw).map((c) => ({
-    jahr: c.id,
-    punkte: lang === 'en' && c.data.punkte_en?.length ? c.data.punkte_en : c.data.punkte,
-  }));
+  return inFileOrder(await getCollection('chronik', istSichtbar), chronikRaw)
+    .map((c) => {
+      const en = sichtbareWorte(c.data.punkte_en);
+      return { jahr: c.id, punkte: lang === 'en' && en.length ? en : sichtbareWorte(c.data.punkte) };
+    })
+    // Jahre, in denen alles ausgeblendet ist, entfallen
+    .filter((c) => c.punkte.length > 0);
 }
 
 /** Ausgaben des Tanzkalenders, neueste zuerst; Plakat und PDF aus dem Repo, sonst von der alten Website */
 export async function getTanzkalenderAusgaben(lang: Lang) {
   // id = erster Monat (JJJJ-MM): neueste zuerst
-  const liste = (await getCollection('tanzkalenderAusgaben')).sort((a, b) => b.id.localeCompare(a.id));
+  const liste = (await getCollection('tanzkalenderAusgaben', istSichtbar)).sort((a, b) => b.id.localeCompare(a.id));
   const monat = (jahr: number, m: number) => new Intl.DateTimeFormat(lang === 'en' ? 'en-GB' : 'de-DE', { month: 'long', timeZone: 'UTC' }).format(new Date(Date.UTC(jahr, m - 1, 1)));
   return liste.map((a, i) => {
     const jahr = Number(a.id.slice(0, 4));

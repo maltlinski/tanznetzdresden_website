@@ -55,11 +55,11 @@ const eintraege = (a: TextAbschnitt) => Object.entries(a.texte) as [string, Text
         <h2 class="tb-seite__h" id={`tb-${id}-h`}>{s.titel}</h2>
         {Object.entries(s.abschnitte).map(([aid, a]) => (
           <section class="tb-abschnitt" aria-labelledby={`tb-${id}-${aid}`}>
-            <h3 class="tb-abschnitt__h" id={`tb-${id}-${aid}`}>{a.titel}</h3>
+            <h3 class="tb-abschnitt__h" id={`tb-${id}-${aid}`}>{a.titel}{a.aus && <span class="tb-aus"> · ausgeblendet</span>}</h3>
             <dl class="tb-liste">
               {eintraege(a).map(([, e]) => (
                 <div class="tb-text">
-                  <dt>{e.wo}{platzhalter(e.de).length > 0 && <span class="tb-ph"> · Platzhalter: {platzhalter(e.de).map((p) => `{${p}}`).join(', ')}</span>}</dt>
+                  <dt>{e.wo}{e.aus && <span class="tb-aus"> · ausgeblendet</span>}{platzhalter(e.de).length > 0 && <span class="tb-ph"> · Platzhalter: {platzhalter(e.de).map((p) => `{${p}}`).join(', ')}</span>}</dt>
                   <dd lang="de">{absaetze(e.de).map((z, i) => <>{i > 0 && <br />}{z}</>)}</dd>
                   <dd lang="en" class="tb-en">
                     <span class="tb-sprache">EN</span>
@@ -100,6 +100,7 @@ const eintraege = (a: TextAbschnitt) => Object.entries(a.texte) as [string, Text
   .tb-liste { margin: 0; }
   .tb-text { padding: 12px 0; border-bottom: 1px solid var(--rule); break-inside: avoid; }
   .tb-text dt { font-size: 13px; color: var(--ink-soft); }
+  .tb-aus { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--magenta-2); }
   .tb-ph { color: var(--ink-muted); }
   .tb-text dd { margin: 4px 0 0; font-size: 17px; line-height: 1.5; color: var(--ink); }
   .tb-en { font-size: 15px !important; color: var(--ink-soft) !important; }

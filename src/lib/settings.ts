@@ -6,8 +6,17 @@
 import { z } from 'astro/zod';
 import raw from '../settings/verein.json';
 import type { Lang } from './i18n';
+import { nurSichtbare, sichtbareWorte } from './sichtbar';
 
-const stat = z.object({ value: z.string(), label: z.string() });
+/**
+ * Listeneinträge mit „Auf der Website anzeigen“ (Redaktion): ausgeblendete fallen hier schon heraus
+ * (src/lib/sichtbar.ts). Wortlisten: Text oder { text, sichtbar: false }.
+ */
+const sichtbar = z.boolean().default(true);
+const sichtbareListe = <T extends z.ZodRawShape>(form: T) => z.array(z.object({ ...form, sichtbar })).transform((l) => nurSichtbare(l));
+const worte = z.array(z.union([z.string(), z.object({ text: z.string(), sichtbar })])).transform((l) => sichtbareWorte(l));
+
+const stat = { value: z.string(), label: z.string() };
 
 const schema = z.object({
   name: z.string(),
@@ -27,7 +36,7 @@ const schema = z.object({
     taxNote: z.string(),
   }),
   social: z.object({ instagram: z.string(), telegram: z.string() }),
-  stats: z.array(stat),
+  stats: sichtbareListe(stat),
   training: z.object({
     rhythm: z.string(), rhythmNote: z.string(), fee: z.string(), feeNote: z.string(),
     place: z.string(), placeAddress: z.string(),
@@ -35,9 +44,8 @@ const schema = z.object({
   membership: z.object({ fee: z.string(), feeNote: z.string(), applicationPdf: z.string(), statutesPdf: z.string() }),
   map: z.object({ lat: z.number(), lon: z.number(), note: z.string().optional() }),
   press: z.object({ contact: z.string(), role: z.string() }),
-  partners: z.array(z.string()),
-  funders: z.array(
-    z.object({
+  partners: worte,
+  funders: sichtbareListe({
       name: z.string(),
       name_en: z.string().optional(),
       url: z.url(),
@@ -49,8 +57,7 @@ const schema = z.object({
       notice: z.string().optional(),
       notice_en: z.string().optional(),
       note: z.string().optional(),
-    }),
-  ),
+  }),
   funders_note: z.string().optional(),
   fundingText: z.string(),
   analytics: z.object({ provider: z.enum(['', 'matomo', 'plausible']), url: z.string(), siteId: z.string(), note: z.string().optional() }),
@@ -73,20 +80,23 @@ const schema = z.object({
     onlineUrl: z.string(),
     onlineProvider: z.string(),
     /** „Deine Spende wird Bewegung“: Formate (Kürzel aus src/content/formate/) mit eigener Zeile und eigenem Text */
-    formate: z.array(z.object({ format: z.string(), meta: z.string(), meta_en: z.string().optional(), text: z.string(), text_en: z.string().optional() })).max(6),
+    formate: z
+      .array(z.object({ format: z.string(), meta: z.string(), meta_en: z.string().optional(), text: z.string(), text_en: z.string().optional(), sichtbar }))
+      .max(6)
+      .transform((l) => nurSichtbare(l)),
     note: z.string().optional(),
   }),
   en: z
     .object({
       claim: z.string(),
       description: z.string(),
-      stats: z.array(stat),
+      stats: sichtbareListe(stat),
       fundingText: z.string(),
       training: z.object({ rhythmNote: z.string(), feeNote: z.string() }).partial(),
       membership: z.object({ fee: z.string(), feeNote: z.string() }).partial(),
       register: z.object({ representationNote: z.string(), taxNote: z.string() }).partial(),
       press: z.object({ role: z.string() }).partial(),
-      partners: z.array(z.string()),
+      partners: worte,
       donation: z.object({ reference: z.string().max(140) }).partial(),
     })
     .partial(),

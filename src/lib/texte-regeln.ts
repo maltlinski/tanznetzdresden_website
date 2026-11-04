@@ -16,6 +16,10 @@ export interface TextEintrag {
   ursprung?: { de: string; en: string };
   /** Deutsch wurde geändert, Englisch noch nicht angepasst */
   enPruefen?: boolean;
+  /** die Redaktion darf den Text ausblenden (nur, wo die Seite ohne ihn sauber aussieht) */
+  ausblendbar?: boolean;
+  /** ausgeblendet: die Website zeigt den Text (samt seinem Element) nicht */
+  aus?: boolean;
 }
 export interface TextAbschnitt {
   titel: string;
@@ -24,6 +28,10 @@ export interface TextAbschnitt {
    * `ziel`: „redaktion:<bereich>“ (Website-Inhalte) oder ein Pfad im internen Bereich, z. B. „intern/kalender/“
    */
   auch?: { text: string; ziel: string }[];
+  /** die Redaktion darf den ganzen Abschnitt ausblenden */
+  ausblendbar?: boolean;
+  /** ausgeblendet: der Abschnitt fehlt auf der Website ganz (auch im HTML) */
+  aus?: boolean;
   texte: Record<string, TextEintrag>;
 }
 export interface TextSeite {
@@ -120,25 +128,50 @@ export const textId = (seite: string, abschnitt: string, key: string) => `${seit
  * gemerkt; ändert sich nur Deutsch, wird Englisch zum Prüfen markiert. `englischPasst`: Markierung entfernen.
  * Gibt die Zahl der geänderten Texte zurück.
  */
-export function uebernehmen(datei: Record<string, unknown>, neu: Map<string, { de: string; en: string; englischPasst?: boolean }>): number {
+export function uebernehmen(datei: Record<string, unknown>, neu: Map<string, { de: string; en: string; englischPasst?: boolean; aus?: boolean }>): number {
   let n = 0;
   for (const { seite, abschnitt, key, e } of alleTexte(datei)) {
     const x = neu.get(textId(seite, abschnitt, key));
     if (!x) continue;
+    let geaendert = false;
+    // Ausblenden (nur bei ausblendbaren Texten)
+    if (x.aus !== undefined && e.ausblendbar && x.aus !== !!e.aus) {
+      if (x.aus) e.aus = true;
+      else delete e.aus;
+      geaendert = true;
+    }
     const de = x.de.replace(/\s+$/, '');
     const en = x.en.replace(/\s+$/, '');
     const deNeu = de !== e.de;
     const enNeu = en !== e.en;
-    if (!deNeu && !enNeu && !(x.englischPasst && e.enPruefen)) continue;
-    n++;
-    e.ursprung ??= { de: e.de, en: e.en };
-    e.de = de;
-    e.en = en;
-    if (enNeu || x.englischPasst) delete e.enPruefen;
-    else if (deNeu) e.enPruefen = true;
-    if (e.de === e.ursprung.de && e.en === e.ursprung.en) {
-      delete e.ursprung;
-      delete e.enPruefen;
+    if (deNeu || enNeu || (x.englischPasst && e.enPruefen)) {
+      geaendert = true;
+      e.ursprung ??= { de: e.de, en: e.en };
+      e.de = de;
+      e.en = en;
+      if (enNeu || x.englischPasst) delete e.enPruefen;
+      else if (deNeu) e.enPruefen = true;
+      if (e.de === e.ursprung.de && e.en === e.ursprung.en) {
+        delete e.ursprung;
+        delete e.enPruefen;
+      }
+    }
+    if (geaendert) n++;
+  }
+  return n;
+}
+
+/** Ganze Abschnitte aus- oder einblenden („seite.abschnitt“ → aus); nur ausblendbare. Gibt die Zahl der Änderungen zurück. */
+export function abschnitteUebernehmen(datei: Record<string, unknown>, aus: Map<string, boolean>): number {
+  let n = 0;
+  for (const [seite, s] of Object.entries(datei)) {
+    if (seite.startsWith('_') || !s || typeof s !== 'object') continue;
+    for (const [id, a] of Object.entries((s as TextSeite).abschnitte)) {
+      const soll = aus.get(`${seite}.${id}`);
+      if (soll === undefined || !a.ausblendbar || soll === !!a.aus) continue;
+      if (soll) a.aus = true;
+      else delete a.aus;
+      n++;
     }
   }
   return n;

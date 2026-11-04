@@ -33,7 +33,7 @@ for (let i = 0; i < people.length; i += 2) reihen.push(people.slice(i, i + 2));
       <h2 id="netz-h" class="netz__h">
         <span data-sweep="0.1">{t.l1}</span><br /><span class="netz__l2" data-sweep="0.35">{t.l2}</span>
       </h2>
-      <p class="netz__lead">{t.lead}</p>
+      {t.lead && <p class="netz__lead">{t.lead}</p>}
       <div class="netz__links">
         <a href={url(lang, 'verein', '#vorstand')}>{t.team}</a>
         <a href={url(lang, 'kooperationen')}>{t.partner}</a>

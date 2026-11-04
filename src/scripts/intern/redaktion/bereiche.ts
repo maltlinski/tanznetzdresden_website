@@ -47,7 +47,9 @@ export type Feld =
   | (Basis & { typ: 'verweis'; quelle: string; mehrfach?: boolean })
   | (Basis & { typ: 'bild'; ordner: 'photos' | 'personen' | 'foerderer'; form: 'relativ' | 'name' })
   | (Basis & { typ: 'pdf' })
-  | (Basis & { typ: 'werte'; art: 'text' | 'zahl'; neu: string; max?: number })
+  | (Basis & { typ: 'werte'; art: 'text' | 'zahl'; neu: string; max?: number; ausblendbar?: boolean })
+  /** „Auf der Website anzeigen“ (src/lib/sichtbar.ts): key „sichtbar“, bei Terminen und älteren News „draft“ (umgekehrt) */
+  | (Basis & { typ: 'sichtbar'; umgekehrt?: boolean })
   | (Basis & { typ: 'liste'; felder: Feld[]; neu: string; titel: (v: Daten) => string })
   | { typ: 'abschnitt'; key?: undefined; label: string; hilfe?: string; nurVorstand?: boolean };
 
@@ -126,8 +128,14 @@ const RUBRIKEN: Option[] = [
   { wert: 'buehne', label: 'Bühne' }, { wert: 'training', label: 'Training' }, { wert: 'diskurs', label: 'Diskurs' },
   { wert: 'stadt', label: 'Stadtraum' }, { wert: 'residenz', label: 'Residenz' },
 ];
+/** „Auf der Website anzeigen“ (Schalter oben im Formular bzw. im Listeneintrag; src/lib/sichtbar.ts) */
+const SICHTBAR: Feld = { typ: 'sichtbar', key: 'sichtbar', label: 'Auf der Website anzeigen' };
+/** dasselbe für Termine und ältere News, die schon „draft“ (Entwurf) haben */
+const ENTWURF: Feld = { typ: 'sichtbar', key: 'draft', umgekehrt: true, label: 'Auf der Website anzeigen', hilfe: 'Aus: bleibt hier gespeichert (wie ein Entwurf), erscheint aber nicht auf der Website.' };
+
 /** Links auf der Formate-Seite (src/content.config.ts → formatLink): Text und genau ein Ziel */
 const LINK_FELDER: Feld[] = [
+  SICHTBAR,
   { typ: 'text', key: 'text', label: 'Linktext', pflicht: true, en: true },
   { typ: 'verweis', key: 'news', label: 'Ziel: News-Beitrag', quelle: 'news' },
   { typ: 'auswahl', key: 'seite', label: 'Ziel: Seite der Website', optionen: SEITEN_OPTIONEN },
@@ -161,17 +169,17 @@ export const bereiche: Bereich[] = [
     sortierung: { feld: 'start' },
     titel: (e) => e.data.title ?? e.id,
     info: (e, k) =>
-      [datumDe(e.data.start) + (e.data.start ? `, ${String(e.data.start).slice(11)}` : ''), e.data.venue, e.data.category, e.data.format ? k.name('formate', e.data.format) : '', e.data.draft ? 'Entwurf' : '']
+      [datumDe(e.data.start) + (e.data.start ? `, ${String(e.data.start).slice(11)}` : ''), e.data.venue, e.data.category, e.data.format ? k.name('formate', e.data.format) : '']
         .filter(Boolean)
         .join(' · '),
     seite: (e) => (e.data.draft ? null : `termine/${e.id}/`),
     filter: [
       { id: 'kommend', label: 'Kommende', passt: (e) => String(e.data.start ?? '').slice(0, 10) >= heute() },
       { id: 'vergangen', label: 'Vergangene', passt: (e) => String(e.data.start ?? '').slice(0, 10) < heute() },
-      { id: 'entwurf', label: 'Entwürfe', passt: (e) => !!e.data.draft },
     ],
     pruefen: (e): Record<string, string> => (e.data.end && e.data.start && e.data.end < e.data.start ? { end: 'Das Ende liegt vor dem Beginn.' } : {}),
     felder: [
+      ENTWURF,
       { typ: 'text', key: 'title', label: 'Titel', pflicht: true, en: true, max: 140 },
       { typ: 'datumzeit', key: 'start', label: 'Beginn', pflicht: true, hilfe: 'Ortszeit Dresden.' },
       { typ: 'datumzeit', key: 'end', label: 'Ende', erweitert: true, hilfe: 'Optional, für den Kalender-Export.' },
@@ -185,7 +193,6 @@ export const bereiche: Bereich[] = [
       { typ: 'verweis', key: 'people', label: 'Mitwirkende aus dem Netzwerk', quelle: 'personen', mehrfach: true, erweitert: true, hilfe: 'Der Termin erscheint dann auch auf ihren Profilen.' },
       { typ: 'verweis', key: 'format', label: 'Gehört zum Format', quelle: 'formate', erweitert: true, hilfe: 'KEEP UP = Workshop im Profitrainings-Kalender.' },
       { typ: 'verweis', key: 'news', label: 'Passender News-Beitrag', quelle: 'news', erweitert: true },
-      { typ: 'janein', key: 'draft', label: 'Entwurf: noch nicht auf der Website zeigen', standard: false },
     ],
   },
   {
@@ -206,6 +213,7 @@ export const bereiche: Bereich[] = [
     seite: (e) => `formate/#${e.id}`,
     pruefen: (e) => linksPruefen(e.data.links),
     felder: [
+      SICHTBAR,
       { typ: 'text', key: 'title', label: 'Name', pflicht: true, en: true },
       { typ: 'text', key: 'since', label: 'Seit', pflicht: true, en: true, platzhalter: 'z. B. seit 2022', hilfe: 'Bei beendeten Formaten der Zeitraum, z. B. 2022–2024.' },
       { typ: 'mehrfach', key: 'rubriken', label: 'Rubriken', optionen: RUBRIKEN, hilfe: 'Die erste steht als Badge am Format. Danach filtert „Ich möchte …“ auf der Formate-Seite. Ohne Auswahl: Bühne.' },
@@ -214,6 +222,7 @@ export const bereiche: Bereich[] = [
       { typ: 'bild', key: 'image', label: 'Foto', pflicht: true, ordner: 'photos', form: 'relativ', hilfe: 'Im Kopf der Formate-Seite steht die Person freigestellt. Das richtet der Admin nach einem neuen Foto ein, bis dahin steht dort das Foto.' },
       { typ: 'text', key: 'alt', label: 'Bildbeschreibung', pflicht: true, en: true, hilfe: BILD_ALT },
       { typ: 'liste', key: 'fakten', label: 'Eckdaten', neu: 'Eckdatum hinzufügen', titel: (v) => [v.label, v.wert].filter(Boolean).join(': '), felder: [
+        SICHTBAR,
         { typ: 'text', key: 'label', label: 'Bezeichnung', pflicht: true, en: true, platzhalter: 'z. B. Ort, Partner, Projektleitung' },
         { typ: 'text', key: 'wert', label: 'Angabe', pflicht: true, en: true },
       ] },
@@ -248,6 +257,7 @@ export const bereiche: Bereich[] = [
     seite: () => 'formate/#archiv',
     pruefen: (e) => linksPruefen(e.data.links),
     felder: [
+      SICHTBAR,
       { typ: 'text', key: 'titel', label: 'Name', pflicht: true },
       { typ: 'text', key: 'jahre', label: 'Jahre', pflicht: true, platzhalter: 'z. B. 2011–2018' },
       { typ: 'text', key: 'art', label: 'Art', pflicht: true, en: true, platzhalter: 'z. B. Aufführungsreihe' },
@@ -271,8 +281,9 @@ export const bereiche: Bereich[] = [
     titel: (e) => `${e.id}: ${(e.data.punkte ?? []).join(', ')}`,
     seite: () => 'formate/',
     felder: [
+      SICHTBAR,
       { typ: 'text', key: 'id', label: 'Jahr', pflicht: true, nurNeu: true, muster: [/^\d{4}$/, 'Vier Ziffern, z. B. 2027'] },
-      { typ: 'werte', key: 'punkte', label: 'Was geschah', pflicht: true, en: true, art: 'text', neu: 'Ereignis hinzufügen' },
+      { typ: 'werte', key: 'punkte', label: 'Was geschah', pflicht: true, en: true, art: 'text', neu: 'Ereignis hinzufügen', ausblendbar: true },
     ],
   },
   {
@@ -290,6 +301,7 @@ export const bereiche: Bereich[] = [
     info: (e) => [(e.data.monate ?? []).join('/'), e.data.breit ? 'Doppelplakat' : '', e.data.kopf ? 'im Kopf' : ''].filter(Boolean).join(' · '),
     seite: () => 'formate/tanzkalender/',
     felder: [
+      SICHTBAR,
       { typ: 'text', key: 'id', label: 'Erster Monat', pflicht: true, nurNeu: true, muster: [/^\d{4}-\d{2}$/, 'Format: JJJJ-MM'] },
       { typ: 'werte', key: 'monate', label: 'Monate', pflicht: true, art: 'zahl', neu: 'Monat hinzufügen', hilfe: '1–12, z. B. 7 und 8 für Juli/August.' },
       { typ: 'url', key: 'bild', label: 'Plakat (Adresse auf der alten Website)', pflicht: true, hilfe: URL_HILFE },
@@ -311,10 +323,11 @@ export const bereiche: Bereich[] = [
     loeschen: true,
     sortierung: { feld: 'date', abwaerts: true },
     titel: (e) => e.data.title ?? e.id,
-    info: (e) => [datumDe(e.data.date), e.data.category, e.en?.data.title ? 'DE/EN' : 'nur DE', e.data.draft ? 'Entwurf' : ''].filter(Boolean).join(' · '),
+    info: (e) => [datumDe(e.data.date), e.data.category, e.en?.data.title ? 'DE/EN' : 'nur DE'].filter(Boolean).join(' · '),
     seite: (e) => (e.data.draft ? null : `news/${e.id}/`),
     pruefen: (e): Record<string, string> => (e.data.image && !e.data.alt ? { alt: 'Zum Foto fehlt die Bildbeschreibung.' } : {}),
     felder: [
+      ENTWURF,
       { typ: 'text', key: 'title', label: 'Titel', pflicht: true, en: true },
       { typ: 'textlang', key: 'teaser', label: 'Kurztext', pflicht: true, en: true, zeilen: 3, max: 400 },
       { typ: 'markdown', key: 'body', label: 'Text', en: true },
@@ -339,7 +352,6 @@ export const bereiche: Bereich[] = [
         { typ: 'text', key: 'value', label: 'Angabe', pflicht: true },
       ] },
       { erweitert: true, typ: 'janein', key: 'featured', label: 'Titelthema (groß oben)', standard: false },
-      { typ: 'janein', key: 'draft', label: 'Entwurf: nicht auf der Website zeigen', standard: false },
     ],
   },
 
@@ -380,6 +392,7 @@ export const bereiche: Bereich[] = [
     info: (e, k) => [k.name('dozentinnen', e.data.dozent), (e.data.tage ?? []).map((t: string) => TAGE.find((x) => x.wert === t)?.label).join(' '), e.data.zeit].filter(Boolean).join(' · '),
     seite: () => 'profitraining/#kalender',
     felder: [
+      SICHTBAR,
       { typ: 'datum', key: 'id', label: 'Woche ab Montag', pflicht: true, nurNeu: true, montag: true },
       { typ: 'verweis', key: 'dozent', label: 'Dozent:in', pflicht: true, quelle: 'dozentinnen', hilfe: 'Neue Dozent:innen zuerst unter „Dozent:innen“ anlegen.' },
       { typ: 'mehrfach', key: 'tage', label: 'Trainingstage', pflicht: true, min: 1, optionen: TAGE },
@@ -403,6 +416,7 @@ export const bereiche: Bereich[] = [
     info: (e) => e.data.stil ?? '',
     seite: (e) => `profitraining/#dozentin-${e.id}`,
     felder: [
+      SICHTBAR,
       { typ: 'verweis', key: 'id', label: 'Person', pflicht: true, nurNeu: true, quelle: 'personen', hilfe: 'Name, Profil und Foto kommen aus dem Profil der Person. Wer fehlt: unter „Personen“ anlegen oder das eigene Profil im internen Bereich freigeben lassen.' },
       { typ: 'text', key: 'stil', label: 'Schwerpunkt im Unterricht', pflicht: true, en: true, platzhalter: 'z. B. Contemporary' },
       { typ: 'textlang', key: 'text', label: 'Text zum Unterricht', pflicht: true, en: true, zeilen: 4, max: 600, hilfe: 'Zwei bis drei Sätze.' },
@@ -459,6 +473,7 @@ export const bereiche: Bereich[] = [
     info: (e) => [(e.data.roles ?? []).map((r: string) => (r === 'trainer' ? 'Trainer:in' : 'Mitglied')).join(', '), e.data.vorstand ? 'Vorstand' : ''].filter(Boolean).join(' · '),
     seite: (e) => `netzwerk/${e.id}/`,
     felder: [
+      SICHTBAR,
       { typ: 'text', key: 'name', label: 'Name', pflicht: true },
       { typ: 'text', key: 'pronouns', label: 'Pronomen', platzhalter: 'z. B. sie/ihr' },
       { typ: 'mehrfach', key: 'roles', label: 'Im Netzwerk als', pflicht: true, min: 1, optionen: [{ wert: 'mitglied', label: 'Mitglied' }, { wert: 'trainer', label: 'Trainer:in' }] },
@@ -474,6 +489,7 @@ export const bereiche: Bereich[] = [
       { typ: 'bild', key: 'photo', label: 'Porträt', ordner: 'personen', form: 'relativ', hilfe: 'Groß oben auf dem Profil.' },
       { typ: 'text', key: 'photoCredit', label: 'Foto von' },
       { typ: 'liste', key: 'gallery', label: 'Galerie', neu: 'Foto hinzufügen', titel: (v) => v.caption ?? '', felder: [
+        SICHTBAR,
         { typ: 'bild', key: 'photo', label: 'Foto', pflicht: true, ordner: 'personen', form: 'relativ' },
         { typ: 'text', key: 'caption', label: 'Bildunterschrift', en: true, hilfe: 'Beschreibt das Foto auch für Menschen, die es nicht sehen.' },
         { typ: 'text', key: 'credit', label: 'Foto von' },
@@ -481,6 +497,7 @@ export const bereiche: Bereich[] = [
       { typ: 'auswahl', key: 'galleryLayout', label: 'Galerie zeigen als', erweitert: true, optionen: Object.entries(GALERIE_LAYOUTS).map(([wert, l]) => ({ wert, label: `${l.de}: ${l.hilfe}` })) },
       { typ: 'abschnitt', label: 'Arbeiten' },
       { typ: 'liste', key: 'works', label: 'Stücke und Projekte', neu: 'Arbeit hinzufügen', titel: (v) => [v.year, v.title].filter(Boolean).join(' · '), felder: [
+        SICHTBAR,
         { typ: 'text', key: 'year', label: 'Jahr', pflicht: true, max: 9, platzhalter: '2026', muster: [/^\d{4}(–\d{4})?$/, 'Format: 2026 oder 2024–2026'] },
         { typ: 'text', key: 'title', label: 'Titel', pflicht: true, max: 120 },
         { typ: 'text', key: 'place', label: 'Wo', max: 120, platzhalter: 'z. B. Welttanztag · Societaetstheater' },
@@ -510,6 +527,7 @@ export const bereiche: Bereich[] = [
     info: (e) => [e.data.rolle, e.data.sitz ? 'Sitz' : ''].filter(Boolean).join(' · '),
     seite: () => 'kooperationen/',
     felder: [
+      SICHTBAR,
       { typ: 'text', key: 'name', label: 'Name', pflicht: true },
       { typ: 'text', key: 'kurz', label: 'Kurzname auf der Karte', hilfe: 'Optional, sonst der Name.', erweitert: true },
       { typ: 'text', key: 'adresse', label: 'Adresse', platzhalter: 'z. B. Bautzner Straße 107, 01099 Dresden', hilfe: 'Optional. Steht im Tanzkalender unter dem Ort, wenn ein Termin dort stattfindet (Ort wie Name oder Kurzname).' },
@@ -537,8 +555,10 @@ export const bereiche: Bereich[] = [
     info: (e) => `${(e.data.partner ?? []).length} Partner`,
     seite: () => 'kooperationen/',
     felder: [
+      SICHTBAR,
       { typ: 'text', key: 'titel', label: 'Gruppe', pflicht: true, en: true },
       { typ: 'liste', key: 'partner', label: 'Partner', pflicht: true, neu: 'Partner hinzufügen', titel: (v) => v.name ?? '', felder: [
+        SICHTBAR,
         { typ: 'text', key: 'name', label: 'Name', pflicht: true },
         { typ: 'text', key: 'rolle', label: 'Was wir zusammen machen', pflicht: true, en: true },
         { typ: 'url', key: 'url', label: 'Website' },
@@ -558,6 +578,7 @@ export const bereiche: Bereich[] = [
     seite: () => 'verein/',
     felder: [
       { typ: 'liste', key: 'liste', label: 'Arbeitsgruppen', pflicht: true, neu: 'AG hinzufügen', titel: (v) => v.name ?? '', felder: [
+        SICHTBAR,
         { typ: 'text', key: 'name', label: 'Name', pflicht: true },
         { typ: 'textlang', key: 'text', label: 'Beschreibung', pflicht: true, en: true, zeilen: 2 },
       ] },
@@ -577,7 +598,7 @@ export const bereiche: Bereich[] = [
     seite: () => '',
     felder: [
       { typ: 'text', key: 'claim.de.lead', label: 'Anfang', en: 'claim.en.lead', pflicht: true, platzhalter: 'Tanz für' },
-      { typ: 'werte', key: 'claim.de.woerter', label: 'Wechselnde Wörter', en: 'claim.en.woerter', art: 'text', neu: 'Wort hinzufügen', hilfe: 'Laufen nacheinander durch. Leere Liste = Zeile ausblenden.' },
+      { typ: 'werte', key: 'claim.de.woerter', label: 'Wechselnde Wörter', en: 'claim.en.woerter', art: 'text', neu: 'Wort hinzufügen', ausblendbar: true, hilfe: 'Laufen nacheinander durch. Leere Liste = Zeile ausblenden. Ausblenden gilt je Sprache.' },
       { typ: 'zahl', key: 'wortPause', label: 'Sekunden pro Wort', pflicht: true, min: 1, max: 20, schritt: 0.5 },
     ],
   },
@@ -597,10 +618,11 @@ export const bereiche: Bereich[] = [
       { typ: 'text', key: 'de.l2', label: 'Überschrift, Zeile 2 (Magenta)', en: 'en.l2', pflicht: true },
       { typ: 'textlang', key: 'de.lead', label: 'Einleitung', en: 'en.lead', pflicht: true },
       { typ: 'liste', key: 'de.saeulen', label: 'Säulen', en: 'en.saeulen', pflicht: true, neu: 'Säule hinzufügen', titel: (v) => v.titel ?? '', felder: [
+        SICHTBAR,
         { typ: 'text', key: 'titel', label: 'Titel', pflicht: true },
         { typ: 'textlang', key: 'text', label: 'Text', pflicht: true, zeilen: 2 },
       ] },
-      { typ: 'werte', key: 'de.auszeichnungen', label: 'Auszeichnungen', en: 'en.auszeichnungen', art: 'text', neu: 'Auszeichnung hinzufügen' },
+      { typ: 'werte', key: 'de.auszeichnungen', label: 'Auszeichnungen', en: 'en.auszeichnungen', art: 'text', neu: 'Auszeichnung hinzufügen', ausblendbar: true },
       { typ: 'bild', key: 'foto.datei', label: 'Foto', ordner: 'photos', form: 'name', pflicht: true },
       { typ: 'text', key: 'foto.alt.de', label: 'Bildbeschreibung', en: 'foto.alt.en', pflicht: true, hilfe: BILD_ALT },
     ],
@@ -624,6 +646,7 @@ export const bereiche: Bereich[] = [
       { typ: 'url', key: 'social.instagram', label: 'Instagram', hilfe: URL_HILFE },
       { typ: 'text', key: 'social.telegram', label: 'Telegram-Gruppe (Link)', erweitert: true, hilfe: 'Für die Anmeldung zu KEEP UP-Workshops. Leer = Kontaktseite.' },
       { typ: 'liste', key: 'stats', label: 'Zahlen', en: 'en.stats', hilfe: 'Die erste Zahl steht auf der Startseite bei „Wer im Netz tanzt“ (z. B. 70+ Tanzschaffende).', neu: 'Zahl hinzufügen', titel: (v) => `${v.value ?? ''} ${v.label ?? ''}`, felder: [
+        SICHTBAR,
         { typ: 'text', key: 'value', label: 'Zahl', pflicht: true, platzhalter: '70+' },
         { typ: 'text', key: 'label', label: 'Bedeutung', pflicht: true },
       ] },
@@ -642,9 +665,10 @@ export const bereiche: Bereich[] = [
       { typ: 'abschnitt', label: 'Presse und Partner' },
       { typ: 'text', key: 'press.contact', label: 'Pressekontakt (Name)', pflicht: true },
       { typ: 'text', key: 'press.role', label: 'Funktion', en: 'en.press.role', pflicht: true },
-      { typ: 'werte', key: 'partners', label: 'Partner auf der Startseite („Gemeinsam mit“)', en: 'en.partners', art: 'text', neu: 'Partner hinzufügen' },
+      { typ: 'werte', key: 'partners', label: 'Partner auf der Startseite („Gemeinsam mit“)', en: 'en.partners', art: 'text', neu: 'Partner hinzufügen', ausblendbar: true },
       { typ: 'abschnitt', label: 'Förderer' },
       { typ: 'liste', key: 'funders', label: 'Förderer', neu: 'Förderer hinzufügen', titel: (v) => v.name ?? '', felder: [
+        SICHTBAR,
         { typ: 'text', key: 'name', label: 'Name', pflicht: true, en: true },
         { typ: 'url', key: 'url', label: 'Website', pflicht: true },
         { typ: 'bild', key: 'logo', label: 'Logo', ordner: 'foerderer', form: 'name', hilfe: 'PNG mit transparentem Hintergrund. Leer = Name als Text.' },
@@ -655,6 +679,7 @@ export const bereiche: Bereich[] = [
       { typ: 'abschnitt', label: 'Spenden' },
       { typ: 'text', key: 'donation.reference', label: 'Verwendungszweck', en: 'en.donation.reference', pflicht: true, max: 140 },
       { typ: 'liste', key: 'donation.formate', label: 'Spenden: „Deine Spende wird Bewegung“', neu: 'Format hinzufügen', titel: (v) => v.format ?? '', hilfe: 'Bis zu sechs Formate mit Foto und Titel aus Formate.', felder: [
+        SICHTBAR,
         { typ: 'verweis', key: 'format', label: 'Format', pflicht: true, quelle: 'formate' },
         { typ: 'text', key: 'meta', label: 'Zeile über dem Titel', pflicht: true, en: true, platzhalter: 'z. B. Seit 2022 · 3–5× pro Woche' },
         { typ: 'textlang', key: 'text', label: 'Text', pflicht: true, en: true, zeilen: 2 },
@@ -718,4 +743,6 @@ export const bereiche: Bereich[] = [
 ];
 
 export const bereich = (id: string | null) => bereiche.find((b) => b.id === id);
+/** Hat der Bereich den Schalter „Auf der Website anzeigen“ für ganze Einträge? */
+export const ausblendbar = (b: Bereich) => b.art !== 'einstellung' && b.felder.some((f) => f.typ === 'sichtbar');
 export const gruppen = [...new Set(bereiche.map((b) => b.gruppe))];

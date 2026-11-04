@@ -18,7 +18,7 @@ import { istDatum } from '../lib/datum-schrift';
 import { getNews, dateShort } from '../lib/news';
 import { arbeitsgruppen } from '../settings/arbeitsgruppen';
 import { dateLocale, getLang, tr, url } from '../lib/i18n';
-import { fuellen, texte, zeilen } from '../lib/texte';
+import { abschnittZeigen, fuellen, texte, zeilen } from '../lib/texte';
 
 const lang = getLang(Astro);
 const k = texte(lang, 'formate', 'kopf');
@@ -35,6 +35,12 @@ const sr = tr(lang, {
 const formate = await getFormatSeite(lang);
 const projekte = await getProjekte(lang);
 const chronik = await getChronik(lang);
+// Abschnitte, die die Redaktion ausgeblendet hat oder die leer sind, fehlen ganz (src/lib/texte.ts)
+const zeigen = {
+  chronik: abschnittZeigen('formate', 'chronik') && chronik.length > 0,
+  archiv: abschnittZeigen('formate', 'archiv') && projekte.length > 0,
+  mitmachen: abschnittZeigen('formate', 'mitmachen'),
+};
 const netz = gitterNetz();
 const locale = dateLocale[lang];
 const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
@@ -212,92 +218,95 @@ const daten = JSON.stringify({
     </div>
   </section>
 
-  <section class="fo-chronik" aria-labelledby="fo-chronik-h">
-    <KeilBar color="var(--cyan)" height={12} flip class="fo-chronik__keil" />
-    <div class="wrap">
-      <Tag color="cyan" class="fo-chronik__tag">{c.kicker}</Tag>
-      <h2 class="fo-chronik__h" id="fo-chronik-h" data-split>{zeilen(c.titel)[0]}<br /><span>{zeilen(c.titel)[1]}</span></h2>
-      <ol class="fo-meilensteine">
-        {chronik.map((x) => (
-          <li class="fo-meilenstein">
-            <span class="fo-meilenstein__q" aria-hidden="true"></span>
-            <span class="fo-meilenstein__j">{x.jahr}</span>
-            <ul>{x.punkte.map((p) => <li>{p}</li>)}</ul>
-          </li>
-        ))}
-      </ol>
-    </div>
-  </section>
-
-  <section class="fo-archiv" id="archiv" aria-labelledby="fo-archiv-h">
-    <div class="wrap">
-      <div class="fo-archiv__kopf">
-        <div>
-          <Tag class="fo-archiv__tag">{ar.kicker}</Tag>
-          <h2 class="fo-archiv__h" id="fo-archiv-h" data-split>{zeilen(ar.titel)[0]}<br /><span>{zeilen(ar.titel)[1]}</span></h2>
-        </div>
-        <p class="fo-archiv__lead">{ar.lead}</p>
-      </div>
-      <div class="fo-projekte">
-        {projekte.map((p) => (
-          <details class="fo-projekt" id={`archiv-${p.id}`} data-projekt>
-            <summary class="fo-projekt__kopf">
-              <span class="fo-projekt__jahre">{p.jahre}</span>
-              <span class="fo-projekt__name"><span class="fo-projekt__t">{p.titel}</span><span class="fo-projekt__art">{p.art}</span></span>
-              <span class="fo-projekt__zeichen" aria-hidden="true"></span>
-            </summary>
-            <div class="fo-projekt__inhalt" data-inhalt>
-              <p class="fo-projekt__text">{p.text}</p>
-              {p.partner && <p class="fo-projekt__partner"><span>{ar.mit}</span><span>{p.partner}</span></p>}
-              {p.links.length > 0 && (
-                <div class="fo-links">
-                  {p.links.map((l) => (
-                    <a class="fo-link" href={l.href} target={l.extern ? '_blank' : undefined} rel={l.extern ? 'noopener' : undefined}>
-                      {l.text} →{l.extern && <span class="visually-hidden"> ({sr.neu})</span>}
-                    </a>
-                  ))}
-                </div>
-              )}
-            </div>
-          </details>
-        ))}
-      </div>
-    </div>
-  </section>
-
-  <section class="fo-mit" id="mitmachen" aria-labelledby="fo-mit-h">
-    <KeilBar color="var(--purple)" height={14} flip class="fo-mit__keil" />
-    <div class="wrap fo-mit__grid">
-      <div>
-        <Tag color="purple" class="fo-mit__tag">{m.kicker}</Tag>
-        <h2 class="fo-mit__h" id="fo-mit-h" data-split>{m1}<br />{m2}</h2>
-        <p class="fo-mit__lead">{m.lead}</p>
-        <div data-fo-calls>
-          {calls.map((p, i) => (
-            <a class="fo-call" href={url(lang, 'news', `${p.id}/`)} hidden={i > 0} data-frist={p.deadline}>
-              <span class="fo-call__k">{fuellen(m.call, { datum: dateShort(p.deadline!, lang) })}</span>
-              <span class="fo-call__t">{p.title}</span>
-              <span class="fo-call__l">{m.zurCall}</span>
-            </a>
+  {zeigen.chronik && (
+    <section class="fo-chronik" aria-labelledby="fo-chronik-h">
+      <KeilBar color="var(--cyan)" height={12} flip class="fo-chronik__keil" />
+      <div class="wrap">
+        <Tag color="cyan" class="fo-chronik__tag">{c.kicker}</Tag>
+        <h2 class="fo-chronik__h" id="fo-chronik-h" data-split>{zeilen(c.titel)[0]}<br /><span>{zeilen(c.titel)[1]}</span></h2>
+        <ol class="fo-meilensteine">
+          {chronik.map((x) => (
+            <li class="fo-meilenstein">
+              <span class="fo-meilenstein__q" aria-hidden="true"></span>
+              <span class="fo-meilenstein__j">{x.jahr}</span>
+              <ul>{x.punkte.map((p) => <li>{p}</li>)}</ul>
+            </li>
           ))}
-          <a class="fo-call" href={url(lang, 'news')} hidden={calls.length > 0} data-fo-keine>
-            <span class="fo-call__k">{m.calls}</span>
-            <span class="fo-call__t">{m.callsText}</span>
-            <span class="fo-call__l">{m.zuCalls}</span>
-          </a>
+        </ol>
+      </div>
+    </section>
+  )}
+  {zeigen.archiv && (
+    <section class="fo-archiv" id="archiv" aria-labelledby="fo-archiv-h">
+      <div class="wrap">
+        <div class="fo-archiv__kopf">
+          <div>
+            <Tag class="fo-archiv__tag">{ar.kicker}</Tag>
+            <h2 class="fo-archiv__h" id="fo-archiv-h" data-split>{zeilen(ar.titel)[0]}<br /><span>{zeilen(ar.titel)[1]}</span></h2>
+          </div>
+          {ar.lead && <p class="fo-archiv__lead">{ar.lead}</p>}
+        </div>
+        <div class="fo-projekte">
+          {projekte.map((p) => (
+            <details class="fo-projekt" id={`archiv-${p.id}`} data-projekt>
+              <summary class="fo-projekt__kopf">
+                <span class="fo-projekt__jahre">{p.jahre}</span>
+                <span class="fo-projekt__name"><span class="fo-projekt__t">{p.titel}</span><span class="fo-projekt__art">{p.art}</span></span>
+                <span class="fo-projekt__zeichen" aria-hidden="true"></span>
+              </summary>
+              <div class="fo-projekt__inhalt" data-inhalt>
+                <p class="fo-projekt__text">{p.text}</p>
+                {p.partner && <p class="fo-projekt__partner"><span>{ar.mit}</span><span>{p.partner}</span></p>}
+                {p.links.length > 0 && (
+                  <div class="fo-links">
+                    {p.links.map((l) => (
+                      <a class="fo-link" href={l.href} target={l.extern ? '_blank' : undefined} rel={l.extern ? 'noopener' : undefined}>
+                        {l.text} →{l.extern && <span class="visually-hidden"> ({sr.neu})</span>}
+                      </a>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </details>
+          ))}
         </div>
       </div>
-      <div class="fo-ags">
-        <h3 class="fo-ags__h">{m.ags}</h3>
-        <p class="fo-ags__text">{m.agsText}</p>
-        <ul class="fo-ags__liste">
-          {arbeitsgruppen.map((ag) => <li><span class="fo-quadrat fo-quadrat--mini" aria-hidden="true"></span>{ag.name}</li>)}
-        </ul>
-        <Button href={url(lang, 'mitglied')} size="lg" marker>{m.join}</Button>
+    </section>
+  )}
+  {zeigen.mitmachen && (
+    <section class="fo-mit" id="mitmachen" aria-labelledby="fo-mit-h">
+      <KeilBar color="var(--purple)" height={14} flip class="fo-mit__keil" />
+      <div class="wrap fo-mit__grid">
+        <div>
+          <Tag color="purple" class="fo-mit__tag">{m.kicker}</Tag>
+          <h2 class="fo-mit__h" id="fo-mit-h" data-split>{m1}<br />{m2}</h2>
+          {m.lead && <p class="fo-mit__lead">{m.lead}</p>}
+          <div data-fo-calls>
+            {calls.map((p, i) => (
+              <a class="fo-call" href={url(lang, 'news', `${p.id}/`)} hidden={i > 0} data-frist={p.deadline}>
+                <span class="fo-call__k">{fuellen(m.call, { datum: dateShort(p.deadline!, lang) })}</span>
+                <span class="fo-call__t">{p.title}</span>
+                <span class="fo-call__l">{m.zurCall}</span>
+              </a>
+            ))}
+            <a class="fo-call" href={url(lang, 'news')} hidden={calls.length > 0} data-fo-keine>
+              <span class="fo-call__k">{m.calls}</span>
+              <span class="fo-call__t">{m.callsText}</span>
+              <span class="fo-call__l">{m.zuCalls}</span>
+            </a>
+          </div>
+        </div>
+        <div class="fo-ags">
+          <h3 class="fo-ags__h">{m.ags}</h3>
+          <p class="fo-ags__text">{m.agsText}</p>
+          <ul class="fo-ags__liste">
+            {arbeitsgruppen.map((ag) => <li><span class="fo-quadrat fo-quadrat--mini" aria-hidden="true"></span>{ag.name}</li>)}
+          </ul>
+          <Button href={url(lang, 'mitglied')} size="lg" marker>{m.join}</Button>
+        </div>
       </div>
-    </div>
-  </section>
-
+    </section>
+  )}
   <script type="application/json" id="fo-daten" set:html={daten} />
 </Page>
 

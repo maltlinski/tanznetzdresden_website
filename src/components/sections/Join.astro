@@ -17,7 +17,7 @@ const t = { kicker: tx.kicker, l1, l2, lead: tx.lead, cta: tx.antrag, donate: tx
     <div data-reveal>
       <Tag color="purple">{t.kicker}</Tag>
       <h2 id="join-h" class="join__title">{t.l1}<br />{t.l2}</h2>
-      <p class="join__lead">{t.lead}</p>
+      {t.lead && <p class="join__lead">{t.lead}</p>}
       <div class="join__actions">
         <Button href={url(lang, 'mitglied')} size="lg" marker>{t.cta}</Button>
         <a class="mono-link join__donate" href={url(lang, 'spenden')}>{t.donate}</a>

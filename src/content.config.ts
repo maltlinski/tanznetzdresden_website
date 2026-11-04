@@ -14,6 +14,14 @@ import { z } from 'astro/zod';
 import { routes, type RouteKey } from './lib/i18n';
 import { GALERIE_WERTE, OFFEN_WERTE } from './lib/profil-felder';
 
+/**
+ * „Auf der Website anzeigen“ (Redaktion). false = ausgeblendet: bleibt in der Datei, die Lader filtern es heraus
+ * (src/lib/sichtbar.ts, docs/redaktion.md#ausblenden). Fehlt das Feld, ist der Eintrag sichtbar.
+ */
+const sichtbar = z.boolean().default(true);
+/** Wortliste, in der einzelne Einträge ausgeblendet sein können: Text oder { text, sichtbar: false } */
+const worte = z.array(z.union([z.string(), z.object({ text: z.string(), sichtbar })]));
+
 const localDateTime = z
   .string()
   .regex(/^\d{4}-\d{2}-\d{2}[ T]\d{2}:\d{2}$/, 'Format: JJJJ-MM-TT HH:MM (Ortszeit Dresden)');
@@ -67,6 +75,7 @@ const formatLink = z
     seite: routeKey.optional(),
     datei: z.string().optional(),
     url: z.url().optional(),
+    sichtbar,
   })
   .refine((l) => [l.news, l.seite, l.datei, l.url].filter(Boolean).length === 1, 'Genau ein Ziel: news, seite, datei oder url');
 
@@ -97,7 +106,7 @@ const formate = defineCollection({
       alt: z.string(),
       alt_en: z.string().optional(),
       /** Eckdaten unter dem Text, z. B. Ort, Partner, Projektleitung */
-      fakten: z.array(z.object({ label: z.string(), label_en: z.string().optional(), wert: z.string(), wert_en: z.string().optional() })).default([]),
+      fakten: z.array(z.object({ label: z.string(), label_en: z.string().optional(), wert: z.string(), wert_en: z.string().optional(), sichtbar })).default([]),
       links: z.array(formatLink).default([]),
       /** Format ist beendet: „Laufzeit“ statt „Seit“, statt des nächsten Termins der Rückblick */
       beendet: z.boolean().default(false),
@@ -105,6 +114,7 @@ const formate = defineCollection({
       rueckblick: z.string().optional(),
       /** Eigene Seite des Formats (Route aus src/lib/i18n.ts), z. B. "profitraining" */
       seite: routeKey.optional(),
+      sichtbar,
     }),
 });
 
@@ -123,6 +133,7 @@ const projekte = defineCollection({
     partner: z.string().optional(),
     partner_en: z.string().optional(),
     links: z.array(formatLink).default([]),
+    sichtbar,
   }),
 });
 
@@ -130,8 +141,9 @@ const projekte = defineCollection({
 const chronik = defineCollection({
   loader: file('./src/content/formate-archiv/chronik.yaml'),
   schema: z.object({
-    punkte: z.array(z.string()).min(1),
-    punkte_en: z.array(z.string()).optional(),
+    punkte: worte.min(1),
+    punkte_en: worte.optional(),
+    sichtbar,
   }),
 });
 
@@ -152,6 +164,7 @@ const tanzkalenderAusgaben = defineCollection({
     breit: z.boolean().default(false),
     /** im Kopf der Seite zeigen (drei Ausgaben) */
     kopf: z.boolean().default(false),
+    sichtbar,
   }),
 });
 
@@ -169,6 +182,7 @@ const keepUpDozentinnen = defineCollection({
     /** zwei bis drei Sätze zum Unterricht */
     text: z.string(),
     text_en: z.string().optional(),
+    sichtbar,
   }),
 });
 
@@ -179,6 +193,7 @@ const keepUpWochen = defineCollection({
     tage: z.array(z.enum(['mo', 'di', 'mi', 'do', 'fr', 'sa', 'so'])).min(1),
     zeit: z.string().regex(/^\d{2}:\d{2}\s*[–-]\s*\d{2}:\d{2}$/, 'Format: 10:00–11:30').default('10:00–11:30'),
     ort: z.string().optional(),
+    sichtbar,
   }),
 });
 
@@ -217,7 +232,7 @@ const personen = defineCollection({
       /** offen für (src/lib/profil-felder.ts) */
       openFor: z.array(z.enum(OFFEN_WERTE)).default([]),
       /** Stücke und Projekte */
-      works: z.array(z.object({ year: z.coerce.string(), title: z.string(), place: z.string().optional() })).default([]),
+      works: z.array(z.object({ year: z.coerce.string(), title: z.string(), place: z.string().optional(), sichtbar })).default([]),
       /** Angaben im Abschnitt „Über“ */
       education: z.string().optional(),
       techniques: z.string().optional(),
@@ -226,10 +241,11 @@ const personen = defineCollection({
       height: z.string().optional(),
       available: z.string().optional(),
       /** Galerie: Fotos in src/assets/personen/ */
-      gallery: z.array(z.object({ photo: image(), caption: z.string().optional(), caption_en: z.string().optional(), credit: z.string().optional() })).default([]),
+      gallery: z.array(z.object({ photo: image(), caption: z.string().optional(), caption_en: z.string().optional(), credit: z.string().optional(), sichtbar })).default([]),
       galleryLayout: z.enum(GALERIE_WERTE).default('filmstreifen'),
       /** auf der Startseite zeigen */
       featured: z.boolean().default(true),
+      sichtbar,
     }),
 });
 
@@ -259,6 +275,7 @@ const orte = defineCollection({
     /** ids anderer Orte, zu denen eine Linie gezogen wird */
     verbunden: z.array(z.string()).default([]),
     url: z.url().optional(),
+    sichtbar,
   }),
 });
 
@@ -267,6 +284,7 @@ const partner = z.object({
   rolle: z.string(),
   rolle_en: z.string().optional(),
   url: z.url().optional(),
+  sichtbar,
 });
 
 const partnergruppen = defineCollection({
@@ -275,6 +293,7 @@ const partnergruppen = defineCollection({
     titel: z.string(),
     titel_en: z.string().optional(),
     partner: z.array(partner).min(1),
+    sichtbar,
   }),
 });
 

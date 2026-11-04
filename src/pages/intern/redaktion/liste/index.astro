@@ -31,7 +31,10 @@ import '../../../../styles/redaktion.css';
 
   <div data-access hidden>
     <div class="r-tools">
-      <div class="chips" role="group" aria-label="Filtern" data-filter hidden></div>
+      <div class="r-filter">
+        <div class="chips" role="group" aria-label="Filtern" data-filter hidden></div>
+        <div class="chips" role="group" aria-label="Auf der Website" data-sicht hidden></div>
+      </div>
       <label class="r-suche">
         <span class="visually-hidden">Suchen</span>
         <input type="search" placeholder="Suchen …" data-suche />
@@ -65,7 +68,8 @@ import '../../../../styles/redaktion.css';
 </Redaktion>
 
 <script>
-  import { bereich as bereichNach } from '../../../../scripts/intern/redaktion/bereiche';
+  import { ausblendbar, bereich as bereichNach } from '../../../../scripts/intern/redaktion/bereiche';
+  import { istSichtbar } from '../../../../lib/sichtbar';
   import { laden, loeschAenderungen, reihenfolgeAenderungen, type Eintrag, type Geladen } from '../../../../scripts/intern/redaktion/daten';
   import { $, bereichOrt, brotkrumen, erscheintAuf, meldung, namenLaden, ortsKrumen, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
   import { planLesen } from '../../../../scripts/intern/redaktion/seitenplan';
@@ -137,6 +141,31 @@ import '../../../../styles/redaktion.css';
         box.append(btn);
       }
     }
+    // Auf der Website: alle / nur sichtbare / nur ausgeblendete
+    let sicht: 'alle' | 'an' | 'aus' = 'alle';
+    if (ausblendbar(b)) {
+      const box = $('[data-sicht]')!;
+      box.hidden = false;
+      const arten = [
+        { id: 'alle', label: 'Alle', passt: () => true },
+        { id: 'an', label: 'Sichtbar', passt: (e: Eintrag) => istSichtbar(e) },
+        { id: 'aus', label: 'Ausgeblendet', passt: (e: Eintrag) => !istSichtbar(e) },
+      ] as const;
+      for (const a of arten) {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'chip';
+        btn.dataset.sicht = a.id;
+        btn.setAttribute('aria-pressed', String(a.id === sicht));
+        btn.innerHTML = `${a.label} <span class="chip__count">${g.eintraege.filter(a.passt).length}</span>`;
+        btn.addEventListener('click', () => {
+          sicht = a.id;
+          box.querySelectorAll('button').forEach((x) => x.setAttribute('aria-pressed', String(x === btn)));
+          zeichnen();
+        });
+        box.append(btn);
+      }
+    }
     // Vergangene Termine: neueste zuerst
     const sichtbar = () => {
       const nachId = new Map(g.eintraege.map((e) => [e.id, e]));
@@ -144,6 +173,7 @@ import '../../../../styles/redaktion.css';
       let xs = reihenfolge.map((id) => nachId.get(id)!);
       if (b.art === 'ordner' && b.filter && filter) xs = xs.filter(b.filter.find((f) => f.id === filter)!.passt);
       if (filter === 'vergangen') xs.reverse();
+      if (sicht !== 'alle') xs = xs.filter((e) => istSichtbar(e) === (sicht === 'an'));
       if (q) xs = xs.filter((e) => `${titelVon(b, e, namen)} ${b.info?.(e, namen) ?? ''} ${e.id}`.toLowerCase().includes(q));
       return xs;
     };
@@ -164,11 +194,15 @@ import '../../../../styles/redaktion.css';
       li.className = 'r-zeile';
       li.dataset.id = e.id;
       const gesperrt = !!b!.nurVorstand?.(e.id) && !r!.vorstand;
+      const aus = !istSichtbar(e);
+      li.classList.toggle('is-aus', aus);
       const link = document.createElement('a');
       link.className = 'r-zeile__link';
       link.href = redaktionUrl('eintrag/', { b: b!.id, id: e.id, von: ort.von });
       link.innerHTML = '<span class="r-zeile__t"></span><span class="r-zeile__m"></span>';
       link.querySelector('.r-zeile__t')!.textContent = titel;
+      // deutlich markiert: ausgegraut und mit Label
+      if (aus) link.querySelector('.r-zeile__t')!.append(Object.assign(document.createElement('span'), { className: 'r-aus', textContent: 'Ausgeblendet' }));
       link.querySelector('.r-zeile__m')!.textContent = [b!.info?.(e, namen), gesperrt ? 'nur Vorstand' : ''].filter(Boolean).join(' · ');
       li.append(link);
 
@@ -192,7 +226,7 @@ import '../../../../styles/redaktion.css';
         knopf('↓', 'Nach unten', () => tauschen(pos, pos + 1, '↓'), i === n - 1);
         li.draggable = true;
       }
-      const seite = b!.seite?.(e);
+      const seite = aus ? null : b!.seite?.(e);
       if (seite !== undefined && seite !== null) {
         const a = document.createElement('a');
         a.className = 'r-zeile__ext';

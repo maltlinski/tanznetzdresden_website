@@ -231,6 +231,19 @@ test('Rechtliches nur für den Vorstand', async () => {
   expect(textePruefen(JSON.stringify(texte), JSON.stringify({ ...texte, recht: { titel: 'Rechtliches', x: 1 } }))).toMatch(/Rechtliches/);
 });
 
+test('texte.json: ausblenden nur, wo die Website es vorsieht (auf dem Server geprüft)', () => {
+  const datei = (lead: object, abschnitt: object = {}) => JSON.stringify({
+    start: { titel: 'Startseite', abschnitte: { netz: { titel: 'Netz', ...abschnitt, texte: { lead: { wo: 'Text', de: 'a', en: 'b', ...lead }, titel: { wo: 'Ü', de: 'c', en: 'd' } } } } },
+  });
+  const alt = datei({ ausblendbar: true }, { ausblendbar: true });
+  expect(textePruefen(alt, datei({ ausblendbar: true, aus: true }, { ausblendbar: true }))).toBeNull();
+  expect(textePruefen(alt, datei({ ausblendbar: true }, { ausblendbar: true, aus: true }))).toBeNull();
+  // nicht vorgesehen: Überschrift ausblenden, „ausblendbar“ selbst setzen oder entfernen
+  expect(textePruefen(alt, datei({ ausblendbar: true }, { ausblendbar: true }).replace('"de":"c"', '"aus":true,"de":"c"'))).toMatch(/lässt sich nicht ausblenden/);
+  expect(textePruefen(datei({}), datei({ ausblendbar: true, aus: true }))).toMatch(/legt die Website fest/);
+  expect(textePruefen(alt, datei({}, { ausblendbar: true }))).toMatch(/legt die Website fest/);
+});
+
 test('neu_bauen stößt den Deploy-Workflow an (repository_dispatch), nur für Redaktion und Dozent:innen', async () => {
   const gh = fakeGitHub({});
   const r = await call(gh, { aktion: 'neu_bauen' });

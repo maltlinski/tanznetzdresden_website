@@ -12,7 +12,7 @@ import { getVerein } from '../lib/settings';
 import { getFormate } from '../lib/content';
 import { formatIban, giroCodeSvg, isValidIban } from '../lib/girocode';
 import { getLang, loc, tr, url } from '../lib/i18n';
-import { fuellen, texte, zeilen } from '../lib/texte';
+import { abschnittZeigen, fuellen, texte, zeilen } from '../lib/texte';
 import sprung from '../assets/photos/sprung.jpg';
 
 const lang = getLang(Astro);
@@ -64,7 +64,7 @@ const kopieren = [
       <div class="sk__links">
         <Tag color="cyan" class="kopf__kicker">{t.kicker}</Tag>
         <h1 id="spenden-h" class="sk__h">{t.h1}{' '}<br /><span>{t.accent}</span></h1>
-        <p class="sk__lead">{t.lead}</p>
+        {t.lead && <p class="sk__lead">{t.lead}</p>}
         <div class="sk__foto">
           <Image src={sprung} alt={t.photoAlt} widths={[480, 760, 1120]} sizes="(min-width: 1000px) 560px, 100vw" loading="eager" />
         </div>
@@ -157,6 +157,7 @@ const kopieren = [
     </div>
   </section>
 
+  {abschnittZeigen('spenden', 'fragen') && (
   <section class="section" aria-labelledby="fragen-h">
     <div class="wrap fragen">
       <div>
@@ -164,7 +165,7 @@ const kopieren = [
         <h2 id="fragen-h" class="h2 fragen__h">{t.faqH}</h2>
         <p class="fragen__p">{t.faqP} <ProtectedEmail email={v.emails.kontakt} label={t.faqMail} subject={t.faqSubject} /></p>
         {bescheid && <p class="fragen__klein">{t.status(v.taxExemption.office, v.taxExemption.noticeDate)}</p>}
-        <p class="fragen__klein">{t.transparency} <a href={url(lang, 'transparenz')}>{t.transparencyCta}</a></p>
+        {t.transparency && <p class="fragen__klein">{t.transparency} <a href={url(lang, 'transparenz')}>{t.transparencyCta}</a></p>}
       </div>
       <div class="faq">
         {t.faqs.map((f, i) => (
@@ -179,6 +180,7 @@ const kopieren = [
       </div>
     </div>
   </section>
+  )}
 </Page>
 
 <script>

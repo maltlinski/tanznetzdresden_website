@@ -5,6 +5,9 @@
  *   t.lead                         → Text in der Sprache (Englisch leer = Deutsch)
  *   zeilen(t.titel)                → ['Werde Teil', 'des Netzes.']
  *   fuellen(t.alle, { zahl: 70 })  → 'Alle 70 Profile →'
+ *   abschnittZeigen('startseite', 'netz') → false, wenn die Redaktion den Abschnitt ausgeblendet hat
+ *
+ * Ausgeblendete Texte (nur wo `ausblendbar`) kommen als '' zurück; die Ansicht lässt das Element dann weg.
  *
  * Seiten, Abschnitte und Schlüssel sind typisiert: Ein Tippfehler fällt beim Build auf.
  */
@@ -26,5 +29,16 @@ export function texte<S extends TextSeiteId, A extends keyof Abschnitte<S> & str
 ): Record<Schluessel<Abschnitte<S>[A]>, string> {
   const a = (daten[seite].abschnitte as Record<string, TextAbschnitt>)[abschnitt];
   if (!a) throw new Error(`texte.json: Abschnitt „${seite}.${abschnitt}“ fehlt.`);
-  return Object.fromEntries(Object.entries(a.texte).map(([k, e]) => [k, (lang === 'en' && e.en.trim()) || e.de])) as never;
+  // ausgeblendete Texte (Redaktion) sind leer: die Ansicht lässt sie samt Element weg
+  return Object.fromEntries(Object.entries(a.texte).map(([k, e]) => [k, e.aus ? '' : (lang === 'en' && e.en.trim()) || e.de])) as never;
+}
+
+/**
+ * Zeigt die Website diesen Abschnitt? false, wenn die Redaktion ihn ausgeblendet hat (`aus` in texte.json).
+ * Die Ansicht lässt ihn dann ganz weg (auch im HTML), samt Abständen und Sprungmarken.
+ */
+export function abschnittZeigen<S extends TextSeiteId>(seite: S, abschnitt: keyof Abschnitte<S> & string): boolean {
+  const a = (daten[seite].abschnitte as Record<string, TextAbschnitt>)[abschnitt];
+  if (!a) throw new Error(`texte.json: Abschnitt „${seite}.${abschnitt}“ fehlt.`);
+  return !a.aus;
 }

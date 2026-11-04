@@ -339,19 +339,29 @@ export interface MedienAngaben {
   alt_en: string;
   credit: string;
   focus: string | null;
+  /** „Auf der Website anzeigen“ (Mediathek); false = das Foto fehlt überall, wo es steht */
+  sichtbar?: boolean;
 }
 
 /**
  * Angaben aus der Mediathek in die Bilder eines Textes übernehmen: Sie gelten überall, wo das Foto steht
  * (Bildbeschreibung, Ausschnitt; Fotonachweis, wenn der Abschnitt keinen eigenen hat).
+ * Ausgeblendete Fotos fallen aus Bildern und Schritten heraus; bleibt keins übrig, entfällt der ganze Abschnitt.
  */
 export function medienAnwenden(md: string, medien: Map<string, MedienAngaben>, lang: 'de' | 'en' = 'de'): string {
   if (!medien.size || !md) return md;
   return md.replace(DIREKTIVE, (ganz, art: string, yaml: string) => {
     if (art === 'hinweis') return ganz;
     const b = art === 'schritte' ? { ...schritteLesen(yaml), titel_en: '' } : { ...bilderLesen(yaml), text_en: '', titel_en: '' };
-    const bilder: (Bild | Schritt)[] = b.typ === 'schritte' ? b.schritte : b.bilder;
+    const aus = (x: Bild | Schritt) => medien.get(x.datei)?.sichtbar === false;
     let anders = false;
+    if (b.typ === 'schritte' ? b.schritte.some(aus) : b.bilder.some(aus)) {
+      if (b.typ === 'schritte') b.schritte = b.schritte.filter((x) => !aus(x));
+      else b.bilder = b.bilder.filter((x) => !aus(x));
+      if (!(b.typ === 'schritte' ? b.schritte : b.bilder).length) return '';
+      anders = true;
+    }
+    const bilder: (Bild | Schritt)[] = b.typ === 'schritte' ? b.schritte : b.bilder;
     for (const x of bilder) {
       const m = medien.get(x.datei);
       if (!m) continue;

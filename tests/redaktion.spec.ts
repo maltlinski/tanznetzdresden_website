@@ -579,6 +579,90 @@ test('Verwaltung: nur Vorstand und Admin, mit Rechtlichem, Demo-Ansicht und Verl
   await expect(feld(p2, 'IBAN')).toBeEnabled();
 });
 
+test('Ausblenden: Eintrag, Termin, Listeneintrag und Wort – gespeichert wird nur die Markierung', async ({ page }) => {
+  const gespeichert = await redaktion(page);
+  // Person: Schalter oben im Formular, Label am Titel
+  await page.goto('/intern/redaktion/eintrag/?b=personen&id=alba-t-alvarez');
+  const schalter = page.getByRole('switch', { name: 'Auf der Website anzeigen' }).first();
+  await expect(schalter).toBeChecked();
+  await expect(page.locator('[data-aus-label]')).toBeHidden();
+  await schalter.uncheck();
+  await expect(page.locator('[data-aus-label]')).toBeVisible();
+  await expect(page.getByText('Ausgeblendet', { exact: true }).first()).toBeVisible();
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect.poll(() => gespeichert.length).toBe(1);
+  const personen = parse(gespeichert[0].aenderungen[0].text!) as { id: string; sichtbar?: boolean }[];
+  expect(personen.find((p) => p.id === 'alba-t-alvarez')?.sichtbar).toBe(false);
+  expect(personen.filter((p) => p.sichtbar === false)).toHaveLength(1);
+  await expect(page.getByText('Gespeichert. Die Website ist in etwa 2–3 Minuten aktualisiert.')).toBeVisible();
+
+  // Termin: derselbe Schalter setzt „draft“ (kein zweites Feld)
+  await page.goto('/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9');
+  await page.getByRole('switch', { name: 'Auf der Website anzeigen' }).uncheck();
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect.poll(() => gespeichert.length).toBe(2);
+  expect(frontmatter(gespeichert[1].aenderungen[0].text!)).toMatchObject({ draft: true });
+  expect(frontmatter(gespeichert[1].aenderungen[0].text!).sichtbar).toBeUndefined();
+  await expect(page.getByText('Gespeichert. Die Website ist in etwa 2–3 Minuten aktualisiert.')).toBeVisible();
+
+  // Listeneintrag (Förderer) und einzelnes Wort (Partner auf der Startseite)
+  await page.goto('/intern/redaktion/eintrag/?b=verein');
+  const foerderer = page.locator('.rf-item').filter({ hasText: 'Amt für Kultur' }).first();
+  await foerderer.getByRole('switch', { name: 'Auf der Website anzeigen' }).uncheck();
+  await expect(foerderer).toHaveClass(/is-aus/);
+  await page.getByRole('button', { name: 'Ausblenden: TENZA' }).click();
+  await expect(page.getByRole('button', { name: 'Einblenden: TENZA' })).toBeVisible();
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect.poll(() => gespeichert.length).toBe(3);
+  const verein = JSON.parse(gespeichert[2].aenderungen[0].text!);
+  expect(verein.funders.filter((f: { sichtbar?: boolean }) => f.sichtbar === false)).toHaveLength(1);
+  expect(verein.partners).toContainEqual({ text: 'TENZA', sichtbar: false });
+  expect(verein.partners.filter((p: unknown) => typeof p === 'object')).toHaveLength(1);
+});
+
+test('Ausblenden: Liste zeigt Ausgeblendetes markiert und filtert danach', async ({ page }) => {
+  await redaktion(page);
+  // ausgeblendeten Eintrag nachbauen: der Mock liefert die Datei mit „sichtbar: false“ für Alba
+  await page.route('**/functions/v1/inhalte', async (route) => {
+    const body = route.request().postDataJSON();
+    if (body.aktion !== 'lesen' || !body.pfade.includes('src/content/personen.yaml')) return route.fallback();
+    const dateien = Object.fromEntries((body.pfade as string[]).map((p) => {
+      const text = readFileSync(p, 'utf8');
+      return [p, { sha: aktuell(p), text: p.endsWith('personen.yaml') ? text.replace('- id: alba-t-alvarez\n', '- id: alba-t-alvarez\n  sichtbar: false\n') : text }];
+    }));
+    return route.fulfill({ json: { head: 'h1', dateien }, headers: { 'Access-Control-Allow-Origin': '*' } });
+  });
+  await page.goto('/intern/redaktion/liste/?b=personen');
+  const zeile = page.locator('.r-zeile', { hasText: 'Alba T Álvarez' });
+  await expect(zeile).toHaveClass(/is-aus/);
+  await expect(zeile.getByText('Ausgeblendet')).toBeVisible();
+  await expect(zeile.getByRole('link', { name: /auf der Website ansehen/ })).toHaveCount(0);
+  const filter = page.getByRole('group', { name: 'Auf der Website' });
+  await filter.getByRole('button', { name: /^Ausgeblendet/ }).click();
+  await expect(page.locator('.r-zeile')).toHaveCount(1);
+  await filter.getByRole('button', { name: /^Sichtbar/ }).click();
+  await expect(page.locator('.r-zeile', { hasText: 'Alba T Álvarez' })).toHaveCount(0);
+});
+
+test('Ausblenden: Texte und ganze Abschnitte, nur wo vorgesehen', async ({ page }) => {
+  const gespeichert = await redaktion(page);
+  await page.goto('/intern/redaktion/texte/?seite=startseite');
+  const netz = page.locator('[data-abschnitt="startseite.netz"]');
+  await netz.getByRole('switch', { name: /Abschnitt „Eine Stadt. Ein Netz.“/ }).uncheck();
+  await expect(netz).toHaveClass(/is-aus/);
+  // Überschriften haben keinen Schalter, die Einleitung von „Mitglied werden“ schon
+  await expect(page.locator('[data-text="startseite.netz.titel"]').getByRole('switch')).toHaveCount(0);
+  await page.locator('[data-text="startseite.mitglied.lead"]').getByRole('switch').uncheck();
+  await expect(page.locator('[data-text="startseite.mitglied.lead"]')).toHaveClass(/is-aus/);
+  await expect(page.getByText('2 Texte geändert, noch nicht gespeichert')).toBeVisible();
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect.poll(() => gespeichert.length).toBe(1);
+  const d = JSON.parse(gespeichert[0].aenderungen[0].text!);
+  expect(d.startseite.abschnitte.netz.aus).toBe(true);
+  expect(d.startseite.abschnitte.mitglied.texte.lead.aus).toBe(true);
+  expect(d.startseite.abschnitte.mitglied.aus).toBeUndefined();
+});
+
 const AXE: [string, 'presse' | 'vorstand'][] = [
   ...['/intern/redaktion/texte/', '/intern/redaktion/texte/textbuch/', '/intern/redaktion/freigaben/', '/intern/redaktion/', '/intern/redaktion/seiten/',
     '/intern/redaktion/seiten/?s=startseite', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9',

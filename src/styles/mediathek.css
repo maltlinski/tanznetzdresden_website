@@ -92,3 +92,12 @@
 .md-wahl__raster { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; padding: 8px 28px 28px; overflow: auto; }
 .md-wahl__raster .md-kachel__bild { aspect-ratio: 4 / 3; }
 .md-wahl__fuss { display: flex; justify-content: flex-end; padding: 14px 28px; border-top: 1px solid var(--rule); }
+
+/* Ausblenden („Auf der Website anzeigen“, Spalte news_medien.sichtbar) */
+.md-sicht { margin: 0 0 14px; }
+.md-kachel.is-aus img { opacity: 0.45; filter: grayscale(1); }
+.md-kachel__aus {
+  position: absolute; right: 8px; top: 8px; padding: 3px 7px; background: var(--ink-soft); color: #fff;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+}
+.md-detail__sicht { margin-bottom: 4px; }

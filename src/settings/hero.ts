@@ -15,6 +15,7 @@
  * Fehlt eine Datei, bricht der Build mit einer Meldung ab.
  */
 import data from './hero.json';
+import { sichtbareWorte, type Wort } from '../lib/sichtbar';
 
 export interface HeroFoto {
   datei: string;
@@ -33,7 +34,9 @@ export const heroFotos: HeroFoto[] = [
  * (bearbeitbar unter Intern → Redaktion → Startseite). Die Wörter wechseln nacheinander,
  * nach einer Runde bleibt das erste stehen. Leere Liste = Zeile ausblenden.
  */
-export const claim = { de: data.claim.de, en: data.claim.en };
+const fassung = (c: { lead: string; woerter: Wort[] }) => ({ ...c, woerter: sichtbareWorte(c.woerter) });
+/** ausgeblendete Wörter (Redaktion) fallen heraus */
+export const claim = { de: fassung(data.claim.de), en: fassung(data.claim.en) };
 export const wortPause: number = data.wortPause;
 
 /** Knotendichte bei 1440 × 820 (wird mit der Fläche skaliert). */

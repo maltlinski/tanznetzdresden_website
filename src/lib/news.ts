@@ -142,10 +142,14 @@ function fetchMedien(): Promise<Map<string, MedienAngaben>> {
   medienCache ??= (async () => {
     if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return new Map();
     try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/news_medien?select=datei,alt,alt_en,credit,focus`, {
-        headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
-        signal: AbortSignal.timeout(10_000),
-      });
+      const holen = (spalten: string) =>
+        fetch(`${SUPABASE_URL}/rest/v1/news_medien?select=${spalten}`, {
+          headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
+          signal: AbortSignal.timeout(10_000),
+        });
+      // „sichtbar“ gibt es erst mit Migration 20261104000000_sichtbar.sql; vorher ohne (alles sichtbar)
+      let res = await holen('datei,alt,alt_en,credit,focus,sichtbar');
+      if (res.status === 400) res = await holen('datei,alt,alt_en,credit,focus');
       if (!res.ok) return new Map();
       const rows = (await res.json()) as (MedienAngaben & { datei: string })[];
       return new Map(rows.map(({ datei, ...m }) => [datei, m]));
@@ -196,7 +200,8 @@ function fromRemote(r: RemoteNews, lang: Lang, medien: Map<string, MedienAngaben
   const m = r.image_path ? medien.get(r.image_path) : undefined;
   const teaser = pick(r.teaser, r.teaser_en);
   const quote = r.quote_text ? { text: pick(r.quote_text, r.quote_text_en), who: r.quote_who ?? '', role: pick(r.quote_role ?? undefined, r.quote_role_en) } : undefined;
-  const image = r.image_path ? `${SUPABASE_URL}/storage/v1/object/public/newsbilder/${r.image_path}` : undefined;
+  // in der Mediathek ausgeblendetes Titelbild: Beitrag ohne Foto (Kopf ohne Bild)
+  const image = r.image_path && m?.sichtbar !== false ? `${SUPABASE_URL}/storage/v1/object/public/newsbilder/${r.image_path}` : undefined;
   return {
     id: r.slug,
     html: renderMarkdown(body, import.meta.env.BASE_URL, { lang }),

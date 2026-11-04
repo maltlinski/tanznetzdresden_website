@@ -21,6 +21,8 @@ export interface Mediathek {
   liste: Medium[];
   /** false: Tabelle news_medien fehlt noch (Migration nicht eingespielt) – Angaben lassen sich nicht speichern */
   tabelle: boolean;
+  /** false: Spalte „sichtbar“ fehlt noch (Migration 20261104000000_sichtbar.sql) – Ausblenden geht noch nicht */
+  ausblenden: boolean;
 }
 
 const leer = (datei: string): Medium => ({ datei, alt: '', alt_en: '', credit: '', focus: null, verwendet: [] });
@@ -43,10 +45,11 @@ async function bucketDateien(sb: SupabaseClient): Promise<{ datei: string; creat
 
 /** Alles laden: Angaben, Dateien und Verwendung in Beiträgen; neueste zuerst */
 export async function medienLaden(sb: SupabaseClient): Promise<Mediathek> {
-  const [angaben, beitraege, dateien] = await Promise.all([
+  const [angaben, beitraege, dateien, spalte] = await Promise.all([
     sb.from('news_medien').select('*'),
     sb.from('news_posts').select('id, title, status, image_path, body, body_en').order('date', { ascending: false }),
     bucketDateien(sb).catch(() => []),
+    sb.from('news_medien').select('sichtbar', { count: 'exact', head: true }),
   ]);
   const map = new Map<string, Medium>();
   const holen = (d: string) => map.get(d) ?? map.set(d, leer(d)).get(d)!;
@@ -69,12 +72,14 @@ export async function medienLaden(sb: SupabaseClient): Promise<Mediathek> {
   }
   const zeit = (m: Medium) => m.created_at ?? m.datei.match(/-([a-z0-9]{8,})\.\w+$/)?.[1] ?? '';
   const liste = [...map.values()].sort((a, b) => (zeit(b) > zeit(a) ? 1 : zeit(b) < zeit(a) ? -1 : b.datei.localeCompare(a.datei)));
-  return { liste, tabelle: !angaben.error };
+  return { liste, tabelle: !angaben.error, ausblenden: !angaben.error && !spalte.error };
 }
 
-/** Angaben speichern (legt das Foto in der Tabelle an, falls nötig) */
-export async function medienSpeichern(sb: SupabaseClient, m: Pick<MedienRow, 'datei' | 'alt' | 'alt_en' | 'credit' | 'focus'>) {
-  const { error } = await sb.from('news_medien').upsert({ datei: m.datei, alt: m.alt, alt_en: m.alt_en, credit: m.credit, focus: m.focus });
+/** Angaben speichern (legt das Foto in der Tabelle an, falls nötig); „sichtbar“ nur, wenn es die Spalte gibt */
+export async function medienSpeichern(sb: SupabaseClient, m: Pick<MedienRow, 'datei' | 'alt' | 'alt_en' | 'credit' | 'focus' | 'sichtbar'>) {
+  const zeile: Partial<MedienRow> = { datei: m.datei, alt: m.alt, alt_en: m.alt_en, credit: m.credit, focus: m.focus };
+  if (m.sichtbar !== undefined) zeile.sichtbar = m.sichtbar;
+  const { error } = await sb.from('news_medien').upsert(zeile);
   return error;
 }
 

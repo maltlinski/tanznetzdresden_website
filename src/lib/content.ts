@@ -5,6 +5,7 @@ import { alsTerminDaten, type OeffentlicherKalenderTermin } from './kalender-int
 import personenRaw from '../content/personen.yaml?raw';
 import orteRaw from '../content/kooperation/orte.yaml?raw';
 import gruppenRaw from '../content/kooperation/gruppen.yaml?raw';
+import { istSichtbar, nurSichtbare } from './sichtbar';
 
 /**
  * Sammlungen aus einer YAML-Datei kommen alphabetisch nach id zurück.
@@ -19,9 +20,23 @@ export function inFileOrder<T extends { id: string }>(entries: T[], raw: string)
   return [...entries].sort((a, b) => pos(a.id) - pos(b.id));
 }
 
-export const getPersonen = async () => inFileOrder(await getCollection('personen'), personenRaw);
-export const getOrte = async () => inFileOrder(await getCollection('orte'), orteRaw);
-export const getPartnergruppen = async () => inFileOrder(await getCollection('partnergruppen'), gruppenRaw);
+// Ausgeblendetes (sichtbar: false) liefern die Lader gar nicht erst aus (src/lib/sichtbar.ts)
+export const getPersonen = async () =>
+  inFileOrder(await getCollection('personen', istSichtbar), personenRaw).map((p) => ({
+    ...p,
+    data: { ...p.data, gallery: nurSichtbare(p.data.gallery), works: nurSichtbare(p.data.works) },
+  }));
+export const getOrte = async () => {
+  const orte = inFileOrder(await getCollection('orte', istSichtbar), orteRaw);
+  const da = new Set(orte.map((o) => o.id));
+  // Linien zu ausgeblendeten Orten entfallen
+  return orte.map((o) => ({ ...o, data: { ...o.data, verbunden: o.data.verbunden.filter((v) => da.has(v)) } }));
+};
+/** Partnergruppen mit sichtbaren Partnern; Gruppen ohne sichtbare Partner entfallen */
+export const getPartnergruppen = async () =>
+  inFileOrder(await getCollection('partnergruppen', istSichtbar), gruppenRaw)
+    .map((g) => ({ ...g, data: { ...g.data, partner: nurSichtbare(g.data.partner) } }))
+    .filter((g) => g.data.partner.length > 0);
 
 export type Termin = CollectionEntry<'termine'>;
 
@@ -78,7 +93,7 @@ export async function getUpcoming(limit?: number): Promise<Termin[]> {
 }
 
 export async function getFormate() {
-  return (await getCollection('formate')).sort((a, b) => a.data.order - b.data.order);
+  return (await getCollection('formate', istSichtbar)).sort((a, b) => a.data.order - b.data.order);
 }
 
 /** Termine, an denen eine Person mitwirkt (Feld `people` im Termin). */

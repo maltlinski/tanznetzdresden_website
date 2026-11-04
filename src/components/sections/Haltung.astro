@@ -27,15 +27,17 @@ const t = texte(lang, 'verein', 'haltung');
       <p class="haltung__lead">{h.lead}</p>
     </div>
 
-    <ol class="pillars">
-      {h.saeulen.map((s, i) => (
-        <li class="pillar">
-          <span class="pillar__n"><span class="pillar__sq" aria-hidden="true"></span>{String(i + 1).padStart(2, '0')}</span>
-          <h3 class="pillar__t">{s.titel}</h3>
-          <p class="pillar__d">{s.text}</p>
-        </li>
-      ))}
-    </ol>
+    {h.saeulen.length > 0 && (
+      <ol class="pillars">
+        {h.saeulen.map((s, i) => (
+          <li class="pillar">
+            <span class="pillar__n"><span class="pillar__sq" aria-hidden="true"></span>{String(i + 1).padStart(2, '0')}</span>
+            <h3 class="pillar__t">{s.titel}</h3>
+            <p class="pillar__d">{s.text}</p>
+          </li>
+        ))}
+      </ol>
+    )}
 
     <div class="haltung__more">
       <div class="haltung__photo">
@@ -51,7 +53,7 @@ const t = texte(lang, 'verein', 'haltung');
         )}
         <div class="haltung__partners">
           <h3 class="haltung__k">{t.with}</h3>
-          <p>{verein.partners.join(' · ')}</p>
+          {verein.partners.length > 0 && <p>{verein.partners.join(' · ')}</p>}
           <a class="mono-link underline-link" href={url(lang, 'kooperationen')}>{t.all}</a>
         </div>
       </div>

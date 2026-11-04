@@ -43,6 +43,11 @@ import '../../../../styles/redaktion.css';
         <button type="button" class="tx-chip" aria-pressed="false" data-filter="englisch">Englisch prüfen <span data-n="englisch"></span></button>
         <button type="button" class="tx-chip" aria-pressed="false" data-filter="geaendert">Von der Redaktion geändert <span data-n="geaendert"></span></button>
       </div>
+      <div class="tx-filter" role="group" aria-label="Auf der Website">
+        <button type="button" class="tx-chip" aria-pressed="true" data-sicht="alle">Alle</button>
+        <button type="button" class="tx-chip" aria-pressed="false" data-sicht="an">Sichtbar</button>
+        <button type="button" class="tx-chip" aria-pressed="false" data-sicht="aus">Ausgeblendet <span data-n="aus"></span></button>
+      </div>
     </div>
 
     <div class="tx">
@@ -69,11 +74,13 @@ import '../../../../styles/redaktion.css';
 <script>
   import { h } from '../../../../scripts/intern/news/dom';
   import { $, brotkrumen, meldung, redaktionUrl, starten, statusAnzeigen, websiteUrl, zielName, zielUrl } from '../../../../scripts/intern/redaktion/seite';
-  import { alleTexte, dateiText, platzhalter, textId, textPruefen, uebernehmen, type TextEintrag, type TextSeite } from '../../../../lib/texte-regeln';
+  import { abschnitteUebernehmen, alleTexte, dateiText, platzhalter, textId, textPruefen, uebernehmen, type TextAbschnitt, type TextEintrag, type TextSeite } from '../../../../lib/texte-regeln';
 
   const PFAD = 'src/settings/texte.json';
   type Filter = 'alle' | 'englisch' | 'geaendert';
-  interface Feld { id: string; e: TextEintrag; seite: string; de: HTMLTextAreaElement; en: HTMLTextAreaElement; karte: HTMLElement; englischPasst: boolean; gesperrt: boolean }
+  interface Feld { id: string; e: TextEintrag; seite: string; abschnitt: string; de: HTMLTextAreaElement; en: HTMLTextAreaElement; karte: HTMLElement; englischPasst: boolean; gesperrt: boolean; aus: boolean }
+  /** ausblendbarer Abschnitt: Stand in der Datei und im Formular */
+  interface Abschnitt { id: string; a: TextAbschnitt; aus: boolean; kopf?: HTMLElement }
 
   const r = await starten();
   if (r) {
@@ -84,6 +91,8 @@ import '../../../../styles/redaktion.css';
     let felder: Feld[] = [];
     let seite = new URLSearchParams(location.search).get('seite') ?? '';
     let filter: Filter = 'alle';
+    let sicht: 'alle' | 'an' | 'aus' = 'alle';
+    let abschnitte: Abschnitt[] = [];
     const inhalt = $('[data-inhalt]')!;
     const seitenListe = $('[data-seiten]')!;
     const seitenWahl = $<HTMLSelectElement>('[data-seiten-wahl]')!;
@@ -102,8 +111,17 @@ import '../../../../styles/redaktion.css';
 
     const seiten = () => Object.entries(datei).filter(([k]) => !k.startsWith('_')) as [string, TextSeite][];
     const abschnittId = (s: string, a: string) => `abschnitt-${s}-${a}`;
-    const geaendert = (f: Feld) => f.de.value !== f.e.de || f.en.value !== f.e.en || (f.englischPasst && !!f.e.enPruefen);
+    const geaendert = (f: Feld) => f.de.value !== f.e.de || f.en.value !== f.e.en || (f.englischPasst && !!f.e.enPruefen) || f.aus !== !!f.e.aus;
     const offen = () => felder.filter(geaendert);
+    const abschnitteOffen = () => abschnitte.filter((x) => x.aus !== !!x.a.aus);
+    /** ausgeblendet: selbst oder sein ganzer Abschnitt */
+    const istAus = (f: Feld) => f.aus || !!abschnitte.find((x) => x.id === `${f.seite}.${f.abschnitt}`)?.aus;
+    /** Schalter „Auf der Website anzeigen“ */
+    const schalter = (an: boolean, name: string, wechsel: (an: boolean) => void, gesperrt: boolean) => {
+      const box = h('input', { type: 'checkbox', role: 'switch', checked: an, disabled: gesperrt, 'aria-label': `${name}: auf der Website anzeigen` }) as HTMLInputElement;
+      box.addEventListener('change', () => wechsel(box.checked));
+      return h('label', { class: 'i-check tx-sicht' }, box, h('span', { 'aria-hidden': 'true' }, 'Auf der Website anzeigen'));
+    };
 
     /** Zähler, Fehler und Markierungen einer Karte */
     function pruefeFeld(f: Feld): boolean {
@@ -117,11 +135,12 @@ import '../../../../styles/redaktion.css';
         if (fehler) ok = false;
       }
       f.karte.classList.toggle('is-geaendert', geaendert(f));
+      f.karte.classList.toggle('is-aus', istAus(f));
       return ok;
     }
 
     function leiste() {
-      const n = offen().length;
+      const n = offen().length + abschnitteOffen().length;
       bar.hidden = n === 0;
       $('[data-bar-n]')!.textContent = n === 1 ? '1 Text geändert, noch nicht gespeichert' : `${n} Texte geändert, noch nicht gespeichert`;
       const zaehlen = (fn: (e: TextEintrag) => boolean) => felder.filter((f) => fn(f.e)).length;
@@ -129,6 +148,8 @@ import '../../../../styles/redaktion.css';
       const nG = zaehlen((e) => !!e.ursprung);
       $('[data-n="englisch"]')!.textContent = nE ? `(${nE})` : '';
       $('[data-n="geaendert"]')!.textContent = nG ? `(${nG})` : '';
+      const nA = felder.filter(istAus).length;
+      $('[data-n="aus"]')!.textContent = nA ? `(${nA})` : '';
     }
 
     /** Feld so hoch wie sein Text (nur sichtbare Felder haben eine Höhe) */
@@ -156,7 +177,10 @@ import '../../../../styles/redaktion.css';
       const de = feld('de');
       const en = feld('en');
       const k = h('article', { class: 'tx-karte', 'data-text': id, 'data-seite': seiteId },
-        h('p', { class: 'tx-karte__wo' }, e.wo),
+        h('div', { class: 'tx-karte__kopf' },
+          h('p', { class: 'tx-karte__wo' }, e.wo, h('span', { class: 'r-aus tx-aus' }, 'Ausgeblendet')),
+          // nur, wo die Seite ohne den Text sauber aussieht (ausblendbar in texte.json)
+          e.ausblendbar ? schalter(!e.aus, e.wo, (an) => { f.aus = !an; pruefeFeld(f); leiste(); }, gesperrt) : null),
         e.zeilen || ph.length
           ? h('p', { class: 'tx-karte__regel' }, [
             e.zeilen ? `${e.zeilen} Zeilen: neue Zeile mit der Eingabetaste.` : '',
@@ -166,7 +190,7 @@ import '../../../../styles/redaktion.css';
         h('div', { class: 'tx-paar' }, de, en),
         h('div', { class: 'tx-karte__aktionen', 'data-aktionen': true }),
       );
-      const f: Feld = { id, e, seite: seiteId, de: de.querySelector('textarea')!, en: en.querySelector('textarea')!, karte: k, englischPasst: false, gesperrt };
+      const f: Feld = { id, e, seite: seiteId, abschnitt, de: de.querySelector('textarea')!, en: en.querySelector('textarea')!, karte: k, englischPasst: false, gesperrt, aus: !!e.aus };
       aktionen(f);
       for (const ta of [f.de, f.en]) ta.addEventListener('input', () => { pruefeFeld(f); leiste(); hoehe(ta); });
       pruefeFeld(f);
@@ -193,6 +217,7 @@ import '../../../../styles/redaktion.css';
 
     function aufbauen() {
       felder = [];
+      abschnitte = [];
       inhalt.replaceChildren();
       seitenListe.replaceChildren();
       seitenWahl.replaceChildren();
@@ -230,12 +255,21 @@ import '../../../../styles/redaktion.css';
         }
         if (x.abschnitt !== letzterAbschnitt) {
           letzterAbschnitt = x.abschnitt;
-          inhalt.append(h('div', { class: 'tx-abschnitt', 'data-seite': x.seite },
-            h('h3', { class: 'tx-abschnitt__h', id: abschnittId(x.seite, x.abschnitt) }, x.a.titel),
+          const gesperrt = !!x.s.nurVorstand && !vorstand;
+          // ganze Abschnitte ausblenden, wo es vorgesehen ist (ausblendbar in texte.json)
+          const ab: Abschnitt | null = x.a.ausblendbar ? { id: `${x.seite}.${x.abschnitt}`, a: x.a, aus: !!x.a.aus } : null;
+          if (ab) abschnitte.push(ab);
+          const wechsel = (an: boolean) => { ab!.aus = !an; ab!.kopf?.classList.toggle('is-aus', ab!.aus); felder.forEach(pruefeFeld); leiste(); };
+          const kopf = h('div', { class: `tx-abschnitt${ab?.aus ? ' is-aus' : ''}`, 'data-seite': x.seite, 'data-abschnitt': `${x.seite}.${x.abschnitt}` },
+            h('div', { class: 'tx-abschnitt__kopf' },
+              h('h3', { class: 'tx-abschnitt__h', id: abschnittId(x.seite, x.abschnitt) }, x.a.titel, h('span', { class: 'r-aus tx-aus' }, 'Ausgeblendet')),
+              ab ? schalter(!ab.aus, `Abschnitt „${x.a.titel}“`, wechsel, gesperrt) : null),
             x.a.auch?.length
               ? h('p', { class: 'tx-auch' }, 'Außerdem auf dieser Seite: ',
                 ...x.a.auch.flatMap((a, i) => [i > 0 ? ' · ' : '', h('a', { href: zielUrl(a.ziel, `${x.seite}.${x.abschnitt}`) }, a.text), h('span', { class: 'tx-auch__wo' }, ` (${zielName(a.ziel)})`)]))
-              : null));
+              : null);
+          if (ab) ab.kopf = kopf;
+          inhalt.append(kopf);
         }
         const f = karte(x.seite, x.abschnitt, x.key, x.e, !!x.s.nurVorstand && !vorstand);
         felder.push(f);
@@ -258,9 +292,10 @@ import '../../../../styles/redaktion.css';
     /** Sichtbarkeit nach Seite, Suche und Filter. Mit Suche oder Filter: über alle Seiten. */
     function zeigen() {
       const q = suche.value.trim().toLowerCase();
-      const alleSeiten = !!q || filter !== 'alle';
+      const alleSeiten = !!q || filter !== 'alle' || sicht !== 'alle';
       const passt = (f: Feld) =>
         (alleSeiten || f.seite === seite) &&
+        (sicht === 'alle' || istAus(f) === (sicht === 'aus')) &&
         (!q || [f.e.wo, f.de.value, f.en.value].some((t) => t.toLowerCase().includes(q))) &&
         (filter !== 'englisch' || !!f.e.enPruefen) &&
         (filter !== 'geaendert' || !!f.e.ursprung || geaendert(f));
@@ -295,9 +330,23 @@ import '../../../../styles/redaktion.css';
         document.querySelectorAll('[data-filter]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
         zeigen();
       }));
+    // Auf der Website: alle / sichtbar / ausgeblendet
+    document.querySelectorAll<HTMLButtonElement>('[data-sicht]').forEach((b) =>
+      b.addEventListener('click', () => {
+        sicht = b.dataset.sicht as typeof sicht;
+        document.querySelectorAll('[data-sicht]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        zeigen();
+      }));
 
     $('[data-verwerfen]')!.addEventListener('click', () => {
-      for (const f of offen()) { f.de.value = f.e.de; f.en.value = f.e.en; f.englischPasst = false; aktionen(f); pruefeFeld(f); [f.de, f.en].forEach(hoehe); }
+      for (const x of abschnitteOffen()) { x.aus = !!x.a.aus; x.kopf?.classList.toggle('is-aus', x.aus); const box = x.kopf?.querySelector<HTMLInputElement>('[role=switch]'); if (box) box.checked = !x.aus; }
+      for (const f of offen()) {
+        f.de.value = f.e.de; f.en.value = f.e.en; f.englischPasst = false; f.aus = !!f.e.aus;
+        const box = f.karte.querySelector<HTMLInputElement>('.tx-karte__kopf [role=switch]');
+        if (box) box.checked = !f.aus;
+        aktionen(f); [f.de, f.en].forEach(hoehe);
+      }
+      felder.forEach(pruefeFeld);
       leiste();
       meldung('');
     });
@@ -313,9 +362,11 @@ import '../../../../styles/redaktion.css';
         return;
       }
       const kopie = structuredClone(datei);
-      const n = uebernehmen(kopie, new Map(liste.map((f) => [f.id, { de: f.de.value, en: f.en.value, englischPasst: f.englischPasst }])));
+      const n =
+        uebernehmen(kopie, new Map(liste.map((f) => [f.id, { de: f.de.value, en: f.en.value, englischPasst: f.englischPasst, aus: f.aus }]))) +
+        abschnitteUebernehmen(kopie, new Map(abschnitteOffen().map((x) => [x.id, x.aus])));
       if (!n) return leiste();
-      const namen = [...new Set(liste.map((f) => (datei[f.seite] as { titel: string }).titel))].join(', ');
+      const namen = [...new Set([...liste.map((f) => f.seite), ...abschnitteOffen().map((x) => x.id.split('.')[0])].map((s) => (datei[s] as { titel: string }).titel))].join(', ');
       speichernBtn.disabled = true;
       try {
         await r.a.speichern(`Texte: ${namen} (${n} ${n === 1 ? 'Text' : 'Texte'})`, [{ pfad: PFAD, text: dateiText(kopie), alt: sha }]);
@@ -330,7 +381,7 @@ import '../../../../styles/redaktion.css';
     });
 
     addEventListener('beforeunload', (e) => {
-      if (offen().length) e.preventDefault();
+      if (offen().length || abschnitteOffen().length) e.preventDefault();
     });
 
     try {
@@ -354,6 +405,13 @@ import '../../../../styles/redaktion.css';
   }
   .tx-chip:hover { border-color: var(--magenta); }
   .tx-chip[aria-pressed='true'] { background: var(--purple); border-color: var(--purple); color: #fff; }
+  /* Ausblenden: Schalter am Text und am Abschnitt, ausgegraut mit Label */
+  .tx-karte__kopf, .tx-abschnitt__kopf { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 18px; }
+  .tx-sicht { font-size: 13.5px; color: var(--purple); }
+  .tx-aus { display: none; }
+  .tx-karte.is-aus .tx-aus, .tx-abschnitt.is-aus .tx-aus { display: inline-block; }
+  .tx-karte.is-aus .tx-paar { opacity: 0.55; }
+  .tx-karte.is-aus { border-left-style: dashed; }
 
   .tx { display: grid; grid-template-columns: minmax(180px, 220px) minmax(0, 1fr); gap: 24px clamp(20px, 3vw, 40px); align-items: start; }
   .tx-seiten { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow-y: auto; scrollbar-width: thin; }

@@ -112,6 +112,8 @@ export interface MedienRow {
   alt_en: string;
   credit: string;
   focus: string | null;
+  /** „Auf der Website anzeigen“ (Migration 20261104000000_sichtbar.sql); fehlt = sichtbar */
+  sichtbar?: boolean;
   created_at?: string;
   updated_at?: string;
 }

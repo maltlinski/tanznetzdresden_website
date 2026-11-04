@@ -7,6 +7,7 @@
 import Redaktion from '../../../../layouts/Redaktion.astro';
 import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
 import '../../../../styles/mediathek.css';
+import '../../../../styles/redaktion.css';
 ---
 <Redaktion title="Mediathek" current="medien">
   <div class="md-kopf">
@@ -42,6 +43,11 @@ import '../../../../styles/mediathek.css';
     </div>
     <p class="i-hint" role="status" data-upload-status></p>
 
+    <div class="chips md-sicht" role="group" aria-label="Auf der Website">
+      <button type="button" class="chip" aria-pressed="true" data-sicht="alle">Alle</button>
+      <button type="button" class="chip" aria-pressed="false" data-sicht="an">Sichtbar</button>
+      <button type="button" class="chip" aria-pressed="false" data-sicht="aus">Ausgeblendet <span class="chip__count" data-n-aus></span></button>
+    </div>
     <div class="md-flaeche">
       <div class="md-raster" data-raster aria-label="Fotos"></div>
       <aside class="md-detail" data-detail hidden aria-label="Ausgewähltes Foto"></aside>
@@ -70,7 +76,17 @@ import '../../../../styles/mediathek.css';
     const detail = $('[data-detail]');
     let liste: Medium[] = [];
     let tabelle = true;
+    let ausblenden = false;
     let auswahl: Medium | null = null;
+    // Filter „Auf der Website“: alle / sichtbar / ausgeblendet
+    let sicht: 'alle' | 'an' | 'aus' = 'alle';
+    const istAus = (m: Medium) => m.sichtbar === false;
+    document.querySelectorAll<HTMLButtonElement>('[data-sicht]').forEach((b) =>
+      b.addEventListener('click', () => {
+        sicht = b.dataset.sicht as typeof sicht;
+        document.querySelectorAll('[data-sicht]').forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+        zeichnen();
+      }));
 
     const stat = () => {
       const ohne = liste.filter((m) => !m.alt.trim()).length;
@@ -86,17 +102,22 @@ import '../../../../styles/mediathek.css';
 
     const kachel = (m: Medium) =>
       h('button', {
-        type: 'button', class: `md-kachel${m === auswahl ? ' is-sel' : ''}`, 'aria-pressed': String(m === auswahl),
-        'aria-label': m.alt || `Foto ${m.datei.split('/').pop()}`,
+        type: 'button', class: `md-kachel${m === auswahl ? ' is-sel' : ''}${istAus(m) ? ' is-aus' : ''}`, 'aria-pressed': String(m === auswahl),
+        'aria-label': `${m.alt || `Foto ${m.datei.split('/').pop()}`}${istAus(m) ? ' (ausgeblendet)' : ''}`,
         onclick: () => zeigen(m),
       },
         h('div', { class: 'md-kachel__bild' },
           h('img', { src: newsPhotoUrl(m.datei)!, alt: '', loading: 'lazy', style: m.focus ? `object-position:${m.focus}` : undefined }),
-          m.alt.trim() ? null : h('span', { class: 'md-kachel__warn', text: 'Ohne Beschreibung' })),
+          m.alt.trim() ? null : h('span', { class: 'md-kachel__warn', text: 'Ohne Beschreibung' }),
+          istAus(m) ? h('span', { class: 'md-kachel__aus', text: 'Ausgeblendet' }) : null),
         h('span', { class: 'md-kachel__name', text: m.datei.split('/').pop()! }));
 
     const zeichnen = () => {
-      raster.replaceChildren(...(liste.length ? liste.map(kachel) : [h('p', { class: 'md-leer', text: 'Noch keine Fotos. Zieh die ersten hierher.' })]));
+      const zeigbar = liste.filter((m) => sicht === 'alle' || istAus(m) === (sicht === 'aus'));
+      const leer = liste.length ? 'Hier gibt es gerade nichts.' : 'Noch keine Fotos. Zieh die ersten hierher.';
+      raster.replaceChildren(...(zeigbar.length ? zeigbar.map(kachel) : [h('p', { class: 'md-leer', text: leer })]));
+      const nAus = liste.filter(istAus).length;
+      $('[data-n-aus]').textContent = nAus ? String(nAus) : '';
       stat();
     };
 
@@ -134,8 +155,24 @@ import '../../../../styles/mediathek.css';
           h('input', { id, value: wert, disabled: !tabelle, oninput: (e: Event) => { setzen((e.target as HTMLInputElement).value); speichern(m); }, ...extra }),
           hinweis ? h('span', { class: 'i-hint', text: hinweis }) : null);
       const unbenutzt = !m.verwendet.length;
+      // „Auf der Website anzeigen“: aus = das Foto fehlt überall auf der Website, bleibt aber hier und in den Beiträgen
+      const sichtbarBox = h('input', {
+        type: 'checkbox', role: 'switch', checked: !istAus(m), disabled: !ausblenden,
+        onchange: (e: Event) => {
+          m.sichtbar = (e.target as HTMLInputElement).checked;
+          speichern(m, true);
+          zeichnen();
+          detail.classList.toggle('is-aus', istAus(m));
+        },
+      });
+      detail.classList.toggle('is-aus', istAus(m));
       detail.hidden = false;
       detail.replaceChildren(
+        h('div', { class: 'rf-sichtbar md-detail__sicht' },
+          h('label', { class: 'i-check rf-sichtbar__l' }, sichtbarBox, h('span', { text: 'Auf der Website anzeigen' })),
+          h('span', { class: 'i-hint', text: ausblenden
+            ? 'Aus: Das Foto erscheint nirgends mehr auf der Website, bleibt aber hier und in den Beiträgen gespeichert.'
+            : 'Ausblenden geht, sobald die Migration 20261104000000_sichtbar.sql eingespielt ist (Admin).' })),
         fokus,
         crops,
         feld('md-alt', 'Bildbeschreibung (optional)', m.alt, (v) => { m.alt = v; stat(); }, { maxLength: 300, placeholder: 'Was ist zu sehen?' }, 'Hilft Menschen, die das Foto nicht sehen können. Gilt überall, wo das Foto steht.'),
@@ -169,6 +206,7 @@ import '../../../../styles/mediathek.css';
       const r = await medienLaden(ctx.sb);
       liste = r.liste;
       tabelle = r.tabelle;
+      ausblenden = r.ausblenden;
       $('[data-migration]').hidden = tabelle;
       zeichnen();
       if (liste[0] && !auswahl) zeigen(liste[0]);

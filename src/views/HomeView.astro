@@ -6,13 +6,15 @@ import Demnaechst from '../components/sections/Demnaechst.astro';
 import Formats from '../components/sections/Formats.astro';
 import Netz from '../components/sections/Netz.astro';
 import Join from '../components/sections/Join.astro';
+import { abschnittZeigen } from '../lib/texte';
 ---
 <Page route="home" fortschritt>
   <Hero />
   <Demnaechst />
   <Formats />
-  <Netz />
-  <Join />
+  {/* Abschnitte, die die Redaktion ausgeblendet hat, fehlen ganz (src/lib/texte.ts) */}
+  {abschnittZeigen('startseite', 'netz') && <Netz />}
+  {abschnittZeigen('startseite', 'mitglied') && <Join />}
 </Page>
 
 <script>

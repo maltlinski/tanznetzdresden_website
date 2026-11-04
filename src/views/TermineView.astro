@@ -64,7 +64,7 @@ const json = JSON.stringify({
       <div class="tk-kopf__text">
         <Tag color="cyan" class="kopf__kicker">{k.kicker}</Tag>
         <h1 class="tk-kopf__h1" data-split>{h1}{accent && <><br /><span>{accent}</span></>}</h1>
-        <p class="tk-kopf__lead" data-tk-rise>{k.lead}</p>
+        {k.lead && <p class="tk-kopf__lead" data-tk-rise>{k.lead}</p>}
       </div>
       <div class="tk-next" data-tk-rise hidden={!naechste.length} data-tk-next-box>
         <p class="tk-next__k"><span aria-hidden="true"></span>{k.next}</p>

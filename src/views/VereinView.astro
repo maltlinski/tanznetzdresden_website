@@ -7,7 +7,7 @@ import Haltung from '../components/sections/Haltung.astro';
 import { getProfiles } from '../lib/profiles';
 import { getVerein } from '../lib/settings';
 import { getLang, url } from '../lib/i18n';
-import { fuellen, texte, zeilen } from '../lib/texte';
+import { abschnittZeigen, fuellen, texte, zeilen } from '../lib/texte';
 import { arbeitsgruppen } from '../settings/arbeitsgruppen';
 
 const lang = getLang(Astro);
@@ -53,6 +53,7 @@ const t = {
     </div>
   </section>
 
+  {arbeitsgruppen.length > 0 && (
   <section class="section ags surface-tint" id="arbeitsgruppen" aria-labelledby="ags-h">
     <div class="wrap">
       <div class="section-head">
@@ -60,7 +61,7 @@ const t = {
           <Tag>{t.agKicker}</Tag>
           <h2 id="ags-h" class="h2">{t.agH}</h2>
         </div>
-        <p class="ags__intro">{t.agIntro}</p>
+        {t.agIntro && <p class="ags__intro">{t.agIntro}</p>}
       </div>
       <ol class="ags__list">
         {arbeitsgruppen.map((ag, i) => (
@@ -73,7 +74,9 @@ const t = {
       </ol>
     </div>
   </section>
+  )}
 
+  {abschnittZeigen('verein', 'netz') && (
   <section class="section" id="netzwerk" aria-labelledby="netz-h">
     <div class="wrap">
       <div class="section-head">
@@ -91,9 +94,10 @@ const t = {
           </li>
         ))}
       </ul>
-      <p class="people__note">{t.transparency} <a href={url(lang, 'transparenz')}>{t.transparencyCta}</a></p>
+      {t.transparency && <p class="people__note">{t.transparency} <a href={url(lang, 'transparenz')}>{t.transparencyCta}</a></p>}
     </div>
   </section>
+  )}
 </Page>
 
 <style>

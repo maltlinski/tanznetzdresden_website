@@ -11,6 +11,7 @@
  */
 import type { ImageMetadata } from 'astro';
 import { getCollection } from 'astro:content';
+import { istSichtbar } from './sichtbar';
 import { getImage } from 'astro:assets';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
 import { absaetze, bucketUrl, istWebsiteFoto, tagDatum, zeitNorm, type OeffentlicherTermin } from './keep-up-plan';
@@ -113,8 +114,11 @@ export function weekLabel(lang: Lang, [a, b]: [string, string]): string {
 export async function getKeepUp(lang: Lang) {
   const verein = getVerein(lang);
   const profiles = new Map((await getProfiles()).map((p) => [p.id, p]));
-  const eintraege = inFileOrder(await getCollection('keepUpDozentinnen'), dozentinnenRaw);
-  const wochen = (await getCollection('keepUpWochen')).sort((a, b) => a.id.localeCompare(b.id));
+  // Ausgeblendete Dozent:innen (sichtbar: false) fehlen im Mosaik, ihre Trainings im Kalender ebenso
+  const alleEintraege = await getCollection('keepUpDozentinnen');
+  const ausgeblendet = new Set(alleEintraege.filter((e) => !istSichtbar(e)).map((e) => e.id));
+  const eintraege = inFileOrder(alleEintraege.filter(istSichtbar), dozentinnenRaw);
+  const wochen = (await getCollection('keepUpWochen', istSichtbar)).sort((a, b) => a.id.localeCompare(b.id));
   const k = texte(lang, 'profitraining', 'kalender');
   const t = {
     training: k.badgeTraining, workshop: k.badgeWorkshop, toCard: k.toCard, toEvent: k.toEvent,
@@ -178,6 +182,7 @@ export async function getKeepUp(lang: Lang) {
   const geplant = new Set(plan.filter((p) => p.art === 'training').map((p) => p.woche));
   for (const p of plan) {
     const d = byId.get(p.dozent);
+    if (!d && ausgeblendet.has(p.dozent)) continue;
     if (!d) {
       console.warn(`[keep-up] Einplanung ${p.woche}: Dozent:in „${p.dozent}“ fehlt in dozentinnen.yaml – übersprungen.`);
       continue;
@@ -202,6 +207,7 @@ export async function getKeepUp(lang: Lang) {
     if (utc(w.id).getUTCDay() !== 1) throw new Error(`src/content/keep-up/wochen.yaml: „${w.id}“ ist kein Montag`);
     if (geplant.has(w.id)) continue;
     const d = byId.get(w.data.dozent.id);
+    if (!d && ausgeblendet.has(w.data.dozent.id)) continue;
     if (!d) throw new Error(`src/content/keep-up/wochen.yaml: Dozent:in „${w.data.dozent.id}“ fehlt in dozentinnen.yaml`);
     const offsets = w.data.tage.map((x) => TAGE.indexOf(x)).sort((a, b) => a - b);
     const time = zeitNorm(w.data.zeit);
