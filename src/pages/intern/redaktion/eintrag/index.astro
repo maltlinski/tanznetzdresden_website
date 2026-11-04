@@ -9,9 +9,11 @@ import Redaktion from '../../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
 import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
 import Seitenplan from '../../../../components/intern/Seitenplan.astro';
+import VorschauPanel from '../../../../components/intern/VorschauPanel.astro';
 import '../../../../styles/redaktion.css';
+import '../../../../styles/mediathek.css';
 ---
-<Redaktion title="Redaktion" current="seiten">
+<Redaktion title="Redaktion" current="seiten" breit>
   <Seitenplan />
   <Brotkrumen pfad={[{ label: 'Seiten' }]} />
   <div class="r-head">
@@ -33,6 +35,7 @@ import '../../../../styles/redaktion.css';
 
   <div data-access hidden>
     <p class="i-msg" data-gesperrt hidden>Diesen Eintrag ändert nur der Vorstand. Du kannst ihn lesen, aber nicht speichern.</p>
+    <div class="r-split">
     <form class="r-form" data-form novalidate>
       <div data-felder></div>
       <div class="r-bar r-bar--form">
@@ -44,6 +47,8 @@ import '../../../../styles/redaktion.css';
         <button type="button" class="i-linkbtn r-danger" data-loeschen hidden>Löschen</button>
       </div>
     </form>
+    <VorschauPanel />
+    </div>
   </div>
 
   <dialog class="r-dialog" data-dialog aria-labelledby="r-dialog-h">
@@ -66,6 +71,9 @@ import '../../../../styles/redaktion.css';
   import { $, bereichOrt, brotkrumen, erscheintAuf, meldung, namenLaden, ortsKrumen, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
   import { planLesen } from '../../../../scripts/intern/redaktion/seitenplan';
   import { istSichtbar } from '../../../../lib/sichtbar';
+  import { vorschau } from '../../../../scripts/intern/redaktion/vorschau';
+  import { eintragZiel, eintragZustand } from '../../../../scripts/intern/redaktion/vorschau-eintrag';
+  import { medienWaehlen } from '../../../../scripts/intern/news/medien';
 
   const params = new URLSearchParams(location.search);
   const b = bereichNach(params.get('b'));
@@ -186,10 +194,44 @@ import '../../../../styles/redaktion.css';
         setzeTitel();
       },
       sichtbarkeit: ausLabel,
+      // „Bild aus Medien“ im Text-Editor: Foto aus der Mediathek, Bildbeschreibung ist Pflicht
+      async medienWaehlen() {
+        const [m] = await medienWaehlen(r!.ctx.sb);
+        if (!m) return null;
+        let alt = m.alt.trim();
+        while (!alt) {
+          const eingabe = prompt('Bildbeschreibung (Pflicht): Was ist zu sehen? Für Menschen, die das Foto nicht sehen können.');
+          if (eingabe === null) return null;
+          alt = eingabe.trim();
+        }
+        return { datei: m.datei, alt };
+      },
     };
 
     const form = formular(b, e, k);
     $('[data-felder]')!.append(form.el);
+
+    // Vorschau daneben: die Seite der Website mit den Änderungen, noch bevor gespeichert ist
+    const ziel = eintragZiel(b, vorlage, ort.ort);
+    const panel = $('[data-vorschau]');
+    if (ziel && panel) {
+      panel.hidden = false;
+      $('[data-vs-auf]')!.hidden = false;
+      const vs = vorschau(panel, { pfad: ziel.pfad });
+      vs.zustand(() => eintragZustand(b, vorlage, e, neu, ziel.anker));
+      vs.springen(ziel.anker);
+      // Beim Bearbeiten eines Felds springt die Vorschau zur Stelle (Text des Felds, sonst der Eintrag)
+      form.el.addEventListener('focusin', (ev) => {
+        const t = ev.target as HTMLElement;
+        const wert = t instanceof HTMLInputElement || t instanceof HTMLTextAreaElement ? t.value.trim().split('\n')[0] : '';
+        vs.springen(t.closest('.rf-md, .rt') && b.textSelektor ? b.textSelektor : wert.length > 2 && !/^https?:/.test(wert) ? wert : ziel.anker);
+      });
+      const alt = k.geaendert;
+      k.geaendert = () => {
+        alt();
+        vs.neu();
+      };
+    }
     // Sprung zu einem Abschnitt, z. B. #abschnitt-kontakt-und-bankverbindung (aus der Verwaltung)
     if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ block: 'start' });
     const speichernBtn = $<HTMLButtonElement>('[data-speichern]')!;

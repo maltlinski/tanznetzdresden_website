@@ -219,14 +219,14 @@ const daten = JSON.stringify({
   </section>
 
   {zeigen.chronik && (
-    <section class="fo-chronik" aria-labelledby="fo-chronik-h">
+    <section class="fo-chronik" aria-labelledby="fo-chronik-h" data-abschnitt="formate.chronik">
       <KeilBar color="var(--cyan)" height={12} flip class="fo-chronik__keil" />
       <div class="wrap">
         <Tag color="cyan" class="fo-chronik__tag">{c.kicker}</Tag>
         <h2 class="fo-chronik__h" id="fo-chronik-h" data-split>{zeilen(c.titel)[0]}<br /><span>{zeilen(c.titel)[1]}</span></h2>
         <ol class="fo-meilensteine">
           {chronik.map((x) => (
-            <li class="fo-meilenstein">
+            <li class="fo-meilenstein" data-inhalt={`chronik:${x.jahr}`}>
               <span class="fo-meilenstein__q" aria-hidden="true"></span>
               <span class="fo-meilenstein__j">{x.jahr}</span>
               <ul>{x.punkte.map((p) => <li>{p}</li>)}</ul>
@@ -237,7 +237,7 @@ const daten = JSON.stringify({
     </section>
   )}
   {zeigen.archiv && (
-    <section class="fo-archiv" id="archiv" aria-labelledby="fo-archiv-h">
+    <section class="fo-archiv" id="archiv" aria-labelledby="fo-archiv-h" data-abschnitt="formate.archiv">
       <div class="wrap">
         <div class="fo-archiv__kopf">
           <div>
@@ -274,7 +274,7 @@ const daten = JSON.stringify({
     </section>
   )}
   {zeigen.mitmachen && (
-    <section class="fo-mit" id="mitmachen" aria-labelledby="fo-mit-h">
+    <section class="fo-mit" id="mitmachen" aria-labelledby="fo-mit-h" data-abschnitt="formate.mitmachen">
       <KeilBar color="var(--purple)" height={14} flip class="fo-mit__keil" />
       <div class="wrap fo-mit__grid">
         <div>

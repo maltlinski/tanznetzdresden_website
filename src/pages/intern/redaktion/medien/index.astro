@@ -1,0 +1,265 @@
+---
+/**
+ * Website-Inhalte → Medien, Reiter „Fotos der Seiten“ und „Dokumente (PDF)“ (der erste Reiter, „Fotos für Beiträge“,
+ * ist die Mediathek unter src/pages/intern/news/medien/).
+ *   ?art=seiten      Fotos aus src/assets/{photos,personen,foerderer}/ (Formate, Personen, Förderer, Kopffotos)
+ *   ?art=dokumente   PDFs in public/downloads/ (Mitgliedsantrag, Satzung, Links der Formate)
+ * Je Datei: Vorschau, „Wird verwendet auf …“, Löschen nur, wenn sie nirgends verwendet wird. PDFs lassen sich hier
+ * hochladen (Ziehen oder Knopf); Fotos für Seiten lädt man im Formular hoch, wo auch ihre Bildbeschreibung steht.
+ * Gespeichert wird über die Funktion „inhalte“ (prüft Dateityp, Inhalt und Größe auf dem Server).
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
+import MedienReiter from '../../../../components/intern/MedienReiter.astro';
+import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
+import { heroFotos } from '../../../../settings/hero';
+import '../../../../styles/redaktion.css';
+import '../../../../styles/mediathek.css';
+
+// fest eingebaute Fotos (nicht über die Redaktion änderbar): Bühnenfotos im Kopf der Startseite
+const fest = heroFotos.map((f) => f.datei);
+---
+<Redaktion title="Medien" current="medien">
+  <Brotkrumen pfad={[{ label: 'Medien' }]} />
+  <div class="md-kopf">
+    <div class="md-kopf__titel">
+      <h1 class="i-h1" data-titel>Medien</h1>
+    </div>
+    <RedaktionStatus />
+  </div>
+  <MedienReiter />
+  <div class="i-card" data-no-access hidden>
+    <p>Die Medien sind für Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <p class="i-hint" data-loading hidden>Wird geladen …</p>
+
+  <div data-access hidden>
+    <p class="i-lead mr-lead" data-lead></p>
+    <div class="md-drop" data-drop hidden>
+      <div class="md-drop__text">
+        <span class="md-drop__m" aria-hidden="true"></span>
+        <div>
+          <strong>PDFs hierher ziehen</strong>
+          <span>Höchstens 8 MB je Datei. Nach dem Hochladen ist die Datei in 2–3 Minuten online.</span>
+        </div>
+      </div>
+      <label class="btn btn--primary btn--marker md-drop__btn">
+        Dateien wählen
+        <input type="file" accept="application/pdf" multiple data-upload />
+      </label>
+    </div>
+    <p class="i-hint" role="status" data-upload-status></p>
+    <div class="r-tools">
+      <label class="r-suche">
+        <span class="visually-hidden">Suchen</span>
+        <input type="search" placeholder="Dateien suchen …" data-suche />
+      </label>
+    </div>
+    <ul class="mr-liste" data-liste aria-live="polite"></ul>
+  </div>
+
+  <dialog class="r-dialog" data-dialog aria-labelledby="mr-dialog-h">
+    <form method="dialog">
+      <h2 id="mr-dialog-h" class="r-dialog__h" data-dialog-titel></h2>
+      <p data-dialog-text></p>
+      <div class="r-dialog__btns">
+        <button value="ok" class="btn btn--primary btn--marker">Löschen</button>
+        <button value="abbrechen" class="i-linkbtn">Abbrechen</button>
+      </div>
+    </form>
+  </dialog>
+  <script type="application/json" data-fest set:html={JSON.stringify(fest)} />
+</Redaktion>
+
+<script>
+  import { $, meldung, redaktionUrl, starten, statusAnzeigen } from '../../../../scripts/intern/redaktion/seite';
+  import { bereiche } from '../../../../scripts/intern/redaktion/bereiche';
+  import { base64, dateiName } from '../../../../scripts/intern/redaktion/formular';
+  import { freieId, listeLesen, mdLesen } from '../../../../scripts/intern/redaktion/daten';
+  import { h } from '../../../../scripts/intern/news/dom';
+
+  const art = new URLSearchParams(location.search).get('art') === 'dokumente' ? 'dokumente' : 'seiten';
+  const ORDNER = art === 'dokumente'
+    ? [{ pfad: 'public/downloads', name: 'Dokument' }]
+    : [{ pfad: 'src/assets/photos', name: 'Foto der Seiten' }, { pfad: 'src/assets/personen', name: 'Porträt' }, { pfad: 'src/assets/foerderer', name: 'Förderer-Logo' }];
+  const fest = JSON.parse(document.querySelector('[data-fest]')?.textContent ?? '[]') as string[];
+
+  const r = await starten();
+  if (r) {
+    const status = statusAnzeigen(r, $('[data-website-status]'));
+    $('[data-titel]')!.textContent = art === 'dokumente' ? 'Dokumente (PDF)' : 'Fotos der Seiten';
+    $('[data-lead]')!.textContent = art === 'dokumente'
+      ? 'PDFs zum Herunterladen, z. B. Mitgliedsantrag und Satzung. Verwendet werden sie in den Vereinsdaten und als Link bei den Formaten.'
+      : 'Fotos, die fest zu einer Seite gehören: Formate, Personen, Förderer-Logos, Kopffotos. Neue Fotos lädst du im Formular hoch, wo du sie verwendest; dort steht auch die Bildbeschreibung. Ausblenden geht ebenfalls dort, am Eintrag.';
+    $('[data-drop]')!.hidden = art !== 'dokumente';
+
+    const dateien = r.stand.dateien.filter((d) => ORDNER.some((o) => d.pfad.startsWith(`${o.pfad}/`) && !d.pfad.slice(o.pfad.length + 1).includes('/')));
+    // Wo wird eine Datei verwendet? Dateien lesen, die Fotos oder PDFs enthalten können (Formate, Personen, Einstellungen …)
+    const QUELLEN = /^(src\/content\/(formate\/[^/]+\.md|personen\.yaml|formate-archiv\/[^/]+\.ya?ml|kooperation\/[^/]+\.ya?ml|keep-up\/[^/]+\.ya?ml)|src\/settings\/(?!texte)[a-z-]+\.json)$/;
+    const quellen = r.stand.dateien.filter((d) => QUELLEN.test(d.pfad)).map((d) => d.pfad);
+    const verwendung = new Map<string, { text: string; href: string }[]>();
+    try {
+      const g = await r.a.lesen(quellen);
+      for (const d of dateien) {
+        const name = d.pfad.split('/').pop()!;
+        const treffer: { text: string; href: string }[] = [];
+        if (fest.includes(name)) treffer.push({ text: 'Startseite: Bühnenfotos im Kopf (fest eingebaut)', href: '' });
+        for (const [pfad, q] of Object.entries(g.dateien)) {
+          if (!q || !q.text.includes(name)) continue;
+          for (const b of bereiche) {
+            if (b.art === 'ordner' && pfad.startsWith(`${b.ordner}/`)) {
+              const id = pfad.slice(b.ordner.length + 1).replace(/\.md$/, '');
+              treffer.push({ text: `${b.einzahl} „${String(mdLesen(q.text).data.title ?? id)}“`, href: redaktionUrl('eintrag/', { b: b.id, id }) });
+            } else if (b.art === 'liste' && b.datei === pfad) {
+              for (const e of listeLesen(q.text).filter((x) => JSON.stringify(x.data).includes(name))) {
+                treffer.push({ text: `${b.einzahl} „${String(e.data.name ?? e.data.titel ?? e.id)}“`, href: redaktionUrl('eintrag/', { b: b.id, id: e.id }) });
+              }
+            } else if (b.art === 'einstellung' && b.datei === pfad) {
+              treffer.push({ text: b.label, href: redaktionUrl('eintrag/', { b: b.id }) });
+            }
+          }
+        }
+        verwendung.set(d.pfad, treffer);
+      }
+    } catch (e) {
+      meldung((e as Error).message);
+    }
+
+    const liste = $('[data-liste]')!;
+    const suche = $<HTMLInputElement>('[data-suche]')!;
+    const vorschauCache = new Map<string, string>();
+    const bildLaden = new IntersectionObserver((xs) => {
+      for (const x of xs) {
+        if (!x.isIntersecting) continue;
+        const img = x.target as HTMLImageElement;
+        bildLaden.unobserve(img);
+        const pfad = img.dataset.pfad!;
+        void r.a.datei(pfad).then((d) => {
+          const typ = pfad.endsWith('.png') ? 'image/png' : pfad.endsWith('.webp') ? 'image/webp' : 'image/jpeg';
+          const url = URL.createObjectURL(new Blob([Uint8Array.from(atob(d.base64), (c) => c.charCodeAt(0))], { type: typ }));
+          vorschauCache.set(pfad, url);
+          img.src = url;
+        }, () => {});
+      }
+    });
+
+    const zeichnen = () => {
+      const q = suche.value.trim().toLowerCase();
+      const xs = dateien.filter((d) => !q || d.pfad.toLowerCase().includes(q));
+      liste.replaceChildren(...(xs.length ? xs.map(zeile) : [h('li', { class: 'r-leer', text: q ? 'Nichts gefunden.' : 'Noch keine Dateien.' })]));
+    };
+
+    function zeile(d: { pfad: string; groesse: number }) {
+      const name = d.pfad.split('/').pop()!;
+      const ordner = ORDNER.find((o) => d.pfad.startsWith(`${o.pfad}/`))!;
+      const benutzt = verwendung.get(d.pfad) ?? [];
+      const bild = art === 'seiten'
+        ? (() => {
+          const img = h('img', { alt: '', 'data-pfad': d.pfad, loading: 'lazy' }) as HTMLImageElement;
+          if (vorschauCache.has(d.pfad)) img.src = vorschauCache.get(d.pfad)!;
+          else bildLaden.observe(img);
+          return h('div', { class: 'mr-bild' }, img);
+        })()
+        : h('div', { class: 'mr-bild mr-bild--pdf', 'aria-hidden': 'true' }, 'PDF');
+      return h('li', { class: 'mr-zeile' },
+        bild,
+        h('div', { class: 'mr-text' },
+          h('strong', { text: name }),
+          h('span', { class: 'mr-meta', text: `${ordner.name} · ${Math.max(1, Math.round(d.groesse / 1024))} KB` }),
+          h('div', { class: 'mr-wo' },
+            h('span', { class: 'md-detail__k', text: 'Wird verwendet auf' }),
+            ...(benutzt.length
+              ? benutzt.map((b) => (b.href ? h('a', { href: b.href, text: b.text }) : h('span', { text: b.text })))
+              : [h('span', { class: 'i-hint', text: 'Nirgends. Die Datei lässt sich löschen.' })]))),
+        benutzt.length ? null : h('button', { type: 'button', class: 'i-linkbtn r-danger', text: 'Löschen', 'aria-label': `${name} löschen`, onclick: () => loeschen(d.pfad, name) }));
+    }
+
+    const dialog = $<HTMLDialogElement>('[data-dialog]')!;
+    function loeschen(pfad: string, name: string) {
+      $('[data-dialog-titel]')!.textContent = `„${name}“ löschen?`;
+      $('[data-dialog-text]')!.textContent = 'Die Datei wird nirgends verwendet. Sie verschwindet mit dem nächsten Update. Zurückholen kann sie danach nur der Admin.';
+      dialog.returnValue = '';
+      dialog.showModal();
+      dialog.addEventListener('close', async () => {
+        if (dialog.returnValue !== 'ok') return;
+        try {
+          const alt = r!.stand.dateien.find((x) => x.pfad === pfad)?.sha ?? null;
+          await r!.a.speichern(`${art === 'dokumente' ? 'Dokument' : 'Foto'} „${name}“ gelöscht`, [{ pfad, loeschen: true, alt }]);
+          const i = dateien.findIndex((x) => x.pfad === pfad);
+          if (i >= 0) dateien.splice(i, 1);
+          meldung('Gelöscht. Die Website ist in etwa 2–3 Minuten aktualisiert.', 'ok');
+          status?.neu();
+          zeichnen();
+        } catch (e) {
+          meldung((e as Error).message);
+        }
+      }, { once: true });
+    }
+
+    // PDFs hochladen (Ziehen oder Knopf); Typ und Größe prüft auch die Funktion auf dem Server
+    const upStatus = $('[data-upload-status]')!;
+    async function hoch(files: File[]) {
+      const pdfs = files.filter((f) => f.type === 'application/pdf');
+      if (!pdfs.length) return meldung('Bitte PDF-Dateien wählen.');
+      const zuGross = pdfs.find((f) => f.size > 8_000_000);
+      if (zuGross) return meldung(`„${zuGross.name}“ ist größer als 8 MB.`);
+      upStatus.textContent = pdfs.length === 1 ? 'Wird hochgeladen …' : `${pdfs.length} Dateien werden hochgeladen …`;
+      try {
+        const aenderungen: { pfad: string; base64: string; alt: null }[] = [];
+        for (const f of pdfs) {
+          const basis = dateiName(f.name, 'pdf').replace(/\.pdf$/, '');
+          const id = freieId(basis, (x) => dateien.some((d) => d.pfad === `public/downloads/${x}.pdf`) || aenderungen.some((a) => a.pfad === `public/downloads/${x}.pdf`));
+          aenderungen.push({ pfad: `public/downloads/${id}.pdf`, base64: await base64(f), alt: null });
+        }
+        await r!.a.speichern(aenderungen.length === 1 ? `Dokument „${aenderungen[0].pfad.split('/').pop()}“ hochgeladen` : `${aenderungen.length} Dokumente hochgeladen`, aenderungen);
+        for (const a of aenderungen) {
+          dateien.unshift({ pfad: a.pfad, sha: '', groesse: Math.round((a.base64.length * 3) / 4) });
+          verwendung.set(a.pfad, []);
+        }
+        upStatus.textContent = 'Hochgeladen. In 2–3 Minuten ist die Datei online. Verlinken kannst du sie in den Vereinsdaten oder bei einem Format.';
+        status?.neu();
+        zeichnen();
+      } catch (e) {
+        upStatus.textContent = '';
+        meldung((e as Error).message);
+      }
+    }
+    if (art === 'dokumente') {
+      const input = $<HTMLInputElement>('[data-upload]')!;
+      input.addEventListener('change', () => {
+        void hoch([...(input.files ?? [])]);
+        input.value = '';
+      });
+      const drop = $('[data-drop]')!;
+      drop.addEventListener('dragover', (e) => {
+        if (!e.dataTransfer?.types.includes('Files')) return;
+        e.preventDefault();
+        drop.classList.add('is-drop');
+      });
+      drop.addEventListener('dragleave', (e) => !drop.contains(e.relatedTarget as Node) && drop.classList.remove('is-drop'));
+      drop.addEventListener('drop', (e) => {
+        e.preventDefault();
+        drop.classList.remove('is-drop');
+        void hoch([...(e.dataTransfer?.files ?? [])]);
+      });
+    }
+    suche.addEventListener('input', zeichnen);
+    zeichnen();
+  }
+</script>
+
+<style>
+  .mr-lead { max-width: 72ch; margin: 0 0 18px; }
+  .mr-liste { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+  .mr-liste :global(.mr-zeile) { display: grid; grid-template-columns: 120px minmax(0, 1fr) auto; gap: 16px; align-items: start; padding: 12px; background: var(--paper); }
+  .mr-liste :global(.mr-bild) { width: 120px; aspect-ratio: 4 / 3; background: var(--tint); overflow: hidden; display: grid; place-items: center; }
+  .mr-liste :global(.mr-bild img) { width: 100%; height: 100%; object-fit: cover; }
+  .mr-liste :global(.mr-bild--pdf) { font-family: var(--font-mono); font-weight: 700; letter-spacing: 0.14em; color: var(--purple); }
+  .mr-liste :global(.mr-text) { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+  .mr-liste :global(.mr-text strong) { color: var(--purple); overflow-wrap: anywhere; }
+  .mr-liste :global(.mr-meta) { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-muted); }
+  .mr-liste :global(.mr-wo) { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; margin-top: 4px; font-size: 14px; }
+  .mr-liste :global(.mr-wo a) { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  @media (max-width: 560px) { .mr-liste :global(.mr-zeile) { grid-template-columns: 80px minmax(0, 1fr); } .mr-liste :global(.mr-bild) { width: 80px; } }
+</style>

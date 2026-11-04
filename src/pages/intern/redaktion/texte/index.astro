@@ -7,10 +7,11 @@
 import Redaktion from '../../../../layouts/Redaktion.astro';
 import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro';
 import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
+import VorschauPanel from '../../../../components/intern/VorschauPanel.astro';
 import { href } from '../../../../lib/url';
 import '../../../../styles/redaktion.css';
 ---
-<Redaktion title="Texte" current="texte">
+<Redaktion title="Texte" current="texte" breit>
   <Brotkrumen pfad={[{ label: 'Texte' }]} />
   <div class="r-head">
     <div>
@@ -50,6 +51,7 @@ import '../../../../styles/redaktion.css';
       </div>
     </div>
 
+    <div class="r-split tx-split">
     <div class="tx">
       <nav class="tx-seiten" aria-label="Seiten der Website">
         <ul data-seiten></ul>
@@ -59,6 +61,8 @@ import '../../../../styles/redaktion.css';
         <select id="tx-wahl" data-seiten-wahl></select>
       </div>
       <div class="tx-inhalt" data-inhalt></div>
+    </div>
+    <VorschauPanel />
     </div>
 
     <div class="r-bar tx-bar" data-bar hidden>
@@ -74,6 +78,7 @@ import '../../../../styles/redaktion.css';
 <script>
   import { h } from '../../../../scripts/intern/news/dom';
   import { $, brotkrumen, meldung, redaktionUrl, starten, statusAnzeigen, websiteUrl, zielName, zielUrl } from '../../../../scripts/intern/redaktion/seite';
+  import { vorschau } from '../../../../scripts/intern/redaktion/vorschau';
   import { abschnitteUebernehmen, alleTexte, dateiText, platzhalter, textId, textPruefen, uebernehmen, type TextAbschnitt, type TextEintrag, type TextSeite } from '../../../../lib/texte-regeln';
 
   const PFAD = 'src/settings/texte.json';
@@ -140,6 +145,7 @@ import '../../../../styles/redaktion.css';
     }
 
     function leiste() {
+      vs?.neu();
       const n = offen().length + abschnitteOffen().length;
       bar.hidden = n === 0;
       $('[data-bar-n]')!.textContent = n === 1 ? '1 Text geändert, noch nicht gespeichert' : `${n} Texte geändert, noch nicht gespeichert`;
@@ -281,6 +287,7 @@ import '../../../../styles/redaktion.css';
 
     function waehlen(id: string) {
       seite = id;
+      vs?.laden((datei[id] as TextSeite | undefined)?.pfad ?? '');
       suche.value = '';
       const u = new URL(location.href);
       u.searchParams.set('seite', id);
@@ -384,8 +391,49 @@ import '../../../../styles/redaktion.css';
       if (offen().length || abschnitteOffen().length) e.preventDefault();
     });
 
+    // Vorschau daneben: die gewählte Seite der Website mit den geänderten Texten, vor dem Speichern
+    /** Stück eines Texts, das so auf der Seite steht (ohne Platzhalter wie {zahl}) */
+    const stueck = (t: string) => t.split('\n')[0].split(/\{[a-z]+\}/i).sort((a, b) => b.length - a.length)[0]?.trim() ?? '';
+    let vs: ReturnType<typeof vorschau> | null = null;
+    const vsStarten = () => {
+      const panel = $('[data-vorschau]');
+      if (!panel) return;
+      panel.hidden = false;
+      $('[data-vs-auf]')!.hidden = false;
+      vs = vorschau(panel, { pfad: (datei[seite] as TextSeite | undefined)?.pfad ?? '' });
+      vs.zustand(() => {
+        const hier = felder.filter((f) => f.seite === seite);
+        const ersetzen: [string, string][] = [];
+        const aus: string[] = [];
+        const hinweise: string[] = [];
+        for (const f of hier) {
+          // Texte mit Platzhaltern stehen auf der Seite anders (ausgefüllt): nur ohne Platzhalter ersetzen
+          if (!/\{[a-z]+\}/i.test(f.e.de)) {
+            ersetzen.push([f.e.de, f.de.value]);
+            ersetzen.push([f.e.en || f.e.de, f.en.value || f.de.value]);
+          }
+          if (f.aus && !f.e.aus && stueck(f.e.de)) aus.push(stueck(f.e.de));
+          if (f.e.aus && f.aus) hinweise.push(`Ausgeblendet: ${f.e.wo}`);
+          if (f.e.aus && !f.aus) hinweise.push(`Wird nach dem Speichern wieder angezeigt: ${f.e.wo}`);
+        }
+        for (const ab of abschnitte.filter((x) => x.id.startsWith(`${seite}.`))) {
+          if (ab.aus && !ab.a.aus) aus.push(`[data-abschnitt="${ab.id}"]`);
+          if (ab.a.aus && ab.aus) hinweise.push(`Abschnitt ausgeblendet: ${ab.a.titel}`);
+          if (ab.a.aus && !ab.aus) hinweise.push(`Abschnitt wird nach dem Speichern wieder angezeigt: ${ab.a.titel}`);
+        }
+        return { ersetzen, aus, hinweise };
+      });
+      // Beim Bearbeiten eines Texts springt die Vorschau zur Stelle
+      inhalt.addEventListener('focusin', (ev) => {
+        const ta = (ev.target as HTMLElement).closest('textarea');
+        const f = ta && felder.find((x) => x.de === ta || x.en === ta);
+        if (f) vs?.springen(stueck(f.de.value) || stueck(f.e.de) || null);
+      });
+    };
+
     try {
       await laden();
+      vsStarten();
       aufbauen();
       // Sprung zum Abschnitt (aus „Seiten“: ?seite=…#abschnitt-…)
       if (location.hash) document.getElementById(decodeURIComponent(location.hash.slice(1)))?.scrollIntoView({ block: 'start' });

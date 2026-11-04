@@ -10,7 +10,9 @@ interface Props {
   current: 'beitraege' | 'medien' | 'inhalte' | 'seiten' | 'texte' | 'freigaben' | 'verwaltung';
   /** Arbeitsfläche ohne Innenabstand (Editor mit eigener Kopfleiste) */
   voll?: boolean;
+  /** breite Arbeitsfläche (Formular mit Vorschau daneben) */
+  breit?: boolean;
 }
-const { title, current, voll = false } = Astro.props;
+const { title, current, voll = false, breit = false } = Astro.props;
 ---
-<Intern title={`${title} · Redaktion`} current={current} voll={voll}><slot /></Intern>
+<Intern title={`${title} · Redaktion`} current={current} voll={voll} breit={breit}><slot /></Intern>

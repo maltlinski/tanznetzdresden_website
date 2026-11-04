@@ -126,7 +126,8 @@ test('Übersicht: „Was möchtest du ändern?“, Seiten, Website-Status und Ve
   await expect(page.getByRole('heading', { name: 'Was möchtest du ändern?', level: 1 })).toBeVisible();
   const kacheln = page.getByRole('list', { name: 'Was möchtest du ändern?' });
   for (const [name, ziel] of [['Texte ändern', /redaktion\/texte\/$/], ['Seite für Seite', /redaktion\/seiten\/$/], ['Beitrag schreiben', /intern\/news\/$/],
-    ['Termin eintragen', /intern\/kalender\/$/], ['Medien verwalten', /news\/medien\/$/], ['Freigaben', /redaktion\/freigaben\/$/]] as const) {
+    ['Termin eintragen', /intern\/kalender\/$/], ['Medien verwalten', /news\/medien\/$/], ['Freigaben', /redaktion\/freigaben\/$/],
+    ['Vorschau öffnen', /redaktion\/vorschau\/$/]] as const) {
     await expect(kacheln.getByRole('link', { name: new RegExp(`^${name}`) })).toHaveAttribute('href', ziel);
   }
   // direkt zu einer Seite der Website
@@ -314,21 +315,68 @@ test('Vorstand darf Impressum bearbeiten, Presse nur lesen', async ({ page }) =>
   await expect(feld(page, 'Titel')).toBeDisabled();
 });
 
-test('Textseite mit englischer Fassung bearbeiten', async ({ page }) => {
+test('Textseite mit englischer Fassung bearbeiten (Text-Editor), Tabelle und Notiz bleiben erhalten', async ({ page }) => {
   const gespeichert = await redaktion(page, 'vorstand');
   await page.goto('/intern/redaktion/eintrag/?b=seiten&id=transparenz');
   await englisch(page);
-  // vorhandene englische Fassung ist aufgeklappt
-  const en = page.locator('.rf-en textarea');
-  await expect(en).toHaveValue(/Statutes|statutes|purpose/i);
-  await en.fill(`${await en.inputValue()}\n\nNew paragraph.`);
+  // vorhandene englische Fassung ist aufgeklappt, der Text steht im Editor (nicht als Markdown)
+  const en = page.locator('.rf-en .rt__eingabe');
+  await expect(en).toContainText(/Statutes|statutes|purpose/i);
+  await expect(page.locator('.rf-en .rt-roh').first()).toBeVisible();
+  // ans Ende: neuer Absatz mit fettem Wort
+  await en.click();
+  await page.keyboard.press('Control+End');
+  await page.keyboard.press('Enter');
+  await page.keyboard.type('New paragraph with ');
+  await page.locator('.rf-en').getByRole('button', { name: 'Fett' }).click();
+  await page.keyboard.type('bold');
   await page.getByRole('button', { name: 'Speichern' }).click();
   await expect.poll(() => gespeichert.length).toBe(1);
   const pfade = gespeichert[0].aenderungen.map((a) => a.pfad);
   expect(pfade).toEqual(['src/content/seiten/transparenz.md', 'src/content/seiten/en/transparenz.md']);
+  // Deutsch unverändert, Englisch: neuer Absatz als Markdown, Tabelle und Notiz wie vorher
   expect(gespeichert[0].aenderungen[0].text).toBe(readFileSync('src/content/seiten/transparenz.md', 'utf8'));
-  expect(gespeichert[0].aenderungen[1].text!.trimEnd().endsWith('New paragraph.')).toBe(true);
+  const neu = gespeichert[0].aenderungen[1].text!;
+  expect(neu.trimEnd().endsWith('New paragraph with **bold**')).toBe(true);
+  const alt = readFileSync('src/content/seiten/en/transparenz.md', 'utf8');
+  for (const block of [...alt.matchAll(/^\|.*\|$/gm)].map((m) => m[0])) expect(neu).toContain(block);
+  for (const notiz of alt.match(/<!--[\s\S]*?-->/g) ?? []) expect(neu).toContain(notiz);
 });
+
+test('Text-Editor: Bilder-Abschnitte bleiben, Überschrift und Liste über die Werkzeugleiste, keine Markdown-Zeichen', async ({ page }) => {
+  const gespeichert = await redaktion(page);
+  // ein älterer Beitrag mit Bilder-Abschnitt, der alle Pflichtangaben hat
+  const id = readdirSync('src/content/news/de').map((n) => n.replace(/\.md$/, '')).find((n) => {
+    const t = readFileSync(`src/content/news/de/${n}.md`, 'utf8');
+    return t.includes('\n::: bilder') && /^author:/m.test(t) && (!/^image:/m.test(t) || /^alt:/m.test(t));
+  })!;
+  const alt = readFileSync(`src/content/news/de/${id}.md`, 'utf8');
+  await page.goto(`/intern/redaktion/eintrag/?b=news&id=${id}`);
+  const ed = page.locator('.rt__eingabe').first();
+  await expect(ed).toBeVisible();
+  await expect(page.locator('.rt-roh', { hasText: 'Bilder-Abschnitt' }).first()).toBeVisible();
+  // News zeigen Bilder-Abschnitte: dort gibt es „Bild aus Medien“ (Mediathek)
+  await expect(page.getByRole('button', { name: 'Bild aus Medien einfügen' }).first()).toBeVisible();
+  // keine Markdown-Zeichen im Editor
+  expect(await ed.innerText()).not.toMatch(/\*\*|^## /m);
+  // Überschrift und Liste über die Werkzeugleiste
+  await ed.click();
+  await page.keyboard.press('Control+End');
+  await page.keyboard.press('Enter');
+  await page.getByRole('button', { name: 'Zwischenüberschrift' }).first().click();
+  await page.keyboard.type('Neu im Netz');
+  await page.keyboard.press('Enter');
+  await page.getByRole('button', { name: 'Liste' }).first().click();
+  await page.keyboard.type('Punkt eins');
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect.poll(() => gespeichert.length).toBe(1);
+  const text = gespeichert[0].aenderungen[0].text!;
+  expect(text).toContain('## Neu im Netz');
+  expect(text).toContain('- Punkt eins');
+  // jeder Bilder-Abschnitt steht unverändert drin
+  for (const m of alt.matchAll(/^::: ?bilder[\s\S]*?\n:::$/gm)) expect(text).toContain(m[0]);
+});
+
 
 test('Freigaben: Profil mit Foto freigeben, neues Foto ablehnen, Hinweis auf doppelte Person', async ({ page }) => {
   const aufrufe: string[] = [];
@@ -663,10 +711,92 @@ test('Ausblenden: Texte und ganze Abschnitte, nur wo vorgesehen', async ({ page 
   expect(d.startseite.abschnitte.mitglied.aus).toBeUndefined();
 });
 
+test('Text-Editor: „Bild aus Medien“ fügt ein Foto der Mediathek als Bilder-Abschnitt ein, Beschreibung ist Pflicht', async ({ page }) => {
+  const gespeichert = await redaktion(page);
+  // Mediathek nachbauen: ein Foto ohne Beschreibung
+  await page.route(`${SB}/rest/v1/news_medien**`, (route) =>
+    route.fulfill({ json: [{ datei: '2026/probe.jpg', alt: '', alt_en: '', credit: '', focus: null }], headers: { 'Access-Control-Allow-Origin': '*', 'content-range': '0-0/1' } }));
+  await page.route(`${SB}/storage/v1/object/list/**`, (route) => route.fulfill({ json: [], headers: { 'Access-Control-Allow-Origin': '*' } }));
+  const id = readdirSync('src/content/news/de').map((n) => n.replace(/\.md$/, '')).find((n) => {
+    const t = readFileSync(`src/content/news/de/${n}.md`, 'utf8');
+    return /^author:/m.test(t) && (!/^image:/m.test(t) || /^alt:/m.test(t));
+  })!;
+  await page.goto(`/intern/redaktion/eintrag/?b=news&id=${id}`);
+  await page.locator('.rt__eingabe').first().click();
+  await page.keyboard.press('Control+End');
+  page.once('dialog', (d) => void d.accept('Zwei Tänzerinnen bei der Probe'));
+  await page.getByRole('button', { name: 'Bild aus Medien einfügen' }).first().click();
+  await page.getByRole('dialog').getByRole('button', { name: /^Foto probe\.jpg wählen/ }).click();
+  await expect(page.locator('.rt-roh', { hasText: 'Bilder-Abschnitt · 1 Foto' }).last()).toBeVisible();
+  await page.getByRole('button', { name: 'Speichern' }).click();
+  await expect.poll(() => gespeichert.length).toBe(1);
+  const text = gespeichert[0].aenderungen[0].text!;
+  expect(text).toMatch(/::: bilder\n[\s\S]*datei: 2026\/probe\.jpg\n\s+alt: Zwei Tänzerinnen bei der Probe[\s\S]*\n:::/);
+});
+
+test('Vorschau im Formular: Seite daneben, Änderungen vor dem Speichern, Ausgeblendetes markiert, Geräte', async ({ page, isMobile }) => {
+  await redaktion(page);
+  await page.goto('/intern/redaktion/eintrag/?b=formate&id=pop-up');
+  // schmale Bildschirme: Vorschau öffnet als Fenster
+  if (isMobile) await page.locator('[data-vs-auf]').click();
+  const panel = page.getByRole('region', { name: 'Vorschau der Website' });
+  await expect(panel).toBeVisible();
+  const seite = page.frameLocator('[data-vorschau] iframe');
+  await expect(seite.locator('#pop-up')).toBeVisible({ timeout: 15000 });
+  if (isMobile) await panel.getByRole('button', { name: 'Schließen' }).click();
+  await feld(page, 'Name').fill('POP UP Sommer');
+  await expect(seite.locator('#pop-up')).toContainText('POP UP Sommer');
+  await page.getByRole('switch', { name: 'Auf der Website anzeigen' }).first().uncheck();
+  await expect(seite.locator('#pop-up')).toHaveAttribute('data-vs-aus', '');
+  // nichts gespeichert: die Website selbst ist unverändert
+  if (isMobile) await page.locator('[data-vs-auf]').click();
+  await panel.getByRole('button', { name: 'Handy' }).click();
+  await expect(panel).toHaveAttribute('data-geraet', 'handy');
+  expect(await page.locator('[data-vorschau] iframe').evaluate((f: HTMLIFrameElement) => f.style.width)).toBe('390px');
+});
+
+test('Vorschau in Texte: geänderter Text und ausgeblendeter Abschnitt erscheinen sofort', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'gleiche Logik, auf dem Handy als Fenster');
+  await redaktion(page);
+  await page.goto('/intern/redaktion/texte/?seite=startseite');
+  const seite = page.frameLocator('[data-vorschau] iframe');
+  await expect(seite.locator('[data-abschnitt="startseite.mitglied"]')).toBeVisible({ timeout: 15000 });
+  const lead = page.locator('[data-text="startseite.mitglied.lead"] textarea[data-sprache="de"]');
+  await lead.fill('Werde Teil des Netzes: neuer Text in der Vorschau.');
+  await expect(seite.locator('[data-abschnitt="startseite.mitglied"]')).toContainText('neuer Text in der Vorschau');
+  await page.locator('[data-abschnitt="startseite.netz"]').getByRole('switch').uncheck();
+  await expect(seite.locator('[data-abschnitt="startseite.netz"]')).toHaveAttribute('data-vs-aus', '');
+  // „Ausgeblendetes markiert zeigen“ aus: der Abschnitt verschwindet ganz
+  await page.getByLabel('Ausgeblendetes markiert zeigen').uncheck();
+  await expect(seite.locator('[data-abschnitt="startseite.netz"]')).toBeHidden();
+});
+
+test('Medien: Reiter, Fotos der Seiten mit Verwendung, PDFs hochladen', async ({ page }) => {
+  const gespeichert = await redaktion(page);
+  await page.goto('/intern/redaktion/medien/?art=seiten');
+  const reiter = page.getByRole('navigation', { name: 'Medien' });
+  await expect(reiter.getByRole('link', { name: 'Fotos der Seiten' })).toHaveAttribute('aria-current', 'page');
+  await expect(reiter.getByRole('link', { name: 'Fotos für Beiträge' })).toHaveAttribute('href', /intern\/news\/medien\/$/);
+  const zeile = page.locator('.mr-zeile', { hasText: 'duo-rot.jpg' });
+  await expect(zeile).toContainText('Wird verwendet auf');
+  await expect(zeile.getByRole('link', { name: /^Format „/ }).first()).toHaveAttribute('href', /eintrag\/\?b=formate&id=/);
+  // verwendete Fotos lassen sich nicht löschen
+  await expect(zeile.getByRole('button', { name: /löschen/ })).toHaveCount(0);
+  await zeile.scrollIntoViewIfNeeded();
+  await expect(zeile.locator('img')).toHaveAttribute('src', /^blob:/);
+
+  await page.goto('/intern/redaktion/medien/?art=dokumente');
+  await expect(page.getByRole('heading', { name: 'Dokumente (PDF)' })).toBeVisible();
+  await page.locator('input[data-upload]').setInputFiles({ name: 'Satzung 2027.pdf', mimeType: 'application/pdf', buffer: Buffer.from('%PDF-1.4\n%%EOF\n') });
+  await expect.poll(() => gespeichert.length).toBe(1);
+  expect(gespeichert[0].aenderungen[0]).toMatchObject({ pfad: 'public/downloads/satzung-2027.pdf', alt: null });
+  await expect(page.locator('.mr-zeile', { hasText: 'satzung-2027.pdf' })).toContainText('Nirgends');
+});
+
 const AXE: [string, 'presse' | 'vorstand'][] = [
   ...['/intern/redaktion/texte/', '/intern/redaktion/texte/textbuch/', '/intern/redaktion/freigaben/', '/intern/redaktion/', '/intern/redaktion/seiten/',
     '/intern/redaktion/seiten/?s=startseite', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9',
-    '/intern/redaktion/eintrag/?b=verein'].map((p): [string, 'presse'] => [p, 'presse']),
+    '/intern/redaktion/eintrag/?b=verein', '/intern/redaktion/vorschau/', '/intern/redaktion/medien/?art=seiten', '/intern/redaktion/medien/?art=dokumente'].map((p): [string, 'presse'] => [p, 'presse']),
   ['/intern/redaktion/verwaltung/', 'vorstand'],
 ];
 for (const [pfad, rolle] of AXE) {

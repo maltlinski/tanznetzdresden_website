@@ -1,0 +1,96 @@
+---
+/**
+ * Website-Inhalte → Vorschau: jede Seite der Website als Desktop, Tablet oder Handy ansehen, mit Hinweis, was auf
+ * ihr ausgeblendet ist. Bearbeitet wird in „Seiten“, „Texte“ und den Formularen (dort läuft die Vorschau mit).
+ * Nur für die Redaktion; die Seite selbst ist wie der ganze interne Bereich „noindex“.
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
+import VorschauPanel from '../../../../components/intern/VorschauPanel.astro';
+import texte from '../../../../settings/texte.json';
+import { seitenplan } from '../../../../scripts/intern/redaktion/seitenplan';
+import '../../../../styles/redaktion.css';
+
+const plan = seitenplan(texte);
+const gruppen = [...new Set(plan.map((s) => s.gruppe))];
+---
+<Redaktion title="Vorschau" current="inhalte" breit>
+  <Brotkrumen pfad={[{ label: 'Vorschau' }]} />
+  <div class="r-head">
+    <div>
+      <h1 class="i-h1">Vorschau</h1>
+      <p class="i-lead">Jede Seite der Website auf Computer, Tablet und Handy. Ändern kannst du sie unter Seiten und Texte, dort läuft die Vorschau beim Tippen mit.</p>
+    </div>
+  </div>
+  <div class="i-card" data-no-access hidden>
+    <p>Die Vorschau ist für Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <div data-access hidden>
+    <div class="vsp-wahl i-field">
+      <label for="vsp-seite">Seite der Website</label>
+      <select id="vsp-seite" data-seite>
+        {gruppen.map((g) => (
+          <optgroup label={g}>
+            {plan.filter((s) => s.gruppe === g).map((s) => <option value={s.id} data-pfad={s.pfad}>{s.titel}</option>)}
+          </optgroup>
+        ))}
+      </select>
+      <a class="mono-link" data-bearbeiten href="#">Diese Seite bearbeiten →</a>
+    </div>
+    <VorschauPanel />
+  </div>
+</Redaktion>
+
+<script>
+  import { $, meldung, seitenUrl, starten } from '../../../../scripts/intern/redaktion/seite';
+  import { vorschau } from '../../../../scripts/intern/redaktion/vorschau';
+  import type { TextSeite } from '../../../../lib/texte-regeln';
+
+  const r = await starten();
+  if (r) {
+    const wahl = $<HTMLSelectElement>('[data-seite]')!;
+    const bearbeiten = $<HTMLAnchorElement>('[data-bearbeiten]')!;
+    const s0 = new URLSearchParams(location.search).get('s');
+    if (s0 && [...wahl.options].some((o) => o.value === s0)) wahl.value = s0;
+    const pfad = () => wahl.selectedOptions[0]?.dataset.pfad ?? '';
+    const panel = $('[data-vorschau]')!;
+    panel.hidden = false;
+    // Was auf der gewählten Seite ausgeblendet ist (aktueller Stand, über die Redaktion gelesen)
+    let datei: Record<string, TextSeite> = {};
+    try {
+      const g = await r.a.lesen(['src/settings/texte.json']);
+      datei = JSON.parse(g.dateien['src/settings/texte.json']?.text ?? '{}');
+    } catch (e) {
+      meldung((e as Error).message);
+    }
+    const vs = vorschau(panel, { pfad: pfad() });
+    vs.zustand(() => {
+      const s = datei[wahl.value];
+      const hinweise: string[] = [];
+      for (const a of Object.values(s?.abschnitte ?? {})) {
+        if (a.aus) hinweise.push(`Abschnitt ausgeblendet: ${a.titel}`);
+        else for (const t of Object.values(a.texte)) if (t.aus) hinweise.push(`Ausgeblendet: ${a.titel} · ${t.wo}`);
+      }
+      return { hinweise };
+    });
+    const zeigen = () => {
+      bearbeiten.href = seitenUrl(wahl.value);
+      history.replaceState(null, '', `?s=${wahl.value}`);
+      vs.laden(pfad());
+      vs.neu();
+    };
+    wahl.addEventListener('change', zeigen);
+    zeigen();
+  }
+</script>
+
+<style>
+  .vsp-wahl { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 8px 24px; max-width: 760px; margin-bottom: 18px; }
+  .vsp-wahl select { min-width: 280px; }
+  .vsp-wahl label { width: 100%; }
+  /* hier ist die Vorschau die Hauptsache: auch auf schmalen Bildschirmen im Fluss, nicht als Fenster */
+  :global(.vs) { position: static !important; display: flex !important; padding: 0 !important; background: none !important; }
+  :global(.vs .vs__zu), :global(.vs-auf) { display: none !important; }
+  :global(.vs .vs__buehne) { height: min(80vh, 1000px) !important; flex: none !important; }
+</style>

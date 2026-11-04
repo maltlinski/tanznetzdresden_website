@@ -46,7 +46,7 @@ test('Mediathek: hochladen, beschreiben, Verwendung sehen, unbenutzte löschen',
   await expect(page.locator('[data-stat]')).toHaveText('1 Bild · 1 ohne Bildbeschreibung');
   // erstes Foto ist gewählt: Verwendung und Angaben
   await expect(page.locator('.md-detail__verwendet')).toContainText('Studio Round #9 →');
-  await page.getByLabel('Bildbeschreibung (optional)').fill('Probe im Studio');
+  await page.getByLabel('Bildbeschreibung (Pflicht)').fill('Probe im Studio');
   await page.getByLabel('Fotonachweis').fill('Kim Foto');
   await expect.poll(() => m.medien.get('vorhanden/titel.jpg')?.credit).toBe('Kim Foto');
   expect(m.medien.get('vorhanden/titel.jpg')).toMatchObject({ alt: 'Probe im Studio' });

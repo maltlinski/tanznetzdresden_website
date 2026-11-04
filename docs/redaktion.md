@@ -72,8 +72,18 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 - **Fotos:** „Neues Foto hochladen“ verkleinert das Foto im Browser und lädt es beim Speichern mit hoch. Vorhandene
   Fotos stehen in der Auswahl daneben. Eine Bildbeschreibung ist Pflicht, weil sie für Barrierefreiheit gebraucht
   wird.
-- **Text formatieren:** Über dem Textfeld setzen die Knöpfe Zwischenüberschrift, Fett, Aufzählung, Zitat und Link.
-  „Vorschau“ zeigt das Ergebnis. Eigenes HTML ist aus Sicherheitsgründen nicht erlaubt.
+- **Text formatieren:** Lange Texte schreibst du wie in einem Textprogramm: Zwischenüberschrift, Fett, Kursiv, Liste
+  und Link über die Knöpfe, ohne Sonderzeichen. Bei Beiträgen fügt „Bild“ ein Foto aus den Medien ein (die
+  Bildbeschreibung ist Pflicht). Tabellen, Notizen und Bilder-Abschnitte stehen als Kasten im Text und bleiben, wie
+  sie sind. Enthält ein Text etwas, das der Editor nicht kennt, öffnet er im Textmodus mit den bisherigen Knöpfen.
+- **Vorschau:** Neben dem Formular (auf Tablet und Handy über den Knopf „Vorschau“) steht die Seite der Website.
+  Was du tippst oder ausblendest, siehst du dort sofort, bevor du speicherst; beim Bearbeiten springt sie zur Stelle.
+  Oben: Desktop, Tablet, Handy, Deutsch/Englisch, „Ausgeblendetes markiert zeigen“. Neue Einträge und neue Fotos
+  zeigt sie erst nach dem Speichern. Jede Seite ansehen: *Website-Inhalte → Übersicht → Vorschau öffnen*.
+- **Medien:** drei Reiter. *Fotos für Beiträge* (Mediathek: hochladen per Ziehen, verkleinert automatisch,
+  Bildbeschreibung Pflicht, Fotonachweis, Ausschnitt, ausblenden). *Fotos der Seiten* (Formate, Personen, Förderer)
+  und *Dokumente (PDF)* (hochladen per Ziehen, höchstens 8 MB). Jede Datei zeigt „Wird verwendet auf …“; löschen
+  lässt sich nur, was nirgends verwendet wird.
 - **Entwurf:** Termine und News mit dem Haken „Entwurf“ erscheinen nicht auf der Website.
 - **Personen auswählen:** Bei *Mitwirkende* (Termine) und *Person* (Dozent:innen) stehen auch freigegebene
   Mitgliederprofile zur Auswahl, gekennzeichnet als „(Mitgliederprofil)“. Eine Person muss also nicht doppelt unter
@@ -208,6 +218,24 @@ löschen.
   weiter den vorherigen Stand.
 
 ## Für Entwickler:innen
+
+**Vorschau:** `src/scripts/intern/redaktion/vorschau.ts` lädt die echte Seite (gleiche Adresse) in einen Rahmen und
+ändert sie im Browser: Texte ersetzen, `html` für lange Texte, Ausgeblendetes mit `data-vs-aus` markieren, `springen()`
+zur Stelle. Leiste und Rahmen: `src/components/intern/VorschauPanel.astro`. Welche Seite und Stelle: in `bereiche.ts`
+`seite()`, `anker()` (CSS-Selektor) und `textSelektor` (wo der lange Text steht), Zustand aus dem Formular in
+`vorschau-eintrag.ts`. Ausblendbare Abschnitte tragen auf der Website `data-abschnitt="seite.abschnitt"`,
+Chronik-Jahre `data-inhalt`. Die Website selbst bleibt unverändert, nur unsichtbare `data-`Attribute kommen dazu.
+
+**Text-Editor:** TipTap (`@tiptap/core`, `@tiptap/pm`, `@tiptap/starter-kit`, `@tiptap/extension-link`, feste
+Versionen), nur im internen Bereich geladen. `src/scripts/intern/redaktion/richtext.ts` wandelt Markdown → Editor →
+Markdown; gespeichert wird weiter Markdown. Bevor der Editor ein Feld übernimmt, prüft er den Hin- und Rückweg
+(gleiche Ausgabe auf der Website, Notizen erhalten), sonst bleibt das Feld im Textmodus. Bilder-Abschnitte, Tabellen,
+Notizen und Code sind geschützte Kästen (`roh`). „Bild aus Medien“ nur bei Feldern mit `bilder: true`.
+
+**Medien:** Mediathek `src/pages/intern/news/medien/` (Supabase), *Fotos der Seiten* und *Dokumente*
+`src/pages/intern/redaktion/medien/?art=…` (Repository über die Funktion `inhalte`), Reiter
+`src/components/intern/MedienReiter.astro`. „Wird verwendet auf“ liest die Dateien, in denen Fotos und PDFs stehen
+können (Formate, Personen, Listen, Einstellungen); die Bühnenfotos der Startseite sind fest eingebaut.
 
 **Ausblenden (Regel):** Feld `sichtbar` (Standard `true`, fehlt = sichtbar) in Schemas und Listeneinträgen; Termine und
 News nutzen `draft`. Gefiltert wird **in den Ladern** (`src/lib/content.ts`, `formate.ts`, `keep-up.ts`, `settings.ts`,

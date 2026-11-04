@@ -103,6 +103,7 @@ const az = [...bereiche]
           <section data-seite={s.id} aria-labelledby={`sp-${s.id}`} hidden>
             <header class="sp-seite">
               <h2 id={`sp-${s.id}`} class="visually-hidden">{s.titel}</h2>
+              <a class="mono-link" href={href(`intern/redaktion/vorschau/?s=${s.id}`)}>Vorschau →</a>
               <a class="mono-link" href={href(s.pfad)} target="_blank" rel="noopener">Auf der Website ansehen ↗</a>
             </header>
             {s.nurVorstand && <p class="i-msg" data-nur-vorstand>Diese Seite ändert nur der Vorstand.</p>}

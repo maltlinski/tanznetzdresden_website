@@ -1,0 +1,83 @@
+---
+/**
+ * Vorschau neben dem Formular (Redaktion): Leiste mit Gerät (Desktop, Tablet, Handy), Sprache, „Ausgeblendetes
+ * markieren“ und „Neu laden“, darunter die Seite der Website im Rahmen. Logik: src/scripts/intern/redaktion/vorschau.ts.
+ * Auf schmalen Bildschirmen liegt sie als Fenster über dem Formular und öffnet mit „Vorschau“.
+ */
+interface Props {
+  /** Englisch umschalten anbieten */
+  sprachen?: boolean;
+}
+const { sprachen = true } = Astro.props;
+---
+<section class="vs" data-vorschau data-geraet="desktop" aria-label="Vorschau der Website" hidden>
+  <div class="vs__leiste">
+    <span class="vs__titel">Vorschau</span>
+    <div class="vs__gruppe" role="group" aria-label="Gerät">
+      <button type="button" data-vs-geraet="desktop" aria-pressed="true">Desktop</button>
+      <button type="button" data-vs-geraet="tablet" aria-pressed="false">Tablet</button>
+      <button type="button" data-vs-geraet="handy" aria-pressed="false">Handy</button>
+    </div>
+    {sprachen && (
+      <div class="vs__gruppe" role="group" aria-label="Sprache">
+        <button type="button" data-vs-sprache="de" aria-pressed="true">DE</button>
+        <button type="button" data-vs-sprache="en" aria-pressed="false">EN</button>
+      </div>
+    )}
+    <label class="i-check vs__mark"><input type="checkbox" data-vs-markieren checked />Ausgeblendetes markiert zeigen</label>
+    <button type="button" class="vs__neu" data-vs-neu>Neu laden</button>
+    <button type="button" class="vs__zu" data-vs-zu>Schließen</button>
+  </div>
+  <p class="vs__info">Zeigt die Seite mit deinen Änderungen, noch bevor du speicherst. Neue Einträge und neue Fotos erscheinen hier erst nach dem Speichern.</p>
+  <ul class="vs__hinweise" data-vs-hinweise hidden></ul>
+  <div class="vs__buehne"><iframe title="Vorschau der Seite"></iframe></div>
+</section>
+<button type="button" class="btn btn--secondary vs-auf" data-vs-auf hidden>Vorschau</button>
+
+<style>
+  .vs { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+  .vs[hidden] { display: none; }
+  .vs__leiste { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 12px; background: var(--purple); color: #fff; }
+  .vs__titel { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+  .vs__gruppe { display: flex; }
+  .vs__gruppe button, .vs__neu, .vs__zu {
+    padding: 5px 9px; margin-left: -1px; border: 1px solid rgba(255, 255, 255, 0.45); background: none; color: #fff; cursor: pointer;
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .vs__gruppe button[aria-pressed='true'] { background: #fff; color: var(--purple); border-color: #fff; }
+  .vs__mark { font-size: 12.5px; color: #fff; }
+  .vs__neu { margin-left: auto; }
+  .vs__zu { display: none; }
+  .vs__info { margin: 0; font-size: 12.5px; line-height: var(--lh-text); color: var(--ink-muted); }
+  .vs__hinweise { margin: 0; padding: 8px 12px 8px 28px; background: var(--tint); font-size: 13px; line-height: var(--lh-text); color: var(--purple); }
+  .vs__hinweise[hidden] { display: none; }
+  .vs__buehne { position: relative; height: min(78vh, 900px); overflow: hidden; background: #fff; border: 1px solid var(--rule); }
+  .vs[data-geraet='tablet'] .vs__buehne, .vs[data-geraet='handy'] .vs__buehne { background: var(--tint-2); }
+  .vs iframe { position: absolute; left: 0; top: 0; border: 0; background: #fff; transform-origin: 0 0; }
+  .vs[data-geraet='handy'] iframe, .vs[data-geraet='tablet'] iframe { left: 50%; translate: -50% 0; transform-origin: 50% 0; }
+  .vs-auf { display: none; }
+
+  /* schmale Bildschirme: Vorschau als Fenster über dem Formular */
+  @media (max-width: 1279px) {
+    .vs { position: fixed; inset: 0; z-index: 60; padding: 12px; background: var(--tint-2); }
+    .vs:not(.is-offen) { display: none; }
+    .vs__buehne { flex: 1; height: auto; }
+    .vs__zu { display: inline-block; }
+    .vs-auf { display: inline-flex; position: fixed; right: 16px; bottom: 88px; z-index: 55; }
+    .vs-auf[hidden] { display: none; }
+  }
+</style>
+
+<script>
+  // Auf schmalen Bildschirmen: öffnen und schließen
+  const vs = document.querySelector<HTMLElement>('[data-vorschau]');
+  const auf = document.querySelector<HTMLButtonElement>('[data-vs-auf]');
+  auf?.addEventListener('click', () => {
+    vs?.classList.add('is-offen');
+    vs?.querySelector<HTMLElement>('[data-vs-zu]')?.focus();
+  });
+  vs?.querySelector('[data-vs-zu]')?.addEventListener('click', () => {
+    vs.classList.remove('is-offen');
+    auf?.focus();
+  });
+</script>

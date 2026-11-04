@@ -1,0 +1,33 @@
+---
+/**
+ * Reiter der Medien: Fotos für Beiträge (Mediathek), Fotos der Seiten, Dokumente (PDF).
+ * Der aktive Reiter ergibt sich aus der Adresse (auch ?art= auf der Seite /intern/redaktion/medien/).
+ */
+import { href } from '../../lib/url';
+
+const reiter = [
+  { id: 'beitraege', label: 'Fotos für Beiträge', ziel: href('intern/news/medien/') },
+  { id: 'seiten', label: 'Fotos der Seiten', ziel: href('intern/redaktion/medien/?art=seiten') },
+  { id: 'dokumente', label: 'Dokumente (PDF)', ziel: href('intern/redaktion/medien/?art=dokumente') },
+];
+---
+<nav class="mr-reiter" aria-label="Medien" data-medien-reiter>
+  {reiter.map((r) => <a href={r.ziel} data-reiter={r.id}>{r.label}</a>)}
+</nav>
+
+<script>
+  // aktiver Reiter
+  const pfad = location.pathname;
+  const art = new URLSearchParams(location.search).get('art') === 'dokumente' ? 'dokumente' : pfad.includes('/redaktion/medien/') ? 'seiten' : 'beitraege';
+  document.querySelector(`[data-medien-reiter] [data-reiter="${art}"]`)?.setAttribute('aria-current', 'page');
+</script>
+
+<style>
+  .mr-reiter { display: flex; flex-wrap: wrap; gap: 0; margin: 0 0 22px; border-bottom: 2px solid var(--rule); }
+  .mr-reiter a {
+    margin-bottom: -2px; padding: 10px 16px; border-bottom: 3px solid transparent; color: var(--purple);
+    font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .mr-reiter a:hover { color: var(--magenta-2); }
+  .mr-reiter a[aria-current] { border-bottom-color: var(--magenta); }
+</style>

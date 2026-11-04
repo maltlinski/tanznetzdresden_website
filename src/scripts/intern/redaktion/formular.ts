@@ -3,6 +3,7 @@
  * bindet sie an den Eintrag und prüft sie vor dem Speichern.
  */
 import { renderMarkdown } from '../../../lib/markdown';
+import { zuMarkdown } from '../../../lib/news-bloecke';
 import { slugify } from '../../../lib/supabase';
 import type { Bereich, Feld, Option } from './bereiche';
 import { aufloesen, holen, leer, relativ, setzen, type Daten, type Eintrag } from './daten';
@@ -24,6 +25,8 @@ export interface FormKontext {
   geaendert(): void;
   /** der ganze Eintrag wurde ein- oder ausgeblendet (Schalter „Auf der Website anzeigen“) */
   sichtbarkeit?(an: boolean): void;
+  /** Foto aus der Mediathek wählen (für „Bild aus Medien“ im Text-Editor); null = abgebrochen */
+  medienWaehlen?(): Promise<{ datei: string; alt: string } | null>;
 }
 
 interface Bindung {
@@ -161,6 +164,26 @@ function markdownFeld(f: Feld, bind: Bindung, k: FormKontext, en: boolean, gespe
   const steuer = h('div', { class: 'rf-md' }, leiste, ta, vorschau);
   const r = rahmen(f, id, steuer, { en });
   ta.setAttribute('aria-describedby', r.beschrieben);
+  // Text-Editor (TipTap) statt Markdown-Zeichen; bleibt im Textmodus, wenn der Text etwas enthält, das er nicht kennt
+  let rt: { fokus(): void } | null = null;
+  if (!gesperrt) {
+    void import('./richtext').then(({ richtext }) => {
+      const bild = f.typ === 'markdown' && f.bilder && k.medienWaehlen
+        ? async () => {
+          const m = await k.medienWaehlen!();
+          if (!m) return null;
+          return zuMarkdown([{ typ: 'bilder', darstellung: 'raster', breite: 'text', format: 'original', spalten: 2, bilder: [{ datei: m.datei, alt: m.alt }], titel: '', titel_en: '', text: '', text_en: '', foto: '' }], 'de');
+        }
+        : undefined;
+      rt = richtext(ta, { label: `${f.label}${en ? ' (Englisch)' : ''}`, bild });
+      if (rt) {
+        leiste.hidden = true;
+        vorschau.hidden = true;
+        steuer.classList.add('rf-md--rt');
+        ta.closest('.rf-feld')?.querySelector('label')?.addEventListener('click', () => rt?.fokus());
+      }
+    }).catch(() => {});
+  }
   const geaendert = () => {
     schreibe(bind, f, ta.value.replace(/\s+$/, ''), k);
     k.geaendert();
@@ -214,7 +237,7 @@ function markdownFeld(f: Feld, bind: Bindung, k: FormKontext, en: boolean, gespe
       r.zeigen(fehler);
       return fehler;
     },
-    fokus: () => ta.focus(),
+    fokus: () => (rt ? rt.fokus() : ta.focus()),
   };
 }
 

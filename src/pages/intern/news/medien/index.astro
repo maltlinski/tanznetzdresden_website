@@ -6,6 +6,7 @@
  */
 import Redaktion from '../../../../layouts/Redaktion.astro';
 import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
+import MedienReiter from '../../../../components/intern/MedienReiter.astro';
 import '../../../../styles/mediathek.css';
 import '../../../../styles/redaktion.css';
 ---
@@ -17,6 +18,7 @@ import '../../../../styles/redaktion.css';
     </div>
     <span class="md-kopf__stat" data-stat></span>
   </div>
+  <MedienReiter />
 
   <div class="i-card" data-no-access hidden>
     <p>Die Mediathek ist für Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.</p>
@@ -166,6 +168,13 @@ import '../../../../styles/redaktion.css';
         },
       });
       detail.classList.toggle('is-aus', istAus(m));
+      // Bildbeschreibung ist Pflicht: Hinweis direkt am Feld, solange sie fehlt
+      const pflicht = () => {
+        const f = detail.querySelector<HTMLElement>('#md-alt-fehler');
+        if (f) f.textContent = m.alt.trim() ? '' : 'Bitte beschreiben, was zu sehen ist. Ohne Beschreibung sollte das Foto nicht auf die Website.';
+        detail.querySelector('#md-alt')?.setAttribute('aria-invalid', String(!m.alt.trim()));
+      };
+      requestAnimationFrame(pflicht);
       detail.hidden = false;
       detail.replaceChildren(
         h('div', { class: 'rf-sichtbar md-detail__sicht' },
@@ -175,7 +184,8 @@ import '../../../../styles/redaktion.css';
             : 'Ausblenden geht, sobald die Migration 20261104000000_sichtbar.sql eingespielt ist (Admin).' })),
         fokus,
         crops,
-        feld('md-alt', 'Bildbeschreibung (optional)', m.alt, (v) => { m.alt = v; stat(); }, { maxLength: 300, placeholder: 'Was ist zu sehen?' }, 'Hilft Menschen, die das Foto nicht sehen können. Gilt überall, wo das Foto steht.'),
+        feld('md-alt', 'Bildbeschreibung (Pflicht)', m.alt, (v) => { m.alt = v; stat(); pflicht(); }, { maxLength: 300, placeholder: 'Was ist zu sehen?', required: true, 'aria-required': 'true', 'aria-describedby': 'md-alt-fehler' }, 'Pflicht: Hilft Menschen, die das Foto nicht sehen können. Gilt überall, wo das Foto steht.'),
+        h('p', { class: 'rf-fehler', id: 'md-alt-fehler', 'aria-live': 'polite' }),
         feld('md-alt-en', 'Englisch (optional)', m.alt_en, (v) => (m.alt_en = v), { maxLength: 300, lang: 'en', placeholder: 'Image description' }),
         feld('md-credit', 'Fotonachweis', m.credit, (v) => (m.credit = v), { maxLength: 120, placeholder: 'Vorname Nachname' }),
         h('span', { class: 'md-detail__stand', 'data-gespeichert': '', role: 'status' }),
@@ -226,11 +236,14 @@ import '../../../../styles/redaktion.css';
           showMessage(msg, `„${f.name}“: ${errorText(e)}`);
         }
       }
-      upStatus.textContent = neu.length ? (neu.length === 1 ? 'Hochgeladen. Jetzt noch kurz beschreiben, was zu sehen ist.' : `${neu.length} Fotos hochgeladen.`) : '';
+      upStatus.textContent = neu.length ? (neu.length === 1 ? 'Hochgeladen. Jetzt noch beschreiben, was zu sehen ist (Pflicht).' : `${neu.length} Fotos hochgeladen. Jetzt jedes beschreiben, was zu sehen ist (Pflicht).`) : '';
       auswahl = null;
       await laden();
       const erstes = liste.find((m) => m.datei === neu[0]);
-      if (erstes) zeigen(erstes);
+      if (erstes) {
+        zeigen(erstes);
+        detail.querySelector<HTMLInputElement>('#md-alt')?.focus();
+      }
     };
     const input = $<HTMLInputElement>('[data-upload]');
     input.addEventListener('change', () => {

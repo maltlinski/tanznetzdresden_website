@@ -110,7 +110,7 @@ const pad = (n: number) => String(n).padStart(2, '0');
   </section>
 
   {abschnittZeigen('kooperationen', 'anfrage') && (
-  <section class="coop" aria-labelledby="coop-h">
+  <section class="coop" aria-labelledby="coop-h" data-abschnitt="kooperationen.anfrage">
     <KeilBar color="var(--purple)" height={14} flip class="coop__keil" />
     <div class="wrap coop__inner">
       <div class="coop__text">

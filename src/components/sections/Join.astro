@@ -11,7 +11,7 @@ const tx = texte(lang, 'startseite', 'mitglied');
 const [l1, l2] = zeilen(tx.titel);
 const t = { kicker: tx.kicker, l1, l2, lead: tx.lead, cta: tx.antrag, donate: tx.spende, nlLead: tx.newsletter };
 ---
-<section id="mitglied" class="join" aria-labelledby="join-h">
+<section id="mitglied" class="join" aria-labelledby="join-h" data-abschnitt="startseite.mitglied">
   <KeilBar color="var(--purple)" height={14} flip class="join__keil" />
   <div class="join__grid">
     <div data-reveal>

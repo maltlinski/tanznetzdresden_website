@@ -34,7 +34,8 @@ interface Basis {
 export type Feld =
   | (Basis & { typ: 'text'; max?: number; muster?: [RegExp, string] })
   | (Basis & { typ: 'textlang'; zeilen?: number; max?: number })
-  | (Basis & { typ: 'markdown' })
+  /** bilder: „Bild aus Medien“ im Editor (nur wo die Seite Bilder-Abschnitte zeigt, z. B. News) */
+  | (Basis & { typ: 'markdown'; bilder?: boolean })
   | (Basis & { typ: 'auswahl'; optionen: Option[] })
   | (Basis & { typ: 'mehrfach'; optionen: Option[]; min?: number })
   | (Basis & { typ: 'janein'; standard?: boolean })
@@ -73,6 +74,10 @@ interface BereichBasis {
   info?: (e: Eintrag, k: Kontext) => string;
   /** öffentliche Seite des Eintrags (ohne Basis-Pfad) */
   seite?: (e: Eintrag) => string | null;
+  /** Vorschau: wo der Eintrag auf der Seite steht (CSS-Selektor; ohne = die ganze Seite) */
+  anker?: (e: Eintrag) => string;
+  /** Vorschau: wo der lange Text (body) auf der Seite steht, damit er beim Tippen mitläuft */
+  textSelektor?: string;
   /** zusätzliche Prüfungen: Fehlermeldung je Feld */
   pruefen?: (e: Eintrag) => Record<string, string>;
 }
@@ -173,6 +178,7 @@ export const bereiche: Bereich[] = [
         .filter(Boolean)
         .join(' · '),
     seite: (e) => (e.data.draft ? null : `termine/${e.id}/`),
+    textSelektor: '.tb__text',
     filter: [
       { id: 'kommend', label: 'Kommende', passt: (e) => String(e.data.start ?? '').slice(0, 10) >= heute() },
       { id: 'vergangen', label: 'Vergangene', passt: (e) => String(e.data.start ?? '').slice(0, 10) < heute() },
@@ -211,6 +217,7 @@ export const bereiche: Bereich[] = [
     titel: (e) => e.data.title ?? e.id,
     info: (e) => [e.data.since, e.data.beendet ? 'beendet' : '', e.data.seite ? `eigene Seite: /${routes[e.data.seite as keyof typeof routes]?.de ?? ''}` : ''].filter(Boolean).join(' · '),
     seite: (e) => `formate/#${e.id}`,
+    anker: (e) => `#${e.id}`,
     pruefen: (e) => linksPruefen(e.data.links),
     felder: [
       SICHTBAR,
@@ -255,6 +262,7 @@ export const bereiche: Bereich[] = [
     titel: (e) => e.data.titel ?? e.id,
     info: (e) => [e.data.jahre, e.data.art].filter(Boolean).join(' · '),
     seite: () => 'formate/#archiv',
+    anker: (e) => `#archiv-${e.id}`,
     pruefen: (e) => linksPruefen(e.data.links),
     felder: [
       SICHTBAR,
@@ -280,6 +288,7 @@ export const bereiche: Bereich[] = [
     neueId: (d) => String(d.jahr ?? ''),
     titel: (e) => `${e.id}: ${(e.data.punkte ?? []).join(', ')}`,
     seite: () => 'formate/',
+    anker: (e) => `[data-inhalt="chronik:${e.id}"]`,
     felder: [
       SICHTBAR,
       { typ: 'text', key: 'id', label: 'Jahr', pflicht: true, nurNeu: true, muster: [/^\d{4}$/, 'Vier Ziffern, z. B. 2027'] },
@@ -325,12 +334,13 @@ export const bereiche: Bereich[] = [
     titel: (e) => e.data.title ?? e.id,
     info: (e) => [datumDe(e.data.date), e.data.category, e.en?.data.title ? 'DE/EN' : 'nur DE'].filter(Boolean).join(' · '),
     seite: (e) => (e.data.draft ? null : `news/${e.id}/`),
+    textSelektor: '.ab__text',
     pruefen: (e): Record<string, string> => (e.data.image && !e.data.alt ? { alt: 'Zum Foto fehlt die Bildbeschreibung.' } : {}),
     felder: [
       ENTWURF,
       { typ: 'text', key: 'title', label: 'Titel', pflicht: true, en: true },
       { typ: 'textlang', key: 'teaser', label: 'Kurztext', pflicht: true, en: true, zeilen: 3, max: 400 },
-      { typ: 'markdown', key: 'body', label: 'Text', en: true },
+      { typ: 'markdown', key: 'body', label: 'Text', en: true, bilder: true },
       { typ: 'datum', key: 'date', label: 'Datum', pflicht: true },
       { typ: 'auswahl', key: 'category', label: 'Kategorie', pflicht: true, optionen: opt('Netzwerk', 'Ausschreibung', 'Training', 'Verein', 'Rückblick', 'Stimme') },
       { typ: 'text', key: 'author', label: 'Text von', pflicht: true },
@@ -415,6 +425,7 @@ export const bereiche: Bereich[] = [
     titel: (e, k) => k.name('personen', e.id),
     info: (e) => e.data.stil ?? '',
     seite: (e) => `profitraining/#dozentin-${e.id}`,
+    anker: (e) => `#dozentin-${e.id}`,
     felder: [
       SICHTBAR,
       { typ: 'verweis', key: 'id', label: 'Person', pflicht: true, nurNeu: true, quelle: 'personen', hilfe: 'Name, Profil und Foto kommen aus dem Profil der Person. Wer fehlt: unter „Personen“ anlegen oder das eigene Profil im internen Bereich freigeben lassen.' },
@@ -554,6 +565,7 @@ export const bereiche: Bereich[] = [
     titel: (e) => e.data.titel ?? e.id,
     info: (e) => `${(e.data.partner ?? []).length} Partner`,
     seite: () => 'kooperationen/',
+    anker: (e) => `#gruppe-${e.id}`,
     felder: [
       SICHTBAR,
       { typ: 'text', key: 'titel', label: 'Gruppe', pflicht: true, en: true },
@@ -576,6 +588,7 @@ export const bereiche: Bereich[] = [
     wurzel: 'liste',
     titel: () => 'Arbeitsgruppen',
     seite: () => 'verein/',
+    anker: () => '#arbeitsgruppen',
     felder: [
       { typ: 'liste', key: 'liste', label: 'Arbeitsgruppen', pflicht: true, neu: 'AG hinzufügen', titel: (v) => v.name ?? '', felder: [
         SICHTBAR,
@@ -596,6 +609,7 @@ export const bereiche: Bereich[] = [
     datei: 'src/settings/hero.json',
     titel: () => 'Startseite: Kopf',
     seite: () => '',
+    anker: () => '#top',
     felder: [
       { typ: 'text', key: 'claim.de.lead', label: 'Anfang', en: 'claim.en.lead', pflicht: true, platzhalter: 'Tanz für' },
       { typ: 'werte', key: 'claim.de.woerter', label: 'Wechselnde Wörter', en: 'claim.en.woerter', art: 'text', neu: 'Wort hinzufügen', ausblendbar: true, hilfe: 'Laufen nacheinander durch. Leere Liste = Zeile ausblenden. Ausblenden gilt je Sprache.' },
@@ -612,6 +626,7 @@ export const bereiche: Bereich[] = [
     datei: 'src/settings/haltung.json',
     titel: () => 'Über uns: Haltung',
     seite: () => 'verein/',
+    anker: () => '#haltung',
     felder: [
       { typ: 'text', key: 'de.kicker', label: 'Kicker', en: 'en.kicker', pflicht: true },
       { typ: 'text', key: 'de.l1', label: 'Überschrift, Zeile 1', en: 'en.l1', pflicht: true },
@@ -733,6 +748,7 @@ export const bereiche: Bereich[] = [
     titel: (e) => e.data.title ?? e.id,
     info: (e) => [e.data.updated ? `Stand ${datumDe(e.data.updated)}` : '', e.en?.data.title ? 'DE/EN' : 'nur DE'].filter(Boolean).join(' · '),
     seite: (e) => (seitenRouten[e.id] ? routes[seitenRouten[e.id]].de : null),
+    textSelektor: '.prose',
     felder: [
       { typ: 'text', key: 'title', label: 'Titel', pflicht: true, en: true },
       { typ: 'textlang', key: 'description', label: 'Kurzbeschreibung', en: true, zeilen: 2, hilfe: 'Für Suchmaschinen.', erweitert: true },
