@@ -3,6 +3,8 @@
  * Vorschau neben dem Formular (Redaktion): Leiste mit Gerät (Desktop, Tablet, Handy), Sprache, „Ausgeblendetes
  * markieren“ und „Neu laden“, darunter die Seite der Website im Rahmen. Logik: src/scripts/intern/redaktion/vorschau.ts.
  * Auf schmalen Bildschirmen liegt sie als Fenster über dem Formular und öffnet mit „Vorschau“.
+ * Mehr Platz: Trenner zwischen Formular und Vorschau zum Ziehen (auch mit den Pfeiltasten, gemerkt im Browser),
+ * „Vollbild“ legt die Vorschau über das ganze Fenster (Esc schließt); die Seitenleiste klappt in Intern.astro ein.
  */
 interface Props {
   /** Englisch umschalten anbieten */
@@ -10,6 +12,9 @@ interface Props {
 }
 const { sprachen = true } = Astro.props;
 ---
+<div class="vs-griff" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Breite von Formular und Vorschau"
+  aria-valuemin="25" aria-valuemax="75" aria-valuenow="50" title="Ziehen, um Formular oder Vorschau breiter zu machen. Doppelklick: zurück"
+  data-vs-griff hidden></div>
 <section class="vs" data-vorschau data-geraet="desktop" aria-label="Vorschau der Website" hidden>
   <div class="vs__leiste">
     <span class="vs__titel">Vorschau</span>
@@ -26,6 +31,7 @@ const { sprachen = true } = Astro.props;
     )}
     <label class="i-check vs__mark"><input type="checkbox" data-vs-markieren checked />Ausgeblendetes markiert zeigen</label>
     <button type="button" class="vs__neu" data-vs-neu>Neu laden</button>
+    <button type="button" class="vs__gross" data-vs-gross aria-pressed="false">Vollbild</button>
     <button type="button" class="vs__zu" data-vs-zu>Schließen</button>
   </div>
   <p class="vs__info">Zeigt die Seite mit deinen Änderungen, noch bevor du speicherst. Neue Einträge und neue Fotos erscheinen hier erst nach dem Speichern.</p>
@@ -40,7 +46,7 @@ const { sprachen = true } = Astro.props;
   .vs__leiste { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 12px; background: var(--purple); color: #fff; }
   .vs__titel { font-family: var(--font-mono); font-size: 11px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
   .vs__gruppe { display: flex; }
-  .vs__gruppe button, .vs__neu, .vs__zu {
+  .vs__gruppe button, .vs__neu, .vs__zu, .vs__gross {
     padding: 5px 9px; margin-left: -1px; border: 1px solid rgba(255, 255, 255, 0.45); background: none; color: #fff; cursor: pointer;
     font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
   }
@@ -48,10 +54,29 @@ const { sprachen = true } = Astro.props;
   .vs__mark { font-size: 12.5px; color: #fff; }
   .vs__neu { margin-left: auto; }
   .vs__zu { display: none; }
+  .vs__gross[aria-pressed='true'] { background: #fff; color: var(--purple); border-color: #fff; }
+  /* Vollbild: über dem ganzen Fenster */
+  .vs.is-gross { position: fixed; inset: 0; z-index: 60; padding: 12px; background: var(--tint-2); }
+  .vs.is-gross .vs__buehne { flex: 1; height: auto; }
+
+  /* Trenner zwischen Formular und Vorschau (nur neben dem Formular, breite Bildschirme) */
+  .vs-griff { display: none; }
+  @media (min-width: 1280px) {
+    :global(.r-split) > .vs-griff:not([hidden]) {
+      display: flex; justify-content: center; align-self: stretch; position: relative; cursor: col-resize; touch-action: none; outline: none;
+    }
+    .vs-griff::before { content: ''; width: 2px; background: var(--rule); transition: background var(--dur-base); }
+    .vs-griff::after {
+      content: ''; position: sticky; top: 45vh; align-self: flex-start; margin-left: -6px; width: 10px; height: 44px;
+      border: 2px solid var(--purple); border-width: 0 2px; background: var(--tint-2);
+    }
+    .vs-griff:hover::before, .vs-griff:focus-visible::before, .vs-griff.is-ziehen::before { background: var(--magenta); }
+    .vs-griff:focus-visible { outline: 2px solid var(--magenta); outline-offset: -2px; }
+  }
   .vs__info { margin: 0; font-size: 12.5px; line-height: var(--lh-text); color: var(--ink-muted); }
   .vs__hinweise { margin: 0; padding: 8px 12px 8px 28px; background: var(--tint); font-size: 13px; line-height: var(--lh-text); color: var(--purple); }
   .vs__hinweise[hidden] { display: none; }
-  .vs__buehne { position: relative; height: min(78vh, 900px); overflow: hidden; background: #fff; border: 1px solid var(--rule); }
+  .vs__buehne { position: relative; height: max(480px, calc(100vh - 170px)); overflow: hidden; background: #fff; border: 1px solid var(--rule); }
   .vs[data-geraet='tablet'] .vs__buehne, .vs[data-geraet='handy'] .vs__buehne { background: var(--tint-2); }
   .vs iframe { position: absolute; left: 0; top: 0; border: 0; background: #fff; transform-origin: 0 0; }
   .vs[data-geraet='handy'] iframe, .vs[data-geraet='tablet'] iframe { left: 50%; translate: -50% 0; transform-origin: 50% 0; }
@@ -63,6 +88,7 @@ const { sprachen = true } = Astro.props;
     .vs:not(.is-offen) { display: none; }
     .vs__buehne { flex: 1; height: auto; }
     .vs__zu { display: inline-block; }
+    .vs__gross { display: none; }
     .vs-auf { display: inline-flex; position: fixed; right: 16px; bottom: 88px; z-index: 55; }
     .vs-auf[hidden] { display: none; }
   }
@@ -71,6 +97,78 @@ const { sprachen = true } = Astro.props;
 <script>
   // Auf schmalen Bildschirmen: öffnen und schließen
   const vs = document.querySelector<HTMLElement>('[data-vorschau]');
+  const griff = document.querySelector<HTMLElement>('[data-vs-griff]');
+  const gross = vs?.querySelector<HTMLButtonElement>('[data-vs-gross]');
+
+  // Vollbild an und aus (Esc schließt)
+  const vollbild = (an: boolean) => {
+    vs?.classList.toggle('is-gross', an);
+    gross?.setAttribute('aria-pressed', String(an));
+    if (gross) gross.textContent = an ? 'Verkleinern' : 'Vollbild';
+  };
+  gross?.addEventListener('click', () => vollbild(!vs?.classList.contains('is-gross')));
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && vs?.classList.contains('is-gross')) vollbild(false);
+  });
+
+  // Trenner: Anteil des Formulars an der Breite (25–75 %), gemerkt im Browser
+  const split = griff?.parentElement?.classList.contains('r-split') ? griff.parentElement : null;
+  if (griff && split && vs) {
+    const KEY = 'tndd-vorschau-anteil';
+    const setzen = (anteil: number | null, merken = true) => {
+      if (anteil === null) {
+        split.style.removeProperty('--r-form');
+        griff.setAttribute('aria-valuenow', '50');
+      } else {
+        const a = Math.round(Math.min(75, Math.max(25, anteil)));
+        split.style.setProperty('--r-form', `${a}%`);
+        griff.setAttribute('aria-valuenow', String(a));
+      }
+      if (!merken) return;
+      try {
+        if (anteil === null) localStorage.removeItem(KEY);
+        else localStorage.setItem(KEY, griff.getAttribute('aria-valuenow') ?? '50');
+      } catch {}
+    };
+    // Trenner nur, solange die Vorschau daneben steht
+    const zeigen = () => (griff.hidden = vs.hidden);
+    new MutationObserver(zeigen).observe(vs, { attributes: true, attributeFilter: ['hidden'] });
+    zeigen();
+    try {
+      const gemerkt = Number(localStorage.getItem(KEY));
+      if (gemerkt) setzen(gemerkt, false);
+    } catch {}
+    const jetzt = () => {
+      const r = split.getBoundingClientRect();
+      return ((griff.getBoundingClientRect().left - r.left) / r.width) * 100;
+    };
+    griff.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      griff.setPointerCapture(e.pointerId);
+      griff.classList.add('is-ziehen');
+      vs.style.pointerEvents = 'none';
+    });
+    griff.addEventListener('pointermove', (e) => {
+      if (!griff.hasPointerCapture(e.pointerId)) return;
+      const r = split.getBoundingClientRect();
+      setzen(((e.clientX - r.left) / r.width) * 100, false);
+    });
+    const loslassen = () => {
+      griff.classList.remove('is-ziehen');
+      vs.style.pointerEvents = '';
+      setzen(Number(griff.getAttribute('aria-valuenow')));
+    };
+    griff.addEventListener('lostpointercapture', loslassen);
+    griff.addEventListener('dblclick', () => setzen(null));
+    griff.addEventListener('keydown', (e) => {
+      const schritt = { ArrowLeft: -5, ArrowRight: 5 }[e.key];
+      if (schritt) setzen(jetzt() + schritt);
+      else if (e.key === 'Home') setzen(25);
+      else if (e.key === 'End') setzen(75);
+      else return;
+      e.preventDefault();
+    });
+  }
   const auf = document.querySelector<HTMLButtonElement>('[data-vs-auf]');
   auf?.addEventListener('click', () => {
     vs?.classList.add('is-offen');

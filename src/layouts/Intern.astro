@@ -40,6 +40,7 @@ const t = tr(lang, {
     inhalte: 'Website-Inhalte', uebersicht: 'Übersicht', seiten: 'Seiten', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung',
     supabase: 'Datenbank ↗', web: 'Website ansehen →', aus: 'Abmelden',
     zurWebsite: '← Zur Website', moment: 'Einen Moment …', setupH: 'Noch nicht eingerichtet', sprache: 'Sprache',
+    leisteZu: 'Seitenleiste einklappen', leisteAuf: 'Seitenleiste zeigen',
   },
   en: {
     bereich: 'Members area', logo: 'Members area: My status', status: 'My status', profil: 'My profile', mitglieder: 'Members',
@@ -47,6 +48,7 @@ const t = tr(lang, {
     inhalte: 'Website content', uebersicht: 'Overview', seiten: 'Pages', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Administration',
     supabase: 'Database ↗', web: 'View website →', aus: 'Log out',
     zurWebsite: '← To the website', moment: 'One moment …', setupH: 'Not set up yet', sprache: 'Language',
+    leisteZu: 'Collapse sidebar', leisteAuf: 'Show sidebar',
   },
 });
 const mitglied: { id: Punkt; label: string; path: string; n?: string }[] = [
@@ -77,9 +79,15 @@ const sprachen = anders
   ? (['de', 'en'] as const).map((l) => ({ l, kurz: l.toUpperCase(), name: l === 'de' ? 'Deutsch' : 'English', href: l === lang ? Astro.url.pathname : anders.pfad }))
   : [];
 const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : null;
+// eingeklappte Seitenleiste (mehr Platz für Formular und Vorschau), im Browser gemerkt
+const LEISTE_KEY = 'tndd-intern-leiste';
 ---
 <Base title={`${title} · Intern`} noindex>
-  <script is:inline slot="head" define:vars={{ weiche }}>
+  <script is:inline slot="head" define:vars={{ weiche, LEISTE_KEY }}>
+    // Seitenleiste eingeklappt? Vor dem ersten Zeichnen setzen, damit nichts springt
+    try {
+      if (localStorage.getItem(LEISTE_KEY) === 'zu') document.documentElement.classList.add('leiste-zu');
+    } catch {}
     // Gemerkte Sprache (Umschalter in der Leiste): gleich zur Seite in dieser Sprache
     let weiter = false;
     try {
@@ -99,7 +107,11 @@ const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : nu
   </script>
 
   <div class="intern rd surface-tint" data-intern data-state="loading">
-    <aside class="rd-side" data-side>
+    <aside class="rd-side" id="rd-side" data-side>
+      <button type="button" class="rd-side__klapp" data-leiste-klapp aria-controls="rd-side" aria-expanded="true"
+        data-zu={t.leisteZu} data-auf={t.leisteAuf} aria-label={t.leisteZu} title={t.leisteZu}>
+        <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true"><path d="M10 3 5 8l5 5" fill="none" stroke="currentColor" stroke-width="2" /></svg>
+      </button>
       <div class="rd-side__kopf">
         <a href={ziel('')} class="rd-side__logo" aria-label={t.logo} data-blende-ziel="logo"><Logo part="mark" /></a>
         <span class="rd-side__k" data-blende-ziel="tag">{t.bereich}</span>
@@ -192,6 +204,25 @@ const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : nu
 
   blendeAus();
 
+  // Seitenleiste ein- und ausklappen (nur breite Bildschirme), Zustand im Browser merken
+  const klapp = document.querySelector<HTMLButtonElement>('[data-leiste-klapp]');
+  const leisteZeigen = () => {
+    const zu = document.documentElement.classList.contains('leiste-zu');
+    if (!klapp) return;
+    const label = (zu ? klapp.dataset.auf : klapp.dataset.zu) ?? '';
+    klapp.setAttribute('aria-expanded', String(!zu));
+    klapp.setAttribute('aria-label', label);
+    klapp.title = label;
+  };
+  leisteZeigen();
+  klapp?.addEventListener('click', () => {
+    const zu = document.documentElement.classList.toggle('leiste-zu');
+    try {
+      localStorage.setItem('tndd-intern-leiste', zu ? 'zu' : 'auf');
+    } catch {}
+    leisteZeigen();
+  });
+
   // Sprache merken: beim nächsten Besuch öffnet der interne Bereich in dieser Sprache
   document.querySelectorAll<HTMLAnchorElement>('a[data-intern-sprache]').forEach((a) =>
     a.addEventListener('click', (e) => {
@@ -276,8 +307,21 @@ const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : nu
   :global(body:has(.rd)) { background: var(--tint-2); }
   .rd { display: flex; min-height: 100vh; background: var(--tint-2); }
   .rd-side {
-    flex: 0 0 220px; position: sticky; top: 0; align-self: flex-start; height: 100vh; overflow: auto; z-index: 20;
+    flex: 0 0 220px; position: sticky; box-sizing: border-box; top: 0; align-self: flex-start; height: 100vh; overflow: auto; z-index: 20;
     display: flex; flex-direction: column; gap: 32px; padding: 26px 14px 22px; background: var(--purple); color: #fff;
+  }
+  .rd-side__klapp {
+    position: absolute; top: 14px; right: 10px; display: flex; align-items: center; justify-content: center; width: 30px; height: 30px;
+    padding: 0; border: 1px solid rgba(255, 255, 255, 0.35); background: none; color: #fff; cursor: pointer;
+  }
+  .rd-side__klapp:hover { border-color: #fff; background: rgba(255, 255, 255, 0.08); }
+  .rd-side__klapp svg { transition: rotate var(--dur-base); }
+  /* eingeklappt: schmaler Streifen mit dem Knopf, alles andere weg */
+  @media (min-width: 901px) {
+    :global(html.leiste-zu) .rd-side { flex-basis: 50px; padding: 14px 0; overflow: hidden; }
+    :global(html.leiste-zu) .intern[data-state] .rd-side > :not(.rd-side__klapp) { display: none !important; }
+    :global(html.leiste-zu) .rd-side__klapp { position: static; margin: 0 auto; }
+    :global(html.leiste-zu) .rd-side__klapp svg { rotate: 180deg; }
   }
   .rd-side__kopf { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 0 8px; }
   .rd-side__logo { display: block; width: 76px; color: #fff; }
@@ -354,6 +398,7 @@ const weiche = anders ? { key: SPRACHE_KEY, hier: lang, dort: anders.pfad } : nu
     .rd-side__person, .rd-side__web { display: none; }
     .rd-side__aus { margin: 0; }
     .rd-side__web--aussen { margin: 0 0 0 auto; padding: 0; }
+    .rd-side__klapp { display: none; }
   }
 
   /* Blende */

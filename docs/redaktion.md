@@ -80,6 +80,9 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
   Was du tippst oder ausblendest, siehst du dort sofort, bevor du speicherst; beim Bearbeiten springt sie zur Stelle.
   Oben: Desktop, Tablet, Handy, Deutsch/Englisch, „Ausgeblendetes markiert zeigen“. Neue Einträge und neue Fotos
   zeigt sie erst nach dem Speichern. Jede Seite ansehen: *Website-Inhalte → Übersicht → Vorschau öffnen*.
+  Mehr Platz: Der Knopf oben in der Seitenleiste klappt sie ein (bleibt so, bis du ihn wieder drückst). Den
+  Trenner zwischen Formular und Vorschau ziehst du nach links oder rechts (oder Pfeiltasten; Doppelklick: zurück).
+  „Vollbild“ legt die Vorschau über das ganze Fenster, Esc schließt.
 - **Medien:** drei Reiter. *Fotos für Beiträge* (Mediathek: hochladen per Ziehen, verkleinert automatisch,
   Bildbeschreibung Pflicht, Fotonachweis, Ausschnitt, ausblenden). *Fotos der Seiten* (Formate, Personen, Förderer)
   und *Dokumente (PDF)* (hochladen per Ziehen, höchstens 8 MB). Jede Datei zeigt „Wird verwendet auf …“; löschen
@@ -221,7 +224,8 @@ löschen.
 
 **Vorschau:** `src/scripts/intern/redaktion/vorschau.ts` lädt die echte Seite (gleiche Adresse) in einen Rahmen und
 ändert sie im Browser: Texte ersetzen, `html` für lange Texte, Ausgeblendetes mit `data-vs-aus` markieren, `springen()`
-zur Stelle. Leiste und Rahmen: `src/components/intern/VorschauPanel.astro`. Welche Seite und Stelle: in `bereiche.ts`
+zur Stelle. Leiste und Rahmen: `src/components/intern/VorschauPanel.astro` (mit Trenner `--r-form` in `.r-split` und
+Vollbild; gemerkt in `localStorage`, Seitenleiste eingeklappt über `html.leiste-zu` in `src/layouts/Intern.astro`). Welche Seite und Stelle: in `bereiche.ts`
 `seite()`, `anker()` (CSS-Selektor) und `textSelektor` (wo der lange Text steht), Zustand aus dem Formular in
 `vorschau-eintrag.ts`. Ausblendbare Abschnitte tragen auf der Website `data-abschnitt="seite.abschnitt"`,
 Chronik-Jahre `data-inhalt`. Die Website selbst bleibt unverändert, nur unsichtbare `data-`Attribute kommen dazu.

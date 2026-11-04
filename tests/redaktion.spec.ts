@@ -324,12 +324,21 @@ test('Textseite mit englischer Fassung bearbeiten (Text-Editor), Tabelle und Not
   await expect(en).toContainText(/Statutes|statutes|purpose/i);
   await expect(page.locator('.rf-en .rt-roh').first()).toBeVisible();
   // ans Ende: neuer Absatz mit fettem Wort
-  await en.click();
-  await page.keyboard.press('Control+End');
+  // Cursor ans Ende des letzten Absatzes (Strg+Ende ist im Handy-Profil nicht verlässlich)
+  await en.locator(':scope > p').last().click();
+  await en.evaluate((el) => {
+    const r = document.createRange();
+    r.selectNodeContents(el.lastElementChild!);
+    r.collapse(false);
+    getSelection()!.removeAllRanges();
+    getSelection()!.addRange(r);
+  });
+  await page.waitForTimeout(100);
   await page.keyboard.press('Enter');
   await page.keyboard.type('New paragraph with ');
   await page.locator('.rf-en').getByRole('button', { name: 'Fett' }).click();
   await page.keyboard.type('bold');
+  await expect(en.locator('strong', { hasText: 'bold' })).toBeVisible();
   await page.getByRole('button', { name: 'Speichern' }).click();
   await expect.poll(() => gespeichert.length).toBe(1);
   const pfade = gespeichert[0].aenderungen.map((a) => a.pfad);
@@ -753,6 +762,54 @@ test('Vorschau im Formular: Seite daneben, Änderungen vor dem Speichern, Ausgeb
   await panel.getByRole('button', { name: 'Handy' }).click();
   await expect(panel).toHaveAttribute('data-geraet', 'handy');
   expect(await page.locator('[data-vorschau] iframe').evaluate((f: HTMLIFrameElement) => f.style.width)).toBe('390px');
+});
+
+test('Mehr Platz für die Vorschau: Seitenleiste einklappen, Trenner ziehen, Vollbild', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'auf schmalen Bildschirmen liegt die Vorschau ohnehin als Fenster über dem Formular');
+  await page.setViewportSize({ width: 1600, height: 1000 });
+  await redaktion(page);
+  await page.goto('/intern/redaktion/eintrag/?b=formate&id=pop-up');
+  const panel = page.getByRole('region', { name: 'Vorschau der Website' });
+  await expect(panel).toBeVisible();
+  const breite = () => page.locator('[data-form]').evaluate((f) => f.getBoundingClientRect().width);
+
+  // Seitenleiste einklappen: das Formular wird breiter, der Zustand bleibt nach dem Neuladen
+  const vorher = await panel.evaluate((p) => p.getBoundingClientRect().width);
+  await page.getByRole('button', { name: 'Seitenleiste einklappen' }).click();
+  await expect(page.getByRole('button', { name: 'Seitenleiste zeigen' })).toHaveAttribute('aria-expanded', 'false');
+  expect(await page.locator('[data-side]').evaluate((s) => s.getBoundingClientRect().width)).toBeLessThan(60);
+  await expect.poll(() => panel.evaluate((p) => p.getBoundingClientRect().width)).toBeGreaterThan(vorher + 100);
+  await page.reload();
+  await expect(page.getByRole('button', { name: 'Seitenleiste zeigen' })).toBeVisible();
+
+  // Trenner mit der Tastatur: Formular schmaler, Vorschau breiter; gemerkt
+  const griff = page.getByRole('separator', { name: 'Breite von Formular und Vorschau' });
+  await expect(griff).toBeVisible();
+  const formVorher = await breite();
+  await griff.focus();
+  await page.keyboard.press('Home');
+  await expect(griff).toHaveAttribute('aria-valuenow', '25');
+  expect(await breite()).toBeLessThan(formVorher - 200);
+  await page.reload();
+  await expect(griff).toHaveAttribute('aria-valuenow', '25');
+  // ziehen mit der Maus
+  const box = (await griff.boundingBox())!;
+  await page.mouse.move(box.x + box.width / 2, box.y + 200);
+  await page.mouse.down();
+  await page.mouse.move(box.x + 400, box.y + 200, { steps: 5 });
+  await page.mouse.up();
+  expect(Number(await griff.getAttribute('aria-valuenow'))).toBeGreaterThan(40);
+
+  // Vollbild: Vorschau über dem ganzen Fenster, Esc schließt
+  await panel.getByRole('button', { name: 'Vollbild' }).click();
+  await expect.poll(() => panel.evaluate((p) => p.getBoundingClientRect().width)).toBe(1600);
+  await page.keyboard.press('Escape');
+  await expect(panel.getByRole('button', { name: 'Vollbild' })).toHaveAttribute('aria-pressed', 'false');
+  expect(await panel.evaluate((p) => p.getBoundingClientRect().width)).toBeLessThan(1200);
+
+  // zurück: Leiste wieder zeigen
+  await page.getByRole('button', { name: 'Seitenleiste zeigen' }).click();
+  expect(await page.locator('[data-side]').evaluate((s) => s.getBoundingClientRect().width)).toBeGreaterThan(200);
 });
 
 test('Vorschau in Texte: geänderter Text und ausgeblendeter Abschnitt erscheinen sofort', async ({ page, isMobile }) => {

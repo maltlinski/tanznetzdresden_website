@@ -289,8 +289,9 @@
 .rt-roh.ProseMirror-selectednode { outline: 2px solid var(--magenta); }
 
 /* ---------- Formular mit Vorschau daneben ---------- */
-.r-split { display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; }
+.r-split { --r-form: 860px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; }
 @media (min-width: 1280px) {
-  .r-split:has(> .vs:not([hidden])) { grid-template-columns: minmax(0, 860px) minmax(420px, 1fr); }
+  /* Formular | Trenner | Vorschau; --r-form setzt der Trenner (VorschauPanel.astro) */
+  .r-split:has(> .vs:not([hidden])) { grid-template-columns: minmax(320px, var(--r-form)) 28px minmax(380px, 1fr); gap: 0; }
   .r-split > .vs { position: sticky; top: 16px; }
 }
