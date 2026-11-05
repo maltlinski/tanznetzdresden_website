@@ -40,6 +40,20 @@ interface Mitglied {
  * Meldet eine Person mit Rolle an und baut Supabase samt Funktion „inhalte“ nach.
  * `mitglieder`: Profile für Redaktion → Freigaben; `aufrufe` sammelt Freigaben, gelöschte Fotos und Neubauten.
  */
+/** Verlauf der Redaktion: Speicherungen (Dateien) und Zeilen der Tabelle aenderungen, vor kurzem */
+const vor = (min: number) => new Date(Date.now() - min * 60_000).toISOString();
+const LOG_COMMITS = () => [
+  { sha: 'a1b2c3d', zeit: vor(30), titel: 'Format „POP UP“ geändert', von: 'Pia Presse', dateien: ['src/content/formate/pop-up.md'] },
+  { sha: 'b2c3d4e', zeit: vor(60 * 26), titel: 'Texte: Startseite (1 Text)', von: 'Max Vorstand', dateien: ['src/settings/texte.json'] },
+];
+const LOG_DB = () => [
+  {
+    id: 1, zeit: vor(10), bereich: 'beitraege', eintrag: 'open-call', titel: 'Open Call Residenz', aktion: 'geaendert', von_name: 'Max Vorstand',
+    vorher: { status: 'entwurf', body: 'Erster Absatz.\n\nZweiter Absatz.' }, nachher: { status: 'veroeffentlicht', body: 'Erster Absatz.\n\nZweiter Absatz, neu.' },
+  },
+  { id: 2, zeit: vor(45), bereich: 'termine', eintrag: '2026-11-20-studio', titel: 'Studio Round', aktion: 'geaendert', von_name: 'Pia Presse', vorher: { sichtbar: true }, nachher: { sichtbar: false } },
+];
+
 async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' = 'presse', mitglieder: Mitglied[] = [], aufrufe: string[] = []) {
   const gespeichert: Gespeichert[] = [];
   const dateien = ['src', 'public'].flatMap((d) => alleDateien(d)).filter((p) => ERLAUBT.test(p));
@@ -78,6 +92,7 @@ async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' =
       return json(req.headers()['accept']?.includes('object') ? p : [p]);
     }
     if (url.pathname === '/rest/v1/news_posts') return json([{ slug: 'aus-supabase', title: 'Beitrag aus News schreiben', status: 'veroeffentlicht' }]);
+    if (url.pathname === '/rest/v1/aenderungen') return json(LOG_DB());
     if (url.pathname === '/functions/v1/inhalte') {
       if (rolle === 'mitglied') return json({ fehler: 'Die Redaktion ist für Mitglieder mit der Rolle Presse, Vorstand oder Admin.' }, 403);
       const body = req.postDataJSON();
@@ -94,8 +109,13 @@ async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' =
         case 'status':
           return json({
             website: { status: 'completed', ergebnis: 'success', zeit: '2026-10-13T10:00:00Z', url: '', commit: 'h1' },
+            // für die Verwaltung (Zustand der Website, alle Commits)
             verlauf: [{ sha: 'h1', url: '', zeit: '2026-10-13T09:58:00Z', titel: 'Termin „POP UP“ geändert', von: 'Pia Presse' }],
           });
+        case 'verlauf':
+          return json({ eintraege: LOG_COMMITS(), mehr: false });
+        case 'aenderung':
+          return json({ dateien: body.sha === 'a1b2c3d' ? [{ pfad: 'src/content/formate/pop-up.md', status: 'modified', gekuerzt: false, patch: '@@ -1,4 +1,4 @@\n ---\n-title: POP UP\n+title: POP UP Sommer\n since: 2019' }] : [] });
         case 'speichern':
           gespeichert.push({ nachricht: body.nachricht, aenderungen: body.aenderungen });
           return json({ commit: 'c2', url: '' });
@@ -133,12 +153,16 @@ test('Übersicht: „Was möchtest du ändern?“, Seiten, Website-Status und Ve
   // direkt zu einer Seite der Website
   await expect(page.getByRole('link', { name: 'Startseite', exact: true })).toHaveAttribute('href', /redaktion\/seiten\/\?s=startseite$/);
   await expect(page.getByRole('status').filter({ hasText: 'Die Website ist aktuell' })).toBeVisible();
-  await expect(page.getByText('Termin „POP UP“ geändert')).toBeVisible();
-  // Seitenleiste: „Website-Inhalte“ mit Übersicht, Seiten, Texte, Medien, Beiträge, Termine, Freigaben
+  // Zuletzt geändert: Dateien und Datenbank zusammen, neueste zuerst, mit Link zu allen Änderungen
+  const verlauf = page.locator('[data-verlauf] > li');
+  await expect(verlauf.first()).toContainText('Beitrag „Open Call Residenz“ veröffentlicht');
+  await expect(verlauf.nth(1)).toContainText('Format „POP UP“ geändert');
+  await expect(page.getByRole('link', { name: /Alle Änderungen/ })).toHaveAttribute('href', /redaktion\/aenderungen\/$/);
+  // Seitenleiste: „Website-Inhalte“ mit Übersicht, Seiten, Texte, Medien, Beiträge, Termine, Freigaben, Änderungen
   const nav = page.getByRole('navigation', { name: 'Interner Bereich' });
   await expect(nav.getByRole('link', { name: 'Übersicht' })).toHaveAttribute('aria-current', 'page');
   await expect(nav.getByText('Website-Inhalte', { exact: true })).toBeVisible();
-  for (const name of ['Seiten', 'Texte', 'Medien', 'Beiträge', 'Termine', 'Freigaben']) await expect(nav.getByRole('link', { name: new RegExp(`^${name}`) })).toBeVisible();
+  for (const name of ['Seiten', 'Texte', 'Medien', 'Beiträge', 'Termine', 'Freigaben', 'Änderungen']) await expect(nav.getByRole('link', { name: new RegExp(`^${name}`) })).toBeVisible();
   // Verwaltung nur für Vorstand und Admin
   await expect(nav.getByRole('link', { name: 'Verwaltung' })).toBeHidden();
   // keine Fachbegriffe in der Oberfläche
@@ -812,6 +836,48 @@ test('Mehr Platz für die Vorschau: Seitenleiste einklappen, Trenner ziehen, Vol
   expect(await page.locator('[data-side]').evaluate((s) => s.getBoundingClientRect().width)).toBeGreaterThan(200);
 });
 
+test('Änderungen: Dateien und Datenbank zusammen, Filter, vorher/nachher', async ({ page }) => {
+  await redaktion(page);
+  await page.goto('/intern/redaktion/aenderungen/');
+  await expect(page.getByRole('heading', { name: 'Änderungen', level: 1 })).toBeVisible();
+  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Änderungen' })).toHaveAttribute('aria-current', 'page');
+  const log = page.locator('[data-log]');
+  await expect(page.locator('[data-anzahl]')).toHaveText('4 Änderungen');
+  // nach Tagen gruppiert, neueste zuerst; Sätze ohne Fachbegriffe
+  const zeilen = log.locator('.ae');
+  await expect(zeilen.nth(0)).toContainText('Beitrag „Open Call Residenz“ veröffentlicht');
+  await expect(zeilen.nth(1)).toContainText('Format „POP UP“ geändert');
+  await expect(zeilen.nth(1)).toContainText('Formate');
+  await expect(zeilen.nth(2)).toContainText('Termin „Studio Round“ ausgeblendet');
+  await expect(zeilen.nth(3)).toContainText('Texte: Startseite (1 Text)');
+  expect(await log.locator('.ae-tag').count()).toBeGreaterThanOrEqual(2);
+
+  // vorher/nachher: Datei (Feldname aus dem Formular statt „title“), Beitrag (Status, nur geänderte Zeile im Text)
+  await zeilen.nth(1).getByText('Was wurde geändert?').click();
+  await expect(zeilen.nth(1).locator('.ae-z--alt')).toHaveText(/Name: POP UP$/);
+  await expect(zeilen.nth(1).locator('.ae-z--neu')).toHaveText(/Name: POP UP Sommer$/);
+  await zeilen.nth(0).getByText('Was wurde geändert?').click();
+  const beitrag = zeilen.nth(0).locator('.ae-vergleich');
+  await expect(beitrag).toContainText('Status');
+  await expect(beitrag.locator('.ae-z--alt').first()).toContainText('Entwurf');
+  await expect(beitrag.locator('.ae-z--neu').first()).toContainText('Veröffentlicht');
+  await expect(beitrag.locator('.ae-z--neu').last()).toContainText('Zweiter Absatz, neu.');
+  await expect(beitrag.locator('.ae-z--alt').last()).toContainText('Zweiter Absatz.');
+
+  // Filter: Bereich, Person, Suche
+  await page.getByLabel('Bereich', { exact: true }).selectOption({ label: 'Beiträge' });
+  await expect(page.locator('[data-anzahl]')).toHaveText('1 Änderung');
+  await page.getByLabel('Bereich', { exact: true }).selectOption({ label: 'Alle Bereiche' });
+  await page.getByLabel('Person', { exact: true }).selectOption('Max Vorstand');
+  await expect(page.locator('[data-anzahl]')).toHaveText('2 Änderungen');
+  await page.getByLabel('Person', { exact: true }).selectOption({ label: 'Alle Personen' });
+  await page.getByLabel('Suchen', { exact: true }).fill('studio');
+  await expect(zeilen).toHaveCount(1);
+  await page.getByLabel('Suchen', { exact: true }).fill('gibt es nicht');
+  await expect(log).toContainText('Keine Änderung passt zu deiner Auswahl.');
+  expect(await page.locator('main').innerText()).not.toMatch(/GitHub|Repository|Commit|Markdown|YAML|JSON|Slug/);
+});
+
 test('Vorschau in Texte: geänderter Text und ausgeblendeter Abschnitt erscheinen sofort', async ({ page, isMobile }) => {
   test.skip(isMobile, 'gleiche Logik, auf dem Handy als Fenster');
   await redaktion(page);
@@ -853,7 +919,7 @@ test('Medien: Reiter, Fotos der Seiten mit Verwendung, PDFs hochladen', async ({
 const AXE: [string, 'presse' | 'vorstand'][] = [
   ...['/intern/redaktion/texte/', '/intern/redaktion/texte/textbuch/', '/intern/redaktion/freigaben/', '/intern/redaktion/', '/intern/redaktion/seiten/',
     '/intern/redaktion/seiten/?s=startseite', '/intern/redaktion/liste/?b=termine', '/intern/redaktion/eintrag/?b=termine&id=2026-10-15-studio-round-9',
-    '/intern/redaktion/eintrag/?b=verein', '/intern/redaktion/vorschau/', '/intern/redaktion/medien/?art=seiten', '/intern/redaktion/medien/?art=dokumente'].map((p): [string, 'presse'] => [p, 'presse']),
+    '/intern/redaktion/eintrag/?b=verein', '/intern/redaktion/vorschau/', '/intern/redaktion/medien/?art=seiten', '/intern/redaktion/medien/?art=dokumente', '/intern/redaktion/aenderungen/'].map((p): [string, 'presse'] => [p, 'presse']),
   ['/intern/redaktion/verwaltung/', 'vorstand'],
 ];
 for (const [pfad, rolle] of AXE) {

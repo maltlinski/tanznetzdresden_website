@@ -11,6 +11,7 @@
  *   - Nur Vorstand/Admin: Impressum, Datenschutz und die rechtlichen Angaben in verein.json
  *     (Anschrift, E-Mail-Adressen, Register, Steuer, Bankverbindung).
  *   - Code, Workflows und alles andere: niemand. Eigenes HTML in Texten wird abgelehnt.
+ *   - Änderungen ansehen (Verlauf der Redaktion, vorher/nachher): Presse, Vorstand, Admin.
  *   - Website neu bauen (nach einer Freigabe oder neuen News aus Supabase): Presse, Vorstand, Admin,
  *     außerdem Dozent:innen mit einer KEEP UP-Einplanung (nach dem Veröffentlichen ihrer Beschreibung).
  *
@@ -314,7 +315,7 @@ async function speichern(gh: ReturnType<typeof github>, env: Env, wer: Person, b
     const tree = await gh<{ sha: string }>('/git/trees', { method: 'POST', body: JSON.stringify({ base_tree: headCommit.tree.sha, tree: eintraege }) });
     const commit = await gh<{ sha: string; html_url: string }>('/git/commits', {
       method: 'POST',
-      body: JSON.stringify({ message: `Redaktion: ${nachricht}\n\nGeändert von ${wer.name.slice(0, 80)} (Intern → Redaktion)`, tree: tree.sha, parents: [stand.head] }),
+      body: JSON.stringify({ message: commitNachricht(nachricht, wer.name, [...pfade]), tree: tree.sha, parents: [stand.head] }),
     });
     try {
       await gh(`/git/refs/heads/${env.branch}`, { method: 'PATCH', body: JSON.stringify({ sha: commit.sha, force: false }) });
@@ -327,6 +328,65 @@ async function speichern(gh: ReturnType<typeof github>, env: Env, wer: Person, b
     }
   }
   throw new Fehler(409, 'Gerade speichert jemand anderes. Bitte versuche es gleich noch einmal.');
+}
+
+/** Nachricht eines Commits der Redaktion: Titel, wer, welche Dateien (für den Verlauf, aenderungenLesen) */
+export function commitNachricht(nachricht: string, name: string, pfade: string[]): string {
+  const liste = pfade.length > 20 ? [...pfade.slice(0, 20), `+${pfade.length - 20}`] : pfade;
+  return `Redaktion: ${nachricht}\n\nGeändert von ${name.slice(0, 80)} (Intern → Redaktion)\nDateien: ${liste.join(', ')}`;
+}
+
+/** Commit der Redaktion? Dann Titel, wer und Dateien; sonst (Entwicklung) null */
+export function redaktionsCommit(message: string): { titel: string; von: string; dateien: string[] } | null {
+  const [titel, ...rest] = message.split('\n');
+  const text = rest.join('\n');
+  const von = text.match(/^Geändert von (.+?) \(Intern → Redaktion\)$/m)?.[1];
+  if (!von) return null;
+  const dateien = (text.match(/^Dateien: (.+)$/m)?.[1] ?? '').split(', ').filter((d) => istErlaubt(d));
+  return { titel: titel.replace(/^Redaktion: /, ''), von, dateien };
+}
+
+const ISO = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?Z$/;
+const SEITEN = 5;
+
+/** Verlauf der Redaktion im Zeitraum (nur ihre Commits, ohne die der Entwicklung) */
+async function verlauf(gh: ReturnType<typeof github>, env: Env, body: { seit?: string; bis?: string }) {
+  const q = new URLSearchParams({ sha: env.branch, per_page: '100' });
+  if (body.seit && ISO.test(body.seit)) q.set('since', body.seit);
+  if (body.bis && ISO.test(body.bis)) q.set('until', body.bis);
+  const eintraege: { sha: string; zeit: string; titel: string; von: string; dateien: string[] }[] = [];
+  let mehr = false;
+  for (let seite = 1; seite <= SEITEN; seite++) {
+    q.set('page', String(seite));
+    const commits = await gh<{ sha: string; commit: { message: string; author: { date: string } } }[]>(`/commits?${q}`);
+    for (const c of commits) {
+      const r = redaktionsCommit(c.commit.message);
+      if (r) eintraege.push({ sha: c.sha, zeit: c.commit.author.date, ...r });
+    }
+    if (commits.length < 100) break;
+    if (seite === SEITEN) mehr = true;
+  }
+  return { eintraege, mehr };
+}
+
+const MAX_PATCH = 40_000;
+
+/** Was ein Commit geändert hat: Dateien mit Zeilen vorher/nachher (nur Dateien der Redaktion, keine Fotos) */
+async function aenderungLesen(gh: ReturnType<typeof github>, body: { sha?: string }) {
+  const sha = String(body.sha ?? '');
+  if (!/^[0-9a-f]{7,40}$/.test(sha)) throw new Fehler(400, 'Unbekannte Änderung.');
+  const c = await gh<{ commit: { message: string }; files?: { filename: string; status: string; patch?: string; previous_filename?: string }[] }>(`/commits/${sha}`);
+  if (!redaktionsCommit(c.commit.message)) throw new Fehler(404, 'Diese Änderung stammt nicht aus der Redaktion.');
+  return {
+    dateien: (c.files ?? [])
+      .filter((f) => istErlaubt(f.filename))
+      .map((f) => ({
+        pfad: f.filename,
+        status: f.status,
+        patch: istText(f.filename) && f.patch ? f.patch.slice(0, MAX_PATCH) : null,
+        gekuerzt: !!f.patch && f.patch.length > MAX_PATCH,
+      })),
+  };
 }
 
 async function status(gh: ReturnType<typeof github>, env: Env) {
@@ -388,6 +448,10 @@ export async function handle(req: Request, env: Env, f: typeof fetch = fetch): P
         return json(await speichern(gh, env, wer, body));
       case 'status':
         return json(await status(gh, env));
+      case 'verlauf':
+        return json(await verlauf(gh, env, body));
+      case 'aenderung':
+        return json(await aenderungLesen(gh, body));
       case 'neu_bauen':
         // Profile und News aus Supabase holt die Website beim Build. Der Deploy-Workflow
         // reagiert auf dieses Ereignis (repository_dispatch, braucht „Contents: Read and write“).

@@ -87,8 +87,28 @@ function fakeGitHub(start: Record<string, string>, rolle = 'presse', keepup: unk
       return new Response(null, { status: 204 });
     }
     if (method === 'GET' && p === '/commits') {
-      const c = commits.get(head)!;
-      return res([{ sha: head, html_url: 'https://github.test/c', commit: { message: c.message, author: { date: '2026-10-13T10:00:00Z' } } }]);
+      // Verlauf vom aktuellen Stand rückwärts
+      const liste = [];
+      for (let s: string | undefined = head; s; s = commits.get(s)!.parents[0]) {
+        liste.push({ sha: s, html_url: 'https://github.test/c', commit: { message: commits.get(s)!.message, author: { date: '2026-10-13T10:00:00Z' } } });
+      }
+      return res(liste);
+    }
+    if (method === 'GET' && (m = p.match(/^\/commits\/(\w+)$/))) {
+      // geänderte Dateien eines Commits mit Zeilen vorher/nachher
+      const c = commits.get(m[1]);
+      if (!c) return res({ message: 'Not Found' }, 404);
+      const neu = trees.get(c.tree)!;
+      const alt = c.parents[0] ? trees.get(commits.get(c.parents[0])!.tree)! : new Map<string, string>();
+      const files = [...new Set([...alt.keys(), ...neu.keys()])]
+        .filter((f) => alt.get(f) !== neu.get(f))
+        .map((f) => {
+          const a = alt.has(f) ? dec(blobs.get(alt.get(f)!)!).split('\n').filter(Boolean) : [];
+          const b = neu.has(f) ? dec(blobs.get(neu.get(f)!)!).split('\n').filter(Boolean) : [];
+          const status = !alt.has(f) ? 'added' : !neu.has(f) ? 'removed' : 'modified';
+          return { filename: f, status, patch: ['@@ -1 +1 @@', ...a.map((z) => `-${z}`), ...b.map((z) => `+${z}`)].join('\n') };
+        });
+      return res({ sha: m[1], commit: { message: c.message }, files });
     }
     return res({ message: `nicht nachgebaut: ${method} ${p}` }, 500);
   }) as typeof fetch;
@@ -260,4 +280,36 @@ test('neu_bauen stößt den Deploy-Workflow an (repository_dispatch), nur für R
   expect((await call(dozentin, { aktion: 'neu_bauen' })).status).toBe(200);
   expect(dozentin.log).toEqual(['POST /dispatches']);
   expect((await call(dozentin, { aktion: 'stand' })).status).toBe(403);
+});
+
+test('Verlauf: nur Speicherungen der Redaktion, mit Dateien; Änderung zeigt Zeilen vorher/nachher', async () => {
+  const gh = fakeGitHub(start);
+  const lesen = await (await call(gh, { aktion: 'lesen', pfade: ['src/content/personen.yaml'] })).json();
+  const r = await call(gh, {
+    aktion: 'speichern',
+    nachricht: 'Person „A“ geändert',
+    aenderungen: [{ pfad: 'src/content/personen.yaml', text: '- id: a\n  name: Anna\n', alt: lesen.dateien['src/content/personen.yaml'].sha }],
+  });
+  expect(r.status).toBe(200);
+  const { commit } = await r.json();
+  expect(gh.commit().message).toMatch(/\nDateien: src\/content\/personen\.yaml$/);
+
+  const v = await (await call(gh, { aktion: 'verlauf', seit: '2026-10-01T00:00:00Z' })).json();
+  // der Start-Commit (Entwicklung) fehlt, die Speicherung ist da
+  expect(v.eintraege).toEqual([{ sha: commit, zeit: '2026-10-13T10:00:00Z', titel: 'Person „A“ geändert', von: 'Pia Presse', dateien: ['src/content/personen.yaml'] }]);
+  expect(v.mehr).toBe(false);
+
+  const a = await (await call(gh, { aktion: 'aenderung', sha: commit })).json();
+  expect(a.dateien).toHaveLength(1);
+  expect(a.dateien[0]).toMatchObject({ pfad: 'src/content/personen.yaml', status: 'modified', gekuerzt: false });
+  expect(a.dateien[0].patch).toContain('-  name: A');
+  expect(a.dateien[0].patch).toContain('+  name: Anna');
+
+  // Commits der Entwicklung und unsinnige Kennungen: nicht über die Redaktion
+  const start0 = (await (await call(gh, { aktion: 'verlauf' })).json()).eintraege.length;
+  expect(start0).toBe(1);
+  expect((await call(gh, { aktion: 'aenderung', sha: 'zzz' })).status).toBe(400);
+  const ersterCommit = gh.log.find((l) => l.startsWith('GET /git/commits/'))!.split('/').pop()!;
+  expect((await call(gh, { aktion: 'aenderung', sha: ersterCommit })).status).toBe(404);
+  expect((await call(fakeGitHub(start, 'mitglied'), { aktion: 'verlauf' })).status).toBe(403);
 });

@@ -1,0 +1,139 @@
+---
+/**
+ * Änderungen: alles, was die Redaktion an der Website geändert hat – Texte, Seiten, Formate, Fotos und PDFs
+ * (Speicherungen über die Funktion „inhalte“) sowie Beiträge, Termine, KEEP UP, Mediathek, Freigaben und Rollen
+ * (Tabelle aenderungen). Filter nach Bereich, Person, Zeitraum und Suche; „Was wurde geändert?“ zeigt vorher/nachher.
+ * Wiederherstellen gibt es hier nicht. Logik: src/scripts/intern/redaktion/aenderungen.ts.
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
+import '../../../../styles/redaktion.css';
+---
+<Redaktion title="Änderungen" current="aenderungen">
+  <Brotkrumen pfad={[{ label: 'Änderungen' }]} />
+  <div class="r-head">
+    <div>
+      <p class="r-kicker">Website-Inhalte</p>
+      <h1 class="i-h1">Änderungen</h1>
+      <p class="i-lead">
+        Wer hat wann was geändert? Hier steht alles, was über den internen Bereich gespeichert wurde: Texte, Seiten,
+        Beiträge, Termine, Fotos und Freigaben. Unter „Was wurde geändert?“ siehst du, was vorher und was danach dastand.
+      </p>
+    </div>
+  </div>
+
+  <div class="i-card" data-no-access hidden>
+    <p>Die Änderungen sehen Mitglieder mit der Rolle <strong>Presse</strong>, <strong>Vorstand</strong> oder <strong>Admin</strong>.</p>
+  </div>
+  <p class="i-msg" role="alert" data-msg hidden></p>
+  <p class="i-hint" data-loading hidden>Wird geladen …</p>
+
+  <div data-access hidden>
+    <form class="ae-filter" data-filter role="search" aria-label="Änderungen filtern">
+      <div class="i-field">
+        <label for="ae-suche">Suchen</label>
+        <input id="ae-suche" type="search" placeholder="z. B. POP UP" data-suche />
+      </div>
+      <div class="i-field">
+        <label for="ae-bereich">Bereich</label>
+        <select id="ae-bereich" data-bereich><option value="">Alle Bereiche</option></select>
+      </div>
+      <div class="i-field">
+        <label for="ae-person">Person</label>
+        <select id="ae-person" data-person><option value="">Alle Personen</option></select>
+      </div>
+      <div class="i-field">
+        <label for="ae-zeit">Zeitraum</label>
+        <select id="ae-zeit" data-zeitraum>
+          <option value="7">Letzte 7 Tage</option>
+          <option value="30" selected>Letzte 30 Tage</option>
+          <option value="90">Letzte 3 Monate</option>
+          <option value="365">Letztes Jahr</option>
+        </select>
+      </div>
+    </form>
+    <ul class="ae-hinweise" data-hinweise hidden></ul>
+    <p class="ae-anzahl" role="status" data-anzahl></p>
+    <div data-log aria-live="polite"></div>
+    <p class="i-hint r-hilfe">
+      Etwas soll wieder so sein wie vorher? Änderungen lassen sich zurückholen. Gib dafür dem Vorstand oder Admin Bescheid
+      und nenne Datum und Uhrzeit aus dieser Liste.
+    </p>
+  </div>
+</Redaktion>
+
+<script>
+  import { $, meldung, starten } from '../../../../scripts/intern/redaktion/seite';
+  import { eintragElement, KATEGORIEN, logLaden, tagName, tagVon, type LogEintrag } from '../../../../scripts/intern/redaktion/aenderungen';
+  import { h } from '../../../../scripts/dom';
+
+  const r = await starten();
+  if (r) {
+    const suche = $<HTMLInputElement>('[data-suche]')!;
+    const bereich = $<HTMLSelectElement>('[data-bereich]')!;
+    const person = $<HTMLSelectElement>('[data-person]')!;
+    const zeitraum = $<HTMLSelectElement>('[data-zeitraum]')!;
+    const log = $('[data-log]')!;
+    const anzahl = $('[data-anzahl]')!;
+    const hinweise = $('[data-hinweise]')!;
+    let alle: LogEintrag[] = [];
+
+    // Auswahl aus der Adresse (z. B. ?bereich=termine&tage=90)
+    const q = new URLSearchParams(location.search);
+    if (q.get('tage') && [...zeitraum.options].some((o) => o.value === q.get('tage'))) zeitraum.value = q.get('tage')!;
+
+    const optionen = (sel: HTMLSelectElement, werte: [string, string][], gewaehlt: string) => {
+      const erste = sel.options[0];
+      sel.replaceChildren(erste, ...werte.map(([w, l]) => h('option', { value: w, text: l })));
+      sel.value = werte.some(([w]) => w === gewaehlt) ? gewaehlt : '';
+    };
+
+    const zeigen = () => {
+      const s = suche.value.trim().toLowerCase();
+      const treffer = alle.filter(
+        (e) =>
+          (!bereich.value || e.kategorie === bereich.value) &&
+          (!person.value || e.von === person.value) &&
+          (!s || `${e.titel} ${e.wo} ${e.von}`.toLowerCase().includes(s)),
+      );
+      anzahl.textContent = treffer.length === 1 ? '1 Änderung' : `${treffer.length} Änderungen`;
+      const tage = new Map<string, LogEintrag[]>();
+      for (const e of treffer) {
+        const t = tagVon(e.zeit);
+        tage.set(t, [...(tage.get(t) ?? []), e]);
+      }
+      log.replaceChildren(
+        ...[...tage].map(([t, es]) =>
+          h('section', { class: 'ae-tag' },
+            h('h2', { class: 'ae-tag__h' }, h('time', { datetime: t, text: tagName(t) })),
+            h('ol', { class: 'ae-liste' }, ...es.map((e) => eintragElement(e, r.a))))),
+      );
+      if (!treffer.length) log.append(h('p', { class: 'i-hint', text: alle.length ? 'Keine Änderung passt zu deiner Auswahl.' : 'In diesem Zeitraum wurde nichts geändert.' }));
+    };
+
+    const laden = async () => {
+      anzahl.textContent = 'Wird geladen …';
+      const seit = new Date(Date.now() - Number(zeitraum.value) * 86_400_000).toISOString().replace(/\.\d+Z$/, 'Z');
+      try {
+        const g = await logLaden(r.ctx.sb, r.a, seit);
+        alle = g.eintraege;
+        hinweise.replaceChildren(...g.hinweise.map((t) => h('li', { text: t })));
+        hinweise.hidden = !g.hinweise.length;
+        const kat = [...new Set(alle.map((e) => e.kategorie))];
+        optionen(bereich, (Object.keys(KATEGORIEN) as (keyof typeof KATEGORIEN)[]).filter((k) => kat.includes(k)).map((k) => [k, KATEGORIEN[k]]), bereich.value || q.get('bereich') || '');
+        const leute = [...new Set(alle.map((e) => e.von))].sort((a, b) => a.localeCompare(b, 'de'));
+        optionen(person, leute.map((p) => [p, p]), person.value);
+        zeigen();
+      } catch (e) {
+        meldung((e as Error).message);
+      }
+    };
+
+    suche.addEventListener('input', zeigen);
+    bereich.addEventListener('change', zeigen);
+    person.addEventListener('change', zeigen);
+    zeitraum.addEventListener('change', () => void laden());
+    $('[data-filter]')!.addEventListener('submit', (e) => e.preventDefault());
+    void laden();
+  }
+</script>

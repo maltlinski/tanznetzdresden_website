@@ -13,7 +13,8 @@ Website-Inhalte
 ├─ Medien           Fotos hochladen, beschreiben, sehen, wo sie verwendet werden
 ├─ Beiträge         News schreiben (docs/news.md); ältere Beiträge und Bausteine sind dort verlinkt
 ├─ Termine          Kalender: Termine und KEEP UP (docs/kalender.md); ältere Termine sind dort verlinkt
-└─ Freigaben        Profile und Fotos der Mitglieder
+├─ Freigaben        Profile und Fotos der Mitglieder
+└─ Änderungen       wer wann was geändert hat, mit vorher/nachher (Dateien und Datenbank zusammen)
 Verwaltung (nur Vorstand/Admin, ganz unten): Impressum, Datenschutz, rechtliche Vereinsdaten, Mitglieder und Rollen,
 Zustand und Verlauf, Demo-Ansicht, Datenbank
 ```
@@ -139,6 +140,28 @@ Auf der Übersicht steht unter „Zuletzt geändert“, wer wann was gespeichert
 
 Speichert jemand anderes dieselbe Datei, während du noch tippst, sagt die Redaktion beim Speichern Bescheid, statt
 die andere Änderung zu überschreiben. Dann die Seite neu laden und die eigene Änderung noch einmal eintragen.
+
+### Änderungen
+
+*Website-Inhalte → Änderungen* zeigt alles, was über den internen Bereich gespeichert wurde, nach Tagen geordnet:
+Texte, Seiten und Listen, Fotos der Seiten und PDFs ebenso wie Beiträge, Termine, KEEP UP, Fotos für Beiträge,
+Freigaben und (nur für Vorstand/Admin) Rollen. Filter: Bereich, Person, Zeitraum (7 Tage bis 1 Jahr), Suche.
+**Was wurde geändert?** klappt auf, was vorher und was danach dastand (lange Texte nur die geänderten Zeilen).
+Die Übersicht zeigt unter „Zuletzt geändert“ die letzten acht davon. Wiederherstellen geht hier nicht (siehe unten).
+
+Nicht im Verlauf: was Mitglieder in ihrem eigenen Profil ändern (nur die Freigabe durch die Redaktion steht drin),
+Änderungen direkt im Supabase-Dashboard erscheinen mit „Datenbank“ statt einem Namen.
+
+**Einrichten:** `supabase/migrations/20261105000000_aenderungen.sql` im SQL-Editor ausführen (Tabelle `aenderungen`
+und Trigger) und die Funktion `inhalte` neu einspielen. Ohne Migration zeigt die Seite nur die Dateien und einen
+Hinweis; erfasst wird ab dem Einspielen, ältere Änderungen an Beiträgen und Terminen gibt es nicht.
+
+**Für Entwickler:innen:** Logik `src/scripts/intern/redaktion/aenderungen.ts`, Seite
+`src/pages/intern/redaktion/aenderungen/`. Dateien: Aktion `verlauf` (nur Commits mit „Geändert von … (Intern →
+Redaktion)“, die Commits der Entwicklung bleiben draußen; neue Commits tragen zusätzlich `Dateien: …`) und
+`aenderung` (geänderte Zeilen eines Commits). Datenbank: Trigger `aenderung_merken()` schreibt nur geänderte Felder,
+fasst Änderungen derselben Person am selben Eintrag innerhalb von 15 Minuten zusammen und verhindert nie das Speichern.
+Neue Tabelle mit Redaktionsinhalten → Trigger in einer Migration ergänzen und den Bereich in `DB_ORT` eintragen.
 
 ### Rückgängig machen
 

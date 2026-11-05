@@ -79,7 +79,8 @@ const kacheln = [
 
     <section class="r-gruppe" aria-labelledby="g-verlauf">
       <h2 class="r-gruppe__h" id="g-verlauf">Zuletzt geändert</h2>
-      <ol class="rs-verlauf" data-verlauf></ol>
+      <ol class="ae-liste" data-verlauf></ol>
+      <p class="r-mehr"><a class="mono-link" href={href('intern/redaktion/aenderungen/')}>Alle Änderungen mit vorher und nachher →</a></p>
       <p class="i-hint r-hilfe">
         Etwas ist schiefgegangen? Jede Änderung lässt sich zurückholen. Gib dafür dem Vorstand oder Admin Bescheid.
       </p>
@@ -90,6 +91,8 @@ const kacheln = [
 <script>
   import { $, starten, statusAnzeigen } from '../../../scripts/intern/redaktion/seite';
   import { offeneFreigaben } from '../../../scripts/intern/freigaben';
+  import { eintragElement, logLaden } from '../../../scripts/intern/redaktion/aenderungen';
+  import { h } from '../../../scripts/dom';
 
   const r = await starten();
   if (r) {
@@ -97,6 +100,13 @@ const kacheln = [
       const el = $('[data-freigaben-n]');
       if (el) el.textContent = n ? String(n) : '';
     });
-    statusAnzeigen(r, $('[data-website-status]'), $('[data-verlauf]'));
+    statusAnzeigen(r, $('[data-website-status]'));
+    // Zuletzt geändert: die letzten Änderungen der Redaktion (Dateien und Datenbank), ohne Commits der Entwicklung
+    const seit = new Date(Date.now() - 90 * 86_400_000).toISOString().replace(/\.\d+Z$/, 'Z');
+    void logLaden(r.ctx.sb, r.a, seit).then(({ eintraege }) => {
+      const ol = $('[data-verlauf]')!;
+      ol.replaceChildren(...eintraege.slice(0, 8).map((e) => eintragElement(e, r.a, false)));
+      if (!eintraege.length) ol.append(h('li', { class: 'i-hint', text: 'In den letzten drei Monaten wurde nichts geändert.' }));
+    });
   }
 </script>

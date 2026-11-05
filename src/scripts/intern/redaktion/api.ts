@@ -33,6 +33,22 @@ export interface WebsiteStatus {
   verlauf: { sha: string; url: string; zeit: string; titel: string; von: string | null }[];
 }
 
+/** Speicherung der Redaktion im Verlauf (Commit); dateien fehlen bei älteren Commits */
+export interface VerlaufCommit {
+  sha: string;
+  zeit: string;
+  titel: string;
+  von: string;
+  dateien: string[];
+}
+/** geänderte Datei eines Commits; patch = Zeilen vorher/nachher (nur bei Texten) */
+export interface CommitDatei {
+  pfad: string;
+  status: string;
+  patch: string | null;
+  gekuerzt: boolean;
+}
+
 export class ApiFehler extends Error {
   constructor(public status: number, message: string) {
     super(message);
@@ -67,6 +83,10 @@ export function api(sb: SupabaseClient) {
     datei: (pfad: string) => call<{ sha: string; base64: string }>('datei', { pfad }),
     speichern: (nachricht: string, aenderungen: Aenderung[]) => call<{ commit: string; url: string }>('speichern', { nachricht, aenderungen }),
     status: () => call<WebsiteStatus>('status'),
+    /** Verlauf der Redaktion (ohne Commits der Entwicklung) im Zeitraum */
+    verlauf: (seit: string, bis?: string) => call<{ eintraege: VerlaufCommit[]; mehr: boolean }>('verlauf', { seit, bis }),
+    /** was eine Speicherung geändert hat */
+    aenderung: (sha: string) => call<{ dateien: CommitDatei[] }>('aenderung', { sha }),
     /** Website neu bauen lassen (holt freigegebene Profile und News aus Supabase) */
     neuBauen: () => call<{ ok: true }>('neu_bauen'),
   };

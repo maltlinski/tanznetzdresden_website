@@ -16,7 +16,7 @@ import { getLang, tr, url } from '../lib/i18n';
 import { gegenstueck, internPfad, SPRACHE_KEY } from '../lib/intern-sprache';
 import '../styles/intern.css';
 
-type Punkt = 'status' | 'profil' | 'opencalls' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'seiten' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine' | 'verwaltung';
+type Punkt = 'status' | 'profil' | 'opencalls' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'seiten' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine' | 'verwaltung' | 'aenderungen';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
@@ -37,7 +37,7 @@ const t = tr(lang, {
   de: {
     bereich: 'Interner Bereich', logo: 'Interner Bereich: Mein Status', status: 'Mein Status', profil: 'Mein Profil', mitglieder: 'Mitglieder',
     dokumente: 'Dokumente', trainings: 'Meine Trainings', kalender: 'Termine', beitraege: 'Beiträge', medien: 'Medien',
-    inhalte: 'Website-Inhalte', uebersicht: 'Übersicht', seiten: 'Seiten', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung',
+    inhalte: 'Website-Inhalte', uebersicht: 'Übersicht', seiten: 'Seiten', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung', aenderungen: 'Änderungen',
     supabase: 'Datenbank ↗', web: 'Website ansehen →', aus: 'Abmelden',
     zurWebsite: '← Zur Website', moment: 'Einen Moment …', setupH: 'Noch nicht eingerichtet', sprache: 'Sprache',
     leisteZu: 'Seitenleiste einklappen', leisteAuf: 'Seitenleiste zeigen',
@@ -45,7 +45,7 @@ const t = tr(lang, {
   en: {
     bereich: 'Members area', logo: 'Members area: My status', status: 'My status', profil: 'My profile', mitglieder: 'Members',
     dokumente: 'Documents', trainings: 'My classes', kalender: 'Events', beitraege: 'Posts', medien: 'Media',
-    inhalte: 'Website content', uebersicht: 'Overview', seiten: 'Pages', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Administration',
+    inhalte: 'Website content', uebersicht: 'Overview', seiten: 'Pages', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Administration', aenderungen: 'Changes',
     supabase: 'Database ↗', web: 'View website →', aus: 'Log out',
     zurWebsite: '← To the website', moment: 'One moment …', setupH: 'Not set up yet', sprache: 'Language',
     leisteZu: 'Collapse sidebar', leisteAuf: 'Show sidebar',
@@ -72,6 +72,7 @@ const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
   { id: 'beitraege', label: t.beitraege, path: 'news/', n: 'beitraege' },
   { id: 'kalender', label: t.kalender, path: 'kalender/', n: 'kalender' },
   { id: 'freigaben', label: t.freigaben, path: 'redaktion/freigaben/', n: 'freigaben' },
+  { id: 'aenderungen', label: t.aenderungen, path: 'redaktion/aenderungen/' },
 ];
 // Umschalter Deutsch/English, nur auf Seiten, die es in beiden Sprachen gibt
 const anders = gegenstueck(Astro.url.pathname, import.meta.env.BASE_URL);
