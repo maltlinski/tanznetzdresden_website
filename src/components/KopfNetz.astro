@@ -6,14 +6,14 @@
  * Bewegung: src/scripts/kopf-netz.ts. Der Kopf braucht `position: relative; overflow: hidden`, sein Inhalt
  * `position: relative`, damit er über dem Netz liegt.
  */
-import { kopfNetz, unterseitenForm } from '../lib/kopf-netz';
+import { unterseitenNetz } from '../lib/kopf-netz';
 
 interface Props {
   schluessel: string;
 }
-const n = kopfNetz(unterseitenForm(Astro.props.schluessel));
+const n = unterseitenNetz(Astro.props.schluessel);
 ---
-<svg class="kn" viewBox={`0 0 ${n.breite} ${n.hoehe}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" data-kopf-netz>
+<svg class="kn" viewBox={`0 0 ${n.breite} ${n.hoehe}`} preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false" data-kopf-netz>
   {n.linien.map((l) => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} pathLength="1" class:list={[l.dick && 'dick']} />)}
   {n.punkte.map((p) => <rect x={p.x} y={p.y} width={p.s} height={p.s} class:list={[p.magenta && 'mg']} />)}
 </svg>

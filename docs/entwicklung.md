@@ -196,8 +196,10 @@ Netzwerk, Textseiten wie Impressum und Datenschutz, 404) haben hinter dem lila K
 `src/components/KopfNetz.astro` (steckt in `PageIntro`, Spenden und 404 binden es selbst ein), Form in
 `src/lib/kopf-netz.ts`, Bewegung in `src/scripts/kopf-netz.ts` (Linien zeichnen sich ein, Quadrate springen auf,
 Scrollen und Maus verschieben es; still bei „Bewegung reduzieren“). Jede Seite hat ihre eigene, verwandte Struktur
-(Startwert aus der Route, `netz="…"` an `PageIntro`): zwei nächste Nachbarn statt drei, längere Brücken, rechts
-dichter, keine Quadrate unter dem Text links. Der Kalender nutzt dieselbe Datei mit seiner Grundform (`KALENDER`).
+(Startwert aus der Route, `netz="…"` an `PageIntro`, Funktion `unterseitenNetz()`): ruhiger als im Kalender – Linien
+kreuzen sich nie (jede Verzweigung ist ein Quadrat, nur verbundene Punkte haben eines), keine überlangen Linien, und
+der Bereich von Kicker, Headline und Einleitung links bleibt frei (`FREI`); das Netz spannt sich rechts auf und ist
+rechts verankert (`xMaxYMid slice`). Der Kalender nutzt dieselbe Datei mit seiner Grundform (`kopfNetz(KALENDER)`).
 Neue einfache Unterseite → `PageIntro` mit `netz="<route>"`.
 
 Der Abschnitt „Haltung & Wirkung“ steht auf „Über uns“ (`/verein/`) und liest seine Texte aus

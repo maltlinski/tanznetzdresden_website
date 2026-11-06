@@ -42,6 +42,7 @@ const schluessel = netz ?? Astro.url.pathname.replace(/^.*?\/(en\/)?/, '');
   .intro__title {
     font-family: var(--font-display); font-weight: 800; font-size: clamp(44px, 6.4vw, 96px);
     line-height: 0.92; letter-spacing: -0.035em; margin: 0; max-width: 14ch; text-wrap: balance;
+    hyphens: auto; -webkit-hyphens: auto; /* lange Wörter wie „Datenschutzerklärung“ mit Trennstrich statt mitten im Wort */
   }
   .intro__title em { font-style: normal; color: var(--magenta); }
   .intro__lead { max-width: 560px; margin: 26px 0 0; font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
