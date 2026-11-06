@@ -14,8 +14,7 @@
     "test:ui": "playwright test --ui",
     "design:check": "node scripts/design-check.mjs",
     "design:import": "node scripts/design-import.mjs",
-    "archiv:laden": "node scripts/archiv-laden.mjs",
-    "formate:freisteller": "node scripts/formate-freisteller.mjs"
+    "archiv:laden": "node scripts/archiv-laden.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.4",

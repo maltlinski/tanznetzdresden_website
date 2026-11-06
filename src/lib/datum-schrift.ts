@@ -39,7 +39,7 @@ export const DATUM_AUSNAHMEN = {
   titel: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', '.zeile__titel', '.tka-ausgabe__label', '[data-lb-label]', '.ku-hinweis__titel'],
   /** Fließtext: ein Datum im Satz behält die Schrift des Satzes */
   fliesstext: [
-    '.prose', '.ab__text', '.ab__stand', '.nb__cap', '.post__teaser', '.more__teaser', '.fo-kap__d', '.fo-projekt__text',
+    '.prose', '.ab__text', '.ab__stand', '.nb__cap', '.post__teaser', '.more__teaser', '.fo-kap__d', '.fo-info__text', '.fo-projekt__text',
     '.tka-lead', '.ags__list p', '.ms-lead', '.tk-text', '.tb__text', '.pr-text', '[data-fliesstext]',
   ],
 };

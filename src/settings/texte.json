@@ -273,19 +273,19 @@
     "pfad": "formate/",
     "abschnitte": {
       "kopf": {
-        "titel": "Kopf mit wechselnden Formaten",
+        "titel": "Kopf mit dem Netz der Formate",
         "auch": [{ "text": "Die Formate selbst", "ziel": "redaktion:formate" }],
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Formate", "en": "Formats", "max": 60 },
           "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Was das TanzNetzDresden macht: Showings, Aufführungsreihen, Profitraining, Tanz im Stadtraum und Residenzen. Mit nächsten Terminen, Chronik und Archiv.", "en": "What TanzNetzDresden does: showings, performance series, professional training, dance in public space and residencies. With upcoming dates, history and archive.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift ({zahl} = Anzahl)", "de": "Was wir machen · {zahl} Formate", "en": "What we do · {zahl} formats", "max": 40 },
           "titel": { "wo": "Überschrift ({zahlwort} = Anzahl als Wort), zweiter Teil in Cyan", "zeilen": 2, "de": "{zahlwort} Formate.\nEin Netz.", "en": "{zahlwort} formats.\nOne network.", "max": 40 },
-          "entdecken": { "wo": "Link unter dem Format", "de": "Format entdecken ↓", "en": "Discover the format ↓", "max": 30 },
+          "netzKicker": { "wo": "Kasten unter der Überschrift: kleine Zeile, solange kein Format gewählt ist", "de": "Menschen · Orte · Partner", "en": "People · Places · Partners", "max": 40 },
+          "netzText": { "wo": "Kasten unter der Überschrift: Text, solange kein Format gewählt ist (mit der Maus über einem Namen steht dort die Kurzbeschreibung des Formats)", "de": "Die Formate teilen Bühnen, Partner und Projektleitungen. Wähle einen Namen, um zum Format zu springen.", "en": "The formats share stages, partners and project leads. Choose a name to jump to the format.", "max": 180 },
+          "neuKnuepfen": { "wo": "Knopf: Namen und Linien neu verteilen", "de": "Netz neu knüpfen", "en": "Reknit the network", "max": 24 },
           "naechster": { "wo": "Vor dem nächsten Termin", "de": "Nächster Termin", "en": "Next date", "max": 30 },
           "folgt": { "wo": "Wenn noch kein Termin feststeht", "de": "Termin folgt", "en": "Date to follow", "max": 30 },
-          "heute": { "wo": "Vor dem Datum, wenn der Termin heute ist", "de": "Heute", "en": "Today", "max": 12 },
-          "anhalten": { "wo": "Knopf: automatischen Wechsel anhalten", "de": "Anhalten", "en": "Pause", "max": 16 },
-          "weiter": { "wo": "Knopf: automatischen Wechsel fortsetzen", "de": "Weiter", "en": "Play", "max": 16 }
+          "heute": { "wo": "Vor dem Datum, wenn der Termin heute ist", "de": "Heute", "en": "Today", "max": 12 }
         }
       },
       "detail": {
@@ -298,7 +298,6 @@
           "trainieren": { "wo": "Filter: Formate der Rubrik Training", "de": "Trainieren", "en": "Train", "max": 24 },
           "mitreden": { "wo": "Filter: Formate der Rubrik Diskurs", "de": "Mitreden", "en": "Join the talk", "max": 24 },
           "draussen": { "wo": "Filter: Formate der Rubrik Stadtraum", "de": "Draußen tanzen", "en": "Dance outdoors", "max": 24 },
-          "imDetail": { "wo": "Leiste links: Überschrift", "de": "Im Detail", "en": "In detail", "max": 24 },
           "buehne": { "wo": "Rubrik (Badge)", "de": "Bühne", "en": "Stage", "max": 16 },
           "training": { "wo": "Rubrik (Badge)", "de": "Training", "en": "Training", "max": 16 },
           "diskurs": { "wo": "Rubrik (Badge)", "de": "Diskurs", "en": "Discourse", "max": 16 },

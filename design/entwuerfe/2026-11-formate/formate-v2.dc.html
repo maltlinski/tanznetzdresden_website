@@ -1,0 +1,647 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <title>TanzNetzDresden · Formate</title>
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/fonts.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/colors.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/typography.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/spacing.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/tokens/base.css">
+  <link rel="stylesheet" href="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/styles.css">
+  <script src="_ds/tanznetzdresden-design-system-cacd0a6e-1536-4d03-84c8-3a8c8bfbd880/_ds_bundle.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+  <style>
+    html{-webkit-text-size-adjust:100%}
+    body{margin:0;background:#fff;color:var(--ink);font-family:var(--font-body);hyphens:auto}
+    a{color:var(--magenta);text-decoration:none}
+    a:hover{color:var(--purple)}
+    *{box-sizing:border-box}
+    ::selection{background:var(--magenta);color:#fff}
+  </style>
+</helmet>
+
+<div style="min-height:100vh;background:#fff">
+
+  <header style="position:sticky;top:0;z-index:30;background:var(--purple);border-bottom:1px solid rgba(255,255,255,0.12)">
+    <div style="max-width:1320px;margin:0 auto;padding:18px clamp(20px,4vw,48px);display:flex;align-items:center;flex-wrap:wrap;gap:16px 40px">
+      <a href="TanzNetzDresden Website v5.dc.html" style="display:flex;align-items:center;color:#fff">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="76px" hint-size="76px,36px"></x-import>
+      </a>
+      <div style="margin-left:auto;display:flex;flex-wrap:wrap;align-items:center;justify-content:flex-end;gap:12px clamp(16px,2.4vw,36px)">
+        <nav style="display:flex;flex-wrap:wrap;gap:6px clamp(14px,2vw,28px)">
+          <a href="Kalender.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Kalender</a>
+          <a href="#top" aria-current="page" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:var(--cyan);padding:6px 0;border-bottom:2px solid var(--magenta)">Formate</a>
+          <a href="KEEP UP Profitraining.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Training</a>
+          <a href="News.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Journal</a>
+          <a href="TanzNetzDresden Website v5.dc.html#netz" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Über uns</a>
+        </nav>
+        <a href="Mitgliedsstatus.dc.html" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;color:#fff;padding:6px 0" style-hover="color:var(--cyan)">Login</a>
+        <a href="#mitmachen" style="display:flex">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="secondary" size="sm" marker="{{ true }}" hint-size="160px,32px">Mitglied werden</x-import>
+        </a>
+      </div>
+    </div>
+    <div ref="{{ progRef }}" style="position:absolute;left:0;bottom:-3px;height:3px;width:0;background:var(--magenta)"></div>
+  </header>
+
+  <!-- HERO · Formate als Netz -->
+  <section id="top" ref="{{ heroRef }}" onMouseMove="{{ onMove }}" onMouseLeave="{{ onLeave }}" data-screen-label="Formate · Netz" style="position:relative;background:var(--purple);color:#fff;overflow:hidden">
+    <div style="position:relative;max-width:1320px;margin:0 auto;padding:clamp(28px,4vw,56px) clamp(20px,4vw,48px) clamp(44px,5vw,64px);display:grid;grid-template-columns:minmax(0,1fr)">
+      <div ref="{{ introRef }}" style="grid-column:1;grid-row:1;align-self:start;position:relative;z-index:4;max-width:{{ introW }};margin-bottom:{{ introMb }}">
+        <div data-hin="" style="margin-bottom:18px">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" hint-size="220px,16px">Was wir machen · 08 Formate</x-import>
+        </div>
+        <h1 style="font-family:var(--font-display);font-weight:800;font-size:clamp(48px,7vw,112px);line-height:0.92;letter-spacing:-0.035em;color:#fff;margin:0 0 clamp(20px,2.4vw,32px)">
+          <span style="display:block;white-space:nowrap"><span data-hw="" style="display:inline-block">Acht</span> <span data-hw="" style="display:inline-block">Formate.</span></span>
+          <span style="display:block;white-space:nowrap;color:var(--cyan)"><span data-hw="" style="display:inline-block">Ein</span> <span data-hw="" style="display:inline-block">Netz.</span></span>
+        </h1>
+        <div data-hin="" aria-live="polite" style="max-width:420px;min-height:104px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:10px">
+            <span style="width:10px;height:10px;background:var(--magenta);flex:none"></span>
+            <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan)">{{ info.kicker }}</span>
+          </div>
+          <p style="margin:0;font-size:clamp(15px,1.25vw,17px);line-height:1.55;color:rgba(255,255,255,0.88);text-wrap:pretty">{{ info.text }}</p>
+        </div>
+        <button data-hin="" onClick="{{ reknit }}" style="margin-top:22px;display:flex;align-items:center;gap:10px;background:transparent;border:1.5px solid rgba(255,255,255,0.4);color:#fff;padding:9px 14px;font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;border-radius:0" style-hover="border-color:var(--magenta);color:var(--cyan)"><span style="width:8px;height:8px;background:var(--magenta)"></span>Netz neu knüpfen</button>
+      </div>
+
+      <div ref="{{ stageRef }}" style="grid-column:1;grid-row:{{ stageRow }};position:relative;height:{{ stageH }};min-width:0">
+        {{ netSvg }}
+        <sc-for list="{{ nodes }}" as="nd" hint-placeholder-count="8">
+          <div data-node="{{ nd.i }}" style="position:absolute;z-index:3;left:{{ nd.x }};top:{{ nd.y }};width:0;height:0">
+            <div data-pre="" style="position:absolute;left:0;top:0;width:0;height:0;opacity:{{ nd.pre }}">
+              <span style="position:absolute;left:-6px;top:-6px;width:12px;height:12px;background:{{ nd.sq }};transform:scale({{ nd.sc }});transition:transform 400ms cubic-bezier(0.16,1,0.3,1), background 200ms"></span>
+              <a href="#{{ nd.id }}" onClick="{{ nd.go }}" onMouseEnter="{{ nd.on }}" onMouseLeave="{{ nd.off }}" onFocus="{{ nd.on }}" onBlur="{{ nd.off }}" style="position:absolute;left:{{ nd.lx }};right:{{ nd.rx }};top:0;transform:translateY(-50%) scale({{ nd.ls }});transform-origin:{{ nd.to }};display:flex;flex-direction:column;align-items:{{ nd.align }};gap:6px;padding:8px 10px;background:var(--purple);white-space:nowrap;color:{{ nd.col }};transition:color 200ms, transform 450ms cubic-bezier(0.16,1,0.3,1)">
+                <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(22px,2.6vw,38px);line-height:1;letter-spacing:-0.03em">{{ nd.t }}</span>
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:{{ nd.mc }};transition:color 200ms">{{ nd.n }} · {{ nd.cat }}</span>
+              </a>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--magenta)" height="{{ 10 }}" style="position:absolute;left:0;bottom:0;width:34%;z-index:6" hint-size="34%,10px"></x-import>
+  </section>
+
+  <!-- KAPITEL -->
+  <section data-screen-label="Formate im Detail" style="background:var(--tint);padding:clamp(40px,6vw,80px) 0 clamp(64px,8vw,104px)">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:clamp(28px,4vw,48px)">
+        <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">Ich möchte</span>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+            <button onClick="{{ f.pick }}" aria-pressed="{{ f.on }}" style="display:flex;align-items:center;gap:8px;padding:9px 14px;border:1.5px solid var(--purple);background:{{ f.bg }};color:{{ f.fg }};font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;cursor:pointer;border-radius:0;transition:background 200ms, color 200ms" style-hover="border-color:var(--magenta)">{{ f.label }}<span style="color:{{ f.cc }}">{{ f.count }}</span></button>
+          </sc-for>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:{{ chapterCols }};gap:clamp(32px,5vw,72px);align-items:start">
+        <div style="min-width:0">
+          <sc-for list="{{ chapters }}" as="c" hint-placeholder-count="3">
+            <article id="{{ c.id }}" data-chapter="{{ c.id }}" style="scroll-margin-top:96px;padding-bottom:clamp(56px,7vw,96px);margin-bottom:clamp(56px,7vw,96px);border-bottom:1px solid var(--rule)">
+              <div style="position:relative;aspect-ratio:{{ photoAR }};margin-bottom:clamp(28px,3.5vw,44px);background:var(--purple);clip-path:polygon(0 0,100% 0,100% 84%,92% 100%,0 100%)">
+                <div data-wipe="" style="position:absolute;inset:0"><img data-par="" src="{{ c.img }}" alt="{{ c.alt }}" style="position:absolute;left:0;top:-8%;width:100%;height:116%;object-fit:cover;display:block"></div>
+                <div style="position:absolute;top:0;left:0;width:22px;height:22px;background:var(--magenta)"></div>
+              </div>
+              <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:28px clamp(40px,6vw,96px);align-items:start">
+                <div style="min-width:0">
+  <div style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px;margin-bottom:14px">
+                  <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(44px,5vw,72px);line-height:0.85;letter-spacing:-0.04em;color:var(--magenta)">{{ c.n }}</span>
+                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ c.badge }}" size="sm" hint-size="72px,22px">{{ c.catLabel }}</x-import>
+                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ c.since }}</span>
+                </div>
+                <h2 data-in="0" style="font-family:var(--font-display);font-weight:800;font-size:clamp(40px,5vw,76px);line-height:0.94;letter-spacing:-0.035em;color:var(--purple);margin:0 0 22px;overflow-wrap:anywhere">{{ c.t }}</h2>
+                <p style="margin:0;max-width:560px;font-size:17px;line-height:1.6;color:var(--ink);text-wrap:pretty">{{ c.d }}</p>
+                </div>
+                <div style="min-width:0;padding-top:{{ rightPad }}">
+  <dl style="margin:0 0 26px;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:0 24px">
+                  <sc-for list="{{ c.facts }}" as="f" hint-placeholder-count="3">
+                    <div style="padding:12px 0 14px;border-top:1px solid var(--rule)">
+                      <dt style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);margin-bottom:4px">{{ f.k }}</dt>
+                      <dd style="margin:0;font-size:15px;line-height:1.45;color:var(--purple)">{{ f.v }}</dd>
+                    </div>
+                  </sc-for>
+                </dl>
+                <a href="{{ c.nextHref }}" style="display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:center;gap:16px;background:var(--purple);color:#fff;padding:18px 22px;transition:background 200ms" style-hover="background:var(--magenta);color:#fff">
+                  <span style="display:flex;flex-direction:column;gap:5px;min-width:0">
+                    <span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan)">{{ c.ctaLabel }}</span>
+                    <span style="font-family:var(--font-display);font-weight:700;font-size:20px;line-height:1.15;letter-spacing:-0.015em">{{ c.nextDate }}</span>
+                    <span style="font-size:14px;line-height:1.45;color:rgba(255,255,255,0.86)">{{ c.nextWhere }}</span>
+                  </span>
+                  <span style="font-family:var(--font-display);font-size:28px;line-height:1">→</span>
+                </a>
+                <div style="display:flex;flex-wrap:wrap;gap:12px 28px;margin-top:20px">
+                  <sc-for list="{{ c.links }}" as="l" hint-placeholder-count="1">
+                    <a href="{{ l.href }}" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);border-bottom:1.5px solid var(--magenta);padding-bottom:3px" style-hover="color:var(--purple);border-color:var(--purple)">{{ l.label }}</a>
+                  </sc-for>
+                </div>
+                </div>
+              </div>
+            </article>
+          </sc-for>
+          <sc-if value="{{ filtered }}" hint-placeholder-val="{{ false }}">
+            <button onClick="{{ resetFilter }}" style="background:transparent;border:0;padding:0;cursor:pointer;font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--ink-soft)" style-hover="color:var(--magenta)">Alle 8 Formate zeigen →</button>
+          </sc-if>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CHRONIK -->
+  <section data-screen-label="Chronik" style="position:relative;background:var(--purple);color:#fff;padding:clamp(72px,9vw,120px) 0 clamp(64px,8vw,104px);overflow:hidden">
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--cyan)" height="{{ 12 }}" flip="{{ true }}" style="position:absolute;right:0;top:0;width:40%" hint-size="40%,12px"></x-import>
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div data-in="0" style="margin-bottom:22px">
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--cyan)" hint-size="160px,16px">Chronik</x-import>
+      </div>
+      <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(44px,6vw,88px);line-height:0.92;letter-spacing:-0.035em;margin:0 0 clamp(40px,5vw,64px)">
+        <span data-in="0.05" style="display:block">Seit 2010</span>
+        <span data-in="0.2" style="display:block;color:var(--cyan)">in Bewegung.</span>
+      </h2>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,150px),1fr));border-top:2px solid rgba(255,255,255,0.3)">
+        <sc-for list="{{ miles }}" as="m" hint-placeholder-count="7">
+          <div onMouseEnter="{{ m.on }}" onMouseLeave="{{ m.off }}" style="position:relative;padding:30px 20px 24px 0">
+            <span style="position:absolute;left:0;top:-1px;transform:translateY(-50%);width:{{ m.sq }};height:{{ m.sq }};background:var(--magenta);transition:width 400ms cubic-bezier(0.16,1,0.3,1), height 400ms cubic-bezier(0.16,1,0.3,1)"></span>
+            <div style="font-family:var(--font-display);font-weight:800;font-size:clamp(34px,3.4vw,50px);line-height:1;letter-spacing:-0.035em;color:{{ m.yc }};margin-bottom:12px;transition:color 200ms">{{ m.y }}</div>
+            <div style="display:flex;flex-direction:column;gap:6px">
+              <sc-for list="{{ m.items }}" as="it" hint-placeholder-count="1">
+                <span style="font-size:15px;line-height:1.4;color:rgba(255,255,255,0.88)">{{ it }}</span>
+              </sc-for>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- ARCHIV -->
+  <section id="archiv" data-screen-label="Archiv" style="scroll-margin-top:70px;background:#fff;padding:clamp(64px,8vw,104px) 0">
+    <div style="max-width:1320px;margin:0 auto;padding:0 clamp(20px,4vw,48px)">
+      <div style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:24px 48px;margin-bottom:clamp(32px,4vw,48px)">
+        <div>
+          <div data-in="0" style="margin-bottom:18px">
+            <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--magenta)" hint-size="120px,16px">Archiv</x-import>
+          </div>
+          <h2 style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,4.6vw,60px);line-height:0.98;letter-spacing:-0.03em;color:var(--purple);margin:0">
+            <span data-in="0.05" style="display:block">Abgeschlossene</span>
+            <span data-in="0.15" style="display:block;color:var(--magenta)">Projekte.</span>
+          </h2>
+        </div>
+        <p style="max-width:420px;margin:0;font-size:16px;line-height:1.6;color:var(--ink);text-wrap:pretty">Diese Projekte laufen nicht mehr. Programme, Beteiligte und Pressestimmen bleiben hier abrufbar.</p>
+      </div>
+      <div style="border-top:2px solid var(--purple)">
+        <sc-for list="{{ archive }}" as="a" hint-placeholder-count="3">
+          <article style="border-bottom:1px solid var(--rule)">
+            <button onClick="{{ a.toggle }}" aria-expanded="{{ a.open }}" aria-controls="{{ a.pid }}" style="width:100%;display:flex;flex-wrap:wrap;align-items:center;gap:8px clamp(24px,4vw,56px);padding:clamp(20px,2.6vw,30px) 0;background:transparent;border:0;border-radius:0;text-align:left;cursor:pointer;color:var(--purple)" style-hover="color:var(--magenta)">
+              <span style="flex:0 0 180px;font-family:var(--font-display);font-weight:800;font-size:clamp(24px,2.2vw,30px);line-height:1;letter-spacing:-0.03em;color:var(--magenta)">{{ a.years }}</span>
+              <span style="flex:1 1 300px;min-width:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 18px">
+                <span style="font-family:var(--font-display);font-weight:800;font-size:clamp(24px,2.6vw,34px);line-height:1.05;letter-spacing:-0.025em;color:inherit;transition:color 200ms">{{ a.t }}</span>
+                <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted)">{{ a.kind }}</span>
+              </span>
+              <span aria-hidden="true" style="flex:none;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1.5px solid {{ a.bc }};background:{{ a.bg }};color:{{ a.ic }};font-family:var(--font-display);font-weight:700;font-size:22px;line-height:1;transition:background 200ms, color 200ms">{{ a.sign }}</span>
+            </button>
+            <sc-if value="{{ a.open }}" hint-placeholder-val="{{ false }}">
+              <div id="{{ a.pid }}" data-acc="" style="display:flex;flex-wrap:wrap;gap:16px clamp(24px,4vw,56px);padding:0 0 clamp(24px,3vw,36px)">
+                <div style="flex:0 0 180px"></div>
+                <div style="flex:1 1 380px;min-width:0">
+                  <p style="max-width:620px;margin:0 0 14px;font-size:16px;line-height:1.6;color:var(--ink);text-wrap:pretty">{{ a.d }}</p>
+                  <div style="display:flex;flex-wrap:wrap;gap:4px 10px;font-size:14px;line-height:1.5;color:var(--ink-soft);margin-bottom:22px"><span style="font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--ink-muted);padding-top:2px">Mit</span><span>{{ a.partner }}</span></div>
+                  <div style="display:flex;flex-wrap:wrap;gap:12px 28px">
+                  <sc-for list="{{ a.links }}" as="l" hint-placeholder-count="1">
+                    <a href="{{ l.href }}" target="{{ l.target }}" rel="noopener" style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--magenta);border-bottom:1.5px solid var(--magenta);padding-bottom:3px" style-hover="color:var(--purple);border-color:var(--purple)">{{ l.label }}</a>
+                  </sc-for>
+                  </div>
+                </div>
+              </div>
+            </sc-if>
+          </article>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- MITMACHEN -->
+  <section id="mitmachen" data-screen-label="Mitmachen" style="scroll-margin-top:70px;position:relative;background:var(--cyan);color:var(--purple)">
+    <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--purple)" height="{{ 14 }}" flip="{{ true }}" style="position:absolute;right:0;top:0;width:42%" hint-size="42%,14px"></x-import>
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(64px,8vw,104px) clamp(20px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,400px),1fr));gap:56px clamp(32px,6vw,96px)">
+      <div>
+        <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Tag" color="var(--purple)" style="margin-bottom:18px" hint-size="160px,16px">Mitmachen</x-import>
+        <h2 data-in="0" style="font-family:var(--font-display);font-weight:800;font-size:clamp(38px,4.6vw,60px);line-height:0.98;letter-spacing:-0.03em;margin:0 0 22px">Zeig deine Arbeit.<br>Gestalte mit.</h2>
+        <p style="max-width:480px;margin:0 0 28px;font-size:16px;line-height:1.6">Die Formate leben von den Menschen im Netz. Bewirb dich auf einen Open Call oder bring dich in einer Arbeitsgruppe ein.</p>
+        <a href="Open Calls.dc.html" style="display:flex;flex-direction:column;gap:10px;max-width:520px;background:#fff;border-top:3px solid var(--magenta);padding:20px 22px 22px;color:var(--purple)" style-hover="color:var(--magenta)">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--magenta)">Open Call · Frist 15. Nov 2026</span>
+          <span style="font-family:var(--font-display);font-weight:800;font-size:24px;line-height:1.1;letter-spacing:-0.02em;color:inherit;transition:color 150ms">POP UP Frühjahr 2027: Kurzstücke bis 20 Minuten gesucht</span>
+          <span style="font-family:var(--font-mono);font-size:12px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple)">Zur Ausschreibung →</span>
+        </a>
+      </div>
+      <div style="align-self:end;border-top:2px solid var(--purple);padding-top:26px">
+        <div style="font-family:var(--font-display);font-weight:800;font-size:28px;letter-spacing:-0.02em;margin-bottom:8px">Arbeitsgruppen</div>
+        <p style="margin:0 0 20px;font-size:15px;line-height:1.6">Hinter jedem Format steht eine AG. Mitglieder:innen können jederzeit einsteigen.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:30px">
+          <sc-for list="{{ ags }}" as="ag" hint-placeholder-count="9">
+            <span style="display:flex;align-items:center;gap:8px;padding:8px 12px;border:1.5px solid var(--purple);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.14em;text-transform:uppercase;color:var(--purple)"><span style="width:6px;height:6px;background:var(--magenta)"></span>{{ ag }}</span>
+          </sc-for>
+        </div>
+        <a href="TanzNetzDresden Website v5.dc.html#mitglied" style="display:inline-flex">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Button" variant="primary" size="lg" marker="{{ true }}" hint-size="220px,46px">Mitglied werden</x-import>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer style="background:var(--purple);color:#fff">
+    <div style="max-width:1320px;margin:0 auto;padding:clamp(56px,7vw,88px) clamp(20px,4vw,48px) 28px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:40px 48px;padding-bottom:48px;border-bottom:1px solid rgba(255,255,255,0.16)">
+        <div style="min-width:0">
+          <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="full" color="#ffffff" width="220px" hint-size="220px,74px"></x-import>
+          <p style="margin:22px 0 0;max-width:340px;font-size:14px;line-height:1.6;color:rgba(255,255,255,0.78)">Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit 2010, seit 2020 als gemeinnütziger Verein.</p>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Formate</span>
+          <sc-for list="{{ footFormats }}" as="ff" hint-placeholder-count="7">
+            <a href="#{{ ff.id }}" onClick="{{ ff.go }}" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">{{ ff.t }}</a>
+          </sc-for>
+          <a href="#archiv" style="font-size:14px;color:rgba(255,255,255,0.78)" style-hover="color:var(--cyan)">Archiv</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.18em;text-transform:uppercase;color:var(--cyan);margin-bottom:6px">Kontakt</span>
+          <span style="font-size:14px;line-height:1.6;color:rgba(255,255,255,0.86)">Pfotenhauer Straße 59 HH<br>01307 Dresden</span>
+          <a href="mailto:kontakt@tanznetzdresden.de" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">kontakt@tanznetzdresden.de</a>
+          <a href="tel:+4915771520512" style="font-size:14px;color:#fff" style-hover="color:var(--cyan)">+49 1577 1520 512</a>
+        </div>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px 28px;padding-top:22px;font-family:var(--font-mono);font-size:11px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.7)">
+        <span>© 2026 TanzNetzDresden e.V.</span>
+        <a href="#top" style="color:rgba(255,255,255,0.7);margin-left:auto" style-hover="color:var(--cyan)">Impressum</a>
+        <a href="#top" style="color:rgba(255,255,255,0.7)" style-hover="color:var(--cyan)">Datenschutz</a>
+      </div>
+    </div>
+  </footer>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;react&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;section&quot;:&quot;Kopf&quot;,&quot;label&quot;:&quot;Netz reagiert auf Maus&quot;},&quot;mediaFx&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Wischen&quot;,&quot;Überblenden&quot;],&quot;default&quot;:&quot;Wischen&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Detail&quot;,&quot;label&quot;:&quot;Bildwechsel&quot;},&quot;motion&quot;:{&quot;editor&quot;:&quot;boolean&quot;,&quot;default&quot;:true,&quot;tsType&quot;:&quot;boolean&quot;,&quot;label&quot;:&quot;Animationen&quot;}}">
+const P = 'assets/photos/';
+const CAT = { buehne: ['Bühne', 'magenta'], training: ['Training', 'cyan'], diskurs: ['Diskurs', 'purple'], stadt: ['Stadtraum', 'outline'], residenz: ['Residenz', 'outline'] };
+const TBD = { nextDate: 'Termin folgt', nextWhere: 'Wir kündigen ihn im Newsletter an.', nextHref: 'TanzNetzDresden Website v5.dc.html#mitglied' };
+const FORMATS = [
+  { id: 'studio-round', t: 'Studio Round', since: 'seit 2021', cats: ['diskurs', 'buehne'], img: P + 'duo-silhouette-stage.jpg', alt: 'Duo als Silhouette auf der Bühne',
+    short: 'Offenes Showing mit moderiertem Gespräch. Überregional mit Freiburg und Frankfurt.',
+    d: 'Ein offenes Showing mit anschließendem moderiertem Gespräch: Künstler:innen zeigen Arbeiten im Prozess, das Publikum spricht mit. Seit 2024 überregional mit dem Tanznetz Freiburg und dem ID Frankfurt, gefördert durch die NPN-Impulsförderung.',
+    facts: [['Ort', 'Villa Wigman für Tanz'], ['Partner', 'Tanznetz Freiburg · ID Frankfurt'], ['Projektleitung', 'Alina Lucifero']], ...TBD },
+  { id: 'pop-up', t: 'POP UP', since: 'seit 2019', cats: ['buehne'], img: P + 'ensemble-curtain-call.jpg', alt: 'Ensemble beim Schlussapplaus',
+    short: 'Niedrigschwelliges Aufführungsformat für neue Arbeiten aus dem Netzwerk.',
+    d: 'Unser niedrigschwelliges Aufführungsformat für neue Arbeiten aus dem Netzwerk. Kurze Stücke, ein Abend, ein offenes Publikum. Seit 2022 auch als POP UP exchange.',
+    facts: [['Ort', 'Wechselnde Orte, u. a. Zentralwerk'], ['Ableger', 'POP UP exchange, seit 2022'], ['Projektleitung', 'Justine Rouquart']],
+    nextDate: 'Heute · Sa 31. Okt · 20:00', nextWhere: 'Zentralwerk · Neue Kurzstücke aus dem Netzwerk', nextHref: 'Kalender.dc.html',
+    links: [['Open Call Frühjahr 2027', 'Open Calls.dc.html']] },
+  { id: 'keep-up', t: 'KEEP UP', since: 'seit 2022', cats: ['training'], img: P + 'headstand-solo.jpg', alt: 'Solo-Tänzerin im Kopfstand',
+    short: 'Profitraining drei- bis fünfmal pro Woche in der TENZA, dazu Workshops.',
+    d: 'Profitraining für Tanzschaffende, drei- bis fünfmal pro Woche in der TENZA. Lokale und internationale Dozent:innen wechseln sich ab. Dazu kommen regelmäßige Workshops.',
+    facts: [['Ort', 'TENZA Schmiede'], ['Rhythmus', '3–5× pro Woche'], ['Projektleitung', 'Rika Yotsumoto']],
+    nextDate: 'Mo · 2. Nov · 10:00', nextWhere: 'TENZA Schmiede · Contemporary', nextHref: 'KEEP UP Profitraining.dc.html',
+    links: [['Trainingsplan', 'KEEP UP Profitraining.dc.html']] },
+  { id: 'vision-danceable', t: 'vision:danceable', since: 'seit 2024', cats: ['buehne'], img: P + 'duo-orange-blue.jpg', alt: 'Zwei Tanzende in orangem und blauem Licht',
+    short: 'Kurzstückreihe am Societaetstheater mit 4 rooms company und about blank collective.',
+    d: 'Kurzstückreihe am Societaetstheater, gemeinsam mit der 4 rooms company und dem about blank collective. Mehrere Positionen der freien Szene an einem Abend.',
+    facts: [['Ort', 'Societaetstheater'], ['Partner', '4 rooms company · about blank collective'], ['Projektleitung', 'Malte Leonard Herz']],
+    nextDate: 'Do · 26. Nov · 20:00', nextWhere: 'Societaetstheater · vision:danceable #6', nextHref: 'Kalender.dc.html' },
+  { id: 'welttanztag', t: 'Welttanztag', since: 'jährlich · 29. April', cats: ['stadt'], img: P + 'sprung.jpg', alt: 'Tänzer:in im Sprung',
+    short: 'Tanz im öffentlichen Raum: spontan, einladend und für alle zugänglich.',
+    d: 'Am 29. April tanzt Dresden im öffentlichen Raum. Wir bringen den Tanz direkt ins Stadtbild: spontan, einladend und für alle zugänglich.',
+    facts: [['Ort', 'Öffentlicher Raum, Dresden'], ['Rhythmus', 'jährlich am 29. April'], ['Organisation', 'AG Welttanztag']],
+    nextDate: 'Do · 29. April 2027', nextWhere: 'Programm und Orte folgen', nextHref: 'Kalender.dc.html' },
+  { id: 'bodies-textiles', t: 'Bodies & Textiles', since: 'ab 2027', cats: ['buehne'], img: P + 'duo-rot.jpg', alt: 'Duo in rotem Licht',
+    short: 'Neues Format mit Wir Gestalten Dresden und dem Slow Fashion Festival.',
+    d: 'Neues Format ab 2027, gemeinsam mit Wir Gestalten Dresden und dem Slow Fashion Festival.',
+    facts: [['Partner', 'Wir Gestalten Dresden · Slow Fashion Festival'], ['Start', '2027'], ['Projektleitung', 'Justine Rouquart']], ...TBD },
+  { id: 'dresdance', t: 'Dresdance Gala', since: 'Beteiligung', cats: ['buehne'], img: P + 'solo-blau.jpg', alt: 'Solo in blauem Licht',
+    short: 'Das Netz ist bei der Dresdance Gala vertreten.',
+    d: 'Das TanzNetzDresden ist bei der Dresdance Gala vertreten. Die AG Dresdance koordiniert die Beteiligung aus dem Netzwerk.',
+    facts: [['Organisation', 'AG Dresdance'], ['Projektleitung', 'Malte Leonard Herz']], ...TBD },
+  { id: 'tanzpakt', t: 'TANZPAKT in residence', since: '2022–2024', sinceK: 'Laufzeit', cats: ['residenz'], img: P + 'kopfstand.jpg', alt: 'Tänzer im Kopfstand auf dunkler Bühne',
+    short: 'Residenzprogramm für Tanzschaffende in Sachsen. 18 Residenzen an sieben Partnerorten.',
+    d: 'Mit der Villa Wigman für Tanz und sieben Partnerorten in Sachsen haben wir von 2022 bis 2024 das Residenzprogramm TANZPAKT in residence getragen. 18 Residenzen wurden ausgeschrieben, eine Jury entschied über die Vergabe. Jede Residenz verband eigene Recherche mit einem Workshop für Profis und Amateur:innen und einer Werkstattpräsentation.',
+    facts: [['Umfang', '18 Residenzen · Dresden, Kirschau, Zwickau, Görlitz, Chemnitz, Leipzig'], ['Partner', 'Villa Wigman für Tanz · TanzART Kirschau · Mondstaubtheater Zwickau · TanzRaumGörlitz · KOMPLEX Chemnitz · LOFFT · 4fürTANZ Leipzig · TENZA schmiede'], ['Förderung', 'TANZPAKT Stadt-Land-Bund']],
+    ctaLabel: 'Programm abgeschlossen', nextDate: 'Resümee und Rückschau', nextWhere: '3 Jahre TANZPAKT in residence · 28. April 2025', nextHref: 'https://tanznetzdresden.de/3-jahre-tanzpakt-in-residence-resuemee-und-rueckschau/', noCal: true,
+    links: [['Resident:innen 2024', 'https://tanznetzdresden.de/tanzpakt-in-residence/'], ['Open Call 2024 (Archiv)', 'https://tanznetzdresden.de/tanzpakt-in-residence-2022-24-open-call-bis-19-juni-2023/']] },
+];
+const FILTERS = [['alle', 'Alle'], ['buehne', 'Tanz sehen'], ['training', 'Trainieren'], ['diskurs', 'Mitreden'], ['stadt', 'Draußen tanzen']];
+const MILES = [
+  ['2010', ['Das Netzwerk entsteht']], ['2019', ['POP UP']], ['2020', ['Gründung als gemeinnütziger Verein']], ['2021', ['Studio Round']],
+  ['2022', ['KEEP UP Training', 'POP UP exchange', 'TANZPAKT in residence']], ['2024', ['vision:danceable', 'Studio Round überregional']], ['2027', ['Bodies & Textiles']],
+];
+const ARCHIVE = [
+  { t: 'LINIE 08', years: '2011–2018', kind: 'Aufführungsreihe',
+    d: 'Die Aufführungsreihe der freien Tanzszene Dresdens im Festspielhaus HELLERAU. Pro Abend zwei bis drei Neuproduktionen oder Wiederaufnahmen von 20 bis 30 Minuten, danach ein Publikumsgespräch. Der Name kommt von der Straßenbahnlinie 8, die das Stadtzentrum mit Hellerau verbindet.',
+    partner: 'HELLERAU – Europäisches Zentrum der Künste',
+    links: [['Programme 2011–2018', 'https://tanznetzdresden.de/linie-8/'], ['Pressespiegel (PDF)', 'https://tanznetzdresden.de/wp-content/uploads/2021/03/Pressespiegel-L08.pdf']] },
+  { t: 'ChanceTanz', years: '2015–2020', kind: 'Tanzvermittlung',
+    d: 'Tanzprojekte für bildungsbenachteiligte Kinder und Jugendliche im Förderprogramm „Kultur macht stark!“, getragen von lokalen Bündnissen aus Horten, Schulen und Kulturträgern. Entstanden sind 16 Projekte, darunter MAGIC MOVES, PLANETEN STORIES und MATAMUTAMA.',
+    partner: 'Bundesverband Tanz in Schulen e.V. · JugendKunstschule Dresden · Kultopia gGmbH · Projektschmiede gGmbH',
+    links: [['Alle Projekte', 'https://tanznetzdresden.de/chance-tanz/']] },
+  { t: 'WORKING COMMUNITIES', years: '2021', kind: 'Fachtag · Jubiläum',
+    d: 'Überregionaler Fachtag Tanz im September 2021 mit dem Round Table zu Netzwerkstrukturen in den freien Darstellenden Künsten, im November das Jubiläum des TanzNetzDresden mit drei kostenfreien Workshops zum gemeinschaftlichen Handeln im Tanz.',
+    partner: 'TENZA Schmiede · HELLERAU – Europäisches Zentrum der Künste · Dachverband Tanz Deutschland',
+    links: [['Programm und Graphic Recordings', 'https://tanznetzdresden.de/working-communities/']] },
+  { t: 'Tanzkalender Dresden', years: '2024–2026', kind: 'Monatsplakat',
+    d: 'Der Tanzkalender bündelte die Tanzangebote in Dresden auf einem monatlichen Plakat: Bühnen, Hochschule und freie Szene an einem Ort. Von Mai 2024 bis April 2026 erschienen 18 Ausgaben, zum Herbst 2026 wurde der Kalender eingestellt.',
+    partner: 'Kulturstiftung des Freistaates Sachsen · Landeshauptstadt Dresden · SAX',
+    links: [['Alle 18 Ausgaben', 'Tanzkalender Archiv.dc.html']] },
+];
+const AGS = ['POP UP', 'Welttanztag', 'Studio Round', 'vision:danceable', 'Bodies & Textiles', 'Dresdance', 'Newcomer:innen', 'Elternschaft in Tanz', 'Sharing'];
+const E = 'cubic-bezier(0.16,1,0.3,1)';
+
+const NET = {
+  wide: { 'studio-round': [72, 8, 'r'], 'keep-up': [94, 27, 'l'], 'tanzpakt': [80, 49, 'l'], 'pop-up': [44, 60, 'r'], 'welttanztag': [6, 70, 'r'], 'vision-danceable': [62, 79, 'r'], 'bodies-textiles': [22, 92, 'r'], 'dresdance': [95, 94, 'l'] },
+  narrow: { 'studio-round': [4, 5, 'r'], 'keep-up': [96, 17, 'l'], 'tanzpakt': [96, 32, 'l'], 'pop-up': [4, 45, 'r'], 'welttanztag': [96, 57, 'l'], 'vision-danceable': [4, 69, 'r'], 'bodies-textiles': [96, 82, 'l'], 'dresdance': [4, 95, 'r'] },
+};
+const EDGES = [
+  ['pop-up', 'studio-round', 'Neue Arbeiten'], ['pop-up', 'vision-danceable', 'Kurzstücke'], ['pop-up', 'bodies-textiles', 'Justine Rouquart'],
+  ['pop-up', 'welttanztag', 'Offen für alle', 0.28], ['studio-round', 'tanzpakt', 'Villa Wigman'], ['studio-round', 'keep-up', ''],
+  ['keep-up', 'tanzpakt', 'TENZA'], ['vision-danceable', 'dresdance', 'Malte Leonard Herz'], ['vision-danceable', 'tanzpakt', ''], ['welttanztag', 'bodies-textiles', ''],
+];
+const IDX = (id) => FORMATS.findIndex((f) => f.id === id);
+const EIDX = EDGES.map(([a, b, t, u]) => [IDX(a), IDX(b), t, u ?? 0.5]);
+
+class Component extends DCLogic {
+  state = { filter: 'alle', active: 0, w: 1280, arch: -1, hov: -1, sw: 0, sh: 0, drawn: false, net: null };
+  progRef = React.createRef();
+  heroRef = React.createRef();
+  stageRef = React.createRef();
+  introRef = React.createRef();
+  mediaRef = React.createRef();
+
+  componentDidMount() {
+    this.reduced = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) || this.props.motion === false;
+    this.onResize = () => this.setState({ w: window.innerWidth });
+    this.onResize();
+    window.addEventListener('resize', this.onResize);
+    this.onScroll = () => { if (!this._raf) this._raf = requestAnimationFrame(() => this.tick()); };
+    window.addEventListener('scroll', this.onScroll, { passive: true });
+    this.tick();
+    if ('IntersectionObserver' in window) {
+      this.io = new IntersectionObserver((en) => en.forEach((e) => { if (e.isIntersecting) { this.io.unobserve(e.target); this.reveal(e.target); } }), { threshold: 0.15 });
+      this.observe();
+    }
+    if (window.ResizeObserver && this.stageRef.current) { this.ro = new ResizeObserver(() => this.measure()); this.ro.observe(this.stageRef.current); }
+    this.measure();
+    this.whenGsap(() => { this.gsapReady = true; this.startNet(); this.tryIntro(); this.parallax(); });
+  }
+  componentDidUpdate() {
+    this.observe();
+    const { active, filter, w } = this.state, wide = w >= 900;
+    const j = Math.max(0, Math.min(active, this.visible().length - 1));
+    const pa = this._pA ?? 0, pf = this._pF ?? 'alle', pw = this._pW ?? wide;
+    this._pA = active; this._pF = filter; this._pW = wide;
+    if (this.gsapReady) this.parallax();
+  }
+  parallax() {
+    if (!this.gsapOk() || !window.ScrollTrigger) return;
+    const g = window.gsap; this._par = this._par || new WeakSet();
+    document.querySelectorAll('[data-par]').forEach((im) => { if (this._par.has(im)) return; this._par.add(im);
+      g.fromTo(im, { yPercent: -6 }, { yPercent: 6, ease: 'none', scrollTrigger: { trigger: im.parentElement, start: 'top bottom', end: 'bottom top', scrub: true } }); });
+  }
+  showMedia(j, instant, dir) {
+    const box = this.mediaRef.current; if (!box) return;
+    if (j === this._mj && !instant) return;
+    const imgs = Array.from(box.querySelectorAll('[data-media]')), el = imgs[j]; if (!el) return;
+    this._mj = j; this._mz = (this._mz || 1) + 1;
+    const g = window.gsap;
+    if (instant || !this.gsapOk()) {
+      imgs.forEach((im, k) => { if (g) g.killTweensOf(im); im.style.opacity = k === j ? '1' : '0'; im.style.clipPath = ''; im.style.transform = ''; });
+      return;
+    }
+    el.style.zIndex = String(this._mz);
+    const fade = this.props.mediaFx === 'Überblenden';
+    g.killTweensOf(el);
+    g.fromTo(el, fade ? { opacity: 0, scale: 1.04, clipPath: 'inset(0% 0% 0% 0%)' } : { opacity: 1, scale: 1.08, clipPath: dir < 0 ? 'inset(0% 0% 0% 100%)' : 'inset(0% 100% 0% 0%)' },
+      { opacity: 1, scale: 1, clipPath: 'inset(0% 0% 0% 0%)', duration: fade ? 0.8 : 1.05, ease: 'expo.out', onComplete: () => imgs.forEach((im, k) => { if (k !== this._mj) im.style.opacity = '0'; }) });
+    g.fromTo(box.querySelectorAll('[data-mtx]'), { yPercent: 110 }, { yPercent: 0, duration: 0.8, ease: 'expo.out', stagger: 0.05 });
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize);
+    window.removeEventListener('scroll', this.onScroll);
+    if (this.io) this.io.disconnect();
+    if (this.ro) this.ro.disconnect();
+    if (this._tick && window.gsap) window.gsap.ticker.remove(this._tick);
+    if (this._tl) this._tl.kill();
+    document.querySelectorAll('[data-in],[data-wipe]').forEach((el) => { el.style.opacity = ''; });
+  }
+  gsapOk() { return !!window.gsap && !this.reduced; }
+  whenGsap(cb) {
+    let n = 0;
+    const t = () => { if (window.gsap && window.ScrollTrigger) { window.gsap.registerPlugin(window.ScrollTrigger); (document.fonts ? document.fonts.ready : Promise.resolve()).then(cb); } else if (n++ < 40) setTimeout(t, 100); else cb(); };
+    t();
+  }
+
+  // ---- Formate-Netz
+  measure() {
+    const el = this.stageRef.current; if (!el) return;
+    const sw = el.clientWidth, sh = el.clientHeight;
+    if (sw === this.state.sw && sh === this.state.sh) return;
+    this.setState({ sw, sh }, () => {
+      const narrow = this.state.w < 820, n = this.state.net;
+      const done = () => { this._settled = false; this.tryIntro(); this.netFrame(true); };
+      if (!n || n.narrow !== narrow) this.setState({ net: this.genNet() }, done); else done();
+    });
+  }
+  layout() { const narrow = this.state.w < 820, n = this.state.net; if (n && n.narrow === narrow) return n.pos; const set = narrow ? NET.narrow : NET.wide; return FORMATS.map((f) => set[f.id]); }
+  edges() { const narrow = this.state.w < 820, n = this.state.net; return n && n.narrow === narrow ? n.edges : EIDX; }
+  genNet() {
+    const st = this.stageRef.current, { sw, sh, w } = this.state; if (!st || !sw) return null;
+    const narrow = w < 820, fs = Math.max(22, Math.min(38, w * 0.026)), gap = 20;
+    const sr = st.getBoundingClientRect(), ie = this.introRef.current;
+    const ir = ie && !narrow ? ie.getBoundingClientRect() : null;
+    const block = ir ? [ir.left - sr.left - 30, ir.top - sr.top - 30, ir.right - sr.left + 30, ir.bottom - sr.top + 30] : null;
+    const hit = (a, b) => a[0] < b[2] + gap && a[2] + gap > b[0] && a[1] < b[3] + gap && a[3] + gap > b[1];
+    const lw = (f) => Math.max(f.t.length * fs * 0.62, 120) + 24, lh = fs + 36;
+    const order = FORMATS.map((f, i) => i).sort((a, b) => FORMATS[b].t.length - FORMATS[a].t.length);
+    for (let attempt = 0; attempt < 40; attempt++) {
+      const pts = [], rects = [], pos = []; let ok = true;
+      for (const i of order) {
+        const W = lw(FORMATS[i]); let best = null, bd = -1;
+        for (let t = 0, c = 0; t < 400 && c < 24; t++) {
+          const x = 10 + Math.random() * (sw - 20), y = lh / 2 + Math.random() * (sh - lh), side = x + 12 + W < sw ? (x - 12 - W > 0 && Math.random() < 0.4 ? 'l' : 'r') : 'l';
+          const rc = side === 'r' ? [x - 8, y - lh / 2, x + 12 + W, y + lh / 2] : [x - 12 - W, y - lh / 2, x + 8, y + lh / 2];
+          if (rc[0] < 0 || rc[2] > sw || (block && hit(rc, block)) || rects.some((q) => hit(rc, q))) continue;
+          c++;
+          const d = pts.length ? Math.min(...pts.map((p) => Math.hypot(p[0] - x, p[1] - y))) : Math.random();
+          if (d > bd) { bd = d; best = [x, y, side, rc]; }
+        }
+        if (!best) { ok = false; break; }
+        pts.push([best[0], best[1]]); rects.push(best[3]); pos[i] = [best[0] / sw * 100, best[1] / sh * 100, best[2]];
+      }
+      if (!ok) continue;
+      const P = pos.map((p) => [p[0] / 100 * sw, p[1] / 100 * sh]), D = (a, b) => Math.hypot(P[a][0] - P[b][0], P[a][1] - P[b][1]);
+      const seen = {}, E = [], add = (a, b) => { const k = Math.min(a, b) + '-' + Math.max(a, b); if (seen[k]) return; seen[k] = 1; E.push([a, b]); };
+      const inT = [0];
+      while (inT.length < P.length) { let m = null; inT.forEach((a) => P.forEach((_, b) => { if (!inT.includes(b) && (!m || D(a, b) < m[2])) m = [a, b, D(a, b)]; })); add(m[0], m[1]); inT.push(m[1]); }
+      P.forEach((_, a) => { const nn = P.map((_, b) => b).filter((b) => b !== a).sort((x, y) => D(a, x) - D(a, y)); if (Math.random() < 0.6) add(a, nn[1]); });
+      E.sort((e1, e2) => Math.min(P[e1[0]][0], P[e1[1]][0]) - Math.min(P[e2[0]][0], P[e2[1]][0]));
+      return { narrow, pos, edges: E };
+    }
+    return null;
+  }
+  drawIn(t0) {
+    const g = window.gsap, h = this.heroRef.current, tl = g.timeline({ defaults: { ease: 'expo.out' } });
+    tl.fromTo(h.querySelectorAll('[data-net] line'), { attr: { 'stroke-dashoffset': 1 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 1.1, stagger: 0.07 }, t0)
+      .fromTo(h.querySelectorAll('[data-pre]'), { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: 0.8, stagger: 0.07, clearProps: 'transform' }, t0 + 0.1);
+    return tl;
+  }
+  reknit() {
+    if (this._busy) return;
+    const apply = (cb) => this.setState({ net: this.genNet() || this.state.net }, () => { this.off = FORMATS.map(() => ({ x: 0, y: 0 })); this._settled = false; this.netFrame(true); cb && cb(); });
+    if (!this.gsapOk()) { apply(); return; }
+    const g = window.gsap, h = this.heroRef.current; this._busy = true;
+    g.timeline({ onComplete: () => apply(() => { this.drawIn(0); this._busy = false; }) })
+      .to(h.querySelectorAll('[data-net] line'), { attr: { 'stroke-dashoffset': 1 }, duration: 0.4, ease: 'power3.in', stagger: 0.02 }, 0)
+      .to(h.querySelectorAll('[data-pre]'), { opacity: 0, x: 30, duration: 0.35, ease: 'power3.in', stagger: 0.03 }, 0);
+  }
+  base() { const { sw, sh } = this.state; return this.layout().map((p) => [p[0] / 100 * sw, p[1] / 100 * sh]); }
+  startNet() {
+    this.off = FORMATS.map(() => ({ x: 0, y: 0 }));
+    if (!this.gsapOk() || this.props.react === false) return;
+    this._tick = () => this.netFrame();
+    window.gsap.ticker.add(this._tick);
+  }
+  onMove(e) {
+    const st = this.stageRef.current; if (!st) return;
+    const r = st.getBoundingClientRect();
+    this._mouse = [e.clientX - r.left, e.clientY - r.top]; this._settled = false;
+  }
+  netFrame(force) {
+    const h = this.heroRef.current; if (!h || !this.state.sw || !this.off) return;
+    const b = this.base(), m = this._mouse, hov = this.state.hov, R = Math.max(180, Math.min(340, this.state.sw * 0.28));
+    let moving = false;
+    b.forEach((p, i) => {
+      let tx = 0, ty = 0;
+      if (i === hov) { const cx = this.state.sw / 2, cy = this.state.sh / 2, dx = p[0] - cx, dy = p[1] - cy, d = Math.hypot(dx, dy) || 1; tx = dx / d * 22; ty = dy / d * 22; } else if (m) { const dx = m[0] - p[0], dy = m[1] - p[1], d = Math.hypot(dx, dy) || 1; if (d < R) { const f = Math.sin((1 - d / R) * Math.PI) * 22; tx = dx / d * f; ty = dy / d * f; } }
+      const o = this.off[i]; o.x += (tx - o.x) * 0.08; o.y += (ty - o.y) * 0.08;
+      if (Math.abs(tx - o.x) > 0.05 || Math.abs(ty - o.y) > 0.05) moving = true;
+    });
+    if (!force && !moving && this._settled) return;
+    this._settled = !moving;
+    const o = this.off, f = (n) => n.toFixed(1);
+    h.querySelectorAll('[data-node]').forEach((el, i) => { if (o[i]) el.style.transform = 'translate(' + f(o[i].x) + 'px,' + f(o[i].y) + 'px)'; });
+    const lines = h.querySelectorAll('[data-net] line');
+    this.edges().forEach(([a, c], k) => { const L = lines[k]; if (!L) return; L.setAttribute('x1', f(b[a][0] + o[a].x)); L.setAttribute('y1', f(b[a][1] + o[a].y)); L.setAttribute('x2', f(b[c][0] + o[c].x)); L.setAttribute('y2', f(b[c][1] + o[c].y)); });
+  }
+  tryIntro() {
+    if (this._introDone || !this.gsapReady || !this.state.sw) return;
+    this._introDone = true;
+    if (!this.gsapOk()) { this.setState({ drawn: true }); return; }
+    const g = window.gsap, h = this.heroRef.current, Q = (sel) => h.querySelectorAll(sel);
+    this._tl = g.timeline({ defaults: { ease: 'expo.out' }, onComplete: () => this.setState({ drawn: true }) })
+      .from(Q('[data-hw]'), { x: -60, opacity: 0, duration: 0.8, stagger: 0.06 }, 0)
+      .from(Q('[data-hin]'), { x: -60, opacity: 0, duration: 0.8, stagger: 0.08 }, 0.2)
+      .add(this.drawIn(0), 0.3);
+  }
+
+  // ---- Seite
+  observe() {
+    if (!this.io || this.reduced) return;
+    this._seen = this._seen || new WeakSet();
+    document.querySelectorAll('[data-in],[data-wipe]').forEach((el) => {
+      if (this._seen.has(el)) return; this._seen.add(el);
+      const r = el.getBoundingClientRect();
+      if (r.top < window.innerHeight && r.bottom > 0) { this.reveal(el); return; }
+      this.io.observe(el);
+    });
+  }
+  reveal(el) {
+    el.style.opacity = '';
+    if (!el.animate) return;
+    if (el.hasAttribute('data-wipe')) {
+      el.animate([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 1000, easing: E, fill: 'backwards' });
+    } else {
+      el.animate([{ opacity: 0, transform: 'translateX(-60px)' }, { opacity: 1, transform: 'none' }], { duration: 800, delay: (+el.dataset.in || 0) * 1000, easing: E, fill: 'backwards' });
+    }
+  }
+  tick() {
+    this._raf = null;
+    const el = this.progRef.current;
+    const d = document.documentElement.scrollHeight - window.innerHeight;
+    if (el) el.style.width = (d > 0 ? Math.min(100, (window.scrollY / d) * 100) : 0) + '%';
+    const arts = document.querySelectorAll('[data-chapter]');
+    let a = 0; const line = window.innerHeight * 0.4;
+    arts.forEach((x, i) => { if (x.getBoundingClientRect().top < line) a = i; });
+    if (a !== this.state.active) this.setState({ active: a });
+  }
+  visible() { const f = this.state.filter; return FORMATS.filter((x) => f === 'alle' || x.cats.includes(f)); }
+  go(id) {
+    return (e) => {
+      const el = document.getElementById(id); if (!el) return;
+      e.preventDefault();
+      if (!this.visible().some((x) => x.id === id)) { this.setState({ filter: 'alle' }, () => this.go(id)(e)); return; }
+      window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - 88, behavior: this.reduced ? 'auto' : 'smooth' });
+    };
+  }
+
+  renderVals() {
+    const { filter, active, w, hov, sw, sh } = this.state;
+    const narrow = w < 720, railOff = w < 960;
+    const vis = this.visible();
+    const alt = this.props.alternate ?? true;
+    const num = (i) => String(i + 1).padStart(2, '0');
+    const cat = (x) => CAT[x.cats[0]];
+    const filters = FILTERS.map(([k, label]) => {
+      const on = filter === k;
+      return { label, on, count: k === 'alle' ? FORMATS.length : FORMATS.filter((x) => x.cats.includes(k)).length,
+        bg: on ? 'var(--purple)' : 'transparent', fg: on ? '#fff' : 'var(--purple)', cc: on ? 'var(--cyan)' : 'var(--ink-muted)',
+        pick: () => this.setState({ filter: k }) };
+    });
+    const lay = this.layout(), b = this.base(), pre = (this.state.drawn || this.reduced) ? 1 : 0;
+    const ce = React.createElement, px = (n) => n.toFixed(1) + 'px';
+    const netSvg = sw ? ce('svg', { 'data-net': '', viewBox: '0 0 ' + sw + ' ' + sh, width: '100%', height: '100%', 'aria-hidden': 'true', style: { position: 'absolute', left: 0, top: 0, overflow: 'visible', pointerEvents: 'none', zIndex: 1 } },
+      this.edges().map(([a, z], k) => {
+        return ce('line', { key: k, x1: b[a][0].toFixed(1), y1: b[a][1].toFixed(1), x2: b[z][0].toFixed(1), y2: b[z][1].toFixed(1), pathLength: 1, strokeDasharray: 1, strokeDashoffset: pre ? 0 : 1,
+          stroke: '#48C6D7', strokeOpacity: 0.42, strokeWidth: 1.5 }); })) : null;
+    const hc = hov >= 0 ? FORMATS[hov] : null;
+    const chapters = vis.map((x, j) => {
+      const i = FORMATS.indexOf(x);
+      return { ...x, n: num(i), catLabel: cat(x)[0], badge: cat(x)[1],
+        dir: alt && j % 2 ? 'row-reverse' : 'row',
+        ctaLabel: x.ctaLabel || 'Nächster Termin',
+        facts: [[x.sinceK || 'Seit', x.since], ...x.facts].map(([k, v]) => ({ k, v })),
+        links: [...(x.links || []), ...(x.noCal ? [] : [['Alle Termine', 'Kalender.dc.html']])].map(([label, href]) => ({ label: label + ' →', href })) };
+    });
+    const act = Math.min(active, vis.length - 1);
+    const rail = vis.map((x, j) => ({ id: x.id, t: x.t, n: num(FORMATS.indexOf(x)), col: j === act ? 'var(--magenta)' : 'var(--purple)', fw: j === act ? 800 : 600, go: this.go(x.id) }));
+    const miles = MILES.map(([y, items], i) => ({ y, items, sq: i === this.state.mile ? '22px' : '12px', yc: i === this.state.mile ? 'var(--cyan)' : '#fff',
+      on: () => this.setState({ mile: i }), off: () => this.setState({ mile: -1 }) }));
+    return {
+      progRef: this.progRef, heroRef: this.heroRef, filters,
+      stageRef: this.stageRef, introRef: this.introRef, netSvg, reknit: () => this.reknit(),
+      onMove: (e) => this.onMove(e), onLeave: () => { this._mouse = null; this._settled = false; },
+      introW: narrow ? '100%' : 'min(64%, 820px)', introMb: narrow ? '28px' : '0', stageRow: narrow ? 2 : 1,
+      stageH: narrow ? '620px' : 'clamp(600px, calc(100vh - 150px), 820px)',
+      info: hc ? { kicker: num(hov) + ' · ' + cat(hc)[0] + ' · ' + hc.since, text: hc.short } : { kicker: 'Menschen · Orte · Partner', text: 'Die Formate teilen Bühnen, Partner und Projektleitungen. Wähle einen Namen, um zum Format zu springen.' },
+      nodes: FORMATS.map((x, i) => { const [lx, ly, side] = lay[i], on = i === hov, r = side === 'r';
+        return { i, id: x.id, t: x.t, n: num(i), cat: cat(x)[0], x: lx + '%', y: ly + '%', lx: r ? '12px' : 'auto', rx: r ? 'auto' : '12px', align: r ? 'flex-start' : 'flex-end',
+          col: on ? 'var(--cyan)' : '#fff', mc: on ? '#fff' : 'var(--cyan)', ls: on ? 1.12 : 1, to: r ? '0% 50%' : '100% 50%', sq: on ? 'var(--cyan)' : 'var(--magenta)', sc: on ? 1.7 : 1, pre,
+          go: this.go(x.id), on: () => this.setState({ hov: i }), off: () => this.setState((s) => (s.hov === i ? { hov: -1 } : null)) }; }),
+      chapters, chapterCols: 'minmax(0,1fr)', photoAR: w >= 900 ? '21 / 9' : '4 / 3', rightPad: w >= 900 ? '18px' : '0',
+      media: vis.map((x, j) => ({ j, img: x.img, alt: x.alt })),
+      cm: vis[act] ? { n: num(FORMATS.indexOf(vis[act])), t: vis[act].t, cat: cat(vis[act])[0], total: num(FORMATS.length - 1) } : { n: '', t: '', cat: '', total: '' },
+      segN: vis.length, segs: vis.map((x, j) => ({ id: x.id, t: x.t, go: this.go(x.id), bg: j === act ? 'var(--magenta)' : j < act ? 'var(--purple)' : 'var(--rule)' })),
+      railFill: vis.length ? ((act + 1) / vis.length * 100) + '%' : '0%',
+      filtered: filter !== 'alle', resetFilter: () => this.setState({ filter: 'alle' }),
+      miles, ags: AGS,
+      archive: ARCHIVE.map((a, i) => { const open = this.state.arch === i; return { ...a, open, pid: 'archiv-' + i, sign: open ? '−' : '+',
+        bc: 'var(--purple)', bg: open ? 'var(--purple)' : 'transparent', ic: open ? '#fff' : 'var(--purple)',
+        toggle: () => this.setState({ arch: open ? -1 : i }, () => { const el = document.querySelector('#archiv-' + i); if (el && el.animate && !this.reduced) el.animate([{ opacity: 0, transform: 'translateX(-40px)' }, { opacity: 1, transform: 'none' }], { duration: 600, easing: E }); }),
+        links: a.links.map(([label, href]) => ({ label: label + ' →', href, target: /^https?:/.test(href) ? '_blank' : '_self' })) }; }),
+      footFormats: FORMATS.map((x) => ({ id: x.id, t: x.t, go: this.go(x.id) })),
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,6 +1,7 @@
 # Formate – Entwurf November 2026 (mit Tanzkalender-Archiv)
 
-Aus Claude Design. `formate.dc.html` ist die Formate-Seite, `tanzkalender-archiv.dc.html` die Unterseite mit allen
+Aus Claude Design. `formate-v2.dc.html` ist die aktuelle Formate-Seite (siehe „Fassung 2“ unten), `formate.dc.html`
+die erste Fassung, `tanzkalender-archiv.dc.html` die Unterseite mit allen
 Ausgaben des Tanzkalenders. Umgesetzt in `src/views/FormateView.astro` (Bewegung `src/scripts/formate.ts`) und
 `src/views/TanzkalenderArchivView.astro` (`src/scripts/tanzkalender-archiv.ts`). Inhalte und Pflege: `docs/formate.md`.
 
@@ -38,3 +39,24 @@ Abweichungen:
   einem eigenen Bild – hier stehen die Dateien laut Medienliste der alten Website.
 - Plakate im Kopf des Archivs und die Plakatbilder in der Liste öffnen die Großansicht mit der Maus; mit der
   Tastatur und für Screenreader führt „Ansehen“ dorthin (keine doppelten Tab-Stopps).
+
+## Fassung 2 (`formate-v2.dc.html`)
+
+Umgesetzt wie im Entwurf:
+- Kopf als Netz: „Acht Formate. Ein Netz.“ groß, darunter ein Kasten (ohne gewähltes Format „Menschen · Orte ·
+  Partner“, mit der Maus über einem Namen Nummer, Rubrik, Beginn und Kurzbeschreibung) und „Netz neu knüpfen“.
+  Die Formate als Knoten (Quadrat, Name, Nummer · Rubrik), zufällig verteilt ohne Überlappung und ohne den Text zu
+  verdecken, verbunden durch das kürzeste Netz und einige Querlinien. Knoten neigen sich der Maus zu, der gewählte
+  rückt nach außen (Quadrat cyan und größer, Name cyan). Linien zeichnen sich, Namen gleiten herein.
+- Formate im Detail ohne Leiste: Foto über die ganze Breite (21:9, schmal 4:3) mit Keil-Ecke, Wischer und Parallax,
+  darunter links Nummer, Rubrik, Name und Beschreibung, rechts Eckdaten, „Nächster Termin“ und Links.
+- Chronik, Archiv und Mitmachen unverändert.
+
+Abweichungen:
+- Ohne JavaScript steht das Netz in der festen Lage aus dem Entwurf unter dem Text (bei anderen Formaten
+  gleichmäßig verteilt); der Knopf erscheint erst mit JavaScript.
+- Namen werden mit ihrer echten Breite gemessen statt geschätzt; findet sich kein Platz, gilt die feste Lage. Beim
+  Ändern der Fensterbreite wird neu geknüpft. Die Maus zieht nur bei Maus/Touchpad, nicht auf Touch-Geräten.
+- Die beschrifteten Kanten im Entwurf (z. B. „Villa Wigman“) sind dort nicht sichtbar und entfallen.
+- Die Freisteller der ersten Fassung (und `npm run formate:freisteller`) werden nicht mehr gebraucht und sind
+  entfernt.

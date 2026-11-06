@@ -1,5 +1,5 @@
 /**
- * Formate (/formate/, Entwurf design/entwuerfe/2026-11-formate/) und Tanzkalender-Archiv (/formate/tanzkalender/).
+ * Formate (/formate/, Entwurf design/entwuerfe/2026-11-formate/formate-v2.dc.html) und Tanzkalender-Archiv (/formate/tanzkalender/).
  * Daten: src/content/formate/, src/content/formate-archiv/. Plakate und PDFs der alten Website sind im Test nicht
  * erreichbar – geprüft werden Aufbau, Links und Bedienung.
  */
@@ -17,7 +17,7 @@ async function oeffnen(page: Page, pfad: string) {
   await page.getByRole('button', { name: /^(Nur notwendige|Necessary only)$/ }).click();
 }
 
-test('Formate: Menü, Kopf mit Reitern, nächster Termin aus dem Kalender', async ({ page, isMobile }) => {
+test('Formate: Menü, Kopf als Netz, Kurzbeschreibung unter der Maus, neu knüpfen', async ({ page, isMobile }) => {
   await oeffnen(page, '/');
   if (!isMobile) {
     await page.locator('.site-nav').getByRole('link', { name: 'Formate' }).click();
@@ -25,33 +25,66 @@ test('Formate: Menü, Kopf mit Reitern, nächster Termin aus dem Kalender', asyn
   } else await page.goto('/formate/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Acht Formate. Ein Netz.');
 
-  const reiter = page.getByRole('tab');
-  await expect(reiter).toHaveCount(formate.length);
-  await expect(reiter.first()).toHaveAttribute('aria-selected', 'true');
-  await expect(page.getByRole('tabpanel')).toHaveCount(1);
-  await expect(page.getByRole('tabpanel')).toContainText('Studio Round');
+  const netz = page.getByRole('navigation', { name: 'Formate', exact: true });
+  const namen = netz.getByRole('link');
+  await expect(namen).toHaveCount(formate.length);
+  await expect(netz.locator('.fo-netz--js line').first()).toBeAttached();
+  // Namen überlappen sich nicht, bleiben in der Bühne und lassen den Text frei (gemessen ohne Maus, nach dem Hereingleiten)
+  await page.mouse.move(0, 0);
+  await expect(netz.locator('[data-pre]').last()).toHaveCSS('opacity', '1');
+  const lage = await page.evaluate(() => {
+    const r = (el: Element) => el.getBoundingClientRect();
+    const namen = [...document.querySelectorAll('.fo-knoten__a')].map(r);
+    const intro = r(document.querySelector('[data-fo-intro]')!);
+    const buehne = r(document.querySelector('[data-fo-buehne]')!);
+    const trifft = (a: DOMRect, b: DOMRect) => a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top;
+    return {
+      ueberlappt: namen.some((a, i) => namen.some((b, j) => j > i && trifft(a, b))),
+      imText: namen.some((a) => trifft(a, intro)),
+      draussen: namen.some((a) => a.left < buehne.left - 1 || a.right > buehne.right + 1),
+    };
+  });
+  expect(lage).toEqual({ ueberlappt: false, imText: false, draussen: false });
 
-  // Reiter wählen (auf dem Handy ohne Namen, nur Nummer)
-  await reiter.nth(2).click();
-  await expect(reiter.nth(2)).toHaveAttribute('aria-selected', 'true');
-  const panel = page.getByRole('tabpanel');
-  await expect(panel).toContainText('KEEP UP');
+  // Name mit der Maus oder dem Fokus: Kurzbeschreibung unter der Überschrift
+  const info = page.locator('[data-fo-info]');
+  await expect(info).toContainText('Menschen · Orte · Partner');
+  await netz.getByRole('link', { name: /KEEP UP/ }).focus();
+  await expect(info).toContainText('03 · Training · seit 2022');
+  await expect(info).toContainText('Profitraining');
+  await netz.getByRole('link', { name: /KEEP UP/ }).blur();
+  await expect(info).toContainText('Menschen · Orte · Partner');
+
+  // neu knüpfen: andere Lage, wieder ohne Überlappung
+  const vorher = await netz.locator('[data-knoten]').evaluateAll((l) => l.map((el) => (el as HTMLElement).style.getPropertyValue('--xb')).join());
+  await page.getByRole('button', { name: 'Netz neu knüpfen' }).click();
+  await expect.poll(() => netz.locator('[data-knoten]').evaluateAll((l) => l.map((el) => (el as HTMLElement).style.getPropertyValue('--xb')).join())).not.toBe(vorher);
+
+  // ein Name führt zum Format
+  await netz.getByRole('link', { name: /KEEP UP/ }).click();
+  await expect(page.locator('#keep-up h2')).toBeInViewport();
   // KEEP UP: das nächste Training (wochen.yaml) – je nach Build-Tag heute oder an einem der nächsten Tage
-  await expect(panel).toContainText(/Nächster Termin · (Heute · )?\p{L}{2} (· )?\d{1,2}\. \p{L}{3} · \d\d:\d\d/u);
-  await expect(panel.locator('.fo-panel__datum')).toHaveCSS('font-family', /JetBrains Mono/);
-  await expect(panel.getByRole('link')).toHaveAttribute('href', '#keep-up');
-  // Pfeiltasten wechseln den Reiter
-  await reiter.nth(2).press('ArrowRight');
-  await expect(reiter.nth(3)).toBeFocused();
-  await expect(page.getByRole('tabpanel')).toContainText('vision:danceable');
-
-  // Wechsel anhalten
-  const pause = page.getByRole('button', { name: 'Anhalten' });
-  await pause.click();
-  await expect(page.getByRole('button', { name: 'Weiter' })).toHaveAttribute('aria-pressed', 'true');
+  const termin = page.locator('#keep-up [data-fo-cta] [data-t]');
+  await expect(termin).toHaveText(/^(Heute · )?\p{L}{2} (· )?\d{1,2}\. \p{L}{3} · \d\d:\d\d/u);
+  await expect(termin).toHaveCSS('font-family', /JetBrains Mono/);
 });
 
-test('Formate: Filter „Ich möchte …“, Leiste, Kasten mit Termin oder Rückblick', async ({ page, isMobile }) => {
+test('Formate: ohne JavaScript steht das Netz unter dem Text', async ({ browser }) => {
+  const ctx = await browser.newContext({ javaScriptEnabled: false });
+  const page = await ctx.newPage();
+  await page.goto('/formate/');
+  const namen = page.locator('.fo-knoten__a');
+  await expect(namen).toHaveCount(formate.length);
+  await expect(namen.first()).toBeVisible();
+  await expect(page.locator('.fo-netz line:visible').first()).toBeAttached();
+  await expect(page.getByRole('button', { name: 'Netz neu knüpfen' })).toBeHidden();
+  const introUnten = (await page.locator('[data-fo-intro]').boundingBox())!;
+  const buehne = (await page.locator('[data-fo-buehne]').boundingBox())!;
+  expect(buehne.y).toBeGreaterThanOrEqual(introUnten.y + introUnten.height);
+  await ctx.close();
+});
+
+test('Formate: Filter „Ich möchte …“, großes Foto, Kasten mit Termin oder Rückblick', async ({ page }) => {
   await oeffnen(page, '/formate/');
   const kapitel = page.locator('[data-kap]');
   await expect(kapitel).toHaveCount(formate.length);
@@ -78,12 +111,11 @@ test('Formate: Filter „Ich möchte …“, Leiste, Kasten mit Termin oder Rüc
   await expect(tanzpakt.locator('.fo-cta')).toHaveAttribute('href', /\/news\/3-jahre-tanzpakt-in-residence-resuemee-und-rueckschau\/$/);
   await expect(tanzpakt.getByRole('link', { name: 'Alle Termine →' })).toHaveCount(0);
 
-  if (!isMobile) {
-    const leiste = page.getByRole('navigation', { name: 'Formate im Detail' });
-    await expect(leiste.getByRole('link')).toHaveCount(formate.length);
-    await page.locator('#welttanztag').scrollIntoViewIfNeeded();
-    await expect(leiste.locator('[aria-current="true"]')).toHaveText(/Welttanztag/);
-  }
+  // Foto über die ganze Breite, darunter Text und Eckdaten
+  const foto = (await keepUp.locator('.fo-kap__bild').boundingBox())!;
+  const titel = (await keepUp.getByRole('heading', { level: 2 }).boundingBox())!;
+  expect(titel.y).toBeGreaterThan(foto.y + foto.height);
+  expect(foto.width).toBeGreaterThan(((await keepUp.boundingBox())!.width) - 2);
 });
 
 test('Formate: Chronik, Archiv zum Aufklappen, Mitmachen', async ({ page }) => {
@@ -108,6 +140,9 @@ test('Formate: Chronik, Archiv zum Aufklappen, Mitmachen', async ({ page }) => {
 test('Formate: englische Fassung und Barrierefreiheit', async ({ page }) => {
   await oeffnen(page, '/en/formats/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Eight formats. One network.');
+  // Kontrast erst messen, wenn alles hereingeglitten ist
+  await expect(page.locator('[data-fo-info]')).toHaveCSS('opacity', '1');
+  await expect(page.locator('[data-pre]').last()).toHaveCSS('opacity', '1');
   await expect(page.locator('#keep-up .fo-fakten dt').nth(1)).toHaveText('Venue');
   await expect(page.locator('#archiv-tanzkalender summary')).toContainText('Monthly poster');
   const ergebnis = await new AxeBuilder({ page }).include('main').analyze();

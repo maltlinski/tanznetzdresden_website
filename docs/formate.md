@@ -1,9 +1,10 @@
 # Formate
 
 Die Seite **Formate** (`/formate/`, englisch `/en/formats/`) zeigt, was der Verein macht: oben die Formate als
-Bühne zum Durchschalten, darunter jedes Format im Detail mit dem nächsten Termin, die Chronik, das Archiv
-abgeschlossener Projekte und „Mitmachen“. Dazu gehört das **Tanzkalender-Archiv** (`/formate/tanzkalender/`)
-mit allen Ausgaben des Monatsplakats 2024–2026. Entwurf: `design/entwuerfe/2026-11-formate/`.
+Netz (jeder Name führt zum Format), darunter jedes Format im Detail mit großem Foto und dem nächsten Termin, die
+Chronik, das Archiv abgeschlossener Projekte und „Mitmachen“. Dazu gehört das **Tanzkalender-Archiv**
+(`/formate/tanzkalender/`) mit allen Ausgaben des Monatsplakats 2024–2026. Entwurf:
+`design/entwuerfe/2026-11-formate/formate-v2.dc.html` (die erste Fassung daneben).
 
 ## Was steht wo?
 
@@ -25,7 +26,8 @@ eigenen Seite, Feld `seite`, z. B. KEEP UP → Profitraining). Im Menü führt �
 - **Rubriken**: Bühne, Training, Diskurs, Stadtraum, Residenz. Die erste steht als Badge am Format; der Filter
   „Ich möchte …“ fasst sie zusammen (Tanz sehen = Bühne, Trainieren = Training, Mitreden = Diskurs, Draußen
   tanzen = Stadtraum). Filter ohne passendes Format verschwinden.
-- **Kurzbeschreibung** (Startseite, Kopf der Formate-Seite) und **Beschreibung** (ausführlich, sonst die kurze).
+- **Kurzbeschreibung** (Startseite; im Kopf der Formate-Seite, wenn die Maus über dem Namen steht) und
+  **Beschreibung** (ausführlich, sonst die kurze).
 - **Eckdaten**: Bezeichnung und Angabe, z. B. Ort, Partner, Projektleitung. „Seit“ steht immer zuerst.
 - **Links**: Text und genau ein Ziel – ein Journal-Beitrag, eine Seite der Website, eine Datei (PDF) oder eine
   Adresse. Unter laufenden Formaten steht zusätzlich „Alle Termine →“.
@@ -34,19 +36,15 @@ eigenen Seite, Feld `seite`, z. B. KEEP UP → Profitraining). Im Menü führt �
 - **Beendet** (z. B. TANZPAKT in residence): „Laufzeit“ statt „Seit“ und statt des Termins der **Rückblick**
   (Journal-Beitrag).
 
-### Freisteller im Kopf
+### Netz im Kopf
 
-Im Kopf bricht ein freigestellter Körper aus dem Bild. Die Freisteller entstehen einmal aus den Fotos:
-
-```bash
-npm run formate:freisteller          # nur fehlende
-npm run formate:freisteller -- --neu # alle neu (z. B. nach neuem Foto)
-```
-
-Das Skript (`scripts/formate-freisteller.mjs`) schneidet einen Ausschnitt aus dem Foto, macht den dunklen
-Bühnenhintergrund durchsichtig und lässt nur große zusammenhängende Flächen (Körper) stehen. Für ein neues Format
-dort den Ausschnitt eintragen. Gut geeignet sind Fotos mit dunklem Hintergrund. Ohne Freisteller zeigt der Kopf
-das Foto im Keil-Rahmen.
+Jedes Format ist ein Knoten: magenta Quadrat, Name, Nummer und Rubrik. Linien verbinden die Knoten zu einem Netz
+(kürzeste Verbindung aller Knoten, dazu einige Querlinien). Beim Öffnen verteilt der Browser die Namen zufällig –
+ohne Überlappung, innerhalb der Bühne und ohne den Text oben links zu verdecken; „Netz neu knüpfen“ verteilt sie
+neu. Knoten in der Nähe der Maus neigen sich ihr zu; steht die Maus (oder der Fokus) auf einem Namen, rückt er nach
+außen, und unter der Überschrift steht die Kurzbeschreibung des Formats. Die Texte des Kastens (ohne gewähltes
+Format) und des Knopfs stehen unter *Texte → Formate → Kopf*. Neue oder ausgeblendete Formate brauchen nichts
+weiter: das Netz richtet sich nach den sichtbaren Formaten.
 
 ## Archiv und Dateien der alten Website
 
@@ -67,10 +65,12 @@ Formate-Seite bzw. das Tanzkalender-Archiv weiter (`src/content/news/weiterleitu
 
 ## Technik
 
-- Seite: `src/views/FormateView.astro`, Daten `src/lib/formate.ts` (auch Netz, Archiv, Ausgaben), nächster Termin
+- Seite: `src/views/FormateView.astro`, Daten `src/lib/formate.ts` (auch Archiv, Ausgaben), Netz im Kopf
+  `src/lib/formate-netz.ts` (Verteilen und Verbinden, läuft beim Build und im Browser), nächster Termin
   `src/lib/formate-termin.ts` (läuft auch im Browser), Bewegung und Filter `src/scripts/formate.ts`.
 - Archiv-Seite: `src/views/TanzkalenderArchivView.astro`, Großansicht `src/scripts/tanzkalender-archiv.ts`.
-- Bewegung: Die Formate wechseln alle 6,5 s; Pause mit „Anhalten“, bei Maus oder Fokus auf der Bühne, wenn der
-  Kopf nicht zu sehen ist oder der Tab im Hintergrund liegt. Bei „Bewegung reduzieren“ kein Wechsel und keine
-  Animationen. Ein vom Menschen gewählter Wechsel wird Screenreadern angesagt, der automatische nicht.
+- Bewegung: Überschrift und Text gleiten herein, die Linien zeichnen sich von links, die Namen folgen; die Fotos
+  der Formate wischen herein und gleiten beim Scrollen langsamer als die Seite (Parallax). Bei „Bewegung
+  reduzieren“ nichts davon: das Netz steht still, „Netz neu knüpfen“ verteilt ohne Übergang.
+- Ohne JavaScript steht das Netz in fester Lage (wie im Entwurf, `startLage()`) unter dem Text, der Knopf fehlt.
 - Tests: `tests/formate.spec.ts`.

@@ -1,6 +1,6 @@
 /**
  * Daten der Formate-Seite (/formate/) und des Tanzkalender-Archivs (/formate/tanzkalender/), docs/formate.md:
- * Formate mit nächsten Terminen, Freisteller für den Kopf, Netz, Archiv, Chronik und Ausgaben des Tanzkalenders.
+ * Formate mit nächsten Terminen, Archiv, Chronik und Ausgaben des Tanzkalenders (Netz im Kopf: src/lib/formate-netz.ts).
  */
 import { existsSync } from 'node:fs';
 import { join } from 'node:path';
@@ -36,7 +36,6 @@ const ZAHLWORT = {
 };
 export const zahlwort = (lang: Lang, n: number) => ZAHLWORT[lang][n] ?? String(n);
 
-const freisteller = import.meta.glob<{ default: ImageMetadata }>('../assets/formate/freisteller/*.webp', { eager: true });
 const plakate = import.meta.glob<{ default: ImageMetadata }>('../assets/tanzkalender/*.webp', { eager: true });
 const ausDatei = (glob: Record<string, { default: ImageMetadata }>, id: string) =>
   Object.entries(glob).find(([p]) => p.endsWith(`/${id}.webp`))?.[1].default;
@@ -93,7 +92,6 @@ export async function getFormatSeite(lang: Lang) {
       rubriken: d.rubriken,
       bild: d.image,
       alt: loc(d, 'alt', lang),
-      freisteller: ausDatei(freisteller, f.id),
       fakten: nurSichtbare(d.fakten).map((x) => ({ k: loc(x, 'label', lang), v: loc(x, 'wert', lang) })),
       links: nurSichtbare(d.links).filter((l) => !l.news || nachId.has(l.news)).map((l) => ({ text: loc(l, 'text', lang), ...linkZiel(lang, l) })),
       beendet: d.beendet,
@@ -152,60 +150,3 @@ export async function getTanzkalenderAusgaben(lang: Lang) {
   });
 }
 export type Ausgabe = Awaited<ReturnType<typeof getTanzkalenderAusgaben>>[number];
-
-/**
- * Netz im Kopf der Formate-Seite (wie im Entwurf): Punkte auf einem verwackelten Raster – gleichmäßig verteilt,
- * ohne Haufen und ohne lange Waagerechte. Gleicher Startwert = gleiches Netz bei jedem Build.
- */
-export function gitterNetz() {
-  const W = 1600;
-  const H = 760;
-  let a = 41;
-  const r = () => {
-    a |= 0;
-    a = (a + 0x6d2b79f5) | 0;
-    let t = Math.imul(a ^ (a >>> 15), 1 | a);
-    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-  const C = 9;
-  const R = 5;
-  const cw = W / C;
-  const rh = H / R;
-  const P: [number, number][] = [];
-  for (let y = 0; y < R; y++) {
-    for (let x = 0; x < C; x++) {
-      if (r() < 0.18) continue;
-      P.push([(x + 0.15 + r() * 0.7) * cw, (y + 0.15 + r() * 0.7) * rh]);
-    }
-  }
-  const seen = new Set<string>();
-  const E: [number, number, boolean][] = [];
-  const maxD = Math.hypot(cw, rh) * 1.15;
-  P.forEach((p, i) => {
-    P.map((q, j) => [Math.hypot(q[0] - p[0], q[1] - p[1]), j] as const)
-      .filter((x) => x[1] !== i && x[0] < maxD)
-      .sort((x, y) => x[0] - y[0])
-      .slice(0, 3)
-      .forEach(([d, j]) => {
-        const k = i < j ? `${i}-${j}` : `${j}-${i}`;
-        if (seen.has(k)) return;
-        seen.add(k);
-        const dy = Math.abs(P[j][1] - p[1]);
-        const dx = Math.abs(P[j][0] - p[0]);
-        if (dx > 0 && dy / dx < 0.18 && d > cw * 0.9) return;
-        E.push([i, j, r() < 0.1]);
-      });
-  });
-  E.sort((e1, e2) => Math.min(P[e1[0]][0], P[e1[1]][0]) - Math.min(P[e2[0]][0], P[e2[1]][0]));
-  const f = (v: number) => +v.toFixed(1);
-  const linien = E.map(([i, j, dick]) => ({ x1: f(P[i][0]), y1: f(P[i][1]), x2: f(P[j][0]), y2: f(P[j][1]), dick }));
-  const punkte = P.map((_, i) => i)
-    .sort((i, j) => P[i][0] - P[j][0])
-    .map((i) => {
-      const mg = r() < 0.25;
-      const s = mg ? (r() < 0.25 ? 16 : 11) : 6;
-      return { x: f(P[i][0] - s / 2), y: f(P[i][1] - s / 2), s, magenta: mg };
-    });
-  return { breite: W, hoehe: H, linien, punkte };
-}
