@@ -216,6 +216,8 @@ const personen = defineCollection({
       /** Porträt, Pfad relativ zu dieser Datei, z. B. ../assets/personen/name.jpg */
       photo: image().optional(),
       photoCredit: z.string().optional(),
+      /** Ausschnitt des Porträts: Fokuspunkt „x% y%“ (src/lib/bild-zuschnitt.ts) */
+      photoFocus: z.string().regex(/^\d{1,3}% \d{1,3}%$/).optional(),
       website: z.url().optional(),
       instagram: z.string().optional(),
       vimeo: z.url().optional(),
@@ -241,7 +243,7 @@ const personen = defineCollection({
       height: z.string().optional(),
       available: z.string().optional(),
       /** Galerie: Fotos in src/assets/personen/ */
-      gallery: z.array(z.object({ photo: image(), caption: z.string().optional(), caption_en: z.string().optional(), credit: z.string().optional(), sichtbar })).default([]),
+      gallery: z.array(z.object({ photo: image(), caption: z.string().optional(), caption_en: z.string().optional(), credit: z.string().optional(), fokus: z.string().regex(/^\d{1,3}% \d{1,3}%$/).optional(), ganz: z.boolean().optional(), sichtbar })).default([]),
       galleryLayout: z.enum(GALERIE_WERTE).default('filmstreifen'),
       /** auf der Startseite zeigen */
       featured: z.boolean().default(true),

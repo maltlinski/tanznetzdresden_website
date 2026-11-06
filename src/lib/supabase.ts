@@ -27,6 +27,8 @@ export interface Profile {
   photo_path: string | null;
   /** neues Foto, wartet auf Freigabe (Migration 20261013000000) */
   photo_pending: string | null;
+  /** Fokuspunkt des Porträts je Foto-Pfad (Migration 20261106000000_foto_ausschnitt.sql) */
+  photo_focus?: Record<string, string> | null;
   photo_credit: string | null;
   vimeo: string | null;
   verified: boolean;
@@ -56,6 +58,10 @@ export interface GalerieEintrag {
   caption_en?: string;
   credit?: string;
   frei?: boolean;
+  /** Fokuspunkt „x% y%“ (src/lib/bild-zuschnitt.ts) */
+  fokus?: string;
+  /** ganz zeigen statt zuschneiden */
+  ganz?: boolean;
 }
 
 export interface DirectoryEntry extends Pick<Profile, 'id' | 'display_name' | 'pronouns' | 'bio' | 'website' | 'instagram' | 'is_trainer' | 'ags' | 'role' | 'slug' | 'public_listing' | 'verified'> {

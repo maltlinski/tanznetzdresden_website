@@ -18,6 +18,7 @@ import EventList from '../components/EventList.astro';
 import { bioParagraphs, initials, instagramUrl, profilText, type PublicProfile } from '../lib/profiles';
 import { ANGABEN, OFFEN_FUER } from '../lib/profil-felder';
 import { linkText, mosaik, nameTeile, pad, pitchWoerter, STREIFEN } from '../lib/profil-ansicht';
+import { FOKUS_PORTRAET, fokusText, streifenFormat } from '../lib/bild-zuschnitt';
 import { demoFuer } from '../lib/demo';
 import { getTermineFor } from '../lib/content';
 import { getLang, tr, url } from '../lib/i18n';
@@ -70,17 +71,27 @@ const bio = bioParagraphs(p, lang);
 const events = await getTermineFor(p.id);
 
 // Fotos: Porträt groß oben, Galerie darunter. Ohne Porträt rückt das erste Galeriefoto nach oben.
-interface Foto { src: ImageMetadata | string; alt: string; cap?: string; credit?: string; pos?: string }
+// pos: Ausschnitt (Fokuspunkt aus „Mein Profil“), ganz: Galeriefoto ohne Zuschnitt (src/lib/bild-zuschnitt.ts)
+interface Foto { src: ImageMetadata | string; alt: string; cap?: string; credit?: string; pos?: string; ganz?: boolean }
 const capOf = (g: PublicProfile['gallery'][number]) => (lang === 'en' && g.caption_en) || g.caption;
-const galerieEcht: Foto[] = p.gallery.map((g) => ({ src: g.photo, alt: capOf(g) ?? '', cap: capOf(g), credit: g.credit }));
-const portrait: Foto | undefined = p.photo ? { src: p.photo, alt: t.portrait(p.name), credit: p.photoCredit, pos: '50% 30%' } : undefined;
+const galerieEcht: Foto[] = p.gallery.map((g) => ({ src: g.photo, alt: capOf(g) ?? '', cap: capOf(g), credit: g.credit, pos: g.fokus, ganz: g.ganz }));
+const portrait: Foto | undefined = p.photo ? { src: p.photo, alt: t.portrait(p.name), credit: p.photoCredit, pos: p.photoFocus ?? fokusText(FOKUS_PORTRAET) } : undefined;
 const heroEcht = portrait ?? galerieEcht[0];
 const galerieRest = portrait ? galerieEcht : galerieEcht.slice(1);
 const demoFotos: Foto[] | undefined = demo.gallery?.map((src) => ({ src, alt: '', cap: lang === 'en' ? 'Example photo' : 'Beispielfoto' }));
 const heroDemo: Foto | undefined = !heroEcht && demo.photo ? { src: demo.photo, alt: '', pos: '50% 30%' } : undefined;
 
-const groesse = async (src: ImageMetadata | string, width: number) =>
-  (await getImage(typeof src === 'string' ? { src, inferSize: true, width } : { src, width })).src;
+const bildGroesse = (src: ImageMetadata | string, width: number) =>
+  getImage(typeof src === 'string' ? { src, inferSize: true, width } : { src, width });
+const groesse = async (src: ImageMetadata | string, width: number) => (await bildGroesse(src, width)).src;
+/** Seitenverhältnis (Breite/Höhe) des Fotos, für Galeriefotos, die ganz gezeigt werden */
+async function format(src: ImageMetadata | string) {
+  if (typeof src !== 'string') return src.width / src.height;
+  const b = await bildGroesse(src, 160);
+  const w = Number(b.attributes.width ?? b.options.width);
+  const h = Number(b.attributes.height ?? b.options.height);
+  return w > 0 && h > 0 ? w / h : undefined;
+}
 
 /** Galerie mit Daten fürs Vollbild; Nummern zählen das Foto oben mit */
 async function galerie(fotos: Foto[], oben?: Foto) {
@@ -88,7 +99,8 @@ async function galerie(fotos: Foto[], oben?: Foto) {
   const vollbild = await Promise.all(
     alle.map(async (f, i) => ({ nr: pad(i + 1), gross: await groesse(f.src, 1800), klein: await groesse(f.src, 160), alt: f.alt, cap: f.cap ?? '', credit: f.credit ?? '' })),
   );
-  return { fotos: fotos.map((f, k) => ({ ...f, nr: pad(k + (oben ? 2 : 1)), i: k + (oben ? 1 : 0) })), vollbild, anzahl: alle.length };
+  const formate = await Promise.all(fotos.map((f) => (f.ganz ? format(f.src) : undefined)));
+  return { fotos: fotos.map((f, k) => ({ ...f, r: formate[k], nr: pad(k + (oben ? 2 : 1)), i: k + (oben ? 1 : 0) })), vollbild, anzahl: alle.length };
 }
 const gEcht = galerieRest.length ? await galerie(galerieRest, heroEcht) : null;
 const gDemo = !p.gallery.length && demoFotos ? await galerie(demoFotos, heroEcht ?? heroDemo) : null;
@@ -232,9 +244,11 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
                 <div class="pstrip__track" data-track>
                   {g.fotos.map((f, k) => {
                     const s = STREIFEN[k % STREIFEN.length];
+                    // ganz gezeigt: der Rahmen nimmt das Format des Fotos an, ohne Keil
+                    const ganz = !!(f.ganz && f.r);
                     return (
-                      <button type="button" class:list={['pstrip__el', `pstrip__el--${s.align}`]} style={`--h: ${s.h}; --r: ${s.r}`} data-lb-oeffnen={f.i} aria-label={`${t.zoom(f.nr)}${f.cap ? `: ${f.cap}` : ''}`}>
-                        <span class:list={['pstrip__bild', s.keil && `pstrip__bild--keil-${s.keil}`]}>
+                      <button type="button" class:list={['pstrip__el', `pstrip__el--${s.align}`]} style={`--h: ${s.h}; --r: ${ganz ? streifenFormat(f.r!) : s.r}`} data-lb-oeffnen={f.i} aria-label={`${t.zoom(f.nr)}${f.cap ? `: ${f.cap}` : ''}`}>
+                        <span class:list={['pstrip__bild', s.keil && !ganz && `pstrip__bild--keil-${s.keil}`]}>
                           <Bild src={f.src} alt="" widths={[480, 800, 1200]} sizes="(min-width: 860px) 50vw, 85vw" pos={f.pos} />
                         </span>
                         <span class="pstrip__cap"><span class="pstrip__nr">{f.nr}</span>{f.cap && <span>{f.cap}</span>}</span>
@@ -253,7 +267,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
             <div class="wrap pgrid__wrap">
               <div class:list={['pgrid', `pgrid--${layout}`]}>
                 {g.fotos.map((f, k) => (
-                  <button type="button" class:list={['pgrid__el', `pgrid__el--${spans[k]}`]} data-reveal data-lb-oeffnen={f.i} aria-label={`${t.zoom(f.nr)}${f.cap ? `: ${f.cap}` : ''}`}>
+                  <button type="button" class:list={['pgrid__el', `pgrid__el--${spans[k]}`, f.ganz && 'pgrid__el--voll']} data-reveal data-lb-oeffnen={f.i} aria-label={`${t.zoom(f.nr)}${f.cap ? `: ${f.cap}` : ''}`}>
                     <Bild src={f.src} alt="" widths={[480, 800, 1200]} sizes={spans[k] === 'ganz' ? '100vw' : '(min-width: 860px) 50vw, 100vw'} pos={f.pos} />
                     <span class="pgrid__nr">{f.nr}</span>
                   </button>
@@ -617,6 +631,8 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   .pgrid__el--halb { grid-column: span 6; aspect-ratio: 4 / 3; }
   .pgrid__el--ganz { grid-column: span 12; aspect-ratio: 21 / 9; }
   .pgrid__el--raster { grid-column: span 4; aspect-ratio: 4 / 5; }
+  /* ganzes Foto (Mein Profil → Ausschnitt): nicht zuschneiden, Rest bleibt Lila */
+  .pgrid__el--voll :global(img) { object-fit: contain; }
   .pgrid__nr { position: absolute; top: 0; left: 0; padding: 6px 10px; background: var(--purple); font-family: var(--font-display); font-weight: 800; font-size: 16px; color: var(--magenta); }
 
   /* Vollbild */

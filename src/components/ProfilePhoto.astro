@@ -12,14 +12,16 @@ interface Props {
 }
 const { profile, size = 'card', eager = false, demo } = Astro.props;
 const widths = size === 'large' ? [480, 720, 960] : [320, 480, 640];
+// Ausschnitt aus „Mein Profil“ (src/lib/bild-zuschnitt.ts); sonst Mitte
+const style = profile.photo && profile.photoFocus ? `object-position: ${profile.photoFocus}` : undefined;
 const sizes = size === 'large' ? '(min-width: 900px) 420px, 100vw' : '(min-width: 900px) 300px, 50vw';
 ---
 <div class:list={['pp', `pp--${size}`]}>
   {profile.photo ? (
     typeof profile.photo === 'string' ? (
-      <Image src={profile.photo} alt="" inferSize widths={widths} sizes={sizes} loading={eager ? 'eager' : 'lazy'} class="pp__img" />
+      <Image src={profile.photo} alt="" inferSize widths={widths} sizes={sizes} loading={eager ? 'eager' : 'lazy'} class="pp__img" style={style} />
     ) : (
-      <Image src={profile.photo} alt="" widths={widths} sizes={sizes} loading={eager ? 'eager' : 'lazy'} class="pp__img" />
+      <Image src={profile.photo} alt="" widths={widths} sizes={sizes} loading={eager ? 'eager' : 'lazy'} class="pp__img" style={style} />
     )
   ) : (
     <>

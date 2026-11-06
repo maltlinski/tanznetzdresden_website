@@ -13,6 +13,7 @@ import type { ImageMetadata } from 'astro';
 import { getPersonen } from './content';
 import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
 import { OFFEN_FUER, type GalerieLayout, type OffenFuer } from './profil-felder';
+import { fokusPos } from './bild-zuschnitt';
 
 export type Role = 'mitglied' | 'trainer';
 
@@ -22,6 +23,10 @@ export interface GalerieFoto {
   caption?: string;
   caption_en?: string;
   credit?: string;
+  /** Fokuspunkt „x% y%“ (src/lib/bild-zuschnitt.ts) */
+  fokus?: string;
+  /** ganz zeigen statt zuschneiden */
+  ganz?: boolean;
 }
 
 export interface Arbeit {
@@ -43,6 +48,8 @@ export interface PublicProfile {
   /** lokales Bild (Datei) oder Adresse (Supabase Storage) */
   photo?: ImageMetadata | string;
   photoCredit?: string;
+  /** Fokuspunkt des Porträts „x% y%“ (Mein Profil → Ausschnitt wählen) */
+  photoFocus?: string;
   website?: string;
   instagram?: string;
   vimeo?: string;
@@ -95,8 +102,10 @@ interface RemoteProfile {
   height?: string | null;
   available?: string | null;
   public_email?: string | null;
-  gallery?: { path?: unknown; caption?: unknown; caption_en?: unknown; credit?: unknown }[] | null;
+  gallery?: { path?: unknown; caption?: unknown; caption_en?: unknown; credit?: unknown; fokus?: unknown; ganz?: unknown }[] | null;
   gallery_layout?: string | null;
+  // ab Migration 20261106000000_foto_ausschnitt.sql
+  photo_focus?: string | null;
 }
 
 const clean = <T,>(v: T | null | undefined): T | undefined => (v === null || v === '' ? undefined : v);
@@ -132,7 +141,7 @@ export function getProfiles(): Promise<PublicProfile[]> {
         .filter((w) => w.title);
       const gallery = (r.gallery ?? [])
         .filter((g) => typeof g.path === 'string' && g.path)
-        .map((g) => ({ photo: bild(g.path as string), caption: text(g.caption), caption_en: text(g.caption_en), credit: text(g.credit) }));
+        .map((g) => ({ photo: bild(g.path as string), caption: text(g.caption), caption_en: text(g.caption_en), credit: text(g.credit), fokus: fokusPos(g.fokus), ganz: g.ganz === true || undefined }));
       const fromRemote = {
         name: r.display_name,
         pronouns: clean(r.pronouns),
@@ -144,6 +153,7 @@ export function getProfiles(): Promise<PublicProfile[]> {
         vimeo: clean(r.vimeo),
         photo,
         photoCredit: clean(r.photo_credit),
+        photoFocus: r.photo_path ? fokusPos(r.photo_focus) : undefined,
         email: clean(r.public_email),
         profession: clean(r.profession),
         profession_en: clean(r.profession_en),

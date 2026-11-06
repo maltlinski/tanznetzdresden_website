@@ -7,6 +7,7 @@
  */
 import Intern from '../../layouts/Intern.astro';
 import VorschauPanel from '../../components/intern/VorschauPanel.astro';
+import '../../styles/zuschnitt.css';
 import { arbeitsgruppen } from '../../settings/arbeitsgruppen';
 import { href } from '../../lib/url';
 import { getLang, tr } from '../../lib/i18n';
@@ -31,7 +32,7 @@ const t = tr(lang, {
     schwerpunkte: 'Schwerpunkte', schwerpunkteBsp: 'z. B. Choreografie, Contemporary, Somatics', schwerpunkteHinweis: 'Mit Komma trennen, höchstens 6.',
     keinFoto: 'Kein Foto', wartet: 'Wartet auf Freigabe', portraet: 'Porträt',
     fotoHinweis: 'JPG, PNG oder WebP, höchstens 5 MB, am besten Hochformat. Nur Fotos, an denen du die Rechte hast. Neue Fotos erscheinen nach der Freigabe durch Presse oder Vorstand, bis dahin bleibt das bisherige.',
-    credit: 'Foto: Name der Fotograf:in', fotoWeg: 'Foto entfernen',
+    credit: 'Foto: Name der Fotograf:in', fotoWeg: 'Foto entfernen', ausschnitt: 'Ausschnitt wählen',
     neuFehlt: 'Galerie, Arbeiten und weitere Angaben kommen bald dazu. Bis dahin bleibt dein Profil wie bisher.',
     galerie: 'Galerie', galerieHinweis: 'Bis zu 12 Fotos aus deiner Arbeit. Das Porträt steht groß oben, die Galerie darunter. Nur Fotos, an denen du die Rechte hast.',
     galerieAls: 'Galerie zeigen als', arbeiten: 'Arbeiten', arbeitenHinweis: 'Stücke und Projekte mit Jahr und Ort. Die neuesten stehen oben.',
@@ -57,7 +58,7 @@ const t = tr(lang, {
     schwerpunkte: 'Focus', schwerpunkteBsp: 'e.g. Choreography, Contemporary, Somatics', schwerpunkteHinweis: 'Separate with commas, up to 6.',
     keinFoto: 'No photo', wartet: 'Waiting for approval', portraet: 'Portrait',
     fotoHinweis: 'JPG, PNG or WebP, up to 5 MB, portrait format works best. Only photos you hold the rights to. New photos appear once the press team or the board has approved them; until then the previous one stays.',
-    credit: 'Photo: name of the photographer', fotoWeg: 'Remove photo',
+    credit: 'Photo: name of the photographer', fotoWeg: 'Remove photo', ausschnitt: 'Choose crop',
     neuFehlt: 'Gallery, works and more details are coming soon. Until then your profile stays as it is.',
     galerie: 'Gallery', galerieHinweis: 'Up to 12 photos of your work. The portrait is shown large at the top, the gallery below. Only photos you hold the rights to.',
     galerieAls: 'Show gallery as', arbeiten: 'Works', arbeitenHinweis: 'Pieces and projects with year and venue. The newest are listed first.',
@@ -150,6 +151,7 @@ const t = tr(lang, {
             <div class="photo__box">
               <div class="photo__preview" data-photo-preview><span>{t.keinFoto}</span></div>
               <span class="photo__wait" data-photo-wait hidden>{t.wartet}</span>
+              <button type="button" class="photo__ausschnitt" data-photo-ausschnitt hidden>{t.ausschnitt}</button>
             </div>
             <div class="photo__controls">
               <div class="i-field">
@@ -265,6 +267,8 @@ const t = tr(lang, {
   import { vorschau } from '../../scripts/intern/redaktion/vorschau';
   import type { ProfilEntwurf } from '../../lib/profil-ansicht';
   import { ANGABEN, type GalerieLayout, type OffenFuer } from '../../lib/profil-felder';
+  import { FOKUS_PORTRAET, fokusText, rahmenPortraet } from '../../lib/bild-zuschnitt';
+  import { vorschlagBerechnen, zuschnittWaehlen } from '../../scripts/intern/zuschnitt';
 
   const BUCKET = 'profilbilder';
   const ctx = await initIntern(true);
@@ -287,6 +291,13 @@ const t = tr(lang, {
   let pendingPath: string | null = null;
   /** gerade hochgeladenes Porträt (im Browser), bis die Adresse feststeht */
   let photoLokal: string | null = null;
+  /** Ausschnitt je Foto-Pfad (Spalte photo_focus, Migration 20261106000000); fehlt die Spalte, null */
+  let fokusJe: Record<string, string> | null = null;
+  const ausschnittBtn = document.querySelector<HTMLButtonElement>('[data-photo-ausschnitt]');
+  const portraetFokus = () => {
+    const pfad = pendingPath ?? photoPath;
+    return (pfad && fokusJe?.[pfad]) || undefined;
+  };
 
   const showPhoto = (localUrl?: string) => {
     if (!preview) return;
@@ -297,11 +308,13 @@ const t = tr(lang, {
       const img = document.createElement('img');
       img.src = src;
       img.alt = t('Dein Porträt (Vorschau)', 'Your portrait (preview)');
+      img.style.objectPosition = portraetFokus() ?? fokusText(FOKUS_PORTRAET);
       preview.append(img);
     } else {
       preview.replaceChildren(Object.assign(document.createElement('span'), { textContent: t('Kein Foto', 'No photo') }));
     }
     if (waitTag) waitTag.hidden = !pendingPath;
+    if (ausschnittBtn) ausschnittBtn.hidden = !src || fokusJe === null;
     if (removeBtn) {
       removeBtn.hidden = !pendingPath && !photoPath;
       removeBtn.textContent = pendingPath
@@ -368,6 +381,8 @@ const t = tr(lang, {
           box: document.querySelector<HTMLElement>('[data-galerie]')!,
           start: p.gallery ?? [],
           verified: () => verified,
+          layout: () => (form.querySelector<HTMLInputElement>('input[name="gallery_layout"]:checked')?.value ?? 'filmstreifen') as GalerieLayout,
+          hatPortraet: () => !!(pendingPath ?? photoPath),
           melden: (text, art) => {
             showMessage(msg, text, art);
             zusammenfassen();
@@ -379,6 +394,7 @@ const t = tr(lang, {
       if (!p.slug) (form.elements.namedItem('slug') as HTMLInputElement).value = slugify(p.display_name);
       photoPath = p.photo_path;
       pendingPath = p.photo_pending;
+      fokusJe = 'photo_focus' in p ? { ...(p.photo_focus ?? {}) } : null;
       showPhoto();
       showStatus(p.verified, p.public_listing, p.slug);
     }
@@ -427,12 +443,51 @@ const t = tr(lang, {
       if (pendingPath) await ctx.sb.storage.from(BUCKET).remove([pendingPath]);
       pendingPath = path;
       photoInput.value = '';
+      // Ausschnitt: Vorschlag aus der Datei speichern, dann zum Prüfen gleich den Dialog öffnen
+      const lokal = URL.createObjectURL(file);
+      if (fokusJe) await fokusSpeichern(path, fokusText((await vorschlagBerechnen(file)).fokus));
       showPhoto();
       showMessage(msg, t(
         'Foto hochgeladen. Auf der Website erscheint es, sobald Presse oder Vorstand es freigegeben haben.',
         'Photo uploaded. It appears on the website as soon as the press team or the board has approved it.',
       ), 'ok');
+      if (fokusJe) await portraetZuschneiden(lokal, true);
+      URL.revokeObjectURL(lokal);
     });
+
+    /** Ausschnitt des Porträts speichern (nur Einträge der beiden aktuellen Fotos bleiben) */
+    async function fokusSpeichern(pfad: string, fokus: string) {
+      const neu: Record<string, string> = { [pfad]: fokus };
+      for (const k of [photoPath, pendingPath]) if (k && k !== pfad && fokusJe?.[k]) neu[k] = fokusJe[k];
+      const { error } = await ctx!.sb.from('profiles').update({ photo_focus: neu }).eq('id', ctx!.user.id);
+      if (error) {
+        showMessage(msg, t(
+          'Der Ausschnitt ließ sich nicht speichern. Vielleicht ist die Datenbank noch nicht auf dem neuesten Stand – bitte gib dem Admin Bescheid.',
+          'The crop could not be saved. The database may not be up to date yet – please let the admin know.',
+        ));
+        return false;
+      }
+      fokusJe = neu;
+      return true;
+    }
+    async function portraetZuschneiden(src?: string, neu = false) {
+      const pfad = pendingPath ?? photoPath;
+      if (!pfad) return;
+      const wahl = await zuschnittWaehlen({
+        src: src ?? photoUrl(pfad) ?? '',
+        fokus: portraetFokus(),
+        standard: FOKUS_PORTRAET,
+        titel: neu ? t('Passt der Ausschnitt?', 'Does the crop work?') : t('Ausschnitt des Porträts', 'Crop of the portrait'),
+        rahmen: () => rahmenPortraet({ karte: true, training: !!(feld('is_trainer') as HTMLInputElement | null)?.checked }),
+      });
+      if (!wahl) return;
+      if (await fokusSpeichern(pfad, wahl.fokus)) {
+        showPhoto();
+        showMessage(msg, t('Ausschnitt gespeichert.', 'Crop saved.'), 'ok');
+        ausschnittBtn?.focus();
+      }
+    }
+    ausschnittBtn?.addEventListener('click', () => portraetZuschneiden());
 
     removeBtn?.addEventListener('click', async () => {
       const pending = !!pendingPath;
@@ -473,7 +528,8 @@ const t = tr(lang, {
           bio_en: wert('bio_en'),
           photo: portrait ?? undefined,
           photoCredit: wert('photo_credit'),
-          gallery: (galerie?.wert() ?? []).map((g) => ({ src: photoUrl(g.path) ?? '', caption: g.caption, caption_en: g.caption_en, credit: g.credit })).filter((g) => g.src),
+          photoFocus: portraetFokus(),
+          gallery: (galerie?.wert() ?? []).map((g) => ({ src: photoUrl(g.path) ?? '', caption: g.caption, caption_en: g.caption_en, credit: g.credit, fokus: g.fokus, ganz: g.ganz })).filter((g) => g.src),
           galleryLayout: (form!.querySelector<HTMLInputElement>('input[name="gallery_layout"]:checked')?.value ?? 'filmstreifen') as GalerieLayout,
           works: arbeiten?.wert() ?? [],
           angaben: Object.fromEntries(ANGABEN.map((a) => [a.key, wert(a.key)])),
@@ -590,6 +646,7 @@ const t = tr(lang, {
   .photo__wait[hidden] { display: none; }
   .photo__preview { aspect-ratio: 4 / 5; background: var(--purple); color: rgba(255, 255, 255, 0.7); display: grid; place-items: center; font-size: 13px; overflow: hidden; clip-path: var(--keil-corner); }
   .photo__preview :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .photo__preview--knopf { cursor: pointer; }
   .photo__controls { display: grid; gap: 14px; align-content: start; }
   .two { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 18px; }
   .i-field textarea.kurz { min-height: 0; }
@@ -608,6 +665,13 @@ const t = tr(lang, {
   :global(.pg__el) { display: grid; grid-template-columns: 112px minmax(0, 1fr) auto; gap: 14px; align-items: start; padding: 12px; background: var(--paper); }
   :global(.pg__bild) { display: grid; gap: 6px; }
   :global(.pg__bild img) { width: 112px; aspect-ratio: 4 / 5; object-fit: cover; background: var(--purple); display: block; }
+  :global(.pg__bild img.is-ganz) { object-fit: contain; }
+  :global(.pg__ausschnitt), .photo__ausschnitt {
+    justify-self: start; padding: 0; border: 0; background: none; cursor: pointer; color: var(--magenta-2);
+    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+  :global(.pg__ausschnitt):hover, .photo__ausschnitt:hover { color: var(--magenta); }
   :global(.pg__status) { font-family: var(--font-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 3px 6px; background: var(--magenta-tint); border-left: 3px solid var(--magenta); color: var(--purple); }
   :global(.pg__status--ok) { background: var(--cyan-tint); border-left-color: var(--cyan-2); }
   :global(.pg__felder) { display: grid; gap: 8px; }

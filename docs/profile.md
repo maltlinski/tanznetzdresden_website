@@ -37,6 +37,7 @@ keine Animationen, der Filmstreifen ist dann eine wischbare Reihe. Code: `src/vi
   tags: [Contemporary, Release, Improvisation]
   photo: ../assets/personen/rika-yotsumoto.jpg   # Datei in src/assets/personen/
   photoCredit: "Name Fotograf:in"
+  photoFocus: "50% 30%"           # Ausschnitt: dieser Punkt bleibt in jeder Form sichtbar (von links, von oben)
   website: "https://…"
   instagram: "handle"
   vimeo: "https://vimeo.com/…"     # Video oder Showreel (auch YouTube oder eigene Seite)
@@ -57,6 +58,7 @@ keine Animationen, der Filmstreifen ist dann eine wischbare Reihe. Code: `src/vi
     - photo: ../assets/personen/name-probe.jpg
       caption: "Probe im Hof"      # + caption_en; beschreibt das Foto auch für Screenreader
       credit: "Name Fotograf:in"
+      fokus: "40% 35%"             # optional, Ausschnitt; oder ganz: true (nicht zuschneiden)
   galleryLayout: filmstreifen      # filmstreifen | mosaik | raster
 ```
 
@@ -76,6 +78,22 @@ Ausbildung/Sprachen/…, Kontakt (öffentliche E-Mail, offen für, Video) und di
   `src/lib/profil-vorlage.ts`, nicht in Suchmaschinen), gefüllt von `src/scripts/profil-vorschau.ts` nach denselben
   Regeln wie beim Build (`src/lib/profil-ansicht.ts`: Name, Pitch, Galerie-Formen). Neuer Baustein in `ProfilView` →
   auch dort füllen.
+
+- **Ausschnitt der Fotos** (Porträt: „Ausschnitt wählen“, Galerie: „Ausschnitt“ unter jedem Foto): Fotos stehen auf
+  der Website in festen Formen (Keil im Profilkopf, Karte im Netzwerk, Kachel im Profitraining, Filmstreifen, Mosaik,
+  Raster) und werden dafür zugeschnitten. Im Dialog setzt die Person einen Fokuspunkt (ziehen, antippen, Pfeiltasten);
+  er bleibt in jeder Form sichtbar. Daneben stehen alle Formen, in denen das Foto erscheint, live mit Keil; im großen
+  Foto ist dunkel, was nirgends zu sehen ist, und umrandet, was überall zu sehen ist. Galeriefotos können statt dessen
+  **ganz** gezeigt werden (Filmstreifen im eigenen Format ohne Keil, Mosaik und Raster vollständig auf Lila).
+  **Vorschlag:** Neue Fotos bekommen gleich einen Fokus, beim Porträt öffnet sich danach der Dialog zum Prüfen. Erst
+  Gesichter, sonst Personen auf Kopfhöhe (MediaPipe im Browser, Modelle in `src/assets/modelle/`), sonst eine
+  Auswertung des Bildinhalts (Hautton, Kanten, Farben). Kein externer Dienst, das Foto verlässt den Rechner nicht;
+  Modelle und WebAssembly (~15 MB) lädt der Browser erst beim ersten Vorschlag.
+  Technik: Regeln und Formen `src/lib/bild-zuschnitt.ts` (gilt für Build und Dialog – neue Form auf der Website →
+  dort eintragen), Dialog `src/scripts/intern/zuschnitt.ts` + `src/styles/zuschnitt.css`, Erkennung
+  `src/scripts/intern/bild-erkennung.ts`. Gespeichert: Porträt in `profiles.photo_focus` (je Foto-Pfad, gilt auch für
+  ein wartendes Foto), Galerie als `fokus`/`ganz` im Eintrag. In `personen.yaml`: `photoFocus: "50% 30%"` und je
+  Galeriefoto `fokus`/`ganz`. Ausschnitt ändern braucht keine neue Freigabe.
 
 - **Presse, Vorstand oder Admin geben frei** (*Intern → Redaktion → Freigaben*). Erst dann erscheint das Profil.
   Ändert eine Person später ihre Adresse, muss neu freigegeben werden. Textänderungen brauchen keine neue Freigabe.
@@ -130,7 +148,9 @@ Bucket `profilbilder`, jede Person schreibt nur in ihren eigenen Ordner) und
 `supabase/migrations/20261013000000_freigaben.sql` (wartende Fotos `photo_pending`, Funktion `freigabe()` für Presse,
 Vorstand und Admin) und `supabase/migrations/20261020000000_profil_seite.sql` (Felder der neuen Profilseite, Galerie als
 Liste `gallery` mit Merker `frei`, den nur die Redaktion setzt (Trigger `profiles_galerie`), Funktion `galerie_freigabe()`,
-öffentliche Ansicht nur mit freigegebenen Fotos). Alle im SQL-Editor ausführen. Ohne die letzte Migration bleibt
+öffentliche Ansicht nur mit freigegebenen Fotos) und `supabase/migrations/20261106000000_foto_ausschnitt.sql` (Ausschnitt
+des Porträts `photo_focus`, in der öffentlichen Ansicht). Alle im SQL-Editor ausführen. Ohne die Ausschnitt-Migration
+fehlt nur „Ausschnitt wählen“ beim Porträt. Ohne die letzte Migration bleibt
 *Mein Profil* wie bisher, die neuen Bereiche sind verborgen.
 
 Wartende Fotos liegen schon im öffentlichen Bucket, unter einem nicht erratbaren Namen. Verlinkt sind sie erst nach

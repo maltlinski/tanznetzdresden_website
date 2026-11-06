@@ -9,6 +9,7 @@
  */
 import { absaetze, linkText, mosaik, nameTeile, pad, pitchWoerter, STREIFEN, type ProfilEntwurf } from '../lib/profil-ansicht';
 import { ANGABEN, OFFEN_FUER } from '../lib/profil-felder';
+import { FOKUS_PORTRAET, fokusText, streifenFormat } from '../lib/bild-zuschnitt';
 import { fuellen, zeilen } from '../lib/texte-regeln';
 
 interface Texte {
@@ -86,7 +87,9 @@ export function profilVorschau() {
     const bio = absaetze(sp('bio'));
     const insta = d.instagram?.trim().replace(/^@/, '') || '';
     const hatKontakt = !!(d.email || insta || d.website);
-    const hero = d.photo ? { src: d.photo, credit: d.photoCredit, pos: '50% 30%' } : d.gallery[0] ? { src: d.gallery[0].src, credit: d.gallery[0].credit, pos: '' } : null;
+    const hero = d.photo
+      ? { src: d.photo, credit: d.photoCredit, pos: d.photoFocus ?? fokusText(FOKUS_PORTRAET) }
+      : d.gallery[0] ? { src: d.gallery[0].src, credit: d.gallery[0].credit, pos: d.gallery[0].fokus ?? '' } : null;
     const galerie = d.photo ? d.gallery : d.gallery.slice(1);
     const arbeiten = d.works.filter((w) => w.title).sort((a, b) => String(b.year).localeCompare(String(a.year)));
 
@@ -178,8 +181,15 @@ export function profilVorschau() {
           el.style.setProperty('--r', String(s.r));
           const b = el.querySelector<HTMLElement>('.pstrip__bild');
           b?.classList.remove('pstrip__bild--keil-a', 'pstrip__bild--keil-b');
-          if (s.keil) b?.classList.add(`pstrip__bild--keil-${s.keil}`);
-          bild(el.querySelector('img'), g.src);
+          if (s.keil && !g.ganz) b?.classList.add(`pstrip__bild--keil-${s.keil}`);
+          const img = el.querySelector('img');
+          bild(img, g.src, g.fokus);
+          // ganz gezeigt: Rahmen im Format des Fotos (wie beim Build), sobald das Foto geladen ist
+          if (g.ganz && img) {
+            const passen = () => img.naturalWidth && el.style.setProperty('--r', String(streifenFormat(img.naturalWidth / img.naturalHeight)));
+            if (img.complete) passen();
+            else img.addEventListener('load', passen, { once: true });
+          }
           const c = el.querySelector('.pstrip__cap');
           const nr = c?.querySelector('.pstrip__nr');
           text(nr, pad(k + versatz));
@@ -203,7 +213,8 @@ export function profilVorschau() {
         grid.replaceChildren(...galerie.map((g, k) => {
           const el = klon(muster);
           el.className = el.className.replace(/pgrid__el--\w+/, `pgrid__el--${spans[k]}`);
-          bild(el.querySelector('img'), g.src);
+          el.classList.toggle('pgrid__el--voll', !!g.ganz);
+          bild(el.querySelector('img'), g.src, g.fokus);
           text(el.querySelector('.pgrid__nr'), pad(k + versatz));
           return el;
         }));

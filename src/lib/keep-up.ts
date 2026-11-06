@@ -31,6 +31,8 @@ export interface Dozentin {
   stil: string;
   text: string;
   photo: ImageMetadata | string;
+  /** Ausschnitt des Porträts (object-position), aus dem Profil */
+  photoFocus?: string;
   /** Platzhalterfoto, nicht die Person */
   placeholder: boolean;
   /** Profilseite (leer, wenn es kein öffentliches Profil gibt) */
@@ -142,6 +144,7 @@ export async function getKeepUp(lang: Lang) {
       stil: loc(data, 'stil', lang),
       text: loc(data, 'text', lang),
       photo,
+      photoFocus: p?.photo ? p.photoFocus : undefined,
       placeholder: !p?.photo,
       profile: p ? url(lang, 'netzwerk', `${id}/`) : '',
       weeks: [],

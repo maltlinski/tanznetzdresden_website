@@ -71,8 +71,8 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
                   tabindex={kopie ? -1 : undefined}
                 >
                   {typeof d.photo === 'string'
-                    ? <Image src={d.photo} alt="" inferSize widths={[300, 560]} sizes="280px" />
-                    : <Image src={d.photo} alt="" widths={[300, 560]} sizes="280px" />}
+                    ? <Image src={d.photo} alt="" inferSize widths={[300, 560]} sizes="280px" style={d.photoFocus && `object-position: ${d.photoFocus}`} />
+                    : <Image src={d.photo} alt="" widths={[300, 560]} sizes="280px" style={d.photoFocus && `object-position: ${d.photoFocus}`} />}
                   <span class="kachel__text">
                     <span class="kachel__stil"><span class="kachel__sq" aria-hidden="true"></span>{d.stil}</span>
                     <span class="kachel__name">{d.name}</span>

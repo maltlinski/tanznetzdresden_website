@@ -20,6 +20,7 @@
     "@astrojs/sitemap": "^3.7.4",
     "@fontsource/jetbrains-mono": "^5.3.0",
     "@fontsource/work-sans": "^5.3.0",
+    "@mediapipe/tasks-vision": "0.10.21",
     "@supabase/supabase-js": "^2.117.3",
     "@tiptap/core": "3.32.0",
     "@tiptap/extension-link": "3.32.0",

@@ -2,17 +2,31 @@
  * Mein Profil: Galerie (Fotos hochladen, beschriften, sortieren, entfernen) und Liste der Arbeiten.
  * Neue Galeriefotos speichert die Liste sofort, damit keine Datei ohne Eintrag im Bucket liegt.
  * Ob ein Foto freigegeben ist (frei), entscheidet die Datenbank (Trigger profiles_galerie).
+ * Ausschnitt je Foto (fokus, ganz) über den Zuschnitt-Dialog (zuschnitt.ts); neue Fotos bekommen gleich einen
+ * Vorschlag aus dem Bildinhalt.
  */
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { photoUrl, type GalerieEintrag } from '../../lib/supabase';
-import { GALERIE_MAX, ARBEITEN_MAX } from '../../lib/profil-felder';
+import { GALERIE_MAX, ARBEITEN_MAX, type GalerieLayout } from '../../lib/profil-felder';
+import { fokusText, rahmenGalerie, rahmenPortraet } from '../../lib/bild-zuschnitt';
+import { vorschlagBerechnen, zuschnittWaehlen } from './zuschnitt';
 import { h } from './news/dom';
 import { t } from './sprache';
 
 const BUCKET = 'profilbilder';
 type Melden = (text: string, art?: 'ok') => void;
 
-export function galerieEditor(o: { sb: SupabaseClient; userId: string; box: HTMLElement; start: GalerieEintrag[]; verified: () => boolean; melden: Melden }) {
+export function galerieEditor(o: {
+  sb: SupabaseClient;
+  userId: string;
+  box: HTMLElement;
+  start: GalerieEintrag[];
+  verified: () => boolean;
+  melden: Melden;
+  /** gewählte Darstellung der Galerie und ob es ein Porträt gibt (sonst rückt Foto 1 nach oben) */
+  layout: () => GalerieLayout;
+  hatPortraet: () => boolean;
+}) {
   let liste = o.start.map((g) => ({ ...g }));
   const raster = h('ol', { class: 'pg__liste' });
   const datei = h('input', { type: 'file', accept: 'image/jpeg,image/png,image/webp', multiple: true, class: 'visually-hidden', id: 'p-galerie-datei' }) as HTMLInputElement;
@@ -31,6 +45,31 @@ export function galerieEditor(o: { sb: SupabaseClient; userId: string; box: HTML
     return true;
   };
 
+  /** Zuschnitt-Dialog für Foto i; speichert gleich (wie Sortieren) */
+  async function ausschnitt(i: number) {
+    const g = liste[i];
+    const oben = !o.hatPortraet() && i === 0;
+    const versatz = o.hatPortraet() ? 0 : 1;
+    const wahl = await zuschnittWaehlen({
+      src: photoUrl(g.path) ?? '',
+      fokus: g.fokus,
+      ganz: g.ganz,
+      ganzErlaubt: !oben,
+      titel: t(`Ausschnitt: Foto ${i + 1}`, `Crop: photo ${i + 1}`),
+      rahmen: (format, ganz) => (oben ? rahmenPortraet() : rahmenGalerie(i - versatz, liste.length - versatz, o.layout(), format, ganz)),
+    });
+    if (!wahl) return;
+    const neu = liste.map((x, k) => {
+      if (k !== i) return x;
+      const { ganz: _alt, ...rest } = x;
+      return { ...rest, fokus: wahl.fokus, ...(wahl.ganz && !oben ? { ganz: true } : {}) };
+    });
+    if (await speichern(neu)) {
+      o.melden(t('Ausschnitt gespeichert.', 'Crop saved.'), 'ok');
+      raster.children[i]?.querySelector<HTMLButtonElement>('[data-ausschnitt]')?.focus();
+    }
+  }
+
   function zeigen() {
     zahl.textContent = t(
       `${liste.length} von ${GALERIE_MAX} Fotos. JPG, PNG oder WebP, höchstens 5 MB. Neue Fotos erscheinen nach der Freigabe.`,
@@ -40,7 +79,13 @@ export function galerieEditor(o: { sb: SupabaseClient; userId: string; box: HTML
     raster.replaceChildren(
       ...liste.map((g, i) => {
         const n = i + 1;
-        const bild = h('img', { src: photoUrl(g.path) ?? '', alt: g.caption ? t(`Vorschau: ${g.caption}`, `Preview: ${g.caption}`) : t(`Galeriefoto ${n} (Vorschau)`, `Gallery photo ${n} (preview)`), loading: 'lazy' });
+        const bild = h('img', {
+          src: photoUrl(g.path) ?? '', alt: g.caption ? t(`Vorschau: ${g.caption}`, `Preview: ${g.caption}`) : t(`Galeriefoto ${n} (Vorschau)`, `Gallery photo ${n} (preview)`),
+          loading: 'lazy', class: g.ganz ? 'is-ganz' : undefined, style: g.fokus ? `object-position: ${g.fokus}` : undefined,
+        });
+        const zuschnitt = h('button', { type: 'button', class: 'pg__ausschnitt', 'data-ausschnitt': '', 'aria-label': t(`Ausschnitt von Foto ${n} wählen`, `Choose the crop of photo ${n}`) },
+          g.ganz ? t('Ganzes Foto', 'Whole photo') : t('Ausschnitt', 'Crop')) as HTMLButtonElement;
+        zuschnitt.addEventListener('click', () => ausschnitt(i));
         const status = h('span', { class: g.frei ? 'pg__status pg__status--ok' : 'pg__status' },
           g.frei ? (o.verified() ? t('Auf der Website', 'On the website') : t('Freigegeben', 'Approved')) : t('Wartet auf Freigabe', 'Waiting for approval'));
         const cap = h('input', { value: g.caption ?? '', maxlength: '140', 'aria-label': t(`Bildunterschrift Foto ${n}`, `Caption photo ${n}`), placeholder: t('Bildunterschrift (beschreibt das Foto)', 'Caption (describes the photo)') }) as HTMLInputElement;
@@ -61,7 +106,7 @@ export function galerieEditor(o: { sb: SupabaseClient; userId: string; box: HTML
           if (await speichern(neu)) raster.children[j]?.querySelector<HTMLButtonElement>('[data-schieben]:not(:disabled)')?.focus();
         };
         return h('li', { class: 'pg__el' },
-          h('div', { class: 'pg__bild' }, bild, status),
+          h('div', { class: 'pg__bild' }, bild, zuschnitt, status),
           h('div', { class: 'pg__felder' }, cap, capEn, credit),
           h('div', { class: 'pg__knoepfe' },
             mini('↑', t(`Foto ${n} nach vorn`, `Move photo ${n} forward`), i === 0, () => tauschen(i - 1), true),
@@ -92,14 +137,16 @@ export function galerieEditor(o: { sb: SupabaseClient; userId: string; box: HTML
         o.melden(error.message);
         continue;
       }
-      neu.push({ path, caption: '', credit: '' });
+      // Vorschlag für den Ausschnitt gleich aus der Datei (im Browser, ohne externen Dienst)
+      const { fokus } = await vorschlagBerechnen(file);
+      neu.push({ path, caption: '', credit: '', fokus: fokusText(fokus) });
     }
     if (neu.length && (await speichern([...liste, ...neu]))) {
       o.melden(
         t(
-          `${neu.length === 1 ? 'Foto' : `${neu.length} Fotos`} hochgeladen. Auf der Website erscheinen sie, sobald Presse oder Vorstand sie freigegeben haben.` +
+          `${neu.length === 1 ? 'Foto' : `${neu.length} Fotos`} hochgeladen. Auf der Website erscheinen sie, sobald Presse oder Vorstand sie freigegeben haben. Den Ausschnitt haben wir vorgeschlagen, anpassen kannst du ihn mit „Ausschnitt“ unter dem Foto.` +
             (zuGross.length ? ` ${zuGross.length} größer als 5 MB, nicht hochgeladen.` : ''),
-          `${neu.length === 1 ? 'Photo' : `${neu.length} photos`} uploaded. They appear on the website as soon as the press team or the board has approved them.` +
+          `${neu.length === 1 ? 'Photo' : `${neu.length} photos`} uploaded. They appear on the website as soon as the press team or the board has approved them. We suggested a crop; you can adjust it with “Crop” below the photo.` +
             (zuGross.length ? ` ${zuGross.length} larger than 5 MB, not uploaded.` : ''),
         ),
         'ok',
