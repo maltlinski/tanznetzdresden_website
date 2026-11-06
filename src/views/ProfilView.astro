@@ -4,6 +4,9 @@
  * Abschnitte (nur wenn gefüllt): Pitch, Galerie, Über, Arbeiten, Termine, Kontakt.
  * Nummern der Abschnitte zählt CSS (counter), damit sie auch mit der Demo-Ansicht stimmen.
  * Bewegung (Intro, Wörter, Filmstreifen) nur ohne „Bewegung reduzieren“, Skript: scripts/profil.ts.
+ * `vorlage`: Seite für die Vorschau unter „Mein Profil“ (src/pages/intern/profil/vorschau.astro). Dann stehen alle
+ * Bausteine im HTML (auch Initialen und das Galerie-Raster als <template>), und scripts/profil-vorschau.ts füllt sie
+ * mit dem Stand des Formulars. Regeln, die beide brauchen, stehen in lib/profil-ansicht.ts.
  */
 import { getImage } from 'astro:assets';
 import Page from '../layouts/Page.astro';
@@ -13,7 +16,8 @@ import Bild from '../components/profil/Bild.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
 import EventList from '../components/EventList.astro';
 import { bioParagraphs, initials, instagramUrl, profilText, type PublicProfile } from '../lib/profiles';
-import { ANGABEN, OFFEN_FUER, type GalerieLayout } from '../lib/profil-felder';
+import { ANGABEN, OFFEN_FUER } from '../lib/profil-felder';
+import { linkText, mosaik, nameTeile, pad, pitchWoerter, STREIFEN } from '../lib/profil-ansicht';
 import { demoFuer } from '../lib/demo';
 import { getTermineFor } from '../lib/content';
 import { getLang, tr, url } from '../lib/i18n';
@@ -21,8 +25,10 @@ import { fuellen, texte, zeilen } from '../lib/texte';
 
 interface Props {
   profile: PublicProfile;
+  /** Vorlage für die Vorschau unter „Mein Profil“ (nicht in Suchmaschinen) */
+  vorlage?: boolean;
 }
-const { profile: p } = Astro.props;
+const { profile: p, vorlage = false } = Astro.props;
 const lang = getLang(Astro);
 // Texte: Redaktion → Texte (settings/texte.json); hier nur Beschriftungen für Screenreader
 const kopf = texte(lang, 'profil', 'kopf');
@@ -50,14 +56,10 @@ const t = {
   }),
 };
 
-const demo = demoFuer(p, lang);
-const pad = (n: number) => String(n).padStart(2, '0');
-const woerter = p.name.trim().split(/\s+/).filter(Boolean);
-const vorname = woerter[0] ?? p.name;
-const nachname = woerter.slice(1).join(' ');
+const demo = vorlage ? {} as ReturnType<typeof demoFuer> : demoFuer(p, lang);
 // Schriftgröße passt sich dem längsten Wort an (lange Namen sprengen sonst die Zeile, auch auf breiten Bildschirmen)
-const laengstes = Math.max(...woerter.map((w) => w.length), 4);
-const nameFit = `--fit: min(${(150 / laengstes).toFixed(2)}vw, ${Math.round(2000 / laengstes)}px)`;
+const { vorname, nachname, fit } = nameTeile(p.name);
+const nameFit = `--fit: ${fit}`;
 
 const rollen = [p.roles.includes('mitglied') ? t.member : null, p.roles.includes('trainer') ? t.trainer : null].filter(Boolean).join(' · ');
 const vorstand = lang === 'en' ? p.vorstand_en ?? p.vorstand : p.vorstand;
@@ -66,14 +68,6 @@ const meta = (b?: string) => [p.pronouns, b, p.base].filter(Boolean).join(' · '
 const pitch = profilText(p, 'pitch', lang);
 const bio = bioParagraphs(p, lang);
 const events = await getTermineFor(p.id);
-
-/** Pitch in Wörter: was nach dem ersten Doppelpunkt/Gedankenstrich steht, wird hervorgehoben (sonst die letzten drei Wörter) */
-function pitchWoerter(satz: string) {
-  const w = satz.split(/\s+/).filter(Boolean);
-  const bis = satz.search(/[:–—]/);
-  const ab = bis >= 0 ? satz.slice(0, bis + 1).split(/\s+/).filter(Boolean).length : Math.max(0, w.length - 3);
-  return w.map((text, i) => ({ text, hi: i >= ab }));
-}
 
 // Fotos: Porträt groß oben, Galerie darunter. Ohne Porträt rückt das erste Galeriefoto nach oben.
 interface Foto { src: ImageMetadata | string; alt: string; cap?: string; credit?: string; pos?: string }
@@ -99,28 +93,6 @@ async function galerie(fotos: Foto[], oben?: Foto) {
 const gEcht = galerieRest.length ? await galerie(galerieRest, heroEcht) : null;
 const gDemo = !p.gallery.length && demoFotos ? await galerie(demoFotos, heroEcht ?? heroDemo) : null;
 
-// Filmstreifen: wechselnde Höhen und Formate wie im Entwurf (h in vh, r = Breite/Höhe)
-const STREIFEN = [
-  { h: 64, r: 4 / 5, align: 'start', keil: 'a' },
-  { h: 48, r: 3 / 2, align: 'end', keil: '' },
-  { h: 58, r: 3 / 4, align: 'center', keil: '' },
-  { h: 44, r: 1, align: 'start', keil: 'b' },
-  { h: 60, r: 16 / 10, align: 'end', keil: '' },
-];
-/** Mosaik: Gruppen aus einem großen und zwei kleinen Fotos, Rest halb oder ganz breit */
-function mosaik(n: number, layout: GalerieLayout) {
-  if (layout === 'raster') return Array.from({ length: n }, () => 'raster');
-  const out: string[] = [];
-  let i = 0;
-  let gruppe = 0;
-  while (i < n) {
-    const rest = n - i;
-    if (rest >= 3) { out.push(...(gruppe % 2 === 0 ? ['gross', 'klein', 'klein'] : ['klein', 'gross', 'klein'])); i += 3; gruppe++; }
-    else if (rest === 2) { out.push('halb', 'halb'); i += 2; }
-    else { out.push('ganz'); i += 1; }
-  }
-  return out;
-}
 const layout = p.galleryLayout;
 
 const angaben = [
@@ -128,7 +100,6 @@ const angaben = [
   { k: t.base, v: p.base },
   ...ANGABEN.slice(4).map((a) => ({ k: a[lang], v: p[a.key] })),
 ].filter((a): a is { k: string; v: string } => !!a.v);
-const linkText = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 const links = [
   p.website && { k: t.website, v: linkText(p.website), href: p.website },
   p.instagram && { k: 'Instagram', v: `@${p.instagram.replace(/^@/, '')}`, href: instagramUrl(p.instagram)! },
@@ -156,7 +127,7 @@ const abschnitte: { id: string; label: string; art: Art }[] = [
 const demoKlasse = (a: Art) => (a === 'demo' ? 'demo-an' : undefined);
 const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDresden`;
 ---
-<Page title={p.name} description={description} route="netzwerk" rest={`${p.id}/`} ogImage={typeof p.photo === 'object' ? p.photo : undefined}>
+<Page title={p.name} description={description} route="netzwerk" rest={`${p.id}/`} ogImage={typeof p.photo === 'object' ? p.photo : undefined} noindex={vorlage}>
   <div class="profil" data-profil>
     <section class="ph kopf" data-ph data-kopf-frei>
       {(heroEcht || heroDemo) && (
@@ -168,7 +139,9 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
           {heroEcht?.credit && <span class="ph__credit">{t.photo}: {heroEcht.credit}</span>}
         </div>
       )}
-      {!heroEcht && <span class:list={['ph__initialen', heroDemo && 'demo-aus']} aria-hidden="true">{initials(p.name)}</span>}
+      {(!heroEcht || vorlage) && (
+        <span class:list={['ph__initialen', heroDemo && 'demo-aus']} aria-hidden="true" style={heroEcht ? 'display: none' : undefined} data-pv-initialen>{initials(p.name)}</span>
+      )}
       <div class="wrap ph__inhalt">
         <div class="ph__top" data-rise="0">
           <a class="ph__zurueck" href={url(lang, 'netzwerk')}>{t.back}</a>
@@ -287,6 +260,15 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
                 ))}
               </div>
             </div>
+          )}
+          {vorlage && (
+            <template data-pv-raster>
+              <div class="wrap pgrid__wrap">
+                <div class="pgrid pgrid--mosaik">
+                  <button type="button" class="pgrid__el pgrid__el--gross" data-reveal data-lb-oeffnen="0"><img alt="" /><span class="pgrid__nr">01</span></button>
+                </div>
+              </div>
+            </template>
           )}
           <dialog class="plb" aria-label={t.lightbox} data-lb>
             <div class="plb__kopf">
@@ -421,6 +403,15 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
         </div>
       </section>
     )}
+
+    {vorlage && (
+      <script type="application/json" data-pv-texte set:html={JSON.stringify({
+        kicker: t.kicker, member: t.member, trainer: t.trainer, ueber: inhalt.ueber, kontakt: kontakt.titel, photos: t.photos,
+        entries: t.entries, soon: t.soon, focus: t.focus, base: t.base, website: t.website, video: t.video, photo: t.photo,
+      }).replace(/</g, '\\u003c')} />
+    )}
+
+    <slot />
 
     <section class="wrap pfuss">
       <a class="mono-link" href={url(lang, 'netzwerk')}>{t.back}</a>

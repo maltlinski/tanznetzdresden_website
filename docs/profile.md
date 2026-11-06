@@ -67,6 +67,16 @@ Alles außer `name` und `roles` ist freiwillig. In der Redaktion (*Website-Inhal
 aus. Aufklappbar darunter: Galerie (bis 12 Fotos, mit Bildunterschrift, Reihenfolge und Darstellung), Arbeiten,
 Ausbildung/Sprachen/…, Kontakt (öffentliche E-Mail, offen für, Video) und die englische Fassung.
 
+- **Vorschau daneben** (wie in der Redaktion): Rechts neben dem Formular steht das öffentliche Profil so, wie es auf der
+  Website aussähe, schon beim Tippen und vor dem Speichern – mit neuen Fotos (auch solchen, die noch auf Freigabe
+  warten), Arbeiten und der gewählten Galerie-Darstellung. Desktop, Tablet, Handy; DE/EN (englische Felder schalten
+  auf EN); beim Bearbeiten springt sie zur Stelle. Auf Tablet und Handy öffnet sie der Knopf „Vorschau“. Es fehlen nur
+  die Termine (kommen beim Build aus dem Kalender) und Angaben aus `personen.yaml` (z. B. Vorstandsfunktion).
+  Technik: Vorlage der Profilseite unter `/intern/profil/vorschau/` (`ProfilView` mit `vorlage`, Inhalt
+  `src/lib/profil-vorlage.ts`, nicht in Suchmaschinen), gefüllt von `src/scripts/profil-vorschau.ts` nach denselben
+  Regeln wie beim Build (`src/lib/profil-ansicht.ts`: Name, Pitch, Galerie-Formen). Neuer Baustein in `ProfilView` →
+  auch dort füllen.
+
 - **Presse, Vorstand oder Admin geben frei** (*Intern → Redaktion → Freigaben*). Erst dann erscheint das Profil.
   Ändert eine Person später ihre Adresse, muss neu freigegeben werden. Textänderungen brauchen keine neue Freigabe.
 - **Fotos:** Ein neues Foto wartet auf Freigabe, bis dahin bleibt das bisherige online. Unter *Freigaben* steht

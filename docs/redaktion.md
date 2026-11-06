@@ -252,6 +252,8 @@ Vollbild; gemerkt in `localStorage`, Seitenleiste eingeklappt über `html.leiste
 `seite()`, `anker()` (CSS-Selektor) und `textSelektor` (wo der lange Text steht), Zustand aus dem Formular in
 `vorschau-eintrag.ts`. Ausblendbare Abschnitte tragen auf der Website `data-abschnitt="seite.abschnitt"`,
 Chronik-Jahre `data-inhalt`. Die Website selbst bleibt unverändert, nur unsichtbare `data-`Attribute kommen dazu.
+Seiten, die sich selbst füllen, bekommen den Stand als `daten` (an `window.vorschauDaten` im Rahmen) – so arbeitet die
+Vorschau unter *Mein Profil* (docs/profile.md). `VorschauPanel` ist zweisprachig (`markieren`, `info` als Optionen).
 
 **Text-Editor:** TipTap (`@tiptap/core`, `@tiptap/pm`, `@tiptap/starter-kit`, `@tiptap/extension-link`, feste
 Versionen), nur im internen Bereich geladen. `src/scripts/intern/redaktion/richtext.ts` wandelt Markdown → Editor →

@@ -288,14 +288,6 @@
 }
 .rt-roh.ProseMirror-selectednode { outline: 2px solid var(--magenta); }
 
-/* ---------- Formular mit Vorschau daneben ---------- */
-.r-split { --r-form: 860px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; }
-@media (min-width: 1280px) {
-  /* Formular | Trenner | Vorschau; --r-form setzt der Trenner (VorschauPanel.astro) */
-  .r-split:has(> .vs:not([hidden])) { grid-template-columns: minmax(320px, var(--r-form)) 28px minmax(380px, 1fr); gap: 0; }
-  .r-split > .vs { position: sticky; top: 16px; }
-}
-
 /* ---------- Änderungen (Verlauf der Redaktion) ---------- */
 .ae-filter { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px 18px; max-width: 1000px; margin-bottom: 18px; }
 .ae-hinweise { margin: 0 0 16px; padding: 10px 14px 10px 30px; background: var(--tint); color: var(--purple); font-size: 14px; line-height: var(--lh-text); max-width: 1000px; }

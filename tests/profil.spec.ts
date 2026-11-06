@@ -158,6 +158,67 @@ test.describe('Mein Profil und Freigaben', () => {
     await expect.poll(() => m.geloescht.at(-1)).toEqual([m.hochgeladen[1]]);
   });
 
+  test('Vorschau neben dem Formular: zeigt den Stand beim Tippen, auch neue Fotos und Einträge', async ({ page }) => {
+    await page.setViewportSize({ width: 1600, height: 1000 });
+    await redaktion(page, { profil: { ...profil, display_name: 'Pia Presse', pitch: 'Ich tanze: draußen.', tags: ['Floorwork'], instagram: 'pia' } });
+    await page.goto('/intern/profil/');
+    const vs = page.locator('[data-vorschau]');
+    await expect(vs).toBeVisible();
+    const f = page.frameLocator('[data-vorschau] iframe');
+    await expect(f.locator('h1 .ph__vor')).toHaveText('Pia');
+    await expect(f.locator('h1 .ph__nach')).toHaveText('Presse');
+    await expect(f.locator('.ph__meta')).toHaveText('Tänzerin · Dresden');
+    await expect(f.locator('.ppitch__w--hi')).toHaveText(['draußen.']);
+    await expect(f.locator('#galerie')).toBeHidden(); // ein Galeriefoto steht ohne Porträt oben
+    await expect(f.locator('.parb__titel')).toHaveText(['Kreide']);
+    await expect(f.locator('#kontakt')).toBeVisible();
+    await expect(f.locator('.pkontakt__offen li')).toHaveText(['Workshops geben']);
+
+    // Tippen ändert die Vorschau, noch bevor gespeichert ist; die Vorschau springt zur Stelle
+    await page.getByLabel('Name', { exact: true }).fill('Pia Maria Presse');
+    await expect(f.locator('h1 .ph__nach')).toHaveText('Maria Presse');
+    await page.getByLabel('Kurzbio', { exact: true }).fill('Erster Absatz.\n\nZweiter Absatz.');
+    await expect(f.locator('.pueber__bio p')).toHaveText(['Erster Absatz.', 'Zweiter Absatz.']);
+    await expect(f.locator('#ueber-h')).toContainText('Pia');
+    await expect(f.locator('[data-vs-fokus]')).toHaveId('ueber');
+    await page.getByLabel('In einem Satz optional').fill('');
+    await expect(f.locator('#pitch')).toBeHidden();
+    await expect(f.locator('.pfakten')).toContainText('Floorwork'); // ohne Satz stehen die Schwerpunkte bei den Angaben
+
+    // Neue Fotos und Arbeiten erscheinen sofort, auch das Raster
+    await page.locator('summary', { hasText: 'Galerie' }).click();
+    await page.locator('#p-galerie-datei').setInputFiles(FOTOS.slice(0, 2));
+    await expect(page.locator('.pg__el')).toHaveCount(3);
+    await expect(f.locator('#galerie')).toBeVisible();
+    await expect(f.locator('.pgrid__el')).toHaveCount(2);
+    await expect(f.locator('.pgal__n')).toContainText('03');
+    await page.getByLabel('Raster', { exact: false }).check();
+    await expect(f.locator('.pgrid--raster .pgrid__el--raster')).toHaveCount(2);
+    await page.getByLabel('Filmstreifen', { exact: false }).check();
+    await expect(f.locator('.pstrip__el')).toHaveCount(2);
+    await page.locator('summary', { hasText: 'Arbeiten' }).click();
+    await page.getByRole('button', { name: '+ Arbeit hinzufügen' }).click();
+    await page.getByLabel('Arbeit 2: Jahr').fill('2026');
+    await page.getByLabel('Arbeit 2: Titel').fill('Echo, draußen');
+    await expect(f.locator('.parb__titel')).toHaveText(['Echo, draußen', 'Kreide']);
+    await expect(f.locator('.parb__n')).toContainText('02');
+
+    // Englische Felder: Vorschau wechselt auf Englisch
+    await page.locator('summary', { hasText: 'Auf Englisch' }).click();
+    await page.getByLabel('Kurzbio (Englisch)').fill('In English.');
+    await expect(vs.getByRole('button', { name: 'EN', exact: true })).toHaveAttribute('aria-pressed', 'true');
+    await expect(f.locator('.pueber__bio p')).toHaveText(['In English.']);
+    await expect(f.locator('html')).toHaveAttribute('lang', 'en');
+
+    // Kontakt weg: Abschnitt und Knopf verschwinden
+    await page.locator('#p-instagram').fill('');
+    await page.locator('#p-website').fill('');
+    await expect(f.locator('#kontakt')).toBeHidden();
+    await expect(f.locator('.pbar__anfrage')).toBeHidden();
+    // Vorschau ist nicht in Suchmaschinen
+    await expect(f.locator('meta[name="robots"]')).toHaveAttribute('content', /noindex/);
+  });
+
   test('ohne Migration: neue Bereiche verborgen, Speichern geht weiter', async ({ page }) => {
     const m = await redaktion(page, { profil: { slug: 'pia-presse', public_listing: true, verified: true } });
     await page.goto('/intern/profil/');

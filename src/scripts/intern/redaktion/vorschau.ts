@@ -11,6 +11,9 @@
  *   v.zustand(() => ({ ersetzen: [['Alter Titel', 'Neuer Titel']], aus: ['#archiv-linie-08'], ziel: '#archiv-linie-08' }));
  *   v.neu();            // nach jeder Änderung (gebündelt)
  *   v.springen('#…');   // beim Bearbeiten eines Felds
+ *
+ * Mein Profil nutzt dasselbe mit einer Vorlage der Profilseite, die sich selbst füllt (Zustand.daten,
+ * src/scripts/profil-vorschau.ts): Dort erscheinen auch neue Einträge und Fotos sofort.
  */
 
 export type Geraet = 'desktop' | 'tablet' | 'handy';
@@ -25,6 +28,8 @@ export interface Zustand {
   aus?: string[];
   /** Hinweis in der Leiste, z. B. was ausgeblendet ist und deshalb fehlt */
   hinweise?: string[];
+  /** Daten für eine Seite, die sich selbst füllt: gehen an `window.vorschauDaten` im Rahmen (Vorlage „Mein Profil“) */
+  daten?: unknown;
 }
 
 export interface Vorschau {
@@ -54,14 +59,15 @@ const block = (n: Node | null): HTMLElement | null => {
   return el;
 };
 
-export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string }): Vorschau {
+export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string; lang?: 'de' | 'en' }): Vorschau {
   const frame = root.querySelector<HTMLIFrameElement>('iframe')!;
   const buehne = frame.parentElement as HTMLElement;
   const hinweisBox = root.querySelector<HTMLElement>('[data-vs-hinweise]');
   const markieren = root.querySelector<HTMLInputElement>('[data-vs-markieren]');
   let geraet: Geraet = 'desktop';
   let pfad = opt.pfad;
-  let lang: 'de' | 'en' = 'de';
+  let lang: 'de' | 'en' = opt.lang ?? 'de';
+  root.querySelectorAll('[data-vs-sprache]').forEach((x) => x.setAttribute('aria-pressed', String((x as HTMLElement).dataset.vsSprache === lang)));
   let quelle: () => Zustand = () => ({});
   let ziel: string | null = null;
   let geladen = false;
@@ -121,6 +127,7 @@ export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string 
       if (!htmlOriginal.has(el)) htmlOriginal.set(el, el.innerHTML);
       el.innerHTML = html;
     }
+    if (z.daten !== undefined) (d.defaultView as (Window & { vorschauDaten?: (x: unknown) => void }) | null)?.vorschauDaten?.(z.daten);
     for (const a of z.aus ?? []) {
       const els = /^[#.[]/.test(a) ? [...d.querySelectorAll<HTMLElement>(a)] : finden(d, a).map(block).filter((x): x is HTMLElement => !!x);
       els.forEach((el) => el.setAttribute('data-vs-aus', ''));
@@ -158,7 +165,10 @@ export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string 
     d.head.append(s);
     d.documentElement.toggleAttribute('data-vs-markieren', markieren?.checked ?? true);
     d.addEventListener('click', (e) => {
-      if ((e.target as Element).closest('a')) e.preventDefault();
+      // Links, Vollbild und geschützte E-Mail-Adressen öffnen nicht im Rahmen
+      if (!(e.target as Element).closest('a, [data-lb-oeffnen], [data-protected-email]')) return;
+      e.preventDefault();
+      e.stopPropagation();
     }, true);
     anwenden();
   });

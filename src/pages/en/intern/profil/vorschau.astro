@@ -1,0 +1,15 @@
+---
+/**
+ * Vorlage der Profilseite für die Vorschau unter „Mein Profil“ (läuft dort im Rahmen neben dem Formular).
+ * Inhalt: src/lib/profil-vorlage.ts, gefüllt von src/scripts/profil-vorschau.ts. Nicht in Suchmaschinen.
+ */
+import ProfilView from '../../../../views/ProfilView.astro';
+import { profilVorlage } from '../../../../lib/profil-vorlage';
+import { getLang } from '../../../../lib/i18n';
+---
+<ProfilView profile={profilVorlage(getLang(Astro))} vorlage>
+  <script>
+    import { profilVorschau } from '../../../../scripts/profil-vorschau';
+    profilVorschau();
+  </script>
+</ProfilView>

@@ -2,8 +2,11 @@
 /**
  * Intern → Mein Profil: Angaben für Mitglieder und das freiwillige öffentliche Profil (Galerie, Arbeiten, Angaben,
  * Kontakt, englische Fassung). Deutsch (/intern/profil/) und Englisch (/en/intern/profil/).
+ * Daneben die Vorschau des öffentlichen Profils (wie in der Redaktion): eine Vorlage der Profilseite
+ * (/intern/profil/vorschau/), die sich beim Tippen mit dem Stand des Formulars füllt (scripts/profil-vorschau.ts).
  */
 import Intern from '../../layouts/Intern.astro';
+import VorschauPanel from '../../components/intern/VorschauPanel.astro';
 import { arbeitsgruppen } from '../../settings/arbeitsgruppen';
 import { href } from '../../lib/url';
 import { getLang, tr } from '../../lib/i18n';
@@ -37,6 +40,7 @@ const t = tr(lang, {
     offen: 'Offen für', video: 'Video oder Showreel', englisch: 'Auf Englisch', englischHinweis: 'Erscheint auf der englischen Seite. Leer = deutscher Text.',
     taetigkeitEn: 'Tätigkeit (Englisch)', satzEn: 'In einem Satz (Englisch)', bioEn: 'Kurzbio (Englisch)',
     speichern: 'Speichern', passwort: 'Passwort ändern', ansehen: 'Öffentliches Profil ansehen',
+    vorschau: 'Zeigt dein öffentliches Profil so, wie es auf der Website aussähe, noch bevor du speicherst. Fotos, die noch auf Freigabe warten, sind schon zu sehen.',
   },
   en: {
     titel: 'My profile',
@@ -62,12 +66,14 @@ const t = tr(lang, {
     offen: 'Open to', video: 'Video or showreel', englisch: 'English version', englischHinweis: 'Shown on the English website. Leave empty to use the texts above.',
     taetigkeitEn: 'Profession (English)', satzEn: 'In one sentence (English)', bioEn: 'Short bio (English)',
     speichern: 'Save', passwort: 'Change password', ansehen: 'View public profile',
+    vorschau: 'Shows your public profile as it would look on the website, before you save. Photos still waiting for approval are already shown.',
   },
 });
 ---
-<Intern title={t.titel} current="profil">
+<Intern title={t.titel} current="profil" breit>
   <h1 class="i-h1">{t.titel}</h1>
   <p class="i-lead">{t.lead}</p>
+  <div class="r-split">
   <div class="i-card">
     <form class="i-form profile" data-profile-form>
       <div class="i-field">
@@ -246,6 +252,8 @@ const t = tr(lang, {
       </div>
     </form>
   </div>
+  <VorschauPanel markieren={false} info={t.vorschau} />
+  </div>
 </Intern>
 
 <script>
@@ -254,6 +262,9 @@ const t = tr(lang, {
   import { arbeitenEditor, galerieEditor } from '../../scripts/intern/profil-galerie';
   import { sprache, t } from '../../scripts/intern/sprache';
   import { url } from '../../lib/i18n';
+  import { vorschau } from '../../scripts/intern/redaktion/vorschau';
+  import type { ProfilEntwurf } from '../../lib/profil-ansicht';
+  import { ANGABEN, type GalerieLayout, type OffenFuer } from '../../lib/profil-felder';
 
   const BUCKET = 'profilbilder';
   const ctx = await initIntern(true);
@@ -274,9 +285,12 @@ const t = tr(lang, {
   /** freigegebenes Foto (auf der Website) und neues, das auf Freigabe wartet */
   let photoPath: string | null = null;
   let pendingPath: string | null = null;
+  /** gerade hochgeladenes Porträt (im Browser), bis die Adresse feststeht */
+  let photoLokal: string | null = null;
 
   const showPhoto = (localUrl?: string) => {
     if (!preview) return;
+    photoLokal = localUrl ?? null;
     const src = localUrl ?? photoUrl(pendingPath ?? photoPath);
     preview.replaceChildren();
     if (src) {
@@ -435,6 +449,78 @@ const t = tr(lang, {
       showPhoto();
       showMessage(msg, pending ? t('Neues Foto verworfen.', 'New photo discarded.') : t('Foto entfernt.', 'Photo removed.'), 'ok');
     });
+
+    // ---------- Vorschau des öffentlichen Profils ----------
+    const panel = document.querySelector<HTMLElement>('[data-vorschau]');
+    if (panel) {
+      panel.hidden = false;
+      document.querySelector<HTMLElement>('[data-vs-auf]')!.hidden = false;
+      const vs = vorschau(panel, { pfad: 'intern/profil/vorschau/', lang: sprache });
+      const wert = (n: string) => feld(n)?.value.trim() || undefined;
+      const entwurf = (): ProfilEntwurf => {
+        const portrait = photoLokal ?? photoUrl(pendingPath ?? photoPath);
+        return {
+          name: wert('display_name') ?? '',
+          pronouns: wert('pronouns'),
+          trainer: !!(feld('is_trainer') as HTMLInputElement | null)?.checked,
+          profession: wert('profession'),
+          profession_en: wert('profession_en'),
+          base: wert('base'),
+          pitch: wert('pitch'),
+          pitch_en: wert('pitch_en'),
+          tags: (wert('tags') ?? '').split(',').map((x) => x.trim()).filter(Boolean).slice(0, 6),
+          bio: wert('bio'),
+          bio_en: wert('bio_en'),
+          photo: portrait ?? undefined,
+          photoCredit: wert('photo_credit'),
+          gallery: (galerie?.wert() ?? []).map((g) => ({ src: photoUrl(g.path) ?? '', caption: g.caption, caption_en: g.caption_en, credit: g.credit })).filter((g) => g.src),
+          galleryLayout: (form!.querySelector<HTMLInputElement>('input[name="gallery_layout"]:checked')?.value ?? 'filmstreifen') as GalerieLayout,
+          works: arbeiten?.wert() ?? [],
+          angaben: Object.fromEntries(ANGABEN.map((a) => [a.key, wert(a.key)])),
+          website: wert('website'),
+          instagram: wert('instagram'),
+          vimeo: wert('vimeo'),
+          email: hatNeu ? wert('public_email') : undefined,
+          openFor: [...form!.querySelectorAll<HTMLInputElement>('input[name="open_for"]:checked')].map((c) => c.value as OffenFuer),
+        };
+      };
+      vs.zustand(() => ({
+        daten: entwurf(),
+        hinweise: [
+          ...(!publicToggle?.checked ? [t('Du hast kein öffentliches Profil gewählt. So sähe es aus.', 'You have not chosen a public profile. This is how it would look.')] : []),
+          t('Termine aus dem Kalender erscheinen auf der Website automatisch und fehlen hier.', 'Events from the calendar appear on the website automatically and are missing here.'),
+        ],
+      }));
+      // Beim Bearbeiten springt die Vorschau zur Stelle
+      const ZIEL: Record<string, string> = {
+        display_name: '[data-name]', pronouns: '.ph__meta', profession: '.ph__meta', profession_en: '.ph__meta', base: '.ph__meta',
+        is_trainer: '.ph__top', pitch: '#pitch', pitch_en: '#pitch', tags: '#pitch', bio: '#ueber', bio_en: '#ueber',
+        website: '.pfakten', instagram: '.pfakten', vimeo: '.pfakten', photo_credit: '[data-ph-bild]', gallery_layout: '#galerie',
+        public_email: '#kontakt', open_for: '#kontakt', ...Object.fromEntries(ANGABEN.map((a) => [a.key, '.pfakten'])),
+      };
+      const zielVon = (el: HTMLElement) => {
+        const n = (el as HTMLInputElement).name;
+        if (n && ZIEL[n]) return n === 'tags' && !wert('pitch') ? '.pfakten' : ZIEL[n];
+        if (el.closest('[data-galerie]')) return '#galerie';
+        if (el.closest('[data-arbeiten]')) return '#arbeiten';
+        if (el.matches('[data-photo-input]')) return '[data-ph-bild]';
+        return null;
+      };
+      form.addEventListener('focusin', (e) => {
+        const el = e.target as HTMLElement;
+        // englische Felder: Vorschau auf Englisch
+        const englisch = el.closest('[data-klapp="englisch"]') || (el.lang === 'en' && el.closest('[data-galerie]'));
+        if (englisch) panel.querySelector<HTMLButtonElement>('[data-vs-sprache="en"][aria-pressed="false"]')?.click();
+        vs.springen(zielVon(el));
+      });
+      const neu = () => vs.neu();
+      form.addEventListener('input', neu);
+      form.addEventListener('change', neu);
+      // Galerie und Arbeiten bauen ihre Listen neu (sortieren, entfernen, hochladen)
+      const mo = new MutationObserver(neu);
+      document.querySelectorAll('[data-galerie], [data-arbeiten], [data-photo-preview]').forEach((el) => mo.observe(el, { childList: true, subtree: true }));
+      vs.neu();
+    }
 
     form.addEventListener('submit', async (e) => {
       e.preventDefault();

@@ -5,42 +5,71 @@
  * Auf schmalen Bildschirmen liegt sie als Fenster über dem Formular und öffnet mit „Vorschau“.
  * Mehr Platz: Trenner zwischen Formular und Vorschau zum Ziehen (auch mit den Pfeiltasten, gemerkt im Browser),
  * „Vollbild“ legt die Vorschau über das ganze Fenster (Esc schließt); die Seitenleiste klappt in Intern.astro ein.
+ * Auch unter „Mein Profil“ (dort zweisprachig, ohne „Ausgeblendetes markieren“, mit eigenem Hinweis).
  */
+import { getLang, tr } from '../../lib/i18n';
+
 interface Props {
   /** Englisch umschalten anbieten */
   sprachen?: boolean;
+  /** „Ausgeblendetes markiert zeigen“ anbieten (nur Redaktion) */
+  markieren?: boolean;
+  /** Hinweis unter der Leiste statt des Standardtexts */
+  info?: string;
 }
-const { sprachen = true } = Astro.props;
+const { sprachen = true, markieren = true, info } = Astro.props;
+const t = tr(getLang(Astro), {
+  de: {
+    griff: 'Breite von Formular und Vorschau', griffTitel: 'Ziehen, um Formular oder Vorschau breiter zu machen. Doppelklick: zurück',
+    bereich: 'Vorschau der Website', titel: 'Vorschau', geraet: 'Gerät', handy: 'Handy', sprache: 'Sprache',
+    markieren: 'Ausgeblendetes markiert zeigen', neu: 'Neu laden', gross: 'Vollbild', klein: 'Verkleinern', zu: 'Schließen',
+    info: 'Zeigt die Seite mit deinen Änderungen, noch bevor du speicherst. Neue Einträge und neue Fotos erscheinen hier erst nach dem Speichern.',
+    rahmen: 'Vorschau der Seite',
+  },
+  en: {
+    griff: 'Width of form and preview', griffTitel: 'Drag to make the form or the preview wider. Double-click: reset',
+    bereich: 'Preview of the website', titel: 'Preview', geraet: 'Device', handy: 'Phone', sprache: 'Language',
+    markieren: 'Mark hidden content', neu: 'Reload', gross: 'Full screen', klein: 'Shrink', zu: 'Close',
+    info: 'Shows the page with your changes before you save.', rahmen: 'Preview of the page',
+  },
+});
 ---
-<div class="vs-griff" role="separator" tabindex="0" aria-orientation="vertical" aria-label="Breite von Formular und Vorschau"
-  aria-valuemin="25" aria-valuemax="75" aria-valuenow="50" title="Ziehen, um Formular oder Vorschau breiter zu machen. Doppelklick: zurück"
+<div class="vs-griff" role="separator" tabindex="0" aria-orientation="vertical" aria-label={t.griff}
+  aria-valuemin="25" aria-valuemax="75" aria-valuenow="50" title={t.griffTitel}
   data-vs-griff hidden></div>
-<section class="vs" data-vorschau data-geraet="desktop" aria-label="Vorschau der Website" hidden>
+<section class="vs" data-vorschau data-geraet="desktop" aria-label={t.bereich} hidden>
   <div class="vs__leiste">
-    <span class="vs__titel">Vorschau</span>
-    <div class="vs__gruppe" role="group" aria-label="Gerät">
+    <span class="vs__titel">{t.titel}</span>
+    <div class="vs__gruppe" role="group" aria-label={t.geraet}>
       <button type="button" data-vs-geraet="desktop" aria-pressed="true">Desktop</button>
       <button type="button" data-vs-geraet="tablet" aria-pressed="false">Tablet</button>
-      <button type="button" data-vs-geraet="handy" aria-pressed="false">Handy</button>
+      <button type="button" data-vs-geraet="handy" aria-pressed="false">{t.handy}</button>
     </div>
     {sprachen && (
-      <div class="vs__gruppe" role="group" aria-label="Sprache">
+      <div class="vs__gruppe" role="group" aria-label={t.sprache}>
         <button type="button" data-vs-sprache="de" aria-pressed="true">DE</button>
         <button type="button" data-vs-sprache="en" aria-pressed="false">EN</button>
       </div>
     )}
-    <label class="i-check vs__mark"><input type="checkbox" data-vs-markieren checked />Ausgeblendetes markiert zeigen</label>
-    <button type="button" class="vs__neu" data-vs-neu>Neu laden</button>
-    <button type="button" class="vs__gross" data-vs-gross aria-pressed="false">Vollbild</button>
-    <button type="button" class="vs__zu" data-vs-zu>Schließen</button>
+    {markieren && <label class="i-check vs__mark"><input type="checkbox" data-vs-markieren checked />{t.markieren}</label>}
+    <button type="button" class="vs__neu" data-vs-neu>{t.neu}</button>
+    <button type="button" class="vs__gross" data-vs-gross aria-pressed="false" data-gross={t.gross} data-klein={t.klein}>{t.gross}</button>
+    <button type="button" class="vs__zu" data-vs-zu>{t.zu}</button>
   </div>
-  <p class="vs__info">Zeigt die Seite mit deinen Änderungen, noch bevor du speicherst. Neue Einträge und neue Fotos erscheinen hier erst nach dem Speichern.</p>
+  <p class="vs__info">{info ?? t.info}</p>
   <ul class="vs__hinweise" data-vs-hinweise hidden></ul>
-  <div class="vs__buehne"><iframe title="Vorschau der Seite"></iframe></div>
+  <div class="vs__buehne"><iframe title={t.rahmen}></iframe></div>
 </section>
-<button type="button" class="btn btn--secondary vs-auf" data-vs-auf hidden>Vorschau</button>
+<button type="button" class="btn btn--secondary vs-auf" data-vs-auf hidden>{t.titel}</button>
 
 <style>
+  /* Formular mit Vorschau daneben: <div class="r-split"><form>…</form><VorschauPanel /></div> */
+  :global(.r-split) { --r-form: 860px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 28px; align-items: start; }
+  @media (min-width: 1280px) {
+    /* Formular | Trenner | Vorschau; --r-form setzt der Trenner */
+    :global(.r-split:has(> .vs:not([hidden]))) { grid-template-columns: minmax(320px, var(--r-form)) 28px minmax(380px, 1fr); gap: 0; }
+    :global(.r-split) > .vs { position: sticky; top: 16px; }
+  }
   .vs { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
   .vs[hidden] { display: none; }
   .vs__leiste { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px 12px; background: var(--purple); color: #fff; }
@@ -104,7 +133,7 @@ const { sprachen = true } = Astro.props;
   const vollbild = (an: boolean) => {
     vs?.classList.toggle('is-gross', an);
     gross?.setAttribute('aria-pressed', String(an));
-    if (gross) gross.textContent = an ? 'Verkleinern' : 'Vollbild';
+    if (gross) gross.textContent = (an ? gross.dataset.klein : gross.dataset.gross) ?? '';
   };
   gross?.addEventListener('click', () => vollbild(!vs?.classList.contains('is-gross')));
   document.addEventListener('keydown', (e) => {
