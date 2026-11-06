@@ -141,7 +141,10 @@ export async function logLaden(sb: SupabaseClient, a: Api, seit: string): Promis
   const hinweise: string[] = [];
   const [commits, db] = await Promise.all([
     a.verlauf(seit).catch((e: Error) => {
-      hinweise.push(`Änderungen an Texten und Seiten konnten nicht geladen werden: ${e.message}`);
+      // ältere Fassung der Funktion „inhalte“ kennt die Aktion „verlauf“ noch nicht (docs/redaktion.md: neu einspielen)
+      hinweise.push(/Unbekannte Aktion/.test(e.message)
+        ? 'Änderungen an Texten und Seiten erscheinen hier, sobald die Redaktion in Supabase auf den neuesten Stand gebracht ist. Bitte gib dem Admin Bescheid.'
+        : `Änderungen an Texten und Seiten konnten nicht geladen werden: ${e.message}`);
       return { eintraege: [], mehr: false };
     }),
     sb.from('aenderungen').select('id,zeit,bereich,eintrag,titel,aktion,von_name,vorher,nachher').gte('zeit', seit).order('zeit', { ascending: false }).limit(1000),
