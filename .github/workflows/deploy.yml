@@ -45,12 +45,22 @@ jobs:
         with:
           path: dist
 
-  deploy:
+    deploy:
     needs: build
     runs-on: ubuntu-latest
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      url: ${{ steps.deployment.outputs.page_url || steps.nochmal.outputs.page_url }}
     steps:
+      # GitHub Pages bleibt manchmal beim Übernehmen der Dateien hängen („syncing_files“, dann „Timeout reached“).
+      # Darum länger warten (20 statt 10 Minuten) und bei einem Fehlschlag einmal neu versuchen.
       - id: deployment
         uses: actions/deploy-pages@v4
+        continue-on-error: true
+        with:
+          timeout: 1200000
+      - id: nochmal
+        if: steps.deployment.outcome == 'failure'
+        uses: actions/deploy-pages@v4
+        with:
+          timeout: 1200000
