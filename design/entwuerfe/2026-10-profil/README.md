@@ -16,3 +16,12 @@ Abweichungen:
 - Zusätzlich: Abschnitt „Termine“, englische Fassung, Demo-Ansicht (auch mit Beispielangaben neben „Über“).
 - Die Umschalter des Entwurfs (Galerie-Darstellung, Namensvorschau) sind keine Schalter auf der Website: Die
   Darstellung der Galerie wählt jede Person in „Mein Profil“.
+
+## Fassung 3 (6. November 2026, `profil-v3.dc.html`)
+
+- Name über dem Porträt: statt durchscheinend („Geist“) mit getauschten Farben („Tausch“) – Vorname magenta,
+  Nachname weiß. Der Entwurf bietet weitere Varianten (Regenbogen, Kontur, Unterlegt, Geist); umgesetzt ist
+  die Voreinstellung „Tausch“.
+- Pitch: hervorgehoben wird ab dem Wort nach dem ersten Doppelpunkt (Gedankenstriche zählen nicht mehr), ohne
+  Doppelpunkt die letzten drei Wörter. Regel in `src/lib/profil-ansicht.ts` (gilt auch für die Vorschau unter
+  „Mein Profil“).

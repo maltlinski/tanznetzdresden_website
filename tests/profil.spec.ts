@@ -6,6 +6,7 @@ import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { supabase } from '../src/settings/supabase';
 import { redaktion, FOTOS } from './redaktion-mock';
+import { pitchWoerter } from '../src/lib/profil-ansicht';
 
 const ohneBanner = (page: Page) =>
   page.addInitScript(() => localStorage.setItem('tndd-consent', JSON.stringify({ v: 1, date: '2026-10-15T00:00:00Z', categories: { notwendig: true } })));
@@ -27,7 +28,7 @@ test.describe('öffentliche Profilseite', () => {
     await page.goto('/netzwerk/alina-lucifero/?demo=1');
     const leiste = page.getByRole('navigation', { name: 'Abschnitte' });
     await expect(leiste.getByRole('link')).toHaveText(['Pitch', 'Galerie', 'Über', 'Arbeiten']);
-    await expect(page.locator('#pitch .ppitch__satz')).toContainText('Beispielsatz');
+    await expect(page.locator('#pitch .ppitch__satz')).toContainText('Beispiel – ');
     await expect(page.getByRole('heading', { name: /Stücke und\s*Projekte/ })).toBeVisible();
   });
 
@@ -51,7 +52,14 @@ test.describe('öffentliche Profilseite', () => {
     await expect(zweites).toBeFocused();
   });
 
-  test('Name über dem Porträt: voll links vom Bildrand, durchscheinend darüber; Angaben neben „Über“', async ({ page, isMobile }) => {
+  test('Pitch: hervorgehoben ab dem Wort nach dem Doppelpunkt, sonst die letzten drei Wörter (Entwurf v3)', () => {
+    const hi = (s: string) => pitchWoerter(s).filter((w) => w.hi).map((w) => w.text).join(' ');
+    expect(hi('Ich bringe Tanz an Orte: Höfe, Haltestellen, leere Läden.')).toBe('Höfe, Haltestellen, leere Läden.');
+    expect(hi('Ich arbeite mit Gewicht, Vertrauen und Zufall')).toBe('Vertrauen und Zufall');
+    expect(hi('Tanz – überall und für alle')).toBe('und für alle'); // Gedankenstrich zählt nicht
+  });
+
+  test('Name über dem Porträt: voll links vom Bildrand, darüber mit getauschten Farben; Angaben neben „Über“', async ({ page, isMobile }) => {
     await ohneBanner(page);
     await page.goto('/netzwerk/alina-lucifero/?demo=1');
     await expect(page.getByRole('heading', { level: 1 })).toHaveText(/^\s*Alina\s*Lucifero\s*$/);
@@ -63,6 +71,11 @@ test.describe('öffentliche Profilseite', () => {
     } else {
       await expect.poll(async () => (await clip()).every((c) => c.startsWith('polygon('))).toBe(true);
     }
+    // Tausch (Entwurf v3): über dem Foto Vorname magenta, Nachname weiß
+    const farben = () => page.evaluate(() => ['.ph__vor', '.ph__nach'].map((s) => getComputedStyle(document.querySelector(`[data-name-licht] ${s}`)!).color));
+    // nach dem Einwischen des Namens (Intro)
+    await expect.poll(async () => (await farben())[1], { timeout: 5000 }).toBe('rgb(255, 255, 255)');
+    expect((await farben())[0]).toMatch(/^rgb\(2\d\d, \d+, \d+\)$/); // Magenta
     const seite = page.locator('#ueber .pueber__seite');
     await expect(seite.getByText('Ausbildung')).toBeVisible();
   });

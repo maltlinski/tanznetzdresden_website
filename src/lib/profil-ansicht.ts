@@ -18,12 +18,19 @@ export function nameTeile(name: string) {
   };
 }
 
-/** Pitch in Wörter: was nach dem ersten Doppelpunkt/Gedankenstrich steht, wird hervorgehoben (sonst die letzten drei Wörter) */
+/**
+ * Pitch in Wörter (Entwurf Profil v3): hervorgehoben wird ab dem Wort nach dem ersten Wort, das auf einen
+ * Doppelpunkt endet; ohne Doppelpunkt im Satz die letzten drei Wörter. Gedankenstriche zählen nicht.
+ */
 export function pitchWoerter(satz: string) {
-  const w = satz.split(/\s+/).filter(Boolean);
-  const bis = satz.search(/[:–—]/);
-  const ab = bis >= 0 ? satz.slice(0, bis + 1).split(/\s+/).filter(Boolean).length : Math.max(0, w.length - 3);
-  return w.map((text, i) => ({ text, hi: i >= ab }));
+  const w = satz.trim().split(/\s+/).filter(Boolean);
+  const mitDoppelpunkt = satz.includes(':');
+  let an = false;
+  return w.map((text, i) => {
+    const hi = an || (!mitDoppelpunkt && i >= w.length - 3);
+    if (mitDoppelpunkt && text.endsWith(':')) an = true;
+    return { text, hi };
+  });
 }
 
 /** Kurzbio als Absätze (Leerzeile trennt) */

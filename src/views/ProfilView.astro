@@ -153,7 +153,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
               <span class="ph__vor" data-sweep="0.3" data-bar="var(--cyan)">{vorname}</span>
               {nachname && <>{' '}<br /><span class="ph__nach" data-sweep="0.55" data-bar="var(--magenta)">{nachname}</span></>}
             </h1>
-            {/* gleicher Name noch einmal, durchscheinend: sichtbar nur, wo er über dem Porträt liegt (scripts/profil.ts).
+            {/* gleicher Name noch einmal mit getauschten Farben (Entwurf v3 „Tausch“): sichtbar nur, wo er über dem Porträt liegt (scripts/profil.ts).
                 Text per CSS (data-text), damit er nicht doppelt vorgelesen oder als Text geprüft wird */}
             <div class="ph__name ph__name--licht" aria-hidden="true" data-name-licht>
               <span class="ph__vor" data-sweep="0.3" data-bar="var(--cyan)" data-text={vorname}></span>
@@ -478,11 +478,12 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   }
   .ph__vor, .ph__nach { display: inline-block; position: relative; }
   .ph__nach { color: var(--magenta); }
-  /* über dem Porträt: Name durchscheinend; die Grenze (schräger Bildrand) setzt das Skript */
+  /* über dem Porträt: Farben getauscht – Vorname magenta, Nachname weiß (Entwurf Profil v3 „Tausch“);
+     die Grenze (schräger Bildrand) setzt das Skript */
   .ph__name--licht { position: absolute; inset: 0; clip-path: inset(0 0 0 100%); visibility: hidden; pointer-events: none; }
   .ph__name--licht span::before { content: attr(data-text); }
-  .ph__name--licht .ph__vor { color: rgba(255, 255, 255, 0.35); }
-  .ph__name--licht .ph__nach { color: color-mix(in srgb, var(--magenta) 45%, transparent); }
+  .ph__name--licht .ph__vor { color: var(--magenta); }
+  .ph__name--licht .ph__nach { color: #fff; }
   .ph__meta { margin: 0; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan); }
   .ph__vorstand { margin: 0; max-width: 60ch; color: rgba(255, 255, 255, 0.86); line-height: 1.6; }
   .ph__vorstand span {

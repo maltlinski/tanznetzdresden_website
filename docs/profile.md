@@ -5,9 +5,9 @@ Unter `/netzwerk/` (englisch `/en/network/`) hat jede Person aus dem Netzwerk ei
 
 | Abschnitt | Inhalt |
 |---|---|
-| Kopf | großer Name, Porträt rechts mit schrägem Rand; ein langer Name läuft über das Foto und ist dort durchscheinend. Pronomen · Tätigkeit · Basis, Vorstandsfunktion, „Anfrage senden“, „Showreel“ |
+| Kopf | großer Name, Porträt rechts mit schrägem Rand; ein langer Name läuft über das Foto, dort mit getauschten Farben (Vorname magenta, Nachname weiß; Entwurf v3). Pronomen · Tätigkeit · Basis, Vorstandsfunktion, „Anfrage senden“, „Showreel“ |
 | Leiste | klebt beim Scrollen unter dem Seitenkopf: Name, Abschnitte (aktueller markiert), „Anfrage“, Fortschritt |
-| 01 Pitch | „In einem Satz“: Wörter leuchten beim Scrollen auf, Teil nach dem Doppelpunkt pink; Schwerpunkte darunter |
+| 01 Pitch | „In einem Satz“: Wörter leuchten beim Scrollen auf, Teil nach dem Doppelpunkt pink (ohne Doppelpunkt die letzten drei Wörter); Schwerpunkte darunter |
 | 02 Galerie | Filmstreifen (zieht beim Scrollen seitlich vorbei, auf dem Handy zum Wischen), Mosaik oder Raster; Vollbild mit Pfeiltasten |
 | 03 Über | Profiltext links (erster Absatz groß), rechts klebend die Angaben (Ausbildung, Techniken, Sprachen, Arbeitsorte, Basis, Körpergröße, Verfügbar) und Links |
 | 04 Arbeiten | Stücke und Projekte mit Jahr und Ort, neueste oben |

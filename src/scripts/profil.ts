@@ -73,7 +73,7 @@ function kopfHoehe() {
 
 /**
  * Der große Name darf über das Porträt laufen. Links vom schrägen Bildrand steht er voll, über dem Foto
- * durchscheinend: Die volle Ebene wird dort abgeschnitten, die durchscheinende Kopie (data-name-licht) beginnt dort.
+ * mit getauschten Farben: Die volle Ebene wird dort abgeschnitten, die Kopie (data-name-licht) beginnt dort.
  * Ohne Skript, auf dem Handy (Foto über dem Namen) und ohne Foto steht der Name einfach voll.
  */
 function nameUeberBild(root: HTMLElement) {

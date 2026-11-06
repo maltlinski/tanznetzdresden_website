@@ -41,14 +41,14 @@ const BIOS: Record<Lang, string[][]> = {
 
 const PITCHES: Record<Lang, string[]> = {
   de: [
-    'Beispielsatz: Ich bringe Tanz an Orte, an denen ihn niemand erwartet: Höfe, Haltestellen, leere Läden.',
-    'Beispielsatz: Ich arbeite mit dem, was zwischen zwei Körpern passiert: Gewicht, Vertrauen, Zufall.',
-    'Beispielsatz: Meine Stücke fragen, wie sich eine Stadt bewegt, wenn niemand hinsieht.',
+    'Beispiel – Ich bringe Tanz an Orte, an denen ihn niemand erwartet: Höfe, Haltestellen, leere Läden.',
+    'Beispiel – Ich arbeite mit dem, was zwischen zwei Körpern passiert: Gewicht, Vertrauen, Zufall.',
+    'Beispiel – Meine Stücke fragen, wie sich eine Stadt bewegt, wenn niemand hinsieht.',
   ],
   en: [
-    'Example: I bring dance to places where nobody expects it: courtyards, tram stops, empty shops.',
-    'Example: I work with what happens between two bodies: weight, trust, chance.',
-    'Example: My pieces ask how a city moves when nobody is watching.',
+    'Example – I bring dance to places where nobody expects it: courtyards, tram stops, empty shops.',
+    'Example – I work with what happens between two bodies: weight, trust, chance.',
+    'Example – My pieces ask how a city moves when nobody is watching.',
   ],
 };
 
