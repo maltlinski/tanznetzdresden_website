@@ -326,3 +326,7 @@
   .ae__mehr { padding-left: 14px; }
 }
 .r-mehr { margin: 12px 0 0; }
+
+/* Fokuspunkt eines Fotos mit Knopf für den Zuschnitt-Dialog (bereiche.ts: ausschnitt) */
+.rf-ausschnitt__zeile { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+.rf-ausschnitt__zeile input { flex: 0 1 9em; min-width: 7em; }

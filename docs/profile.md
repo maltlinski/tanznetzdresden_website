@@ -93,7 +93,10 @@ Ausbildung/Sprachen/…, Kontakt (öffentliche E-Mail, offen für, Video) und di
   dort eintragen), Dialog `src/scripts/intern/zuschnitt.ts` + `src/styles/zuschnitt.css`, Erkennung
   `src/scripts/intern/bild-erkennung.ts`. Gespeichert: Porträt in `profiles.photo_focus` (je Foto-Pfad, gilt auch für
   ein wartendes Foto), Galerie als `fokus`/`ganz` im Eintrag. In `personen.yaml`: `photoFocus: "50% 30%"` und je
-  Galeriefoto `fokus`/`ganz`. Ausschnitt ändern braucht keine neue Freigabe.
+  Galeriefoto `fokus`/`ganz` – in der Redaktion (*Personen*) mit Knopf „Ausschnitt wählen“ neben dem Feld
+  (`ausschnitt` in bereiche.ts). Derselbe Dialog steckt im News-Editor und in der Mediathek („Ausschnitt-Editor“,
+  `fokusFlaeche()` in `src/scripts/intern/news/medien.ts`, Formen `RAHMEN_NEWS`/`RAHMEN_NEWS_BLOECKE`).
+  Ausschnitt ändern braucht keine neue Freigabe.
 
 - **Presse, Vorstand oder Admin geben frei** (*Intern → Redaktion → Freigaben*). Erst dann erscheint das Profil.
   Ändert eine Person später ihre Adresse, muss neu freigegeben werden. Textänderungen brauchen keine neue Freigabe.

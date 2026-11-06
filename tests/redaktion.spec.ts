@@ -309,6 +309,31 @@ test('Formate: neues Format mit Foto-Upload', async ({ page }) => {
   expect(Buffer.from(foto.base64!, 'base64').subarray(0, 3)).toEqual(Buffer.from([0xff, 0xd8, 0xff]));
 });
 
+test('Personen: Ausschnitt des Porträts im Zuschnitt-Dialog wählen', async ({ page }) => {
+  const gespeichert = await redaktion(page);
+  await page.goto('/intern/redaktion/eintrag/?b=personen&neu=1');
+  await feld(page, 'Name').fill('Zoe Zuschnitt');
+  await page.getByRole('group', { name: /Im Netzwerk als/ }).getByLabel('Mitglied').check();
+  // ohne Foto: Hinweis statt Dialog
+  await page.getByRole('button', { name: 'Ausschnitt wählen' }).click();
+  await expect(page.getByText('Bitte zuerst ein Foto wählen.')).toBeVisible();
+  await page.locator('[data-bild-key="photo"] input[type=file]').first().setInputFiles('src/assets/photos/solo-blau.jpg');
+  await expect(page.locator('[data-bild-key="photo"] .rf-bild__frame img').first()).toBeVisible();
+  await page.getByRole('button', { name: 'Ausschnitt wählen' }).click();
+  const dlg = page.getByRole('dialog', { name: 'Ausschnitt des Porträts' });
+  await expect(dlg.locator('.zs__formel > span')).toHaveText(['Profil, großer Bildschirm', 'Profil auf dem Handy', 'Netzwerk-Übersicht', 'Profitraining']);
+  const punkt = dlg.getByRole('slider', { name: 'Fokuspunkt' });
+  await expect(punkt).toHaveAttribute('aria-valuetext', '50 % von links, 30 % von oben');
+  await punkt.press('Shift+ArrowDown');
+  await dlg.getByRole('button', { name: 'Übernehmen' }).click();
+  await expect(dlg).toBeHidden();
+  await expect(feld(page, 'Ausschnitt des Porträts')).toHaveValue('50% 40%');
+  await page.getByRole('button', { name: /anlegen/ }).click();
+  await expect.poll(() => gespeichert.length).toBe(1);
+  const yaml = gespeichert[0].aenderungen.find((a) => a.pfad === 'src/content/personen.yaml')!.text!;
+  expect((parse(yaml) as { id: string; photoFocus?: string }[]).find((p) => p.id === 'zoe-zuschnitt')?.photoFocus).toBe('50% 40%');
+});
+
 test('Einstellungen: Texte ändern, rechtliche Angaben nur für den Vorstand', async ({ page }) => {
   const gespeichert = await redaktion(page);
   await page.goto('/intern/redaktion/eintrag/?b=keep-up-texte');

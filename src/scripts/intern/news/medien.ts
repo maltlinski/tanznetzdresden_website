@@ -8,6 +8,8 @@ import { newsPhotoUrl, type MedienRow, type NewsRow } from '../../../lib/supabas
 import { abschnitte } from '../../../lib/news-bloecke';
 import { BUCKET, hochladen } from './fotos';
 import { h } from './dom';
+import { RAHMEN_NEWS, type Rahmen } from '../../../lib/bild-zuschnitt';
+import { zuschnittWaehlen } from '../zuschnitt';
 
 export interface Verwendung {
   id: string;
@@ -105,19 +107,36 @@ export function zuschnitte(src: string, fokus: string | null) {
       h('span', { text: z.label }))));
 }
 
-/** Foto mit Fokuspunkt: Klick setzt den Ausschnitt */
-export function fokusFlaeche(src: string, fokus: string | null, setzen: (f: string) => void, titel = 'Klick ins Foto setzt den Fokuspunkt. Alle Zuschnitte richten sich danach.') {
+/**
+ * Foto mit Fokuspunkt: Klick setzt den Ausschnitt schnell; „Ausschnitt-Editor“ öffnet den großen Dialog
+ * (src/scripts/intern/zuschnitt.ts) mit allen Formen, Vorschlag per Gesichts-/Personenerkennung und Pfeiltasten.
+ * `rahmen`: Formen, in denen das Foto erscheint (Standard: Titelbild/Mediathek).
+ */
+export function fokusFlaeche(src: string, fokus: string | null, setzen: (f: string) => void, titel = 'Klick ins Foto setzt den Fokuspunkt. Alle Zuschnitte richten sich danach.', rahmen: Rahmen[] = RAHMEN_NEWS) {
+  let aktuell = fokus;
   const img = h('img', { src, alt: '', draggable: false });
   const [x, y] = (fokus ?? '50% 50%').split(' ');
   const punkt = h('span', { class: 'md-fokus__punkt', style: `left:${x};top:${y}`, 'aria-hidden': 'true' }, h('span'));
-  const el = h('div', { class: 'md-fokus', title: titel }, img, punkt);
+  const editor = h('button', { type: 'button', class: 'md-fokus__editor', text: 'Ausschnitt-Editor', title: 'Ausschnitt im großen Editor wählen: alle Formen, Vorschlag, Pfeiltasten' });
+  const el = h('div', { class: 'md-fokus', title: titel }, img, punkt, editor);
+  const setze = (f: string) => {
+    const [fx, fy] = f.split(' ');
+    punkt.style.left = fx;
+    punkt.style.top = fy;
+    aktuell = f;
+    setzen(f);
+  };
   el.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('.md-fokus__editor')) return;
     const r = img.getBoundingClientRect();
     const fx = Math.round(Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100)));
     const fy = Math.round(Math.min(100, Math.max(0, ((e.clientY - r.top) / r.height) * 100)));
-    punkt.style.left = `${fx}%`;
-    punkt.style.top = `${fy}%`;
-    setzen(`${fx}% ${fy}%`);
+    setze(`${fx}% ${fy}%`);
+  });
+  editor.addEventListener('click', async () => {
+    const wahl = await zuschnittWaehlen({ src, fokus: aktuell ?? undefined, rahmen: () => rahmen, titel: 'Ausschnitt wählen' });
+    if (wahl) setze(wahl.fokus);
+    editor.focus();
   });
   return el;
 }

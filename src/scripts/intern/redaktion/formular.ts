@@ -7,6 +7,8 @@ import { zuMarkdown } from '../../../lib/news-bloecke';
 import { slugify } from '../../../lib/supabase';
 import type { Bereich, Feld, Option } from './bereiche';
 import { aufloesen, holen, leer, relativ, setzen, type Daten, type Eintrag } from './daten';
+import { FOKUS_PORTRAET, rahmenGalerieAlle, rahmenPortraet } from '../../../lib/bild-zuschnitt';
+import { zuschnittWaehlen } from '../zuschnitt';
 
 export interface FormKontext {
   vorstand: boolean;
@@ -129,8 +131,34 @@ function textFeld(f: Feld, bind: Bindung, k: FormKontext, en: boolean, gesperrt:
   steuer.value = f.typ === 'schlagworte' ? (Array.isArray(wert) ? wert.join(', ') : '') : wert == null ? '' : String(wert);
   if ('platzhalter' in f && f.platzhalter && !en) steuer.placeholder = f.platzhalter;
   if (en) steuer.lang = 'en';
-  const r = rahmen(f, id, steuer, { en });
+  // Fokuspunkt eines Fotos: Knopf öffnet den Zuschnitt-Dialog mit dem Foto aus dem Bildfeld daneben
+  const auswahl = f.typ === 'text' && f.ausschnitt && !en ? f.ausschnitt : null;
+  const knopf = auswahl ? h('button', { type: 'button', class: 'btn btn--secondary btn--sm rf-ausschnitt', text: 'Ausschnitt wählen', disabled: gesperrt }) : null;
+  const r = rahmen(f, id, knopf ? h('div', { class: 'rf-ausschnitt__zeile' }, steuer, knopf) : steuer, { en });
   steuer.setAttribute('aria-describedby', r.beschrieben);
+  if (knopf && auswahl) {
+    knopf.addEventListener('click', async () => {
+      const eintrag = r.el.closest('.rf-item');
+      const bild = [...(eintrag ?? r.el.closest('form') ?? document).querySelectorAll<HTMLImageElement>(`[data-bild-key="${auswahl.bild}"] img`)]
+        .find((img) => img.closest('.rf-item') === eintrag && !img.hidden && img.src);
+      if (!bild) {
+        r.zeigen('Bitte zuerst ein Foto wählen.');
+        return;
+      }
+      r.zeigen(null);
+      const wahl = await zuschnittWaehlen({
+        src: bild.src,
+        fokus: (steuer as HTMLInputElement).value.trim() || undefined,
+        standard: auswahl.form === 'portraet' ? FOKUS_PORTRAET : undefined,
+        titel: auswahl.form === 'portraet' ? 'Ausschnitt des Porträts' : 'Ausschnitt des Galeriefotos',
+        rahmen: () => (auswahl.form === 'portraet' ? rahmenPortraet({ karte: true, training: true }) : rahmenGalerieAlle()),
+      });
+      if (!wahl) return knopf.focus();
+      steuer.value = wahl.fokus;
+      steuer.dispatchEvent(new Event('input', { bubbles: true }));
+      knopf.focus();
+    });
+  }
   const lesen = () => {
     const v = steuer.value.trim();
     return f.typ === 'schlagworte' ? v.split(',').map((x) => x.trim()).filter(Boolean) : v;
@@ -484,7 +512,7 @@ function dateiFeld(f: Extract<Feld, { typ: 'bild' | 'pdf' }>, bind: Bindung, k: 
     eingabe.value = '';
   });
   const seite = h('div', { class: 'rf-bild__side' }, sel, hochladen, status);
-  const steuer = h('div', { class: bild ? 'rf-bild' : 'rf-bild rf-bild--pdf' }, rahmenBild, seite);
+  const steuer = h('div', { class: bild ? 'rf-bild' : 'rf-bild rf-bild--pdf', 'data-bild-key': f.key }, rahmenBild, seite);
   const r = rahmen(f, id, steuer);
   sel.setAttribute('aria-describedby', r.beschrieben);
   return {

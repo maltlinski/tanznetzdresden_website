@@ -85,7 +85,8 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
   Trenner zwischen Formular und Vorschau ziehst du nach links oder rechts (oder Pfeiltasten; Doppelklick: zurück).
   „Vollbild“ legt die Vorschau über das ganze Fenster, Esc schließt.
 - **Medien:** drei Reiter. *Fotos für Beiträge* (Mediathek: hochladen per Ziehen, verkleinert automatisch,
-  Bildbeschreibung Pflicht, Fotonachweis, Ausschnitt, ausblenden). *Fotos der Seiten* (Formate, Personen, Förderer)
+  Bildbeschreibung Pflicht, Fotonachweis, Ausschnitt – schnell per Klick oder im großen *Ausschnitt-Editor*, ausblenden).
+  Bei *Personen* hat das Porträt und jedes Galeriefoto „Ausschnitt wählen“ (gleicher Dialog wie unter „Mein Profil“). *Fotos der Seiten* (Formate, Personen, Förderer)
   und *Dokumente (PDF)* (hochladen per Ziehen, höchstens 8 MB). Jede Datei zeigt „Wird verwendet auf …“; löschen
   lässt sich nur, was nirgends verwendet wird.
 - **Entwurf:** Termine und News mit dem Haken „Entwurf“ erscheinen nicht auf der Website.

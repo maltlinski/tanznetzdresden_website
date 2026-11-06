@@ -50,7 +50,10 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
 - **Titel** und **Teaser** (Zähler bis 220 Zeichen, mehr geht, ist aber nicht empfohlen).
 - **Titelbild:** hineinziehen, **Aus Mediathek** oder **Vom Computer**. Ein Klick ins Bild setzt den
   **Fokuspunkt**. Darunter steht, wie das Foto in der Übersicht (16 : 10), auf der Startseite (16 : 9) und im Artikel
-  (21 : 9) zugeschnitten wird. Dazu kommen die Bildbeschreibung (freiwillig, empfohlen) und der Fotonachweis.
+  (21 : 9) zugeschnitten wird. **Ausschnitt-Editor** (Knopf im Foto) öffnet den großen Dialog wie unter „Mein Profil“:
+  Punkt ziehen oder mit Pfeiltasten setzen, alle Formen live mit Keil, Vorschlag per Gesichts-/Personenerkennung im
+  Browser (docs/profile.md). Gilt auch für Fotos in Bildpaar, Bildstrecke, Bild & Text und Schritten (Formen quer, hoch,
+  Quadrat, randlos) und in der Mediathek. Dazu kommen die Bildbeschreibung (freiwillig, empfohlen) und der Fotonachweis.
 - **Kopfbereich:** Mit Titelbild zeigen kleine Skizzen die Varianten *Automatisch*, *Vollbild*, *Hochkant*, *Split*
   und *Typo* („Automatisch“: Querformat wird Vollbild, Hochkant-Fotos bekommen den Hochkant-Kopf; daneben steht, was
   der Beitrag gerade zeigt). Ohne Titelbild: Farbfläche des Netzes (Lila, Cyan, Hell) und die Angabe am Knoten

@@ -32,7 +32,8 @@ interface Basis {
   platzhalter?: string;
 }
 export type Feld =
-  | (Basis & { typ: 'text'; max?: number; muster?: [RegExp, string] })
+  /** ausschnitt: Fokuspunkt eines Fotos („x% y%“) mit Knopf für den Zuschnitt-Dialog; bild = Schlüssel des Bildfelds daneben */
+  | (Basis & { typ: 'text'; max?: number; muster?: [RegExp, string]; ausschnitt?: { bild: string; form: 'portraet' | 'galerie' } })
   | (Basis & { typ: 'textlang'; zeilen?: number; max?: number })
   /** bilder: „Bild aus Medien“ im Editor (nur wo die Seite Bilder-Abschnitte zeigt, z. B. News) */
   | (Basis & { typ: 'markdown'; bilder?: boolean })
@@ -499,13 +500,13 @@ export const bereiche: Bereich[] = [
       { typ: 'abschnitt', label: 'Fotos' },
       { typ: 'bild', key: 'photo', label: 'Porträt', ordner: 'personen', form: 'relativ', hilfe: 'Groß oben auf dem Profil.' },
       { typ: 'text', key: 'photoCredit', label: 'Foto von' },
-      { typ: 'text', key: 'photoFocus', label: 'Ausschnitt des Porträts', max: 9, platzhalter: '50% 30%', erweitert: true, hilfe: 'Welcher Punkt im Foto immer zu sehen bleibt: von links, von oben in Prozent. Leer: Mitte, etwas oberhalb.', muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30% (von links, von oben)'] },
+      { typ: 'text', key: 'photoFocus', label: 'Ausschnitt des Porträts', max: 9, platzhalter: '50% 30%', ausschnitt: { bild: 'photo', form: 'portraet' }, hilfe: 'Welcher Punkt im Foto in jeder Form zu sehen bleibt. Am einfachsten über „Ausschnitt wählen“. Leer: Mitte, etwas oberhalb.', muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30% (von links, von oben)'] },
       { typ: 'liste', key: 'gallery', label: 'Galerie', neu: 'Foto hinzufügen', titel: (v) => v.caption ?? '', felder: [
         SICHTBAR,
         { typ: 'bild', key: 'photo', label: 'Foto', pflicht: true, ordner: 'personen', form: 'relativ' },
         { typ: 'text', key: 'caption', label: 'Bildunterschrift', en: true, hilfe: 'Beschreibt das Foto auch für Menschen, die es nicht sehen.' },
         { typ: 'text', key: 'credit', label: 'Foto von' },
-        { typ: 'text', key: 'fokus', label: 'Ausschnitt', max: 9, platzhalter: '50% 50%', erweitert: true, hilfe: 'Welcher Punkt im Foto immer zu sehen bleibt: von links, von oben in Prozent.', muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30% (von links, von oben)'] },
+        { typ: 'text', key: 'fokus', label: 'Ausschnitt', max: 9, platzhalter: '50% 50%', ausschnitt: { bild: 'photo', form: 'galerie' }, hilfe: 'Welcher Punkt im Foto in jeder Form zu sehen bleibt. Am einfachsten über „Ausschnitt wählen“.', muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30% (von links, von oben)'] },
         { typ: 'janein', key: 'ganz', label: 'Ganzes Foto zeigen (nicht zuschneiden)', erweitert: true },
       ] },
       { typ: 'auswahl', key: 'galleryLayout', label: 'Galerie zeigen als', erweitert: true, optionen: Object.entries(GALERIE_LAYOUTS).map(([wert, l]) => ({ wert, label: `${l.de}: ${l.hilfe}` })) },

@@ -171,3 +171,28 @@ test.describe('Zuschnitt unter „Mein Profil“', () => {
     await expect(page.getByRole('button', { name: 'Ausschnitt wählen' })).toBeHidden();
   });
 });
+
+test.describe('Zuschnitt in der Redaktion (News)', () => {
+  test.skip(!supabase.url || !supabase.anonKey, 'Supabase nicht eingetragen');
+
+  test('Titelbild: „Ausschnitt-Editor“ öffnet den Dialog mit den Formen der News', async ({ page }) => {
+    await page.setViewportSize({ width: 1400, height: 950 });
+    await redaktion(page);
+    await page.goto('/intern/news/bearbeiten/');
+    await page.locator('[data-photo-input]').first().setInputFiles(FOTOS[2]);
+    const flaeche = page.locator('[data-cover-fokus] .md-fokus');
+    await expect(flaeche.locator('img')).toBeVisible();
+    await flaeche.getByRole('button', { name: 'Ausschnitt-Editor' }).click();
+    const dlg = page.getByRole('dialog', { name: 'Ausschnitt wählen' });
+    await expect(dlg.locator('.zs__formel > span')).toHaveText(['News-Übersicht', 'Startseite', 'Beitrag, großer Bildschirm', 'Beitrag auf dem Handy']);
+    const punkt = dlg.getByRole('slider');
+    await punkt.press('Home');
+    await punkt.press('Shift+ArrowLeft');
+    await punkt.press('Shift+ArrowUp');
+    await dlg.getByRole('button', { name: 'Übernehmen' }).click();
+    await expect(dlg).toBeHidden();
+    await expect(flaeche.locator('.md-fokus__punkt')).toHaveAttribute('style', /left: ?40%; ?top: ?40%/);
+    await expect(page.locator('.md-zuschnitt img').first()).toHaveCSS('object-position', '40% 40%');
+  });
+});
+

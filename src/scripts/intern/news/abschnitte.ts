@@ -8,6 +8,7 @@
  */
 import { h } from './dom';
 import { fokusFlaeche } from './medien';
+import { RAHMEN_NEWS_BLOECKE } from '../../../lib/bild-zuschnitt';
 import { newsBildUrl } from '../../../lib/markdown';
 import { FORMATE, type Bild, type BilderBlock, type Block, type Breite, type Format, type Schritt, type SchritteBlock, type TextBlock } from '../../../lib/news-bloecke';
 
@@ -362,7 +363,7 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
       const bild = x.laedt
         ? h('div', { class: 'md-fokus fb-einzel__bild is-laedt' }, h('img', { src: x.lokal ?? bildUrl(x.datei), alt: '' }), h('span', { class: 'fb-bild__laedt', text: 'lädt …' }))
         : imBucket(x.datei)
-          ? fokusFlaeche(bildUrl(x.datei), x.fokus ?? null, (f) => { x.fokus = f; geaendert(); })
+          ? fokusFlaeche(bildUrl(x.datei), x.fokus ?? null, (f) => { x.fokus = f; geaendert(); }, undefined, RAHMEN_NEWS_BLOECKE)
           : h('div', { class: 'md-fokus' }, h('img', { src: bildUrl(x.datei), alt: '' }));
       bild.classList.add('fb-einzel__bild');
       ziel.append(h('div', { class: 'fb-einzel' },
@@ -461,7 +462,7 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
             x.fokus = f;
             raster.querySelectorAll<HTMLImageElement>('.fb-bild img')[sel]?.style.setProperty('object-position', f);
             geaendert();
-          })
+          }, undefined, RAHMEN_NEWS_BLOECKE)
         : h('div', { class: 'md-fokus' }, h('img', { src: x.lokal ?? bildUrl(x.datei), alt: '' }));
       const [enId, en] = eingabe(`${i}-alten-${sel}`, x.alt_en ?? '', (v) => (x.alt_en = v), { maxLength: 300, lang: 'en', class: 'fb-en', placeholder: 'Image description (optional)' });
       detail = h('div', { class: 'fb-detail' },
@@ -582,7 +583,7 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
     const x = b.bilder[j];
     const bild = x.laedt || !imBucket(x.datei)
       ? h('div', { class: `md-fokus${x.laedt ? ' is-laedt' : ''}` }, h('img', { src: x.lokal ?? bildUrl(x.datei), alt: '' }), x.laedt ? h('span', { class: 'fb-bild__laedt', text: 'lädt …' }) : null)
-      : fokusFlaeche(bildUrl(x.datei), x.fokus ?? null, (f) => { x.fokus = f; geaendert(); }, 'Klick ins Foto setzt den Ausschnitt.');
+      : fokusFlaeche(bildUrl(x.datei), x.fokus ?? null, (f) => { x.fokus = f; geaendert(); }, 'Klick ins Foto setzt den Ausschnitt.', RAHMEN_NEWS_BLOECKE);
     const [altId, alt] = eingabe(`${i}-${j}-alt`, x.alt, (v) => (x.alt = v), { maxLength: 300, placeholder: 'Was ist zu sehen?', class: `fm-alt${x.alt.trim() ? '' : ' is-leer'}` });
     const [capId, cap] = eingabe(`${i}-${j}-cap`, x.text ?? '', (v) => (x.text = v), { maxLength: 300, placeholder: 'Bildunterschrift', class: 'fm-cap' });
     const karte = h('div', { class: 'fm-kachel', draggable: 'true' },
@@ -733,7 +734,7 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
         ? h('div', { class: 'fs-bild' },
             st.laedt || !imBucket(st.datei)
               ? h('div', { class: `md-fokus${st.laedt ? ' is-laedt' : ''}` }, h('img', { src: st.lokal ?? bildUrl(st.datei), alt: '' }))
-              : fokusFlaeche(bildUrl(st.datei), st.fokus ?? null, (f) => { st.fokus = f; geaendert(); }, 'Klick ins Foto setzt den Ausschnitt.'),
+              : fokusFlaeche(bildUrl(st.datei), st.fokus ?? null, (f) => { st.fokus = f; geaendert(); }, 'Klick ins Foto setzt den Ausschnitt.', RAHMEN_NEWS_BLOECKE),
             h('button', { type: 'button', class: 'fs-bild__aendern', text: 'Ändern', onclick: () => void schrittBild(st, 'mediathek') }))
         : h('div', { class: 'fs-leer' },
             h('button', { type: 'button', class: 'md-knopf md-knopf--voll', text: 'Bild wählen', onclick: () => void schrittBild(st, 'mediathek') }),

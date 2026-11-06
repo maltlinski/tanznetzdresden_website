@@ -111,6 +111,33 @@ export function rahmenGalerie(k: number, n: number, layout: GalerieLayout, bild:
   ];
 }
 
+/** Galerie, wenn Darstellung und Platz noch offen sind (Redaktion → Personen): die typischen Formen */
+export function rahmenGalerieAlle(): Rahmen[] {
+  return [
+    { id: 'hoch', de: 'Galerie hoch (Filmstreifen, Raster)', en: 'Gallery portrait', r: 4 / 5 },
+    { id: 'quer', de: 'Galerie quer (Filmstreifen)', en: 'Gallery landscape', r: 3 / 2 },
+    { id: 'mosaik', de: 'Mosaik', en: 'Mosaic', r: 4 / 3 },
+    { id: 'breit', de: 'Mosaik, ganz breit', en: 'Mosaic, full width', r: 21 / 9 },
+  ];
+}
+
+// News (src/styles/artikel.css, Karten der Übersicht und der Startseite): Fokus aus der Mediathek gilt überall
+const KEIL_NEWS = (x: number) => `polygon(0 0, 100% 0, 100% 86%, ${x}% 100%, 0 100%)`;
+/** Titelbild eines Beitrags und Fotos der Mediathek */
+export const RAHMEN_NEWS: Rahmen[] = [
+  { id: 'uebersicht', de: 'News-Übersicht', en: 'News overview', r: 16 / 10, clip: KEIL_NEWS(92) },
+  { id: 'start', de: 'Startseite', en: 'Home page', r: 16 / 9, clip: KEIL_NEWS(93) },
+  { id: 'artikel', de: 'Beitrag, großer Bildschirm', en: 'Article, large screen', r: 21 / 9, clip: KEIL_NEWS(94) },
+  { id: 'artikel-handy', de: 'Beitrag auf dem Handy', en: 'Article on a phone', r: 4 / 3, clip: KEIL_NEWS(94) },
+];
+/** Fotos in Bildpaar, Bildstrecke und Bild & Text (je nach gewählter Form) */
+export const RAHMEN_NEWS_BLOECKE: Rahmen[] = [
+  { id: 'quer', de: 'Quer', en: 'Landscape', r: 3 / 2 },
+  { id: 'hoch', de: 'Hoch', en: 'Portrait', r: 3 / 4 },
+  { id: 'quadrat', de: 'Quadrat', en: 'Square', r: 1 },
+  { id: 'randlos', de: 'Randlos', en: 'Full bleed', r: 21 / 9 },
+];
+
 /** Bereich, der in allen Rahmen sichtbar ist (Schnitt der Ausschnitte); Rahmen mit ganzem Foto zählen nicht */
 export function sicherSichtbar(bild: number, rahmen: Rahmen[], f: Fokus) {
   let x0 = 0, y0 = 0, x1 = 1, y1 = 1;
