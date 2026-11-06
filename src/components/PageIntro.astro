@@ -2,9 +2,11 @@
 /**
  * Kopfbereich für Unterseiten: lila Fläche, Kicker, große Headline, Keil.
  * So hoch wie der Kopf der Startseite (--buehne-h); `kompakt` für Rechtstexte und Ähnliches.
+ * Im Hintergrund ein Netz wie im Kalender (KopfNetz), je Seite eigene Struktur (`netz`, meist die Route).
  */
 import Tag from './ui/Tag.astro';
 import KeilBar from './ui/KeilBar.astro';
+import KopfNetz from './KopfNetz.astro';
 
 interface Props {
   kicker: string;
@@ -14,10 +16,14 @@ interface Props {
   lead?: string;
   /** nur so hoch wie der Inhalt (Impressum, Datenschutz …) */
   kompakt?: boolean;
+  /** Schlüssel für die Struktur des Netzes (Route); fehlt er, die Adresse ohne Sprache */
+  netz?: string;
 }
-const { kicker, title, accent, lead, kompakt = false } = Astro.props;
+const { kicker, title, accent, lead, kompakt = false, netz } = Astro.props;
+const schluessel = netz ?? Astro.url.pathname.replace(/^.*?\/(en\/)?/, '');
 ---
 <section class:list={['intro', 'kopf', kompakt && 'intro--kompakt']}>
+  <KopfNetz schluessel={schluessel} />
   <div class="wrap intro__inner">
     <Tag color="cyan" class="kopf__kicker">{kicker}</Tag>
     <h1 class="intro__title">{title}{accent && <><br /><em>{accent}</em></>}</h1>
@@ -30,7 +36,7 @@ const { kicker, title, accent, lead, kompakt = false } = Astro.props;
 <style>
   .intro { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
   /* Regel „Köpfe“: Inhalt oben, erste Zeile im Abstand --buehne-oben (wie der Claim der Startseite) */
-  .intro__inner { width: 100%; padding-block: var(--buehne-oben) clamp(64px, 8vw, 104px); }
+  .intro__inner { position: relative; width: 100%; padding-block: var(--buehne-oben) clamp(64px, 8vw, 104px); }
   .intro--kompakt { min-height: 0; }
   .intro--kompakt .intro__inner { padding-block: var(--buehne-oben) clamp(48px, 6vw, 80px); }
   .intro__title {

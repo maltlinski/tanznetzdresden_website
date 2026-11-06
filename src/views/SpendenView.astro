@@ -14,6 +14,7 @@ import { formatIban, giroCodeSvg, isValidIban } from '../lib/girocode';
 import { getLang, loc, tr, url } from '../lib/i18n';
 import { abschnittZeigen, fuellen, texte, zeilen } from '../lib/texte';
 import sprung from '../assets/photos/sprung.jpg';
+import KopfNetz from '../components/KopfNetz.astro';
 
 const lang = getLang(Astro);
 const v = getVerein(lang);
@@ -60,6 +61,7 @@ const kopieren = [
 ---
 <Page title={t.title} description={t.desc} route="spenden">
   <section class="sk kopf" aria-labelledby="spenden-h">
+    <KopfNetz schluessel="spenden" />
     <div class="wrap sk__grid">
       <div class="sk__links">
         <Tag color="cyan" class="kopf__kicker">{t.kicker}</Tag>
@@ -207,7 +209,7 @@ const kopieren = [
   /* so hoch wie der Kopf der Startseite (--buehne-h) */
   .sk { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
   .sk__grid {
-    flex: 1; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 48px clamp(32px, 5vw, 80px);
+    position: relative; flex: 1; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 48px clamp(32px, 5vw, 80px);
     align-items: start; align-content: start; padding-block: var(--buehne-oben) clamp(48px, 7vh, 72px);
   }
   /* Regel „Köpfe“: Inhalt oben, Headline --kopf-kicker unter dem Kicker */

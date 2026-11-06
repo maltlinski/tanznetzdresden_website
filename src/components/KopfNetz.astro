@@ -1,0 +1,37 @@
+---
+/**
+ * Netz als Hintergrund eines lila Kopfs (wie im Kalender), für Unterseiten ohne eigene Gestaltung:
+ * Über uns, Spenden, Kontakt, Mitglied werden, Netzwerk, Textseiten, 404. Jede Seite hat ihre eigene,
+ * verwandte Struktur (`schluessel`, meist die Route; Deutsch und Englisch gleich). Form: src/lib/kopf-netz.ts,
+ * Bewegung: src/scripts/kopf-netz.ts. Der Kopf braucht `position: relative; overflow: hidden`, sein Inhalt
+ * `position: relative`, damit er über dem Netz liegt.
+ */
+import { kopfNetz, unterseitenForm } from '../lib/kopf-netz';
+
+interface Props {
+  schluessel: string;
+}
+const n = kopfNetz(unterseitenForm(Astro.props.schluessel));
+---
+<svg class="kn" viewBox={`0 0 ${n.breite} ${n.hoehe}`} preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false" data-kopf-netz>
+  {n.linien.map((l) => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} pathLength="1" class:list={[l.dick && 'dick']} />)}
+  {n.punkte.map((p) => <rect x={p.x} y={p.y} width={p.s} height={p.s} class:list={[p.magenta && 'mg']} />)}
+</svg>
+
+<script>
+  import { initKopfNetz } from '../scripts/kopf-netz';
+  initKopfNetz();
+</script>
+
+<style>
+  /* wie das Netz im Kalender (TermineView) */
+  .kn { position: absolute; inset: -4% 0; width: 100%; height: 108%; display: block; pointer-events: none; }
+  .kn line { stroke: var(--cyan); stroke-opacity: 0.15; stroke-width: 1; stroke-dasharray: 1; }
+  .kn line.dick { stroke-opacity: 0.28; stroke-width: 2; }
+  .kn rect { fill: var(--cyan); fill-opacity: 0.4; }
+  .kn rect.mg { fill: var(--magenta); fill-opacity: 0.7; }
+  /* schmal liegt der Text über der Mitte des Netzes: Quadrate leiser */
+  @media (max-width: 720px) { .kn rect { fill-opacity: 0.25; } .kn rect.mg { fill-opacity: 0.4; } }
+  /* bis das Skript das Netz einzeichnet */
+  @media (prefers-reduced-motion: no-preference) { :global(.js) .kn:not(.is-da) { opacity: 0; } }
+</style>

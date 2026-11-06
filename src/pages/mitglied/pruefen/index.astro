@@ -14,7 +14,7 @@ const t = texte('de', 'ausweis', 'seite');
 const ergebnis = { gueltig: t.gueltig, offen: t.offen, abgelaufen: t.abgelaufen, textGueltig: t.textGueltig, textOffen: t.textOffen, textAbgelaufen: t.textAbgelaufen };
 ---
 <Page title={t.title} description={t.desc} route="ausweisPruefen" noindex>
-  <PageIntro kicker={t.kicker} title={t.h1} kompakt />
+  <PageIntro kicker={t.kicker} title={t.h1} kompakt netz="pruefen" />
   <section class="section">
     <div class="wrap">
       <div class="pr" data-pruefen data-texte={JSON.stringify(ergebnis)} data-ergebnis="laden" aria-live="polite">

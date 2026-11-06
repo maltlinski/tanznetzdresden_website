@@ -191,6 +191,15 @@ nebeneinander, `sections/Demnaechst.astro`), Formate als Streifen, „Eine Stadt
 (`sections/Netz.astro`), Mitglied werden und Newsletter. Unter dem Kopf läuft ab dem Ende des Hero ein Fortschrittsbalken
 (`<Page fortschritt>`).
 
+**Netz im Kopf der Unterseiten:** Unterseiten ohne eigene Gestaltung (Über uns, Spenden, Kontakt, Mitglied werden,
+Netzwerk, Textseiten wie Impressum und Datenschutz, 404) haben hinter dem lila Kopf ein Netz wie der Kalender:
+`src/components/KopfNetz.astro` (steckt in `PageIntro`, Spenden und 404 binden es selbst ein), Form in
+`src/lib/kopf-netz.ts`, Bewegung in `src/scripts/kopf-netz.ts` (Linien zeichnen sich ein, Quadrate springen auf,
+Scrollen und Maus verschieben es; still bei „Bewegung reduzieren“). Jede Seite hat ihre eigene, verwandte Struktur
+(Startwert aus der Route, `netz="…"` an `PageIntro`): zwei nächste Nachbarn statt drei, längere Brücken, rechts
+dichter, keine Quadrate unter dem Text links. Der Kalender nutzt dieselbe Datei mit seiner Grundform (`KALENDER`).
+Neue einfache Unterseite → `PageIntro` mit `netz="<route>"`.
+
 Der Abschnitt „Haltung & Wirkung“ steht auf „Über uns“ (`/verein/`) und liest seine Texte aus
 `src/settings/haltung.json`, die Partnerliste aus `src/settings/verein.json` (`partners`).
 
