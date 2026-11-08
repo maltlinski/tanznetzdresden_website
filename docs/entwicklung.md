@@ -173,11 +173,11 @@ Jede Unterseite tritt beim Aufrufen gleich auf – nach dem Muster von Kalender 
 | Zeit | Was | Markierung |
 |---|---|---|
 | 0 s | Kicker, Zurück-Link, Pfad, Datum gleiten von links herein | `.kopf__kicker`, `data-kopf-vor` |
-| 0,1 s | Headline Wort für Wort von links (je 0,06 s) | `h1` im Kopf oder `data-kopf-titel`; schon geteilt: `data-kopf-wort` (Zahl = feste Stelle) |
-| 0,2 s | Netz im Hintergrund zeichnet sich ein, Quadrate springen auf | `KopfNetz`, Kalender (`netzBewegen()` in `kopf-netz.ts`) |
-| 0,3 s | Einleitung, Knöpfe, Kästen, Fotos nacheinander (je 0,08 s) | `data-kopf-folgt` |
+| 0,15 s | Headline Wort für Wort von links (je 0,08 s) | `h1` im Kopf oder `data-kopf-titel`; schon geteilt: `data-kopf-wort` (Zahl = feste Stelle) |
+| 0,25 s | Netz im Hintergrund zeichnet sich ein, Quadrate springen auf | `KopfNetz`, Kalender (`netzBewegen()` in `kopf-netz.ts`) |
+| 0,45 s | Einleitung, Knöpfe, Kästen, Fotos nacheinander (je 0,1 s) | `data-kopf-folgt` |
 
-Alles gleitet 60 px mit `EASE` in 0,8 s. Danach werden die Wörter wieder zusammengesetzt (Trennung und Umbruch
+Alles gleitet 60 px mit `EASE` in 1,1 s (bewusst ruhiger als die übrigen Bewegungen). Danach werden die Wörter wieder zusammengesetzt (Trennung und Umbruch
 wie ohne Bewegung). Neuer Kopf: `data-kopf-auftritt` an den Kopf, die Teile markieren, `initKopfAuftritt()` im
 Skript der Seite (`PageIntro` macht das selbst); eine zweite Spalte startet später mit `data-kopf-auftritt="0.12"`
 (404). Eigene Bewegung einer Seite hängt sich an die zurückgegebene Zeitleiste von `kopfAuftritt()`. Die Vorschau

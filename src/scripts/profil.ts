@@ -119,7 +119,7 @@ function intro(root: HTMLElement) {
   kopfAuftritt(root.querySelector<HTMLElement>('[data-kopf-auftritt]'));
   if (!root.animate) return;
   root.querySelectorAll<HTMLElement>('[data-wipe]').forEach((el) =>
-    el.animate([{ clipPath: 'inset(0 0 0 100%)' }, { clipPath: getComputedStyle(el).clipPath }], { duration: 1300, delay: KOPF.titel * 1000, easing: EASE, fill: 'backwards' }),
+    el.animate([{ clipPath: 'inset(0 0 0 100%)' }, { clipPath: getComputedStyle(el).clipPath }], { duration: 1700, delay: KOPF.titel * 1000, easing: EASE, fill: 'backwards' }),
   );
 }
 

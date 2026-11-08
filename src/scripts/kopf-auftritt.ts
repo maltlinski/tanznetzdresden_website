@@ -3,9 +3,9 @@
  * Ausnahmen: Startseite (eigener Hero) und Profitraining/KEEP UP (eigene Bewegung).
  *
  *   0,00 s  Kicker (.kopf__kicker) und alles mit data-kopf-vor (Zurück-Link, Pfad, Datum) gleiten von links herein
- *   0,10 s  die Headline Wort für Wort von links (h1 oder data-kopf-titel; schon geteilt: data-kopf-wort)
- *   0,30 s  alles mit data-kopf-folgt (Einleitung, Knöpfe, Kästen, Fotos), nacheinander in der Reihenfolge der Seite
- *   0,20 s  das Netz im Hintergrund zeichnet sich ein (kopf-netz.ts, KOPF.netz)
+ *   0,15 s  die Headline Wort für Wort von links (h1 oder data-kopf-titel; schon geteilt: data-kopf-wort)
+ *   0,45 s  alles mit data-kopf-folgt (Einleitung, Knöpfe, Kästen, Fotos), nacheinander in der Reihenfolge der Seite
+ *   0,25 s  das Netz im Hintergrund zeichnet sich ein (kopf-netz.ts, KOPF.netz)
  *
  * Ohne JavaScript oder bei „Bewegung reduzieren“ steht alles sofort da (gsap.from, nichts per CSS versteckt).
  * Die Wörter werden nach dem Auftritt wieder zusammengesetzt, damit Trennung und Umbruch der Headline stimmen.
@@ -19,17 +19,17 @@ gsap.registerPlugin(SplitText);
 export const KOPF = {
   /** Weg von links */
   x: -60,
-  dauer: 0.8,
+  dauer: 1.1,
   /** Start der Headline */
-  titel: 0.1,
+  titel: 0.15,
   /** Abstand der Wörter */
-  wort: 0.06,
+  wort: 0.08,
   /** Start der folgenden Elemente */
-  folgt: 0.3,
+  folgt: 0.45,
   /** Abstand der Elemente untereinander */
-  abstand: 0.08,
+  abstand: 0.1,
   /** Start des Netzes im Hintergrund */
-  netz: 0.2,
+  netz: 0.25,
 } as const;
 
 const sichtbar = (el: HTMLElement) => !el.closest('[hidden]');

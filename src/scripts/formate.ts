@@ -204,8 +204,8 @@ function kopf() {
   const hineinZeichnen = (t0 = 0) =>
     gsap
       .timeline({ defaults: { ease: EASE } })
-      .fromTo(linien, { attr: { 'stroke-dashoffset': 1 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 1.1, stagger: 0.07 }, t0)
-      .fromTo(buehne.querySelectorAll('[data-pre]'), { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: 0.8, stagger: 0.07, clearProps: 'transform,opacity' }, t0 + 0.1);
+      .fromTo(linien, { attr: { 'stroke-dashoffset': 1 } }, { attr: { 'stroke-dashoffset': 0 }, duration: 1.5, stagger: 0.09 }, t0)
+      .fromTo(buehne.querySelectorAll('[data-pre]'), { opacity: 0, x: -36 }, { opacity: 1, x: 0, duration: KOPF.dauer, stagger: 0.09, clearProps: 'transform,opacity' }, t0 + 0.15);
 
   // Info-Kasten: Kurzbeschreibung des Formats unter Maus oder Fokus
   const waehlen = (i: number) => {

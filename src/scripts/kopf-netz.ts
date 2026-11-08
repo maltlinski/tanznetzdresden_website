@@ -12,8 +12,8 @@ export function netzBewegen(svg: SVGSVGElement, kopf: HTMLElement): void {
   if (!motionOk()) return;
   const linien = svg.querySelectorAll('line');
   const punkte = svg.querySelectorAll('rect');
-  gsap.fromTo(linien, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.2, ease: EASE, stagger: { amount: Math.min(1, linien.length * 0.004) }, delay: KOPF.netz });
-  gsap.fromTo(punkte, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.6, ease: EASE, stagger: { amount: Math.min(1, punkte.length * 0.006) }, delay: KOPF.netz + 0.3, clearProps: 'transform' });
+  gsap.fromTo(linien, { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.6, ease: EASE, stagger: { amount: Math.min(1, linien.length * 0.004) }, delay: KOPF.netz });
+  gsap.fromTo(punkte, { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.8, ease: EASE, stagger: { amount: Math.min(1, punkte.length * 0.006) }, delay: KOPF.netz + 0.4, clearProps: 'transform' });
   gsap.to(svg, { yPercent: 12, ease: 'none', scrollTrigger: { trigger: kopf, start: 'top top', end: 'bottom top', scrub: true } });
   if (!matchMedia('(pointer: fine)').matches) return;
   const qx = gsap.quickTo(svg, 'x', { duration: 1.4, ease: EASE });
