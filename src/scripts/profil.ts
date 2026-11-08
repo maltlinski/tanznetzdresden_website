@@ -3,6 +3,8 @@
  * Name über dem Porträt und Bewegung (Intro des Namens, Wörter des Pitch, Filmstreifen, Parallaxe).
  * Bei „Bewegung reduzieren“ bleibt alles still und der Filmstreifen ist eine wischbare Reihe.
  */
+import { kopfAuftritt, KOPF } from './kopf-auftritt';
+
 interface VollbildFoto {
   nr: string;
   gross: string;
@@ -112,35 +114,12 @@ function nameUeberBild(root: HTMLElement) {
   document.fonts?.ready.then(setzen);
 }
 
-/** Name wischt mit einem Farbbalken herein, Zeilen gleiten von links, das Foto öffnet sich */
+/** Kopf wie auf allen Unterseiten (kopf-auftritt.ts), das Porträt öffnet sich dazu von rechts */
 function intro(root: HTMLElement) {
+  kopfAuftritt(root.querySelector<HTMLElement>('[data-kopf-auftritt]'));
   if (!root.animate) return;
-  root.querySelectorAll<HTMLElement>('[data-sweep]').forEach((el) => {
-    const delay = Number(el.dataset.sweep) * 1000;
-    const dauer = 1100;
-    const farbe = getComputedStyle(el).color;
-    const balken = document.createElement('span');
-    balken.setAttribute('aria-hidden', 'true');
-    balken.style.cssText = `position:absolute;left:-0.04em;right:-0.04em;top:0.08em;bottom:0.02em;pointer-events:none;background:${el.dataset.bar ?? 'var(--cyan)'}`;
-    el.append(balken);
-    el.animate([{ color: 'transparent' }, { color: 'transparent', offset: 0.46 }, { color: farbe, offset: 0.47 }, { color: farbe }], { duration: dauer, delay, fill: 'backwards' });
-    balken
-      .animate(
-        [
-          { transform: 'scaleX(0)', transformOrigin: '0 50%', easing: EASE },
-          { transform: 'scaleX(1)', transformOrigin: '0 50%', offset: 0.46 },
-          { transform: 'scaleX(1)', transformOrigin: '100% 50%', offset: 0.47, easing: 'cubic-bezier(0.7,0,0.84,0)' },
-          { transform: 'scaleX(0)', transformOrigin: '100% 50%' },
-        ],
-        { duration: dauer, delay, fill: 'both' },
-      )
-      .finished.finally(() => balken.remove());
-  });
-  root.querySelectorAll<HTMLElement>('[data-rise]').forEach((el) =>
-    el.animate([{ opacity: 0, transform: 'translateX(-48px)' }, { opacity: 1, transform: 'none' }], { duration: 900, delay: Number(el.dataset.rise) * 1000, easing: EASE, fill: 'backwards' }),
-  );
   root.querySelectorAll<HTMLElement>('[data-wipe]').forEach((el) =>
-    el.animate([{ clipPath: 'inset(0 0 0 100%)' }, { clipPath: getComputedStyle(el).clipPath }], { duration: 1300, delay: 150, easing: EASE, fill: 'backwards' }),
+    el.animate([{ clipPath: 'inset(0 0 0 100%)' }, { clipPath: getComputedStyle(el).clipPath }], { duration: 1300, delay: KOPF.titel * 1000, easing: EASE, fill: 'backwards' }),
   );
 }
 

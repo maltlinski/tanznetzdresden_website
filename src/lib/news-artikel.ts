@@ -53,13 +53,13 @@ export function kopfHtml(d: KopfDaten): string {
   const nr = d.nr ? `${nrLabel(d.nr)} · ` : '';
   const lesezeit = `${d.minuten} ${t.min} ${t.read}`;
   const meta = (mitZeit = true) =>
-    `<div class="ak__meta" data-rise="0.08">${badge(variante, kat)}<span>${nr}<time datetime="${d.datum}">${dateLong(d.datum, d.lang)}</time>${mitZeit ? ` · ${lesezeit}` : ''}</span></div>`;
+    `<div class="ak__meta" data-kopf-vor>${badge(variante, kat)}<span>${nr}<time datetime="${d.datum}">${dateLong(d.datum, d.lang)}</time>${mitZeit ? ` · ${lesezeit}` : ''}</span></div>`;
   const zurueck = (cls = '') =>
-    d.zurueck ? `<a href="${esc(d.zurueck)}" class="ak__back${cls}" data-rise="0">${esc(t.back)}</a>` : `<span class="ak__back${cls}" data-rise="0">${esc(t.back)}</span>`;
+    d.zurueck ? `<a href="${esc(d.zurueck)}" class="ak__back${cls}" data-kopf-vor>${esc(t.back)}</a>` : `<span class="ak__back${cls}" data-kopf-vor>${esc(t.back)}</span>`;
   // lange Titel (oft aus der alten Website) kleiner setzen, sonst füllen sie den Kopf
-  const h1 = `<h1 class="ak__titel${d.titel.length > 60 ? ' ak__titel--lang' : ''}" data-split>${esc(d.titel)}</h1>`;
-  const teaser = d.teaser ? `<p class="ak__teaser" data-rise="0.26">${esc(d.teaser)}</p>` : '';
-  const autor = (extra = '') => `<span class="ak__autor" data-rise="0.34">${esc(t.text)} · ${esc(d.autor)}${extra}</span>`;
+  const h1 = `<h1 class="ak__titel${d.titel.length > 60 ? ' ak__titel--lang' : ''}">${esc(d.titel)}</h1>`;
+  const teaser = d.teaser ? `<p class="ak__teaser" data-kopf-folgt>${esc(d.teaser)}</p>` : '';
+  const autor = (extra = '') => `<span class="ak__autor" data-kopf-folgt>${esc(t.text)} · ${esc(d.autor)}${extra}</span>`;
   const credit = d.bild?.credit ? `<span class="ak__credit">${esc(t.credit)} · ${esc(d.bild.credit)}</span>` : '';
   const zoom = (cls: string) =>
     d.bild

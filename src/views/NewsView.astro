@@ -79,17 +79,17 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
 <Page route="news" title={t.title} description={t.description}>
   <link slot="head" rel="alternate" type="application/rss+xml" title={`${verein.name} – News`} href={feed} />
 
-  <section class="ni kopf" aria-labelledby="news-title" data-news-intro>
+  <section class="ni kopf" aria-labelledby="news-title" data-kopf-auftritt>
     <div class="wrap ni__inner">
       <div class="ni__top">
-        <div data-rise="0.05"><Tag color="cyan" class="kopf__kicker">{t.kicker}</Tag></div>
-        <span class="ni__place" data-rise="0.15">Dresden · {year}</span>
+        <Tag color="cyan" class="kopf__kicker">{t.kicker}</Tag>
+        <span class="ni__place" data-kopf-vor>Dresden · {year}</span>
       </div>
       <h1 id="news-title" class="ni__title">
-        <span data-sweep="0.25" data-bar="var(--cyan)">{t.l1}</span><br /><em data-sweep="0.5" data-bar="var(--magenta)">{t.l2}</em>
+        {t.l1}<br /><em>{t.l2}</em>
       </h1>
       {lead ? (
-        <a href={link(lead)} class="ni__lead" data-rise="0.95">
+        <a href={link(lead)} class="ni__lead" data-kopf-folgt>
           <div class="ni__lead-img">
             {lead.image && <NewsImage src={lead.image} alt={lead.alt ?? ''} focus={lead.imageFocus} sizes="(min-width: 900px) 620px, 100vw" loading="eager" />}
             <span class="ni__corner" aria-hidden="true"></span>
@@ -107,7 +107,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
       <div class="ni__calls">
         <div class="wrap ni__calls-inner">
           {open.map((p) => (
-            <a href={link(p)} class="ni__call" data-rise="1.25" data-deadline={p.deadline} data-deadline-open>
+            <a href={link(p)} class="ni__call" data-kopf-folgt data-deadline={p.deadline} data-deadline-open>
               <span class="ni__call-k"><span class="ni__dot" aria-hidden="true"></span>{t.openCall}</span>
               <span class="ni__call-title">{p.title}</span>
               <span class="ni__call-d">
@@ -287,11 +287,11 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
 </Page>
 
 <script>
-  import { introText } from '../scripts/intro-text';
+  import { initKopfAuftritt } from '../scripts/kopf-auftritt';
   import { initChronik } from '../scripts/news-chronik';
   import '../scripts/deadline';
 
-  introText(document.querySelector('[data-news-intro]'));
+  initKopfAuftritt();
   const chronik = document.querySelector<HTMLElement>('[data-chronik]');
   if (chronik) initChronik(chronik);
 </script>

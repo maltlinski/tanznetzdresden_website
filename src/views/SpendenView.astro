@@ -60,19 +60,19 @@ const kopieren = [
 ];
 ---
 <Page title={t.title} description={t.desc} route="spenden">
-  <section class="sk kopf" aria-labelledby="spenden-h">
+  <section class="sk kopf" aria-labelledby="spenden-h" data-kopf-auftritt>
     <KopfNetz schluessel="spenden" />
     <div class="wrap sk__grid">
       <div class="sk__links">
         <Tag color="cyan" class="kopf__kicker">{t.kicker}</Tag>
         <h1 id="spenden-h" class="sk__h">{t.h1}{' '}<br /><span>{t.accent}</span></h1>
-        {t.lead && <p class="sk__lead">{t.lead}</p>}
-        <div class="sk__foto">
+        {t.lead && <p class="sk__lead" data-kopf-folgt>{t.lead}</p>}
+        <div class="sk__foto" data-kopf-folgt>
           <Image src={sprung} alt={t.photoAlt} widths={[480, 760, 1120]} sizes="(min-width: 1000px) 560px, 100vw" loading="eager" />
         </div>
       </div>
 
-      <div id="spende" class="konto">
+      <div id="spende" class="konto" data-kopf-folgt>
         <div class="konto__kopf">
           <span class="konto__k">{t.account}</span>
           <h2 class="konto__h">{t.accountH}</h2>
@@ -186,6 +186,9 @@ const kopieren = [
 </Page>
 
 <script>
+  import { initKopfAuftritt } from '../scripts/kopf-auftritt';
+  initKopfAuftritt();
+
   // Kopieren
   document.querySelectorAll<HTMLElement>('[data-copy-scope]').forEach((scope) => {
     scope.addEventListener('click', async (e) => {

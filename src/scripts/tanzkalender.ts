@@ -5,7 +5,8 @@
  * damit die Seite auch zwischen zwei Builds stimmt.
  */
 import { gsap, ScrollTrigger, EASE, motionOk } from './gsap';
-import { ueberschriften } from './split-text';
+import { kopfAuftritt } from './kopf-auftritt';
+import { netzBewegen } from './kopf-netz';
 import { getLenis } from './smooth-scroll';
 import { h } from './dom';
 import { fuellen } from '../lib/texte-regeln';
@@ -576,23 +577,11 @@ export function initTanzkalender(): void {
   kopfBewegen();
 }
 
-/** Netz im Kopf: Linien zeichnen sich ein, Punkte springen auf, Maus und Scrollen verschieben es leicht */
+/** Kopf: Auftritt wie auf allen Unterseiten (kopf-auftritt.ts), das Netz zeichnet sich ein */
 function kopfBewegen() {
   const kopf = document.querySelector<HTMLElement>('[data-tk-kopf]');
   const svg = kopf?.querySelector<SVGSVGElement>('[data-tk-netz]');
-  if (!kopf || !svg) return;
-  svg.classList.add('is-da');
-  if (!motionOk()) return;
-  gsap.fromTo(svg.querySelectorAll('line'), { strokeDashoffset: 1 }, { strokeDashoffset: 0, duration: 1.2, ease: EASE, stagger: 0.0035 });
-  gsap.fromTo(svg.querySelectorAll('rect'), { scale: 0, transformOrigin: '50% 50%' }, { scale: 1, duration: 0.6, ease: EASE, stagger: 0.005, delay: 0.3, clearProps: 'transform' });
-  gsap.to(svg, { yPercent: 12, ease: 'none', scrollTrigger: { trigger: kopf, start: 'top top', end: 'bottom top', scrub: true } });
-  const qx = gsap.quickTo(svg, 'x', { duration: 1.4, ease: EASE });
-  const qy = gsap.quickTo(svg, 'y', { duration: 1.4, ease: EASE });
-  kopf.addEventListener('pointermove', (e) => {
-    const r = kopf.getBoundingClientRect();
-    qx(((e.clientX - r.left) / r.width - 0.5) * -24);
-    qy(((e.clientY - r.top) / r.height - 0.5) * -14);
-  });
-  ueberschriften(kopf);
-  gsap.from(kopf.querySelectorAll('[data-tk-rise]:not([hidden])'), { x: -40, opacity: 0, duration: 0.8, ease: EASE, stagger: 0.1, delay: 0.35, clearProps: 'transform,opacity' });
+  if (!kopf) return;
+  if (svg) netzBewegen(svg, kopf);
+  kopfAuftritt(kopf);
 }

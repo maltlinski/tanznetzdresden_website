@@ -89,14 +89,14 @@ const daten = JSON.stringify({
       <div class="fo-intro" data-fo-intro>
         <Tag color="cyan" class="fo-kopf__tag kopf__kicker">{fuellen(k.kicker, { zahl: gesamt })}</Tag>
         <h1 class="fo-h1">
-          <span class="fo-h1__zeile">{h1a.split(' ').map((w, i) => <>{i > 0 && ' '}<span data-hw>{w}</span></>)}</span>{' '}
-          <span class="fo-h1__zeile fo-h1__akzent">{h1b.split(' ').map((w, i) => <>{i > 0 && ' '}<span data-hw>{w}</span></>)}</span>
+          <span class="fo-h1__zeile">{h1a.split(' ').map((w, i) => <>{i > 0 && ' '}<span data-kopf-wort>{w}</span></>)}</span>{' '}
+          <span class="fo-h1__zeile fo-h1__akzent">{h1b.split(' ').map((w, i) => <>{i > 0 && ' '}<span data-kopf-wort>{w}</span></>)}</span>
         </h1>
-        <div class="fo-info" aria-live="polite" data-hin data-fo-info>
+        <div class="fo-info" aria-live="polite" data-kopf-folgt data-fo-info>
           <span class="fo-info__k"><span class="fo-quadrat" aria-hidden="true"></span><span data-fo-info-k>{k.netzKicker}</span></span>
           <p class="fo-info__text" data-fo-info-t>{k.netzText}</p>
         </div>
-        <button type="button" class="fo-knuepfen" hidden data-hin data-fo-knuepfen><span class="fo-quadrat fo-quadrat--klein" aria-hidden="true"></span>{k.neuKnuepfen}</button>
+        <button type="button" class="fo-knuepfen" hidden data-kopf-folgt data-fo-knuepfen><span class="fo-quadrat fo-quadrat--klein" aria-hidden="true"></span>{k.neuKnuepfen}</button>
       </div>
       <nav class="fo-buehne" aria-label={sr.netz} data-fo-buehne>
         <svg class="fo-netz fo-netz--breit" aria-hidden="true">

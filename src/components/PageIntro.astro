@@ -3,6 +3,7 @@
  * Kopfbereich für Unterseiten: lila Fläche, Kicker, große Headline, Keil.
  * So hoch wie der Kopf der Startseite (--buehne-h); `kompakt` für Rechtstexte und Ähnliches.
  * Im Hintergrund ein Netz wie im Kalender (KopfNetz), je Seite eigene Struktur (`netz`, meist die Route).
+ * Auftritt beim Aufrufen wie auf allen Unterseiten (src/scripts/kopf-auftritt.ts).
  */
 import Tag from './ui/Tag.astro';
 import KeilBar from './ui/KeilBar.astro';
@@ -22,16 +23,21 @@ interface Props {
 const { kicker, title, accent, lead, kompakt = false, netz } = Astro.props;
 const schluessel = netz ?? Astro.url.pathname.replace(/^.*?\/(en\/)?/, '');
 ---
-<section class:list={['intro', 'kopf', kompakt && 'intro--kompakt']}>
+<section class:list={['intro', 'kopf', kompakt && 'intro--kompakt']} data-kopf-auftritt>
   <KopfNetz schluessel={schluessel} />
   <div class="wrap intro__inner">
     <Tag color="cyan" class="kopf__kicker">{kicker}</Tag>
     <h1 class="intro__title">{title}{accent && <><br /><em>{accent}</em></>}</h1>
-    {lead && <p class="intro__lead">{lead}</p>}
+    {lead && <p class="intro__lead" data-kopf-folgt>{lead}</p>}
     <slot />
   </div>
   <KeilBar class="intro__keil" />
 </section>
+
+<script>
+  import { initKopfAuftritt } from '../scripts/kopf-auftritt';
+  initKopfAuftritt();
+</script>
 
 <style>
   .intro { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }

@@ -159,3 +159,34 @@ test('Köpfe: erste Zeile, Headline und Abstand zum ersten Textblock überall gl
   for (const h of headlines) if (Math.abs(h.top - mitte) > 3) fehler.push(`${h.seite}: Headline ${h.top.toFixed(0)} px unter der Kopfleiste, auf den anderen Seiten ${mitte.toFixed(0)}`);
   expect(fehler).toEqual([]);
 });
+
+/**
+ * Auftritt (src/scripts/kopf-auftritt.ts): Alle Unterseiten spielen beim Aufrufen denselben Auftritt ab wie Kalender
+ * und Formate; Startseite und Profitraining (KEEP UP) behalten ihre eigene Bewegung. Danach steht alles wie ohne
+ * Bewegung: keine geteilten Wörter, keine Reste von Verschiebung oder Deckkraft.
+ */
+const AUFTRITT = [
+  '/termine/', '/formate/', '/news/', '/verein/', '/spenden/', '/kontakt/', '/netzwerk/', '/mitglied-werden/', '/kooperationen/',
+  '/impressum/', '/formate/tanzkalender/', '/en/about/', '/termine/2026-10-31-pop-up/', '/gibt-es-nicht/',
+  '/news/15-jahre-tanznetzdresden-der-rueckblick-von-rico-stehfest/', '/netzwerk/alba-t-alvarez/',
+];
+
+test('Köpfe: gleicher Auftritt auf allen Unterseiten', async ({ page }) => {
+  test.setTimeout(120_000);
+  for (const seite of AUFTRITT) {
+    await page.goto(seite);
+    await expect(page.locator('[data-auftritt="da"]').first(), seite).toBeAttached();
+    await expect
+      .poll(() => page.evaluate(() => [...document.querySelectorAll<HTMLElement>('.kopf-wort, [data-kopf-wort], [data-kopf-vor], [data-kopf-folgt], .kopf__kicker')].filter((e) => e.classList.contains('kopf-wort') || e.style.opacity || e.style.transform).length), { message: seite, timeout: 4000 })
+      .toBe(0);
+  }
+  for (const seite of ['/', '/profitraining/']) {
+    await page.goto(seite);
+    await expect(page.locator('[data-auftritt]'), seite).toHaveCount(0);
+  }
+  // bei „Bewegung reduzieren“ läuft nichts
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/verein/');
+  await expect(page.locator('[data-auftritt]')).toHaveCount(0);
+  await expect(page.locator('.kopf-wort')).toHaveCount(0);
+});

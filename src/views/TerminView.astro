@@ -55,21 +55,21 @@ const jsonLd = {
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <article data-termin data-end={end}>
-    <header class="th">
+    <header class="th" data-kopf-auftritt>
       <div class="wrap th__inner">
-        <a href={url(lang, 'termine')} class="th__back" data-rise="0">{t.back}</a>
+        <a href={url(lang, 'termine')} class="th__back" data-kopf-vor>{t.back}</a>
         <div class="th__row">
-          <time class="th__date" datetime={date.iso} data-rise="0.08">
+          <time class="th__date" datetime={date.iso} data-kopf-vor>
             <span class="th__day" aria-hidden="true">{date.day}</span>
             <span class="th__dm" aria-hidden="true">{date.dow} · {date.month}</span>
             <span class="visually-hidden">{date.long}</span>
           </time>
           <div class="th__text">
-            <div class="th__meta" data-rise="0.12">
+            <div class="th__meta" data-kopf-vor>
               <Badge variant={badgeVariant[d.category] === 'purple' ? 'cyan' : badgeVariant[d.category]}>{categoryLabel[lang][d.category]}</Badge>
             </div>
-            <h1 class="th__title" data-rise="0.16">{title}</h1>
-            <p class="th__where" data-rise="0.24">{d.venue} · {time}</p>
+            <h1 class="th__title">{title}</h1>
+            <p class="th__where" data-kopf-folgt>{d.venue} · {time}</p>
           </div>
         </div>
         <p class="th__past" data-past hidden>{t.past}</p>
@@ -129,10 +129,10 @@ const jsonLd = {
 </Page>
 
 <script>
-  import { introText } from '../scripts/intro-text';
+  import { initKopfAuftritt } from '../scripts/kopf-auftritt';
 
   const article = document.querySelector<HTMLElement>('[data-termin]');
-  introText(article?.querySelector('.th') ?? null);
+  initKopfAuftritt();
   // Die Seite wird einmal am Tag gebaut: vorbei ist, was der Browser für vorbei hält.
   if (article && new Date(article.dataset.end ?? '').getTime() < Date.now()) {
     article.querySelector<HTMLElement>('[data-past]')?.removeAttribute('hidden');

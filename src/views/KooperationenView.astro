@@ -43,14 +43,14 @@ const t = {
 const pad = (n: number) => String(n).padStart(2, '0');
 ---
 <Page title={t.title} description={t.desc} route="kooperationen">
-  <section class="khero kopf">
+  <section class="khero kopf" data-kopf-auftritt>
     <div class="wrap khero__grid">
       <div class="khero__text">
         <Tag color="cyan" class="khero__tag kopf__kicker">{t.kicker}</Tag>
         <h1 class="khero__title">{t.h1}<br /><em>{t.accent}</em></h1>
-        {t.lead && <p class="khero__lead">{t.lead}</p>}
-        <h2 class="khero__places-h" id="orte-h">{t.places}</h2>
-        <ul class="venues" aria-labelledby="orte-h" data-venues>
+        {t.lead && <p class="khero__lead" data-kopf-folgt>{t.lead}</p>}
+        <h2 class="khero__places-h" id="orte-h" data-kopf-folgt>{t.places}</h2>
+        <ul class="venues" aria-labelledby="orte-h" data-venues data-kopf-folgt>
           {orte.map((o, i) => (
             <li class:list={['venue', o.data.sitz && 'is-seed']} data-index={i}>
               <span class="venue__mark" aria-hidden="true"></span>
@@ -125,8 +125,11 @@ const pad = (n: number) => String(n).padStart(2, '0');
 </Page>
 
 <script>
+  import { initKopfAuftritt } from '../scripts/kopf-auftritt';
   import { PartnerNet, type Venue } from '../scripts/partner-net';
   import { hasConsent, onConsent, readConsent, saveConsent } from '../scripts/consent';
+
+  initKopfAuftritt();
 
   const box = document.querySelector<HTMLElement>('[data-netmap]');
   const mapEl = box?.querySelector<HTMLElement>('[data-netmap-map]');

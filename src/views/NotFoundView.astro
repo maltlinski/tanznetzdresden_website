@@ -17,20 +17,20 @@ const [enL1, enL2] = zeilen(en.titel);
   <section class="nf kopf">
     <KopfNetz schluessel="404" />
     <div class="wrap nf__grid">
-      <div>
+      <div data-kopf-auftritt>
         <Tag color="cyan" class="kopf__kicker">{de.kicker}</Tag>
         <h1 class="nf__title">{deL1}<br /><em>{deL2}</em></h1>
-        <p>{de.text}</p>
-        <div class="nf__actions">
+        <p data-kopf-folgt>{de.text}</p>
+        <div class="nf__actions" data-kopf-folgt>
           <a class="btn btn--secondary btn--marker" href={url('de', 'home')}>{de.home}</a>
           <a class="mono-link underline-link" href={url('de', 'termine')}>{de.kalender}</a>
         </div>
       </div>
-      <div lang="en">
+      <div lang="en" data-kopf-auftritt="0.12">
         <Tag color="cyan" class="kopf__kicker">{en.kicker}</Tag>
-        <p class="nf__title nf__title--en" role="presentation">{enL1}<br /><em>{enL2}</em></p>
-        <p>{en.text}</p>
-        <div class="nf__actions">
+        <p class="nf__title nf__title--en" role="presentation" data-kopf-titel>{enL1}<br /><em>{enL2}</em></p>
+        <p data-kopf-folgt>{en.text}</p>
+        <div class="nf__actions" data-kopf-folgt>
           <a class="btn btn--secondary btn--marker" href={url('en', 'home')}>{en.home}</a>
           <a class="mono-link underline-link" href={url('en', 'termine')}>{en.kalender}</a>
         </div>
@@ -39,6 +39,11 @@ const [enL1, enL2] = zeilen(en.titel);
     <KeilBar class="nf__keil" />
   </section>
 </Page>
+
+<script>
+  import { initKopfAuftritt } from '../scripts/kopf-auftritt';
+  initKopfAuftritt();
+</script>
 
 <style>
   /* so hoch wie der Kopf der Startseite (--buehne-h) */

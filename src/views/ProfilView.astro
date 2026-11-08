@@ -141,7 +141,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
 ---
 <Page title={p.name} description={description} route="netzwerk" rest={`${p.id}/`} ogImage={typeof p.photo === 'object' ? p.photo : undefined} noindex={vorlage}>
   <div class="profil" data-profil>
-    <section class="ph kopf" data-ph data-kopf-frei>
+    <section class="ph kopf" data-ph data-kopf-frei data-kopf-auftritt>
       {(heroEcht || heroDemo) && (
         <div class:list={['ph__bild', !heroEcht && 'demo-an']} data-wipe data-ph-bild>
           <div class="ph__bild-in" data-parallax>
@@ -155,27 +155,27 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
         <span class:list={['ph__initialen', heroDemo && 'demo-aus']} aria-hidden="true" style={heroEcht ? 'display: none' : undefined} data-pv-initialen>{initials(p.name)}</span>
       )}
       <div class="wrap ph__inhalt">
-        <div class="ph__top" data-rise="0">
+        <div class="ph__top" data-kopf-vor>
           <a class="ph__zurueck" href={url(lang, 'netzwerk')}>{t.back}</a>
           <Tag color="cyan">{t.kicker}{rollen && ` · ${rollen}`}</Tag>
         </div>
         <div class="ph__unten">
           <div class="ph__namebox" style={nameFit} data-name>
             <h1 class="ph__name" data-name-voll>
-              <span class="ph__vor" data-sweep="0.3" data-bar="var(--cyan)">{vorname}</span>
-              {nachname && <>{' '}<br /><span class="ph__nach" data-sweep="0.55" data-bar="var(--magenta)">{nachname}</span></>}
+              <span class="ph__vor" data-kopf-wort="0">{vorname}</span>
+              {nachname && <>{' '}<br /><span class="ph__nach" data-kopf-wort="1">{nachname}</span></>}
             </h1>
             {/* gleicher Name noch einmal mit getauschten Farben (Entwurf v3 „Tausch“): sichtbar nur, wo er über dem Porträt liegt (scripts/profil.ts).
                 Text per CSS (data-text), damit er nicht doppelt vorgelesen oder als Text geprüft wird */}
             <div class="ph__name ph__name--licht" aria-hidden="true" data-name-licht>
-              <span class="ph__vor" data-sweep="0.3" data-bar="var(--cyan)" data-text={vorname}></span>
-              {nachname && <>{' '}<br /><span class="ph__nach" data-sweep="0.55" data-bar="var(--magenta)" data-text={nachname}></span></>}
+              <span class="ph__vor" data-kopf-wort="0" data-text={vorname}></span>
+              {nachname && <>{' '}<br /><span class="ph__nach" data-kopf-wort="1" data-text={nachname}></span></>}
             </div>
           </div>
-          {meta(beruf) && <p class="ph__meta" data-rise="0.9">{meta(beruf)}</p>}
+          {meta(beruf) && <p class="ph__meta" data-kopf-folgt>{meta(beruf)}</p>}
           {!beruf && demo.profession && <p class="ph__meta demo-an">{meta(demo.profession)}</p>}
-          {vorstand && <p class="ph__vorstand" data-rise="0.9"><span>{t.board}</span> {vorstand}</p>}
-          <div class="ph__aktionen" data-rise="1">
+          {vorstand && <p class="ph__vorstand" data-kopf-folgt><span>{t.board}</span> {vorstand}</p>}
+          <div class="ph__aktionen" data-kopf-folgt>
             {hatKontakt && <a class="btn btn--secondary btn--marker" href="#kontakt">{t.request}</a>}
             {p.vimeo && (
               <a class="ph__reel" href={p.vimeo} target="_blank" rel="noopener"><span class="ph__play" aria-hidden="true"></span>{t.showreel}</a>

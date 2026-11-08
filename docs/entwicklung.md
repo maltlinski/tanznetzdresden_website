@@ -72,6 +72,7 @@ Beim Wechsel zwischen den Menüpunkten steht alles an derselben Stelle – man f
   derselbe Abstand bis zu dessen erstem Text.
 - Ausnahme `data-kopf-frei`: Profilseiten (der Name steht unten am Porträt) – dort gelten nur erste Zeile und
   Abstand danach.
+- Auftritt beim Aufrufen: überall gleich (`data-kopf-auftritt`, siehe [Auftritt der Köpfe](#auftritt-der-köpfe)).
 - Geprüft in `tests/koepfe.spec.ts` auf allen Menüseiten und den Seiten der Sitemap (Deutsch, Englisch,
   Desktop, Handy): erste Zeile, Abstand Kicker → Headline, Headline auf allen Seiten auf gleicher Höhe, Abstand
   zum ersten Textblock und zum Keil. Neue Seite mit Kopf: Klassen setzen, Test laufen lassen.
@@ -160,13 +161,33 @@ if (motionOk()) {
 
 Regeln: `EASE` (= `--ease-out`, schnell, kein Federn), nichts bei „Bewegung reduzieren“, Inhalte müssen ohne
 JavaScript sichtbar bleiben (`gsap.from` statt Elemente per CSS zu verstecken). Die bestehenden Auftritte
-(`intro-text.ts`, `reveal.ts`) und der Text links im Netz-Abschnitt laufen ohne GSAP. Weitere Plugins (Flip, SplitText …)
+(`reveal.ts`) und der Text links im Netz-Abschnitt laufen ohne GSAP. Weitere Plugins (Flip, SplitText …)
 direkt aus `gsap/…` importieren und dort registrieren, wo sie gebraucht werden.
+
+### Auftritt der Köpfe
+
+Jede Unterseite tritt beim Aufrufen gleich auf – nach dem Muster von Kalender und Formate:
+`src/scripts/kopf-auftritt.ts`, Takt in `KOPF` (einmal festgelegt, überall gleich). Ausnahmen: die Startseite
+(eigener Hero) und Profitraining/KEEP UP (eigene Bewegung).
+
+| Zeit | Was | Markierung |
+|---|---|---|
+| 0 s | Kicker, Zurück-Link, Pfad, Datum gleiten von links herein | `.kopf__kicker`, `data-kopf-vor` |
+| 0,1 s | Headline Wort für Wort von links (je 0,06 s) | `h1` im Kopf oder `data-kopf-titel`; schon geteilt: `data-kopf-wort` (Zahl = feste Stelle) |
+| 0,2 s | Netz im Hintergrund zeichnet sich ein, Quadrate springen auf | `KopfNetz`, Kalender (`netzBewegen()` in `kopf-netz.ts`) |
+| 0,3 s | Einleitung, Knöpfe, Kästen, Fotos nacheinander (je 0,08 s) | `data-kopf-folgt` |
+
+Alles gleitet 60 px mit `EASE` in 0,8 s. Danach werden die Wörter wieder zusammengesetzt (Trennung und Umbruch
+wie ohne Bewegung). Neuer Kopf: `data-kopf-auftritt` an den Kopf, die Teile markieren, `initKopfAuftritt()` im
+Skript der Seite (`PageIntro` macht das selbst); eine zweite Spalte startet später mit `data-kopf-auftritt="0.12"`
+(404). Eigene Bewegung einer Seite hängt sich an die zurückgegebene Zeitleiste von `kopfAuftritt()`. Die Vorschau
+der Redaktion zeigt alles ohne Auftritt. Geprüft in `tests/koepfe.spec.ts`.
 
 Wo GSAP läuft:
 
 | Stelle | Datei | Was passiert |
 |---|---|---|
+| Köpfe aller Unterseiten (außer Profitraining) | `scripts/kopf-auftritt.ts` (SplitText) | Auftritt wie oben: Kicker, Headline Wort für Wort, Folgendes, Netz |
 | Überschriften der Startseite | `scripts/split-text.ts` (SplitText) | `data-split`: Wörter gleiten nacheinander von links herein; „Eine Stadt. Ein Netz.“ steigt Wort für Wort aus einer Maske; „Tanz für …“ wechselt Buchstabe für Buchstabe |
 | „Wer im Netz tanzt“ (Startseite) | `sections/Netz.astro` | Namen gleiten Reihe für Reihe von links herein, das magentafarbene Quadrat dahinter setzt kurz danach ein |
 | Formate (Startseite) | `sections/Formats.astro` | Karten im Streifen laufen nacheinander ein; Pfeile blättern um eine Karte |

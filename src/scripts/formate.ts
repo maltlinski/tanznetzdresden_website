@@ -8,6 +8,7 @@
 import { gsap, ScrollTrigger, EASE, motionOk } from './gsap';
 import { knuepfen, verteilen, type Kante, type Lage } from '../lib/formate-netz';
 import { ueberschriften } from './split-text';
+import { kopfAuftritt, KOPF } from './kopf-auftritt';
 import { heuteDresden, naechster, terminText, type FormatTermin } from '../lib/formate-termin';
 
 interface Daten {
@@ -266,15 +267,12 @@ function kopf() {
     wart = window.setTimeout(() => knuepfenNeu(), 200);
   });
 
+  // Text sofort wie auf allen Unterseiten (kopf-auftritt.ts); das Netz der Formate erst mit den richtigen Schriften
+  const auftritt = kopfAuftritt(root);
   const los = () => {
     knuepfenNeu();
     buehne.classList.add('is-da');
-    if (!bewegt) return;
-    gsap
-      .timeline({ defaults: { ease: EASE } })
-      .from(root.querySelectorAll('[data-hw]'), { x: -60, opacity: 0, duration: 0.8, stagger: 0.06, clearProps: 'transform,opacity' }, 0)
-      .from(root.querySelectorAll('.fo-kopf__tag, [data-hin]'), { x: -60, opacity: 0, duration: 0.8, stagger: 0.08, clearProps: 'transform,opacity' }, 0.2)
-      .add(hineinZeichnen(), 0.3);
+    if (bewegt) hineinZeichnen(Math.max(0, KOPF.netz - (auftritt?.time() ?? KOPF.netz)));
   };
   // erst mit den richtigen Schriften messen (Breite der Namen)
   (document.fonts?.ready ?? Promise.resolve()).then(los, los);

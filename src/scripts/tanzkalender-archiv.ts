@@ -31,7 +31,7 @@ export function initTanzkalenderArchiv() {
   // Plakate im Kopf wischen von links herein
   if (!ruhig()) {
     document.querySelectorAll<HTMLElement>('[data-wipe]').forEach((el, i) =>
-      el.animate?.([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 1000, delay: 200 + i * 80, easing: EASE, fill: 'backwards' }),
+      el.animate?.([{ clipPath: 'inset(0 100% 0 0)' }, { clipPath: 'inset(0 0 0 0)' }], { duration: 1000, delay: 300 + i * 80, easing: EASE, fill: 'backwards' }),
     );
   }
 

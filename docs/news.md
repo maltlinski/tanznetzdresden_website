@@ -317,7 +317,7 @@ Die erste legt an:
 | Übersicht / Beitrag | `src/views/NewsView.astro`, `src/views/NewsArticleView.astro` |
 | Editor | `src/pages/intern/news/bearbeiten/` |
 | Countdown im Browser | `src/scripts/deadline.ts` |
-| Auftritt der Überschriften | `src/scripts/intro-text.ts` (`data-sweep`, `data-rise`) |
+| Auftritt des Kopfs (Übersicht, Beitrag) | `src/scripts/kopf-auftritt.ts` (wie alle Unterseiten, siehe docs/entwicklung.md#auftritt-der-köpfe) |
 
 Alle Farben, Schriften und Abstände kommen aus den Design-Tokens. Ein neuer Import des Designsystems wirkt also
 auch hier.

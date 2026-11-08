@@ -63,10 +63,10 @@ const json = JSON.stringify({
     <div class="wrap tk-kopf__inner">
       <div class="tk-kopf__text">
         <Tag color="cyan" class="kopf__kicker">{k.kicker}</Tag>
-        <h1 class="tk-kopf__h1" data-split>{h1}{accent && <><br /><span>{accent}</span></>}</h1>
-        {k.lead && <p class="tk-kopf__lead" data-tk-rise>{k.lead}</p>}
+        <h1 class="tk-kopf__h1">{h1}{accent && <><br /><span>{accent}</span></>}</h1>
+        {k.lead && <p class="tk-kopf__lead" data-kopf-folgt>{k.lead}</p>}
       </div>
-      <div class="tk-next" data-tk-rise hidden={!naechste.length} data-tk-next-box>
+      <div class="tk-next" data-kopf-folgt hidden={!naechste.length} data-tk-next-box>
         <p class="tk-next__k"><span aria-hidden="true"></span>{k.next}</p>
         <ul data-tk-next>
           {naechste.map((t) => {

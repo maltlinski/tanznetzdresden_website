@@ -180,6 +180,8 @@ test('Tanzkalender-Archiv: Jahrgänge, Großansicht zum Blättern, PDF', async (
 });
 
 test('Tanzkalender-Archiv: englisch, alte Adresse leitet weiter', async ({ page }) => {
+  // die Uhr steht (oeffnen): ohne „Bewegung reduzieren“ bliebe der Kopf am Anfang seines Auftritts stehen
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   await oeffnen(page, '/en/formats/dance-calendar/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(new RegExp(`^Tanzkalender\\s*Dresden\\.\\s*${ausgaben.length} issues\\.$`));
   await expect(page.getByRole('button', { name: 'View April 2026' })).toBeVisible();

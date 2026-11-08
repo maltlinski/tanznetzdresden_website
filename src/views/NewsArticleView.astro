@@ -131,8 +131,7 @@ const jsonLd = {
 </Page>
 
 <script>
-  import { introText } from '../scripts/intro-text';
-  import { titelHerein } from '../scripts/split-text';
+  import { kopfAuftritt } from '../scripts/kopf-auftritt';
   import { gsap, motionOk } from '../scripts/gsap';
   import { initLightbox } from '../scripts/lightbox';
   import { initArtikel, kartenNetze } from '../scripts/news-artikel';
@@ -141,8 +140,7 @@ const jsonLd = {
 
   const article = document.querySelector<HTMLElement>('[data-article]');
   if (article) {
-    introText(article.querySelector('.ak'));
-    titelHerein(article.querySelector('.ak') ?? undefined);
+    kopfAuftritt(article.querySelector<HTMLElement>('.ak'));
     initLightbox(article);
     initArtikel(article, { seed: article.dataset.seed ?? '' });
     kartenNetze(article);

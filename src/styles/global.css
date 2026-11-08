@@ -92,9 +92,8 @@ main > .kopf + :is(script, style) + :is(script, style) + :not(script, style, .ko
    Seite gleich hoch, egal wie der Kicker eingebunden ist */
 .kopf .kopf__kicker { display: flex; width: fit-content; margin-bottom: var(--kopf-kicker); }
 main > .kopf + .kopf-leiste, main > .kopf + :is(script, style) + .kopf-leiste { margin-top: calc(var(--nach-kopf) - 14px) !important; /* 14px: Innenabstand der Leiste */ }
-/* Auftritt von Überschriften (src/scripts/intro-text.ts) */
+/* Zeilen, die aus einer Maske steigen (Startseite, src/scripts/split-text.ts) */
 [data-sweep] { display: inline-block; position: relative; }
-.sweep-bar { position: absolute; left: -0.04em; right: -0.04em; top: 0.1em; bottom: 0.02em; pointer-events: none; }
 
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;

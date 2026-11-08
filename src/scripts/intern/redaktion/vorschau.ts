@@ -161,7 +161,7 @@ export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string;
     // Vorschau: keine Animationen, die Inhalte verstecken; Links öffnen nicht im Rahmen
     d.documentElement.classList.add('vorschau');
     const s = d.createElement('style');
-    s.textContent = `${STIL} *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; } [data-reveal], [data-rise], [data-tk-rise] { opacity: 1 !important; transform: none !important; }`;
+    s.textContent = `${STIL} *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; } [data-reveal], [data-rise], [data-kopf-vor], [data-kopf-folgt], [data-kopf-wort], .kopf-wort, .kopf__kicker, .kopf h1 { opacity: 1 !important; transform: none !important; }`;
     d.head.append(s);
     d.documentElement.toggleAttribute('data-vs-markieren', markieren?.checked ?? true);
     d.addEventListener('click', (e) => {

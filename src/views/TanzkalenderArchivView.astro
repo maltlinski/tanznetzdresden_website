@@ -40,7 +40,7 @@ const daten = JSON.stringify(
 ).replace(/</g, '\\u003c');
 ---
 <Page title={k.title} description={k.desc} route="tanzkalenderArchiv">
-  <section class="tka-kopf kopf">
+  <section class="tka-kopf kopf" data-kopf-auftritt>
     <div class="wrap tka-kopf__grid">
       <div class="tka-kopf__text">
         <nav class="tka-pfad kopf__kicker" aria-label={sr.pfad}>
@@ -50,10 +50,10 @@ const daten = JSON.stringify(
           <span aria-hidden="true">·</span>
           <span aria-current="page">{k.hier}</span>
         </nav>
-        <h1 class="tka-h1" data-split>{t1}<br />{t2}<br /><span>{fuellen(k.anzahl, { zahl: gesamt })}</span></h1>
-        <p class="tka-lead" data-reveal>{k.lead}</p>
-        <p class="tka-lead tka-lead--zwei" data-reveal>{k.lead2}</p>
-        <div class="tka-kopf__links" data-reveal>
+        <h1 class="tka-h1">{t1}<br />{t2}<br /><span>{fuellen(k.anzahl, { zahl: gesamt })}</span></h1>
+        <p class="tka-lead" data-kopf-folgt>{k.lead}</p>
+        <p class="tka-lead tka-lead--zwei" data-kopf-folgt>{k.lead2}</p>
+        <div class="tka-kopf__links" data-kopf-folgt>
           <Button href="#ausgaben" variant="secondary" size="lg" marker>{k.alle}</Button>
           <a class="tka-kalender" href={url(lang, 'termine')}>{k.kalender}</a>
         </div>
@@ -147,7 +147,9 @@ const daten = JSON.stringify(
 </Page>
 
 <script>
+  import { initKopfAuftritt } from '../scripts/kopf-auftritt';
   import { initTanzkalenderArchiv } from '../scripts/tanzkalender-archiv';
+  initKopfAuftritt();
   initTanzkalenderArchiv();
 </script>
 
