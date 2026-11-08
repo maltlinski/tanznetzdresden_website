@@ -92,7 +92,7 @@ const t = tr(lang, {
       </div>
       <div class="i-field">
         <label for="p-website">{t.website}</label>
-        <input id="p-website" name="website" type="url" placeholder="https://" autocomplete="url" />
+        <input id="p-website" name="website" type="url" pattern="https?://.+" placeholder="https://" autocomplete="url" />
       </div>
       <div class="i-field">
         <label for="p-instagram">Instagram</label>
@@ -220,7 +220,7 @@ const t = tr(lang, {
                 </fieldset>
                 <div class="i-field">
                   <label for="p-vimeo">{t.video} <span class="opt">{t.optional}</span></label>
-                  <input id="p-vimeo" name="vimeo" type="url" placeholder="https://vimeo.com/…" />
+                  <input id="p-vimeo" name="vimeo" type="url" pattern="https?://.+" placeholder="https://vimeo.com/…" />
                 </div>
               </div>
             </details>
@@ -265,7 +265,7 @@ const t = tr(lang, {
   import { sprache, t } from '../../scripts/intern/sprache';
   import { url } from '../../lib/i18n';
   import { vorschau } from '../../scripts/intern/redaktion/vorschau';
-  import type { ProfilEntwurf } from '../../lib/profil-ansicht';
+  import { webLink, type ProfilEntwurf } from '../../lib/profil-ansicht';
   import { ANGABEN, type GalerieLayout, type OffenFuer } from '../../lib/profil-felder';
   import { FOKUS_PORTRAET, fokusText, rahmenPortraet } from '../../lib/bild-zuschnitt';
   import { vorschlagBerechnen, zuschnittWaehlen } from '../../scripts/intern/zuschnitt';
@@ -533,9 +533,9 @@ const t = tr(lang, {
           galleryLayout: (form!.querySelector<HTMLInputElement>('input[name="gallery_layout"]:checked')?.value ?? 'filmstreifen') as GalerieLayout,
           works: arbeiten?.wert() ?? [],
           angaben: Object.fromEntries(ANGABEN.map((a) => [a.key, wert(a.key)])),
-          website: wert('website'),
+          website: webLink(wert('website')),
           instagram: wert('instagram'),
-          vimeo: wert('vimeo'),
+          vimeo: webLink(wert('vimeo')),
           email: hatNeu ? wert('public_email') : undefined,
           openFor: [...form!.querySelectorAll<HTMLInputElement>('input[name="open_for"]:checked')].map((c) => c.value as OffenFuer),
         };

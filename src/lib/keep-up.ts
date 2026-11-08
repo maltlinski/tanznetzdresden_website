@@ -13,7 +13,7 @@ import type { ImageMetadata } from 'astro';
 import { getCollection } from 'astro:content';
 import { istSichtbar } from './sichtbar';
 import { getImage } from 'astro:assets';
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
+import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseFehlt } from './supabase-config';
 import { absaetze, bucketUrl, istWebsiteFoto, tagDatum, zeitNorm, type OeffentlicherTermin } from './keep-up-plan';
 import dozentinnenRaw from '../content/keep-up/dozentinnen.yaml?raw';
 import { getTermine, inFileOrder } from './content';
@@ -79,8 +79,7 @@ function fetchPlan(): Promise<OeffentlicherTermin[]> {
       );
       return rows;
     } catch (err) {
-      console.warn(`[keep-up] Einplanungen aus dem internen Bereich nicht geladen (${String(err)}) – nur wochen.yaml wird verwendet.`);
-      return [];
+      return supabaseFehlt('[keep-up] Einplanungen aus dem internen Bereich nicht geladen', err, 'nur wochen.yaml wird verwendet');
     }
   })();
   return planCache;

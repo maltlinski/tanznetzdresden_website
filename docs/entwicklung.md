@@ -19,6 +19,11 @@
   `ConsentEmbed` oder `<script type="text/plain" data-consent="…">` einbinden und in der Datenschutzerklärung
   beschreiben.
 - **E-Mail-Adressen nie im Klartext** ausgeben, sondern mit `<ProtectedEmail email={…} />`.
+- **Daten aus Supabase beim Build:** Lädt ein Lader nichts, ruft er `supabaseFehlt()` aus `src/lib/supabase-config.ts`
+  auf. Lokal baut die Website dann mit Warnung ohne diese Daten weiter; auf GitHub (`CI`) bricht der Build ab, damit
+  der letzte gute Stand online bleibt statt einer Website ohne Profile, News oder Termine. Neuer Lader → genauso.
+- **Text in eigenem HTML** (Beiträge, Feed, Vorschau) immer mit `escapeHtml()` aus `src/lib/news-format.ts`.
+- **Links aus Profilen** nur mit `webLink()` aus `src/lib/profil-ansicht.ts` (nur `http(s)`).
 - **Tests grün halten:** `npm run build && npm test`. Die CI prüft Funktion, „keine externen Anfragen ohne
   Einwilligung“ und Barrierefreiheit (WCAG 2.1 AA).
 

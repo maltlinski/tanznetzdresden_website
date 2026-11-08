@@ -11,9 +11,10 @@
  */
 import type { ImageMetadata } from 'astro';
 import { getPersonen } from './content';
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
+import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseFehlt } from './supabase-config';
 import { OFFEN_FUER, type GalerieLayout, type OffenFuer } from './profil-felder';
 import { fokusPos } from './bild-zuschnitt';
+import { webLink } from './profil-ansicht';
 
 export type Role = 'mitglied' | 'trainer';
 
@@ -120,8 +121,7 @@ async function fetchRemote(): Promise<RemoteProfile[]> {
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return (await res.json()) as RemoteProfile[];
   } catch (err) {
-    console.warn(`[profile] Supabase-Profile nicht geladen (${String(err)}) – nur personen.yaml wird verwendet.`);
-    return [];
+    return supabaseFehlt('[profile] Supabase-Profile nicht geladen', err, 'nur personen.yaml wird verwendet');
   }
 }
 
@@ -148,9 +148,9 @@ export function getProfiles(): Promise<PublicProfile[]> {
         bio: clean(r.bio),
         bio_en: clean(r.bio_en),
         tags: r.tags?.length ? r.tags : undefined,
-        website: clean(r.website),
+        website: webLink(r.website),
         instagram: clean(r.instagram),
-        vimeo: clean(r.vimeo),
+        vimeo: webLink(r.vimeo),
         photo,
         photoCredit: clean(r.photo_credit),
         photoFocus: r.photo_path ? fokusPos(r.photo_focus) : undefined,

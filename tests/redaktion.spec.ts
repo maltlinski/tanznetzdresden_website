@@ -176,6 +176,22 @@ test('Ohne Rolle Presse/Vorstand kein Zugang', async ({ page }) => {
   await expect(page.getByRole('link', { name: /^Termine/ })).toBeHidden();
 });
 
+test('Gelesene Dateien kommen beim nächsten Öffnen aus dem Zwischenspeicher (GitHub-Limit)', async ({ page }) => {
+  await redaktion(page);
+  const gelesen: string[] = [];
+  page.on('request', (r) => {
+    if (r.url().endsWith('/functions/v1/inhalte') && r.method() === 'POST' && r.postDataJSON()?.aktion === 'lesen') gelesen.push(...r.postDataJSON().pfade);
+  });
+  await page.goto('/intern/redaktion/liste/?b=termine');
+  await expect(page.getByRole('heading', { name: 'Ältere Termine', exact: true })).toBeVisible();
+  const termine = gelesen.filter((p) => p.startsWith('src/content/termine/'));
+  expect(termine.length).toBeGreaterThan(0);
+  gelesen.length = 0;
+  await page.reload();
+  await expect(page.getByRole('heading', { name: 'Ältere Termine', exact: true })).toBeVisible();
+  expect(gelesen.filter((p) => p.startsWith('src/content/termine/'))).toEqual([]);
+});
+
 test('Ältere Termine: kein Anlegen mehr, Bearbeiten mit Prüfung, Verweisen und „Erweitert“', async ({ page }) => {
   const gespeichert = await redaktion(page);
   await page.goto('/intern/redaktion/liste/?b=termine');

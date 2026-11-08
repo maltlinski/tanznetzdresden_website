@@ -313,3 +313,17 @@ test('Verlauf: nur Speicherungen der Redaktion, mit Dateien; Änderung zeigt Zei
   expect((await call(gh, { aktion: 'aenderung', sha: ersterCommit })).status).toBe(404);
   expect((await call(fakeGitHub(start, 'mitglied'), { aktion: 'verlauf' })).status).toBe(403);
 });
+
+test('GitHub-Limit erreicht: eigene Meldung statt „keine Rechte“', async () => {
+  const gh = fakeGitHub({ 'src/content/termine/a.md': 'x' });
+  const gebremst = (async (input: RequestInfo | URL, init?: RequestInit) => {
+    if (new URL(String(input)).host === 'sb.test') return gh.f(input, init);
+    return new Response(JSON.stringify({ message: 'API rate limit exceeded for user' }), {
+      status: 403,
+      headers: { 'Content-Type': 'application/json', 'x-ratelimit-remaining': '0', 'x-ratelimit-reset': String(Math.floor(Date.now() / 1000) + 600) },
+    });
+  }) as typeof fetch;
+  const r = await call({ ...gh, f: gebremst }, { aktion: 'stand' });
+  expect(r.status).toBe(503);
+  expect((await r.json()).fehler).toMatch(/^GitHub bremst gerade \(zu viele Abfragen\)\. Bitte in etwa 10 Minuten/);
+});

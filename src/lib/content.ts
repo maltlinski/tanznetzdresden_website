@@ -1,6 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { sortKey } from './dates';
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
+import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseFehlt } from './supabase-config';
 import { alsTerminDaten, type OeffentlicherKalenderTermin } from './kalender-intern';
 import personenRaw from '../content/personen.yaml?raw';
 import orteRaw from '../content/kooperation/orte.yaml?raw';
@@ -62,8 +62,7 @@ function fetchKalender(): Promise<OeffentlicherKalenderTermin[]> {
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       return (await res.json()) as OeffentlicherKalenderTermin[];
     } catch (err) {
-      console.warn(`[termine] Termine aus dem internen Kalender nicht geladen (${String(err)}) – nur Dateien werden verwendet.`);
-      return [];
+      return supabaseFehlt('[termine] Termine aus dem internen Kalender nicht geladen', err, 'nur Dateien werden verwendet');
     }
   })();
   return kalenderCache;

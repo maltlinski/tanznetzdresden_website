@@ -6,14 +6,13 @@
  * Bewegung und Netz: src/scripts/news-artikel.ts.
  */
 import type { Lang } from './i18n';
-import { dateLong, dateShort, daysLeft, nrLabel, newsBadge, newsBadgeOnDark, newsCategoryLabel, type NewsCategory } from './news-format';
+import { dateLong, dateShort, daysLeft, escapeHtml as esc, nrLabel, newsBadge, newsBadgeOnDark, newsCategoryLabel, type NewsCategory } from './news-format';
 import { deadlineText } from './deadline-text';
 import { texte } from './texte';
 
 export type KopfModus = 'vollbild' | 'hochkant' | 'split' | 'typo' | 'netz';
 export type Flaeche = 'purple' | 'cyan' | 'tint';
 
-const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /** Welcher Kopf: ohne Titelbild das Netz, „auto“ = Vollbild, Hochkant-Fotos bekommen den Hochkant-Kopf */
 export function kopfModus(hero: string | undefined, hatBild: boolean, verhaeltnis?: number): KopfModus {

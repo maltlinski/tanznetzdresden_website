@@ -8,7 +8,7 @@
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
-import { SUPABASE_ANON_KEY, SUPABASE_URL } from './supabase-config';
+import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseFehlt } from './supabase-config';
 import type { Lang } from './i18n';
 import { newsCategories, type newsHeroes, type newsThemes } from '../content.config';
 import { renderMarkdown } from './markdown';
@@ -185,8 +185,7 @@ function fetchRemote(): Promise<RemoteNews[]> {
       );
       return rows;
     } catch (err) {
-      console.warn(`[news] Beiträge aus dem internen Bereich nicht geladen (${String(err)}) – nur Dateien werden verwendet.`);
-      return [];
+      return supabaseFehlt('[news] Beiträge aus dem internen Bereich nicht geladen', err, 'nur Dateien werden verwendet');
     }
   })();
   return remoteCache;

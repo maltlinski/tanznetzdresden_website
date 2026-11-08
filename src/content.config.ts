@@ -218,9 +218,9 @@ const personen = defineCollection({
       photoCredit: z.string().optional(),
       /** Ausschnitt des Porträts: Fokuspunkt „x% y%“ (src/lib/bild-zuschnitt.ts) */
       photoFocus: z.string().regex(/^\d{1,3}% \d{1,3}%$/).optional(),
-      website: z.url().optional(),
+      website: z.url({ protocol: /^https?$/ }).optional(),
       instagram: z.string().optional(),
-      vimeo: z.url().optional(),
+      vimeo: z.url({ protocol: /^https?$/ }).optional(),
       /** öffentliche Kontaktadresse (wird verschlüsselt ausgegeben) */
       email: z.email().optional(),
       /** Tätigkeit, z. B. „Tänzerin und Choreografin“ */

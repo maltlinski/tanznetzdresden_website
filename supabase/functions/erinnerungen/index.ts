@@ -123,8 +123,17 @@ export function nachricht(m: Mail, from: string, jetzt = new Date()): string {
   ].join('\r\n');
 }
 
-export async function smtpSenden(l: Leitung, smtp: Env['smtp'], mails: Mail[]): Promise<void> {
+/** Der Mailserver lehnt einen Befehl ab (Verbindung steht noch) */
+class Abgelehnt extends Error {}
+
+/**
+ * Schickt die Mails nacheinander. `gesendet` läuft direkt nach jeder angenommenen Mail (dort vermerken,
+ * damit ein späterer Abbruch keine Mail doppelt schickt). Lehnt der Server eine Adresse ab, geht es mit
+ * der nächsten weiter; zurück kommt die Zahl der abgelehnten Mails. Bricht die Verbindung ab, wirft die Funktion.
+ */
+export async function smtpSenden(l: Leitung, smtp: Env['smtp'], mails: Mail[], gesendet?: (m: Mail, i: number) => Promise<void>): Promise<number> {
   let puffer = '';
+  let abgelehnt = 0;
   const antwort = async (erwartet: number) => {
     // letzte Zeile einer Antwort: „250 …“ (mehrzeilig davor „250-…“)
     while (!/(?:^|\r\n)\d{3} [^\r\n]*\r\n$/.test(puffer)) {
@@ -135,7 +144,7 @@ export async function smtpSenden(l: Leitung, smtp: Env['smtp'], mails: Mail[]): 
     const code = Number(/(?:^|\r\n)(\d{3}) [^\r\n]*\r\n$/.exec(puffer)![1]);
     const text = puffer.trim();
     puffer = '';
-    if (Math.floor(code / 100) !== Math.floor(erwartet / 100)) throw new Error(`Mailserver: ${text}`);
+    if (Math.floor(code / 100) !== Math.floor(erwartet / 100)) throw new Abgelehnt(`Mailserver: ${text}`);
   };
   const befehl = async (zeile: string, erwartet: number) => {
     await l.schreiben(`${zeile}\r\n`);
@@ -145,14 +154,23 @@ export async function smtpSenden(l: Leitung, smtp: Env['smtp'], mails: Mail[]): 
     await antwort(220);
     await befehl(`EHLO ${smtp.from.split('@')[1] ?? 'localhost'}`, 250);
     await befehl(`AUTH PLAIN ${base64(`\0${smtp.user}\0${smtp.pass}`)}`, 235);
-    for (const m of mails) {
-      await befehl(`MAIL FROM:<${smtp.from}>`, 250);
-      await befehl(`RCPT TO:<${m.an}>`, 250);
-      await befehl('DATA', 354);
-      // Punkt am Zeilenanfang verdoppeln (RFC 5321 §4.5.2)
-      await befehl(`${nachricht(m, smtp.from).replace(/\r\n\./g, '\r\n..')}\r\n.`, 250);
+    for (const [i, m] of mails.entries()) {
+      try {
+        await befehl(`MAIL FROM:<${smtp.from}>`, 250);
+        await befehl(`RCPT TO:<${m.an}>`, 250);
+        await befehl('DATA', 354);
+        // Punkt am Zeilenanfang verdoppeln (RFC 5321 §4.5.2)
+        await befehl(`${nachricht(m, smtp.from).replace(/\r\n\./g, '\r\n..')}\r\n.`, 250);
+      } catch (e) {
+        if (!(e instanceof Abgelehnt)) throw e;
+        abgelehnt++;
+        await befehl('RSET', 250);
+        continue;
+      }
+      await gesendet?.(m, i);
     }
     await befehl('QUIT', 221);
+    return abgelehnt;
   } finally {
     l.schliessen();
   }
@@ -192,14 +210,23 @@ export async function handle(req: Request, env: Env, f: typeof fetch = fetch, ve
     an: email.get(z.person)!,
     ...mailText(c, { name: namen.get(z.person) ?? '', sprache: z.sprache, heute, seite: `${site}${z.sprache === 'en' ? 'en/' : ''}intern/open-calls/#call-${z.call_id}` }),
   }));
-  await smtpSenden(await verbinden(env.smtp.host, env.smtp.port), env.smtp, mails);
-
-  // vermerken: '1' schließt '7' ein (wer erst am Vortag einschaltet, bekommt nur eine Mail)
-  for (const { z, welche } of raus) {
+  // gleich nach jeder Mail vermerken: '1' schließt '7' ein (wer erst am Vortag einschaltet, bekommt nur eine Mail).
+  // Klappt das Vermerken nicht, bricht der Versand ab – sonst ginge die Mail morgen noch einmal raus.
+  let verschickt = 0;
+  const vermerken = async (_: Mail, i: number) => {
+    const { z, welche } = raus[i];
     const erinnert = [...new Set([...z.erinnert, welche, ...(welche === '1' ? ['7'] : [])])];
-    await f(`${rest}/open_call_stand?person=eq.${z.person}&call_id=eq.${z.call_id}`, { method: 'PATCH', headers: h, body: JSON.stringify({ erinnert }) });
+    const res = await f(`${rest}/open_call_stand?person=eq.${z.person}&call_id=eq.${z.call_id}`, { method: 'PATCH', headers: h, body: JSON.stringify({ erinnert }) });
+    if (!res.ok) throw new Error(`Erinnerung ließ sich nicht vermerken (HTTP ${res.status}).`);
+    verschickt++;
+  };
+  try {
+    const abgelehnt = await smtpSenden(await verbinden(env.smtp.host, env.smtp.port), env.smtp, mails, vermerken);
+    return json(abgelehnt ? { verschickt, abgelehnt } : { verschickt });
+  } catch (e) {
+    console.error(e);
+    return json({ fehler: `Versand abgebrochen: ${e instanceof Error ? e.message : String(e)}`, verschickt }, 502);
   }
-  return json({ verschickt: mails.length });
 }
 
 // Nur in Supabase (Deno) starten, nicht in den Tests

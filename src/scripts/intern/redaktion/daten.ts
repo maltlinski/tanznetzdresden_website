@@ -162,13 +162,46 @@ export const jsonSchreiben = (data: unknown) => `${JSON.stringify(data, null, 2)
 
 export const enPfad = (b: Bereich, id: string) => (b.art === 'ordner' && b.uebersetzung ? b.uebersetzung(id) : null);
 
+/**
+ * Gelesene Texte je Prüfsumme (SHA) für diese Sitzung. Gleiche SHA heißt gleicher Inhalt – so holt die
+ * Redaktion beim nächsten Öffnen nur Geändertes neu (jede Datei kostet sonst eine Abfrage aus dem GitHub-Limit).
+ */
+const ZWISCHEN = 'redaktion:text:';
+const zwischen = {
+  holen(sha: string): string | null {
+    try {
+      return sessionStorage.getItem(ZWISCHEN + sha);
+    } catch {
+      return null;
+    }
+  },
+  ablegen(sha: string, text: string) {
+    try {
+      sessionStorage.setItem(ZWISCHEN + sha, text);
+    } catch {
+      // Speicher voll oder gesperrt: dann beim nächsten Mal eben neu lesen
+    }
+  },
+};
+
 /** Liest alle Einträge eines Bereichs */
 export async function laden(a: Api, b: Bereich, dateien: DateiInfo[], nur?: string): Promise<Geladen> {
   const quellen = new Map<string, { sha: string; text: string }>();
+  const shas = new Map(dateien.map((d) => [d.pfad, d.sha]));
   const lies = async (pfade: string[]) => {
-    for (let i = 0; i < pfade.length; i += 150) {
-      const r = await a.lesen(pfade.slice(i, i + 150));
-      for (const [p, d] of Object.entries(r.dateien)) if (d) quellen.set(p, d);
+    const offen = pfade.filter((p) => {
+      const sha = shas.get(p);
+      const text = sha ? zwischen.holen(sha) : null;
+      if (sha && text !== null) quellen.set(p, { sha, text });
+      return text === null;
+    });
+    for (let i = 0; i < offen.length; i += 150) {
+      const r = await a.lesen(offen.slice(i, i + 150));
+      for (const [p, d] of Object.entries(r.dateien)) {
+        if (!d) continue;
+        quellen.set(p, d);
+        zwischen.ablegen(d.sha, d.text);
+      }
     }
   };
   if (b.art === 'ordner') {

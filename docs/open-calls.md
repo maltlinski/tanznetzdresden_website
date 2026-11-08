@@ -81,7 +81,11 @@ freigeben und löschen darf die Redaktion. `open_call_stand` liest und schreibt 
 
 Verschickt wird nur bei Stand „Gemerkt“ oder „In Arbeit“, jede Erinnerung einmal, in der Sprache der Seite, auf der
 die Person sie eingeschaltet hat. Wer erst am Vortag einschaltet, bekommt nur die Mail „Endet morgen“.
-Prüfen: *Edge Functions → erinnerungen → Logs*; Antwort `{"verschickt": n}`.
+Jede Mail wird gleich nach dem Verschicken vermerkt: Bricht der Mailserver mittendrin ab, bekommt am nächsten Tag
+niemand dieselbe Mail doppelt, und die übrigen kommen dann dran. Lehnt der Server eine Adresse ab, geht es mit der
+nächsten weiter.
+Prüfen: *Edge Functions → erinnerungen → Logs*; Antwort `{"verschickt": n}` (mit abgelehnten Adressen
+`{"verschickt": n, "abgelehnt": m}`, bei Abbruch Status 502 mit `fehler`).
 
 ## Wenn es nicht klappt
 

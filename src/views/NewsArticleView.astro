@@ -13,6 +13,7 @@ import NewsImage from '../components/NewsImage.astro';
 import '../styles/artikel.css';
 import { getNews, dateShort, newsBadge, newsCategoryLabel, type NewsPost } from '../lib/news';
 import { faktenHtml, fussHtml, kopfHtml, kopfModus, nachweise, zeileHtml } from '../lib/news-artikel';
+import { escapeHtml as esc } from '../lib/news-format';
 import { getVerein } from '../lib/settings';
 import { getLang, tr, url } from '../lib/i18n';
 import { texte } from '../lib/texte';
@@ -46,7 +47,6 @@ if (post.image) {
     getImage({ src: post.image, ...remote, widths: [640, 1000, 1400, 1900, 2400], format: 'webp', quality: 80 }),
     getImage({ src: post.image, ...remote, width: 2400, format: 'webp', quality: 82 }),
   ]);
-  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
   const pos = post.imageFocus ? ` style="object-position:${post.imageFocus}"` : '';
   bild = {
     img: `<img class="ak__img" src="${klein.src}" srcset="${klein.srcSet.attribute}" sizes="${sizes}" alt="${esc(post.alt ?? '')}" decoding="async" fetchpriority="high"${pos}>`,

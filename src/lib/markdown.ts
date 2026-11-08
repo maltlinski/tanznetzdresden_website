@@ -13,10 +13,10 @@
  */
 import { Marked, type Tokens } from 'marked';
 import { bilderLesen, schritteLesen, type Bild, type Schritt } from './news-bloecke';
+import { escapeHtml as escape } from './news-format';
 import { SUPABASE_URL } from './supabase-config';
 import { texte } from './texte';
 
-const escape = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 const safeHref = (href: string) => /^(https?:|mailto:|\/(?!\/)|#)/i.test(href.trim());
 
 export interface MarkdownOptionen {

@@ -152,7 +152,9 @@ Bucket `profilbilder`, jede Person schreibt nur in ihren eigenen Ordner) und
 Vorstand und Admin) und `supabase/migrations/20261020000000_profil_seite.sql` (Felder der neuen Profilseite, Galerie als
 Liste `gallery` mit Merker `frei`, den nur die Redaktion setzt (Trigger `profiles_galerie`), Funktion `galerie_freigabe()`,
 öffentliche Ansicht nur mit freigegebenen Fotos) und `supabase/migrations/20261106000000_foto_ausschnitt.sql` (Ausschnitt
-des Porträts `photo_focus`, in der öffentlichen Ansicht). Alle im SQL-Editor ausführen. Ohne die Ausschnitt-Migration
+des Porträts `photo_focus`, in der öffentlichen Ansicht) und `supabase/migrations/20261108000000_links_pruefen.sql`
+(Website und Video nur als `http(s)`-Link; bereinigt alte Einträge – dieselbe Regel prüft `webLink()` in
+`src/lib/profil-ansicht.ts` beim Bauen). Alle im SQL-Editor ausführen. Ohne die Ausschnitt-Migration
 fehlt nur „Ausschnitt wählen“ beim Porträt. Ohne die letzte Migration bleibt
 *Mein Profil* wie bisher, die neuen Bereiche sind verborgen.
 

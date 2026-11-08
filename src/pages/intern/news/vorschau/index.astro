@@ -32,6 +32,7 @@ import '../../../../styles/artikel.css';
   import { newsPhotoUrl, getSupabase, type NewsRow } from '../../../../lib/supabase';
   import { faktenHtml, fussHtml, kopfHtml, kopfModus, nachweise, zeileHtml, type Flaeche } from '../../../../lib/news-artikel';
   import { texte } from '../../../../lib/texte';
+  import { escapeHtml as esc } from '../../../../lib/news-format';
   import { initLightbox } from '../../../../scripts/lightbox';
   import { initArtikel, verhaeltnisse } from '../../../../scripts/news-artikel';
 
@@ -58,7 +59,6 @@ import '../../../../styles/artikel.css';
     }
     return masse.get(src)!;
   };
-  const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
   let erstesMal = true;
   let zuletzt: { b: MitAbschnitten; lang: 'de' | 'en' } | null = null;
 

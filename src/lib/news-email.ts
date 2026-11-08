@@ -3,6 +3,7 @@
  * beim Build zu verschlüsselten Knöpfen; erst ein Klick zeigt die Adresse (src/scripts/protected-email.ts).
  * Stile: src/styles/artikel.css (.protected-email).
  */
+import { escapeHtml as esc } from './news-format';
 import { protectEmail } from './protect-email';
 import type { Lang } from './i18n';
 
@@ -13,7 +14,6 @@ const T = {
 const EMAIL = /[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi;
 const EINE = new RegExp(EMAIL.source, 'i');
 const ANKER = /<a href="mailto:([^"?]+)[^"]*"[^>]*>([\s\S]*?)<\/a>/gi;
-const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 
 async function knopf(email: string, text: string, lang: Lang) {
   const t = T[lang];

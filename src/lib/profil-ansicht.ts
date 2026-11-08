@@ -68,6 +68,9 @@ export function mosaik(n: number, layout: GalerieLayout) {
   return out;
 }
 
+/** Nur Links ins Web (http/https) – kein „javascript:“ o. ä. aus Profilen; gleiche Regel wie in der Datenbank (20261108000000) */
+export const webLink = (u?: string | null) => (u && /^https?:\/\/\S/i.test(u.trim()) ? u.trim() : undefined);
+
 export const linkText = (u: string) => u.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
 
 /** Stand des Formulars „Mein Profil“, den die Vorschau zeigt (noch nicht gespeichert) */

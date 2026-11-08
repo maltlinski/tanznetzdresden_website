@@ -675,7 +675,10 @@ test('Über uns: Haltung & Wirkung mit Partnern', async ({ page }) => {
   await page.goto('/verein/');
   const s = page.locator('#haltung');
   await expect(s.getByRole('heading', { level: 2 })).toHaveText(/Tanz gehört\s*in die Stadt\./);
-  await expect(s.getByRole('listitem')).toHaveCount(6); // 4 Säulen + 2 Auszeichnungen
+  // Säulen + Auszeichnungen, so viele wie sichtbar in haltung.json (die Redaktion ändert sie)
+  const h = JSON.parse(readFileSync('src/settings/haltung.json', 'utf8')).de as Record<'saeulen' | 'auszeichnungen', unknown[]>;
+  const sichtbar = (l: unknown[]) => l.filter((x) => typeof x === 'string' || (x as { sichtbar?: boolean }).sichtbar !== false).length;
+  await expect(s.getByRole('listitem')).toHaveCount(sichtbar(h.saeulen) + sichtbar(h.auszeichnungen));
   await expect(s.getByRole('link', { name: 'Alle Partner →' })).toHaveAttribute('href', /\/kooperationen\/$/);
 });
 

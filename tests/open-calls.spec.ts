@@ -444,4 +444,45 @@ test.describe('Fristen, Kalenderdatei und Erinnerungen (ohne Browser)', () => {
     // Adressen nur für Personen mit fälliger Erinnerung nachgeschlagen
     expect(aufrufe.find((a) => a.url.startsWith('/rest/v1/profiles'))!.url).toBe('/rest/v1/profiles?select=id,display_name&id=in.(p1,p3)');
   });
+
+  test('Erinnerungen: abgelehnte Adresse überspringen, bei Abbruch nur Verschicktes vermerken', async () => {
+    const stand = (person: string) => ({ person, call_id: 'c1', stand: 'gemerkt', sprache: 'de', erinnert: [], open_calls: { titel: 'Förderung', anbieter: 'Stiftung', frist: '2026-11-02', uhrzeit: '23:59:00', link: '', status: 'frei' } });
+    const lauf = async (antwort: (zeile: string, rcpt: string) => string | null) => {
+      const patch: string[] = [];
+      const f = (async (input: RequestInfo | URL, init?: RequestInit) => {
+        const u = new URL(String(input));
+        const j = (b: unknown) => new Response(JSON.stringify(b), { headers: { 'Content-Type': 'application/json' } });
+        if (init?.method === 'PATCH') patch.push(u.searchParams.get('person')!.replace('eq.', ''));
+        if (u.pathname === '/rest/v1/open_call_stand' && !init?.method) return j(['p1', 'p2', 'p3'].map(stand));
+        if (u.pathname === '/auth/v1/admin/users') return j({ users: ['p1', 'p2', 'p3'].map((id) => ({ id, email: `${id}@example.org` })) });
+        return j([]);
+      }) as typeof fetch;
+      let raus = ['220 mail.test ESMTP\r\n'];
+      let rcpt = '';
+      const leitung: Leitung = {
+        async lesen() { return raus.shift() ?? ''; },
+        async schreiben(text) {
+          const z = text.split('\r\n')[0];
+          if (z.startsWith('RCPT')) rcpt = z;
+          const eigen = antwort(z, rcpt);
+          if (eigen !== null) return void raus.push(eigen);
+          raus.push(/^EHLO/.test(z) ? '250 mail.test\r\n' : /^AUTH/.test(z) ? '235 ok\r\n' : z === 'DATA' ? '354 go\r\n' : z === 'QUIT' ? '221 bye\r\n' : '250 ok\r\n');
+        },
+        schliessen() { raus = []; },
+      };
+      const req = new Request('https://fn.test/erinnerungen', { method: 'POST', headers: { Authorization: 'Bearer service' } });
+      const res = await handle(req, env, f, async () => leitung, JETZT);
+      return { status: res.status, body: await res.json(), patch };
+    };
+
+    // Server lehnt p2 ab: p1 und p3 bekommen ihre Mail, nur sie werden vermerkt
+    const a = await lauf((z) => (z === 'RCPT TO:<p2@example.org>' ? '550 unbekannt\r\n' : null));
+    expect(a).toEqual({ status: 200, body: { verschickt: 2, abgelehnt: 1 }, patch: ['p1', 'p3'] });
+
+    // Verbindung bricht nach der ersten Mail ab: p1 ist vermerkt (keine doppelte Mail morgen), p2 und p3 kommen morgen dran
+    const b = await lauf((z, rcpt) => (z === 'MAIL FROM:<post@tanznetzdresden.de>' && rcpt === 'RCPT TO:<p1@example.org>' ? '' : null));
+    expect(b.status).toBe(502);
+    expect(b.body.verschickt).toBe(1);
+    expect(b.patch).toEqual(['p1']);
+  });
 });

@@ -191,6 +191,12 @@ function github(env: Env, f: typeof fetch) {
       const text = await res.text().catch(() => '');
       if (res.status === 422 && pfad.includes('/git/refs/')) throw new Fehler(409, 'nicht-vorspulbar');
       if (res.status === 401) throw new Fehler(502, 'Der GitHub-Schlüssel der Redaktion ist ungültig oder abgelaufen (docs/redaktion.md).');
+      // Limit des Schlüssels (5.000 Abfragen pro Stunde) oder Bremse bei vielen Abfragen auf einmal – kein Rechteproblem
+      if ((res.status === 403 || res.status === 429) && (res.headers.get('x-ratelimit-remaining') === '0' || /rate limit/i.test(text))) {
+        const ab = Number(res.headers.get('x-ratelimit-reset'));
+        const minuten = ab ? Math.max(1, Math.ceil((ab * 1000 - Date.now()) / 60000)) : 0;
+        throw new Fehler(503, `GitHub bremst gerade (zu viele Abfragen). Bitte ${minuten ? `in etwa ${minuten} Minuten` : 'später'} noch einmal versuchen.`);
+      }
       if (res.status === 403 || res.status === 404) throw new Fehler(502, `GitHub verweigert den Zugriff (${res.status}). Hat der Schlüssel Lese- und Schreibrechte für ${env.repo}?`);
       throw new Fehler(502, `GitHub antwortet mit ${res.status}: ${text.slice(0, 200)}`);
     }

@@ -14,4 +14,16 @@ const cleanUrl = (u: string) =>
 
 export const SUPABASE_URL = cleanUrl(PUBLIC_SUPABASE_URL || supabase.url);
 export const SUPABASE_ANON_KEY = (PUBLIC_SUPABASE_ANON_KEY || supabase.anonKey).trim();
-export const supabaseConfigured = Boolean(SUPABASE_URL && SUPABASE_ANON_KEY);
+
+/**
+ * Beim Build ließen sich Daten aus Supabase nicht laden. Lokal: Warnung und ohne sie weiterbauen.
+ * Auf GitHub (CI): abbrechen – sonst ginge eine Website ohne Profile, News oder Termine online;
+ * so bleibt der letzte gute Stand stehen, und der fehlgeschlagene Lauf fällt auf.
+ */
+export function supabaseFehlt(was: string, err: unknown, ersatz: string): never[] {
+  if (typeof process !== 'undefined' && process.env.CI) {
+    throw new Error(`${was} (${String(err)}). Build abgebrochen, die Website bleibt auf dem letzten Stand.`);
+  }
+  console.warn(`${was} (${String(err)}) – ${ersatz}.`);
+  return [];
+}

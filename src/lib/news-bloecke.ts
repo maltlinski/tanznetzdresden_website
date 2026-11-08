@@ -321,18 +321,6 @@ export function zuMarkdown(bloecke: Block[], lang: 'de' | 'en' = 'de'): string {
     .join('\n\n');
 }
 
-/** Alle Bilddateien im Bucket, auf die ein Text verweist (zum Aufräumen nach dem Speichern) */
-export function bilddateien(...texte: (string | null | undefined)[]): Set<string> {
-  const out = new Set<string>();
-  for (const t of texte) {
-    for (const b of zerlegen(t ?? '')) {
-      const dateien = b.typ === 'bilder' ? b.bilder : b.typ === 'schritte' ? b.schritte : [];
-      for (const x of dateien) if (x.datei && !/^(\/|https:|\.\.)/.test(x.datei)) out.add(x.datei);
-    }
-  }
-  return out;
-}
-
 /** Angaben zu einem Foto aus der Mediathek (Supabase-Tabelle news_medien) */
 export interface MedienAngaben {
   alt: string;

@@ -7,6 +7,9 @@ import type { newsCategories } from '../content.config';
 
 export type NewsCategory = (typeof newsCategories)[number];
 
+/** Text sicher in HTML einsetzen (als Inhalt und in Attributen mit "…") – die eine Fassung für News, Vorschau, Feed */
+export const escapeHtml = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+
 export const newsCategoryLabel: Record<Lang, Record<NewsCategory | 'Alle', string>> = {
   de: { Alle: 'Alle', Netzwerk: 'Netzwerk', Ausschreibung: 'Ausschreibung', Training: 'Training', Verein: 'Verein', Rückblick: 'Rückblick', Stimme: 'Stimme' },
   en: { Alle: 'All', Netzwerk: 'Network', Ausschreibung: 'Open call', Training: 'Training', Verein: 'Association', Rückblick: 'Review', Stimme: 'Voices' },

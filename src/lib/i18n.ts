@@ -13,7 +13,6 @@ import { href } from './url';
 
 export const locales = ['de', 'en'] as const;
 export type Lang = (typeof locales)[number];
-export const defaultLang: Lang = 'de';
 
 export const langNames: Record<Lang, string> = { de: 'Deutsch', en: 'English' };
 export const htmlLang: Record<Lang, string> = { de: 'de', en: 'en' };

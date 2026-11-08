@@ -1,10 +1,10 @@
 /** RSS-Feed der News (RSS 2.0) – /news.xml und /en/news.xml. */
 import { getNews, newsCategoryLabel } from './news';
+import { escapeHtml as esc } from './news-format';
 import { getVerein } from './settings';
 import { url, type Lang } from './i18n';
 import { href } from './url';
 
-const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 export async function newsFeed(lang: Lang, site: URL | undefined): Promise<Response> {
   const v = getVerein(lang);

@@ -44,11 +44,3 @@ export async function drehen(sb: SupabaseClient, path: string, slug: string): Pr
   if (!res.ok) throw new Error('Das Foto ließ sich nicht laden.');
   return hochladen(sb, await res.blob(), slug, 90);
 }
-
-/** Ausschnitt aus einem Klick ins Foto: „x% y%“ */
-export function fokusAusKlick(e: MouseEvent, el: HTMLElement): string {
-  const r = el.getBoundingClientRect();
-  const x = Math.round(Math.min(100, Math.max(0, ((e.clientX - r.left) / r.width) * 100)));
-  const y = Math.round(Math.min(100, Math.max(0, ((e.clientY - r.top) / r.height) * 100)));
-  return `${x}% ${y}%`;
-}

@@ -64,7 +64,3 @@ export function activateScripts(state: ConsentState | null): void {
     el.replaceWith(s);
   });
 }
-
-export function openConsentSettings(): void {
-  window.dispatchEvent(new Event('tndd:consent-open'));
-}

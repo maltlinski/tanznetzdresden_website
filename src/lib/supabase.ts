@@ -161,5 +161,3 @@ export function getSupabase(): SupabaseClient | null {
       : null;
   return client;
 }
-
-export const isConfigured = () => getSupabase() !== null;
