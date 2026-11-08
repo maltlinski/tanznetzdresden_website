@@ -104,18 +104,12 @@
       "note": "Logo-Datei bkm.png zeigt noch „Die Beauftragte“. Seit Mai 2025 heißt das Amt „Der Beauftragte“ (Wolfram Weimer), das Logo wurde 2025 entsprechend geändert. Neue Datei laut Zuwendungsbescheid bzw. von kulturstaatsminister.de unter Redaktion → Verein → Förderer hochladen (docs/livegang.md)."
     },
     {
-      "name": "NEUSTART KULTUR",
-      "url": "https://www.bundesregierung.de/breg-de/service/archiv/neustart-kultur-evaluation-zeigt-wirksamkeit-des-programms-2324916",
-      "logo": "neustart-kultur.png",
-      "height": 60
-    },
-    {
       "name": "Dachverband Tanz Deutschland",
       "name_en": "Dachverband Tanz Deutschland (German Dance Association)",
       "url": "https://www.dachverband-tanz.de/",
       "logo": "dachverband-tanz.png",
       "height": 50,
-      "note": "Ggf. Förderhinweis-Text des Programms (z. B. NEUSTART KULTUR über den Dachverband Tanz) unter notice ergänzen – Wortlaut laut Zuwendungsbescheid."
+      "note": "Ggf. Förderhinweis-Text des Programms unter notice ergänzen – Wortlaut laut Zuwendungsbescheid."
     }
   ],
   "fundingText": "",

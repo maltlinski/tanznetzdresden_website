@@ -31,8 +31,8 @@ Gepflegt unter *Redaktion → Website-Inhalte → Verein → Förderer* (Logo ho
 Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur Öffentlichkeitsarbeit.
 
 - [ ] **Welche Förderungen laufen noch?** Nur zeigen, was aktuell gefördert wird oder laut Bescheid weiter genannt
-      werden muss. NEUSTART KULTUR (über den Dachverband Tanz, Programme DIS-TANZEN u. a.) lief 2020–2023 –
-      Logo und Eintrag „Dachverband Tanz“ entfernen, wenn keine Nennungspflicht mehr besteht.
+      werden muss. NEUSTART KULTUR (über den Dachverband Tanz, Programme DIS-TANZEN u. a.) lief 2020–2023 und ist
+      entfernt; den Eintrag „Dachverband Tanz“ ebenfalls entfernen, wenn keine Nennungspflicht mehr besteht.
 - [ ] **BKM**: Seit Mai 2025 heißt das Amt „Der Beauftragte der Bundesregierung für Kultur und Medien“
       (Wolfram Weimer); das Logo wurde 2025 entsprechend geändert. Die Datei `src/assets/foerderer/bkm.png` zeigt
       noch „Die Beauftragte“. Neue Logodatei aus den Unterlagen zum Bescheid bzw. von kulturstaatsminister.de

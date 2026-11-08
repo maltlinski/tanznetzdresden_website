@@ -196,14 +196,15 @@ test('Förderhinweis steht auf jeder Seite', async ({ page }) => {
     await page.goto(path);
     await expect(page.locator('#funding-h')).toHaveText(/Gefördert durch|Funded by/);
   }
-  // alle fünf Förderer mit Logo, Alternativtext und Link
+  // alle vier Förderer mit Logo, Alternativtext und Link (NEUSTART KULTUR lief 2020–2023 aus)
   await page.goto('/');
   const logos = page.locator('.funding__list img');
-  await expect(logos).toHaveCount(5);
-  for (const alt of ['Landeshauptstadt Dresden', 'Kulturstiftung des Freistaates Sachsen', 'Kultur und Medien', 'NEUSTART KULTUR', 'Dachverband Tanz']) {
+  await expect(logos).toHaveCount(4);
+  for (const alt of ['Landeshauptstadt Dresden', 'Kulturstiftung des Freistaates Sachsen', 'Kultur und Medien', 'Dachverband Tanz']) {
     await expect(page.locator(`.funding__list a:has(img[alt*="${alt}"])`)).toHaveAttribute('href', /^https:\/\//);
   }
   await expect(page.locator('.funding__notices')).toContainText('Sächsischen Landtag');
+  await expect(page.locator('.funding__list img[alt*="NEUSTART"]')).toHaveCount(0);
 });
 
 test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
