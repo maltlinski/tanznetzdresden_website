@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches-ignore: [main]
+    paths-ignore: ['src/content/**']
 
 concurrency:
   group: ci-${{ github.ref }}
