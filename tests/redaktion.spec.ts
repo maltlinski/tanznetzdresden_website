@@ -56,6 +56,9 @@ const LOG_DB = () => [
 
 async function redaktion(page: Page, rolle: 'presse' | 'vorstand' | 'mitglied' = 'presse', mitglieder: Mitglied[] = [], aufrufe: string[] = []) {
   const gespeichert: Gespeichert[] = [];
+  // Die Vorschau daneben zeigt die Website samt Animationen; bei vier Browsern gleichzeitig hielt das die Rechner so
+  // beschäftigt, dass das Schließen nach dem Test über 30 Sekunden dauerte. Geprüft werden hier die Formulare.
+  await page.emulateMedia({ reducedMotion: 'reduce' });
   const dateien = ['src', 'public'].flatMap((d) => alleDateien(d)).filter((p) => ERLAUBT.test(p));
   const b64 = (o: object) => Buffer.from(JSON.stringify(o)).toString('base64url');
   const token = `${b64({ alg: 'HS256', typ: 'JWT' })}.${b64({ sub: 'u1', role: 'authenticated', exp: 4102444800 })}.x`;
@@ -845,7 +848,7 @@ test('Mehr Platz für die Vorschau: Seitenleiste einklappen, Trenner ziehen, Vol
   const vorher = await panel.evaluate((p) => p.getBoundingClientRect().width);
   await page.getByRole('button', { name: 'Seitenleiste einklappen' }).click();
   await expect(page.getByRole('button', { name: 'Seitenleiste zeigen' })).toHaveAttribute('aria-expanded', 'false');
-  expect(await page.locator('[data-side]').evaluate((s) => s.getBoundingClientRect().width)).toBeLessThan(60);
+  await expect.poll(() => page.locator('[data-side]').evaluate((s) => s.getBoundingClientRect().width)).toBeLessThan(60);
   await expect.poll(() => panel.evaluate((p) => p.getBoundingClientRect().width)).toBeGreaterThan(vorher + 100);
   await page.reload();
   await expect(page.getByRole('button', { name: 'Seitenleiste zeigen' })).toBeVisible();
@@ -877,7 +880,7 @@ test('Mehr Platz für die Vorschau: Seitenleiste einklappen, Trenner ziehen, Vol
 
   // zurück: Leiste wieder zeigen
   await page.getByRole('button', { name: 'Seitenleiste zeigen' }).click();
-  expect(await page.locator('[data-side]').evaluate((s) => s.getBoundingClientRect().width)).toBeGreaterThan(200);
+  await expect.poll(() => page.locator('[data-side]').evaluate((s) => s.getBoundingClientRect().width)).toBeGreaterThan(200);
 });
 
 test('Änderungen: Dateien und Datenbank zusammen, Filter, vorher/nachher', async ({ page }) => {

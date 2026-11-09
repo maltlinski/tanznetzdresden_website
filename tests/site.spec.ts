@@ -11,12 +11,13 @@ const neuester = veroeffentlicht()[0];
 const ausschreibung = veroeffentlicht().find((p) => p.deadline) ?? neuester;
 const englisch = newsDateien('en').find((e) => veroeffentlicht().some((p) => p.id === e.id))!;
 
+// Jede Seite einmal: lädt ohne Fehler und ist barrierearm. Interne Seiten ohne Anmeldung leiten nur zur Anmeldung
+// (die prüfen intern.spec.ts, news-editor.spec.ts, redaktion.spec.ts mit Anmeldung); Englisch nutzt dieselben
+// Bausteine wie Deutsch, darum nur eine Seite je Art.
 const pages = [
   '/', '/termine/', '/termine/2026-10-15-studio-round-9/', '/profitraining/', '/news/', `/news/${neuester.id}/`, `/news/${ausschreibung.id}/`, '/netzwerk/', '/netzwerk/alina-lucifero/', '/verein/', '/mitglied-werden/', '/kontakt/',
   '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/mitglied/pruefen/', '/intern/',
-  '/intern/news/', '/intern/news/bearbeiten/', '/intern/redaktion/', '/intern/redaktion/liste/', '/intern/redaktion/eintrag/', '/intern/redaktion/freigaben/',
-  '/en/', '/en/events/', '/en/events/2026-10-15-studio-round-9/', '/en/training/', '/en/news/', `/en/news/${englisch.id}/`, '/en/network/', '/en/network/alina-lucifero/', '/en/about/', '/en/membership/',
-  '/en/contact/', '/en/partners/', '/en/donate/', '/en/transparency/', '/en/accessibility/', '/en/legal-notice/', '/en/privacy/',
+  '/en/', '/en/events/', '/en/training/', `/en/news/${englisch.id}/`, '/en/network/alina-lucifero/',
 ];
 
 /** Externe Anfragen sperren: die Seite selbst darf ohne Einwilligung nichts nachladen. */
@@ -54,7 +55,9 @@ for (const path of pages) {
     expect(overflow).toBeLessThanOrEqual(1);
   });
 
-  test(`${path} ist barrierearm (axe)`, async ({ page }) => {
+  test(`${path} ist barrierearm (axe)`, async ({ page, isMobile }) => {
+    // Kontraste, Beschriftungen und Aufbau sind auf dem Handy gleich; dort nur die Startseite (aufklappbares Menü)
+    test.skip(isMobile && path !== '/', 'axe auf dem Handy nur für die Startseite');
     // ohne Einblend-Animationen messen, sonst zählt halbe Deckkraft als Kontrastfehler
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(path);

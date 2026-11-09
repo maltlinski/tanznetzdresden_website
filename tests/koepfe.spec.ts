@@ -171,7 +171,9 @@ const AUFTRITT = [
   '/news/15-jahre-tanznetzdresden-der-rueckblick-von-rico-stehfest/', '/netzwerk/alba-t-alvarez/',
 ];
 
-test('Köpfe: gleicher Auftritt auf allen Unterseiten', async ({ page }) => {
+test('Köpfe: gleicher Auftritt auf allen Unterseiten', async ({ page, isMobile }) => {
+  // die Bewegung hängt nicht von der Bildschirmbreite ab (src/scripts/kopf-auftritt.ts)
+  test.skip(isMobile, 'gleiche Bewegung auf dem Handy');
   test.setTimeout(120_000);
   for (const seite of AUFTRITT) {
     await page.goto(seite);

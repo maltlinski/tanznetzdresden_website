@@ -29,7 +29,10 @@
 - **Testlauf auf GitHub** (Workflow „CI“) baut nur mit den Dateien, ohne Daten aus Supabase (`datenAusSupabase` in
   `src/lib/supabase-config.ts`) – die Tests rechnen mit `src/content/`.
 - **Tests grün halten:** `npm run build && npm test`. Die CI prüft Funktion, „keine externen Anfragen ohne
-  Einwilligung“ und Barrierefreiheit (WCAG 2.1 AA).
+  Einwilligung“ und Barrierefreiheit (WCAG 2.1 AA). Jeder Test läuft als Computer und als Handy – außer was von der
+  Breite nicht abhängt: Rechenregeln (`playwright.config.ts`, `testIgnore`), axe außer auf der Startseite, der Auftritt
+  der Köpfe. Neue Seite in der Seitenliste von `tests/site.spec.ts` nur, wenn sie eigene Bausteine hat; englische
+  Fassungen und interne Seiten (ohne Anmeldung nur die Anmeldung) prüfen eigene Tests.
 
 ## Designsystem
 

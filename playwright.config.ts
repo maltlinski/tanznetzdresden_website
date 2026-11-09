@@ -18,7 +18,8 @@ export default defineConfig({
   },
   projects: [
     { name: 'desktop', use: { ...devices['Desktop Chrome'] } },
-    { name: 'mobile', use: { ...devices['Pixel 7'] } },
+    // Dateien nur mit Rechenregeln (ohne Seite) laufen einmal
+    { name: 'mobile', use: { ...devices['Pixel 7'] }, testIgnore: ['redaktion-funktion.spec.ts', 'sichtbar.spec.ts'] },
   ],
   webServer: {
     // --ignore-lock: im Vordergrund bleiben (Astro startet die Vorschau sonst in manchen Umgebungen im Hintergrund)
