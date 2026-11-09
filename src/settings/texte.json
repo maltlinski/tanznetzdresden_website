@@ -10,9 +10,9 @@
         "texte": {
           "calendar": { "wo": "Menü: Punkt 1", "de": "Kalender", "en": "Calendar", "max": 24 },
           "news": { "wo": "Menü: Punkt 2", "de": "News", "en": "News", "max": 24 },
-          "formats": { "wo": "Menü: Punkt 3", "de": "Formate", "en": "Formats", "max": 24 },
-          "training": { "wo": "Menü: Punkt 4", "de": "Training", "en": "Training", "max": 24 },
-          "about": { "wo": "Menü: Punkt 5", "de": "Über uns", "en": "About", "max": 24 },
+          "about": { "wo": "Menü: Punkt 3", "de": "Über uns", "en": "About", "max": 24 },
+          "formats": { "wo": "Menü: Punkt 4", "de": "Formate", "en": "Formats", "max": 24 },
+          "training": { "wo": "Menü: Punkt 5", "de": "Training", "en": "Training", "max": 24 },
           "donate": { "wo": "Menü: Punkt 6", "de": "Spenden", "en": "Donate", "max": 24 },
           "intern": { "wo": "Link zum internen Bereich", "de": "Login", "en": "Login", "max": 24 },
           "join": { "wo": "Knopf rechts oben", "de": "Mitglied werden", "en": "Become a member", "max": 24 },

@@ -508,7 +508,7 @@ test('Header: TNDD-Zeichen führt zur Startseite, News und Über uns im Menü', 
   await page.goto('/netzwerk/alina-lucifero/');
   await dismissConsent(page);
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
-  await expect(nav.getByRole('link')).toHaveText(['Kalender', 'Formate', 'Training', 'News', 'Über uns', 'Spenden']);
+  await expect(nav.getByRole('link')).toHaveText(['Kalender', 'News', 'Über uns', 'Formate', 'Training', 'Spenden']);
   // „Kalender“ führt zum ganzen Tanzkalender, nicht zum Ausschnitt auf der Startseite
   await expect(nav.getByRole('link', { name: 'Kalender' })).toHaveAttribute('href', /\/termine\/$/);
   await expect(nav.getByRole('link', { name: 'Über uns' })).toHaveAttribute('aria-current', 'page');
