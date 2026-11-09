@@ -2,6 +2,7 @@
  * Zuschnitt von Profilfotos: Geometrie und Vorschlag (src/lib/bild-zuschnitt.ts), Dialog unter „Mein Profil“
  * (src/scripts/intern/zuschnitt.ts) und die Darstellung auf der Website.
  */
+import { readFileSync } from 'node:fs';
 import { test, expect } from '@playwright/test';
 import { ausschnitt, fokusLesen, fokusPos, fokusVorschlag, rahmenGalerie, rahmenPortraet, sicherSichtbar, streifenFormat } from '../src/lib/bild-zuschnitt';
 import { supabase } from '../src/settings/supabase';
@@ -58,6 +59,11 @@ test.describe('Zuschnitt: Regeln', () => {
     expect(rahmenGalerie(0, 5, 'filmstreifen', 1.5, false)[0].r).toBeCloseTo(4 / 5);
     expect(rahmenGalerie(0, 5, 'filmstreifen', 1.5, false)[0].clip).toContain('polygon');
     expect(rahmenGalerie(0, 5, 'filmstreifen', 1.5, true)[0]).toMatchObject({ r: 1.5, clip: undefined });
+    // eigenes Format im Filmstreifen und Raster; im Mosaik gibt die Anordnung die Form vor, „ganz“ geht vor
+    expect(rahmenGalerie(0, 5, 'filmstreifen', 0.7, false, 'quer')[0].r).toBeCloseTo(3 / 2);
+    expect(rahmenGalerie(1, 5, 'raster', 1.5, false, 'quadrat').map((r) => r.r)).toEqual([1, 1]);
+    expect(rahmenGalerie(0, 5, 'mosaik', 1.5, false, 'quadrat').map((r) => r.r)).toEqual(rahmenGalerie(0, 5, 'mosaik', 1.5, false).map((r) => r.r));
+    expect(rahmenGalerie(0, 5, 'filmstreifen', 0.7, true, 'quer')[0].r).toBeCloseTo(0.7);
     expect(streifenFormat(5)).toBe(2.2);
     const m = rahmenGalerie(3, 4, 'mosaik', 1, false);
     expect(m.map((r) => r.id)).toEqual(['gross', 'handy']);
@@ -135,29 +141,48 @@ test.describe('Zuschnitt unter „Mein Profil“', () => {
     await expect(page.locator('.pg__el')).toHaveCount(2);
     const neu = m.profilGespeichert.at(-1)!.gallery as { path: string; fokus?: string }[];
     expect(neu[1].fokus).toMatch(/^\d{1,3}% \d{1,3}%$/);
+    // neu gespeichert: ohne Kamera-Angaben (Exif, darin auch der Aufnahmeort) – das Testfoto hat welche
+    expect(readFileSync(FOTOS[0]).includes('Exif')).toBe(true);
+    expect(m.hochgeladenDaten.at(-1)!.length).toBeGreaterThan(1000);
+    expect(m.hochgeladenDaten.at(-1)!.includes('Exif')).toBe(false);
 
-    await page.getByRole('button', { name: 'Ausschnitt von Foto 1 wählen' }).click();
+    await page.getByRole('button', { name: 'Ausschnitt und Format von Foto 1 wählen' }).click();
     const dlg = page.getByRole('dialog', { name: 'Ausschnitt: Foto 1' });
     await expect(dlg.locator('.zs__formel > span')).toHaveText(['Filmstreifen']);
     await dlg.getByRole('button', { name: 'Vorschlag' }).click();
     await expect(dlg.getByRole('status')).toContainText(/Vorschlag nach dem Bildinhalt|Gesicht erkannt|Person erkannt|Mitte/, { timeout: 20000 });
     await dlg.getByRole('slider').press('Home');
-    await dlg.getByLabel(/Ganzes Foto zeigen/).check();
+    await dlg.getByRole('radio', { name: 'Ganzes Foto, nicht zuschneiden' }).check();
     await expect(dlg.locator('.zs__form')).not.toHaveAttribute('style', /clip-path/);
     await dlg.getByRole('button', { name: 'Übernehmen' }).click();
     await expect(page.locator('[data-profile-msg]')).toHaveText('Ausschnitt gespeichert.');
     const g = m.profilGespeichert.at(-1)!.gallery as { path: string; fokus?: string; ganz?: boolean; caption?: string }[];
     expect(g[0]).toMatchObject({ path: 'u1/galerie-a.jpg', caption: 'Probe', fokus: '50% 50%', ganz: true });
-    await expect(page.getByRole('button', { name: 'Ausschnitt von Foto 1 wählen' })).toHaveText('Ganzes Foto');
+    await expect(page.getByRole('button', { name: 'Ausschnitt und Format von Foto 1 wählen' })).toHaveText('Ganzes Foto');
     // Vorschau: Filmstreifen ohne Keil im Format des Fotos
     const f = page.frameLocator('[data-vorschau] iframe');
     const el = f.locator('.pstrip__el').first();
     await expect(el.locator('.pstrip__bild')).not.toHaveClass(/keil/);
     await expect.poll(async () => Number(await el.evaluate((e) => (e as HTMLElement).style.getPropertyValue('--r')))).not.toBeCloseTo(0.8, 2);
 
+    // eigenes Format: Querformat 3 : 2 im Filmstreifen, auch in der Vorschau
+    await page.getByRole('button', { name: 'Ausschnitt und Format von Foto 2 wählen' }).click();
+    const dlg2 = page.getByRole('dialog', { name: 'Ausschnitt: Foto 2' });
+    await expect(dlg2.getByRole('radio', { name: 'Wie die Galerie es vorsieht' })).toBeChecked();
+    await dlg2.getByRole('radio', { name: 'Querformat' }).check();
+    await expect(dlg2.locator('.zs__form')).toHaveAttribute('style', /aspect-ratio: 1\.5/);
+    const gespeichert = m.profilGespeichert.length;
+    await dlg2.getByRole('button', { name: 'Übernehmen' }).click();
+    await expect.poll(() => m.profilGespeichert.length).toBe(gespeichert + 1);
+    const g2 = m.profilGespeichert.at(-1)!.gallery as { format?: string; ganz?: boolean }[];
+    expect(g2[1]).toMatchObject({ format: 'quer' });
+    expect(g2[1].ganz).toBeUndefined();
+    await expect(page.getByRole('button', { name: 'Ausschnitt und Format von Foto 2 wählen' })).toHaveText('Ausschnitt · Querformat');
+    await expect.poll(async () => f.locator('.pstrip__el').nth(1).evaluate((e) => (e as HTMLElement).style.getPropertyValue('--r'))).toBe('1.5');
+
     // Abbrechen ändert nichts
     const vorher = m.profilGespeichert.length;
-    await page.getByRole('button', { name: 'Ausschnitt von Foto 2 wählen' }).click();
+    await page.getByRole('button', { name: 'Ausschnitt und Format von Foto 2 wählen' }).click();
     await page.getByRole('dialog').getByRole('button', { name: 'Abbrechen' }).click();
     await expect(page.getByRole('dialog')).toBeHidden();
     expect(m.profilGespeichert.length).toBe(vorher);

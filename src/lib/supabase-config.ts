@@ -16,6 +16,13 @@ export const SUPABASE_URL = cleanUrl(PUBLIC_SUPABASE_URL || supabase.url);
 export const SUPABASE_ANON_KEY = (PUBLIC_SUPABASE_ANON_KEY || supabase.anonKey).trim();
 
 /**
+ * Daten aus Supabase beim Build holen? Nicht im Testlauf auf GitHub (Workflow „CI“, .github/workflows/ci.yml):
+ * die Tests rechnen mit den Dateien in src/content/, echte Beiträge und Termine würden ihre Zahlen verschieben.
+ */
+export const datenAusSupabase =
+  !!SUPABASE_URL && !!SUPABASE_ANON_KEY && !(typeof process !== 'undefined' && process.env.GITHUB_WORKFLOW === 'CI');
+
+/**
  * Beim Build ließen sich Daten aus Supabase nicht laden. Lokal: Warnung und ohne sie weiterbauen.
  * Auf GitHub (CI): abbrechen – sonst ginge eine Website ohne Profile, News oder Termine online;
  * so bleibt der letzte gute Stand stehen, und der fehlgeschlagene Lauf fällt auf.

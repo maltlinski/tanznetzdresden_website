@@ -12,7 +12,7 @@
  * Bildunterschriften, Großansicht und die Bildnachweise am Ende des Beitrags (src/lib/news-artikel.ts).
  */
 import { Marked, type Tokens } from 'marked';
-import { bilderLesen, schritteLesen, type Bild, type Schritt } from './news-bloecke';
+import { bilderLesen, FORMAT_R, schritteLesen, type Bild, type Schritt } from './news-bloecke';
 import { escapeHtml as escape } from './news-format';
 import { SUPABASE_URL } from './supabase-config';
 import { texte } from './texte';
@@ -57,11 +57,13 @@ export function renderMarkdown(src: string, base = '/', opt: MarkdownOptionen = 
   const vergroessern = opt.lang === 'en' ? 'Enlarge photo' : 'Foto vergrößern';
 
   /** Foto als Link zur Großansicht; data-k, data-cap und data-credit lesen Großansicht und Bildnachweise */
-  const foto = (x: Bild, k: string, cap: string, wer: string, sizes: string) => {
+  /** `r`: festes Format (Bildpaar, Bildstrecke), sonst setzt der Build bzw. die Seite das Format des Fotos */
+  const foto = (x: Bild, k: string, cap: string, wer: string, sizes: string, r?: number) => {
     const url = escape(bildUrl(x.datei));
     const pos = x.fokus ? ` style="object-position:${x.fokus}"` : '';
     const name = x.alt.trim() ? '' : ` aria-label="${vergroessern}"`;
-    return `<a class="nb__item" href="${url}" data-lightbox data-bild="${escape(x.datei)}" data-k="${escape(k)}" data-cap="${escape(cap)}" data-credit="${escape(wer)}"${name}><img src="${url}" alt="${escape(x.alt)}" loading="lazy" decoding="async" sizes="${sizes}"${pos}></a>`;
+    const fest = r ? ` style="--r:${r.toFixed(4)}"` : '';
+    return `<a class="nb__item" href="${url}" data-lightbox data-bild="${escape(x.datei)}" data-k="${escape(k)}" data-cap="${escape(cap)}" data-credit="${escape(wer)}"${name}${fest}><img src="${url}" alt="${escape(x.alt)}" loading="lazy" decoding="async" sizes="${sizes}"${pos}></a>`;
   };
 
   function bilder(inhalt: string) {
@@ -70,10 +72,11 @@ export function renderMarkdown(src: string, base = '/', opt: MarkdownOptionen = 
     if (!n) return '';
     const wer = (x: Bild) => x.foto || b.foto;
     const darstellung = n === 1 && (b.darstellung === 'paar' || b.darstellung === 'strecke') ? 'raster' : b.darstellung;
+    const r = b.format === 'original' ? undefined : FORMAT_R[b.format];
 
     if (darstellung === 'paar') {
       const ks = b.bilder.map(nummer);
-      const items = b.bilder.map((x, j) => foto(x, ks[j], x.text || b.text, wer(x), '(min-width: 1060px) 520px, 100vw')).join('');
+      const items = b.bilder.map((x, j) => foto(x, ks[j], x.text || b.text, wer(x), '(min-width: 1060px) 520px, 100vw', r)).join('');
       const caps = b.bilder.map((x, j) => `<span class="nb__einzel"><span class="nb__k">${ks[j]}</span>${escape(x.text ?? '')}</span>`).join('');
       const namen = [...new Set(b.bilder.map(wer).filter(Boolean))].join(', ');
       const text = b.text && !b.bilder.some((x) => x.text) ? `<span class="nb__text">${escape(b.text)}</span>` : '';
@@ -86,7 +89,7 @@ export function renderMarkdown(src: string, base = '/', opt: MarkdownOptionen = 
         .map((x) => {
           const k = nummer();
           const cap = x.text || '';
-          return `<div class="nb__bild">${foto(x, k, cap || b.text, wer(x), '(min-width: 800px) 780px, 90vw')}<p class="nb__cap"><span class="nb__k">${k}</span>${escape(cap)}</p></div>`;
+          return `<div class="nb__bild">${foto(x, k, cap || b.text, wer(x), '(min-width: 800px) 780px, 90vw', r)}<p class="nb__cap"><span class="nb__k">${k}</span>${escape(cap)}</p></div>`;
         })
         .join('');
       const namen = [...new Set(b.bilder.map(wer).filter(Boolean))].join(', ');

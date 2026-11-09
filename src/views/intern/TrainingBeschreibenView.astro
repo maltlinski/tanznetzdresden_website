@@ -153,7 +153,7 @@ const t = tr(lang, {
   import { initIntern, errorText, showMessage, internUrl } from '../../scripts/intern/session';
   import { gsap, EASE, motionOk } from '../../scripts/gsap';
   import { h } from '../../scripts/intern/news/dom';
-  import { verkleinern } from '../../scripts/intern/news/fotos';
+  import { endung, verkleinern } from '../../scripts/intern/foto-datei';
   import { neuBauenLassen } from '../../scripts/intern/redaktion/api';
   import { daten, ich, zeitraum, tageText, artText, badge, toast, DOWL, tagLang, wochentag, FEHLT, tabelleFehlt, SPALTEN } from '../../scripts/intern/keep-up';
   import {
@@ -354,9 +354,8 @@ const t = tr(lang, {
     drop.classList.add('is-laedt');
     try {
       const blob = await verkleinern(file);
-      const typ = blob.type || 'image/jpeg';
-      const pfad = `${t.dozent}/${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}.${typ === 'image/png' ? 'png' : typ === 'image/webp' ? 'webp' : 'jpg'}`;
-      const { error } = await ctx.sb.storage.from('keepup').upload(pfad, blob, { contentType: typ, upsert: false });
+      const pfad = `${t.dozent}/${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}.${endung(blob)}`;
+      const { error } = await ctx.sb.storage.from('keepup').upload(pfad, blob, { contentType: blob.type, upsert: false });
       if (error) throw error;
       bildSetzen(pfad);
     } catch (e) {

@@ -517,6 +517,8 @@ test('Bildpaar, Bildstrecke und Bild & Text: Blöcke anlegen, Checkliste, Vorsch
   await strecke.locator('input[type=file]').setInputFiles(FOTOS[2]);
   await expect(strecke.locator('.fm-kachel')).toHaveCount(3);
   await expect(typen(page).nth(2)).toHaveText('Bildstrecke · 3 Bilder');
+  // Format: alle Fotos der Strecke im Hochformat
+  await strecke.getByLabel('Format', { exact: true }).selectOption('hoch');
   await schritte.locator('.fs-schritt').nth(1).locator('input[type=file]').setInputFiles(FOTOS[1]);
   await expect(schritte.locator('.fs-bild')).toHaveCount(2);
   await schritte.getByLabel('Schritt 2: Text', { exact: true }).fill('Kein Podest, kein Eintritt.');
@@ -527,6 +529,8 @@ test('Bildpaar, Bildstrecke und Bild & Text: Blöcke anlegen, Checkliste, Vorsch
     await expect(vs.locator('.nb--paar figcaption')).toContainText('Abb. 01Duo in Blau.');
     await expect(vs.locator('.nb--strecke .nb__titel')).toHaveText('Der Tag in Bildern');
     await expect(vs.locator('.nb--strecke .nb__item')).toHaveCount(3);
+    for (let k = 0; k < 3; k++) await expect(vs.locator('.nb--strecke .nb__item').nth(k)).toHaveAttribute('style', '--r:0.7500');
+    await expect(vs.locator('.nb--paar .nb__item').first()).not.toHaveAttribute('style', '--r:0.7500');
     await expect(vs.locator('.ns__titel')).toHaveText('Ein Tag in der Stadt');
     await expect(vs.locator('.ns__schritt')).toHaveCount(2);
   }
@@ -539,7 +543,8 @@ test('Bildpaar, Bildstrecke und Bild & Text: Blöcke anlegen, Checkliste, Vorsch
   const { bloecke } = abschnitte(body);
   expect(bloecke.map((b) => b.typ)).toEqual(['text', 'bilder', 'bilder', 'schritte']);
   expect(bloecke[1]).toMatchObject({ darstellung: 'paar', bilder: [{ text: 'Duo in Blau.' }, { alt: 'Tänzerin im Sprung' }] });
-  expect(bloecke[2]).toMatchObject({ darstellung: 'strecke', titel: 'Der Tag in Bildern' });
+  expect(bloecke[2]).toMatchObject({ darstellung: 'strecke', titel: 'Der Tag in Bildern', format: 'hoch' });
+  expect(bloecke[1]).toMatchObject({ format: 'original' });
   expect(bloecke[3]).toMatchObject({ titel: 'Ein Tag in der Stadt', schritte: [{ titel: 'Raus aus dem Studio' }, { text: 'Kein Podest, kein Eintritt.' }] });
   // Bildbeschreibung aus dem Bildpaar steht in der Mediathek
   const zweites = (bloecke[1] as { bilder: { datei: string }[] }).bilder[1].datei;
@@ -592,6 +597,19 @@ test('Format: Zwischentitel und Zitat sind eigene Blöcke; Mediathek-Angaben gel
   expect(de).toMatchObject({ foto: 'Kim', bilder: [{ datei: '2026/a.jpg', alt: 'Neu', fokus: '20% 30%' }] });
   expect(medienAnwenden(neu, medien, 'en')).toContain('alt: New');
   expect(medienAnwenden(neu, new Map())).toBe(neu);
+});
+
+test('Format: Bildpaar und Bildstrecke ohne Angabe im Format der Fotos, sonst alle gleich zugeschnitten', () => {
+  const strecke = (format = '') => `::: bilder\ndarstellung: strecke\n${format}bilder:\n  - datei: 2026/a.jpg\n    alt: A\n  - datei: 2026/b.jpg\n    alt: B\n  - datei: 2026/c.jpg\n    alt: C\n:::`;
+  // alte Beiträge ohne Angabe: Original, nichts ändert sich
+  const [ohne] = abschnitte(strecke()).bloecke;
+  expect(ohne).toMatchObject({ darstellung: 'strecke', format: 'original' });
+  expect(zuMarkdown([ohne])).not.toContain('format:');
+  // Hochformat: bleibt beim Hin und Her (Darstellung prüft der Editor-Test mit der Vorschau)
+  const [hoch] = abschnitte(strecke('format: hoch\n')).bloecke;
+  expect(hoch).toMatchObject({ format: 'hoch' });
+  expect(zuMarkdown([hoch])).toContain('format: hoch');
+  expect(zuMarkdown(abschnitte(zuMarkdown([hoch])).bloecke)).toBe(zuMarkdown([hoch]));
 });
 
 test('Format: Bildpaar, Bildstrecke und Bild & Text mit Englisch bleiben beim Hin und Her gleich', () => {

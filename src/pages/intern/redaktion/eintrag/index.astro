@@ -66,7 +66,8 @@ import '../../../../styles/mediathek.css';
 <script>
   import { bereich as bereichNach } from '../../../../scripts/intern/redaktion/bereiche';
   import { aenderungenFuer, dateiPfad, freieId, laden, leer, loeschAenderungen, type Eintrag, type Geladen } from '../../../../scripts/intern/redaktion/daten';
-  import { base64, dateiName, formular, verkleinern, type FormKontext } from '../../../../scripts/intern/redaktion/formular';
+  import { base64, dateiName, formular, type FormKontext } from '../../../../scripts/intern/redaktion/formular';
+  import { endung, verkleinern } from '../../../../scripts/intern/foto-datei';
   import type { Aenderung } from '../../../../scripts/intern/redaktion/api';
   import { $, bereichOrt, brotkrumen, erscheintAuf, meldung, namenLaden, ortsKrumen, redaktionUrl, starten, statusAnzeigen, titelVon, verweisQuellen, verwendungen, websiteUrl, type Namen } from '../../../../scripts/intern/redaktion/seite';
   import { planLesen } from '../../../../scripts/intern/redaktion/seitenplan';
@@ -181,11 +182,12 @@ import '../../../../styles/mediathek.css';
       async hochladen(ordner, datei) {
         const pdf = ordner === 'downloads';
         if (pdf && datei.type !== 'application/pdf') throw new Error('Bitte eine PDF-Datei wählen.');
-        const { blob, endung } = pdf ? { blob: datei as Blob, endung: 'pdf' } : await verkleinern(datei);
+        const blob = pdf ? datei : await verkleinern(datei);
+        const ende = pdf ? 'pdf' : endung(blob);
         if (blob.size > 8_000_000) throw new Error('Die Datei ist größer als 8 MB.');
-        const basis = dateiName(datei.name, endung).replace(/\.[^.]+$/, '');
-        const belegt = (n: string) => r!.stand.dateien.some((d) => d.pfad === `${ORDNER[ordner]}/${n}.${endung}`) || uploads.has(`${ORDNER[ordner]}/${n}.${endung}`);
-        const pfad = `${ORDNER[ordner]}/${freieId(basis, belegt)}.${endung}`;
+        const basis = dateiName(datei.name, ende).replace(/\.[^.]+$/, '');
+        const belegt = (n: string) => r!.stand.dateien.some((d) => d.pfad === `${ORDNER[ordner]}/${n}.${ende}`) || uploads.has(`${ORDNER[ordner]}/${n}.${ende}`);
+        const pfad = `${ORDNER[ordner]}/${freieId(basis, belegt)}.${ende}`;
         uploads.set(pfad, blob);
         return pfad;
       },

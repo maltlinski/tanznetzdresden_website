@@ -8,9 +8,9 @@
  * - Daneben jede Form, in der das Foto auf der Website erscheint, live mit Keil (src/lib/bild-zuschnitt.ts).
  * - „Vorschlag“: Gesichter, sonst Personen (MediaPipe im Browser, bild-erkennung.ts), sonst eine Auswertung des
  *   Bildinhalts (Hautton, Kanten, Farben). Kein externer Dienst, das Foto verlässt den Rechner nicht.
- * - Galeriefotos können statt dessen ganz gezeigt werden.
+ * - Galeriefotos können statt dessen ganz gezeigt werden oder ein eigenes Format bekommen (Quer, Hoch, Quadrat).
  */
-import { fokusLesen, fokusText, fokusVorschlag, ausschnitt, sicherSichtbar, FOKUS_MITTE, type Fokus, type Quelle, type Rahmen } from '../../lib/bild-zuschnitt';
+import { fokusLesen, fokusText, fokusVorschlag, ausschnitt, sicherSichtbar, FOKUS_MITTE, GALERIE_FORMATE, type Fokus, type GalerieFormat, type Quelle, type Rahmen } from '../../lib/bild-zuschnitt';
 import { erkennen } from './bild-erkennung';
 import { h } from './news/dom';
 import { t } from './sprache';
@@ -18,6 +18,8 @@ import { t } from './sprache';
 export interface ZuschnittWahl {
   fokus: string;
   ganz: boolean;
+  /** eigenes Format (nur mit `formatWaehlen`) */
+  format?: GalerieFormat;
 }
 
 const vorschlaege = new Map<string, Promise<{ fokus: Fokus; quelle: Quelle }>>();
@@ -73,7 +75,10 @@ export function zuschnittWaehlen(o: {
   ganz?: boolean;
   /** „Ganzes Foto zeigen“ anbieten (Galerie) */
   ganzErlaubt?: boolean;
-  rahmen: (format: number, ganz: boolean) => Rahmen[];
+  /** dazu ein eigenes Format anbieten (Galerie im Filmstreifen und Raster) */
+  formatWaehlen?: boolean;
+  format?: GalerieFormat;
+  rahmen: (format: number, ganz: boolean, eigenes?: GalerieFormat) => Rahmen[];
   titel?: string;
   /** beim Öffnen gleich einen Vorschlag setzen (neues Foto ohne gewählten Ausschnitt) */
   vorschlagSofort?: boolean;
@@ -83,6 +88,8 @@ export function zuschnittWaehlen(o: {
   return new Promise((fertig) => {
     let fokus: Fokus = fokusLesen(o.fokus) ?? { ...(o.standard ?? FOKUS_MITTE) };
     let ganz = !!o.ganz;
+    // eigenes Format des Galeriefotos; `format` ist das Seitenverhältnis des Fotos selbst
+    let eigenes: GalerieFormat | undefined = o.formatWaehlen && !ganz ? o.format : undefined;
     let format = 1;
     let markiert = -1;
     let ergebnis: ZuschnittWahl | null = null;
@@ -99,13 +106,32 @@ export function zuschnittWaehlen(o: {
     const vorschlagKnopf = h('button', { type: 'button', class: 'btn btn--secondary btn--sm' }, t('Vorschlag', 'Suggest')) as HTMLButtonElement;
     const mitteKnopf = h('button', { type: 'button', class: 'i-linkbtn' }, t('Mitte', 'Centre')) as HTMLButtonElement;
     const ganzBox = h('input', { type: 'checkbox', checked: ganz }) as HTMLInputElement;
-    const ganzZeile = o.ganzErlaubt
+    // Galerie im Filmstreifen und Raster: Format wählen (statt nur „ganzes Foto“)
+    const formWahl: [string, string, string][] = [
+      ['', 'Wie die Galerie es vorsieht', 'As the gallery has it'],
+      ...(Object.entries(GALERIE_FORMATE) as [GalerieFormat, (typeof GALERIE_FORMATE)[GalerieFormat]][]).map(([k, f]): [string, string, string] => [k, f.de, f.en]),
+      ['ganz', 'Ganzes Foto, nicht zuschneiden', 'Whole photo, no cropping'],
+    ];
+    const formZeile = o.formatWaehlen && o.ganzErlaubt
+      ? h('fieldset', { class: 'zs__format' },
+          h('legend', { text: t('Format', 'Format') }),
+          ...formWahl.map(([wert, de, en]) => {
+            const r = h('input', { type: 'radio', name: 'zs-format', value: wert, checked: wert === (ganz ? 'ganz' : (eigenes ?? '')) }) as HTMLInputElement;
+            r.addEventListener('change', () => {
+              ganz = wert === 'ganz';
+              eigenes = wert && wert !== 'ganz' ? (wert as GalerieFormat) : undefined;
+              formenBauen();
+            });
+            return h('label', { class: 'i-check' }, r, h('span', { text: t(de, en) }));
+          }))
+      : null;
+    const ganzZeile = formZeile ?? (o.ganzErlaubt
       ? h('label', { class: 'i-check zs__ganz' }, ganzBox,
           h('span', {},
             h('strong', { text: t('Ganzes Foto zeigen', 'Show the whole photo') }), ' ',
             t('statt zuschneiden. Im Filmstreifen bekommt es sein eigenes Format, im Mosaik und Raster steht es vollständig auf Lila.',
               'instead of cropping. In the film strip it keeps its own format, in the mosaic and grid it sits complete on purple.')))
-      : null;
+      : null);
     const liste = h('ul', { class: 'zs__formen' });
     const ok = h('button', { type: 'button', class: 'btn btn--primary btn--sm btn--marker' }, t('Übernehmen', 'Apply')) as HTMLButtonElement;
     const abbrechen = h('button', { type: 'button', class: 'btn btn--secondary btn--sm' }, t('Abbrechen', 'Cancel')) as HTMLButtonElement;
@@ -136,7 +162,7 @@ export function zuschnittWaehlen(o: {
     let rahmen: Rahmen[] = [];
     let formBilder: HTMLImageElement[] = [];
     function formenBauen() {
-      rahmen = o.rahmen(format, ganz);
+      rahmen = o.rahmen(format, ganz, eigenes);
       formBilder = [];
       liste.replaceChildren(...rahmen.map((r, i) => {
         const img = h('img', { src: o.src, alt: '', draggable: false }) as HTMLImageElement;
@@ -265,7 +291,7 @@ export function zuschnittWaehlen(o: {
 
     abbrechen.addEventListener('click', () => dlg.close());
     ok.addEventListener('click', () => {
-      ergebnis = { fokus: fokusText(fokus), ganz };
+      ergebnis = { fokus: fokusText(fokus), ganz, ...(eigenes ? { format: eigenes } : {}) };
       dlg.close();
     });
     dlg.addEventListener('close', () => {

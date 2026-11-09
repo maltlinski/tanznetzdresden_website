@@ -84,7 +84,11 @@ Ausbildung/Sprachen/…, Kontakt (öffentliche E-Mail, offen für, Video) und di
   Raster) und werden dafür zugeschnitten. Im Dialog setzt die Person einen Fokuspunkt (ziehen, antippen, Pfeiltasten);
   er bleibt in jeder Form sichtbar. Daneben stehen alle Formen, in denen das Foto erscheint, live mit Keil; im großen
   Foto ist dunkel, was nirgends zu sehen ist, und umrandet, was überall zu sehen ist. Galeriefotos können statt dessen
-  **ganz** gezeigt werden (Filmstreifen im eigenen Format ohne Keil, Mosaik und Raster vollständig auf Lila).
+  **ganz** gezeigt werden (Filmstreifen im eigenen Format ohne Keil, Mosaik und Raster vollständig auf Lila) oder im
+  Filmstreifen und Raster ein **eigenes Format** bekommen (Quer 3 : 2, Hoch 4 : 5, Quadrat; im Eintrag `format`,
+  Regeln `GALERIE_FORMATE` in `src/lib/bild-zuschnitt.ts`). Im Mosaik gibt die Anordnung die Form vor.
+  **Hochladen:** Fotos werden im Browser auf höchstens 2400 px verkleinert und neu gespeichert
+  (`src/scripts/intern/foto-datei.ts`); dabei fallen die Kamera-Angaben weg, auch der Aufnahmeort von Handyfotos.
   **Vorschlag:** Neue Fotos bekommen gleich einen Fokus, beim Porträt öffnet sich danach der Dialog zum Prüfen. Erst
   Gesichter, sonst Personen auf Kopfhöhe (MediaPipe im Browser, Modelle in `src/assets/modelle/`), sonst eine
   Auswertung des Bildinhalts (Hautton, Kanten, Farben). Kein externer Dienst, das Foto verlässt den Rechner nicht;
@@ -154,7 +158,8 @@ Liste `gallery` mit Merker `frei`, den nur die Redaktion setzt (Trigger `profile
 öffentliche Ansicht nur mit freigegebenen Fotos) und `supabase/migrations/20261106000000_foto_ausschnitt.sql` (Ausschnitt
 des Porträts `photo_focus`, in der öffentlichen Ansicht) und `supabase/migrations/20261108000000_links_pruefen.sql`
 (Website und Video nur als `http(s)`-Link; bereinigt alte Einträge – dieselbe Regel prüft `webLink()` in
-`src/lib/profil-ansicht.ts` beim Bauen). Alle im SQL-Editor ausführen. Ohne die Ausschnitt-Migration
+`src/lib/profil-ansicht.ts` beim Bauen) und `supabase/migrations/20261109000000_portraet_ordner.sql` (ein wartendes
+Porträt nur aus dem eigenen Ordner – sonst könnte „Ablehnen“ das Foto einer anderen Person löschen). Alle im SQL-Editor ausführen. Ohne die Ausschnitt-Migration
 fehlt nur „Ausschnitt wählen“ beim Porträt. Ohne die letzte Migration bleibt
 *Mein Profil* wie bisher, die neuen Bereiche sind verborgen.
 

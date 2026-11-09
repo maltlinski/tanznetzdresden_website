@@ -91,7 +91,7 @@ export interface ProfilEntwurf {
   photoCredit?: string;
   /** Fokuspunkt des Porträts „x% y%“ */
   photoFocus?: string;
-  gallery: { src: string; caption?: string; caption_en?: string; credit?: string; fokus?: string; ganz?: boolean }[];
+  gallery: { src: string; caption?: string; caption_en?: string; credit?: string; fokus?: string; ganz?: boolean; format?: string }[];
   galleryLayout: GalerieLayout;
   works: { year: string; title: string; place?: string }[];
   angaben: Partial<Record<AngabeKey, string>>;

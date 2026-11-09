@@ -11,9 +11,9 @@
  */
 import type { ImageMetadata } from 'astro';
 import { getPersonen } from './content';
-import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseFehlt } from './supabase-config';
+import { SUPABASE_ANON_KEY, SUPABASE_URL, datenAusSupabase, supabaseFehlt } from './supabase-config';
 import { OFFEN_FUER, type GalerieLayout, type OffenFuer } from './profil-felder';
-import { fokusPos } from './bild-zuschnitt';
+import { fokusPos, galerieFormat, type GalerieFormat } from './bild-zuschnitt';
 import { webLink } from './profil-ansicht';
 
 export type Role = 'mitglied' | 'trainer';
@@ -28,6 +28,8 @@ export interface GalerieFoto {
   fokus?: string;
   /** ganz zeigen statt zuschneiden */
   ganz?: boolean;
+  /** eigenes Format im Filmstreifen und Raster */
+  format?: GalerieFormat;
 }
 
 export interface Arbeit {
@@ -103,7 +105,7 @@ interface RemoteProfile {
   height?: string | null;
   available?: string | null;
   public_email?: string | null;
-  gallery?: { path?: unknown; caption?: unknown; caption_en?: unknown; credit?: unknown; fokus?: unknown; ganz?: unknown }[] | null;
+  gallery?: { path?: unknown; caption?: unknown; caption_en?: unknown; credit?: unknown; fokus?: unknown; ganz?: unknown; format?: unknown }[] | null;
   gallery_layout?: string | null;
   // ab Migration 20261106000000_foto_ausschnitt.sql
   photo_focus?: string | null;
@@ -112,7 +114,7 @@ interface RemoteProfile {
 const clean = <T,>(v: T | null | undefined): T | undefined => (v === null || v === '' ? undefined : v);
 
 async function fetchRemote(): Promise<RemoteProfile[]> {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+  if (!datenAusSupabase) return [];
   try {
     const res = await fetch(`${SUPABASE_URL}/rest/v1/public_profiles?select=*&order=display_name`, {
       headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
@@ -141,7 +143,7 @@ export function getProfiles(): Promise<PublicProfile[]> {
         .filter((w) => w.title);
       const gallery = (r.gallery ?? [])
         .filter((g) => typeof g.path === 'string' && g.path)
-        .map((g) => ({ photo: bild(g.path as string), caption: text(g.caption), caption_en: text(g.caption_en), credit: text(g.credit), fokus: fokusPos(g.fokus), ganz: g.ganz === true || undefined }));
+        .map((g) => ({ photo: bild(g.path as string), caption: text(g.caption), caption_en: text(g.caption_en), credit: text(g.credit), fokus: fokusPos(g.fokus), ganz: g.ganz === true || undefined, format: galerieFormat(g.format) }));
       const fromRemote = {
         name: r.display_name,
         pronouns: clean(r.pronouns),

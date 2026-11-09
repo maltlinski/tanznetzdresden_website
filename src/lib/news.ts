@@ -8,7 +8,7 @@
  */
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { getImage } from 'astro:assets';
-import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseFehlt } from './supabase-config';
+import { SUPABASE_ANON_KEY, SUPABASE_URL, datenAusSupabase, supabaseFehlt } from './supabase-config';
 import type { Lang } from './i18n';
 import { newsCategories, type newsHeroes, type newsThemes } from '../content.config';
 import { renderMarkdown } from './markdown';
@@ -140,7 +140,7 @@ let medienCache: Promise<Map<string, MedienAngaben>> | undefined;
 /** Mediathek (Migration 20261016000000): Bildbeschreibung, Fotonachweis und Ausschnitt je Foto */
 function fetchMedien(): Promise<Map<string, MedienAngaben>> {
   medienCache ??= (async () => {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return new Map();
+    if (!datenAusSupabase) return new Map();
     try {
       const holen = (spalten: string) =>
         fetch(`${SUPABASE_URL}/rest/v1/news_medien?select=${spalten}`, {
@@ -163,7 +163,7 @@ function fetchMedien(): Promise<Map<string, MedienAngaben>> {
 let remoteCache: Promise<RemoteNews[]> | undefined;
 function fetchRemote(): Promise<RemoteNews[]> {
   remoteCache ??= (async () => {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+    if (!datenAusSupabase) return [];
     try {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/public_news?select=*&order=date.desc`, {
         headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },
@@ -317,7 +317,8 @@ async function bilderOptimieren(html: string, id: string): Promise<string> {
       const f = await fassung(url, id);
       if (f === undefined) return ganz;
       if (f === null) return '';
-      const r = f.w && f.h ? ` style="--r:${(f.w / f.h).toFixed(4)}"` : '';
+      // festes Format aus dem Editor (Bildpaar, Bildstrecke) geht vor
+      const r = f.w && f.h && !attr?.includes('--r:') ? ` style="--r:${(f.w / f.h).toFixed(4)}"` : '';
       if (src !== undefined) return `<img class="ns__bild" src="${f.klein}" srcset="${f.srcset}" width="${f.w}" height="${f.h}"${restNs}>`;
       return `<a class="nb__item" href="${f.gross}"${attr}${r}><img src="${f.klein}" srcset="${f.srcset}" width="${f.w}" height="${f.h}"${rest}></a>`;
     }),

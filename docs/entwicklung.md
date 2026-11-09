@@ -24,6 +24,10 @@
   der letzte gute Stand online bleibt statt einer Website ohne Profile, News oder Termine. Neuer Lader → genauso.
 - **Text in eigenem HTML** (Beiträge, Feed, Vorschau) immer mit `escapeHtml()` aus `src/lib/news-format.ts`.
 - **Links aus Profilen** nur mit `webLink()` aus `src/lib/profil-ansicht.ts` (nur `http(s)`).
+- **Fotos hochladen** (News, Redaktion, KEEP UP, Mein Profil) immer über `verkleinern()` aus
+  `src/scripts/intern/foto-datei.ts`: höchstens 2400 px, neu gespeichert, ohne Aufnahmeort und Kamera-Angaben.
+- **Testlauf auf GitHub** (Workflow „CI“) baut nur mit den Dateien, ohne Daten aus Supabase (`datenAusSupabase` in
+  `src/lib/supabase-config.ts`) – die Tests rechnen mit `src/content/`.
 - **Tests grün halten:** `npm run build && npm test`. Die CI prüft Funktion, „keine externen Anfragen ohne
   Einwilligung“ und Barrierefreiheit (WCAG 2.1 AA).
 

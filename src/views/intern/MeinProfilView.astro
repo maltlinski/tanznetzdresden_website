@@ -31,7 +31,7 @@ const t = tr(lang, {
     satz: 'In einem Satz', satzHinweis: 'Steht groß oben auf deinem Profil. Was nach einem Doppelpunkt kommt, wird pink hervorgehoben, z. B. „Ich bringe Tanz an Orte, an denen ihn niemand erwartet: Höfe, Haltestellen, leere Läden.“',
     schwerpunkte: 'Schwerpunkte', schwerpunkteBsp: 'z. B. Choreografie, Contemporary, Somatics', schwerpunkteHinweis: 'Mit Komma trennen, höchstens 6.',
     keinFoto: 'Kein Foto', wartet: 'Wartet auf Freigabe', portraet: 'Porträt',
-    fotoHinweis: 'JPG, PNG oder WebP, höchstens 5 MB, am besten Hochformat. Nur Fotos, an denen du die Rechte hast. Neue Fotos erscheinen nach der Freigabe durch Presse oder Vorstand, bis dahin bleibt das bisherige.',
+    fotoHinweis: 'JPG, PNG oder WebP, am besten Hochformat. Große Fotos verkleinern wir beim Hochladen, Angaben wie der Aufnahmeort werden entfernt. Nur Fotos, an denen du die Rechte hast. Neue Fotos erscheinen nach der Freigabe durch Presse oder Vorstand, bis dahin bleibt das bisherige.',
     credit: 'Foto: Name der Fotograf:in', fotoWeg: 'Foto entfernen', ausschnitt: 'Ausschnitt wählen',
     neuFehlt: 'Galerie, Arbeiten und weitere Angaben kommen bald dazu. Bis dahin bleibt dein Profil wie bisher.',
     galerie: 'Galerie', galerieHinweis: 'Bis zu 12 Fotos aus deiner Arbeit. Das Porträt steht groß oben, die Galerie darunter. Nur Fotos, an denen du die Rechte hast.',
@@ -57,7 +57,7 @@ const t = tr(lang, {
     satz: 'In one sentence', satzHinweis: 'Shown large at the top of your profile. Whatever follows a colon is highlighted in pink, e.g. “I bring dance to places where nobody expects it: courtyards, tram stops, empty shops.”',
     schwerpunkte: 'Focus', schwerpunkteBsp: 'e.g. Choreography, Contemporary, Somatics', schwerpunkteHinweis: 'Separate with commas, up to 6.',
     keinFoto: 'No photo', wartet: 'Waiting for approval', portraet: 'Portrait',
-    fotoHinweis: 'JPG, PNG or WebP, up to 5 MB, portrait format works best. Only photos you hold the rights to. New photos appear once the press team or the board has approved them; until then the previous one stays.',
+    fotoHinweis: 'JPG, PNG or WebP, portrait format works best. We shrink large photos when uploading and remove details such as the location. Only photos you hold the rights to. New photos appear once the press team or the board has approved them; until then the previous one stays.',
     credit: 'Photo: name of the photographer', fotoWeg: 'Remove photo', ausschnitt: 'Choose crop',
     neuFehlt: 'Gallery, works and more details are coming soon. Until then your profile stays as it is.',
     galerie: 'Gallery', galerieHinweis: 'Up to 12 photos of your work. The portrait is shown large at the top, the gallery below. Only photos you hold the rights to.',
@@ -269,6 +269,7 @@ const t = tr(lang, {
   import { ANGABEN, type GalerieLayout, type OffenFuer } from '../../lib/profil-felder';
   import { FOKUS_PORTRAET, fokusText, rahmenPortraet } from '../../lib/bild-zuschnitt';
   import { vorschlagBerechnen, zuschnittWaehlen } from '../../scripts/intern/zuschnitt';
+  import { endung, verkleinern } from '../../scripts/intern/foto-datei';
 
   const BUCKET = 'profilbilder';
   const ctx = await initIntern(true);
@@ -428,12 +429,13 @@ const t = tr(lang, {
     form.addEventListener('change', zusammenfassen);
 
     photoInput?.addEventListener('change', async () => {
-      const file = photoInput.files?.[0];
-      if (!file) return;
-      if (file.size > 5 * 1024 * 1024) return showMessage(msg, t('Das Foto ist größer als 5 MB.', 'The photo is larger than 5 MB.'));
-      const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
+      const original = photoInput.files?.[0];
+      if (!original) return;
+      // verkleinert und ohne Aufnahmeort (foto-datei.ts)
+      const file = await verkleinern(original).catch(() => null);
+      if (!file) return showMessage(msg, t('Das Foto lässt sich nicht lesen. Bitte als JPG, PNG oder WebP speichern und noch einmal wählen.', 'The photo cannot be read. Please save it as JPG, PNG or WebP and choose it again.'));
       // neuer Dateiname bei jedem Upload, damit Browser- und Build-Caches das neue Bild holen
-      const path = `${ctx.user.id}/portrait-${Date.now()}.${ext}`;
+      const path = `${ctx.user.id}/portrait-${Date.now()}.${endung(file)}`;
       showPhoto(URL.createObjectURL(file));
       const { error } = await ctx.sb.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false });
       if (error) return showMessage(msg, errorText(error));
@@ -529,7 +531,7 @@ const t = tr(lang, {
           photo: portrait ?? undefined,
           photoCredit: wert('photo_credit'),
           photoFocus: portraetFokus(),
-          gallery: (galerie?.wert() ?? []).map((g) => ({ src: photoUrl(g.path) ?? '', caption: g.caption, caption_en: g.caption_en, credit: g.credit, fokus: g.fokus, ganz: g.ganz })).filter((g) => g.src),
+          gallery: (galerie?.wert() ?? []).map((g) => ({ src: photoUrl(g.path) ?? '', caption: g.caption, caption_en: g.caption_en, credit: g.credit, fokus: g.fokus, ganz: g.ganz, format: g.format })).filter((g) => g.src),
           galleryLayout: (form!.querySelector<HTMLInputElement>('input[name="gallery_layout"]:checked')?.value ?? 'filmstreifen') as GalerieLayout,
           works: arbeiten?.wert() ?? [],
           angaben: Object.fromEntries(ANGABEN.map((a) => [a.key, wert(a.key)])),

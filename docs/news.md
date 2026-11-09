@@ -77,6 +77,8 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
       Ziehen.
     - **Darstellung** (eingeklappt): Format (Original, Quer 3 : 2, Hoch 3 : 4, Quadrat) und Fotos pro Reihe (2–4,
       auf dem Handy höchstens zwei).
+  - **Bildpaar** und **Bildstrecke** haben ein Feld **Format**: Original (jedes Foto in seinem Format) oder alle
+    Fotos gleich als Quer 3 : 2, Hoch 3 : 4 oder Quadrat (`format:` im Abschnitt, ohne Angabe Original).
   - **Bildpaar:** genau zwei Fotos, auf der Website gleich hoch (auch Hoch- neben Querformat). Jedes Foto hat
     Bildbeschreibung und eine eigene Unterschrift; Reihenfolge durch Ziehen, × entfernt.
   - **Bildstrecke:** Titel und 3 bis 12 Fotos, jedes mit eigener Unterschrift. Auf der Website ein lila Band über die
@@ -164,7 +166,7 @@ Text in Markdown. Links zu Seiten der Website mit /kontakt/ (der Unterpfad wird 
 > — Name · Funktion
 
 ::: bilder
-format: quer          # original · quer · hoch · quadrat
+format: quer          # original · quer · hoch · quadrat (auch Bildpaar und Bildstrecke)
 spalten: 2            # 2–4, bei mehreren Fotos
 breite: weit          # nur ein Foto: text · weit · randlos
 text: Bildunterschrift

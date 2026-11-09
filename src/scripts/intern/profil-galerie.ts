@@ -8,9 +8,10 @@
 import type { SupabaseClient } from '@supabase/supabase-js';
 import { photoUrl, type GalerieEintrag } from '../../lib/supabase';
 import { GALERIE_MAX, ARBEITEN_MAX, type GalerieLayout } from '../../lib/profil-felder';
-import { fokusText, rahmenGalerie, rahmenPortraet } from '../../lib/bild-zuschnitt';
+import { fokusText, formatWaehlbar, galerieFormat, GALERIE_FORMATE, rahmenGalerie, rahmenPortraet } from '../../lib/bild-zuschnitt';
 import { vorschlagBerechnen, zuschnittWaehlen } from './zuschnitt';
 import { h } from './news/dom';
+import { endung, verkleinern } from './foto-datei';
 import { t } from './sprache';
 
 const BUCKET = 'profilbilder';
@@ -55,14 +56,17 @@ export function galerieEditor(o: {
       fokus: g.fokus,
       ganz: g.ganz,
       ganzErlaubt: !oben,
+      // eigenes Format im Filmstreifen und Raster; im Mosaik gibt die Anordnung die Form vor
+      formatWaehlen: !oben && formatWaehlbar(o.layout()),
+      format: galerieFormat(g.format),
       titel: t(`Ausschnitt: Foto ${i + 1}`, `Crop: photo ${i + 1}`),
-      rahmen: (format, ganz) => (oben ? rahmenPortraet() : rahmenGalerie(i - versatz, liste.length - versatz, o.layout(), format, ganz)),
+      rahmen: (format, ganz, eigenes) => (oben ? rahmenPortraet() : rahmenGalerie(i - versatz, liste.length - versatz, o.layout(), format, ganz, eigenes)),
     });
     if (!wahl) return;
     const neu = liste.map((x, k) => {
       if (k !== i) return x;
-      const { ganz: _alt, ...rest } = x;
-      return { ...rest, fokus: wahl.fokus, ...(wahl.ganz && !oben ? { ganz: true } : {}) };
+      const { ganz: _alt, format: _f, ...rest } = x;
+      return { ...rest, fokus: wahl.fokus, ...(wahl.ganz && !oben ? { ganz: true } : {}), ...(wahl.format && !oben ? { format: wahl.format } : {}) };
     });
     if (await speichern(neu)) {
       o.melden(t('Ausschnitt gespeichert.', 'Crop saved.'), 'ok');
@@ -72,8 +76,8 @@ export function galerieEditor(o: {
 
   function zeigen() {
     zahl.textContent = t(
-      `${liste.length} von ${GALERIE_MAX} Fotos. JPG, PNG oder WebP, höchstens 5 MB. Neue Fotos erscheinen nach der Freigabe.`,
-      `${liste.length} of ${GALERIE_MAX} photos. JPG, PNG or WebP, up to 5 MB. New photos appear after approval.`,
+      `${liste.length} von ${GALERIE_MAX} Fotos. JPG, PNG oder WebP; große Fotos verkleinern wir, Angaben wie der Aufnahmeort werden entfernt. Neue Fotos erscheinen nach der Freigabe.`,
+      `${liste.length} of ${GALERIE_MAX} photos. JPG, PNG or WebP; we shrink large photos and remove details such as the location. New photos appear after approval.`,
     );
     knopf.toggleAttribute('hidden', liste.length >= GALERIE_MAX);
     raster.replaceChildren(
@@ -83,8 +87,9 @@ export function galerieEditor(o: {
           src: photoUrl(g.path) ?? '', alt: g.caption ? t(`Vorschau: ${g.caption}`, `Preview: ${g.caption}`) : t(`Galeriefoto ${n} (Vorschau)`, `Gallery photo ${n} (preview)`),
           loading: 'lazy', class: g.ganz ? 'is-ganz' : undefined, style: g.fokus ? `object-position: ${g.fokus}` : undefined,
         });
-        const zuschnitt = h('button', { type: 'button', class: 'pg__ausschnitt', 'data-ausschnitt': '', 'aria-label': t(`Ausschnitt von Foto ${n} wählen`, `Choose the crop of photo ${n}`) },
-          g.ganz ? t('Ganzes Foto', 'Whole photo') : t('Ausschnitt', 'Crop')) as HTMLButtonElement;
+        const f = galerieFormat(g.format);
+        const zuschnitt = h('button', { type: 'button', class: 'pg__ausschnitt', 'data-ausschnitt': '', 'aria-label': t(`Ausschnitt und Format von Foto ${n} wählen`, `Choose the crop and format of photo ${n}`) },
+          g.ganz ? t('Ganzes Foto', 'Whole photo') : f ? t(`Ausschnitt · ${GALERIE_FORMATE[f].de}`, `Crop · ${GALERIE_FORMATE[f].en}`) : t('Ausschnitt', 'Crop')) as HTMLButtonElement;
         zuschnitt.addEventListener('click', () => ausschnitt(i));
         const status = h('span', { class: g.frei ? 'pg__status pg__status--ok' : 'pg__status' },
           g.frei ? (o.verified() ? t('Auf der Website', 'On the website') : t('Freigegeben', 'Approved')) : t('Wartet auf Freigabe', 'Waiting for approval'));
@@ -127,11 +132,16 @@ export function galerieEditor(o: {
     const files = [...(datei.files ?? [])].slice(0, GALERIE_MAX - liste.length);
     datei.value = '';
     if (!files.length) return;
-    const zuGross = files.filter((f) => f.size > 5 * 1024 * 1024);
     const neu: GalerieEintrag[] = [];
-    for (const [k, file] of files.filter((f) => f.size <= 5 * 1024 * 1024).entries()) {
-      const ext = file.type === 'image/png' ? 'png' : file.type === 'image/webp' ? 'webp' : 'jpg';
-      const path = `${o.userId}/galerie-${Date.now()}-${k}.${ext}`;
+    let unlesbar = 0;
+    for (const [k, original] of files.entries()) {
+      // verkleinert und ohne Aufnahmeort (foto-datei.ts)
+      const file = await verkleinern(original).catch(() => null);
+      if (!file) {
+        unlesbar++;
+        continue;
+      }
+      const path = `${o.userId}/galerie-${Date.now()}-${k}.${endung(file)}`;
       const { error } = await o.sb.storage.from(BUCKET).upload(path, file, { contentType: file.type, upsert: false });
       if (error) {
         o.melden(error.message);
@@ -141,19 +151,21 @@ export function galerieEditor(o: {
       const { fokus } = await vorschlagBerechnen(file);
       neu.push({ path, caption: '', credit: '', fokus: fokusText(fokus) });
     }
+    const nichtLesbar = t(
+      `${unlesbar === 1 ? 'Ein Foto ließ' : `${unlesbar} Fotos ließen`} sich nicht lesen. Bitte als JPG, PNG oder WebP speichern und noch einmal wählen.`,
+      `${unlesbar === 1 ? 'One photo' : `${unlesbar} photos`} could not be read. Please save as JPG, PNG or WebP and choose again.`,
+    );
     if (neu.length && (await speichern([...liste, ...neu]))) {
       o.melden(
         t(
-          `${neu.length === 1 ? 'Foto' : `${neu.length} Fotos`} hochgeladen. Auf der Website erscheinen sie, sobald Presse oder Vorstand sie freigegeben haben. Den Ausschnitt haben wir vorgeschlagen, anpassen kannst du ihn mit „Ausschnitt“ unter dem Foto.` +
-            (zuGross.length ? ` ${zuGross.length} größer als 5 MB, nicht hochgeladen.` : ''),
-          `${neu.length === 1 ? 'Photo' : `${neu.length} photos`} uploaded. They appear on the website as soon as the press team or the board has approved them. We suggested a crop; you can adjust it with “Crop” below the photo.` +
-            (zuGross.length ? ` ${zuGross.length} larger than 5 MB, not uploaded.` : ''),
-        ),
+          `${neu.length === 1 ? 'Foto' : `${neu.length} Fotos`} hochgeladen. Auf der Website erscheinen sie, sobald Presse oder Vorstand sie freigegeben haben. Den Ausschnitt haben wir vorgeschlagen, anpassen kannst du ihn und das Format mit „Ausschnitt“ unter dem Foto.`,
+          `${neu.length === 1 ? 'Photo' : `${neu.length} photos`} uploaded. They appear on the website as soon as the press team or the board has approved them. We suggested a crop; you can adjust it and the format with “Crop” below the photo.`,
+        ) + (unlesbar ? ` ${nichtLesbar}` : ''),
         'ok',
       );
       raster.lastElementChild?.querySelector('input')?.focus();
-    } else if (zuGross.length) {
-      o.melden(t('Die Fotos sind größer als 5 MB.', 'The photos are larger than 5 MB.'));
+    } else if (unlesbar) {
+      o.melden(nichtLesbar);
     }
   });
 

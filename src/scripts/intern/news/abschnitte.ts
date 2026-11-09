@@ -642,7 +642,7 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
         h('label', { class: 'md-knopf' }, 'Hochladen', dateiInput(b, `Fotos hochladen (Block ${i + 1})`))));
     }
     const hinweis = paar
-      ? n === 2 ? 'Hoch- und Querformat werden auf der Website gleich hoch gesetzt.' : 'Ein Bildpaar braucht genau 2 Bilder.'
+      ? n === 2 ? (b.format === 'original' ? 'Hoch- und Querformat werden auf der Website gleich hoch gesetzt.' : `Beide Fotos im ${FORMAT_KURZ[b.format]}.`) : 'Ein Bildpaar braucht genau 2 Bilder.'
       : n < min ? 'Mindestens 3, höchstens 12 Bilder.' : `${n} Bilder · auf der Website seitlich zum Blättern.`;
     const [fotoId, foto] = eingabe(`${i}-foto`, b.foto, (v) => { b.foto = v; letzterFotonachweis = v; }, { maxLength: 120, placeholder: 'leer = Angaben aus der Mediathek' });
     const enFelder: HTMLElement[] = [];
@@ -655,9 +655,14 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
       const [cId, c] = eingabe(`${i}-${j}-capen`, x.text_en ?? '', (v) => (x.text_en = v), { maxLength: 300, lang: 'en', class: 'fb-en', placeholder: 'Caption' });
       enFelder.push(h('div', { class: 'ne-row' }, feld(aId, `Foto ${j + 1}: Bildbeschreibung (Englisch)`, a), feld(cId, `Foto ${j + 1}: Bildunterschrift (Englisch)`, c)));
     });
+    // Format: Original = jedes Foto in seinem eigenen Format, sonst alle gleich zugeschnitten
+    const formatId = neueId();
+    const format = h('select', { id: formatId, onchange: (e: Event) => { b.format = (e.target as HTMLSelectElement).value as Format; zeichnen(); geaendert(); } },
+      ...FORMATE.map((f) => h('option', { value: f, text: f === 'original' ? 'Original (jedes Foto in seinem Format)' : FORMAT_LABEL[f], selected: b.format === f })));
     ziel.append(
       raster,
       h('span', { class: `i-hint fm-hinweis${n < min ? ' is-offen' : ''}`, text: hinweis }),
+      feld(formatId, 'Format', format),
       feld(fotoId, 'Fotos von', foto),
       englisch(b, enFelder, () => !!(b.titel_en || b.bilder.some((x) => x.alt_en || x.text_en))),
     );

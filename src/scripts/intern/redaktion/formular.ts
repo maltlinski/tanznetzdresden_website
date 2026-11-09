@@ -855,23 +855,6 @@ export function formular(b: Bereich, e: Eintrag, k: FormKontext): Formular {
   };
 }
 
-/** Foto im Browser verkleinern (max. 2400 px, JPEG), damit Upload und Website schnell bleiben */
-export async function verkleinern(datei: File): Promise<{ blob: Blob; endung: string }> {
-  const bmp = await createImageBitmap(datei).catch(() => null);
-  if (!bmp) throw new Error('Das Foto lässt sich nicht lesen. Bitte JPG, PNG oder WebP nehmen.');
-  const png = datei.type === 'image/png';
-  const scale = Math.min(1, 2400 / Math.max(bmp.width, bmp.height));
-  if (scale === 1 && datei.size < 2_500_000) return { blob: datei, endung: png ? 'png' : datei.type === 'image/webp' ? 'webp' : 'jpg' };
-  const c = document.createElement('canvas');
-  c.width = Math.round(bmp.width * scale);
-  c.height = Math.round(bmp.height * scale);
-  c.getContext('2d')!.drawImage(bmp, 0, 0, c.width, c.height);
-  // Logos (PNG) behalten Transparenz
-  const typ = png ? 'image/png' : 'image/jpeg';
-  const blob = await new Promise<Blob>((res, rej) => c.toBlob((x) => (x ? res(x) : rej(new Error('Das Foto ließ sich nicht verkleinern.'))), typ, 0.86));
-  return { blob, endung: png ? 'png' : 'jpg' };
-}
-
 export const dateiName = (name: string, endung: string) => `${slugify(name.replace(/\.[^.]+$/, '')) || 'datei'}.${endung}`;
 
 export async function base64(blob: Blob): Promise<string> {

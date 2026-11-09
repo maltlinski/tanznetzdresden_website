@@ -1,6 +1,6 @@
 import { getCollection, type CollectionEntry } from 'astro:content';
 import { sortKey } from './dates';
-import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseFehlt } from './supabase-config';
+import { SUPABASE_ANON_KEY, SUPABASE_URL, datenAusSupabase, supabaseFehlt } from './supabase-config';
 import { alsTerminDaten, type OeffentlicherKalenderTermin } from './kalender-intern';
 import personenRaw from '../content/personen.yaml?raw';
 import orteRaw from '../content/kooperation/orte.yaml?raw';
@@ -53,7 +53,7 @@ let kalenderCache: Promise<OeffentlicherKalenderTermin[]> | undefined;
 /** Termine aus Intern → Kalender (leer, wenn Supabase fehlt oder die Migration 20261026 noch nicht eingespielt ist) */
 function fetchKalender(): Promise<OeffentlicherKalenderTermin[]> {
   kalenderCache ??= (async () => {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+    if (!datenAusSupabase) return [];
     try {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/public_kalender?select=*&order=datum`, {
         headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },

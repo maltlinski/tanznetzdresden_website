@@ -243,7 +243,7 @@ const personen = defineCollection({
       height: z.string().optional(),
       available: z.string().optional(),
       /** Galerie: Fotos in src/assets/personen/ */
-      gallery: z.array(z.object({ photo: image(), caption: z.string().optional(), caption_en: z.string().optional(), credit: z.string().optional(), fokus: z.string().regex(/^\d{1,3}% \d{1,3}%$/).optional(), ganz: z.boolean().optional(), sichtbar })).default([]),
+      gallery: z.array(z.object({ photo: image(), caption: z.string().optional(), caption_en: z.string().optional(), credit: z.string().optional(), fokus: z.string().regex(/^\d{1,3}% \d{1,3}%$/).optional(), ganz: z.boolean().optional(), format: z.enum(['quer', 'hoch', 'quadrat']).optional(), sichtbar })).default([]),
       galleryLayout: z.enum(GALERIE_WERTE).default('filmstreifen'),
       /** auf der Startseite zeigen */
       featured: z.boolean().default(true),

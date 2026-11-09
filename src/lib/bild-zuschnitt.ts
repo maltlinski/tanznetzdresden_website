@@ -78,6 +78,21 @@ const KEIL_STREIFEN = { a: 'polygon(0 0, 100% 0, 100% 90%, 86% 100%, 0 100%)', b
 const MOSAIK_R: Record<string, number> = { gross: 0.93, klein: 4 / 3, halb: 4 / 3, ganz: 21 / 9, raster: 4 / 5 };
 const MOSAIK_HANDY_R: Record<string, number> = { gross: 4 / 3, ganz: 4 / 3, klein: 4 / 5, halb: 4 / 5, raster: 4 / 5 };
 
+/**
+ * Format, das ein Galeriefoto unter „Mein Profil“ bekommen kann (Breite/Höhe). Gilt im Filmstreifen und im Raster;
+ * im Mosaik gibt die Anordnung die Form vor. Ohne Wahl: die Form der Darstellung, „ganz“: das Format des Fotos.
+ */
+export const GALERIE_FORMATE = {
+  quer: { r: 3 / 2, de: 'Querformat', en: 'Landscape' },
+  hoch: { r: 4 / 5, de: 'Hochformat', en: 'Portrait' },
+  quadrat: { r: 1, de: 'Quadrat', en: 'Square' },
+} as const;
+export type GalerieFormat = keyof typeof GALERIE_FORMATE;
+export const galerieFormat = (v: unknown): GalerieFormat | undefined =>
+  typeof v === 'string' && Object.hasOwn(GALERIE_FORMATE, v) ? (v as GalerieFormat) : undefined;
+/** Darstellungen, in denen ein gewähltes Format gilt */
+export const formatWaehlbar = (layout: GalerieLayout) => layout !== 'mosaik';
+
 /** Filmstreifen mit ganzem Foto: der Rahmen nimmt das Format des Fotos an (in Grenzen), ohne Keil */
 export const streifenFormat = (bild: number) => +klemmen(bild, 0.5, 2.2).toFixed(3);
 
@@ -95,19 +110,20 @@ export function rahmenPortraet(o: { karte?: boolean; training?: boolean } = {}):
  * Rahmen eines Galeriefotos. `k` zählt in der Galerie unter dem Foto oben (ohne Porträt rückt das erste
  * Galeriefoto nach oben, dann gilt rahmenPortraet), `n` ist die Zahl dieser Fotos.
  */
-export function rahmenGalerie(k: number, n: number, layout: GalerieLayout, bild: number, ganz: boolean): Rahmen[] {
+export function rahmenGalerie(k: number, n: number, layout: GalerieLayout, bild: number, ganz: boolean, format?: GalerieFormat): Rahmen[] {
+  const fest = format && !ganz && formatWaehlbar(layout) ? GALERIE_FORMATE[format].r : undefined;
   if (layout === 'filmstreifen') {
     const s = STREIFEN[k % STREIFEN.length];
     return [{
       id: 'streifen', de: 'Filmstreifen', en: 'Film strip',
-      r: ganz ? streifenFormat(bild) : s.r, clip: s.keil && !ganz ? KEIL_STREIFEN[s.keil] : undefined,
+      r: ganz ? streifenFormat(bild) : (fest ?? s.r), clip: s.keil && !ganz ? KEIL_STREIFEN[s.keil] : undefined,
     }];
   }
   const span = mosaik(n, layout)[k] ?? 'raster';
   const name = layout === 'mosaik' ? { de: 'Mosaik', en: 'Mosaic' } : { de: 'Raster', en: 'Grid' };
   return [
-    { id: 'gross', de: `${name.de}, großer Bildschirm`, en: `${name.en}, large screen`, r: MOSAIK_R[span], ganz },
-    { id: 'handy', de: `${name.de} auf dem Handy`, en: `${name.en} on a phone`, r: MOSAIK_HANDY_R[span], ganz },
+    { id: 'gross', de: `${name.de}, großer Bildschirm`, en: `${name.en}, large screen`, r: fest ?? MOSAIK_R[span], ganz },
+    { id: 'handy', de: `${name.de} auf dem Handy`, en: `${name.en} on a phone`, r: fest ?? MOSAIK_HANDY_R[span], ganz },
   ];
 }
 

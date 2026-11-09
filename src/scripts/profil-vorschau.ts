@@ -9,7 +9,7 @@
  */
 import { absaetze, linkText, mosaik, nameTeile, pad, pitchWoerter, STREIFEN, type ProfilEntwurf } from '../lib/profil-ansicht';
 import { ANGABEN, OFFEN_FUER } from '../lib/profil-felder';
-import { FOKUS_PORTRAET, fokusText, streifenFormat } from '../lib/bild-zuschnitt';
+import { FOKUS_PORTRAET, fokusText, galerieFormat, GALERIE_FORMATE, streifenFormat } from '../lib/bild-zuschnitt';
 import { fuellen, zeilen } from '../lib/texte-regeln';
 
 interface Texte {
@@ -178,7 +178,9 @@ export function profilVorschau() {
           const el = klon(vorlage.streifen);
           el.className = el.className.replace(/pstrip__el--\w+/, `pstrip__el--${s.align}`);
           el.style.setProperty('--h', String(s.h));
-          el.style.setProperty('--r', String(s.r));
+          // gewähltes Format (Mein Profil → Ausschnitt), sonst die Form des Platzes
+          const f = g.ganz ? undefined : galerieFormat(g.format);
+          el.style.setProperty('--r', String(f ? +GALERIE_FORMATE[f].r.toFixed(4) : s.r));
           const b = el.querySelector<HTMLElement>('.pstrip__bild');
           b?.classList.remove('pstrip__bild--keil-a', 'pstrip__bild--keil-b');
           if (s.keil && !g.ganz) b?.classList.add(`pstrip__bild--keil-${s.keil}`);
@@ -214,6 +216,9 @@ export function profilVorschau() {
           const el = klon(muster);
           el.className = el.className.replace(/pgrid__el--\w+/, `pgrid__el--${spans[k]}`);
           el.classList.toggle('pgrid__el--voll', !!g.ganz);
+          const f = d.galleryLayout === 'raster' && !g.ganz ? galerieFormat(g.format) : undefined;
+          if (f) el.style.setProperty('--fr', String(+GALERIE_FORMATE[f].r.toFixed(4)));
+          else el.style.removeProperty('--fr');
           bild(el.querySelector('img'), g.src, g.fokus);
           text(el.querySelector('.pgrid__nr'), pad(k + versatz));
           return el;

@@ -8,7 +8,7 @@
  *   ::: bilder
  *   darstellung: raster   # raster (ein Foto oder Galerie) | neben | paar (2 Fotos) | strecke (3–12, seitlich)
  *   breite: weit          # nur ein Foto: text | weit | randlos
- *   format: quer          # original | quer | hoch | quadrat (raster)
+ *   format: quer          # original | quer | hoch | quadrat (alle Darstellungen; Paar/Strecke ohne Angabe: original)
  *   spalten: 4            # 2–4, nur Galerie
  *   titel: Der Tag in Bildern   # nur Bildstrecke
  *   text: Bildunterschrift
@@ -41,6 +41,8 @@ import { Lexer } from 'marked';
 
 export const FORMATE = ['original', 'quer', 'hoch', 'quadrat'] as const;
 export type Format = (typeof FORMATE)[number];
+/** Seitenverhältnis (Breite/Höhe) der festen Formate, wie in src/styles/artikel.css */
+export const FORMAT_R: Record<Exclude<Format, 'original'>, number> = { quer: 3 / 2, hoch: 3 / 4, quadrat: 1 };
 /** Breite eines einzelnen Fotos: Textspalte, etwas breiter (Keil-Ecke) oder über die ganze Seite */
 export const BREITEN = ['text', 'weit', 'randlos'] as const;
 export type Breite = (typeof BREITEN)[number];
@@ -141,7 +143,7 @@ export function bilderLesen(yaml: string): Omit<BilderBlock, 'text_en' | 'titel_
     typ: 'bilder',
     darstellung,
     breite: (BREITEN as readonly string[]).includes(str(d.breite)) ? (str(d.breite) as Breite) : 'text',
-    format: (FORMATE as readonly string[]).includes(str(d.format)) ? (str(d.format) as Format) : bilder.length > 1 ? 'quer' : 'original',
+    format: (FORMATE as readonly string[]).includes(str(d.format)) ? (str(d.format) as Format) : bilder.length > 1 && (darstellung === 'raster' || darstellung === 'neben') ? 'quer' : 'original',
     spalten: sp === 2 || sp === 3 || sp === 4 ? sp : (Math.min(4, Math.max(2, bilder.length)) as 2 | 3 | 4),
     titel: str(d.titel).trim(),
     text: str(d.text).trim(),
@@ -302,7 +304,8 @@ export function zuMarkdown(bloecke: Block[], lang: 'de' | 'en' = 'de'): string {
       const darstellung = b.darstellung === 'neben' && n !== 1 ? 'raster' : b.darstellung;
       if (darstellung !== 'raster') daten.darstellung = darstellung;
       if (darstellung === 'raster' && n === 1 && b.breite && b.breite !== 'text') daten.breite = b.breite;
-      if (darstellung === 'raster' || darstellung === 'neben') daten.format = b.format;
+      // Bildpaar und Bildstrecke: ohne Angabe im Format der Fotos
+      if (darstellung === 'raster' || darstellung === 'neben' || b.format !== 'original') daten.format = b.format;
       if (darstellung === 'raster' && n > 1) daten.spalten = b.spalten;
       if (darstellung === 'strecke' && w(b.titel, b.titel_en)) daten.titel = w(b.titel, b.titel_en);
       const text = w(b.text, b.text_en);

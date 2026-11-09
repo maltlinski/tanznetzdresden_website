@@ -6,6 +6,7 @@
 import { slugify } from '../../../lib/supabase';
 import { routes } from '../../../lib/i18n';
 import { ANGABEN, GALERIE_LAYOUTS, OFFEN_FUER } from '../../../lib/profil-felder';
+import { GALERIE_FORMATE } from '../../../lib/bild-zuschnitt';
 import type { Daten, Eintrag } from './daten';
 
 export interface Option {
@@ -508,6 +509,7 @@ export const bereiche: Bereich[] = [
         { typ: 'text', key: 'credit', label: 'Foto von' },
         { typ: 'text', key: 'fokus', label: 'Ausschnitt', max: 9, platzhalter: '50% 50%', ausschnitt: { bild: 'photo', form: 'galerie' }, hilfe: 'Welcher Punkt im Foto in jeder Form zu sehen bleibt. Am einfachsten über „Ausschnitt wählen“.', muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30% (von links, von oben)'] },
         { typ: 'janein', key: 'ganz', label: 'Ganzes Foto zeigen (nicht zuschneiden)', erweitert: true },
+        { typ: 'auswahl', key: 'format', label: 'Format (Filmstreifen und Raster)', erweitert: true, hilfe: '– keine – = wie die Galerie es vorsieht. Im Mosaik gibt die Anordnung die Form vor.', optionen: Object.entries(GALERIE_FORMATE).map(([wert, f]) => ({ wert, label: f.de })) },
       ] },
       { typ: 'auswahl', key: 'galleryLayout', label: 'Galerie zeigen als', erweitert: true, optionen: Object.entries(GALERIE_LAYOUTS).map(([wert, l]) => ({ wert, label: `${l.de}: ${l.hilfe}` })) },
       { typ: 'abschnitt', label: 'Arbeiten' },

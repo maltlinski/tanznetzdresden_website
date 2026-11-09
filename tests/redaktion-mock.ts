@@ -16,6 +16,8 @@ export interface Mock {
   /** jede Speicherung (insert/update) von news_posts */
   gespeichert: Record<string, unknown>[];
   hochgeladen: string[];
+  /** was der Browser geschickt hat (Formular mit dem Foto), je Upload */
+  hochgeladenDaten: Buffer[];
   geloescht: string[][];
   /** Tabelle news_medien (datei → Zeile) */
   medien: Map<string, Record<string, unknown>>;
@@ -98,7 +100,7 @@ const INHALT = ['titel', 'kurz', 'text', 'schwerpunkte', 'mitbringen', 'bild', '
 
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
-  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, einladen: [], keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [],
+  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), hochgeladenDaten: [], neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, einladen: [], keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [],
     openCalls: (o.openCalls ?? []).map(openCallZeile), ocStand: [...(o.ocStand ?? [])], ocNetz: [...(o.ocNetz ?? [])], ocAenderungen: [] };
   const mitglieder = new Map<string, Record<string, unknown>>([...(o.mitgliedschaft ? [o.mitgliedschaft] : []), ...(o.mitgliedschaften ?? [])].map((z) => [String(z.person), z]));
   let profil: Record<string, unknown> = { id: 'u1', display_name: 'Pia Presse', role: 'presse', verified: false, public_listing: false, tags: [], ags: [], ...o.profil };
@@ -195,6 +197,7 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       // supabase-js schickt das Foto als Formular; ausgeliefert wird einfach ein echtes Foto
       dateien.set(pfad, readFileSync(FOTOS[m.hochgeladen.length % FOTOS.length]));
       m.hochgeladen.push(pfad);
+      m.hochgeladenDaten.push(req.postDataBuffer() ?? Buffer.alloc(0));
       return json({ Key: `newsbilder/${pfad}` });
     }
     if (/^\/storage\/v1\/object\/(newsbilder|profilbilder)$/.test(url.pathname) && req.method() === 'DELETE') {

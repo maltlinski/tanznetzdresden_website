@@ -13,7 +13,7 @@ import type { ImageMetadata } from 'astro';
 import { getCollection } from 'astro:content';
 import { istSichtbar } from './sichtbar';
 import { getImage } from 'astro:assets';
-import { SUPABASE_ANON_KEY, SUPABASE_URL, supabaseFehlt } from './supabase-config';
+import { SUPABASE_ANON_KEY, SUPABASE_URL, datenAusSupabase, supabaseFehlt } from './supabase-config';
 import { absaetze, bucketUrl, istWebsiteFoto, tagDatum, zeitNorm, type OeffentlicherTermin } from './keep-up-plan';
 import dozentinnenRaw from '../content/keep-up/dozentinnen.yaml?raw';
 import { getTermine, inFileOrder } from './content';
@@ -57,7 +57,7 @@ let planCache: Promise<OeffentlicherTermin[]> | undefined;
 /** Einplanungen aus Intern → KEEP UP (leer, wenn Supabase fehlt oder die Migration noch nicht eingespielt ist) */
 function fetchPlan(): Promise<OeffentlicherTermin[]> {
   planCache ??= (async () => {
-    if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return [];
+    if (!datenAusSupabase) return [];
     try {
       const res = await fetch(`${SUPABASE_URL}/rest/v1/public_keepup?select=*&order=woche`, {
         headers: { apikey: SUPABASE_ANON_KEY, Authorization: `Bearer ${SUPABASE_ANON_KEY}` },

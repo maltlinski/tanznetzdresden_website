@@ -18,7 +18,7 @@ import EventList from '../components/EventList.astro';
 import { bioParagraphs, initials, instagramUrl, profilText, type PublicProfile } from '../lib/profiles';
 import { ANGABEN, OFFEN_FUER } from '../lib/profil-felder';
 import { linkText, mosaik, nameTeile, pad, pitchWoerter, STREIFEN } from '../lib/profil-ansicht';
-import { FOKUS_PORTRAET, fokusText, streifenFormat } from '../lib/bild-zuschnitt';
+import { FOKUS_PORTRAET, fokusText, GALERIE_FORMATE, streifenFormat, type GalerieFormat } from '../lib/bild-zuschnitt';
 import { demoFuer } from '../lib/demo';
 import { getTermineFor } from '../lib/content';
 import { getLang, tr, url } from '../lib/i18n';
@@ -71,10 +71,11 @@ const bio = bioParagraphs(p, lang);
 const events = await getTermineFor(p.id);
 
 // Fotos: Porträt groß oben, Galerie darunter. Ohne Porträt rückt das erste Galeriefoto nach oben.
-// pos: Ausschnitt (Fokuspunkt aus „Mein Profil“), ganz: Galeriefoto ohne Zuschnitt (src/lib/bild-zuschnitt.ts)
-interface Foto { src: ImageMetadata | string; alt: string; cap?: string; credit?: string; pos?: string; ganz?: boolean }
+// pos: Ausschnitt (Fokuspunkt aus „Mein Profil“), ganz: Galeriefoto ohne Zuschnitt, format: eigenes Format
+// im Filmstreifen und Raster (src/lib/bild-zuschnitt.ts)
+interface Foto { src: ImageMetadata | string; alt: string; cap?: string; credit?: string; pos?: string; ganz?: boolean; format?: GalerieFormat }
 const capOf = (g: PublicProfile['gallery'][number]) => (lang === 'en' && g.caption_en) || g.caption;
-const galerieEcht: Foto[] = p.gallery.map((g) => ({ src: g.photo, alt: capOf(g) ?? '', cap: capOf(g), credit: g.credit, pos: g.fokus, ganz: g.ganz }));
+const galerieEcht: Foto[] = p.gallery.map((g) => ({ src: g.photo, alt: capOf(g) ?? '', cap: capOf(g), credit: g.credit, pos: g.fokus, ganz: g.ganz, format: g.ganz ? undefined : g.format }));
 const portrait: Foto | undefined = p.photo ? { src: p.photo, alt: t.portrait(p.name), credit: p.photoCredit, pos: p.photoFocus ?? fokusText(FOKUS_PORTRAET) } : undefined;
 const heroEcht = portrait ?? galerieEcht[0];
 const galerieRest = portrait ? galerieEcht : galerieEcht.slice(1);
@@ -244,10 +245,11 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
                 <div class="pstrip__track" data-track>
                   {g.fotos.map((f, k) => {
                     const s = STREIFEN[k % STREIFEN.length];
-                    // ganz gezeigt: der Rahmen nimmt das Format des Fotos an, ohne Keil
+                    // ganz gezeigt: der Rahmen nimmt das Format des Fotos an, ohne Keil; sonst das gewählte Format
                     const ganz = !!(f.ganz && f.r);
+                    const r = ganz ? streifenFormat(f.r!) : f.format ? GALERIE_FORMATE[f.format].r : s.r;
                     return (
-                      <button type="button" class:list={['pstrip__el', `pstrip__el--${s.align}`]} style={`--h: ${s.h}; --r: ${ganz ? streifenFormat(f.r!) : s.r}`} data-lb-oeffnen={f.i} aria-label={`${t.zoom(f.nr)}${f.cap ? `: ${f.cap}` : ''}`}>
+                      <button type="button" class:list={['pstrip__el', `pstrip__el--${s.align}`]} style={`--h: ${s.h}; --r: ${+r.toFixed(4)}`} data-lb-oeffnen={f.i} aria-label={`${t.zoom(f.nr)}${f.cap ? `: ${f.cap}` : ''}`}>
                         <span class:list={['pstrip__bild', s.keil && !ganz && `pstrip__bild--keil-${s.keil}`]}>
                           <Bild src={f.src} alt="" widths={[480, 800, 1200]} sizes="(min-width: 860px) 50vw, 85vw" pos={f.pos} />
                         </span>
@@ -267,7 +269,7 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
             <div class="wrap pgrid__wrap">
               <div class:list={['pgrid', `pgrid--${layout}`]}>
                 {g.fotos.map((f, k) => (
-                  <button type="button" class:list={['pgrid__el', `pgrid__el--${spans[k]}`, f.ganz && 'pgrid__el--voll']} data-reveal data-lb-oeffnen={f.i} aria-label={`${t.zoom(f.nr)}${f.cap ? `: ${f.cap}` : ''}`}>
+                  <button type="button" class:list={['pgrid__el', `pgrid__el--${spans[k]}`, f.ganz && 'pgrid__el--voll']} style={layout === 'raster' && f.format ? `--fr: ${+GALERIE_FORMATE[f.format].r.toFixed(4)}` : undefined} data-reveal data-lb-oeffnen={f.i} aria-label={`${t.zoom(f.nr)}${f.cap ? `: ${f.cap}` : ''}`}>
                     <Bild src={f.src} alt="" widths={[480, 800, 1200]} sizes={spans[k] === 'ganz' ? '100vw' : '(min-width: 860px) 50vw, 100vw'} pos={f.pos} />
                     <span class="pgrid__nr">{f.nr}</span>
                   </button>
@@ -631,6 +633,8 @@ const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDr
   .pgrid__el--halb { grid-column: span 6; aspect-ratio: 4 / 3; }
   .pgrid__el--ganz { grid-column: span 12; aspect-ratio: 21 / 9; }
   .pgrid__el--raster { grid-column: span 4; aspect-ratio: 4 / 5; }
+  /* eigenes Format (Mein Profil → Ausschnitt), nur im Raster: Zeilen richten sich oben aus */
+  .pgrid__el--raster[style*='--fr'] { aspect-ratio: var(--fr); align-self: start; }
   /* ganzes Foto (Mein Profil → Ausschnitt): nicht zuschneiden, Rest bleibt Lila */
   .pgrid__el--voll :global(img) { object-fit: contain; }
   .pgrid__nr { position: absolute; top: 0; left: 0; padding: 6px 10px; background: var(--purple); font-family: var(--font-display); font-weight: 800; font-size: 16px; color: var(--magenta); }

@@ -62,6 +62,8 @@ export interface GalerieEintrag {
   fokus?: string;
   /** ganz zeigen statt zuschneiden */
   ganz?: boolean;
+  /** eigenes Format: quer | hoch | quadrat (src/lib/bild-zuschnitt.ts) */
+  format?: string;
 }
 
 export interface DirectoryEntry extends Pick<Profile, 'id' | 'display_name' | 'pronouns' | 'bio' | 'website' | 'instagram' | 'is_trainer' | 'ags' | 'role' | 'slug' | 'public_listing' | 'verified'> {
