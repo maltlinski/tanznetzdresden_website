@@ -8,6 +8,8 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
+  // GitHub gibt öffentlichen Repos 4 Kerne, Playwright nähme sonst nur die Hälfte
+  workers: process.env.CI ? 4 : undefined,
   reporter: process.env.CI ? 'github' : 'list',
   use: {
     baseURL: 'http://localhost:4321',
