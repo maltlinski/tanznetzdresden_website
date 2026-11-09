@@ -212,7 +212,7 @@ test('Englisch: #kategorie-buhne wählt Bühne, englische Texte und Eintritt', a
   const l = liste(page);
   await expect(l.locator('[data-tk-treffer]')).toHaveText('2 events from today');
   await l.getByRole('button', { name: /POP UP/ }).first().click();
-  await expect(l.locator('[data-detail="2026-10-31-pop-up"]')).toContainText('Saturday 31 October 2026 · 20:00');
+  await expect(l.locator('[data-detail="2026-10-31-pop-up"]')).toContainText(/Saturday,? 31 October 2026 · 20:00/); // je nach ICU mit oder ohne Komma
   await expect(l.locator('[data-detail="2026-10-31-pop-up"]')).toContainText('Pay what you can');
   await expect(l.getByRole('link', { name: 'About the event →' })).toHaveAttribute('href', /\/en\/events\/2026-10-31-pop-up\/$/);
 });

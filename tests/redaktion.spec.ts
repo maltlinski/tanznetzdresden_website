@@ -184,6 +184,8 @@ test('Gelesene Dateien kommen beim nächsten Öffnen aus dem Zwischenspeicher (G
   });
   await page.goto('/intern/redaktion/liste/?b=termine');
   await expect(page.getByRole('heading', { name: 'Ältere Termine', exact: true })).toBeVisible();
+  // erst neu laden, wenn die Liste steht (dann ist der Zwischenspeicher gefüllt)
+  await expect(page.locator('.r-zeile__t').first()).not.toBeEmpty();
   const termine = gelesen.filter((p) => p.startsWith('src/content/termine/'));
   expect(termine.length).toBeGreaterThan(0);
   gelesen.length = 0;
@@ -343,7 +345,8 @@ test('Personen: Ausschnitt des Porträts im Zuschnitt-Dialog wählen', async ({ 
   await punkt.press('Shift+ArrowDown');
   await dlg.getByRole('button', { name: 'Übernehmen' }).click();
   await expect(dlg).toBeHidden();
-  await expect(feld(page, 'Ausschnitt des Porträts')).toHaveValue('50% 40%');
+  // das Textfeld, nicht der Dialog (gleicher Name, wird nach dem Schließen erst entfernt)
+  await expect(page.getByRole('textbox', { name: 'Ausschnitt des Porträts' })).toHaveValue('50% 40%');
   await page.getByRole('button', { name: /anlegen/ }).click();
   await expect.poll(() => gespeichert.length).toBe(1);
   const yaml = gespeichert[0].aenderungen.find((a) => a.pfad === 'src/content/personen.yaml')!.text!;
