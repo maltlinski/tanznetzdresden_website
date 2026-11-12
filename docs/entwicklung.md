@@ -26,8 +26,10 @@
 - **Links aus Profilen** nur mit `webLink()` aus `src/lib/profil-ansicht.ts` (nur `http(s)`).
 - **Fotos hochladen** (News, Redaktion, KEEP UP, Mein Profil) immer über `verkleinern()` aus
   `src/scripts/intern/foto-datei.ts`: höchstens 2400 px, neu gespeichert, ohne Aufnahmeort und Kamera-Angaben.
-- **Testlauf auf GitHub** (Workflow „CI“) baut nur mit den Dateien, ohne Daten aus Supabase (`datenAusSupabase` in
-  `src/lib/supabase-config.ts`) – die Tests rechnen mit `src/content/`.
+- **Testlauf auf GitHub** (Workflow „CI“, `src/lib/testlauf.ts`) baut einen festen Stand: nur die Dateien, ohne
+  Daten aus Supabase, und die ursprünglichen Texte aus `texte.json` (`ursprung`, nichts ausgeblendet). So werden
+  Tests nicht rot, wenn die Redaktion Texte ändert. Lokal genauso: `GITHUB_WORKFLOW=CI npm run build && GITHUB_WORKFLOW=CI npm test`.
+  Texte in Erwartungen am besten über `text()` aus `tests/texte.ts` statt fest eingetippt.
 - **Tests grün halten:** `npm run build && npm test`. Die CI prüft Funktion, „keine externen Anfragen ohne
   Einwilligung“ und Barrierefreiheit (WCAG 2.1 AA). Jeder Test läuft als Computer und als Handy – außer was von der
   Breite nicht abhängt: Rechenregeln (`playwright.config.ts`, `testIgnore`), axe außer auf der Startseite, der Auftritt

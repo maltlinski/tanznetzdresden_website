@@ -577,7 +577,8 @@ test('Texte: Englisch prüfen, ursprünglichen Text zurückholen, Filter, Textbu
   const gespeichert = await redaktion(page);
   // Stand wie nach einer früheren Änderung: Datei der nachgebauten Funktion austauschen
   const PFAD = 'src/settings/texte.json';
-  const datei = JSON.parse(readFileSync(PFAD, 'utf8'));
+  // Merker „Englisch prüfen“ aus echten Änderungen der Redaktion entfernen, dann genau einen setzen
+  const datei = JSON.parse(readFileSync(PFAD, 'utf8'), (k, v) => (k === 'enPruefen' ? undefined : v));
   Object.assign(datei.profil.abschnitte.kopf.texte.anfrage, { de: 'Anfragen', ursprung: { de: 'Anfrage senden', en: 'Send a request' }, enPruefen: true });
   const text = JSON.stringify(datei);
   await page.route(`${SB}/functions/v1/inhalte`, async (route) => {

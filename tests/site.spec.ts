@@ -2,6 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
+import { text } from './texte';
 import { supabase } from '../src/settings/supabase';
 import { galerie, newsDateien, veroeffentlicht } from './news-daten';
 import { dozentin, kcalTage, monatLabel, plusTage, profileMitTerminen, tagLabel, trainingstage } from './kalender-daten';
@@ -409,14 +410,14 @@ test('News: Startseite zeigt Titelthema und offene Ausschreibungen, Links führe
   const lead = veroeffentlicht().find((p) => p.image) ?? neuester;
   await page.goto('/');
   const news = page.locator('#news');
-  await expect(news.getByRole('heading', { name: 'Aus dem Netz' })).toBeVisible();
+  await expect(news.getByRole('heading', { name: text('startseite', 'termine', 'newsTitel') })).toBeVisible();
   await expect(news.locator(`a[href$="/news/${lead.id}/"]`).first()).toBeVisible();
   // offene Ausschreibungen (Frist noch nicht vorbei) stehen mit Frist darunter
   const offen = veroeffentlicht().filter((p) => p.id !== lead.id && p.deadline && p.deadline >= heute);
   if (offen.length) await expect(news.getByText(/Frist \d+\./).first()).toBeVisible();
   await news.getByRole('link', { name: 'Alle Beiträge →' }).click();
   await expect(page).toHaveURL(/\/news\/$/);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Aus dem');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(text('news', 'uebersicht', 'titel').split('\n')[0]);
 });
 
 test('News: Chronik als Archiv mit Rubriken, Jahren, Suche, Sortierung, Ansicht und „Weitere laden“', async ({ page }) => {
@@ -607,8 +608,10 @@ test('Startseite: Einstiege im Hero, Netz mit Profilen, Formate zum Blättern', 
   await dismissConsent(page);
   const wege = page.getByRole('navigation', { name: 'Einstiege' });
   await expect(wege.getByRole('link')).toHaveCount(3);
-  await expect(wege.getByRole('link', { name: /Mittrainieren/ })).toHaveAttribute('href', /\/profitraining\/$/);
-  await expect(wege.getByRole('link', { name: /Teil des Netzes werden/ })).toHaveAttribute('href', /#mitglied$/);
+  // Texte ändert die Redaktion (texte.json): gesucht wird nach der großen Zeile
+  const gross = (t: string) => t.split('\n').at(-1)!;
+  await expect(wege.getByRole('link', { name: gross(text('startseite', 'kopf', 'trainieren')) })).toHaveAttribute('href', /\/profitraining\/$/);
+  await expect(wege.getByRole('link', { name: gross(text('startseite', 'kopf', 'mitmachen')) })).toHaveAttribute('href', /#mitglied$/);
 
   const netz = page.locator('#netz');
   await expect(netz.getByText('70+ Tanzschaffende')).toBeVisible();
