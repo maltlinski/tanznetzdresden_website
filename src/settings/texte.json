@@ -107,9 +107,9 @@
         "auch": [{ "text": "„Tanz für …“ mit den wechselnden Wörtern", "ziel": "redaktion:hero" }, { "text": "Der nächste Termin kommt aus dem Kalender", "ziel": "intern/kalender/" }],
         "texte": {
           "naechster": { "wo": "Kleine Zeile über dem nächsten Termin", "de": "Upcoming", "en": "Upcoming", "max": 24 },
-          "sehen": { "wo": "Einstieg 1 (zu den Terminen): kleine Zeile, darunter groß", "zeilen": 2, "de": "Zuschauen\nTanz sehen", "en": "Watch\nSee dance", "max": 50 },
-          "trainieren": { "wo": "Einstieg 2 (zum Profitraining): kleine Zeile, darunter groß", "zeilen": 2, "de": "Trainieren\nMittrainieren", "en": "Train\nTrain with us", "max": 50 },
-          "mitmachen": { "wo": "Einstieg 3 (Mitglied werden): kleine Zeile, darunter groß", "zeilen": 2, "de": "Mitmachen\nTeil des Netzes werden", "en": "Join\nBecome part of the network", "max": 50 },
+          "sehen": { "wo": "Einstieg 1 (zu den Terminen): kleine Zeile, darunter groß", "zeilen": 2, "de": "Zuschauen\nErlebt Tanz", "en": "Watch\nExperience dance", "max": 50, "ursprung": { "de": "Zuschauen\nTanz sehen", "en": "Watch\nSee dance" } },
+          "trainieren": { "wo": "Einstieg 2 (zum Profitraining): kleine Zeile, darunter groß", "zeilen": 2, "de": "Trainieren\nEntdeckt unser Profi-Trainning", "en": "Train\nDiscover our profi training", "max": 50, "ursprung": { "de": "Trainieren\nMittrainieren", "en": "Train\nTrain with us" } },
+          "mitmachen": { "wo": "Einstieg 3 (Mitglied werden): kleine Zeile, darunter groß", "zeilen": 2, "de": "Mitmachen\nWerdet Teil des Netzwerks", "en": "Join\nBecome part of the network", "max": 50, "ursprung": { "de": "Mitmachen\nTeil des Netzes werden", "en": "Join\nBecome part of the network" }, "enPruefen": true },
           "neuKnuepfen": { "wo": "Knopf, der die Animation des Netzes neu startet", "de": "Netz neu knüpfen", "en": "Re-knot the net", "max": 30 }
         }
       },
@@ -123,7 +123,7 @@
           "abo": { "wo": "Termine: Link zum Kalender-Abo", "de": "Abonnieren (.ics)", "en": "Subscribe (.ics)", "max": 40 },
           "einreichen": { "wo": "Termine: Link „Termin einreichen“", "de": "Termin einreichen", "en": "Submit an event", "max": 40 },
           "newsKicker": { "wo": "News: kleine Zeile über der Überschrift", "de": "News", "en": "News", "max": 40 },
-          "newsTitel": { "wo": "News: Überschrift", "de": "Aus dem Netz", "en": "From the network", "max": 30 },
+          "newsTitel": { "wo": "News: Überschrift", "de": "Aktuelles", "en": "Latest news", "max": 30, "ursprung": { "de": "Aus dem Netz", "en": "From the network" } },
           "newsAlle": { "wo": "News: Link zu allen Beiträgen", "de": "Alle Beiträge →", "en": "All posts →", "max": 40 },
           "frist": { "wo": "News: Wort vor dem Datum einer Ausschreibung", "de": "Frist", "en": "Deadline", "max": 20 }
         }
