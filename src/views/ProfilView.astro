@@ -12,6 +12,7 @@ import { getImage } from 'astro:assets';
 import Page from '../layouts/Page.astro';
 import Tag from '../components/ui/Tag.astro';
 import KeilBar from '../components/ui/KeilBar.astro';
+import KopfNetz from '../components/KopfNetz.astro';
 import Bild from '../components/profil/Bild.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
 import EventList from '../components/EventList.astro';
@@ -154,6 +155,8 @@ const jsonLd = {
   {!vorlage && <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   <div class="profil" data-profil>
     <section class="ph kopf" data-ph data-kopf-frei data-kopf-auftritt>
+      {/* Netz oben rechts, solange kein Foto den Platz füllt (je Profil eigene Struktur) */}
+      {!heroEcht && <KopfNetz schluessel={`netzwerk/${p.id}`} lage="ecke" />}
       {(heroEcht || heroDemo) && (
         <div class:list={['ph__bild', !heroEcht && 'demo-an']} data-wipe data-ph-bild>
           <div class="ph__bild-in" data-parallax>

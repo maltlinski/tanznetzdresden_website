@@ -9,6 +9,7 @@ import Page from '../layouts/Page.astro';
 import Tag from '../components/ui/Tag.astro';
 import Button from '../components/ui/Button.astro';
 import KeilBar from '../components/ui/KeilBar.astro';
+import KopfNetz from '../components/KopfNetz.astro';
 import Kalender from '../components/Kalender.astro';
 import Mosaik from '../components/keep-up/Mosaik.astro';
 import { getVerein } from '../lib/settings';
@@ -58,6 +59,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
 ---
 <Page title={t.title} description={t.desc} route="profitraining" ogImage={foto.default}>
   <section class="ku-hero kopf" aria-labelledby="ku-h1">
+    <KopfNetz schluessel="profitraining" lage="rechts" />
     <div class="wrap ku-hero__grid">
       <div class="ku-hero__text">
         <Tag color="cyan" class="kopf__kicker">{s.kicker}{since && ` · ${since}`}</Tag>
@@ -180,7 +182,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
   /* so hoch wie der Kopf der Startseite (--buehne-h) */
   .ku-hero { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
   .ku-hero__grid {
-    flex: 1; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
+    position: relative; flex: 1; width: 100%; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr));
     gap: 48px clamp(32px, 6vw, 96px); align-items: start; align-content: start;
     padding-block: var(--buehne-oben) clamp(40px, 6vh, 72px);
   }

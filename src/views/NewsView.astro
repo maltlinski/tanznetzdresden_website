@@ -8,6 +8,7 @@ import Page from '../layouts/Page.astro';
 import Tag from '../components/ui/Tag.astro';
 import Button from '../components/ui/Button.astro';
 import KeilBar from '../components/ui/KeilBar.astro';
+import KopfNetz from '../components/KopfNetz.astro';
 import NewsImage from '../components/NewsImage.astro';
 import NewsEintrag from '../components/NewsEintrag.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
@@ -84,6 +85,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
   <link slot="head" rel="alternate" type="application/rss+xml" title={`${verein.name} – News`} href={feed} />
 
   <section class="ni kopf" aria-labelledby="news-title" data-kopf-auftritt>
+    <KopfNetz schluessel="news" lage="ecke" />
     <div class="wrap ni__inner">
       <div class="ni__top">
         <Tag color="cyan" class="kopf__kicker">{t.kicker}</Tag>
@@ -241,7 +243,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
   /* so hoch wie der Kopf der Startseite (--buehne-h) */
   .ni { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
   /* Regel „Köpfe“: Inhalt oben, erste Zeile im Abstand --buehne-oben, Headline --kopf-kicker darunter */
-  .ni__inner { flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: flex-start; padding-top: var(--buehne-oben); }
+  .ni__inner { position: relative; flex: 1; width: 100%; display: flex; flex-direction: column; justify-content: flex-start; padding-top: var(--buehne-oben); }
   .ni__top { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 12px 32px; }
   .ni__place, .ni__lead-meta, .ni__call-d {
     font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-dark-soft);
