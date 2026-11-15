@@ -192,3 +192,22 @@ test('Köpfe: gleicher Auftritt auf allen Unterseiten', async ({ page, isMobile 
   await expect(page.locator('[data-auftritt]')).toHaveCount(0);
   await expect(page.locator('.kopf-wort')).toHaveCount(0);
 });
+
+test('Netz im Kopf: auch News, Profitraining, Tanzkalender-Archiv und Profile ohne Foto; Formate so hoch wie die anderen', async ({ page, isMobile }) => {
+  for (const pfad of ['/news/', '/profitraining/', '/formate/tanzkalender/', '/netzwerk/alina-lucifero/']) {
+    await page.goto(pfad);
+    const netz = page.locator('.kopf > svg[data-kopf-netz]');
+    await expect(netz, pfad).toHaveCount(1);
+    expect(await netz.locator('line').count(), pfad).toBeGreaterThan(10);
+    // der Inhalt liegt über dem Netz
+    expect(await page.locator('.kopf > svg[data-kopf-netz] ~ .wrap').first().evaluate((e) => getComputedStyle(e).position), pfad).not.toBe('static');
+  }
+  test.skip(!!isMobile, 'gleiche Höhe nur auf breiten Bildschirmen (schmal richtet sie sich nach dem Inhalt)');
+  // ab etwa 800 px Fensterhöhe; darunter braucht die Bühne der Namen ihre Mindesthöhe
+  await page.setViewportSize({ width: 1440, height: 900 });
+  const hoehe = async (pfad: string) => {
+    await page.goto(pfad);
+    return Math.round((await page.locator('.kopf').first().boundingBox())!.height);
+  };
+  expect(await hoehe('/formate/')).toBe(await hoehe('/verein/'));
+});

@@ -241,6 +241,12 @@ der Bereich von Kicker, Headline und Einleitung links bleibt frei (`FREI`); das 
 rechts verankert (`xMaxYMid slice`). Der Kalender nutzt dieselbe Datei mit seiner Grundform (`kopfNetz(KALENDER)`).
 Neue einfache Unterseite → `PageIntro` mit `netz="<route>"`.
 
+Köpfe mit eigenem Inhalt rechts bekommen dasselbe Netz in einer anderen Lage (`lage` an `KopfNetz`, `NetzLage` in
+`kopf-netz.ts`): `ecke` nur oben rechts, nach links und unten lichter (News über dem Titelthema, Profile ohne Foto über
+den Initialen); `rechts` über die ganze Höhe hinter einem Bild, an dessen Rändern es hervorschaut (Profitraining,
+Tanzkalender-Archiv). Kooperationen und Formate haben ihr eigenes Netz. Der Kopf der Formate ist so hoch wie alle
+anderen (`--buehne-h`): Die Bühne der Namen füllt ihn ohne die Abstände oben und unten.
+
 Der Abschnitt „Haltung & Wirkung“ steht auf „Über uns“ (`/verein/`) und liest seine Texte aus
 `src/settings/haltung.json`, die Partnerliste aus `src/settings/verein.json` (`partners`).
 
