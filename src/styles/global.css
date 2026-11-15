@@ -87,7 +87,10 @@ button { font: inherit; }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
-  *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  /* Übergänge ganz aus (Dauer und Verzögerung 0): Änderungen gelten sofort. Eine winzige Dauer wie 0,01 ms würde
+     jede Stiländerung an jedem Element zu einem Übergang machen; wer direkt danach misst (Skripte, Tests), bekäme
+     noch den alten Wert. Animationen springen dagegen ans Ende, damit ihr Endzustand gilt. */
+  *, *::before, *::after { transition-duration: 0s !important; transition-delay: 0s !important; animation-duration: 0.01ms !important; }
   /* Seitenwechsel ohne Überblenden */
   ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

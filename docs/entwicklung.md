@@ -26,8 +26,10 @@
 - **Links aus Profilen** nur mit `webLink()` aus `src/lib/profil-ansicht.ts` (nur `http(s)`).
 - **Fotos hochladen** (News, Redaktion, KEEP UP, Mein Profil) immer über `verkleinern()` aus
   `src/scripts/intern/foto-datei.ts`: höchstens 2400 px, neu gespeichert, ohne Aufnahmeort und Kamera-Angaben.
-- **Testlauf auf GitHub** (Workflow „CI“) baut nur mit den Dateien, ohne Daten aus Supabase (`datenAusSupabase` in
-  `src/lib/supabase-config.ts`) – die Tests rechnen mit `src/content/`.
+- **Testlauf auf GitHub** (Workflow „CI“, `src/lib/testlauf.ts`) baut einen festen Stand: nur die Dateien, ohne
+  Daten aus Supabase, und die ursprünglichen Texte aus `texte.json` (`ursprung`, nichts ausgeblendet). So werden
+  Tests nicht rot, wenn die Redaktion Texte ändert. Lokal genauso: `GITHUB_WORKFLOW=CI npm run build && GITHUB_WORKFLOW=CI npm test`.
+  Texte in Erwartungen am besten über `text()` aus `tests/texte.ts` statt fest eingetippt.
 - **Tests grün halten:** `npm run build && npm test`. Die CI prüft Funktion, „keine externen Anfragen ohne
   Einwilligung“ und Barrierefreiheit (WCAG 2.1 AA). Jeder Test läuft als Computer und als Handy – außer was von der
   Breite nicht abhängt: Rechenregeln (`playwright.config.ts`, `testIgnore`), axe außer auf der Startseite, der Auftritt
@@ -266,6 +268,10 @@ Festlegungen aus der Durchsicht vom November 2026. Bei neuen Seiten und Baustein
   einer Medienabfrage: Chromium kennt die Regel sonst beim Ankommen noch nicht und bricht den Übergang mit einem
   Fehler ab. Dauer und Kopfleiste stehen in `global.css`; bei „Bewegung reduzieren“ entfällt die Animation.
   Die Seiten bleiben eigenständige Dokumente: Skripte laufen bei jedem Aufruf neu, es gibt keinen Router im Browser.
+- **„Bewegung reduzieren“ schaltet Übergänge ganz aus** (`transition-duration` und `-delay` auf 0 in `global.css`),
+  nicht auf eine winzige Dauer: sonst wird jede Stiländerung zu einem Übergang, und Skripte oder Tests, die direkt
+  danach messen, sehen noch den alten Wert. Beim Klick auf „Login“ ist die Blende der Übergang, das Überblenden
+  entfällt dort (`src/scripts/blende.ts`).
 - **Lange Listen nicht ganz ins HTML.** Die News-Übersicht enthält nur die neuesten 24 Beiträge
   (`src/lib/news-chronik.ts`); alle älteren stehen in `news/weitere/` (`src/views/NewsRestView.astro`) und kommen
   beim Laden dazu (`src/scripts/news-chronik.ts`). Einträge beider Teile rendert `src/components/NewsEintrag.astro`.

@@ -2,6 +2,7 @@ import { test, expect, type Page } from '@playwright/test';
 import { readFileSync } from 'node:fs';
 import AxeBuilder from '@axe-core/playwright';
 import { giroCodeSvg, isValidIban } from '../src/lib/girocode';
+import { text } from './texte';
 import { supabase } from '../src/settings/supabase';
 import { galerie, newsDateien, veroeffentlicht } from './news-daten';
 import { dozentin, kcalTage, monatLabel, plusTage, profileMitTerminen, tagLabel, trainingstage } from './kalender-daten';
@@ -19,12 +20,6 @@ const pages = [
   '/kooperationen/', '/transparenz/', '/spenden/', '/spenden/nachweis/', '/barrierefreiheit/', '/leichte-sprache/', '/impressum/', '/datenschutz/', '/mitglied/pruefen/', '/intern/',
   '/en/', '/en/events/', '/en/training/', `/en/news/${englisch.id}/`, '/en/network/alina-lucifero/',
 ];
-
-/** Fester Text der Website, wie ihn die Redaktion gerade gesetzt hat (src/settings/texte.json); `zeile` wählt eine Zeile */
-function wortlaut(seite: string, abschnitt: string, key: string, zeile?: number): string {
-  const text: string = JSON.parse(readFileSync('src/settings/texte.json', 'utf8'))[seite].abschnitte[abschnitt].texte[key].de;
-  return zeile === undefined ? text : text.split('\n')[zeile];
-}
 
 /** Externe Anfragen sperren: die Seite selbst darf ohne Einwilligung nichts nachladen. */
 async function trackExternal(page: Page) {
@@ -415,14 +410,14 @@ test('News: Startseite zeigt Titelthema und offene Ausschreibungen, Links führe
   const lead = veroeffentlicht().find((p) => p.image) ?? neuester;
   await page.goto('/');
   const news = page.locator('#news');
-  await expect(news.getByRole('heading', { name: wortlaut('startseite', 'termine', 'newsTitel') })).toBeVisible();
+  await expect(news.getByRole('heading', { name: text('startseite', 'termine', 'newsTitel') })).toBeVisible();
   await expect(news.locator(`a[href$="/news/${lead.id}/"]`).first()).toBeVisible();
   // offene Ausschreibungen (Frist noch nicht vorbei) stehen mit Frist darunter
   const offen = veroeffentlicht().filter((p) => p.id !== lead.id && p.deadline && p.deadline >= heute);
   if (offen.length) await expect(news.getByText(/Frist \d+\./).first()).toBeVisible();
   await news.getByRole('link', { name: 'Alle Beiträge →' }).click();
   await expect(page).toHaveURL(/\/news\/$/);
-  await expect(page.getByRole('heading', { level: 1 })).toContainText('Aus dem');
+  await expect(page.getByRole('heading', { level: 1 })).toContainText(text('news', 'uebersicht', 'titel').split('\n')[0]);
 });
 
 test('News: Chronik als Archiv mit Rubriken, Jahren, Suche, Sortierung, Ansicht und „Weitere laden“', async ({ page }) => {
@@ -613,9 +608,10 @@ test('Startseite: Einstiege im Hero, Netz mit Profilen, Formate zum Blättern', 
   await dismissConsent(page);
   const wege = page.getByRole('navigation', { name: 'Einstiege' });
   await expect(wege.getByRole('link')).toHaveCount(3);
-  // die Wortlaute pflegt die Redaktion (Texte → Startseite → Kopf), der Test liest sie aus der Datei
-  await expect(wege.getByRole('link', { name: wortlaut('startseite', 'kopf', 'trainieren', 1) })).toHaveAttribute('href', /\/profitraining\/$/);
-  await expect(wege.getByRole('link', { name: wortlaut('startseite', 'kopf', 'mitmachen', 1) })).toHaveAttribute('href', /#mitglied$/);
+  // Texte ändert die Redaktion (texte.json): gesucht wird nach der großen Zeile
+  const gross = (t: string) => t.split('\n').at(-1)!;
+  await expect(wege.getByRole('link', { name: gross(text('startseite', 'kopf', 'trainieren')) })).toHaveAttribute('href', /\/profitraining\/$/);
+  await expect(wege.getByRole('link', { name: gross(text('startseite', 'kopf', 'mitmachen')) })).toHaveAttribute('href', /#mitglied$/);
 
   const netz = page.locator('#netz');
   await expect(netz.getByText('70+ Tanzschaffende')).toBeVisible();

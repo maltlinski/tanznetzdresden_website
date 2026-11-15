@@ -20,6 +20,10 @@ const ms = {
 const nav = (page: Page) => page.getByRole('navigation', { name: 'Members area' });
 const sprache = (page: Page) => page.getByRole('group', { name: /^(Language|Sprache)$/ });
 const pruefen = async (page: Page) => {
+  // erst messen, wenn Blende und Einblenden fertig sind: halbe Deckkraft zählt sonst als Kontrastfehler
+  await page.evaluate(() =>
+    Promise.all(document.getAnimations().filter((a) => Number.isFinite(a.effect?.getComputedTiming().endTime)).map((a) => a.finished.catch(() => undefined))),
+  );
   const r = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
   return r.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical').map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(', ')}`);
 };

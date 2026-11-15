@@ -14,6 +14,7 @@
 import daten from '../settings/texte.json';
 import type { Lang } from './i18n';
 import type { TextAbschnitt } from './texte-regeln';
+import { testlauf } from './testlauf';
 
 export { fuellen, zeilen } from './texte-regeln';
 
@@ -29,8 +30,11 @@ export function texte<S extends TextSeiteId, A extends keyof Abschnitte<S> & str
 ): Record<Schluessel<Abschnitte<S>[A]>, string> {
   const a = (daten[seite].abschnitte as Record<string, TextAbschnitt>)[abschnitt];
   if (!a) throw new Error(`texte.json: Abschnitt „${seite}.${abschnitt}“ fehlt.`);
-  // ausgeblendete Texte (Redaktion) sind leer: die Ansicht lässt sie samt Element weg
-  return Object.fromEntries(Object.entries(a.texte).map(([k, e]) => [k, e.aus ? '' : (lang === 'en' && e.en.trim()) || e.de])) as never;
+  // ausgeblendete Texte (Redaktion) sind leer: die Ansicht lässt sie samt Element weg; im Testlauf der ursprüngliche Text
+  return Object.fromEntries(Object.entries(a.texte).map(([k, e]) => {
+    if (testlauf) return [k, (lang === 'en' && (e.ursprung ?? e).en.trim()) || (e.ursprung ?? e).de];
+    return [k, e.aus ? '' : (lang === 'en' && e.en.trim()) || e.de];
+  })) as never;
 }
 
 /**
@@ -40,5 +44,5 @@ export function texte<S extends TextSeiteId, A extends keyof Abschnitte<S> & str
 export function abschnittZeigen<S extends TextSeiteId>(seite: S, abschnitt: keyof Abschnitte<S> & string): boolean {
   const a = (daten[seite].abschnitte as Record<string, TextAbschnitt>)[abschnitt];
   if (!a) throw new Error(`texte.json: Abschnitt „${seite}.${abschnitt}“ fehlt.`);
-  return !a.aus;
+  return testlauf || !a.aus;
 }

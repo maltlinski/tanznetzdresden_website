@@ -26,6 +26,8 @@ export function blendeEin(root: HTMLElement, ziel: string): boolean {
   if (ruhig()) return false;
   const q = (s: string) => root.querySelector<HTMLElement>(s)!;
   root.hidden = false;
+  // Die Blende ist hier der Übergang: das weiche Überblenden beim Seitenwechsel (View Transition) entfällt
+  addEventListener('pageswap', (e) => (e as PageSwapEvent).viewTransition?.skipTransition(), { once: true });
   const opt = (dauer: number, delay: number, easing: string): KeyframeAnimationOptions => ({ duration: dauer, delay, easing, fill: 'both' });
   const zu = [{ transform: 'translateX(-100%)' }, { transform: 'translateX(0)' }];
   q('[data-blende-naht]').animate(zu, opt(750, 0, EXPO_IN_OUT));
