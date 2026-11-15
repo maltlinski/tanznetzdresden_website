@@ -11,7 +11,8 @@
  * Die Wörter werden nach dem Auftritt wieder zusammengesetzt, damit Trennung und Umbruch der Headline stimmen.
  */
 import { SplitText } from 'gsap/SplitText';
-import { gsap, EASE, motionOk } from './gsap';
+// ohne ScrollTrigger: der Auftritt läuft beim Aufrufen, nicht beim Scrollen
+import { gsap, EASE, motionOk } from './gsap-kern';
 
 gsap.registerPlugin(SplitText);
 

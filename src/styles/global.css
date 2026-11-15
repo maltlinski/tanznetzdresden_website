@@ -59,10 +59,22 @@ time { font-family: var(--font-datum); }
 .surface-tint .mono-link, .surface-tint a.mono-link { color: var(--magenta-2); }
 
 *, *::before, *::after { box-sizing: border-box; }
+/* Seitenwechsel: weiches Überblenden (View Transitions, in Browsern, die es können). Die Kopfleiste bleibt dabei
+   stehen, nur der Inhalt blendet um. Eingeschaltet wird es im Kopf jeder Seite (@view-transition in
+   src/layouts/Base.astro), hier stehen Dauer und Kopfleiste. Bei „Bewegung reduzieren“ ohne Animation (weiter unten). */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.22s; animation-timing-function: var(--ease-out); }
+.site-header { view-transition-name: kopfleiste; }
+::view-transition-group(kopfleiste) { animation: none; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header-h); }
 /* Lenis (src/scripts/smooth-scroll.ts) scrollt selbst – das Browser-Gleiten würde dagegen arbeiten */
 html.lenis { scroll-behavior: auto; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); hyphens: auto; overflow-wrap: break-word; }
+/* Silbentrennung nur im Fließtext: Knöpfe, Menüpunkte, Felder und kleine Zeilen in Versalien werden nie getrennt
+   („NEU-ESTE“), Überschriften nur bei langen Wörtern („Vereinsangelegenheiten“, nicht „Dres-den“). */
+button, .btn, .chip, .tag, .badge, .mono-link, label, input, select, summary, time, .datum { hyphens: manual; }
+h1, h2, h3, h4, h5, h6, .up__title {
+  hyphenate-limit-chars: 10 4 4; -webkit-hyphenate-limit-before: 4; -webkit-hyphenate-limit-after: 4;
+}
 a { color: var(--magenta); text-decoration: none; }
 a:hover { color: var(--purple); }
 ::selection { background: var(--magenta); color: #fff; }
@@ -76,6 +88,8 @@ button { font: inherit; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+  /* Seitenwechsel ohne Überblenden */
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }
 
 .wrap { max-width: var(--wrap); margin: 0 auto; padding: 0 var(--gutter); }

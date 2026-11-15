@@ -97,8 +97,8 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 
 **Supabase** (docs/intern.md)
 
-- [ ] Alle **siebzehn Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
-      (bis `20261106000000_foto_ausschnitt.sql`).
+- [ ] **Alle Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
+      (bis `20261115000000_mitgliedsantraege.sql`, die letzte speichert die Anträge aus dem Formular „Mitglied werden“).
 - [ ] *Authentication*: Selbst-Registrierung aus, Site URL gesetzt, **Redirect URLs** `…/intern/**` und
       `…/en/intern/**`.
 - [ ] **E-Mails** (*Authentication → Emails*): Vorlagen für Einladung, Login-Link und Passwort auf Deutsch (und
@@ -133,3 +133,4 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 | `src/content/seiten/transparenz.md` | Tätigkeitsbericht, Personal, Einnahmen und Ausgaben, Verbände, Förderungen |
 | `src/content/seiten/barrierefreiheit.md` | eine Angabe prüfen |
 | `src/views/SpendenView.astro`, `SpendenNachweisView.astro` | kein Eintrag nötig: blenden Angaben mit Platzhalter automatisch aus |
+| `src/views/MitgliedView.astro` | kein Eintrag nötig: ohne Mitgliedsbeitrag in `verein.json` zeigt der Kasten keine Zahl |

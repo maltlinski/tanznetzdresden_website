@@ -15,6 +15,7 @@ const lang = getLang(Astro);
 const other = lang === 'de' ? 'en' : 'de';
 const otherUrl = alternates[other] ?? url(other, 'home');
 // Texte: Redaktion → Texte (settings/texte.json); hier nur Beschriftungen für Screenreader
+const fuss = texte(lang, 'allgemein', 'fuss');
 const t = {
   ...texte(lang, 'allgemein', 'kopf'),
   ...tr(lang, {
@@ -32,6 +33,11 @@ const nav = [
   { href: url(lang, 'profitraining'), label: t.training },
   { href: url(lang, 'spenden'), label: t.donate },
 ];
+// nur im geöffneten Handy-Menü: Seiten, die sonst erst im Fuß stehen
+const mehr = [
+  { href: url(lang, 'netzwerk'), label: fuss.network },
+  { href: url(lang, 'kontakt'), label: fuss.contactPress },
+];
 ---
 <header class="site-header" data-header>
   <div class="site-header__inner">
@@ -48,6 +54,9 @@ const nav = [
         {nav.map((item) => <a class="mono-link" href={item.href} data-nav-link data-nav-auch={item.auch}>{item.label}</a>)}
         <span class="site-nav__strich" aria-hidden="true" data-nav-strich></span>
       </nav>
+      <div class="site-header__mehr">
+        {mehr.map((item) => <a class="mono-link" href={item.href}>{item.label}</a>)}
+      </div>
       <a class="mono-link site-header__login" href={url(lang, 'intern')} data-nav-link data-login>{t.intern}</a>
       <a class="mono-link site-header__lang" href={otherUrl} hreflang={other} lang={other} title={t.switchTo}>
         <span class="visually-hidden">{langNames[other]}</span><span aria-hidden="true">{other.toUpperCase()}</span>
@@ -70,6 +79,7 @@ const nav = [
 
 <script>
   import { blendeEin } from '../../scripts/blende';
+  import { getLenis } from '../../scripts/smooth-scroll';
 
   const header = document.querySelector<HTMLElement>('[data-header]');
   const toggle = header?.querySelector<HTMLButtonElement>('[data-menu-toggle]');
@@ -86,10 +96,18 @@ const nav = [
     blende.hidden = true;
   });
 
+  // Handy-Menü: füllt den ganzen Bildschirm, die Seite dahinter scrollt solange nicht
   const setOpen = (open: boolean) => {
     toggle?.setAttribute('aria-expanded', String(open));
     header?.classList.toggle('is-open', open);
+    document.documentElement.classList.toggle('menu-offen', open);
+    if (open) getLenis()?.stop();
+    else getLenis()?.start();
   };
+  // breiter gezogen (Menü steht wieder in der Zeile): offenes Menü schließen
+  matchMedia('(min-width: 1101px)').addEventListener('change', (e) => {
+    if (e.matches && header?.classList.contains('is-open')) setOpen(false);
+  });
   toggle?.addEventListener('click', () => setOpen(toggle.getAttribute('aria-expanded') !== 'true'));
   header?.querySelectorAll('[data-menu] a').forEach((a) => a.addEventListener('click', () => setOpen(false)));
   document.addEventListener('keydown', (e) => {
@@ -259,6 +277,7 @@ const nav = [
     gap: 12px clamp(16px, 2.4vw, 36px);
   }
   .site-nav { display: flex; flex-wrap: wrap; gap: 6px clamp(14px, 2vw, 28px); }
+  .site-header__mehr { display: none; }
   .site-nav a, .site-header__login {
     color: #fff; padding: 6px 0; border-bottom: 1.5px solid transparent;
     transition: color var(--dur-base), border-color var(--dur-base);
@@ -317,6 +336,14 @@ const nav = [
        (geprüft in tests/site.spec.ts „Menü auf dem Handy: Unterstrich …“) */
     .site-nav a { font-family: var(--font-display); font-size: 30px; font-weight: 800; letter-spacing: -0.02em; text-transform: none; line-height: 1.1; padding: 2px 0 1px; }
     .site-header.is-open .site-header__right { display: flex; }
+    /* geöffnet füllt das Menü den Bildschirm (nichts von der Seite scheint durch); langes Menü scrollt in sich */
+    .site-header.is-open { height: 100vh; height: 100dvh; }
+    .site-header.is-open .site-header__inner { height: 100%; align-content: flex-start; overflow-y: auto; overscroll-behavior: contain; }
+    .site-header.is-open .site-header__right { padding-bottom: 32px; }
+    .site-header__mehr { display: flex; flex-direction: column; align-items: flex-start; gap: 12px; padding-top: 16px; border-top: 1px solid rgba(255, 255, 255, 0.12); align-self: stretch; }
+    .site-header__mehr a { color: #fff; padding: 4px 0; }
+    .site-header__mehr a:hover { color: var(--cyan); }
+    :global(html.menu-offen), :global(html.menu-offen body) { overflow: hidden; }
     .site-header.is-open .menu-toggle__icon span:first-child { transform: translateY(3.5px) rotate(45deg); }
     .site-header.is-open .menu-toggle__icon span:last-child { width: 22px; transform: translateY(-3.5px) rotate(-45deg); }
   }

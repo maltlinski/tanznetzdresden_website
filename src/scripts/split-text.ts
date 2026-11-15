@@ -5,8 +5,8 @@
  *   data-sweep="0.35"   Zeile steigt Wort für Wort aus einer Maske auf, Start nach 0,35 × 1,2 s
  *                       (sobald der Abschnitt ins Bild kommt, siehe aufstieg())
  *
- * Ohne JavaScript oder bei „Bewegung reduzieren“ steht der Text sofort da. SplitText setzt ein aria-label
- * auf das Element, Screenreader lesen also den ganzen Satz statt einzelner Wörter.
+ * Ohne JavaScript oder bei „Bewegung reduzieren“ steht der Text sofort da. Bei data-split setzt SplitText ein
+ * aria-label auf die Überschrift, Screenreader lesen also den ganzen Satz statt einzelner Wörter.
  */
 import { SplitText } from 'gsap/SplitText';
 import { gsap, EASE, motionOk } from './gsap';
@@ -41,6 +41,8 @@ export function aufstieg(root: HTMLElement): void {
       SplitText.create(el, {
         type: 'words',
         mask: 'words',
+        // Zeilen sind <span> in einer Überschrift: dort ist aria-label nicht erlaubt, die Wörter bleiben lesbarer Text
+        aria: 'none',
         onSplit: (self) =>
           gsap.from(self.words, {
             yPercent: 110, duration: 0.9, ease: EASE, stagger: 0.08, delay: Number(el.dataset.sweep) * 1.2,

@@ -8,6 +8,9 @@ import '@fontsource/jetbrains-mono/latin-400.css';
 import '@fontsource/jetbrains-mono/latin-500.css';
 import '@fontsource/jetbrains-mono/latin-600.css';
 import '../styles/global.css';
+// die zwei Schnitte, die jede Seite sofort braucht (Überschrift, Fließtext), lädt der Browser vorab
+import schriftTitel from '@fontsource/work-sans/files/work-sans-latin-800-normal.woff2?url';
+import schriftText from '@fontsource/open-sans/files/open-sans-latin-400-normal.woff2?url';
 import { getImage } from 'astro:assets';
 import { getVerein } from '../lib/settings';
 import { getLang, htmlLang, tr, type Lang } from '../lib/i18n';
@@ -32,11 +35,15 @@ interface Props {
   alternates?: Alternates;
   /** Bild für Social-Media-Vorschau */
   ogImage?: ImageMetadata;
+  /** Art der Seite für geteilte Links: Beiträge sind „article“ */
+  ogType?: 'website' | 'article';
+  /** Datum der Veröffentlichung (nur bei ogType „article“), JJJJ-MM-TT */
+  published?: string;
 }
 
 const lang = getLang(Astro);
 const site = getVerein(lang);
-const { title: pageTitle, description = site.description, noindex = false, alternates = {}, ogImage } = Astro.props;
+const { title: pageTitle, description = site.description, noindex = false, alternates = {}, ogImage, ogType = 'website', published } = Astro.props;
 const t = {
   tagline: texte(lang, 'allgemein', 'browser').tagline,
   // für Screenreader und Kalender-Apps
@@ -71,6 +78,9 @@ const jsonLd = {
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Seitenwechsel mit Überblenden: die Regel steht direkt im Kopf (nicht in der CSS-Datei), damit der Browser
+         sie beim Ankommen sofort kennt; sonst bricht Chromium den Übergang ab (docs/entwicklung.md, „Tempo und Technik“) -->
+    <style is:inline>@view-transition{navigation:auto}</style>
     <title>{title}</title>
     <meta name="description" content={description} />
     <meta name="designer" content={gestaltung.name} />
@@ -82,9 +92,14 @@ const jsonLd = {
     <link rel="alternate" type="text/calendar" title={t.cal} href={`${base}termine.ics`} />
     <meta name="theme-color" content={token('--purple')} />
     <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+    <link rel="apple-touch-icon" href={`${base}icon-180.png`} />
+    <link rel="manifest" href={`${base}${lang === 'en' ? 'en/' : ''}manifest.webmanifest`} />
     <link rel="sitemap" href={`${base}sitemap-index.xml`} />
+    <link rel="preload" as="font" type="font/woff2" href={schriftTitel} crossorigin />
+    <link rel="preload" as="font" type="font/woff2" href={schriftText} crossorigin />
 
-    <meta property="og:type" content="website" />
+    <meta property="og:type" content={ogType} />
+    {ogType === 'article' && published && <meta property="article:published_time" content={published} />}
     <meta property="og:locale" content={lang === 'en' ? 'en_GB' : 'de_DE'} />
     <meta property="og:site_name" content={site.name} />
     <meta property="og:title" content={title} />

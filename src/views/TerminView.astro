@@ -51,7 +51,10 @@ const jsonLd = {
   url: pageUrl,
 };
 ---
-<Page route="termine" rest={`${termin.id}/`} title={`${title} · ${date.day}. ${date.month}`} description={teaser}>
+<Page
+  route="termine" rest={`${termin.id}/`} title={`${title} · ${date.day}. ${date.month}`} description={teaser}
+  ogImage={typeof post?.image === 'object' ? post.image : undefined}
+>
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 
   <article data-termin data-end={end}>

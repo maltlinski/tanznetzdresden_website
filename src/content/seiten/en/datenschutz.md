@@ -73,6 +73,10 @@ The EPC QR code on the donation page is generated on our server. Scanning it doe
 
 We process members’ data (name, address, contact details, fee data) to administer the membership (Art. 6(1)(b) GDPR) and keep it after leaving for as long as required by tax and association law.
 
+## Membership application
+
+When you submit the form on the “Membership” page, we store your name, your email address, the type of membership you would like and your text with Supabase (data centre in Frankfurt am Main, see “Members area”). Only the board can read the applications. We use the details solely to process your application (Art. 6(1)(b) GDPR) and delete them as soon as the application is settled. If the service cannot be reached, a prepared email to the board opens instead; in that case the section “Contact by email” applies.
+
 ## Your rights
 
 You have the right of access (Art. 15 GDPR), rectification (Art. 16), erasure (Art. 17), restriction of processing (Art. 18), data portability (Art. 20) and objection (Art. 21). You can withdraw consent at any time with effect for the future (Art. 7(3)).

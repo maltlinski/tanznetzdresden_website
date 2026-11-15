@@ -3,9 +3,10 @@ import Page from '../layouts/Page.astro';
 import PageIntro from '../components/PageIntro.astro';
 import Tag from '../components/ui/Tag.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
+import MitgliedAntrag from '../components/MitgliedAntrag.astro';
 import { getVerein } from '../lib/settings';
 import { href } from '../lib/url';
-import { getLang } from '../lib/i18n';
+import { getLang, url } from '../lib/i18n';
 import { fuellen, texte, zeilen } from '../lib/texte';
 
 const lang = getLang(Astro);
@@ -15,6 +16,9 @@ const [feeRegular, feeMember] = verein.training.fee.split('/').map((s) => s.trim
 const kopf = texte(lang, 'mitglied', 'kopf');
 const v = texte(lang, 'mitglied', 'vorteile');
 const sch = texte(lang, 'mitglied', 'schritte');
+const an = texte(lang, 'mitglied', 'antrag');
+// Platzhalter wie „[BITTE ERGÄNZEN]“ nicht öffentlich zeigen: ohne Beitrag bleibt der Kasten ohne Zahl
+const beitrag = /\[/.test(m.fee) ? '' : m.fee;
 const [h1, accent] = zeilen(kopf.titel);
 const t = {
   ...kopf, h1, accent, whyKicker: v.whyKicker, whyH: v.whyH, howKicker: sch.howKicker, howH: sch.howH,
@@ -44,16 +48,29 @@ const t = {
         </ol>
       </div>
       <aside class="card">
-        <span class="card__label">{t.fee}</span>
-        <span class="card__big">{m.fee}</span>
-        <span class="card__note">{m.feeNote}</span>
-        <div class="card__actions">
+        {beitrag && (
+          <>
+            <span class="card__label">{t.fee}</span>
+            <span class="card__big">{beitrag}</span>
+            {m.feeNote && <span class="card__note">{m.feeNote}</span>}
+          </>
+        )}
+        <div class:list={['card__actions', !beitrag && 'card__actions--oben']}>
+          <a class="btn btn--secondary btn--marker" href={url(lang, 'mitglied', '#antrag')}>{an.zum}</a>
           {m.applicationPdf && <a class="btn btn--primary btn--marker" href={href(m.applicationPdf)} download>{t.pdf}</a>}
           {m.statutesPdf && <a class="mono-link card__link" href={href(m.statutesPdf)}>{t.statutes}</a>}
           <span class="card__label">{t.questions}</span>
           <ProtectedEmail email={verein.emails.vorstand} label={t.mail} subject={t.subject} />
         </div>
       </aside>
+    </div>
+  </section>
+
+  <section class="section" id="antrag" aria-labelledby="antrag-h">
+    <div class="wrap">
+      <div class="section-head"><div data-reveal><Tag>{an.kicker}</Tag><h2 class="h2" id="antrag-h">{an.h}</h2></div></div>
+      {an.lead && <p class="antrag__lead">{an.lead}</p>}
+      <MitgliedAntrag />
     </div>
   </section>
 </Page>
@@ -75,5 +92,7 @@ const t = {
   .card__big { font-family: var(--font-display); font-weight: 800; font-size: clamp(30px, 3.4vw, 44px); line-height: 1; letter-spacing: -0.03em; }
   .card__note { font-size: 14px; color: var(--on-dark-soft); }
   .card__actions { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--on-dark-rule); }
+  .card__actions--oben { margin-top: 0; padding-top: 0; border-top: 0; }
   .card__link { color: #fff; }
+  .antrag__lead { max-width: 720px; margin: 0 0 28px; font-size: 17px; line-height: var(--lh-text); color: var(--ink-soft); }
 </style>

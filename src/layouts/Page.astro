@@ -17,6 +17,8 @@ interface Props {
   /** Zusatz hinter der Route, z. B. Profil-Kürzel "alba-t-alvarez/" */
   rest?: string;
   ogImage?: ImageMetadata;
+  ogType?: 'website' | 'article';
+  published?: string;
   /** Fortschrittsbalken unter dem Kopf (Startseite) */
   fortschritt?: boolean;
 }

@@ -20,6 +20,12 @@ const pages = [
   '/en/', '/en/events/', '/en/training/', `/en/news/${englisch.id}/`, '/en/network/alina-lucifero/',
 ];
 
+/** Fester Text der Website, wie ihn die Redaktion gerade gesetzt hat (src/settings/texte.json); `zeile` wählt eine Zeile */
+function wortlaut(seite: string, abschnitt: string, key: string, zeile?: number): string {
+  const text: string = JSON.parse(readFileSync('src/settings/texte.json', 'utf8'))[seite].abschnitte[abschnitt].texte[key].de;
+  return zeile === undefined ? text : text.split('\n')[zeile];
+}
+
 /** Externe Anfragen sperren: die Seite selbst darf ohne Einwilligung nichts nachladen. */
 async function trackExternal(page: Page) {
   const external: string[] = [];
@@ -409,7 +415,7 @@ test('News: Startseite zeigt Titelthema und offene Ausschreibungen, Links führe
   const lead = veroeffentlicht().find((p) => p.image) ?? neuester;
   await page.goto('/');
   const news = page.locator('#news');
-  await expect(news.getByRole('heading', { name: 'Aus dem Netz' })).toBeVisible();
+  await expect(news.getByRole('heading', { name: wortlaut('startseite', 'termine', 'newsTitel') })).toBeVisible();
   await expect(news.locator(`a[href$="/news/${lead.id}/"]`).first()).toBeVisible();
   // offene Ausschreibungen (Frist noch nicht vorbei) stehen mit Frist darunter
   const offen = veroeffentlicht().filter((p) => p.id !== lead.id && p.deadline && p.deadline >= heute);
@@ -607,8 +613,9 @@ test('Startseite: Einstiege im Hero, Netz mit Profilen, Formate zum Blättern', 
   await dismissConsent(page);
   const wege = page.getByRole('navigation', { name: 'Einstiege' });
   await expect(wege.getByRole('link')).toHaveCount(3);
-  await expect(wege.getByRole('link', { name: /Mittrainieren/ })).toHaveAttribute('href', /\/profitraining\/$/);
-  await expect(wege.getByRole('link', { name: /Teil des Netzes werden/ })).toHaveAttribute('href', /#mitglied$/);
+  // die Wortlaute pflegt die Redaktion (Texte → Startseite → Kopf), der Test liest sie aus der Datei
+  await expect(wege.getByRole('link', { name: wortlaut('startseite', 'kopf', 'trainieren', 1) })).toHaveAttribute('href', /\/profitraining\/$/);
+  await expect(wege.getByRole('link', { name: wortlaut('startseite', 'kopf', 'mitmachen', 1) })).toHaveAttribute('href', /#mitglied$/);
 
   const netz = page.locator('#netz');
   await expect(netz.getByText('70+ Tanzschaffende')).toBeVisible();

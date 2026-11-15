@@ -1,0 +1,32 @@
+---
+/**
+ * Ältere Beiträge der Chronik zum Nachladen (news/weitere/): eine schlichte Liste ohne Rahmen der Website.
+ * src/scripts/news-chronik.ts holt sie und sortiert die Einträge in die Chronik ein. Ohne JavaScript führt ein
+ * Link hierher; Suchmaschinen folgen den Links, nehmen die Seite selbst aber nicht auf.
+ */
+import NewsEintrag from '../components/NewsEintrag.astro';
+import { getNews, leadPost } from '../lib/news';
+import { chronikTeilen } from '../lib/news-chronik';
+import { getLang, htmlLang, url } from '../lib/i18n';
+import { texte } from '../lib/texte';
+
+const lang = getLang(Astro);
+const posts = await getNews(lang);
+const { rest } = chronikTeilen(posts, leadPost(posts));
+const t = texte(lang, 'news', 'uebersicht');
+---
+<!doctype html>
+<html lang={htmlLang[lang]}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, follow" />
+    <title>{t.title}</title>
+  </head>
+  <body>
+    <p><a href={url(lang, 'news')}>{t.title}</a></p>
+    <div data-rest>
+      {rest.map((p) => <NewsEintrag post={p} />)}
+    </div>
+  </body>
+</html>

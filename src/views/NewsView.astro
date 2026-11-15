@@ -2,19 +2,21 @@
 /**
  * News-Übersicht („Aus dem Netz.“, Entwurf News v4): Titelthema, offene Fristen und die Chronik als Archiv
  * mit Suche, Rubriken, Jahren, Sortierung, Ansicht (Liste/Kompakt) und „Weitere laden“ (src/scripts/news-chronik.ts).
+ * Im HTML stehen nur die neuesten Beiträge, ältere kommen aus news/weitere/ (NewsRestView.astro) dazu.
  */
 import Page from '../layouts/Page.astro';
 import Tag from '../components/ui/Tag.astro';
-import Badge from '../components/ui/Badge.astro';
 import Button from '../components/ui/Button.astro';
 import KeilBar from '../components/ui/KeilBar.astro';
 import NewsImage from '../components/NewsImage.astro';
+import NewsEintrag from '../components/NewsEintrag.astro';
 import ProtectedEmail from '../components/ProtectedEmail.astro';
 import {
   getNews, leadPost, daysLeft, deadlineText, dateLong, dateShort, monthLong, monthShort,
-  newsBadge, newsCategoryLabel, type NewsCategory, type NewsPost,
+  newsCategoryLabel, type NewsPost,
 } from '../lib/news';
 import { newsCategories } from '../content.config';
+import { chronikTeilen } from '../lib/news-chronik';
 import { getVerein } from '../lib/settings';
 import { href } from '../lib/url';
 import { getLang, tr, url } from '../lib/i18n';
@@ -35,18 +37,20 @@ const a = tr(lang, {
   de: { filter: 'Nach Kategorie filtern', suche: 'Beiträge durchsuchen', leeren: 'Suche leeren', sortierung: 'Sortierung', ansicht: 'Ansicht', jahr: 'Jahr' },
   en: { filter: 'Filter by category', suche: 'Search posts', leeren: 'Clear search', sortierung: 'Sort order', ansicht: 'View', jahr: 'Year' },
 });
-/** 12. Okt / 12 Oct (kompakte Zeile) */
-const datumKurz = (iso: string) => (lang === 'de' ? `${iso.slice(8, 10)}. ${monthShort(iso, lang)}` : `${Number(iso.slice(8, 10))} ${monthShort(iso, lang)}`);
 
 // Chronik: Jahre → Monate (ohne JavaScript; src/scripts/news-chronik.ts gruppiert beim Filtern neu).
 // Das Titelthema steht oben und ist erst beim Filtern in der Liste.
 const jahresGruppen: { jahr: number; n: number; monate: { key: string; date: string; posts: NewsPost[] }[] }[] = [];
-for (const p of posts) {
+// Im HTML stehen nur die neuesten (so viele, wie die Liste zuerst zeigt); alle älteren lädt die Chronik aus
+// news/weitere/ nach (src/lib/news-chronik.ts, src/views/NewsRestView.astro). Zahlen an Jahr und Monat gelten für alle.
+const { erste, rest } = chronikTeilen(posts, lead);
+const imMonat = (key: string) => posts.filter((p) => p !== lead && p.date.startsWith(key)).length;
+const imJahr = (jahr: number) => posts.filter((p) => p !== lead && p.date.startsWith(String(jahr))).length;
+for (const p of erste) {
   if (p === lead) continue;
   const jahr = Number(p.date.slice(0, 4));
   let j = jahresGruppen.at(-1);
-  if (j?.jahr !== jahr) jahresGruppen.push((j = { jahr, n: 0, monate: [] }));
-  j.n++;
+  if (j?.jahr !== jahr) jahresGruppen.push((j = { jahr, n: imJahr(jahr), monate: [] }));
   const key = p.date.slice(0, 7);
   const g = j.monate.at(-1);
   if (g?.key === key) g.posts.push(p);
@@ -121,7 +125,10 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
     <KeilBar class="ni__keil" />
   </section>
 
-  <section id="journal" class="section journal" aria-labelledby="journal-h" data-chronik data-ansicht="liste" data-texte={JSON.stringify(jsTexte)}>
+  <section
+    id="journal" class="section journal" aria-labelledby="journal-h" data-chronik data-ansicht="liste" data-texte={JSON.stringify(jsTexte)}
+    data-rest={rest.length ? url(lang, 'news', 'weitere/') : undefined}
+  >
     <div class="wrap">
       <div class="journal__head">
         <div>
@@ -185,85 +192,18 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
                   <span class="jmonat__punkt"></span>
                   <span class="jmonat__mo" aria-hidden="true">{monthShort(g.date, lang)}</span>
                   <span class="jmonat__name">{monthLong(g.date, lang)}</span>
-                  <span class="jmonat__n">{count(g.posts.filter((p) => p !== lead).length)}</span>
+                  <span class="jmonat__n">{count(imMonat(g.key))}</span>
                 </div>
                 <div class="jmonat__posts">
-                  {g.posts.map((p) => {
-                    const cat = newsCategoryLabel[lang][p.category as NewsCategory];
-                    const meta = (
-                      <div class="post__meta">
-                        <span class="post__datum">{dateShort(p.date, lang)}</span>
-                        <Badge variant={newsBadge[p.category]}>{cat}</Badge>
-                      </div>
-                    );
-                    return (
-                      <div
-                        class="eintrag" data-post data-cat={p.category} data-date={p.date} data-titel={p.title}
-                        data-suchtext={[p.title, p.teaser, p.author, cat, p.quote?.who].filter(Boolean).join(' ').toLowerCase()}
-                        data-lead={p === lead ? '' : undefined} hidden={p === lead} data-frist={p.deadline ?? undefined}
-                        data-minuten={`${p.minutes} ${t.min}`} data-mo={monthShort(p.date, lang)} data-monat={monthLong(p.date, lang)}
-                      >
-                        <a href={link(p)} class:list={['post', `post--${p.kind}`]}>
-                          {p.kind === 'photo' && (
-                            <>
-                              <div class="post__img">{p.image && <NewsImage src={p.image} alt={p.alt ?? ''} focus={p.imageFocus} sizes="(min-width: 1000px) 560px, 100vw" />}</div>
-                              <div class="post__body">
-                                {meta}
-                                <h4 class="post__title">{p.title}</h4>
-                                <p class="post__teaser">{p.teaser}</p>
-                                <span class="post__more">{t.readShort} · {p.minutes} {t.min} →</span>
-                              </div>
-                            </>
-                          )}
-                          {p.kind === 'text' && (
-                            <>
-                              <div class="post__body">
-                                {meta}
-                                <h4 class="post__title">{p.title}</h4>
-                                <p class="post__teaser">{p.teaser}</p>
-                              </div>
-                              <span class="post__arrow" aria-hidden="true">→</span>
-                            </>
-                          )}
-                          {p.kind === 'call' && (
-                            <>
-                              <div class="post__body">
-                                {meta}
-                                <h4 class="post__title">{p.title}</h4>
-                                <p class="post__teaser">{p.teaser}</p>
-                              </div>
-                              <div class="post__deadline">
-                                <span class="post__dl-k">{t.deadline}</span>
-                                <span class="post__dl-n" data-deadline={p.deadline} data-deadline-part="n">{deadlineText(daysLeft(p.deadline!), 'n', lang)}</span>
-                                <span class="post__dl-u">
-                                  <span data-deadline={p.deadline} data-deadline-part="unit">{deadlineText(daysLeft(p.deadline!), 'unit', lang)}</span> · {t.until} {dateShort(p.deadline!, lang)}
-                                </span>
-                              </div>
-                            </>
-                          )}
-                          {p.kind === 'quote' && p.quote && (
-                            <>
-                              {meta}
-                              <blockquote class="post__quote"><span class="post__q-mark" aria-hidden="true">„</span>{p.quote.text}<span aria-hidden="true">“</span></blockquote>
-                              <span class="visually-hidden">{p.title}</span>
-                              <span class="post__q-foot">{p.quote.who}{p.quote.role && ` · ${p.quote.role}`} →</span>
-                            </>
-                          )}
-                        </a>
-                        <a href={link(p)} class="zeile">
-                          <span class="zeile__datum">{datumKurz(p.date)}</span>
-                          <span class="zeile__mitte"><span class="zeile__titel">{p.title}</span><Badge variant={newsBadge[p.category]}>{cat}</Badge></span>
-                          <span class="zeile__rechts" data-rechts>{p.minutes} {t.min}</span>
-                        </a>
-                      </div>
-                    );
-                  })}
+                  {g.posts.map((p) => <NewsEintrag post={p} lead={p === lead} />)}
                 </div>
               </div>
             ))}
           </div>
         ))}
       </div>
+
+      {rest.length > 0 && <noscript><p class="jaeltere"><a class="mono-link" href={url(lang, 'news', 'weitere/')}>{t.aeltere}</a></p></noscript>}
 
       <div class="jmehr" data-mehr hidden>
         <span class="jmehr__text" data-mehr-text></span>
@@ -320,7 +260,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
     position: relative; width: 100%; aspect-ratio: 16 / 10; max-height: 30vh; min-height: 180px; background: #000; overflow: hidden;
     clip-path: polygon(0 0, 100% 0, 100% 86%, 92% 100%, 0 100%);
   }
-  .ni__lead-img :global(img), .post__img :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .ni__lead-img :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
   .ni__corner { position: absolute; top: 0; left: 0; width: 36px; height: 36px; background: var(--magenta); }
   .ni__lead-text { display: flex; flex-direction: column; gap: 16px; padding-bottom: 6px; }
   .ni__lead-meta { color: var(--cyan); }
@@ -367,6 +307,8 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
   /* Chronik: Jahres- und Monatsköpfe baut src/scripts/news-chronik.ts, deshalb global (alles unter .journal) */
   /* ---------- Chronik (Archiv) ---------- */
   /* --jt-h: Höhe der Werkzeugleiste, misst src/scripts/news-chronik.ts */
+  .journal .post__img img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block; }
+  .journal .jaeltere { margin: 28px 0 0; }
   .journal { --jt-h: 210px; scroll-margin-top: var(--header-h); padding-block: clamp(48px, 6vw, 80px) clamp(56px, 8vw, 104px); }
   .journal__head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px 40px; margin-bottom: 24px; }
   .journal__head .tag { margin-bottom: 16px; }

@@ -579,6 +579,12 @@ test('Texte: Englisch prüfen, ursprünglichen Text zurückholen, Filter, Textbu
   const PFAD = 'src/settings/texte.json';
   const datei = JSON.parse(readFileSync(PFAD, 'utf8'));
   Object.assign(datei.profil.abschnitte.kopf.texte.anfrage, { de: 'Anfragen', ursprung: { de: 'Anfrage senden', en: 'Send a request' }, enPruefen: true });
+  // Merker, die gerade wirklich in der Datei stehen (die Redaktion arbeitet darin), zählen hier nicht mit
+  for (const seite of Object.values<{ abschnitte?: Record<string, { texte: Record<string, { enPruefen?: boolean }> }> }>(datei)) {
+    for (const abschnitt of Object.values(seite.abschnitte ?? {})) {
+      for (const [key, e] of Object.entries(abschnitt.texte)) if (key !== 'anfrage') delete e.enPruefen;
+    }
+  }
   const text = JSON.stringify(datei);
   await page.route(`${SB}/functions/v1/inhalte`, async (route) => {
     const body = route.request().postDataJSON();

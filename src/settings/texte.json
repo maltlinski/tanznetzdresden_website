@@ -74,6 +74,7 @@
         "texte": {
           "h": { "wo": "Überschrift", "de": "Deine Privatsphäre", "en": "Your privacy", "max": 40 },
           "text": { "wo": "Text (danach folgt der Link zur Datenschutzerklärung)", "de": "Wir verwenden keine Tracking-Cookies. Für Karten, Videos und Social-Media-Beiträge brauchen wir aber deine Zustimmung, weil dabei Daten an andere Anbieter gehen. Du kannst sie jederzeit im Footer unter „Cookie-Einstellungen“ ändern. Mehr dazu in der", "en": "We do not use tracking cookies. For maps, videos and social media posts we need your consent, because data is sent to other providers. You can change your choice at any time under “Cookie settings” in the footer. More in our", "max": 500 },
+          "kurz": { "wo": "Kurzer Text in der schmalen Leiste (der lange Text oben erscheint erst unter „Einstellungen“)", "de": "Karten, Videos und Social-Media-Beiträge laden wir erst mit deiner Zustimmung. Tracking gibt es bei uns nicht.", "en": "We only load maps, videos and social media posts with your consent. We do not track you.", "max": 160 },
           "privacy": { "wo": "Link am Ende des Texts", "de": "Datenschutzerklärung", "en": "privacy policy", "max": 40 },
           "all": { "wo": "Knopf", "de": "Alle akzeptieren", "en": "Accept all", "max": 30 },
           "necessary": { "wo": "Knopf", "de": "Nur notwendige", "en": "Necessary only", "max": 30 },
@@ -108,7 +109,7 @@
         "texte": {
           "naechster": { "wo": "Kleine Zeile über dem nächsten Termin", "de": "Upcoming", "en": "Upcoming", "max": 24 },
           "sehen": { "wo": "Einstieg 1 (zu den Terminen): kleine Zeile, darunter groß", "zeilen": 2, "de": "Zuschauen\nErlebt Tanz", "en": "Watch\nExperience dance", "max": 50, "ursprung": { "de": "Zuschauen\nTanz sehen", "en": "Watch\nSee dance" } },
-          "trainieren": { "wo": "Einstieg 2 (zum Profitraining): kleine Zeile, darunter groß", "zeilen": 2, "de": "Trainieren\nEntdeckt unser Profi-Trainning", "en": "Train\nDiscover our profi training", "max": 50, "ursprung": { "de": "Trainieren\nMittrainieren", "en": "Train\nTrain with us" } },
+          "trainieren": { "wo": "Einstieg 2 (zum Profitraining): kleine Zeile, darunter groß", "zeilen": 2, "de": "Trainieren\nEntdeckt unser Profitraining", "en": "Train\nDiscover our professional training", "max": 50, "ursprung": { "de": "Trainieren\nMittrainieren", "en": "Train\nTrain with us" } },
           "mitmachen": { "wo": "Einstieg 3 (Mitglied werden): kleine Zeile, darunter groß", "zeilen": 2, "de": "Mitmachen\nWerdet Teil des Netzwerks", "en": "Join\nBecome part of the network", "max": 50, "ursprung": { "de": "Mitmachen\nTeil des Netzes werden", "en": "Join\nBecome part of the network" }, "enPruefen": true },
           "neuKnuepfen": { "wo": "Knopf, der die Animation des Netzes neu startet", "de": "Netz neu knüpfen", "en": "Re-knot the net", "max": 30 }
         }
@@ -377,6 +378,7 @@
           "az": { "wo": "Chronik: Sortierung nach Titel", "de": "A–Z", "en": "A–Z", "max": 14 },
           "liste": { "wo": "Chronik: Ansicht mit Bildern und Teasern", "de": "Liste", "en": "List", "max": 14 },
           "kompakt": { "wo": "Chronik: Ansicht als Zeilen", "de": "Kompakt", "en": "Compact", "max": 14 },
+          "aeltere": { "wo": "Chronik: Link zu den älteren Beiträgen (nur sichtbar, wenn im Browser JavaScript aus ist)", "de": "Ältere Beiträge →", "en": "Older posts →", "max": 40 },
           "zuruecksetzen": { "wo": "Chronik: Filter zurücksetzen", "de": "Filter zurücksetzen", "en": "Reset filters", "max": 30 },
           "leer": { "wo": "Wenn Suche und Filter nichts finden: Überschrift", "de": "Nichts gefunden.", "en": "Nothing found.", "max": 40 },
           "chronicle": { "wo": "Chronik: Überschrift", "de": "Chronik", "en": "Chronicle", "max": 30 },
@@ -765,10 +767,40 @@
           "howKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "So geht’s", "en": "How it works", "max": 40 },
           "howH": { "wo": "Überschrift", "de": "In vier Schritten", "en": "In four steps", "max": 40 },
           "schritt1": { "wo": "Schritt 1, wenn es den Antrag als PDF gibt", "zeilen": 2, "de": "Antrag ausfüllen\nLade den Mitgliedsantrag herunter und fülle ihn aus.", "en": "Fill in the form\nDownload the membership form and fill it in.", "max": 250 },
-          "schritt1OhnePdf": { "wo": "Schritt 1, wenn es keinen Antrag als PDF gibt", "zeilen": 2, "de": "Antrag ausfüllen\nSchreib uns kurz, wer du bist und woran du arbeitest. Wir schicken dir den Antrag.", "en": "Fill in the form\nTell us briefly who you are and what you work on. We will send you the form.", "max": 250 },
-          "schritt2": { "wo": "Schritt 2", "zeilen": 2, "de": "An den Vorstand senden\nPer E-Mail oder per Post an die Vereinsadresse.", "en": "Send it to the board\nBy email or by post to the association address.", "max": 250 },
+          "schritt1OhnePdf": { "wo": "Schritt 1, wenn es keinen Antrag als PDF gibt", "zeilen": 2, "de": "Antrag ausfüllen\nFüll das Formular unten auf dieser Seite aus und schreib kurz, wer du bist und woran du arbeitest.", "en": "Fill in the form\nFill in the form at the bottom of this page and tell us briefly who you are and what you work on.", "max": 250 },
+          "schritt2": { "wo": "Schritt 2", "zeilen": 2, "de": "Der Vorstand meldet sich\nWir lesen deinen Antrag und schicken dir, was noch fehlt.", "en": "The board gets back to you\nWe read your application and send you whatever is still needed.", "max": 250 },
           "schritt3": { "wo": "Schritt 3", "zeilen": 2, "de": "Kennenlernen\nWir laden dich zum nächsten Sharing ein, dem offenen Netzwerktreffen.", "en": "Get to know us\nWe invite you to the next Sharing, our open network meeting.", "max": 250 },
           "schritt4": { "wo": "Schritt 4", "zeilen": 2, "de": "Zugang erhalten\nDu bekommst eine Einladung in den internen Bereich und pflegst dort dein Profil.", "en": "Get access\nYou receive an invitation to the members area and set up your profile there.", "max": 250 }
+        }
+      },
+      "antrag": {
+        "titel": "Antragsformular",
+        "auch": [{ "text": "Eingegangene Anträge", "ziel": "intern/mitglieder/" }],
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Antrag", "en": "Application", "max": 40 },
+          "h": { "wo": "Überschrift über dem Formular", "de": "Jetzt Mitglied werden", "en": "Apply for membership", "max": 40 },
+          "lead": { "wo": "Text unter der Überschrift", "de": "Füll das Formular aus. Der Vorstand meldet sich bei dir und schickt dir alles Weitere.", "en": "Fill in the form. The board will get back to you with everything else.", "max": 250 },
+          "zum": { "wo": "Knopf im Kasten rechts, springt zum Formular", "de": "Zum Antragsformular", "en": "Go to the application form", "max": 40 },
+          "name": { "wo": "Feld", "de": "Name", "en": "Name", "max": 30 },
+          "email": { "wo": "Feld", "de": "E-Mail", "en": "Email", "max": 30 },
+          "art": { "wo": "Auswahl: Art der Mitgliedschaft", "de": "Ich möchte", "en": "I would like to", "max": 40 },
+          "ordentlich": { "wo": "Auswahl: ordentliches Mitglied", "de": "Mitglied werden (Tanzschaffende)", "en": "become a member (dance artists)", "max": 60 },
+          "foerder": { "wo": "Auswahl: Fördermitglied", "de": "Fördermitglied werden", "en": "become a supporting member", "max": 60 },
+          "nachricht": { "wo": "Feld für den freien Text", "de": "Wer bist du, woran arbeitest du?", "en": "Who are you and what do you work on?", "max": 80 },
+          "nachrichtHilfe": { "wo": "Hinweis unter dem freien Text", "de": "Ein paar Sätze genügen.", "en": "A few sentences are enough.", "max": 120 },
+          "consent1": { "wo": "Einwilligung, Text vor dem Link", "de": "Ich bin einverstanden, dass der Vorstand meine Angaben zur Bearbeitung des Antrags nutzt. Mehr in der", "en": "I agree that the board uses my details to process the application. More in the", "max": 200 },
+          "privacy": { "wo": "Einwilligung, Link", "de": "Datenschutzerklärung", "en": "privacy policy", "max": 40 },
+          "consent2": { "wo": "Einwilligung, Text nach dem Link", "de": ".", "en": ".", "max": 80 },
+          "senden": { "wo": "Knopf", "de": "Antrag senden", "en": "Send application", "max": 30 },
+          "sendet": { "wo": "Knopf, während gesendet wird", "de": "Wird gesendet …", "en": "Sending …", "max": 30 },
+          "fehlerName": { "wo": "Meldung: Name fehlt", "de": "Bitte gib deinen Namen an.", "en": "Please enter your name.", "max": 120 },
+          "fehlerEmail": { "wo": "Meldung: E-Mail ungültig", "de": "Bitte gib eine gültige E-Mail-Adresse an.", "en": "Please enter a valid email address.", "max": 120 },
+          "fehlerNachricht": { "wo": "Meldung: freier Text fehlt", "de": "Bitte schreib kurz, wer du bist.", "en": "Please tell us briefly who you are.", "max": 120 },
+          "fehlerConsent": { "wo": "Meldung: Einwilligung fehlt", "de": "Bitte stimme der Verarbeitung deiner Angaben zu.", "en": "Please agree to the processing of your details.", "max": 120 },
+          "fehler": { "wo": "Meldung: Senden hat nicht geklappt", "de": "Das hat nicht geklappt. Bitte versuch es noch einmal oder schreib uns eine E-Mail.", "en": "That did not work. Please try again or send us an email.", "max": 200 },
+          "fertig": { "wo": "Meldung nach dem Senden", "de": "Danke, dein Antrag ist beim Vorstand angekommen. Wir melden uns bei dir.", "en": "Thank you, your application has reached the board. We will get back to you.", "max": 200 },
+          "mail": { "wo": "Meldung, wenn stattdessen eine vorbereitete E-Mail geöffnet wird", "de": "Dein E-Mail-Programm öffnet sich mit dem vorbereiteten Antrag. Bitte sende die E-Mail ab.", "en": "Your email program opens with the prepared application. Please send the email.", "max": 200 },
+          "betreff": { "wo": "Betreff der vorbereiteten E-Mail", "de": "Mitgliedsantrag", "en": "Membership application", "max": 80 }
         }
       },
       "kasten": {

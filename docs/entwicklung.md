@@ -176,6 +176,10 @@ JavaScript sichtbar bleiben (`gsap.from` statt Elemente per CSS zu verstecken). 
 (`reveal.ts`) und der Text links im Netz-Abschnitt laufen ohne GSAP. Weitere Plugins (Flip, SplitText …)
 direkt aus `gsap/…` importieren und dort registrieren, wo sie gebraucht werden.
 
+Läuft eine Bewegung nur beim Aufrufen (ohne Scroll-Auslöser), aus `src/scripts/gsap-kern.ts` importieren: derselbe
+GSAP-Kern ohne ScrollTrigger, ein gutes Drittel kleiner. So halten es der Auftritt der Köpfe und das Netz im Kopf;
+einfache Unterseiten laden ScrollTrigger deshalb gar nicht.
+
 ### Auftritt der Köpfe
 
 Jede Unterseite tritt beim Aufrufen gleich auf – nach dem Muster von Kalender und Formate:
@@ -244,3 +248,32 @@ Der Abschnitt „Haltung & Wirkung“ steht auf „Über uns“ (`/verein/`) und
 - Pressebereich mit Download-Paket.
 - Ausschreibungen & Open Calls als eigene Sammlung mit Ablaufdatum.
 - Statistik ohne Cookies (z. B. selbst gehostetes Matomo/Plausible) über die Kategorie „statistik“.
+
+## Tempo und Technik (Stand November 2026)
+
+Festlegungen aus der Durchsicht vom November 2026. Bei neuen Seiten und Bausteinen bitte beibehalten.
+
+- **Schriften nur als WOFF2.** Work Sans, JetBrains Mono und Open Sans kommen aus `@fontsource` (`src/layouts/Base.astro`,
+  `src/styles/fonts.css`). Die TTF-Dateien in `design/system/assets/fonts` bindet die Website nicht ein. Die zwei
+  Schnitte, die jede Seite sofort braucht (Work Sans 800, Open Sans 400), lädt `Base.astro` per `rel="preload"` vor.
+- **Silbentrennung nur im Fließtext.** Knöpfe, Felder, Menüpunkte und kleine Zeilen in Versalien trennen nie
+  (`hyphens: manual` in `src/styles/global.css`), Überschriften nur Wörter ab zehn Buchstaben
+  (`hyphenate-limit-chars`). Neue Bausteine mit Versalien-Zeilen: Klasse `mono-link`, `tag` oder `datum` nutzen
+  oder `hyphens: manual` setzen.
+- **Seitenwechsel.** Links werden beim Überfahren vorausgeladen (`prefetch` in `astro.config.mjs`), der Wechsel
+  blendet weich um (View Transitions, die Kopfleiste bleibt stehen). Eingeschaltet wird das mit
+  `@view-transition` direkt im Kopf jeder Seite (`src/layouts/Base.astro`), nicht in einer CSS-Datei und nicht in
+  einer Medienabfrage: Chromium kennt die Regel sonst beim Ankommen noch nicht und bricht den Übergang mit einem
+  Fehler ab. Dauer und Kopfleiste stehen in `global.css`; bei „Bewegung reduzieren“ entfällt die Animation.
+  Die Seiten bleiben eigenständige Dokumente: Skripte laufen bei jedem Aufruf neu, es gibt keinen Router im Browser.
+- **Lange Listen nicht ganz ins HTML.** Die News-Übersicht enthält nur die neuesten 24 Beiträge
+  (`src/lib/news-chronik.ts`); alle älteren stehen in `news/weitere/` (`src/views/NewsRestView.astro`) und kommen
+  beim Laden dazu (`src/scripts/news-chronik.ts`). Einträge beider Teile rendert `src/components/NewsEintrag.astro`.
+- **Geteilte Links.** Beiträge sind `og:type` „article“ mit Datum, Termine zeigen das Bild des verknüpften Beitrags,
+  Profile haben `Person`-Daten für Suchmaschinen (`ogType`, `published`, `ogImage` am Layout `Page`).
+- **Startbildschirm.** Web-Manifest je Sprache (`src/lib/manifest.ts`), Symbole aus dem Zeichen des Favicons
+  (`src/lib/icon.ts`, `src/pages/icon-[name].png.ts`).
+- **Cookie-Hinweis** als schmale Leiste (`src/components/ConsentBanner.astro`): kurzer Text, beide Knöpfe gleich
+  gewichtet; Überschrift, langer Text und Kategorien erst mit „Einstellungen“.
+- **Handy-Menü** füllt den Bildschirm, die Seite dahinter scrollt nicht (`src/components/sections/Header.astro`);
+  darin zusätzlich „Netzwerk & Profile“ und „Kontakt & Presse“.

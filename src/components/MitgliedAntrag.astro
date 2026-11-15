@@ -1,0 +1,168 @@
+---
+/**
+ * Mitgliedsantrag auf der Seite „Mitglied werden“.
+ * Der Antrag geht an Supabase (Funktion mitgliedsantrag_stellen, supabase/migrations/…_mitgliedsantraege.sql);
+ * der Vorstand sieht ihn unter Intern → Mitglieder. Ist Supabase nicht eingerichtet oder nicht erreichbar,
+ * öffnet sich eine vorbereitete E-Mail an den Vorstand (wie beim Newsletter).
+ */
+import { verein } from '../lib/settings';
+import { protectEmail } from '../lib/protect-email';
+import { SUPABASE_ANON_KEY, SUPABASE_URL } from '../lib/supabase-config';
+import { getLang, url } from '../lib/i18n';
+import { texte } from '../lib/texte';
+
+const lang = getLang(Astro);
+const t = texte(lang, 'mitglied', 'antrag');
+const p = await protectEmail(verein.emails.vorstand);
+const msgs = {
+  name: t.fehlerName, email: t.fehlerEmail, nachricht: t.fehlerNachricht, consent: t.fehlerConsent, fehler: t.fehler,
+  fertig: t.fertig, mail: t.mail, betreff: t.betreff, senden: t.senden, sendet: t.sendet,
+  felder: { name: t.name, email: t.email, art: t.art, nachricht: t.nachricht },
+};
+---
+<form
+  class="ma" novalidate data-antrag data-lang={lang} data-msgs={JSON.stringify(msgs)}
+  data-ziel={SUPABASE_URL ? `${SUPABASE_URL}/rest/v1/rpc/mitgliedsantrag_stellen` : undefined} data-schluessel={SUPABASE_URL ? SUPABASE_ANON_KEY : undefined}
+  data-salt={p.salt} data-challenge={p.challenge} data-max={p.max} data-iv={p.iv} data-data={p.data}
+>
+  <div class="ma__reihe">
+    <div class="ma__feld">
+      <label for="ma-name">{t.name}</label>
+      <input id="ma-name" name="name" type="text" autocomplete="name" maxlength="80" required aria-describedby="ma-fehler" />
+    </div>
+    <div class="ma__feld">
+      <label for="ma-email">{t.email}</label>
+      <input id="ma-email" name="email" type="email" autocomplete="email" maxlength="200" required aria-describedby="ma-fehler" />
+    </div>
+  </div>
+  <fieldset class="ma__art">
+    <legend>{t.art}</legend>
+    <label class="ma__wahl"><input type="radio" name="art" value="Ordentliches Mitglied" checked /><span class="ma__punkt" aria-hidden="true"></span><span>{t.ordentlich}</span></label>
+    <label class="ma__wahl"><input type="radio" name="art" value="Fördermitglied" /><span class="ma__punkt" aria-hidden="true"></span><span>{t.foerder}</span></label>
+  </fieldset>
+  <div class="ma__feld">
+    <label for="ma-nachricht">{t.nachricht}</label>
+    <textarea id="ma-nachricht" name="nachricht" rows="5" maxlength="2000" required aria-describedby="ma-hilfe ma-fehler"></textarea>
+    {t.nachrichtHilfe && <span class="ma__hilfe" id="ma-hilfe">{t.nachrichtHilfe}</span>}
+  </div>
+  <!-- Honeypot: für Menschen unsichtbar, Bots füllen es aus -->
+  <div class="ma__hp" aria-hidden="true">
+    <label for="ma-website">Website</label>
+    <input id="ma-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+  </div>
+  <label class="ma__check">
+    <input type="checkbox" name="consent" required aria-describedby="ma-fehler" />
+    <span class="ma__box" aria-hidden="true"></span>
+    <span>{t.consent1} <a href={url(lang, 'datenschutz', lang === 'en' ? '#membership-application' : '#mitgliedsantrag')}>{t.privacy}</a>{t.consent2}</span>
+  </label>
+  <p class="ma__fehler" id="ma-fehler" role="alert" hidden></p>
+  <div><button type="submit" class="btn btn--primary btn--marker" data-antrag-senden>{t.senden}</button></div>
+</form>
+<p class="ma__fertig" data-antrag-fertig role="status" tabindex="-1" hidden></p>
+
+<script>
+  import { reveal } from '../scripts/protected-email';
+
+  const form = document.querySelector<HTMLFormElement>('[data-antrag]');
+  const fertig = document.querySelector<HTMLElement>('[data-antrag-fertig]');
+  if (form && fertig) {
+    const msg = JSON.parse(form.dataset.msgs ?? '{}') as Record<string, string> & { felder: Record<string, string> };
+    const fehler = form.querySelector<HTMLElement>('#ma-fehler')!;
+    const knopf = form.querySelector<HTMLButtonElement>('[data-antrag-senden]')!;
+    const start = Date.now();
+    const feld = (name: string) => form.elements.namedItem(name) as HTMLInputElement | HTMLTextAreaElement;
+    const melden = (text: string, bei?: HTMLElement) => {
+      fehler.textContent = text;
+      fehler.hidden = false;
+      bei?.setAttribute('aria-invalid', 'true');
+      bei?.focus();
+    };
+    const danke = (text: string) => {
+      form.hidden = true;
+      fertig.textContent = text;
+      fertig.hidden = false;
+      fertig.focus({ preventScroll: true });
+    };
+
+    form.addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      form.querySelectorAll('[aria-invalid]').forEach((e) => e.removeAttribute('aria-invalid'));
+      const fd = new FormData(form);
+      const name = String(fd.get('name') ?? '').trim();
+      const email = String(fd.get('email') ?? '').trim();
+      const nachricht = String(fd.get('nachricht') ?? '').trim();
+      const art = String(fd.get('art') ?? 'Ordentliches Mitglied');
+      if (name.length < 2) return melden(msg.name, feld('name'));
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return melden(msg.email, feld('email'));
+      if (nachricht.length < 3) return melden(msg.nachricht, feld('nachricht'));
+      if (!fd.get('consent')) return melden(msg.consent);
+      // Bots: Honeypot ausgefüllt oder Formular in unter 3 Sekunden abgeschickt
+      if (fd.get('website') || Date.now() - start < 3000) return;
+      fehler.hidden = true;
+      knopf.disabled = true;
+      knopf.textContent = msg.sendet;
+
+      const { ziel, schluessel, lang = 'de' } = form.dataset;
+      if (ziel && schluessel) {
+        try {
+          const r = await fetch(ziel, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', apikey: schluessel, Authorization: `Bearer ${schluessel}` },
+            body: JSON.stringify({ p_name: name, p_email: email, p_art: art, p_nachricht: nachricht, p_sprache: lang }),
+          });
+          if (r.ok) return danke(msg.fertig);
+        } catch {
+          /* nicht erreichbar: weiter mit der vorbereiteten E-Mail */
+        }
+      }
+      // Ohne Supabase (oder wenn es gerade nicht geht): vorbereitete E-Mail an den Vorstand
+      const an = await reveal(form).catch(() => null);
+      knopf.disabled = false;
+      knopf.textContent = msg.senden;
+      if (!an) return melden(msg.fehler);
+      const text = [`${msg.felder.name}: ${name}`, `${msg.felder.email}: ${email}`, `${msg.felder.art}: ${art}`, '', nachricht].join('\n');
+      location.href = `mailto:${an}?subject=${encodeURIComponent(msg.betreff)}&body=${encodeURIComponent(text)}`;
+      danke(msg.mail);
+    });
+  }
+</script>
+
+<style>
+  .ma { display: grid; gap: 20px; max-width: 720px; }
+  .ma__reihe { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 20px; }
+  .ma__feld { display: flex; flex-direction: column; gap: 7px; }
+  .ma__feld label, .ma__art legend {
+    padding: 0; font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.16em;
+    text-transform: uppercase; color: var(--purple);
+  }
+  .ma__feld input, .ma__feld textarea {
+    width: 100%; font-family: var(--font-body); font-size: 16px; line-height: var(--lh-text); color: var(--ink); background: var(--paper);
+    border: 1.5px solid var(--rule); border-radius: 0; padding: 11px 13px; outline: none; resize: vertical;
+    transition: border-color var(--dur-base) var(--ease-out);
+  }
+  .ma__feld input:focus, .ma__feld textarea:focus { border-color: var(--magenta); box-shadow: inset 0 -2px 0 var(--magenta); }
+  .ma__feld [aria-invalid='true'] { border-color: var(--magenta); }
+  .ma__hilfe { font-size: 13.5px; line-height: var(--lh-text); color: var(--ink-soft); }
+  .ma__art { margin: 0; padding: 0; border: 0; display: flex; flex-wrap: wrap; gap: 10px 28px; }
+  .ma__art legend { margin-bottom: 10px; }
+  .ma__wahl, .ma__check { position: relative; display: flex; gap: 11px; align-items: flex-start; font-size: 15px; line-height: var(--lh-text); cursor: pointer; }
+  .ma__check { font-size: 14px; }
+  .ma__wahl input, .ma__check input { position: absolute; opacity: 0; width: 20px; height: 20px; margin: 0; cursor: pointer; }
+  .ma__punkt, .ma__box { position: relative; flex: none; width: 20px; height: 20px; margin-top: 1px; background: var(--paper); border: 1.5px solid var(--purple); }
+  .ma__wahl input:checked + .ma__punkt::after { content: ''; position: absolute; inset: 4px; background: var(--magenta); }
+  .ma__check input:checked + .ma__box { background: var(--magenta); border-color: var(--magenta); }
+  .ma__check input:checked + .ma__box::after {
+    content: ''; position: absolute; left: 5px; top: 1px; width: 6px; height: 11px;
+    border: solid #fff; border-width: 0 2.2px 2.2px 0; transform: rotate(45deg);
+  }
+  .ma__wahl input:focus-visible + .ma__punkt, .ma__check input:focus-visible + .ma__box { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+  .ma__check a { color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; }
+  .ma__hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+  .ma__fehler { margin: 0; padding: 10px 14px; background: var(--purple); color: #fff; font-size: 14px; line-height: var(--lh-text); border-left: 4px solid var(--magenta); }
+  .ma__fertig {
+    display: flex; align-items: center; gap: 14px; max-width: 720px; margin: 0; padding: 18px 20px;
+    background: var(--purple); color: #fff; font-size: 16px; line-height: var(--lh-text);
+  }
+  .ma__fertig::before { content: ''; width: 10px; height: 10px; background: var(--magenta); flex: none; }
+  .ma__fertig[hidden] { display: none; }
+</style>

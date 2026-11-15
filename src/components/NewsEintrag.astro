@@ -1,0 +1,96 @@
+---
+/**
+ * Ein Beitrag in der Chronik der News-Übersicht: als Karte (Ansicht „Liste“) und als Zeile (Ansicht „Kompakt“).
+ * Steht in src/views/NewsView.astro (die neuesten) und in der Nachlade-Datei src/views/NewsRestView.astro
+ * (alle älteren); Stile global in NewsView.astro, Filtern und Gruppieren in src/scripts/news-chronik.ts.
+ */
+import Badge from './ui/Badge.astro';
+import NewsImage from './NewsImage.astro';
+import { daysLeft, deadlineText, dateShort, monthLong, monthShort, newsBadge, newsCategoryLabel, type NewsCategory, type NewsPost } from '../lib/news';
+import { getLang, url } from '../lib/i18n';
+import { texte } from '../lib/texte';
+
+interface Props {
+  post: NewsPost;
+  /** Titelthema: steht oben auf der Seite und ist in der Chronik erst beim Filtern sichtbar */
+  lead?: boolean;
+}
+const { post: p, lead = false } = Astro.props;
+const lang = getLang(Astro);
+const t = texte(lang, 'news', 'uebersicht');
+const link = (x: NewsPost) => url(lang, 'news', `${x.id}/`);
+/** 12. Okt / 12 Oct (kompakte Zeile) */
+const datumKurz = (iso: string) => (lang === 'de' ? `${iso.slice(8, 10)}. ${monthShort(iso, lang)}` : `${Number(iso.slice(8, 10))} ${monthShort(iso, lang)}`);
+const cat = newsCategoryLabel[lang][p.category as NewsCategory];
+---
+<div
+  class="eintrag" data-post data-cat={p.category} data-date={p.date} data-titel={p.title}
+  data-suchtext={[p.title, p.teaser, p.author, cat, p.quote?.who].filter(Boolean).join(' ').toLowerCase()}
+  data-lead={lead ? '' : undefined} hidden={lead} data-frist={p.deadline ?? undefined}
+  data-minuten={`${p.minutes} ${t.min}`} data-mo={monthShort(p.date, lang)} data-monat={monthLong(p.date, lang)}
+>
+  <a href={link(p)} class:list={['post', `post--${p.kind}`]}>
+    {p.kind === 'photo' && (
+      <>
+        <div class="post__img">{p.image && <NewsImage src={p.image} alt={p.alt ?? ''} focus={p.imageFocus} sizes="(min-width: 1000px) 560px, 100vw" />}</div>
+        <div class="post__body">
+          <div class="post__meta">
+            <span class="post__datum">{dateShort(p.date, lang)}</span>
+            <Badge variant={newsBadge[p.category]}>{cat}</Badge>
+          </div>
+          <h4 class="post__title">{p.title}</h4>
+          <p class="post__teaser">{p.teaser}</p>
+          <span class="post__more">{t.readShort} · {p.minutes} {t.min} →</span>
+        </div>
+      </>
+    )}
+    {p.kind === 'text' && (
+      <>
+        <div class="post__body">
+          <div class="post__meta">
+            <span class="post__datum">{dateShort(p.date, lang)}</span>
+            <Badge variant={newsBadge[p.category]}>{cat}</Badge>
+          </div>
+          <h4 class="post__title">{p.title}</h4>
+          <p class="post__teaser">{p.teaser}</p>
+        </div>
+        <span class="post__arrow" aria-hidden="true">→</span>
+      </>
+    )}
+    {p.kind === 'call' && (
+      <>
+        <div class="post__body">
+          <div class="post__meta">
+            <span class="post__datum">{dateShort(p.date, lang)}</span>
+            <Badge variant={newsBadge[p.category]}>{cat}</Badge>
+          </div>
+          <h4 class="post__title">{p.title}</h4>
+          <p class="post__teaser">{p.teaser}</p>
+        </div>
+        <div class="post__deadline">
+          <span class="post__dl-k">{t.deadline}</span>
+          <span class="post__dl-n" data-deadline={p.deadline} data-deadline-part="n">{deadlineText(daysLeft(p.deadline!), 'n', lang)}</span>
+          <span class="post__dl-u">
+            <span data-deadline={p.deadline} data-deadline-part="unit">{deadlineText(daysLeft(p.deadline!), 'unit', lang)}</span> · {t.until} {dateShort(p.deadline!, lang)}
+          </span>
+        </div>
+      </>
+    )}
+    {p.kind === 'quote' && p.quote && (
+      <>
+        <div class="post__meta">
+          <span class="post__datum">{dateShort(p.date, lang)}</span>
+          <Badge variant={newsBadge[p.category]}>{cat}</Badge>
+        </div>
+        <blockquote class="post__quote"><span class="post__q-mark" aria-hidden="true">„</span>{p.quote.text}<span aria-hidden="true">“</span></blockquote>
+        <span class="visually-hidden">{p.title}</span>
+        <span class="post__q-foot">{p.quote.who}{p.quote.role && ` · ${p.quote.role}`} →</span>
+      </>
+    )}
+  </a>
+  <a href={link(p)} class="zeile">
+    <span class="zeile__datum">{datumKurz(p.date)}</span>
+    <span class="zeile__mitte"><span class="zeile__titel">{p.title}</span><Badge variant={newsBadge[p.category]}>{cat}</Badge></span>
+    <span class="zeile__rechts" data-rechts>{p.minutes} {t.min}</span>
+  </a>
+</div>

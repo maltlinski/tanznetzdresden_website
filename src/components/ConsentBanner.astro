@@ -2,6 +2,8 @@
 /**
  * Einwilligungs-Dialog. Erscheint nur, wenn es neben „Notwendig“ aktive
  * Kategorien gibt und noch keine (aktuelle) Auswahl gespeichert ist.
+ * Zuerst als schmale Leiste mit kurzem Text (verdeckt weder Kopf noch Inhalt); Überschrift, der ausführliche
+ * Text und die Kategorien erscheinen mit „Einstellungen“ (Klasse consent--offen).
  * Über jeden Button mit [data-consent-open] (z. B. im Footer) wieder aufrufbar.
  */
 import { consentCategories, CONSENT_VERSION } from '../settings/consent';
@@ -20,7 +22,8 @@ const optional = categories.filter((c) => !c.required);
 {optional.length > 0 && (
   <section class="consent" role="dialog" aria-modal="false" aria-labelledby="consent-h" data-consent-banner data-version={CONSENT_VERSION} hidden>
     <h2 id="consent-h" class="consent__h">{t.h}</h2>
-    <p class="consent__text">{t.text} <a href={url(lang, 'datenschutz')}>{t.privacy}</a>.</p>
+    <p class="consent__text consent__text--kurz">{t.kurz || t.text} <a href={url(lang, 'datenschutz')}>{t.privacy}</a></p>
+    <p class="consent__text consent__text--lang">{t.text} <a href={url(lang, 'datenschutz')}>{t.privacy}</a>.</p>
     <form class="consent__details" data-consent-form hidden>
       {categories.map((c) => (
         <label class="consent__cat">
@@ -64,6 +67,7 @@ const optional = categories.filter((c) => !c.required);
     const showDetails = (show: boolean) => {
       form.hidden = !show;
       save.hidden = !show;
+      banner.classList.toggle('consent--offen', show);
       toggle.setAttribute('aria-expanded', String(show));
     };
     const open = (details = false, focus = true) => {
@@ -93,15 +97,28 @@ const optional = categories.filter((c) => !c.required);
 </script>
 
 <style>
+  /* Schmale Leiste: unten links, so klein wie möglich */
   .consent {
-    position: fixed; z-index: 50; left: clamp(12px, 3vw, 32px); bottom: clamp(12px, 3vw, 32px);
-    width: min(560px, calc(100vw - 24px)); max-height: calc(100vh - 24px); overflow: auto;
-    background: var(--purple); color: #fff; padding: 26px 26px 22px; border-top: 4px solid var(--magenta);
+    position: fixed; z-index: 50; left: clamp(8px, 2vw, 24px); bottom: clamp(8px, 2vw, 24px);
+    width: min(430px, calc(100vw - 16px)); max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); overflow: auto;
+    background: var(--purple); color: #fff; padding: 16px 18px; border-top: 3px solid var(--magenta);
+    outline: 1px solid rgba(255, 255, 255, 0.14);
   }
   .consent[hidden] { display: none; }
-  .consent__h { font-family: var(--font-display); font-weight: 800; font-size: 24px; letter-spacing: -0.02em; margin: 0 0 10px; }
-  .consent__text { margin: 0 0 18px; font-size: 14px; line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
+  /* Überschrift nur in der ausführlichen Fassung sichtbar (benennt den Dialog aber immer) */
+  .consent__h {
+    position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+    font-family: var(--font-display); font-weight: 800; font-size: 22px; letter-spacing: -0.02em;
+  }
+  .consent__text { margin: 0 0 12px; font-size: 13.5px; line-height: 1.5; color: rgba(255, 255, 255, 0.86); }
+  .consent__text--lang { display: none; }
   .consent__text a { color: var(--cyan); text-decoration: underline; text-underline-offset: 3px; }
+  /* Ausführlich („Einstellungen“ oder Aufruf aus dem Fuß) */
+  .consent--offen { width: min(560px, calc(100vw - 16px)); padding: 24px 24px 20px; border-top-width: 4px; }
+  .consent--offen .consent__h { position: static; width: auto; height: auto; margin: 0 0 10px; overflow: visible; clip-path: none; white-space: normal; }
+  .consent--offen .consent__text { margin-bottom: 18px; font-size: 14px; line-height: 1.6; }
+  .consent--offen .consent__text--kurz { display: none; }
+  .consent--offen .consent__text--lang { display: block; }
   .consent__details { display: grid; gap: 14px; margin: 0 0 20px; padding: 16px 0; border-block: 1px solid var(--on-dark-rule); }
   .consent__details[hidden] { display: none; }
   .consent__cat { position: relative; display: flex; gap: 12px; align-items: flex-start; font-size: 14px; line-height: 1.5; cursor: pointer; }
@@ -116,14 +133,22 @@ const optional = categories.filter((c) => !c.required);
   .consent__cat input:focus-visible + .consent__box { outline: 2px solid var(--cyan); outline-offset: 2px; }
   .consent__desc { display: block; color: var(--on-dark-soft); font-size: 13px; margin-top: 2px; }
   .consent__svc { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-top: 6px; }
-  .consent__actions { display: flex; flex-wrap: wrap; gap: 10px 12px; align-items: center; }
+  .consent__actions { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
   /* Beide Hauptoptionen gleich gewichtet (rechtlich gefordert) */
   .consent__btn { background: var(--cyan); color: var(--purple); }
   .consent__btn:hover { background: #fff; color: var(--purple); }
+  .consent:not(.consent--offen) .consent__btn { padding: 9px 12px; }
   .consent__more {
     background: none; border: 0; padding: 6px 0; color: #fff; cursor: pointer; font-family: var(--font-mono);
     font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
     border-bottom: 1.5px solid var(--magenta);
   }
   .consent__more:hover { color: var(--cyan); }
+  @media (max-width: 520px) {
+    .consent { left: 8px; right: 8px; bottom: 8px; width: auto; padding: 12px 14px; }
+    .consent--offen { width: auto; padding: 20px 18px 18px; }
+    .consent__text { font-size: 13px; margin-bottom: 10px; }
+    .consent:not(.consent--offen) .consent__btn { flex: 1 1 0; justify-content: center; text-align: center; white-space: nowrap; padding-inline: 8px; }
+    .consent:not(.consent--offen) .consent__more { flex: 1 0 100%; text-align: left; border-bottom: 0; padding: 2px 0 0; text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 4px; }
+  }
 </style>

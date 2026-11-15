@@ -1,10 +1,12 @@
 /**
  * Chronik der News-Übersicht als Archiv (Entwurf News v4): Suche, Rubriken, Jahre, Sortierung (Neueste, Älteste,
- * A–Z), Ansicht (Liste mit Bildern oder kompakte Zeilen) und „Weitere laden“. Die Beiträge stehen fertig im HTML
- * (src/views/NewsView.astro); ohne JavaScript ist einfach alles sichtbar. Hier werden sie nur gefiltert,
- * umsortiert und neu nach Jahr und Monat gruppiert.
+ * A–Z), Ansicht (Liste mit Bildern oder kompakte Zeilen) und „Weitere laden“. Die neuesten Beiträge stehen fertig
+ * im HTML (src/views/NewsView.astro), alle älteren kommen aus einer eigenen Datei dazu (news/weitere/,
+ * src/lib/news-chronik.ts). Hier werden sie nur gefiltert, umsortiert und neu nach Jahr und Monat gruppiert.
+ * Ohne JavaScript stehen die neuesten da, ein Link führt zu den älteren.
  */
 import { deadlineText } from '../lib/deadline-text';
+import { fristen } from './deadline';
 import { fuellen } from '../lib/texte-regeln';
 
 type Sortierung = 'neu' | 'alt' | 'az';
@@ -56,7 +58,7 @@ export function initChronik(root: HTMLElement) {
   const mehr = root.querySelector<HTMLElement>('[data-mehr]')!;
   const anzahl = (n: number) => `${n} ${n === 1 ? t.post : t.posts}`;
 
-  const alle: Eintrag[] = [...liste.querySelectorAll<HTMLElement>('[data-post]')].map((e) => ({
+  const lesen = (e: HTMLElement): Eintrag => ({
     el: e,
     datum: e.dataset.date!,
     jahr: Number(e.dataset.date!.slice(0, 4)),
@@ -69,7 +71,9 @@ export function initChronik(root: HTMLElement) {
     minuten: e.dataset.minuten ?? '',
     mo: e.dataset.mo!,
     monat: e.dataset.monat!,
-  })).sort((a, b) => b.datum.localeCompare(a.datum));
+  });
+  const neuZuerst = (a: Eintrag, b: Eintrag) => b.datum.localeCompare(a.datum);
+  const alle: Eintrag[] = [...liste.querySelectorAll<HTMLElement>('[data-post]')].map(lesen).sort(neuZuerst);
   const s = { q: '', kat: 'Alle', jahr: 'alle', sort: 'neu' as Sortierung, ansicht: 'liste' as Ansicht, grenze: SCHRITT.liste };
 
   /** Jahr → Monat → Beiträge; bei A–Z eine einzige Gruppe ohne Überschriften */
@@ -216,8 +220,31 @@ export function initChronik(root: HTMLElement) {
   const messen = () => root.style.setProperty('--jt-h', `${leiste.offsetHeight}px`);
   new ResizeObserver(messen).observe(leiste);
 
-  leiste.hidden = false;
-  root.querySelector<HTMLElement>('[data-ergebnis-zeile]')!.hidden = false;
-  zeigen();
-  messen();
+  const starten = () => {
+    leiste.hidden = false;
+    root.querySelector<HTMLElement>('[data-ergebnis-zeile]')!.hidden = false;
+    zeigen();
+    messen();
+  };
+  // Ältere Beiträge stehen in einer eigenen Datei (src/views/NewsRestView.astro). Bis sie da ist, bleibt die
+  // fertige Liste aus dem HTML stehen; danach stimmen Zahlen, Suche und Filter für das ganze Archiv.
+  const rest = root.dataset.rest;
+  if (!rest) return starten();
+  fetch(rest)
+    .then((r) => (r.ok ? r.text() : Promise.reject(new Error(String(r.status)))))
+    .then((html) => {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const bekannt = new Set(alle.map((p) => p.el.querySelector('a')?.getAttribute('href')));
+      doc.querySelectorAll<HTMLElement>('[data-rest] [data-post]').forEach((e) => {
+        if (bekannt.has(e.querySelector('a')?.getAttribute('href'))) return;
+        const neu = document.adoptNode(e);
+        fristen(neu);
+        alle.push(lesen(neu));
+      });
+      alle.sort(neuZuerst);
+    })
+    .catch(() => {
+      /* nicht erreichbar: die Chronik arbeitet mit den Beiträgen, die im HTML stehen */
+    })
+    .finally(starten);
 }

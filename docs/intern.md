@@ -22,7 +22,9 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
    `supabase/migrations/20261025000000_keepup.sql` (KEEP UP planen und beschreiben, siehe [keep-up.md](keep-up.md)) und
    `supabase/migrations/20261026000000_kalender.sql` (Termine im internen Kalender eintragen, siehe [kalender.md](kalender.md)) und
    `supabase/migrations/20261027000000_open_calls.sql` (Open Calls, siehe [open-calls.md](open-calls.md)) und
-   `supabase/migrations/20261028000000_kalender_eintritt.sql` (Eintritt bei Terminen, siehe [kalender.md](kalender.md)).
+   `supabase/migrations/20261028000000_kalender_eintritt.sql` (Eintritt bei Terminen, siehe [kalender.md](kalender.md)),
+   danach alle weiteren Dateien im Ordner in der Reihenfolge ihres Datums, zuletzt
+   `supabase/migrations/20261115000000_mitgliedsantraege.sql` (Anträge aus dem Formular „Mitglied werden“, siehe unten).
    Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
 
 ## 2. Login konfigurieren
@@ -128,6 +130,19 @@ Danach vergibt der Vorstand Rollen direkt unter *Intern → Mitglieder*:
 | Admin | wie Vorstand (Admin vergeben nur Admins) |
 
 **Mitgliedschaft beendet:** *Authentication → Users* → Person löschen. Das Profil wird mit gelöscht.
+
+### Anträge von der Website
+
+Das Formular auf „Mitglied werden“ (`src/components/MitgliedAntrag.astro`) schickt Name, E-Mail, Art der
+Mitgliedschaft und ein paar Sätze an die Supabase-Funktion `mitgliedsantrag_stellen`
+(`supabase/migrations/20261115000000_mitgliedsantraege.sql`). Der Vorstand sieht offene Anträge unter
+*Intern → Mitglieder* im Bereich „Anträge von der Website“: „Einladen“ füllt die Einladung aus, „Löschen“ entfernt
+den Antrag. Erledigte Anträge bitte löschen, so steht es in der Datenschutzerklärung.
+
+Besucher:innen können die Tabelle weder lesen noch direkt beschreiben; die Funktion nimmt höchstens 30 Anträge je
+Stunde an. Ist die Migration nicht eingespielt oder Supabase nicht erreichbar, öffnet das Formular stattdessen eine
+vorbereitete E-Mail an den Vorstand. Eine Benachrichtigung per E-Mail bei neuen Anträgen gibt es noch nicht: bitte
+regelmäßig nachsehen.
 
 ## Auf Englisch
 

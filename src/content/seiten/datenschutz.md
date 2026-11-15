@@ -77,6 +77,10 @@ Der GiroCode (QR-Code) auf der Spendenseite wird auf unserem Server erzeugt. Bei
 
 Daten von Mitglieder:innen (Name, Anschrift, Kontakt, Beitragsdaten) verarbeiten wir zur Durchführung der Mitgliedschaft (Art. 6 Abs. 1 lit. b DSGVO) und bewahren sie nach Austritt so lange auf, wie es steuer- und vereinsrechtlich vorgeschrieben ist.
 
+## Mitgliedsantrag
+
+Wenn du das Formular auf der Seite „Mitglied werden“ abschickst, speichern wir deinen Namen, deine E-Mail-Adresse, die gewünschte Art der Mitgliedschaft und deinen Text bei Supabase (Rechenzentrum Frankfurt am Main, siehe „Interner Bereich“). Nur der Vorstand kann die Anträge lesen. Wir nutzen die Angaben ausschließlich, um deinen Antrag zu bearbeiten (Art. 6 Abs. 1 lit. b DSGVO), und löschen sie, sobald der Antrag erledigt ist. Ist der Dienst nicht erreichbar, öffnet sich stattdessen eine vorbereitete E-Mail an den Vorstand; dann gilt der Abschnitt „Kontakt per E-Mail“.
+
 ## Deine Rechte
 
 Du hast das Recht auf Auskunft (Art. 15 DSGVO), Berichtigung (Art. 16), Löschung (Art. 17), Einschränkung der Verarbeitung (Art. 18), Datenübertragbarkeit (Art. 20) und Widerspruch (Art. 21). Eine Einwilligung kannst du jederzeit mit Wirkung für die Zukunft widerrufen (Art. 7 Abs. 3).

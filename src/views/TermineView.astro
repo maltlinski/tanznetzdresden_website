@@ -276,6 +276,8 @@ const json = JSON.stringify({
   }
   :global(.tk-mono--magenta) { color: var(--magenta-2); }
   .tk-mono:hover, :global(.tk-mono:hover) { color: var(--purple); }
+  /* drei Links untereinander (liefen sonst in einer Zeile ineinander) */
+  .tk-aktionen { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
   .tk-pfeile { display: flex; gap: 6px; }
   .tk-pfeil {
     width: 34px; height: 34px; border: 1.5px solid var(--purple); background: transparent; color: var(--purple);

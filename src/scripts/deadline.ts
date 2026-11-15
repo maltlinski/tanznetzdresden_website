@@ -9,10 +9,15 @@ const days = (iso: string) => {
   const [y, m, d] = iso.split('-').map(Number);
   return Math.ceil((new Date(y, m - 1, d, 23, 59, 59).getTime() - Date.now()) / 864e5);
 };
-document.querySelectorAll<HTMLElement>('[data-deadline]').forEach((el) => {
-  const n = days(el.dataset.deadline ?? '');
-  if (Number.isNaN(n)) return;
-  if (el.hasAttribute('data-deadline-open')) el.hidden = n < 0;
-  const part = el.dataset.deadlinePart as DeadlinePart | undefined;
-  if (part) el.textContent = deadlineText(n, part, lang);
-});
+/** Fristen in `root` nachrechnen (auch für später nachgeladene Einträge der News-Chronik) */
+export function fristen(root: ParentNode = document): void {
+  root.querySelectorAll<HTMLElement>('[data-deadline]').forEach((el) => {
+    const n = days(el.dataset.deadline ?? '');
+    if (Number.isNaN(n)) return;
+    if (el.hasAttribute('data-deadline-open')) el.hidden = n < 0;
+    const part = el.dataset.deadlinePart as DeadlinePart | undefined;
+    if (part) el.textContent = deadlineText(n, part, lang);
+  });
+}
+
+fristen();

@@ -77,6 +77,20 @@ import Intern from '../../../layouts/Intern.astro';
     </details>
   </section>
 
+  <!-- Anträge aus dem Formular „Mitglied werden“ (nur Vorstand, Tabelle mitgliedsantraege) -->
+  <section class="ei at" aria-labelledby="at-h" data-antraege hidden>
+    <details class="ei__klapp" open>
+      <summary><span class="ei__h" id="at-h">Anträge von der Website</span><span class="ei__zahl" data-at-zahl></span></summary>
+      <div class="ei__innen">
+        <p class="ei__hilfe">
+          Eingegangen über das Formular auf „Mitglied werden“. „Einladen“ füllt die Einladung oben aus. Erledigte Anträge
+          bitte löschen: Wir bewahren die Angaben nur auf, solange der Antrag läuft.
+        </p>
+        <ul class="ei-offen__liste" data-at-liste></ul>
+      </div>
+    </details>
+  </section>
+
   <ul class="dir" data-dir aria-live="polite"></ul>
   <template data-dir-item>
     <li class="dir__card">
@@ -414,9 +428,79 @@ import Intern from '../../../layouts/Intern.astro';
     void offeneLaden();
   }
 
+  // ---------- Anträge von der Website (Vorstand, supabase/migrations/…_mitgliedsantraege.sql) ----------
+  interface Antrag { id: string; name: string; email: string; art: string; nachricht: string; sprache: string; created_at: string }
+  async function antraege() {
+    if (!ctx?.isVorstand) return;
+    const box = document.querySelector<HTMLElement>('[data-antraege]')!;
+    const liste = box.querySelector<HTMLUListElement>('[data-at-liste]')!;
+    const zahl = box.querySelector<HTMLElement>('[data-at-zahl]')!;
+    const { data, error } = await ctx.sb.from('mitgliedsantraege').select('*').is('erledigt_am', null).order('created_at', { ascending: false });
+    // Tabelle noch nicht eingespielt oder nichts da: Bereich bleibt weg
+    if (error || !Array.isArray(data) || !data.length) {
+      box.hidden = true;
+      return;
+    }
+    const knopf = (text: string, klick: (b: HTMLButtonElement) => void) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'ei-offen__knopf';
+      b.textContent = text;
+      b.addEventListener('click', () => klick(b));
+      return b;
+    };
+    liste.replaceChildren(
+      ...(data as Antrag[]).map((a) => {
+        const li = document.createElement('li');
+        li.className = 'ei-offen__z';
+        const wer = document.createElement('span');
+        wer.className = 'ei-offen__wer';
+        const name = document.createElement('strong');
+        name.textContent = a.name;
+        const zeile = document.createElement('span');
+        zeile.textContent = `${a.email} · ${a.art} · ${new Date(a.created_at).toLocaleDateString('de-DE')}`;
+        const text = document.createElement('span');
+        text.className = 'at__text';
+        text.textContent = a.nachricht;
+        wer.append(name, zeile, text);
+        li.append(
+          wer,
+          knopf('Einladen', () => {
+            const form = document.querySelector<HTMLFormElement>('[data-ei-form]')!;
+            const setze = (n: string, v: string) => {
+              const f = form.elements.namedItem(n) as HTMLInputElement | HTMLSelectElement | null;
+              if (f) f.value = v;
+            };
+            setze('name', a.name);
+            setze('email', a.email);
+            setze('sprache', a.sprache === 'en' ? 'en' : 'de');
+            setze('art', a.art);
+            document.querySelector<HTMLDetailsElement>('[data-ei-klapp]')!.open = true;
+            form.scrollIntoView({ block: 'center' });
+            (form.elements.namedItem('name') as HTMLInputElement).focus({ preventScroll: true });
+          }),
+          knopf('Löschen', async (b) => {
+            if (!confirm(`Antrag von ${a.name} löschen?`)) return;
+            b.disabled = true;
+            const { error: fehler } = await ctx.sb.from('mitgliedsantraege').delete().eq('id', a.id);
+            if (fehler) {
+              b.disabled = false;
+              return showMessage(msg, errorText(fehler), 'error');
+            }
+            await antraege();
+          }),
+        );
+        return li;
+      }),
+    );
+    zahl.textContent = `${data.length} offen`;
+    box.hidden = false;
+  }
+
   if (ctx) {
     await laden();
     einladen();
+    void antraege();
     if (ctx.isRedaktion) void freigabenHinweis(ctx.sb, document.querySelector('[data-dir-pending]'));
     search?.addEventListener('input', filtern);
   }
@@ -472,6 +556,7 @@ import Intern from '../../../layouts/Intern.astro';
   .ei-offen__liste :global(.ei-offen__z) { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
   .ei-offen__liste :global(.ei-offen__wer) { flex: 1 1 260px; display: flex; flex-direction: column; gap: 2px; font-size: 14px; color: var(--ink-soft); }
   .ei-offen__liste :global(.ei-offen__wer strong) { font-size: 15px; color: var(--purple); }
+  .ei-offen__liste :global(.at__text) { margin-top: 4px; white-space: pre-line; color: var(--ink); }
   .ei-offen__liste :global(.ei-offen__knopf) {
     padding: 7px 11px; border: 1.5px solid var(--purple); border-radius: 0; background: var(--paper); color: var(--purple); cursor: pointer;
     font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;

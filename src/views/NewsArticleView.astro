@@ -78,6 +78,8 @@ const jsonLd = {
   title={post.title}
   description={post.teaser}
   ogImage={typeof post.image === 'object' ? post.image : undefined}
+  ogType="article"
+  published={post.date}
 >
   <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
 

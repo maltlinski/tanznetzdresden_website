@@ -139,8 +139,19 @@ const abschnitte: { id: string; label: string; art: Art }[] = [
 ];
 const demoKlasse = (a: Art) => (a === 'demo' ? 'demo-an' : undefined);
 const description = (pitch ?? bio[0])?.slice(0, 160) ?? `${p.name} · TanzNetzDresden`;
+// für Suchmaschinen: die Person mit ihren öffentlichen Links, als Mitglied des Netzwerks
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: p.name,
+  url: new URL(url(lang, 'netzwerk', `${p.id}/`), Astro.site).href,
+  ...(pitch || bio[0] ? { description } : {}),
+  ...(p.website || insta ? { sameAs: [p.website, insta && `https://www.instagram.com/${insta}/`].filter(Boolean) } : {}),
+  memberOf: { '@type': 'Organization', name: 'TanzNetzDresden e.V.', url: Astro.site?.toString() },
+};
 ---
 <Page title={p.name} description={description} route="netzwerk" rest={`${p.id}/`} ogImage={typeof p.photo === 'object' ? p.photo : undefined} noindex={vorlage}>
+  {!vorlage && <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   <div class="profil" data-profil>
     <section class="ph kopf" data-ph data-kopf-frei data-kopf-auftritt>
       {(heroEcht || heroDemo) && (
