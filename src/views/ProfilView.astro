@@ -155,8 +155,8 @@ const jsonLd = {
   {!vorlage && <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
   <div class="profil" data-profil>
     <section class="ph kopf" data-ph data-kopf-frei data-kopf-auftritt>
-      {/* Netz oben rechts, solange kein Foto den Platz füllt (je Profil eigene Struktur) */}
-      {!heroEcht && <KopfNetz schluessel={`netzwerk/${p.id}`} lage="ecke" />}
+      {/* Netz über die Fläche, solange kein Foto den Platz füllt (je Profil eigene Struktur) */}
+      {!heroEcht && <KopfNetz schluessel={`netzwerk/${p.id}`} lage="flaeche" />}
       {(heroEcht || heroDemo) && (
         <div class:list={['ph__bild', !heroEcht && 'demo-an']} data-wipe data-ph-bild>
           <div class="ph__bild-in" data-parallax>

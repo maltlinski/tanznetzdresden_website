@@ -1,22 +1,23 @@
 ---
 /**
  * Netz als Hintergrund eines lila Kopfs (wie im Kalender), für Unterseiten ohne eigene Gestaltung:
- * Über uns, Spenden, Kontakt, Mitglied werden, Netzwerk, Textseiten, 404; mit eigener Lage (`lage`) auch News,
+ * Über uns, Spenden, Kontakt, Mitglied werden, Netzwerk, Textseiten, 404; groß über die ganze Fläche (`lage="flaeche"`) auch News,
  * Profitraining, Tanzkalender-Archiv und Profile ohne Foto. Jede Seite hat ihre eigene,
  * verwandte Struktur (`schluessel`, meist die Route; Deutsch und Englisch gleich). Form: src/lib/kopf-netz.ts,
  * Bewegung: src/scripts/kopf-netz.ts. Der Kopf braucht `position: relative; overflow: hidden`, sein Inhalt
  * `position: relative`, damit er über dem Netz liegt.
  */
-import { unterseitenNetz, type NetzLage } from '../lib/kopf-netz';
+import { flaechenNetz, unterseitenNetz, type NetzLage } from '../lib/kopf-netz';
 
 interface Props {
   schluessel: string;
-  /** wo das Netz sitzt (src/lib/kopf-netz.ts): `ecke` oben rechts, `rechts` hinter einem Bild */
+  /** `flaeche`: groß über den ganzen Kopf wie im Kalender (src/lib/kopf-netz.ts) */
   lage?: NetzLage;
 }
-const n = unterseitenNetz(Astro.props.schluessel, Astro.props.lage);
+const flaeche = Astro.props.lage === 'flaeche';
+const n = flaeche ? flaechenNetz(Astro.props.schluessel) : unterseitenNetz(Astro.props.schluessel);
 ---
-<svg class="kn" viewBox={`0 0 ${n.breite} ${n.hoehe}`} preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false" data-kopf-netz>
+<svg class="kn" viewBox={`0 0 ${n.breite} ${n.hoehe}`} preserveAspectRatio={flaeche ? 'xMidYMid slice' : 'xMaxYMid slice'} aria-hidden="true" focusable="false" data-kopf-netz>
   {n.linien.map((l) => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} pathLength="1" class:list={[l.dick && 'dick']} />)}
   {n.punkte.map((p) => <rect x={p.x} y={p.y} width={p.s} height={p.s} class:list={[p.magenta && 'mg']} />)}
 </svg>

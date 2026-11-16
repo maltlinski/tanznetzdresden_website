@@ -7,7 +7,7 @@
  * - `unterseitenNetz(schluessel)`: verwandt, aber ruhiger, für Unterseiten ohne eigene Gestaltung
  *   (src/components/KopfNetz.astro): je Seite eigene Struktur, Linien kreuzen sich nie (jede Verzweigung ist ein
  *   Quadrat), keine überlangen Linien, und der Bereich von Headline und Text links bleibt frei – das Netz spannt
- *   sich rechts und oben auf. Für Köpfe mit eigenem Inhalt rechts gibt es zwei weitere Lagen (`NetzLage`).
+ *   sich rechts und oben auf. Köpfe mit eigenem Inhalt rechts nehmen das große Netz über die ganze Fläche (`flaechenNetz`).
  */
 export interface NetzForm {
   /** Startwert des Zufalls */
@@ -103,47 +103,34 @@ export function kopfNetz(form: NetzForm = KALENDER): Netz {
 
 /** Bereich von Headline und Text (Anteile des Bildes, gezeichnet mit preserveAspectRatio="xMaxYMid slice"):
  *  oben Kicker und Headline (bis 66 % der Breite), darunter der kürzere Einleitungstext und der Keil (bis 50 %) */
-const FREI: { x: number; y0: number; y1: number; x0?: number }[] = [
+const FREI = [
   { x: 0.66, y0: -0.02, y1: 0.56 },
   { x: 0.5, y0: 0.56, y1: 1.02 },
 ];
 
 /**
  * Wo das Netz sitzt:
- * - `standard`: rechts und oben, Text links frei (einfache Unterseiten)
- * - `ecke`: nur oben rechts, dünnt nach links und unten aus – für Köpfe, deren untere Hälfte belegt ist
- *   (News: Titelthema; Profil: Foto oder Initialen)
- * - `rechts`: rechte Hälfte über die ganze Höhe, hinter einem Bild; es schaut an dessen Rändern hervor
- *   (Profitraining, Tanzkalender-Archiv)
+ * - `standard`: rechts und oben, Text links frei, kreuzungsfrei (einfache Unterseiten)
+ * - `flaeche`: groß über den ganzen Kopf wie im Kalender, auch hinter Text und Bildern – für Köpfe mit eigenem
+ *   Inhalt rechts (News, Profitraining, Tanzkalender-Archiv, Profile ohne Foto)
  */
-export type NetzLage = 'standard' | 'ecke' | 'rechts';
+export type NetzLage = 'standard' | 'flaeche';
 
-const LAGEN: Record<NetzLage, { frei: typeof FREI; abstand: number; punkte: number; bleibt?: (x: number, y: number) => number }> = {
-  standard: { frei: FREI, abstand: 150, punkte: 34 },
-  ecke: {
-    // links der Text, unten der Inhalt; dazu die kleine Zeile oben rechts (News: „Dresden · Jahr“)
-    frei: [{ x: 0.56, y0: -0.02, y1: 1.02 }, { x: 1.02, y0: 0.43, y1: 1.02 }, { x0: 0.82, x: 0.96, y0: 0.05, y1: 0.16 }],
-    abstand: 104,
-    punkte: 26,
-    // dicht in der Ecke, nach links und unten immer lichter
-    bleibt: (x, y) => Math.pow(Math.max(0, (x - 0.5) / 0.5) * (1 - Math.max(0, y) * 1.1), 0.9) * 1.6,
-  },
-  rechts: { frei: [{ x: 0.54, y0: -0.02, y1: 1.02 }], abstand: 150, punkte: 30 },
-};
+/** Netz wie im Kalender, aber mit eigener Struktur je Seite */
+export const flaechenNetz = (schluessel: string): Netz => kopfNetz({ ...KALENDER, seed: seedAus(schluessel) });
 
-export function unterseitenNetz(schluessel: string, lage: NetzLage = 'standard'): Netz {
+export function unterseitenNetz(schluessel: string): Netz {
   const W = 1600;
   const H = 900;
   const r = zufall(seedAus(schluessel));
   const kq = 1.45;
-  const form = LAGEN[lage];
-  const md = form.abstand;
-  const frei = (x: number, y: number) => form.frei.some((z) => x < W * z.x && x > W * (z.x0 ?? -1) && y > H * z.y0 && y < H * z.y1);
+  const md = 150;
+  const frei = (x: number, y: number) => FREI.some((z) => x < W * z.x && y > H * z.y0 && y < H * z.y1);
 
   // Punkte mit Mindestabstand außerhalb des Textbereichs; einige auf dem Rand rechts, oben und unten,
   // damit Linien aus dem Bild laufen (nie links: von dort führten sie durch den Text)
   const P: [number, number][] = [];
-  for (let tries = 0; P.length < form.punkte && tries < 6000; tries++) {
+  for (let tries = 0; P.length < 34 && tries < 6000; tries++) {
     let x = r() * W;
     let y = r() * H;
     if (r() < 0.2) {
@@ -153,7 +140,6 @@ export function unterseitenNetz(schluessel: string, lage: NetzLage = 'standard')
       else y = H + 3;
     }
     if (frei(x, y)) continue;
-    if (form.bleibt && r() > form.bleibt(x / W, y / H)) continue;
     if (P.every((p) => Math.hypot(p[0] - x, p[1] - y) > md)) P.push([x, y]);
   }
 
