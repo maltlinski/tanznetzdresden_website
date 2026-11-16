@@ -17,7 +17,7 @@ interface Props {
 const flaeche = Astro.props.lage === 'flaeche';
 const n = flaeche ? flaechenNetz(Astro.props.schluessel) : unterseitenNetz(Astro.props.schluessel);
 ---
-<svg class="kn" viewBox={`0 0 ${n.breite} ${n.hoehe}`} preserveAspectRatio={flaeche ? 'xMidYMid slice' : 'xMaxYMid slice'} aria-hidden="true" focusable="false" data-kopf-netz>
+<svg class:list={['kn', flaeche && 'kn--flaeche']} viewBox={`0 0 ${n.breite} ${n.hoehe}`} preserveAspectRatio={flaeche ? 'xMidYMid slice' : 'xMaxYMid slice'} aria-hidden="true" focusable="false" data-kopf-netz>
   {n.linien.map((l) => <line x1={l.x1} y1={l.y1} x2={l.x2} y2={l.y2} pathLength="1" class:list={[l.dick && 'dick']} />)}
   {n.punkte.map((p) => <rect x={p.x} y={p.y} width={p.s} height={p.s} class:list={[p.magenta && 'mg']} />)}
 </svg>
@@ -34,8 +34,13 @@ const n = flaeche ? flaechenNetz(Astro.props.schluessel) : unterseitenNetz(Astro
   .kn line.dick { stroke-opacity: 0.28; stroke-width: 2; }
   .kn rect { fill: var(--cyan); fill-opacity: 0.4; }
   .kn rect.mg { fill: var(--magenta); fill-opacity: 0.7; }
+  /* über die ganze Fläche liegt das Netz auch hinter Text und Bildern: leiser als im Kalender */
+  .kn--flaeche line { stroke-opacity: 0.11; }
+  .kn--flaeche line.dick { stroke-opacity: 0.2; stroke-width: 1.5; }
+  .kn--flaeche rect { fill-opacity: 0.3; }
+  .kn--flaeche rect.mg { fill-opacity: 0.45; }
   /* schmal liegt der Text über der Mitte des Netzes: Quadrate leiser */
-  @media (max-width: 720px) { .kn rect { fill-opacity: 0.25; } .kn rect.mg { fill-opacity: 0.4; } }
+  @media (max-width: 720px) { .kn rect { fill-opacity: 0.25; } .kn rect.mg { fill-opacity: 0.4; } .kn--flaeche rect.mg { fill-opacity: 0.3; } }
   /* bis das Skript das Netz einzeichnet */
   @media (prefers-reduced-motion: no-preference) { :global(.js) .kn:not(.is-da) { opacity: 0; } }
 </style>

@@ -18,6 +18,8 @@ export interface NetzForm {
   nachbarn: number;
   /** Anteil der Punkte mit einer zusätzlichen Linie zu einem beliebigen anderen */
   quer: number;
+  /** Anteil der Magenta-Quadrate (Standard 0.35) */
+  magenta?: number;
 }
 
 export const KALENDER: NetzForm = { seed: 27, dichte: 0.7, nachbarn: 3, quer: 0.3 };
@@ -94,7 +96,7 @@ export function kopfNetz(form: NetzForm = KALENDER): Netz {
   const punkte = P.map((_, i) => i)
     .sort((i, j) => P[i][0] - P[j][0])
     .map((i) => {
-      const mg = r() < 0.35;
+      const mg = r() < (form.magenta ?? 0.35);
       const s = (mg ? (r() < 0.2 ? 22 : 13) : 7) * kq;
       return { x: f(P[i][0] - s / 2), y: f(P[i][1] - s / 2), s: f(s), magenta: mg };
     });
@@ -111,13 +113,13 @@ const FREI = [
 /**
  * Wo das Netz sitzt:
  * - `standard`: rechts und oben, Text links frei, kreuzungsfrei (einfache Unterseiten)
- * - `flaeche`: groß über den ganzen Kopf wie im Kalender, auch hinter Text und Bildern – für Köpfe mit eigenem
+ * - `flaeche`: groß über den ganzen Kopf wie im Kalender, nur dezenter, auch hinter Text und Bildern – für Köpfe mit eigenem
  *   Inhalt rechts (News, Profitraining, Tanzkalender-Archiv, Profile ohne Foto)
  */
 export type NetzLage = 'standard' | 'flaeche';
 
-/** Netz wie im Kalender, aber mit eigener Struktur je Seite */
-export const flaechenNetz = (schluessel: string): Netz => kopfNetz({ ...KALENDER, seed: seedAus(schluessel) });
+/** Netz wie im Kalender, aber dezenter (weniger Punkte, kaum Querverbindungen, wenig Magenta) und mit eigener Struktur je Seite */
+export const flaechenNetz = (schluessel: string): Netz => kopfNetz({ seed: seedAus(schluessel), dichte: 0.45, nachbarn: 3, quer: 0.1, magenta: 0.15 });
 
 export function unterseitenNetz(schluessel: string): Netz {
   const W = 1600;

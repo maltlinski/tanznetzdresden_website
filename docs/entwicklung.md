@@ -242,7 +242,7 @@ rechts verankert (`xMaxYMid slice`). Der Kalender nutzt dieselbe Datei mit seine
 Neue einfache Unterseite → `PageIntro` mit `netz="<route>"`.
 
 Köpfe mit eigenem Inhalt rechts (News, Profitraining, Tanzkalender-Archiv, Profile ohne Foto) bekommen das große Netz
-des Kalenders über die ganze Fläche, auch hinter Text und Bildern, je Seite mit eigener Struktur
+des Kalenders über die ganze Fläche, auch hinter Text und Bildern, aber dezenter (weniger Punkte, wenig Magenta, leiser), je Seite mit eigener Struktur
 (`<KopfNetz lage="flaeche">`, `flaechenNetz()` in `kopf-netz.ts`). Kooperationen und Formate haben ihr eigenes Netz. Der Kopf der Formate ist so hoch wie alle
 anderen (`--buehne-h`): Die Bühne der Namen füllt ihn ohne die Abstände oben und unten.
 
