@@ -6,7 +6,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { supabase } from '../src/settings/supabase';
-import { redaktion } from './redaktion-mock';
+import { redaktion, menue } from './redaktion-mock';
 import { gegenstueck, internPfad } from '../src/lib/intern-sprache';
 import { montag } from '../src/lib/keep-up-plan';
 import { artName } from '../src/lib/mitgliedschaft';
@@ -51,6 +51,7 @@ test('Mein Status auf Englisch: Leiste, Ausweis, Angaben', async ({ page }) => {
   await redaktion(page, { profil: lea, mitgliedschaft: ms });
   await page.goto('/en/intern/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('My status');
+  await menue(page);
   await expect(nav(page).getByRole('link')).toHaveText(['My status', 'My profile', /^Open Calls/, 'Members', 'Documents']);
   // Mitgliederseiten auf Englisch, die übrigen bleiben deutsch
   await expect(nav(page).getByRole('link', { name: 'My profile' })).toHaveAttribute('href', '/en/intern/profil/');
@@ -82,6 +83,7 @@ test('Umschalter merkt sich die Sprache, Redaktion bleibt deutsch', async ({ pag
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('My profile');
 
   // Redaktion: deutsch, ohne Umschalter; Links aus der englischen Leiste führen dorthin
+  await menue(page);
   await expect(nav(page).getByRole('link', { name: /^Posts/ })).toHaveAttribute('href', '/intern/news/');
   await page.goto('/intern/news/');
   await expect(page.locator('html')).toHaveAttribute('lang', 'de');
@@ -138,6 +140,7 @@ test('KEEP UP auf Englisch: Meine Trainings und Editor', async ({ page }) => {
   });
   await page.goto('/en/intern/keep-up/meine/');
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Hello Aurora.');
+  await menue(page);
   await expect(nav(page).getByRole('link', { name: /My classes/ })).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('[data-todo-text]')).toHaveText('One date still needs a description.');
   const karte = page.locator('.mt-karte');

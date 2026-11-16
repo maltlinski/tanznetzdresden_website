@@ -150,7 +150,7 @@ function textFeld(f: Feld, bind: Bindung, k: FormKontext, en: boolean, gesperrt:
         src: bild.src,
         fokus: (steuer as HTMLInputElement).value.trim() || undefined,
         standard: auswahl.form === 'portraet' ? FOKUS_PORTRAET : undefined,
-        titel: auswahl.form === 'portraet' ? 'Ausschnitt des Porträts' : 'Ausschnitt des Galeriefotos',
+        titel: auswahl.form === 'portraet' ? 'Ausschnitt des Porträts' : 'Ausschnitt des Fotos',
         rahmen: () => (auswahl.form === 'portraet' ? rahmenPortraet({ karte: true, training: true }) : rahmenGalerieAlle()),
       });
       if (!wahl) return knopf.focus();
@@ -496,8 +496,7 @@ function dateiFeld(f: Extract<Feld, { typ: 'bild' | 'pdf' }>, bind: Bindung, k: 
   fuellen();
   void zeigen();
   sel.addEventListener('change', () => setze(sel.value || null));
-  eingabe.addEventListener('change', async () => {
-    const datei = eingabe.files?.[0];
+  const laden = async (datei: File | undefined) => {
     if (!datei) return;
     status.textContent = 'Wird vorbereitet …';
     try {
@@ -510,9 +509,62 @@ function dateiFeld(f: Extract<Feld, { typ: 'bild' | 'pdf' }>, bind: Bindung, k: 
       status.textContent = String((e as Error).message ?? e);
     }
     eingabe.value = '';
+  };
+  eingabe.addEventListener('change', () => void laden(eingabe.files?.[0]));
+  // Foto aus dem Ordner mit Vorschaubildern wählen (statt nach Dateinamen); Bilder laden erst, wenn sie zu sehen sind
+  const waehlen = bild ? h('button', { type: 'button', class: 'btn btn--secondary btn--sm', text: 'Aus vorhandenen Fotos wählen', disabled: gesperrt }) : null;
+  waehlen?.addEventListener('click', () => {
+    const suche = h('input', { type: 'search', placeholder: 'Fotos suchen …', 'aria-label': 'Fotos suchen' });
+    const raster = h('ul', { class: 'rf-wahl__raster' });
+    const dlg = h('dialog', { class: 'r-dialog rf-wahl', 'aria-label': `${f.label} wählen` },
+      h('h2', { class: 'r-dialog__h', text: 'Foto wählen' }), suche, raster,
+      h('div', { class: 'r-dialog__btns' }, h('button', { type: 'button', class: 'i-linkbtn', text: 'Abbrechen', onclick: () => dlg.close() })));
+    const sichtbar = new IntersectionObserver((xs) => {
+      for (const x of xs) {
+        if (!x.isIntersecting) continue;
+        const i = x.target as HTMLImageElement;
+        sichtbar.unobserve(i);
+        void k.vorschau(i.dataset.pfad!).then((src) => src && (i.src = src));
+      }
+    }, { root: raster });
+    raster.replaceChildren(...k.dateien(ordnerKey).map((n) => {
+      const p = `${ordner}/${n}`;
+      const i = h('img', { alt: '', 'data-pfad': p });
+      sichtbar.observe(i);
+      return h('li', { 'data-name': n.toLowerCase() }, h('button', { type: 'button', 'aria-pressed': String(p === pfad), onclick: () => {
+        sel.value = p;
+        setze(p);
+        dlg.close();
+      } }, i, h('span', { text: n })));
+    }));
+    suche.addEventListener('input', () => {
+      const q = suche.value.trim().toLowerCase();
+      for (const li of raster.children) (li as HTMLElement).hidden = !!q && !(li as HTMLElement).dataset.name!.includes(q);
+    });
+    dlg.addEventListener('close', () => {
+      sichtbar.disconnect();
+      dlg.remove();
+      waehlen.focus();
+    });
+    document.body.append(dlg);
+    dlg.showModal();
   });
-  const seite = h('div', { class: 'rf-bild__side' }, sel, hochladen, status);
+  const seite = h('div', { class: 'rf-bild__side' }, waehlen, sel, hochladen, bild ? h('span', { class: 'i-hint', text: 'Oder ein Foto hierher ziehen.' }) : null, status);
   const steuer = h('div', { class: bild ? 'rf-bild' : 'rf-bild rf-bild--pdf', 'data-bild-key': f.key }, rahmenBild, seite);
+  if (!gesperrt) {
+    // Datei aus dem Ordner des Computers auf das Feld ziehen
+    steuer.addEventListener('dragover', (e) => {
+      if (!e.dataTransfer?.types.includes('Files')) return;
+      e.preventDefault();
+      steuer.classList.add('is-drop');
+    });
+    steuer.addEventListener('dragleave', (e) => !steuer.contains(e.relatedTarget as Node) && steuer.classList.remove('is-drop'));
+    steuer.addEventListener('drop', (e) => {
+      e.preventDefault();
+      steuer.classList.remove('is-drop');
+      void laden(e.dataTransfer?.files[0]);
+    });
+  }
   const r = rahmen(f, id, steuer);
   sel.setAttribute('aria-describedby', r.beschrieben);
   return {

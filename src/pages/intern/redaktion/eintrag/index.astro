@@ -105,7 +105,9 @@ import '../../../../styles/mediathek.css';
         namenLaden(r, verweisQuellen(b)),
       ]);
     } catch (e) {
-      meldung((e as Error).message);
+      // technische Fehler (TypeError …) nicht roh zeigen
+      meldung(`Das Formular ließ sich nicht laden. Bitte die Seite neu laden.${e instanceof TypeError ? '' : ` (${(e as Error).message})`}`);
+      $('[data-form]')!.hidden = true;
       throw e;
     }
 

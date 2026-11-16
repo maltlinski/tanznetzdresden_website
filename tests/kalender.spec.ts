@@ -4,7 +4,7 @@
  */
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { redaktion } from './redaktion-mock';
+import { redaktion, menue } from './redaktion-mock';
 import { montag, plusTage } from '../src/lib/keep-up-plan';
 import { alsTerminDaten, slugAus } from '../src/lib/kalender-intern';
 
@@ -22,6 +22,7 @@ const woche = (page: Page) => page.locator(`[data-woche="${mo}"]`);
 test('Termin eintragen: Tag anklicken, ausfüllen, Website baut neu', async ({ page }) => {
   const m = await redaktion(page, { profil: pia, kalender: [], keepup: [] });
   await page.goto('/intern/kalender/');
+  await menue(page);
   const nav = page.getByRole('navigation', { name: 'Interner Bereich' });
   await expect(nav.getByRole('link', { name: /^Termine/ })).toHaveAttribute('aria-current', 'page');
 

@@ -38,7 +38,7 @@ const t = tr(lang, {
     bereich: 'Interner Bereich', logo: 'Interner Bereich: Mein Status', status: 'Mein Status', profil: 'Mein Profil', mitglieder: 'Mitglieder',
     dokumente: 'Dokumente', trainings: 'Meine Trainings', kalender: 'Termine', beitraege: 'Beiträge', medien: 'Medien',
     inhalte: 'Website-Inhalte', uebersicht: 'Übersicht', seiten: 'Seiten', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung', aenderungen: 'Änderungen',
-    supabase: 'Datenbank ↗', web: 'Website ansehen →', aus: 'Abmelden',
+    menue: 'Menü', web: 'Website ansehen →', aus: 'Abmelden',
     zurWebsite: '← Zur Website', moment: 'Einen Moment …', setupH: 'Noch nicht eingerichtet', sprache: 'Sprache',
     leisteZu: 'Seitenleiste einklappen', leisteAuf: 'Seitenleiste zeigen',
   },
@@ -46,7 +46,7 @@ const t = tr(lang, {
     bereich: 'Members area', logo: 'Members area: My status', status: 'My status', profil: 'My profile', mitglieder: 'Members',
     dokumente: 'Documents', trainings: 'My classes', kalender: 'Events', beitraege: 'Posts', medien: 'Media',
     inhalte: 'Website content', uebersicht: 'Overview', seiten: 'Pages', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Administration', aenderungen: 'Changes',
-    supabase: 'Database ↗', web: 'View website →', aus: 'Log out',
+    menue: 'Menu', web: 'View website →', aus: 'Log out',
     zurWebsite: '← To the website', moment: 'One moment …', setupH: 'Not set up yet', sprache: 'Language',
     leisteZu: 'Collapse sidebar', leisteAuf: 'Show sidebar',
   },
@@ -66,14 +66,13 @@ const keepup: { id: Punkt; label: string; path: string; n: string }[] = [
 // darunter alles, was auf der Website steht (Aufbau: docs/redaktion.md)
 const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
   { id: 'inhalte', label: t.uebersicht, path: 'redaktion/' },
-  { id: 'seiten', label: t.seiten, path: 'redaktion/seiten/' },
-  { id: 'texte', label: t.texte, path: 'redaktion/texte/' },
-  { id: 'medien', label: t.medien, path: 'news/medien/', n: 'medien' },
   { id: 'beitraege', label: t.beitraege, path: 'news/', n: 'beitraege' },
   { id: 'kalender', label: t.kalender, path: 'kalender/', n: 'kalender' },
+  { id: 'medien', label: t.medien, path: 'news/medien/', n: 'medien' },
   { id: 'freigaben', label: t.freigaben, path: 'redaktion/freigaben/', n: 'freigaben' },
-  { id: 'aenderungen', label: t.aenderungen, path: 'redaktion/aenderungen/' },
 ];
+// Seiten, Texte und Änderungen erreicht man über die Übersicht: dort bleibt „Übersicht“ markiert
+const aktiv = current && ['seiten', 'texte', 'aenderungen'].includes(current) ? 'inhalte' : current;
 // Umschalter Deutsch/English, nur auf Seiten, die es in beiden Sprachen gibt
 const anders = gegenstueck(Astro.url.pathname, import.meta.env.BASE_URL);
 const sprachen = anders
@@ -124,7 +123,8 @@ const LEISTE_KEY = 'tndd-intern-leiste';
           </div>
         )}
       </div>
-      <nav class="rd-nav" aria-label={t.bereich} data-when="ready" data-side-teil>
+      <button type="button" class="rd-side__menue" data-menue aria-controls="rd-nav" aria-expanded="false">{t.menue}</button>
+      <nav class="rd-nav" id="rd-nav" aria-label={t.bereich} data-when="ready" data-side-teil>
         {mitglied.map((i) => (
           <a href={ziel(i.path)} aria-current={i.id === current ? 'page' : undefined}>
             <span class="rd-nav__m" aria-hidden="true"></span>
@@ -142,21 +142,16 @@ const LEISTE_KEY = 'tndd-intern-leiste';
         ))}
         <span class="rd-nav__gruppe" data-redaktion-only hidden>{t.inhalte}</span>
         {redaktion.map((i) => (
-          <a href={ziel(i.path)} aria-current={i.id === current ? 'page' : undefined} data-redaktion-only hidden>
+          <a href={ziel(i.path)} aria-current={i.id === aktiv ? 'page' : undefined} data-redaktion-only hidden>
             <span class="rd-nav__m" aria-hidden="true"></span>
             <span class="rd-nav__l">{i.label}</span>
             {i.n && <span class="rd-nav__n" data-nav-n={i.n}></span>}
           </a>
         ))}
         <!-- Technisches (Rechtliches, Status, Demo, Datenbank): nur Vorstand und Admin, ganz unten -->
-        <span class="rd-nav__gruppe" data-vorstand-only hidden>{t.verwaltung}</span>
         <a href={ziel('redaktion/verwaltung/')} aria-current={current === 'verwaltung' ? 'page' : undefined} data-vorstand-only hidden>
           <span class="rd-nav__m" aria-hidden="true"></span>
           <span class="rd-nav__l">{t.verwaltung}</span>
-        </a>
-        <a href="https://supabase.com/dashboard" target="_blank" rel="noopener" data-vorstand-only hidden>
-          <span class="rd-nav__m" aria-hidden="true"></span>
-          <span class="rd-nav__l">{t.supabase}</span>
         </a>
       </nav>
       <div class="rd-side__fuss" data-when="ready" data-side-teil>
@@ -222,6 +217,13 @@ const LEISTE_KEY = 'tndd-intern-leiste';
       localStorage.setItem('tndd-intern-leiste', zu ? 'zu' : 'auf');
     } catch {}
     leisteZeigen();
+  });
+
+  // Schmale Bildschirme: Menü auf- und zuklappen
+  const menue = document.querySelector<HTMLButtonElement>('[data-menue]');
+  menue?.addEventListener('click', () => {
+    const auf = document.querySelector('[data-side]')!.classList.toggle('menue-auf');
+    menue.setAttribute('aria-expanded', String(auf));
   });
 
   // Sprache merken: beim nächsten Besuch öffnet der interne Bereich in dieser Sprache
@@ -374,6 +376,7 @@ const LEISTE_KEY = 'tndd-intern-leiste';
     font-size: 11px; letter-spacing: 0.16em; color: rgba(255, 255, 255, 0.72);
   }
   .rd-side__aus:hover { color: #fff; }
+  .rd-side__menue { display: none; }
 
   .rd-main { flex: 1 1 0; min-width: 0; outline: none; }
   .rd-main:not(.rd-main--voll) > .rd-flaeche { max-width: 1180px; padding: clamp(28px, 4vw, 52px) clamp(20px, 3.5vw, 48px) 80px; }
@@ -390,10 +393,13 @@ const LEISTE_KEY = 'tndd-intern-leiste';
     }
     .rd-side__kopf { flex-direction: row; align-items: center; padding: 0; }
     .rd-side__logo { width: 52px; }
-    .rd-nav { order: 3; width: 100%; min-width: 0; overflow-x: auto; }
-    .intern[data-state='ready'] .rd-nav[data-when] { flex-direction: row; }
-    .rd-nav a { padding: 10px; white-space: nowrap; }
-    .rd-nav__gruppe { margin: 0 0 0 10px; align-self: center; white-space: nowrap; }
+    .rd-nav { order: 3; width: 100%; min-width: 0; }
+    .intern[data-state='ready'] .rd-side:not(.menue-auf) .rd-nav[data-when] { display: none !important; }
+    .intern[data-state='ready'] .rd-side__menue {
+      display: block; padding: 8px 12px; border: 1px solid rgba(255, 255, 255, 0.4); background: none; color: #fff; cursor: pointer;
+      font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase;
+    }
+    .rd-side__menue[aria-expanded='true'] { background: #fff; color: var(--purple); }
     .rd-side__fuss { margin: 0 0 0 auto; padding: 0; border: 0; }
     .intern[data-state='ready'] .rd-side__fuss[data-when] { flex-direction: row; align-items: center; gap: 14px; }
     .rd-side__person, .rd-side__web { display: none; }

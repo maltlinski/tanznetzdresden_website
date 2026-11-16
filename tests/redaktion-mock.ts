@@ -98,6 +98,11 @@ export const keepupZeile = (z: Record<string, unknown>): Record<string, unknown>
 });
 const INHALT = ['titel', 'kurz', 'text', 'schwerpunkte', 'mitbringen', 'bild', 'bild_alt'];
 
+/** Schmale Bildschirme: das Menü des internen Bereichs ist eingeklappt, erst „Menü“ öffnet es */
+export async function menue(page: Page) {
+  if ((page.viewportSize()?.width ?? 1280) <= 900) await page.locator('[data-menue][aria-expanded="false"]').click();
+}
+
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
   const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), hochgeladenDaten: [], neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, einladen: [], keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [],

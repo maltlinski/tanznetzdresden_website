@@ -5,7 +5,7 @@
  */
 import { test, expect } from '@playwright/test';
 import { generateKeyPairSync, createVerify } from 'node:crypto';
-import { redaktion } from './redaktion-mock';
+import { redaktion, menue } from './redaktion-mock';
 import { handle, type Env } from '../supabase/functions/ausweis/index';
 
 const J = new Date().getFullYear();
@@ -19,6 +19,7 @@ const ms = (z: Record<string, unknown> = {}) => ({
 test('Rahmen: Seitenleiste für Mitglieder, Redaktion nur mit Rolle', async ({ page, isMobile }) => {
   await redaktion(page, { profil: lea, mitgliedschaft: ms() });
   await page.goto('/intern/');
+  await menue(page);
   const nav = page.getByRole('navigation', { name: 'Interner Bereich' });
   await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', /^Open Calls/, 'Mitglieder', 'Dokumente']);
   await expect(nav.getByRole('link', { name: 'Mein Status' })).toHaveAttribute('aria-current', 'page');
@@ -31,7 +32,8 @@ test('Rahmen: Seitenleiste für Mitglieder, Redaktion nur mit Rolle', async ({ p
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await redaktion(page, { profil: { display_name: 'Pia Presse' }, mitgliedschaft: ms({ seit: '2021-05-01' }) });
   await page.goto('/intern/news/');
-  await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', /^Open Calls/, 'Mitglieder', 'Dokumente', 'Übersicht', 'Seiten', 'Texte', /^Medien/, /^Beiträge/, /^Termine/, /^Freigaben/, 'Änderungen']);
+  await menue(page);
+  await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', /^Open Calls/, 'Mitglieder', 'Dokumente', 'Übersicht', /^Beiträge/, /^Termine/, /^Medien/, /^Freigaben/]);
   await expect(nav.getByRole('link', { name: /^Beiträge/ })).toHaveAttribute('aria-current', 'page');
   if (!isMobile) await expect(page.locator('[data-intern-unterzeile]')).toHaveText('Mitglied seit 2021 · Presse');
 });

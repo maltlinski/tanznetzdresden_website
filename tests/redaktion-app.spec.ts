@@ -4,7 +4,7 @@
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { supabase } from '../src/settings/supabase';
-import { redaktion, FOTOS } from './redaktion-mock';
+import { redaktion, FOTOS, menue } from './redaktion-mock';
 
 test.skip(!supabase.url || !supabase.anonKey, 'Supabase nicht eingetragen');
 
@@ -18,6 +18,7 @@ const zeilen = (page: import('@playwright/test').Page) => page.locator('.bl__zei
 test('Beitragsliste: Filter, Suche, Status und Hinweise', async ({ page }) => {
   await redaktion(page, { andere: beitraege });
   await page.goto('/intern/news/');
+  await menue(page);
   await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: /Beiträge/ })).toHaveAttribute('aria-current', 'page');
   await expect(page.locator('[data-nav-n="beitraege"]')).toHaveText('3');
   await expect(zeilen(page)).toHaveCount(3);

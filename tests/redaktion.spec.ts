@@ -3,6 +3,7 @@
  * Supabase (Anmeldung, Profil) und die Funktion „inhalte“ sind nachgebaut. Die nachgebaute Funktion
  * liest die echten Dateien aus dem Repository; was gespeichert würde, prüfen die Tests direkt.
  */
+import { menue } from './redaktion-mock';
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { createHash } from 'node:crypto';
@@ -148,24 +149,30 @@ test('Übersicht: „Was möchtest du ändern?“, Seiten, Website-Status und Ve
   await page.goto('/intern/redaktion/');
   await expect(page.getByRole('heading', { name: 'Was möchtest du ändern?', level: 1 })).toBeVisible();
   const kacheln = page.getByRole('list', { name: 'Was möchtest du ändern?' });
-  for (const [name, ziel] of [['Texte ändern', /redaktion\/texte\/$/], ['Seite für Seite', /redaktion\/seiten\/$/], ['Beitrag schreiben', /intern\/news\/$/],
+  for (const [name, ziel] of [['Texte ändern', /redaktion\/texte\/$/], ['Beitrag schreiben', /intern\/news\/$/],
     ['Termin eintragen', /intern\/kalender\/$/], ['Medien verwalten', /news\/medien\/$/], ['Freigaben', /redaktion\/freigaben\/$/],
     ['Vorschau öffnen', /redaktion\/vorschau\/$/]] as const) {
     await expect(kacheln.getByRole('link', { name: new RegExp(`^${name}`) })).toHaveAttribute('href', ziel);
   }
   // direkt zu einer Seite der Website
   await expect(page.getByRole('link', { name: 'Startseite', exact: true })).toHaveAttribute('href', /redaktion\/seiten\/\?s=startseite$/);
+  // Suche findet eine Seite auch über das, was auf ihr steht
+  await page.getByPlaceholder(/Seite oder Inhalt suchen/).fill('partner');
+  await expect(page.getByRole('link', { name: 'Kooperationen', exact: true })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Startseite', exact: true })).toBeHidden();
+  await page.getByPlaceholder(/Seite oder Inhalt suchen/).fill('');
   await expect(page.getByRole('status').filter({ hasText: 'Die Website ist aktuell' })).toBeVisible();
   // Zuletzt geändert: Dateien und Datenbank zusammen, neueste zuerst, mit Link zu allen Änderungen
   const verlauf = page.locator('[data-verlauf] > li');
   await expect(verlauf.first()).toContainText('Beitrag „Open Call Residenz“ veröffentlicht');
   await expect(verlauf.nth(1)).toContainText('Format „POP UP“ geändert');
   await expect(page.getByRole('link', { name: /Alle Änderungen/ })).toHaveAttribute('href', /redaktion\/aenderungen\/$/);
-  // Seitenleiste: „Website-Inhalte“ mit Übersicht, Seiten, Texte, Medien, Beiträge, Termine, Freigaben, Änderungen
+  // Seitenleiste: „Website-Inhalte“ mit Übersicht, Beiträge, Termine, Medien, Freigaben (Seiten, Texte, Änderungen über die Übersicht)
+  await menue(page);
   const nav = page.getByRole('navigation', { name: 'Interner Bereich' });
   await expect(nav.getByRole('link', { name: 'Übersicht' })).toHaveAttribute('aria-current', 'page');
   await expect(nav.getByText('Website-Inhalte', { exact: true })).toBeVisible();
-  for (const name of ['Seiten', 'Texte', 'Medien', 'Beiträge', 'Termine', 'Freigaben', 'Änderungen']) await expect(nav.getByRole('link', { name: new RegExp(`^${name}`) })).toBeVisible();
+  for (const name of ['Beiträge', 'Termine', 'Medien', 'Freigaben']) await expect(nav.getByRole('link', { name: new RegExp(`^${name}`) })).toBeVisible();
   // Verwaltung nur für Vorstand und Admin
   await expect(nav.getByRole('link', { name: 'Verwaltung' })).toBeHidden();
   // keine Fachbegriffe in der Oberfläche
@@ -315,6 +322,14 @@ test('Formate: neues Format mit Foto-Upload', async ({ page }) => {
   await feld(page, 'Name').fill('Tanz im Park');
   await feld(page, 'Seit').fill('seit 2027');
   await feld(page, 'Kurzbeschreibung').fill('Draußen tanzen, für alle.');
+  // vorhandenes Foto mit Vorschaubildern wählen statt nach Dateinamen
+  await page.getByRole('button', { name: 'Aus vorhandenen Fotos wählen' }).click();
+  const wahl = page.getByRole('dialog', { name: 'Foto wählen' });
+  await wahl.getByLabel('Fotos suchen').fill('sprung');
+  await expect(wahl.getByRole('button')).toHaveCount(2); // ein Foto und „Abbrechen“
+  await wahl.getByRole('button', { name: 'sprung.jpg' }).click();
+  await expect(wahl).toBeHidden();
+  await expect(page.locator('.rf-bild select')).toHaveValue('src/assets/photos/sprung.jpg');
   await page.locator('input[type=file]').setInputFiles('src/assets/photos/duo-rot.jpg');
   await expect(page.getByText('„duo-rot-2.jpg“ wird beim Speichern hochgeladen.')).toBeVisible();
   await expect(page.locator('.rf-bild__frame img')).toBeVisible();
@@ -510,7 +525,8 @@ test('Texte: ändern, Englisch prüfen, Regeln, ursprünglicher Text', async ({ 
   const gespeichert = await redaktion(page);
   const PFAD = 'src/settings/texte.json';
   await page.goto('/intern/redaktion/texte/');
-  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Texte' })).toHaveAttribute('aria-current', 'page');
+  await menue(page);
+  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Übersicht' })).toHaveAttribute('aria-current', 'page');
   // auf dem Handy ist die Liste ausgeblendet (dort das Auswahlfeld), daher ohne Rolle gesucht
   const seiten = page.locator('.tx-seiten');
   // alle Seiten der Website in Gruppen, in der Reihenfolge des Menüs
@@ -698,6 +714,7 @@ test('Verwaltung: nur Vorstand und Admin, mit Rechtlichem, Demo-Ansicht und Verl
   await redaktion(p2, 'vorstand');
   await p2.goto('/intern/redaktion/verwaltung/');
   await expect(p2.getByRole('heading', { name: 'Verwaltung', level: 1 })).toBeVisible();
+  await menue(p2);
   await expect(p2.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Verwaltung' })).toHaveAttribute('aria-current', 'page');
   await expect(p2.getByRole('link', { name: /^Impressum/ })).toHaveAttribute('href', /eintrag\/\?b=seiten&id=impressum$/);
   await expect(p2.getByLabel('Demo-Ansicht')).toBeVisible();
@@ -888,7 +905,8 @@ test('Änderungen: Dateien und Datenbank zusammen, Filter, vorher/nachher', asyn
   await redaktion(page);
   await page.goto('/intern/redaktion/aenderungen/');
   await expect(page.getByRole('heading', { name: 'Änderungen', level: 1 })).toBeVisible();
-  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Änderungen' })).toHaveAttribute('aria-current', 'page');
+  await menue(page);
+  await expect(page.getByRole('navigation', { name: 'Interner Bereich' }).getByRole('link', { name: 'Übersicht' })).toHaveAttribute('aria-current', 'page');
   const log = page.locator('[data-log]');
   await expect(page.locator('[data-anzahl]')).toHaveText('4 Änderungen');
   // nach Tagen gruppiert, neueste zuerst; Sätze ohne Fachbegriffe

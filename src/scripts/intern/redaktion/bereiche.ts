@@ -358,7 +358,7 @@ export const bereiche: Bereich[] = [
       ], hilfe: 'Ohne Foto zeigt der Kopf das Netz auf dieser Fläche.' },
       { erweitert: true, typ: 'text', key: 'nodeKicker', label: 'Netz-Knoten: kleine Zeile', en: true, platzhalter: 'z. B. Ausgabe', hilfe: 'Ohne Foto trägt ein Magenta-Knoten im Netz die wichtigste Angabe. Bei Ausschreibungen zeigt er die Frist.' },
       { erweitert: true, typ: 'text', key: 'nodeValue', label: 'Netz-Knoten: Angabe', en: true, platzhalter: 'z. B. #6 · 26. November' },
-      { erweitert: true, typ: 'text', key: 'imageFocus', label: 'Bildausschnitt', platzhalter: '50% 30%', muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30%'], hilfe: 'Optional. Welche Stelle im Foto sichtbar bleibt, wenn es zugeschnitten wird: waagerecht und senkrecht in Prozent.' },
+      { typ: 'text', key: 'imageFocus', label: 'Bildausschnitt', max: 9, platzhalter: '50% 30%', ausschnitt: { bild: 'image', form: 'galerie' }, muster: [/^\d{1,3}% \d{1,3}%$/, 'Format: 50% 30%'], hilfe: 'Welche Stelle im Foto sichtbar bleibt, wenn es zugeschnitten wird. Am einfachsten über „Ausschnitt wählen“.' },
       { erweitert: true, typ: 'liste', key: 'facts', label: 'Auf einen Blick', en: true, neu: 'Zeile hinzufügen', titel: (v) => v.label ?? '', felder: [
         { typ: 'text', key: 'label', label: 'Was', pflicht: true, platzhalter: 'z. B. Wann' },
         { typ: 'text', key: 'value', label: 'Angabe', pflicht: true },

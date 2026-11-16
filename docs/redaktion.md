@@ -7,17 +7,20 @@ Alles, was auf der Website steht, liegt im internen Bereich unter **Website-Inha
 
 ```
 Website-Inhalte
-├─ Übersicht        „Was möchtest du ändern?“: große Kacheln, Seiten zum Hinspringen, Zustand, Zuletzt geändert
-├─ Seiten           die Website Seite für Seite: Seite › Abschnitt › Element (Texte und was dort sonst steht)
-├─ Texte            alle festen Texte mit Suche und Filtern, dazu das Textbuch (docs/texte.md)
-├─ Medien           Fotos hochladen, beschreiben, sehen, wo sie verwendet werden
+├─ Übersicht        „Was möchtest du ändern?“: große Kacheln, Seiten mit Suche, Zustand, Zuletzt geändert.
+│                   Von hier geht es zu Seiten, Texten und Änderungen (stehen nicht mehr einzeln in der Leiste)
+│  ├─ Seiten        die Website Seite für Seite: Seite › Abschnitt › Element (Texte und was dort sonst steht)
+│  ├─ Texte         alle festen Texte mit Suche und Filtern, dazu das Textbuch (docs/texte.md)
+│  └─ Änderungen    wer wann was geändert hat, mit vorher/nachher (Dateien und Datenbank zusammen)
 ├─ Beiträge         News schreiben (docs/news.md); ältere Beiträge und Bausteine sind dort verlinkt
 ├─ Termine          Kalender: Termine und KEEP UP (docs/kalender.md); ältere Termine sind dort verlinkt
-├─ Freigaben        Profile und Fotos der Mitglieder
-└─ Änderungen       wer wann was geändert hat, mit vorher/nachher (Dateien und Datenbank zusammen)
+├─ Medien           Fotos hochladen, beschreiben, sehen, wo sie verwendet werden
+└─ Freigaben        Profile und Fotos der Mitglieder
 Verwaltung (nur Vorstand/Admin, ganz unten): Impressum, Datenschutz, rechtliche Vereinsdaten, Mitglieder und Rollen,
 Zustand und Verlauf, Demo-Ansicht, Datenbank
 ```
+
+Auf schmalen Bildschirmen klappt der Knopf „Menü“ die Leiste auf.
 
 Jede Seite zeigt oben Breadcrumbs („Website-Inhalte › Seiten › Startseite › Kopf › …“), jeder Bereich, wo er auf der
 Website erscheint („Erscheint auf der Website: …“). Selten gebrauchte Felder stehen im Formular unter **Erweitert**,
@@ -70,8 +73,8 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 - **Englisch:** „Englische Fassung zeigen“ oben im Formular blendet die englischen Felder ein (hell hinterlegt, „Englisch“). Sie sind freiwillig.
   Fehlt es, zeigt die englische Seite den deutschen Text. Lange Texte haben darunter „englische Fassung“ zum
   Aufklappen.
-- **Fotos:** „Neues Foto hochladen“ verkleinert das Foto im Browser und lädt es beim Speichern mit hoch. Vorhandene
-  Fotos stehen in der Auswahl daneben. Eine Bildbeschreibung ist Pflicht, weil sie für Barrierefreiheit gebraucht
+- **Fotos:** „Aus vorhandenen Fotos wählen“ zeigt alle Fotos mit Vorschaubild und Suche. „Neues Foto hochladen“ oder
+  Hineinziehen verkleinert das Foto im Browser und lädt es beim Speichern mit hoch. Den Ausschnitt setzt „Ausschnitt wählen“. Eine Bildbeschreibung ist Pflicht, weil sie für Barrierefreiheit gebraucht
   wird.
 - **Text formatieren:** Lange Texte schreibst du wie in einem Textprogramm: Zwischenüberschrift, Fett, Kursiv, Liste
   und Link über die Knöpfe, ohne Sonderzeichen. Bei Beiträgen fügt „Bild“ ein Foto aus den Medien ein (die

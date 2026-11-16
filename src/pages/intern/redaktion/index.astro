@@ -16,7 +16,6 @@ const plan = seitenplan(texte);
 const gruppen = [...new Set(plan.map((s) => s.gruppe))];
 const kacheln = [
   { titel: 'Texte ändern', text: 'Überschriften, Einleitungen, Knöpfe und Hinweise. Seite für Seite, auf Deutsch und Englisch.', ziel: href('intern/redaktion/texte/'), id: 'texte' },
-  { titel: 'Seite für Seite', text: 'Alles, was auf einer Seite steht: Texte, Fotos, Listen. So aufgebaut wie die Website.', ziel: href('intern/redaktion/seiten/'), id: 'seiten' },
   { titel: 'Beitrag schreiben', text: 'News mit Foto, Frist oder Zitat anlegen und veröffentlichen.', ziel: href('intern/news/'), id: 'beitraege' },
   { titel: 'Termin eintragen', text: 'Vorstellungen, Workshops und KEEP UP-Trainings für den Tanzkalender.', ziel: href('intern/kalender/'), id: 'termine' },
   { titel: 'Medien verwalten', text: 'Fotos hochladen, beschreiben und sehen, wo sie verwendet werden.', ziel: href('intern/news/medien/'), id: 'medien' },
@@ -62,14 +61,19 @@ const kacheln = [
     </ul>
 
     <section class="r-gruppe" aria-labelledby="g-seiten">
-      <h2 class="r-gruppe__h" id="g-seiten">Oder direkt zu einer Seite</h2>
+      <h2 class="r-gruppe__h" id="g-seiten">Seite für Seite</h2>
+      <label class="r-suche r-suche--breit">
+        <span class="visually-hidden">Seiten durchsuchen</span>
+        <input type="search" placeholder="Seite oder Inhalt suchen, z. B. Partner …" data-seiten-suche />
+      </label>
+      <p class="i-hint" data-seiten-leer hidden>Nichts gefunden. Unter <a href={href('intern/redaktion/seiten/')}>Seiten</a> steht alles von A bis Z.</p>
       <div class="r-seitenwahl">
         {gruppen.map((g) => (
           <div>
             <p class="r-seitenwahl__g">{g}</p>
             <ul>
               {plan.filter((s) => s.gruppe === g).map((s) => (
-                <li><a href={href(`intern/redaktion/seiten/?s=${s.id}`)}>{s.titel}</a></li>
+                <li data-suche={[s.titel, ...s.abschnitte.flatMap((a) => [a.titel, ...a.auch.map((z) => z.text)])].join(' ').toLowerCase()}><a href={href(`intern/redaktion/seiten/?s=${s.id}`)}>{s.titel}</a></li>
               ))}
             </ul>
           </div>
@@ -93,6 +97,18 @@ const kacheln = [
   import { offeneFreigaben } from '../../../scripts/intern/freigaben';
   import { eintragElement, logLaden } from '../../../scripts/intern/redaktion/aenderungen';
   import { h } from '../../../scripts/dom';
+
+  // Suche: findet eine Seite auch über das, was auf ihr steht (Abschnitte, Listen)
+  const suche = $<HTMLInputElement>('[data-seiten-suche]')!;
+  suche.addEventListener('input', () => {
+    const q = suche.value.trim().toLowerCase();
+    let treffer = 0;
+    document.querySelectorAll<HTMLElement>('[data-suche]').forEach((li) => {
+      li.hidden = !!q && !li.dataset.suche!.includes(q);
+      if (!li.hidden) treffer++;
+    });
+    $('[data-seiten-leer]')!.hidden = treffer > 0;
+  });
 
   const r = await starten();
   if (r) {

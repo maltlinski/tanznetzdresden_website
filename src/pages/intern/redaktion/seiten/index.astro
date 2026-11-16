@@ -153,6 +153,8 @@ const az = [...bereiche]
     const wahl = $<HTMLSelectElement>('[data-seite-wahl]')!;
     wahl.value = sektion ? s : '';
     wahl.addEventListener('change', () => location.assign(seitenUrl(wahl.value || undefined)));
+    // Übersicht: die Kacheln zeigen schon alle Seiten, die Liste links erst auf einer Seite
+    if (!sektion) $('.sp')!.classList.add('sp--alle');
     if (sektion) {
       $('[data-uebersicht]')!.hidden = true;
       sektion.hidden = false;

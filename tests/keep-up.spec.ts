@@ -5,7 +5,7 @@
  */
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
-import { redaktion } from './redaktion-mock';
+import { redaktion, menue } from './redaktion-mock';
 import { montag, plusTage, status, inhalt, bereit, zeitNorm, kalenderwoche, type KeepUpTermin } from '../src/lib/keep-up-plan';
 
 const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
@@ -27,6 +27,7 @@ test('Planung: Wochen mit Einplanungen, Hinweis auf fehlende Beschreibungen, Fil
   // die alte Adresse der Planung führt in den Kalender
   await page.goto('/intern/keep-up/');
   await expect(page).toHaveURL(/\/intern\/kalender\/$/);
+  await menue(page);
   await expect(nav(page).getByRole('link', { name: /^Termine/ })).toHaveAttribute('aria-current', 'page');
   await expect(nav(page).getByRole('link', { name: /^Termine/ })).toContainText('2');
   await expect(nav(page).getByRole('link', { name: /Meine Trainings/ })).toBeHidden();
@@ -110,6 +111,7 @@ test('Planung: nur für Redaktion und Vorstand, Hinweis ohne Migration', async (
 test('Meine Trainings: anstehend mit Notiz und Prüfliste, vergangen, ohne Zuordnung', async ({ page }) => {
   await redaktion(page, { profil: aurora, keepup: zeilen(), keepupIch: 'aurora-fradella' });
   await page.goto('/intern/keep-up/meine/');
+  await menue(page);
   await expect(nav(page).getByRole('link', { name: /Meine Trainings/ })).toHaveAttribute('aria-current', 'page');
   await expect(nav(page).getByRole('link', { name: /^Termine/ })).toBeHidden();
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('Hallo Aurora.');
