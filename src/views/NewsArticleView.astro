@@ -57,7 +57,7 @@ if (post.image) {
 }
 const kopf = kopfHtml({
   lang, modus, flaeche: post.heroTheme, kategorie: post.category, titel: post.title, teaser: post.teaser, autor: post.author,
-  nr: post.nr, datum: post.date, minuten: post.minutes, zurueck: url(lang, 'news', '#journal'), bild, knoten: post.node, frist: post.deadline,
+  nr: post.nr, datum: post.date, minuten: post.minutes, zurueck: url(lang, 'news', '#journal'), bild, knoten: post.node, frist: post.deadline, unterLeiste: true,
 });
 const liste = nachweise(post.html, bild?.credit ? { k: t.cover, credit: bild.credit } : undefined);
 const jsonLd = {
@@ -158,6 +158,17 @@ const jsonLd = {
 
   // Lesefortschritt als Magenta-Linie unter dem Header
   const header = document.querySelector<HTMLElement>('[data-header]');
+  // Vollbild-Kopf liegt unter der Kopfleiste: genaue Höhe melden, Leiste nur ganz oben durchsichtig
+  const unter = article?.querySelector<HTMLElement>('.ak--unter');
+  if (header && unter) {
+    const leiste = () => {
+      if (!header.classList.contains('is-open')) document.documentElement.style.setProperty('--kopfleiste-h', `${Math.round(header.getBoundingClientRect().height)}px`);
+      header.classList.toggle('ist-gescrollt', scrollY >= 24);
+    };
+    addEventListener('scroll', leiste, { passive: true });
+    addEventListener('resize', leiste);
+    leiste();
+  }
   if (header && article) {
     const bar = document.createElement('div');
     bar.className = 'read-progress';

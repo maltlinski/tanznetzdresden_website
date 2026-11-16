@@ -12,7 +12,7 @@ Die News erscheinen an drei Stellen:
   - Das Titelthema steht oben und erscheint in der Chronik erst, wenn gefiltert oder gesucht wird.
   - Ohne JavaScript ist die Leiste ausgeblendet und die ganze Chronik sichtbar. Logik: `src/scripts/news-chronik.ts`.
 - **`/news/<adresse>/`:** der einzelne Beitrag (Entwurf News v3/v4, `design/entwuerfe/2026-10-news/`):
-  - **Kopf** in fünf Varianten: *Vollbild* (Foto über die ganze Breite, darunter der Titel auf einem lila Band), *Hochkant*
+  - **Kopf** in fünf Varianten: *Vollbild* (Entwurf v5: füllt den Bildschirm, das Foto reicht bis unter die oben durchsichtige Kopfleiste; darunter ein schmales lila Band mit Titel links, Rubrik, Datum und Fotonachweis rechts), *Hochkant*
     (Text links, hohes Foto rechts), *Split* (halb Text, halb Foto mit schräger Kante), *Typo* (großer Titel, Foto
     darunter). Ohne Titelbild zeigt der Kopf **das Netz** auf einer Farbfläche (Lila, Cyan oder Hell); ein
     Magenta-Knoten trägt die wichtigste Angabe, bei Ausschreibungen den Countdown zur Frist.

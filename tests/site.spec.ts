@@ -270,7 +270,19 @@ test('News: Kopf mit Titelbild, Großansicht ab dem Titelbild, Zeile zum Teilen 
   // das Titelbild ist das erste Foto der Großansicht
   const zoom = page.locator('.ak__zoom');
   const box = (await zoom.boundingBox())!;
-  await zoom.click({ position: { x: box.width * 0.8, y: 30 } });
+  // Vollbild (Entwurf v5): Kopf füllt den Bildschirm, Foto reicht bis unter die oben durchsichtige Kopfleiste
+  if (await page.locator('.ak--vollbild').count()) {
+    const leiste = page.locator('[data-header]');
+    expect(Math.round(box.y)).toBe(0);
+    await expect(leiste).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    const kopfBox = (await kopf.boundingBox())!;
+    expect(kopfBox.height).toBeGreaterThanOrEqual(Math.min(940, page.viewportSize()!.height) - 1);
+    await page.mouse.wheel(0, 200);
+    await expect(leiste).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    await page.mouse.wheel(0, -600);
+    await expect(leiste).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+  }
+  await zoom.click({ position: { x: box.width * 0.8, y: box.height * 0.6 } });
   const lb = page.getByRole('dialog', { name: 'Bildansicht' });
   await expect(lb.locator('.lb__n')).toHaveText(/^01 \/ \d{2}$/);
   await expect(lb.locator('.lb__k')).toHaveText('Titelbild');

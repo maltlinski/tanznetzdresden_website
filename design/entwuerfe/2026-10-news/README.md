@@ -1,6 +1,6 @@
-# News – Entwurf Oktober 2026 (Journal v4, Redaktion v2)
+# News – Entwurf Oktober 2026 (Journal v5, Redaktion v2)
 
-Aus Claude Design. `news.dc.html` ist die Fassung „Journal v4“ (ersetzt v3, siehe Versionsgeschichte),
+Aus Claude Design. `news.dc.html` ist die Fassung „Journal v5“ (ersetzt v4, siehe Versionsgeschichte),
 `redaktion.dc.html` der Editor „Redaktion v2“.
 Umgesetzt in `src/views/NewsView.astro` (Übersicht), `src/views/NewsArticleView.astro` (Beitrag, Gerüst in
 `src/lib/news-artikel.ts`) und `src/pages/intern/news/bearbeiten/` (Editor). Inhalte und Bedienung: `docs/news.md`.
@@ -11,7 +11,8 @@ Umgesetzt wie im Entwurf:
   Trefferzeile mit „Filter zurücksetzen“, „Nichts gefunden.“, Gruppen nach Jahr und Monat (Monat klebt unter der
   Leiste), vier Darstellungen (Foto 16 : 10, Text, Ausschreibung mit Countdown, Stimme), kompakte Zeilen, „Weitere
   laden“ mit Fortschrittsbalken.
-- Beitrag: Kopf als Vollbild (v4: niedrigeres Foto, Titel auf dem lila Band darunter), Hochkant, Split oder Typo; ohne Titelbild das Netz auf Lila, Cyan oder Hell mit
+- Beitrag: Kopf als Vollbild (v5: füllt den Bildschirm bis unter die oben durchsichtige Kopfleiste, schmales lila Band
+  mit kleinerem Titel links, Rubrik, Datum und Fotonachweis rechts), Hochkant, Split oder Typo; ohne Titelbild das Netz auf Lila, Cyan oder Hell mit
   Magenta-Knoten (Maus knüpft mit). Zeile mit Autor:in, Datum, „Link kopieren“, „E-Mail“; Eckdaten über dem Text,
   bei Ausschreibungen mit Countdown; Text in einer Spalte, Zitate und Namenskarten weiter; Fotos in Textbreite,
   weit (Keil-Ecke) oder randlos, Bildpaar, Bildstrecke (lila Band, Pfeile, „Vollbild“) und Bild & Text (Bild bleibt
@@ -37,6 +38,8 @@ Abweichungen:
 - Archiv auf dem Handy: Die Leiste klebt nicht (sie wäre fast halb so hoch wie der Bildschirm), Rubriken und Jahre
   lassen sich seitlich wischen. Ohne JavaScript ist die Leiste aus und die ganze Chronik sichtbar.
 - A–Z übergeht Anführungszeichen am Anfang (»METAMORPHOSE« steht unter M).
+- Vollbild-Kopf: Mindesthöhe statt fester Höhe – bei sehr langen Titeln (Handy) wächst der Kopf, statt Text
+  abzuschneiden; ohne JavaScript bleibt die Kopfleiste lila.
 - Lange Titel (über 60 Zeichen) setzen wir in allen Köpfen kleiner; viele Titel der alten Website sind sehr lang.
 - „Meldung einreichen“ öffnet die geschützte E-Mail-Adresse (Bot-Schutz) statt eines mailto-Links.
 - Die Ansicht „Mein Profil“ im Redaktions-Entwurf ist nicht Teil dieser Umsetzung; das Profil bearbeiten Mitglieder

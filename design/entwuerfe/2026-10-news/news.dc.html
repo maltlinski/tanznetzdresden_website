@@ -28,7 +28,7 @@
 
 <div style="min-height:100vh;background:#fff">
 
-  <header style="position:sticky;top:0;z-index:30;background:var(--purple);border-bottom:1px solid rgba(255,255,255,0.12)">
+  <header style="position:sticky;top:0;z-index:30;background:var(--purple);border-bottom:1px solid rgba(255,255,255,0.12);transition:background-color 0.25s ease,border-color 0.25s ease">
     <div style="max-width:1320px;margin:0 auto;padding:18px clamp(20px,4vw,48px);display:flex;align-items:center;flex-wrap:wrap;gap:16px 40px">
       <a href="TanzNetzDresden%20Website.dc.html" onMouseEnter="{{ logoRainbow }}" style="position:relative;display:flex;align-items:center;color:#fff">
         <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Logo" part="mark" color="#ffffff" width="76px" hint-size="76px,36px"></x-import>
@@ -275,26 +275,24 @@
     <article ref="{{ artRef }}">
 
       <sc-if value="{{ hero.full }}" hint-placeholder-val="{{ false }}">
-        <section style="position:relative;background:var(--purple);color:#fff;overflow:hidden">
-          <button onClick="{{ art.cover.open }}" aria-label="Titelbild vergrößern" style="position:relative;display:block;width:100%;height:clamp(320px,64vh,760px);padding:0;border:0;border-radius:0;background:var(--purple);cursor:zoom-in;overflow:hidden">
+        <section data-hero-full="" style="position:relative;background:var(--purple);color:#fff;overflow:hidden;display:flex;flex-direction:column;height:clamp(560px,100vh,940px)">
+          <button onClick="{{ art.cover.open }}" aria-label="Titelbild vergrößern" style="position:relative;display:block;width:100%;flex:1 1 0;min-height:0;padding:0;border:0;border-radius:0;background:var(--purple);cursor:zoom-in;overflow:hidden">
             <img data-wipe="" data-parallax="" data-flip-id="{{ art.cover.fid }}" src="{{ art.cover.src }}" alt="{{ art.cover.alt }}" decoding="async" fetchpriority="high" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:{{ art.cover.pos }};display:block">
           </button>
-          <div style="position:absolute;top:0;left:0;right:0;pointer-events:none">
-            <div style="max-width:1320px;margin:0 auto;padding:clamp(20px,3vw,36px) clamp(20px,4vw,48px)">
+          <div data-hero-back="" style="position:absolute;top:0;left:0;right:0;pointer-events:none">
+            <div style="max-width:1320px;margin:0 auto;padding:16px clamp(20px,4vw,48px)">
               <a href="#journal" data-rise="0" style="pointer-events:auto;display:inline-flex;align-items:center;gap:10px;padding:10px 14px;background:var(--purple);font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;font-size:12px;color:#fff" style-hover="color:var(--cyan)">← Alle Beiträge</a>
             </div>
           </div>
-          <div style="position:relative;background:var(--purple)">
+          <div style="position:relative;flex:0 0 auto;max-height:62%;background:var(--purple)">
             <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.KeilBar" color="var(--cyan)" height="{{ 12 }}" style="position:absolute;left:0;bottom:100%;width:40%" hint-size="40%,12px"></x-import>
-            <div style="max-width:1320px;margin:0 auto;padding:clamp(24px,3vw,40px) clamp(20px,4vw,48px) clamp(28px,3.6vw,48px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:16px 48px">
-              <div style="flex:1 1 560px;min-width:0;display:flex;flex-direction:column;gap:16px">
-                <div data-rise="0.1" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px">
-                  <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ art.badgeDark }}" size="sm" hint-size="90px,22px">{{ art.cat }}</x-import>
-                  <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;letter-spacing:0.18em;color:var(--cyan)">{{ art.nr }} · {{ art.dateLong }} · {{ art.read }} Lesezeit</span>
-                </div>
-                <h1 data-split="0.18" style="font-family:var(--font-display);font-weight:800;font-size:clamp(40px,6vw,96px);line-height:0.94;letter-spacing:-0.04em;margin:0;color:#fff;max-width:16ch;text-wrap:balance">{{ art.title }}</h1>
+            <div style="max-width:1320px;margin:0 auto;padding:clamp(16px,1.8vw,24px) clamp(20px,4vw,48px) clamp(18px,2vw,28px);display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:14px 48px">
+              <h1 data-split="0.18" style="flex:1 1 320px;min-width:0;font-family:var(--font-display);font-weight:800;font-size:clamp(34px,4.4vw,68px);line-height:0.96;letter-spacing:-0.035em;margin:0;color:#fff;max-width:20ch;text-wrap:balance">{{ art.title }}</h1>
+              <div data-rise="0.1" style="flex:none;margin-left:auto;display:flex;flex-direction:column;align-items:flex-end;gap:10px;text-align:right">
+                <x-import component-from-global-scope="TanzNetzDresdenDesignSystem_cacd0a.Badge" variant="{{ art.badgeDark }}" size="sm" hint-size="90px,22px">{{ art.cat }}</x-import>
+                <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:11px;letter-spacing:0.18em;color:var(--cyan)">{{ art.nr }} · {{ art.dateLong }} · {{ art.read }} Lesezeit</span>
+                <span style="font-family:var(--font-mono);font-weight:600;text-transform:uppercase;font-size:10.5px;letter-spacing:0.16em;color:rgba(255,255,255,0.78)">Foto · {{ art.cover.credit }}</span>
               </div>
-              <span style="font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:0.16em;text-transform:uppercase;font-size:10.5px;color:rgba(255,255,255,0.78)">Foto · {{ art.cover.credit }}</span>
             </div>
           </div>
         </section>
@@ -1005,8 +1003,8 @@ class Component extends DCLogic {
   componentDidMount() {
     this.reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     this.onHash = () => this.route();
-    this.onScroll = () => { this.progress(); if (!this.gsapOn) this.scrollyStatic(); };
-    this.onResize = () => { if (this.state.lb != null) this.fitLb(); if (this.state.open) { clearTimeout(this._rz); this._rz = setTimeout(() => { this.setupNet(true); this.cardNets(); }, 120); } };
+    this.onScroll = () => { this.hdrSync(); this.progress(); if (!this.gsapOn) this.scrollyStatic(); };
+    this.onResize = () => { this.hdrSync(); if (this.state.lb != null) this.fitLb(); if (this.state.open) { clearTimeout(this._rz); this._rz = setTimeout(() => { this.setupNet(true); this.cardNets(); }, 120); } };
     window.addEventListener('resize', this.onResize);
     window.addEventListener('hashchange', this.onHash);
     window.addEventListener('scroll', this.onScroll, { passive: true });
@@ -1055,6 +1053,15 @@ class Component extends DCLogic {
       });
     }
     return false;
+  }
+
+  hdrSync() {
+    const hd = document.querySelector('header'); if (!hd) return;
+    const sec = document.querySelector('[data-hero-full]'), hh = Math.round(hd.getBoundingClientRect().height);
+    if (sec) { sec.style.marginTop = -hh + 'px'; const b = sec.querySelector('[data-hero-back]'); if (b) b.style.paddingTop = hh + 'px'; }
+    const clear = !!sec && window.scrollY < 24;
+    hd.style.backgroundColor = clear ? 'transparent' : 'var(--purple)';
+    hd.style.borderBottomColor = clear ? 'transparent' : 'rgba(255,255,255,0.12)';
   }
 
   progress() {
@@ -1275,6 +1282,7 @@ class Component extends DCLogic {
     if (tr) tr.scrollBy({ left: d * tr.clientWidth * 0.7, behavior: this.reduced ? 'auto' : 'smooth' });
   }
   componentDidUpdate(pp, ps) {
+    this.hdrSync();
     if (pp.gsap !== this.props.gsap && this.state.open) { this.killMotion(); if (this.useGsap()) this.motion(); else this.scrollyStatic(); }
     if (this.state.lb == null || ps.lb === this.state.lb) return;
     const opened = ps.lb == null;

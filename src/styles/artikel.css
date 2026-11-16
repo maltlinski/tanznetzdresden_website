@@ -38,19 +38,33 @@ a.ak__back:hover { color: var(--cyan); }
 /* lange Titel: kleiner und breiter, in allen Varianten */
 .ak .ak__titel.ak__titel--lang { font-size: clamp(30px, 3.8vw, 60px); line-height: 1; letter-spacing: -0.03em; max-width: 26ch; }
 
-/* Vollbild: Foto über die ganze Breite, darunter der Titel auf einem lila Band */
-.ak--vollbild .ak__buehne { width: 100%; height: clamp(320px, 64vh, 760px); }
+/*
+ * Vollbild (Entwurf News v5): Der Kopf füllt den Bildschirm. Das Foto nimmt die ganze Breite und alle Höhe, die das
+ * lila Band darunter übrig lässt; im Band links der Titel, rechts Rubrik, Datum und Fotonachweis.
+ * Auf der Beitragsseite reicht das Foto bis unter die Kopfleiste (ak--unter), die dort oben durchsichtig ist.
+ */
+.ak--vollbild { display: flex; flex-direction: column; min-height: clamp(560px, 100vh, 940px); min-height: clamp(560px, 100svh, 940px); }
+.ak--vollbild .ak__buehne { width: 100%; flex: 1 1 auto; min-height: 240px; }
 .ak__oben { position: absolute; top: 0; left: 0; right: 0; pointer-events: none; }
-.ak__oben .wrap { padding-block: clamp(20px, 3vw, 36px); }
+.ak__oben .wrap { padding-block: 16px; }
 .ak__back--fahne { pointer-events: auto; padding: 10px 14px; background: var(--purple); }
-.ak__band { position: relative; background: var(--purple); }
+.ak__band { position: relative; flex: 0 0 auto; background: var(--purple); }
 .ak__band .ak__keil-oben { position: absolute; left: 0; bottom: 100%; width: 40%; }
 .ak__band-innen {
-  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 48px;
-  padding-block: clamp(24px, 3vw, 40px) clamp(28px, 3.6vw, 48px);
+  display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 48px;
+  padding-block: clamp(16px, 1.8vw, 24px) clamp(18px, 2vw, 28px);
 }
-.ak--vollbild .ak__block { flex: 1 1 560px; gap: 16px; }
-.ak--vollbild .ak__titel { font-size: clamp(40px, 6vw, 96px); line-height: 0.94; letter-spacing: -0.04em; max-width: 16ch; }
+.ak--vollbild .ak__titel { flex: 1 1 320px; min-width: 0; font-size: clamp(34px, 4.4vw, 68px); line-height: 0.96; letter-spacing: -0.035em; max-width: 20ch; }
+.ak--vollbild .ak__titel.ak__titel--lang { font-size: clamp(26px, 3vw, 46px); line-height: 1.02; max-width: 30ch; }
+.ak--vollbild .ak__block { flex: none; max-width: 100%; margin-left: auto; align-items: flex-end; gap: 10px; text-align: right; }
+.ak--vollbild .ak__meta { flex-direction: column; align-items: flex-end; gap: 10px; }
+:root { --kopfleiste-h: 73px; }
+.ak--unter { margin-top: calc(-1 * var(--kopfleiste-h)); }
+.ak--unter .ak__oben { top: var(--kopfleiste-h); }
+/* Kopfleiste über dem Foto: durchsichtig, solange die Seite ganz oben steht (Klasse setzt NewsArticleView.astro) */
+.site-header { transition: background-color 0.25s ease, border-color 0.25s ease; }
+.js body:has(.ak--unter) .site-header:not(.ist-gescrollt):not(.is-open) { background-color: transparent; border-bottom-color: transparent; }
+@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }
 
 /* Hochkant: Text links, das hohe Foto rechts mit Magenta-Kante */
 .ak--hochkant .ak__innen {

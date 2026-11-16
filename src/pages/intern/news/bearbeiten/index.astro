@@ -40,7 +40,7 @@ const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
 // Kopfbereich: kleine Skizzen der Varianten (Entwurf Redaktion v2); „bild“ = dort steht das Titelbild
 type Teil = { l: string; t: string; w: string; h: string; bg?: string; bild?: boolean };
 const SKIZZEN: Record<'vollbild' | 'hochkant' | 'split' | 'typo', Teil[]> = {
-  vollbild: [{ l: '0', t: '0', w: '100%', h: '100%', bild: true }, { l: '0', t: '64%', w: '100%', h: '36%', bg: 'color-mix(in srgb, var(--purple) 90%, transparent)' }, { l: '8%', t: '75%', w: '52%', h: '9%', bg: '#fff' }, { l: '0', t: '60%', w: '40%', h: '4%', bg: 'var(--cyan)' }],
+  vollbild: [{ l: '0', t: '0', w: '100%', h: '100%', bild: true }, { l: '0', t: '78%', w: '100%', h: '22%', bg: 'var(--purple)' }, { l: '8%', t: '85%', w: '44%', h: '8%', bg: '#fff' }, { l: '74%', t: '89%', w: '18%', h: '4%', bg: 'var(--cyan)' }, { l: '0', t: '74%', w: '40%', h: '4%', bg: 'var(--cyan)' }],
   hochkant: [{ l: '0', t: '0', w: '100%', h: '100%', bg: 'var(--purple)' }, { l: '60%', t: '0', w: '30%', h: '100%', bild: true }, { l: '8%', t: '52%', w: '42%', h: '10%', bg: '#fff' }, { l: '8%', t: '68%', w: '30%', h: '6%', bg: 'rgba(255,255,255,0.6)' }],
   split: [{ l: '0', t: '0', w: '100%', h: '100%', bg: 'var(--purple)' }, { l: '46%', t: '0', w: '54%', h: '100%', bild: true }, { l: '8%', t: '52%', w: '32%', h: '10%', bg: '#fff' }, { l: '8%', t: '68%', w: '24%', h: '6%', bg: 'rgba(255,255,255,0.6)' }],
   typo: [{ l: '0', t: '0', w: '100%', h: '58%', bg: 'var(--purple)' }, { l: '8%', t: '16%', w: '50%', h: '10%', bg: '#fff' }, { l: '8%', t: '44%', w: '84%', h: '52%', bild: true }],

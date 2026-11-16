@@ -40,6 +40,8 @@ export interface KopfDaten {
   /** Angabe am Magenta-Knoten (Netz-Kopf); bei Ausschreibungen die Frist */
   knoten?: { kicker: string; value: string };
   frist?: string;
+  /** Vollbild-Kopf reicht bis unter die Kopfleiste der Website (nur auf der Beitragsseite, nicht in der Vorschau) */
+  unterLeiste?: boolean;
 }
 
 const badge = (v: 'magenta' | 'cyan' | 'purple', text: string) => `<span class="badge${v === 'magenta' ? '' : ` badge--${v}`}">${esc(text)}</span>`;
@@ -68,10 +70,10 @@ export function kopfHtml(d: KopfDaten): string {
   switch (d.modus) {
     case 'vollbild':
       return (
-        `<header class="ak ak--vollbild" data-kopf>${zoom('ak__buehne')}` +
+        `<header class="ak ak--vollbild${d.unterLeiste ? ' ak--unter' : ''}" data-kopf>${zoom('ak__buehne')}` +
         `<div class="ak__oben"><div class="wrap">${zurueck(' ak__back--fahne')}</div></div>` +
         `<div class="ak__band">${keil('var(--cyan)', 'ak__keil-oben')}<div class="wrap ak__band-innen">` +
-        `<div class="ak__block">${meta()}${h1}</div>${credit}</div></div></header>`
+        `${h1}<div class="ak__block">${meta()}${credit}</div></div></div></header>`
       );
     case 'hochkant':
       return (
