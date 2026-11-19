@@ -8,6 +8,11 @@
  * ausgeblendete Texte stehen nicht so auf der Seite – sie bleiben unter Texte. Über dem Text mit dem Cursor steht eine
  * kleine Leiste: wo der Text steht, Zeichen, Zurücksetzen, Ausblenden (wo erlaubt).
  *
+ * Navigieren geht wie auf der Website (Menü, Links, Sprache): Die Leiste stellt sich auf die neue Seite um, und
+ * ungespeicherte Änderungen bleiben erhalten – gespeichert wird alles zusammen. Texte in Links (Menü, Knöpfe als
+ * Link): Klick folgt dem Link, Doppelklick bearbeitet den Text (wie in gängigen Website-Editoren). Externe Links
+ * öffnen in einem neuen Tab.
+ *
  * Gespeichert wird wie unter Texte (src/lib/texte-regeln.ts: prüfen, übernehmen, Datei schreiben) über die Funktion
  * „inhalte“; die Website zeigt die Änderung nach 2–3 Minuten. Listen und Inhalte (Partner, Personen, Formate …)
  * öffnet „Listen und Inhalte“ in der Leiste im Formular.
@@ -96,18 +101,41 @@ export function seiteBearbeiten(r: Redaktion) {
   let letzter = '[]';
 
   const seiteVon = (id: string) => datei[id] as TextSeite | undefined;
+  const wahl = $<HTMLSelectElement>('[data-sb-seite]')!;
   const eintraege = () => alleTexte(datei).filter((x) => x.seite === seite || x.seite === 'allgemein');
   const wert = (id: string, e: TextEintrag): Wert => neu.get(id) ?? { de: e.de, en: e.en, aus: !!e.aus };
   const geaendert = (id: string, e: TextEintrag) => {
     const w = neu.get(id);
     return !!w && (w.de !== e.de || w.en !== e.en || !!w.aus !== !!e.aus);
   };
-  const offen = () => eintraege().filter((x) => geaendert(textId(x.seite, x.abschnitt, x.key), x.e));
+  /** alle ungespeicherten Änderungen, auch auf Seiten, die man inzwischen verlassen hat */
+  const offen = () => alleTexte(datei).filter((x) => geaendert(textId(x.seite, x.abschnitt, x.key), x.e));
+  const basis = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  /** Seite im Seitenplan zu einer Adresse: genau diese, sonst die mit dem längsten passenden Anfang (Profil unter netzwerk/) */
+  const seiteFuer = (p: string): string | null => {
+    const liste = (Object.entries(datei) as [string, TextSeite][]).filter(([k, s]) => !k.startsWith('_') && k !== 'allgemein' && s?.pfad !== undefined && s.pfad !== '404.html');
+    const genau = liste.find(([, s]) => s.pfad === p);
+    if (genau) return genau[0];
+    const teil = liste.filter(([, s]) => s.pfad && p.startsWith(s.pfad)).sort((a, b) => b[1].pfad.length - a[1].pfad.length)[0];
+    return teil ? (liste.filter(([, s]) => s.pfad === teil[1].pfad).at(-1)?.[0] ?? null) : liste.find(([, s]) => s.pfad === '')?.[0] ?? null;
+  };
+  let linkTimer = 0;
+  /** Link folgen: Seite der Website im Rahmen, alles andere in einem neuen Tab */
+  const folgen = (url: URL, imRahmen: boolean) => {
+    if (imRahmen) frame.contentWindow!.location.href = url.href;
+    else if (/^https?:$/.test(url.protocol)) window.open(url.href, '_blank', 'noopener');
+  };
+  /** führt ein Link auf eine Seite der Website (dann im Rahmen öffnen)? */
+  const websiteLink = (url: URL) =>
+    url.origin === location.origin && url.pathname.startsWith(basis) && !/^(en\/)?intern\//.test(url.pathname.slice(basis.length)) && !/\.[a-z0-9]{2,4}$/i.test(url.pathname);
 
   // ---------- Leiste oben ----------
   function stand() {
     const n = offen().length;
-    $('[data-sb-stand]')!.textContent = n ? `${n} ${n === 1 ? 'Änderung' : 'Änderungen'}, nicht gespeichert` : 'Alles gespeichert';
+    const seiten = new Set(offen().map((x) => x.seite)).size;
+    $('[data-sb-stand]')!.textContent = n
+      ? `${n} ${n === 1 ? 'Änderung' : 'Änderungen'}${seiten > 1 ? ` auf ${seiten} Seiten` : ''}, nicht gespeichert`
+      : 'Alles gespeichert';
     $<HTMLButtonElement>('[data-sb-speichern]')!.disabled = !n;
     $<HTMLButtonElement>('[data-sb-verwerfen]')!.disabled = !n;
     $<HTMLButtonElement>('[data-sb-zurueck]')!.disabled = !zurueckL.length;
@@ -199,11 +227,28 @@ export function seiteBearbeiten(r: Redaktion) {
     const stil = d.createElement('style');
     stil.textContent = STIL;
     d.head.append(stil);
-    // Links und Knöpfe der Seite führen beim Bearbeiten nirgendwohin
+    // Navigieren geht wie auf der Website; ein Klick in einen Text bearbeitet ihn (öffnen: „Link öffnen“ in der Leiste).
+    // Externe Links, Dateien und der interne Bereich öffnen in einem neuen Tab.
     d.addEventListener('click', (ev) => {
       const t = ev.target as Element;
       if (t.closest('.sb-leiste')) return;
-      if (t.closest('a, button, label') || t.closest('[data-sb-text]')) ev.preventDefault();
+      const text = t.closest<HTMLElement>('[data-sb-text]');
+      // Text wird gerade bearbeitet (auch ein Linktext nach dem Doppelklick): nicht folgen
+      if (text?.isContentEditable) return ev.preventDefault();
+      const a = t.closest<HTMLAnchorElement>('a[href]');
+      if (!a || (a.getAttribute('href') ?? '').startsWith('#')) return text ? ev.preventDefault() : undefined;
+      const url = new URL(a.href, d.baseURI);
+      const imRahmen = websiteLink(url) && a.target !== '_blank' && !a.hasAttribute('download');
+      // Linktext: kurz warten, ob ein Doppelklick (Bearbeiten) folgt
+      if (text) {
+        ev.preventDefault();
+        window.clearTimeout(linkTimer);
+        if (ev.detail < 2) linkTimer = window.setTimeout(() => folgen(url, imRahmen), 280);
+        return;
+      }
+      if (imRahmen) return;
+      ev.preventDefault();
+      folgen(url, false);
     }, true);
     d.addEventListener('submit', (ev) => ev.preventDefault(), true);
 
@@ -248,15 +293,31 @@ export function seiteBearbeiten(r: Redaktion) {
 
   function beschreibbar(el: HTMLElement, t: Treffer, mehrzeilig: boolean, leiste: HTMLElement) {
     if (root.dataset.gesperrt === 'true') return;
-    try {
-      el.contentEditable = mehrzeilig ? 'true' : 'plaintext-only';
-    } catch {
-      el.contentEditable = 'true';
-    }
+    const an = () => {
+      try {
+        el.contentEditable = mehrzeilig ? 'true' : 'plaintext-only';
+      } catch {
+        el.contentEditable = 'true';
+      }
+    };
+    const d = el.ownerDocument;
+    // Text in einem Link: Klick folgt dem Link, Doppelklick bearbeitet
+    const imLink = !!el.closest('a[href]:not([href^="#"])');
+    if (imLink) {
+      el.addEventListener('dblclick', (ev) => {
+        ev.preventDefault();
+        window.clearTimeout(linkTimer);
+        an();
+        el.focus();
+        const sel = d.getSelection();
+        sel?.selectAllChildren(el);
+        sel?.collapseToEnd();
+        leisteZeigen();
+      });
+    } else an();
     el.setAttribute('data-sb-text', t.id);
     el.spellcheck = true;
-    el.title = `${t.e.wo}: zum Bearbeiten klicken`;
-    const d = el.ownerDocument;
+    el.title = imLink ? `${t.e.wo}: Doppelklick zum Bearbeiten, Klick folgt dem Link` : `${t.e.wo}: zum Bearbeiten klicken`;
     const leisteZeigen = () => {
       const w = wert(t.id, t.e);
       const text = lesen(el, mehrzeilig);
@@ -276,6 +337,15 @@ export function seiteBearbeiten(r: Redaktion) {
       wo.className = 'sb-leiste__wo';
       wo.textContent = `${t.e.wo}${lang === 'en' ? ' · Englisch' : ''}`;
       leiste.replaceChildren(wo, zahl);
+      const link = el.closest<HTMLAnchorElement>('a[href]');
+      if (link && !(link.getAttribute('href') ?? '').startsWith('#')) {
+        leiste.append(knopf('Link öffnen →', () => {
+          const url = new URL(link.href, d.baseURI);
+          el.blur();
+          if (websiteLink(url)) frame.contentWindow!.location.href = url.href;
+          else window.open(url.href, '_blank', 'noopener');
+        }));
+      }
       if (geaendert(t.id, t.e)) {
         leiste.append(knopf('↺ Zurücksetzen', () => {
           neu.delete(t.id);
@@ -296,13 +366,17 @@ export function seiteBearbeiten(r: Redaktion) {
       }
       leiste.hidden = false;
       const rect = el.getBoundingClientRect();
-      const top = rect.top + (d.defaultView?.scrollY ?? 0) - leiste.offsetHeight - 8;
-      leiste.style.top = `${Math.max((d.defaultView?.scrollY ?? 0) + 4, top)}px`;
+      // über dem Text, wenn oben Platz ist, sonst darunter (nie über dem Text selbst)
+      const y = d.defaultView?.scrollY ?? 0;
+      const oben = rect.top - leiste.offsetHeight - 8;
+      leiste.style.top = `${y + (oben >= 4 ? oben : rect.bottom + 8)}px`;
       leiste.style.left = `${Math.max(8, Math.min(rect.left + (d.defaultView?.scrollX ?? 0), (d.defaultView?.innerWidth ?? 800) - leiste.offsetWidth - 8))}px`;
     };
-    el.addEventListener('focus', leisteZeigen);
+    // Leiste nur beim Bearbeiten (ein Link bekommt den Fokus auch beim Anklicken – dort erst nach dem Doppelklick)
+    el.addEventListener('focus', () => el.isContentEditable && leisteZeigen());
     el.addEventListener('blur', () => {
       leiste.hidden = true;
+      if (imLink) el.removeAttribute('contenteditable');
       zeigen(t);
     });
     el.addEventListener('input', () => {
@@ -331,9 +405,41 @@ export function seiteBearbeiten(r: Redaktion) {
     });
   }
 
+  /** nach dem Laden oder Navigieren im Rahmen: Seite, Sprache und Adresse aus dem Rahmen übernehmen */
+  function angekommen() {
+    const ort = frame.contentWindow?.location;
+    if (!ort || !ort.pathname.startsWith(basis)) return;
+    let p = decodeURIComponent(ort.pathname.slice(basis.length));
+    lang = p.startsWith('en/') || p === 'en' ? 'en' : 'de';
+    p = p.replace(/^en(\/|$)/, '');
+    root.querySelectorAll('[data-sb-sprache]').forEach((x) => x.setAttribute('aria-pressed', String((x as HTMLElement).dataset.sbSprache === lang)));
+    const id = seiteFuer(p) ?? seite;
+    if (id !== seite) {
+      seite = id;
+      wahl.value = id;
+      const s = seiteVon(id);
+      $('[data-sb-titel]')!.textContent = s?.titel ?? 'Seite';
+      const nurVorstand = !!s?.nurVorstand && !r.vorstand;
+      meldung(nurVorstand ? 'Diese Seite ändert nur der Vorstand.' : '', 'error', $('[data-sb-meldung]'));
+      root.dataset.gesperrt = String(nurVorstand);
+      inhalteListe();
+    }
+    pfad = p;
+    history.replaceState(null, '', `?s=${seite}${p !== seiteVon(seite)?.pfad ? `&pfad=${encodeURIComponent(p)}` : ''}`);
+    // ein Beitrag: im News-Editor bearbeiten
+    const beitrag = $<HTMLAnchorElement>('[data-sb-beitrag]');
+    if (beitrag) {
+      const b = /^news\/([^/]+)\/?$/.exec(p);
+      beitrag.hidden = !b;
+      if (b) beitrag.href = `${location.pathname.replace(/seite-bearbeiten\/?$/, 'bearbeiten/')}?seite=${encodeURIComponent(p)}`;
+    }
+  }
+
   frame.addEventListener('load', () => {
     const d = frame.contentDocument;
     if (!d) return;
+    treffer = [];
+    angekommen();
     // Rückgängig/Wiederholen auch im Rahmen (Strg+Z außerhalb eines Textes)
     d.addEventListener('keydown', tasten);
     // warten, bis der Auftritt der Köpfe die Wörter der Headline wieder zusammengesetzt hat
@@ -383,22 +489,12 @@ export function seiteBearbeiten(r: Redaktion) {
       laden();
     }),
   );
-  const wahl = $<HTMLSelectElement>('[data-sb-seite]')!;
   wahl.value = seite;
+  // andere Seite wählen: dorthin navigieren (ungespeicherte Änderungen bleiben erhalten)
   wahl.addEventListener('change', () => {
-    if (offen().length && !confirm('Es gibt ungespeicherte Änderungen. Trotzdem die Seite wechseln? Sie gehen dann verloren.')) {
-      wahl.value = seite;
-      return;
-    }
     seite = wahl.value;
     pfad = null;
-    neu = new Map();
-    zurueckL.length = 0;
-    vorL.length = 0;
-    letzter = '[]';
-    history.replaceState(null, '', `?s=${seite}`);
     laden();
-    stand();
   });
   $('[data-sb-verwerfen]')!.addEventListener('click', () => {
     if (!confirm('Alle ungespeicherten Änderungen verwerfen?')) return;

@@ -33,7 +33,7 @@ test('Rahmen: Seitenleiste für Mitglieder, Redaktion nur mit Rolle', async ({ p
   await redaktion(page, { profil: { display_name: 'Pia Presse' }, mitgliedschaft: ms({ seit: '2021-05-01' }) });
   await page.goto('/intern/news/');
   await menue(page);
-  await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', /^Open Calls/, 'Mitglieder', 'Dokumente', 'Übersicht', /^Beiträge/, /^Termine/, /^Medien/, /^Freigaben/]);
+  await expect(nav.getByRole('link')).toHaveText(['Mein Status', 'Mein Profil', /^Open Calls/, 'Mitglieder', 'Dokumente', 'Übersicht', 'Website bearbeiten', /^Beiträge/, /^Termine/, /^Medien/, /^Freigaben/]);
   await expect(nav.getByRole('link', { name: /^Beiträge/ })).toHaveAttribute('aria-current', 'page');
   if (!isMobile) await expect(page.locator('[data-intern-unterzeile]')).toHaveText('Mitglied seit 2021 · Presse');
 });

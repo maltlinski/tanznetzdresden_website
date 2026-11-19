@@ -29,8 +29,12 @@ zweizeilige Überschriften mit der Eingabetaste. Über dem Text: wo er steht, Ze
 erlaubt). Oben: Seite wählen, Desktop/Mobil, DE/EN, Rückgängig/Wiederholen (auch Strg+Z), Verwerfen, Speichern
 (schreibt `texte.json` wie unter Texte, online nach 2–3 Minuten). „Listen und Inhalte“ öffnet die Formulare der
 Seite (Partner, Personen, Formate …) in einem neuen Tab. Gefunden wird jedes Element, das genau den Text zeigt;
-Texte mit Platzhaltern, in Attributen oder schon ausgeblendet bleiben unter Texte. Links der Seite führen beim
-Bearbeiten nirgendwohin.
+Texte mit Platzhaltern, in Attributen oder schon ausgeblendet bleiben unter Texte.
+**Navigieren** geht wie auf der Website (Menü, Links, Sprache, Auswahl oben): Die Leiste stellt sich auf die neue
+Seite um, ungespeicherte Änderungen bleiben erhalten und werden zusammen gespeichert („3 Änderungen auf 2 Seiten“).
+Texte in Links (Menü, Knöpfe): Klick folgt dem Link, **Doppelklick** bearbeitet den Text. Externe Links, Dateien und
+der interne Bereich öffnen in einem neuen Tab. Auf einem Beitrag führt „Diesen Beitrag bearbeiten“ zum News-Editor.
+Einstieg im internen Bereich: **Website bearbeiten** in der Seitenleiste (unter Übersicht).
 
 **Von der Website aus:** Wer als Presse, Vorstand oder Admin angemeldet ist (einmal im internen Bereich gewesen),
 sieht auf jeder Seite der Website unten links „Seite bearbeiten“ (`src/components/BearbeitenKnopf.astro`, nur im

@@ -16,7 +16,7 @@ import { getLang, tr, url } from '../lib/i18n';
 import { gegenstueck, internPfad, SPRACHE_KEY } from '../lib/intern-sprache';
 import '../styles/intern.css';
 
-type Punkt = 'status' | 'profil' | 'opencalls' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'seiten' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine' | 'verwaltung' | 'aenderungen';
+type Punkt = 'website' | 'status' | 'profil' | 'opencalls' | 'mitglieder' | 'dokumente' | 'beitraege' | 'medien' | 'inhalte' | 'seiten' | 'texte' | 'freigaben' | 'kalender' | 'keepup-meine' | 'verwaltung' | 'aenderungen';
 interface Props {
   title: string;
   /** aktiver Menüpunkt */
@@ -37,7 +37,7 @@ const t = tr(lang, {
   de: {
     bereich: 'Interner Bereich', logo: 'Interner Bereich: Mein Status', status: 'Mein Status', profil: 'Mein Profil', mitglieder: 'Mitglieder',
     dokumente: 'Dokumente', trainings: 'Meine Trainings', kalender: 'Termine', beitraege: 'Beiträge', medien: 'Medien',
-    inhalte: 'Website-Inhalte', uebersicht: 'Übersicht', seiten: 'Seiten', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung', aenderungen: 'Änderungen',
+    inhalte: 'Website-Inhalte', uebersicht: 'Übersicht', website: 'Website bearbeiten', seiten: 'Seiten', texte: 'Texte', freigaben: 'Freigaben', verwaltung: 'Verwaltung', aenderungen: 'Änderungen',
     menue: 'Menü', web: 'Website ansehen →', aus: 'Abmelden',
     zurWebsite: '← Zur Website', moment: 'Einen Moment …', setupH: 'Noch nicht eingerichtet', sprache: 'Sprache',
     leisteZu: 'Seitenleiste einklappen', leisteAuf: 'Seitenleiste zeigen',
@@ -45,7 +45,7 @@ const t = tr(lang, {
   en: {
     bereich: 'Members area', logo: 'Members area: My status', status: 'My status', profil: 'My profile', mitglieder: 'Members',
     dokumente: 'Documents', trainings: 'My classes', kalender: 'Events', beitraege: 'Posts', medien: 'Media',
-    inhalte: 'Website content', uebersicht: 'Overview', seiten: 'Pages', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Administration', aenderungen: 'Changes',
+    inhalte: 'Website content', uebersicht: 'Overview', website: 'Edit website', seiten: 'Pages', texte: 'Texts', freigaben: 'Approvals', verwaltung: 'Administration', aenderungen: 'Changes',
     menue: 'Menu', web: 'View website →', aus: 'Log out',
     zurWebsite: '← To the website', moment: 'One moment …', setupH: 'Not set up yet', sprache: 'Language',
     leisteZu: 'Collapse sidebar', leisteAuf: 'Show sidebar',
@@ -66,6 +66,8 @@ const keepup: { id: Punkt; label: string; path: string; n: string }[] = [
 // darunter alles, was auf der Website steht (Aufbau: docs/redaktion.md)
 const redaktion: { id: Punkt; label: string; path: string; n?: string }[] = [
   { id: 'inhalte', label: t.uebersicht, path: 'redaktion/' },
+  // die Website selbst, im Vollbild direkt auf den Seiten bearbeiten (src/pages/intern/redaktion/seite-bearbeiten/)
+  { id: 'website', label: t.website, path: 'redaktion/seite-bearbeiten/' },
   { id: 'beitraege', label: t.beitraege, path: 'news/', n: 'beitraege' },
   { id: 'kalender', label: t.kalender, path: 'kalender/', n: 'kalender' },
   { id: 'medien', label: t.medien, path: 'news/medien/', n: 'medien' },

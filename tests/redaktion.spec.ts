@@ -661,7 +661,32 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   await sb.getByText('Listen und Inhalte', { exact: true }).click();
   await expect(sb.locator('[data-sb-inhalte]')).toContainText('Orte auf der Karte');
 
-  // Speichern schreibt die Datei mit den Texten
+  // navigieren wie auf der Website: Menü → Über uns; die Leiste stellt sich um, die Änderung bleibt
+  await sb.locator('summary').click();
+  const menuepunkt = f.locator('header a[href$="/verein/"]').first();
+  // Linktexte: Doppelklick bearbeitet, Klick folgt dem Link
+  await expect(menuepunkt.locator('[data-sb-text]').or(menuepunkt.and(f.locator('[data-sb-text]'))).first()).toHaveAttribute('title', /Doppelklick/);
+  await menuepunkt.click();
+  await expect(sb.locator('[data-sb-seite]')).toHaveValue('verein');
+  await expect(page).toHaveURL(/seite-bearbeiten\/\?s=verein$/);
+  await expect(f.locator('[data-sb-text="verein.kopf.titel"]')).toBeAttached();
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung, nicht gespeichert');
+  // Doppelklick auf einen Menüpunkt: Text bearbeiten statt navigieren
+  const kontakt = f.locator('header [data-sb-text="allgemein.kopf.about"]').first();
+  await kontakt.dblclick();
+  await expect(kontakt).toHaveAttribute('contenteditable', /plaintext-only|true/);
+  await expect(f.locator('.sb-leiste__wo')).toContainText('Menü');
+  await page.keyboard.press('Escape');
+  await expect(kontakt).not.toHaveAttribute('contenteditable', /./);
+  await expect(page).toHaveURL(/s=verein$/);
+  // in einem Beitrag: zum News-Editor
+  await sb.locator('[data-sb-seite]').selectOption('news');
+  await expect(f.locator('[data-sb-text^="news."]').first()).toBeAttached();
+  await expect(sb.locator('[data-sb-beitrag]')).toBeHidden();
+  await f.locator('a[href*="/news/"]:not([href$="/news/"])').first().click();
+  await expect(sb.locator('[data-sb-beitrag]')).toBeVisible();
+
+  // Speichern schreibt die Datei mit den Texten (auch von anderen Seiten)
   await sb.getByRole('button', { name: 'Speichern' }).click();
   await expect(sb.locator('[data-sb-meldung]')).toContainText('Gespeichert: 1 Text');
   expect(gespeichert).toHaveLength(1);
