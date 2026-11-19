@@ -24,7 +24,7 @@ test('Redaktion: Knopf auf der Website führt zur Seite in der Redaktion', async
   await expect(page.locator('[data-intern]')).toHaveAttribute('data-state', 'ready');
   await page.goto('/kooperationen/');
   await knopf(page).click();
-  await expect(page).toHaveURL(/\/intern\/redaktion\/seiten\/\?s=kooperationen$/);
+  await expect(page).toHaveURL(/\/intern\/redaktion\/seite-bearbeiten\/\?s=kooperationen$/);
   // abgemeldet: kein Knopf mehr
   await page.evaluate(() => localStorage.removeItem('tndd-redaktion'));
   await page.goto('/kooperationen/');

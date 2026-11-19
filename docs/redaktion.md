@@ -22,6 +22,16 @@ Zustand und Verlauf, Demo-Ansicht, Datenbank
 
 Auf schmalen Bildschirmen klappt der Knopf „Menü“ die Leiste auf.
 
+**Auf der Seite bearbeiten** (Seiten → Knopf je Seite, oder „Seite bearbeiten“ auf der Website): die echte Seite im
+Vollbild (`src/pages/intern/redaktion/seite-bearbeiten/`, Logik `src/scripts/intern/redaktion/seite-bearbeiten.ts`).
+Feste Texte der Seite und „Auf jeder Seite“ (Überschriften, Einleitungen, Knöpfe, Menü, Fuß) anklicken und tippen;
+zweizeilige Überschriften mit der Eingabetaste. Über dem Text: wo er steht, Zeichen, Zurücksetzen, Ausblenden (wo
+erlaubt). Oben: Seite wählen, Desktop/Mobil, DE/EN, Rückgängig/Wiederholen (auch Strg+Z), Verwerfen, Speichern
+(schreibt `texte.json` wie unter Texte, online nach 2–3 Minuten). „Listen und Inhalte“ öffnet die Formulare der
+Seite (Partner, Personen, Formate …) in einem neuen Tab. Gefunden wird jedes Element, das genau den Text zeigt;
+Texte mit Platzhaltern, in Attributen oder schon ausgeblendet bleiben unter Texte. Links der Seite führen beim
+Bearbeiten nirgendwohin.
+
 **Von der Website aus:** Wer als Presse, Vorstand oder Admin angemeldet ist (einmal im internen Bereich gewesen),
 sieht auf jeder Seite der Website unten links „Seite bearbeiten“ (`src/components/BearbeitenKnopf.astro`, nur im
 Browser gebaut, nichts im HTML). Er führt über `src/pages/intern/redaktion/bearbeiten/` zum Beitrag im Editor oder

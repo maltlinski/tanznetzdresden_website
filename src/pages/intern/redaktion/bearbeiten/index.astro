@@ -4,7 +4,7 @@
  * an die passende Stelle der Redaktion.
  *   ?seite=news/<adresse>/   Beitrag aus dem internen Bereich → News-Editor, gleich „Auf der Seite bearbeiten“
  *                             älterer Beitrag (Datei) → Website-Inhalte → Ältere Beiträge
- *   ?seite=<pfad>            Seite der Website → Website-Inhalte → Seiten → diese Seite
+ *   ?seite=<pfad>            Seite der Website → „Auf der Seite bearbeiten“ (seite-bearbeiten/) mit dieser Adresse
  */
 import Redaktion from '../../../../layouts/Redaktion.astro';
 import texte from '../../../../settings/texte.json';
@@ -27,7 +27,7 @@ const json = JSON.stringify(seiten).replace(/</g, '\\u003c');
 
 <script>
   import { initIntern, internUrl } from '../../../../scripts/intern/session';
-  import { redaktionUrl, seitenUrl } from '../../../../scripts/intern/redaktion/seite';
+  import { redaktionUrl } from '../../../../scripts/intern/redaktion/seite';
 
   const ctx = await initIntern(true);
   if (ctx && !ctx.isRedaktion) {
@@ -46,7 +46,7 @@ const json = JSON.stringify(seiten).replace(/</g, '\\u003c');
       const genau = seiten.find(([p]) => p === pfad);
       const teil = seiten.filter(([p]) => p && pfad.startsWith(p)).sort((a, b) => b[0].length - a[0].length)[0];
       const s = genau ?? (teil ? seiten.filter(([p]) => p === teil[0]).at(-1) : undefined);
-      if (s) ziel = seitenUrl(s[1]);
+      if (s) ziel = redaktionUrl('seite-bearbeiten/', { s: s[1], pfad: pfad === s[0] ? undefined : pfad });
     }
     location.replace(ziel);
   }

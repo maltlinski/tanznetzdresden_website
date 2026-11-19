@@ -1,0 +1,107 @@
+---
+/**
+ * Website-Inhalte → Seiten → „Auf der Seite bearbeiten“: die echte Seite im Vollbild, feste Texte direkt darauf
+ * bearbeiten (src/scripts/intern/redaktion/seite-bearbeiten.ts).
+ *   ?s=kooperationen                   Seite aus dem Seitenplan (src/settings/texte.json)
+ *   ?s=profil&pfad=netzwerk/name/      andere Adresse derselben Seite (z. B. ein Profil)
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import { href } from '../../../../lib/url';
+import texte from '../../../../settings/texte.json';
+import { seitenplan } from '../../../../scripts/intern/redaktion/seitenplan';
+import '../../../../styles/redaktion.css';
+
+const plan = seitenplan(texte).filter((s) => s.id !== 'allgemein' && s.pfad !== '404.html');
+const gruppen = [...new Set(plan.map((s) => s.gruppe))];
+---
+<Redaktion title="Seite bearbeiten" current="inhalte">
+  <div class="i-card" data-no-access hidden>
+    <p>Die Website bearbeiten dürfen Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
+  </div>
+  <p class="i-msg" data-msg hidden></p>
+
+  <div class="sb" data-sb hidden>
+    <div class="sb__bar">
+      <a class="sb__zurueck" href={href('intern/redaktion/seiten/')}>← Seiten</a>
+      <label class="sb__wahl">
+        <span class="visually-hidden">Seite</span>
+        <select data-sb-seite>
+          {gruppen.map((g) => (
+            <optgroup label={g}>
+              {plan.filter((s) => s.gruppe === g).map((s) => <option value={s.id}>{s.titel}</option>)}
+            </optgroup>
+          ))}
+        </select>
+      </label>
+      <strong class="visually-hidden" data-sb-titel></strong>
+      <div class="sb__gruppe" role="group" aria-label="Bildschirm">
+        <button type="button" data-sb-geraet="computer" aria-pressed="true">Desktop</button>
+        <button type="button" data-sb-geraet="handy" aria-pressed="false">Mobil</button>
+      </div>
+      <div class="sb__gruppe" role="group" aria-label="Sprache">
+        <button type="button" data-sb-sprache="de" aria-pressed="true">DE</button>
+        <button type="button" data-sb-sprache="en" aria-pressed="false">EN</button>
+      </div>
+      <div class="sb__gruppe" role="group" aria-label="Verlauf">
+        <button type="button" data-sb-zurueck disabled title="Rückgängig (Strg+Z)">↶ Zurück</button>
+        <button type="button" data-sb-vor disabled title="Wiederholen (Strg+Umschalt+Z)">↷ Vor</button>
+      </div>
+      <details class="sb__inhalte">
+        <summary>Listen und Inhalte</summary>
+        <ul data-sb-inhalte></ul>
+      </details>
+      <span class="sb__stand" data-sb-stand aria-live="polite"></span>
+      <button type="button" data-sb-verwerfen disabled>Verwerfen</button>
+      <button type="button" class="sb__speichern" data-sb-speichern disabled>Speichern</button>
+    </div>
+    <p class="sb__meldung i-msg" data-sb-meldung hidden></p>
+    <p class="sb__hinweis"><span data-sb-zahl></span> · Text anklicken und tippen. Listen, Personen und Fotos: „Listen und Inhalte“.</p>
+    <div class="sb__buehne" data-geraet="computer">
+      <iframe title="Seite der Website zum Bearbeiten"></iframe>
+    </div>
+  </div>
+</Redaktion>
+
+<script>
+  import { starten } from '../../../../scripts/intern/redaktion/seite';
+  import { seiteBearbeiten } from '../../../../scripts/intern/redaktion/seite-bearbeiten';
+
+  const r = await starten();
+  if (r) await seiteBearbeiten(r);
+</script>
+
+<style>
+  /* über der Seitenleiste, über die ganze Fläche */
+  .sb { position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; background: var(--tint); }
+  .sb[hidden] { display: none; }
+  .sb__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px clamp(12px, 2vw, 24px); background: var(--purple); color: #fff; }
+  .sb__bar button, .sb__bar select, .sb__inhalte summary {
+    padding: 8px 12px; border: 1.5px solid rgba(255, 255, 255, 0.55); border-radius: 0; background: transparent; color: #fff; cursor: pointer;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .sb__bar select { max-width: 220px; background: var(--purple); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
+  .sb__bar button:disabled { opacity: 0.45; cursor: default; }
+  .sb__bar button[aria-pressed='true'] { background: #fff; color: var(--purple); border-color: #fff; }
+  .sb__bar button:not(:disabled):hover, .sb__inhalte summary:hover { border-color: var(--magenta); }
+  .sb__gruppe { display: flex; }
+  .sb__gruppe button + button { border-left: 0; }
+  .sb__zurueck { color: #fff; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
+  .sb__zurueck:hover { color: var(--cyan); }
+  .sb__stand { margin-left: auto; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); }
+  .sb__speichern { background: var(--magenta) !important; border-color: var(--magenta) !important; }
+  .sb__inhalte { position: relative; }
+  .sb__inhalte summary { list-style: none; }
+  .sb__inhalte summary::-webkit-details-marker { display: none; }
+  .sb__inhalte ul {
+    position: absolute; z-index: 5; top: calc(100% + 4px); left: 0; min-width: 320px; max-width: 80vw; margin: 0; padding: 6px 0; list-style: none;
+    background: var(--paper); border: 1.5px solid var(--purple);
+  }
+  .sb__inhalte a { display: block; padding: 8px 14px; color: var(--purple); text-decoration: none; font-size: 14px; line-height: var(--lh-text); }
+  .sb__inhalte a:hover { background: var(--tint); color: var(--magenta-2); }
+  .sb__meldung { margin: 0; }
+  .sb__hinweis { margin: 0; padding: 6px clamp(12px, 2vw, 24px); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--ink-muted); }
+  .sb__buehne { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; border-top: 1px solid var(--rule); }
+  .sb__buehne iframe { display: block; border: 0; background: var(--paper); transform-origin: 0 0; }
+  .sb__buehne[data-geraet='handy'] { padding: 12px; display: flex; justify-content: center; }
+  .sb__buehne[data-geraet='handy'] iframe { outline: 8px solid var(--ink); transform-origin: 50% 0; }
+</style>

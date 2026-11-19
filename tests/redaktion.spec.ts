@@ -630,6 +630,46 @@ test('Texte: Englisch prüfen, ursprünglichen Text zurückholen, Filter, Textbu
   await expect(page.getByRole('button', { name: 'Drucken oder als PDF speichern' })).toBeVisible();
 });
 
+test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückgängig, Speichern', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vollbild-Bearbeiten ist für große Bildschirme gedacht');
+  const gespeichert = await redaktion(page);
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=kooperationen');
+  const sb = page.locator('[data-sb]');
+  await expect(sb).toBeVisible();
+  const f = page.frameLocator('[data-sb] iframe');
+  const kicker = f.locator('[data-sb-text="kooperationen.kopf.kicker"]');
+  await expect(kicker).toHaveAttribute('contenteditable', /plaintext-only|true/);
+  await expect(f.locator('[data-sb-text="kooperationen.kopf.titel"]')).toBeAttached();
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('Alles gespeichert');
+
+  // tippen: Leiste zeigt, wo der Text steht; Zähler oben
+  await kicker.click();
+  await page.keyboard.press('End');
+  await page.keyboard.type(' & Freunde');
+  await expect(f.locator('.sb-leiste__wo')).toHaveText('Kleine Zeile über der Überschrift');
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung, nicht gespeichert');
+  await page.keyboard.press('Escape');
+
+  // Rückgängig und Wiederholen
+  await sb.getByRole('button', { name: '↶ Zurück' }).click();
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('Alles gespeichert');
+  await expect(kicker).toHaveText('Kooperationspartner');
+  await sb.getByRole('button', { name: '↷ Vor' }).click();
+  await expect(kicker).toHaveText('Kooperationspartner & Freunde');
+
+  // Listen und Inhalte dieser Seite öffnen die Formulare
+  await sb.getByText('Listen und Inhalte', { exact: true }).click();
+  await expect(sb.locator('[data-sb-inhalte]')).toContainText('Orte auf der Karte');
+
+  // Speichern schreibt die Datei mit den Texten
+  await sb.getByRole('button', { name: 'Speichern' }).click();
+  await expect(sb.locator('[data-sb-meldung]')).toContainText('Gespeichert: 1 Text');
+  expect(gespeichert).toHaveLength(1);
+  expect(gespeichert[0].aenderungen[0].pfad).toBe('src/settings/texte.json');
+  expect(gespeichert[0].aenderungen[0].text).toContain('"Kooperationspartner & Freunde"');
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('Alles gespeichert');
+});
+
 test('Texte: Regeln (Platzhalter, Zeilen, Format der Datei)', async ({}, info) => {
   test.skip(info.project.name !== 'desktop', 'ohne Browser, einmal reicht');
   const { fuellen, textPruefen, dateiText, uebernehmen, alleTexte } = await import('../src/lib/texte-regeln');
