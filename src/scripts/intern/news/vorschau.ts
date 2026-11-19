@@ -2,7 +2,11 @@
  * Vorschau im News-Editor: neben dem Editor (große Bildschirme) und als Vollbild (Knopf „Vorschau“).
  * Beide zeigen src/pages/intern/news/vorschau/ in einem Rahmen und bekommen den Stand per postMessage.
  * Klick in der Vorschau springt im Editor an die Stelle; beim Schreiben scrollt die Vorschau mit.
+ * „Direkt bearbeiten“ (Knopf in beiden Leisten, Standard an, gemerkt): Texte und Fotos in der Vorschau ändern;
+ * die Änderungen kommen als `news-direkt` zurück (src/scripts/intern/news/direkt.ts).
  */
+import type { DirektNachricht } from './direkt';
+
 export type Geraet = 'computer' | 'handy';
 export type Sprache = 'de' | 'en';
 /** Wohin ein Klick in der Vorschau springt */
@@ -24,9 +28,33 @@ export function vorschau(opt: {
   /** aktueller Stand für eine Sprache */
   daten: (lang: Sprache) => unknown;
   springen: (z: Sprungziel) => void;
+  /** Änderung aus der Vorschau (Direkt bearbeiten) */
+  direkt?: (m: DirektNachricht) => void;
 }): Vorschau {
   const panel = document.querySelector<HTMLElement>('[data-vp]');
   const dlg = document.querySelector<HTMLDialogElement>('[data-vorschau]');
+  const SCHLUESSEL = 'tndd-news-direkt';
+  let direktAn = (() => {
+    try {
+      return localStorage.getItem(SCHLUESSEL) !== 'aus';
+    } catch {
+      return true;
+    }
+  })();
+  const direktKnoepfe = () => document.querySelectorAll<HTMLButtonElement>('[data-direkt]');
+  direktKnoepfe().forEach((b) => {
+    b.setAttribute('aria-pressed', String(direktAn));
+    b.addEventListener('click', () => {
+      direktAn = !direktAn;
+      try {
+        localStorage.setItem(SCHLUESSEL, direktAn ? 'an' : 'aus');
+      } catch {
+        /* nur für diese Sitzung */
+      }
+      direktKnoepfe().forEach((x) => x.setAttribute('aria-pressed', String(direktAn)));
+      rahmen.forEach(senden);
+    });
+  });
   const rahmen: { frame: HTMLIFrameElement; buehne: HTMLElement; geraet: Geraet; sprache: Sprache; geladen: boolean; sichtbar: () => boolean }[] = [];
 
   function einrichten(root: HTMLElement, sichtbar: () => boolean) {
@@ -70,7 +98,7 @@ export function vorschau(opt: {
 
   function senden(r: (typeof rahmen)[number]) {
     if (!r.geladen || !r.sichtbar()) return;
-    r.frame.contentWindow?.postMessage({ typ: 'news-vorschau', lang: r.sprache, beitrag: opt.daten(r.sprache) }, location.origin);
+    r.frame.contentWindow?.postMessage({ typ: 'news-vorschau', lang: r.sprache, beitrag: opt.daten(r.sprache), direkt: direktAn }, location.origin);
   }
 
   const laden = (r: (typeof rahmen)[number]) => {
@@ -134,6 +162,7 @@ export function vorschau(opt: {
 
   // Klick in der Vorschau → Editor
   addEventListener('message', (e) => {
+    if (e.origin === location.origin && e.data?.typ === 'news-direkt') return opt.direkt?.(e.data as DirektNachricht);
     if (e.origin !== location.origin || e.data?.typ !== 'news-springen') return;
     if (dlg?.open) dlg.close();
     opt.springen(e.data.ziel === 'abschnitt' ? { ziel: 'abschnitt', i: Number(e.data.i) } : { ziel: e.data.ziel });

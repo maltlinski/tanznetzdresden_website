@@ -4,6 +4,7 @@
  * gleiche Stile: src/styles/artikel.css, gleiche Skripte: src/scripts/news-artikel.ts).
  *  - im Editor (Rahmen, ?eingebettet=1): bekommt den aktuellen Stand per postMessage, auch ungespeichert
  *  - als Link (?id=…): zeigt den zuletzt gespeicherten Stand, nur für Presse, Vorstand und Admin
+ *  - „Direkt bearbeiten“ im Editor: Texte und Fotos auf der Seite ändern (src/scripts/intern/news/direkt.ts)
  */
 import Page from '../../../../layouts/Page.astro';
 import '../../../../styles/artikel.css';
@@ -35,6 +36,7 @@ import '../../../../styles/artikel.css';
   import { escapeHtml as esc } from '../../../../lib/news-format';
   import { initLightbox } from '../../../../scripts/lightbox';
   import { initArtikel, verhaeltnisse } from '../../../../scripts/news-artikel';
+  import { direkt } from '../../../../scripts/intern/news/direkt';
 
   type Beitrag = Partial<NewsRow>;
   const base = import.meta.env.BASE_URL;
@@ -43,8 +45,17 @@ import '../../../../styles/artikel.css';
   const article = $('[data-article]');
   initLightbox(article);
 
-  type MitAbschnitten = Beitrag & { abschnitte?: string[] };
+  type MitAbschnitten = Beitrag & { abschnitte?: string[]; arten?: string[] };
   const eingebettet = window.parent !== window;
+  /** Direkt bearbeiten: an (aus dem Editor), wartender Stand, solange hier getippt oder gezogen wird */
+  let direktAn = false;
+  let wartend: { b: MitAbschnitten; lang: 'de' | 'en' } | null = null;
+  const d = direkt(article, (m) => parent.postMessage(m, location.origin), () => {
+    if (!wartend) return;
+    const w = wartend;
+    wartend = null;
+    void zeigen(w.b, w.lang);
+  });
 
   // Seitenverhältnis des Titelbilds (entscheidet zwischen Vollbild und Hochkant)
   const masse = new Map<string, Promise<number>>();
@@ -121,6 +132,7 @@ import '../../../../styles/artikel.css';
     initArtikel(article, { seed: b.slug || titel, neu: !erstesMal });
     if (erstesMal) erstesMal = false;
     verhaeltnisse(article);
+    d.einrichten({ an: eingebettet && direktAn && !!b.abschnitte, lang, abschnitte: b.abschnitte ?? [], arten: b.arten ?? [], titelbild: !!cover });
   }
 
   const fehler = (text: string) => {
@@ -157,7 +169,20 @@ import '../../../../styles/artikel.css';
   // Aus dem Editor (gleiche Adresse): aktueller, auch ungespeicherter Stand
   addEventListener('message', (e) => {
     if (e.origin !== location.origin) return;
-    if (e.data?.typ === 'news-vorschau') void zeigen(e.data.beitrag as MitAbschnitten, e.data.lang === 'en' ? 'en' : 'de');
+    if (e.data?.typ === 'news-vorschau') {
+      const neu = { b: e.data.beitrag as MitAbschnitten, lang: (e.data.lang === 'en' ? 'en' : 'de') as 'de' | 'en' };
+      const umschalten = direktAn !== !!e.data.direkt;
+      direktAn = !!e.data.direkt;
+      // beim Tippen oder Ziehen nicht neu zeichnen (Cursor bliebe nicht stehen); danach den letzten Stand.
+      // Neue, entfernte oder verschobene Blöcke aus dem Editor zeigen wir sofort und setzen den Cursor zurück.
+      const gebaut = JSON.stringify(neu.b.arten ?? []) !== JSON.stringify(zuletzt?.b.arten ?? []);
+      if (!d.beschaeftigt() || umschalten) void zeigen(neu.b, neu.lang);
+      else if (gebaut) {
+        wartend = null;
+        const zurueck = d.cursorMerken();
+        void zeigen(neu.b, neu.lang).then(zurueck);
+      } else wartend = neu;
+    }
     if (e.data?.typ === 'news-zeigen') {
       // Block i oder Titel, Teaser, Titelbild, Kopf, Eckdaten: hinscrollen und markieren
       const teil = e.data.ziel ? document.querySelector<HTMLElement>(ZIEL[e.data.ziel] ?? '-') : document.querySelector<HTMLElement>(`[data-abschnitt="${Number(e.data.i)}"]`);
@@ -174,7 +199,7 @@ import '../../../../styles/artikel.css';
     document.documentElement.classList.add('vorschau-eingebettet');
     article.addEventListener('click', (e) => {
       const t = e.target as Element;
-      if (t.closest('.nb__steuer, [data-copy]')) return;
+      if (t.closest('.nb__steuer, [data-copy]') || d.klick(e)) return;
       const teil = t.closest<HTMLElement>('[data-abschnitt]');
       const ziel = teil ? null : STELLEN.find(([sel]) => t.closest(sel))?.[1];
       if (!teil && !ziel) return;
@@ -203,6 +228,41 @@ import '../../../../styles/artikel.css';
   :global(.vorschau-eingebettet .ak__titel:hover), :global(.vorschau-eingebettet .ak__teaser:hover), :global(.vorschau-eingebettet .ab__stand:hover),
   :global(.vorschau-eingebettet .ab__fakten:hover) { outline: 1.5px solid var(--cyan); outline-offset: 6px; }
   :global(.vorschau-eingebettet .ak.vs-aktiv-el), :global(.vorschau-eingebettet .ak__zoom.vs-aktiv-el) { outline-offset: -3px; }
+  /* Direkt bearbeiten (src/scripts/intern/news/direkt.ts) */
+  :global(.vorschau-direkt [data-direkt-feld]) { cursor: text; outline-offset: 6px; }
+  :global(.vorschau-direkt [data-direkt-feld]:hover) { outline: 1.5px dashed var(--cyan) !important; }
+  :global(.vorschau-direkt [data-direkt-feld]:focus) { outline: 2px solid var(--magenta) !important; }
+  :global(.vorschau-direkt .vs-teil:hover > [data-direkt-feld]:not(:hover, :focus)) { outline: none; }
+  :global(.vs-ui) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; }
+  :global(.vs-bild) { position: relative; cursor: default; }
+  :global(.vs-bild.is-ziehen) { outline: 2px solid var(--magenta); outline-offset: 4px; }
+  :global(.vs-leiste), :global(.vs-kopfleiste) { position: absolute; z-index: 20; display: flex; flex-wrap: wrap; gap: 2px; }
+  :global(.vs-leiste) { top: 8px; left: 8px; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
+  :global(.vs-bild:hover .vs-leiste), :global(.vs-bild:focus-within .vs-leiste), :global(.vs-gewaehlt .vs-leiste) { opacity: 1; pointer-events: auto; }
+  :global(.vs-kopfleiste) { top: 12px; right: 12px; }
+  :global(.vs-leiste button), :global(.vs-kopfleiste button) {
+    padding: 6px 9px; border: 0; background: var(--purple); color: #fff; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer;
+  }
+  :global(.vs-leiste button[aria-pressed='true']) { background: var(--magenta); }
+  :global(.vs-leiste button:hover) { background: var(--magenta); }
+  /* im lila Kopf sichtbar */
+  :global(.vs-kopfleiste button) { background: var(--magenta); }
+  :global(.vs-kopfleiste button:hover) { background: var(--magenta-2); }
+  :global(.vs-leiste button:focus-visible), :global(.vs-kopfleiste button:focus-visible) { outline: 2px solid var(--cyan); outline-offset: 1px; }
+  :global(.vs-griff) {
+    position: absolute; z-index: 21; top: 50%; width: 12px; height: 56px; margin-top: -28px; background: var(--magenta);
+    cursor: ew-resize; touch-action: none; opacity: 0; transition: opacity 0.15s;
+  }
+  :global(.vs-griff--l) { left: -6px; }
+  :global(.vs-griff--r) { right: -6px; }
+  /* randlos: Griffe innen, sonst lägen sie am Rand des Fensters */
+  :global(.vs-bild.nb--randlos .vs-griff--l) { left: 12px; }
+  :global(.vs-bild.nb--randlos .vs-griff--r) { right: 12px; }
+  :global(.vs-bild:hover .vs-griff), :global(.vs-gewaehlt .vs-griff), :global(.vs-bild.is-ziehen .vs-griff) { opacity: 1; }
+  :global(.vs-masz) {
+    position: absolute; z-index: 22; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 8px 12px;
+    background: var(--magenta); color: #fff; pointer-events: none;
+  }
   /* im Editor ohne Band: dort steht „Live-Vorschau“ schon darüber */
   :global(.vorschau-eingebettet .vb:not(.vb--fehler)) { display: none; }
 </style>

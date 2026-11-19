@@ -917,6 +917,32 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
     },
     /** Blöcke ersetzen (Vorlage, Wiederherstellen) */
     setzen,
+    /** Direkt bearbeiten (Vorschau): Text eines Absatzes oder Zwischentitels */
+    textSetzen(i: number, wert: string, lang: 'de' | 'en') {
+      const b = bloecke[i];
+      if (!b || (b.typ !== 'text' && b.typ !== 'zwischentitel') || b[lang] === wert) return;
+      b[lang] = wert;
+      const el = root.querySelector<HTMLInputElement | HTMLTextAreaElement>(`[data-key="${i}-${lang}"]`);
+      if (el) {
+        el.value = wert;
+        el.dispatchEvent(new Event('groesse'));
+      }
+      geaendert();
+    },
+    /** Direkt bearbeiten: Breite eines einzelnen Fotos */
+    breiteSetzen(i: number, v: Breite | 'neben') {
+      const b = bloecke[i];
+      if (b?.typ !== 'bilder') return;
+      if (v === 'neben') b.darstellung = 'neben';
+      else Object.assign(b, { darstellung: 'raster', breite: v });
+      zeichnen();
+      geaendert();
+    },
+    /** Direkt bearbeiten: Foto eines Bild-Blocks aus der Mediathek tauschen */
+    fotoTauschen(i: number) {
+      const b = bloecke[i];
+      if (b?.typ === 'bilder') void ausMediathek(b, 'ersetzen', false);
+    },
     springen,
     /** Lädt gerade noch ein Foto hoch? */
     laedt: () => alleBilder().some(({ x }) => x.laedt),

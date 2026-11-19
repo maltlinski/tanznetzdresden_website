@@ -91,6 +91,14 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
 - **Live-Vorschau** rechts (ab etwa 1180 px Breite): zeigt den Beitrag beim Schreiben genau wie auf der Website,
   Desktop oder Mobil, Deutsch oder Englisch. Ein Klick in die Vorschau springt zum Block, beim Schreiben scrollt sie
   mit und markiert die Stelle. Auf kleinen Bildschirmen öffnet „Vorschau“ sie groß.
+- **Direkt bearbeiten** (Knopf in der Leiste der Vorschau, daneben und groß; Standard an, der Browser merkt sich die
+  Wahl): Titel, Teaser, Zwischentitel und Absätze schreibt man direkt auf der Seite (Strg+B/Strg+I, Enter beginnt einen
+  neuen Absatz, Esc beendet). Ein einzelnes Foto bekommt beim Darüberfahren eine Leiste (Neben dem Text, Textbreite,
+  Weit, Randlos, Foto tauschen) und Griffe links und rechts: Ziehen macht es breiter oder schmaler, es rastet in diesen
+  Stufen ein, frei wählbare Größen gibt es bewusst nicht (Designsystem, Handy). Oben im Kopf „Titelbild wählen/tauschen“.
+  Alles landet sofort im Formular (gespeichert wird wie sonst). Absätze, deren Darstellung der Rückweg nicht genau
+  trifft (z. B. Personenkarten), Zitate, Galerien, Eckdaten und der Kopf öffnen weiter per Klick die Stelle im Editor.
+  Logik: `src/scripts/intern/news/direkt.ts` (läuft in der Vorschau, schickt `news-direkt` an den Editor).
 
 **Speichern:** Entwürfe speichert der Editor selbst, sobald ein Titel da ist („Gespeichert · 14:32“). Änderungen an
 Beiträgen, die schon online sind, gehen erst mit **Aktualisieren → Änderungen veröffentlichen** raus. Bis dahin
@@ -309,6 +317,7 @@ Die erste legt an:
 | Mediathek (laden, speichern, „Bild wählen“, Fokus, Zuschnitte) | `src/scripts/intern/news/medien.ts`, Seite `src/pages/intern/news/medien/` |
 | Instagram-Story als Bild | `src/scripts/intern/news/story.ts` |
 | Live-Vorschau daneben/groß, Sprung in den Editor | `src/scripts/intern/news/vorschau.ts` |
+| Direkt bearbeiten in der Vorschau (Texte, Fotobreite, Foto tauschen) | `src/scripts/intern/news/direkt.ts` |
 | Link einfügen, Vorlagen | `src/scripts/intern/news/links.ts`, `vorlagen.ts` |
 | Bausteine | `src/settings/news-bausteine.json` |
 | Stile des Editors und der Mediathek | `src/styles/news-editor.css`, `src/styles/mediathek.css` |

@@ -285,6 +285,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
             <button type="button" data-sprache="de" aria-pressed="true">DE</button>
             <button type="button" data-sprache="en" aria-pressed="false">EN</button>
           </div>
+          <button type="button" class="ne-vp__direkt" data-direkt aria-pressed="true" title="Texte und Fotos direkt in der Vorschau ändern">Direkt bearbeiten</button>
           <button type="button" class="ne-vp__gross" data-preview-open title="Vorschau groß zeigen">Groß</button>
         </div>
       </div>
@@ -307,6 +308,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         <button type="button" data-sprache="de" aria-pressed="true">Deutsch</button>
         <button type="button" data-sprache="en" aria-pressed="false">Englisch</button>
       </div>
+      <button type="button" class="nv__direkt" data-direkt aria-pressed="true">Direkt bearbeiten</button>
       <button type="button" class="nv__zu" data-vorschau-zu>Schließen</button>
     </div>
     <div class="nv__buehne" data-geraet="computer">
@@ -382,6 +384,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
   import { drehen } from '../../../../scripts/intern/news/fotos';
   import { fokusFlaeche, medienHochladen, medienWaehlen, zuschnitte } from '../../../../scripts/intern/news/medien';
   import { vorschau, type Sprache, type Sprungziel } from '../../../../scripts/intern/news/vorschau';
+  import type { DirektNachricht } from '../../../../scripts/intern/news/direkt';
   import { linkAuswahl, type Linkziel } from '../../../../scripts/intern/news/links';
   import { vorlagen } from '../../../../scripts/intern/news/vorlagen';
   import { storyBild } from '../../../../scripts/intern/news/story';
@@ -785,7 +788,11 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
       /** für die Vorschau: dazu jeder Block einzeln (Klick springt dorthin) */
       const vorschauDaten = (lang: Sprache) => {
         const bloecke = editor.bloecke();
-        return { ...daten(row.status ?? 'entwurf'), ...kopf(), image_focus: imageFocus, abschnitte: bloecke.map((b) => zuMarkdown([b], lang)) };
+        return {
+          ...daten(row.status ?? 'entwurf'), ...kopf(), image_focus: imageFocus,
+          abschnitte: bloecke.map((b) => zuMarkdown([b], lang)),
+          arten: bloecke.map((b) => (b.typ === 'bilder' ? `bilder:${b.darstellung}:${b.bilder.length}` : b.typ)),
+        };
       };
 
       // ---------- Springen (aus der Vorschau oder der Checkliste) ----------
@@ -807,7 +814,19 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         if (z.ziel === 'kopf') return hin(kopfFeld, kopfFeld.querySelector<HTMLInputElement>(`${imagePath ? '[data-kopf-mit-bild]' : '[data-kopf-ohne-bild]'} input:checked`));
       };
       const kopfFeld = $('[data-kopf-feld]')!;
-      const vp = vorschau({ url: `${internUrl('news/vorschau/')}?eingebettet=1`, daten: vorschauDaten, springen });
+      /** Direkt bearbeiten in der Vorschau: Änderung ins Formular übernehmen (wie getippt) */
+      const direkt = (m: DirektNachricht) => {
+        if (m.art === 'feld') {
+          const el = m.lang === 'en' ? field<HTMLTextAreaElement>(m.feld === 'titel' ? 'title_en' : 'teaser_en') : m.feld === 'titel' ? titel : teaser;
+          if (!el || el.value === m.wert) return;
+          el.value = m.wert;
+          el.dispatchEvent(new Event('input', { bubbles: true }));
+        } else if (m.art === 'text') editor.textSetzen(m.i, m.wert, m.lang);
+        else if (m.art === 'breite') editor.breiteSetzen(m.i, m.wert);
+        else if (m.art === 'foto') editor.fotoTauschen(m.i);
+        else if (m.art === 'titelbild') $('[data-cover-mediathek]')?.click();
+      };
+      const vp = vorschau({ url: `${internUrl('news/vorschau/')}?eingebettet=1`, daten: vorschauDaten, springen, direkt });
       titel.addEventListener('focus', () => vp.zeigen('titel'));
       teaser.addEventListener('focus', () => vp.zeigen('kurztext'));
       coverFeld.addEventListener('focusin', () => vp.zeigen('titelfoto'));

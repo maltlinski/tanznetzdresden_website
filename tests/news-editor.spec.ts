@@ -366,6 +366,9 @@ test('Live-Vorschau daneben (Desktop) und groß; Klick in die Vorschau springt i
     const vs = page.frameLocator('[data-vp] iframe');
     await expect(vs.getByRole('heading', { level: 1 })).toHaveText('Rückblick mit Fotos');
     await expect(vs.locator('.nb--galerie .nb__item img')).toHaveCount(2);
+    // ohne „Direkt bearbeiten“ springt ein Klick in den Editor (mit: siehe nächster Test)
+    await seite.getByRole('button', { name: 'Direkt bearbeiten' }).click();
+    await expect(seite.getByRole('button', { name: 'Direkt bearbeiten' })).toHaveAttribute('aria-pressed', 'false');
     await vs.getByText('Erster Absatz.').click();
     await expect(page.getByLabel('Absatz, Block 1', { exact: true })).toBeFocused();
     await vs.locator('.ak__titel').click();
@@ -392,6 +395,64 @@ test('Live-Vorschau daneben (Desktop) und groß; Klick in die Vorschau springt i
   await expect(v.locator('html')).toHaveAttribute('lang', 'en');
   await dlg.getByRole('button', { name: 'Schließen' }).click();
   await expect(dlg).toBeHidden();
+});
+
+test('Direkt bearbeiten: Titel, Absätze und Fotobreite in der Vorschau ändern', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vorschau neben dem Formular nur auf breiten Bildschirmen');
+  await redaktion(page);
+  await page.goto('/intern/news/bearbeiten/');
+  await page.getByLabel('Titel', { exact: true }).fill('Rückblick');
+  await page.getByLabel('Absatz, Block 1', { exact: true }).fill('Erster Absatz mit **fett**.');
+  await ende(page, '+ Zwischentitel');
+  await page.getByLabel('Zwischentitel, Block 2', { exact: true }).fill('Die Residenzen');
+  await ende(page, '+ Bild');
+  await page.locator('.ab-block').nth(2).locator('input[type=file]').setInputFiles(FOTOS[0]);
+  await expect(page.locator('.fb-bild.is-laedt')).toHaveCount(0);
+  const vs = page.frameLocator('[data-vp] iframe');
+  await expect(page.locator('[data-vp]').getByRole('button', { name: 'Direkt bearbeiten' })).toHaveAttribute('aria-pressed', 'true');
+
+  await expect(vs.locator('[data-abschnitt="2"] figure')).toBeVisible();
+  // Titel auf der Seite tippen → steht im Formular
+  const h1 = vs.locator('.ak__titel');
+  await expect(h1).toHaveAttribute('contenteditable', /plaintext-only|true/);
+  await h1.click();
+  await page.keyboard.press('End');
+  await page.keyboard.type(' 2026');
+  await expect(page.getByLabel('Titel', { exact: true })).toHaveValue('Rückblick 2026');
+
+  // Absatz: weiterschreiben, Enter = neuer Absatz; Fett bleibt erhalten
+  const p = vs.locator('[data-abschnitt="0"] p').first();
+  await p.click();
+  await page.keyboard.press('End');
+  await page.keyboard.type(' Mehr.');
+  await page.keyboard.press('Enter');
+  await page.keyboard.type('Zweiter Absatz.');
+  await expect(page.getByLabel('Absatz, Block 1', { exact: true })).toHaveValue('Erster Absatz mit **fett**. Mehr.\n\nZweiter Absatz.');
+
+  // Zwischentitel
+  await vs.locator('[data-abschnitt="1"] h2').click();
+  await page.keyboard.press('End');
+  await page.keyboard.type(' 2024');
+  await expect(page.getByLabel('Zwischentitel, Block 2', { exact: true })).toHaveValue('Die Residenzen 2024');
+  await page.keyboard.press('Escape');
+
+  // Foto: Breite über die Knöpfe …
+  const fig = vs.locator('[data-abschnitt="2"] figure');
+  await expect(fig).toHaveClass(/nb--weit/);
+  await fig.hover();
+  await fig.getByRole('button', { name: 'Randlos' }).click();
+  await expect(page.locator('.ab-block').nth(2).getByRole('button', { name: 'Randlos' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(vs.locator('[data-abschnitt="2"] figure')).toHaveClass(/nb--randlos/);
+  // … oder am Griff ziehen: weit nach innen = neben dem Text
+  await vs.locator('[data-abschnitt="2"] figure').hover();
+  const griff = vs.locator('[data-abschnitt="2"] .vs-griff--r');
+  const g = (await griff.boundingBox())!;
+  await page.mouse.move(g.x + g.width / 2, g.y + g.height / 2);
+  await page.mouse.down();
+  for (let x = 1; x <= 10; x++) await page.mouse.move(g.x - x * 80, g.y + g.height / 2);
+  await page.mouse.up();
+  await expect(page.locator('.ab-block').nth(2).getByRole('button', { name: 'Neben dem Text' })).toHaveAttribute('aria-pressed', 'true');
+  await expect(vs.locator('[data-abschnitt="2"] figure')).toHaveClass(/nb--neben/);
 });
 
 test('Vorschau: lange Zitate werden kleiner gesetzt', async ({ page, isMobile }) => {
