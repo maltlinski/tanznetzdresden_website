@@ -651,10 +651,10 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   await page.keyboard.press('Escape');
 
   // Rückgängig und Wiederholen
-  await sb.getByRole('button', { name: '↶ Zurück' }).click();
+  await sb.getByRole('button', { name: 'Rückgängig' }).click();
   await expect(sb.locator('[data-sb-stand]')).toHaveText('Alles gespeichert');
   await expect(kicker).toHaveText('Kooperationspartner');
-  await sb.getByRole('button', { name: '↷ Vor' }).click();
+  await sb.getByRole('button', { name: 'Wiederholen' }).click();
   await expect(kicker).toHaveText('Kooperationspartner & Freunde');
 
   // Listen und Inhalte dieser Seite öffnen die Formulare
@@ -662,7 +662,7 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   await expect(sb.locator('[data-sb-inhalte]')).toContainText('Orte auf der Karte');
 
   // navigieren wie auf der Website: Menü → Über uns; die Leiste stellt sich um, die Änderung bleibt
-  await sb.locator('summary').click();
+  await sb.getByText('Listen und Inhalte', { exact: true }).click();
   const menuepunkt = f.locator('header a[href$="/verein/"]').first();
   // Linktexte: Doppelklick bearbeitet, Klick folgt dem Link
   await expect(menuepunkt.locator('[data-sb-text]').or(menuepunkt.and(f.locator('[data-sb-text]'))).first()).toHaveAttribute('title', /Doppelklick/);
@@ -693,6 +693,28 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   expect(gespeichert[0].aenderungen[0].pfad).toBe('src/settings/texte.json');
   expect(gespeichert[0].aenderungen[0].text).toContain('"Kooperationspartner & Freunde"');
   await expect(sb.locator('[data-sb-stand]')).toHaveText('Alles gespeichert');
+});
+
+test('Auf der Seite bearbeiten: Menü und Fuß getrennt, Teiltexte, Weitere Texte', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vollbild-Bearbeiten ist für große Bildschirme gedacht');
+  const gespeichert = await redaktion(page);
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=kooperationen');
+  const sb = page.locator('[data-sb]');
+  const f = page.frameLocator('[data-sb] iframe');
+  // gleicher Text in Menü und Fuß: je ein eigener Eintrag
+  await expect(f.locator('.site-header [data-sb-text="allgemein.kopf.about"]')).toBeAttached();
+  await expect(f.locator('.site-footer [data-sb-text="allgemein.fuss.about"]')).toBeAttached();
+  // Text als Teil eines längeren („Gestaltung: Name“)
+  await expect(f.locator('.site-footer [data-sb-text="allgemein.fuss.design"]')).toHaveText('Gestaltung:');
+  // Weitere Texte: was nicht sichtbar auf der Seite steht, z. B. der Titel für Suchmaschinen
+  await sb.getByText('Weitere Texte', { exact: false }).first().click();
+  const titel = sb.locator('[data-sb-weitere]').getByLabel('Titel im Browser-Tab und bei Suchmaschinen');
+  await expect(titel).toBeVisible();
+  await titel.fill('Partner:innen');
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung, nicht gespeichert');
+  await sb.getByRole('button', { name: 'Speichern' }).click();
+  await expect(sb.locator('[data-sb-meldung]')).toContainText('Gespeichert: 1 Text');
+  expect(gespeichert[0].aenderungen[0].text).toContain('"Partner:innen"');
 });
 
 test('Texte: Regeln (Platzhalter, Zeilen, Format der Datei)', async ({}, info) => {

@@ -28,8 +28,11 @@ Feste Texte der Seite und „Auf jeder Seite“ (Überschriften, Einleitungen, K
 zweizeilige Überschriften mit der Eingabetaste. Über dem Text: wo er steht, Zeichen, Zurücksetzen, Ausblenden (wo
 erlaubt). Oben: Seite wählen, Desktop/Mobil, DE/EN, Rückgängig/Wiederholen (auch Strg+Z), Verwerfen, Speichern
 (schreibt `texte.json` wie unter Texte, online nach 2–3 Minuten). „Listen und Inhalte“ öffnet die Formulare der
-Seite (Partner, Personen, Formate …) in einem neuen Tab. Gefunden wird jedes Element, das genau den Text zeigt;
-Texte mit Platzhaltern, in Attributen oder schon ausgeblendet bleiben unter Texte.
+Seite (Partner, Personen, Formate …) in einem neuen Tab. Gefunden wird jedes Element oder Textstück, das genau den Text zeigt
+(auch innerhalb eines längeren Texts, mehrzeilige Texte Zeile für Zeile); ein gleicher Text an mehreren Stellen wird
+nach Teil der Seite zugeordnet (Kopfleiste und Login-Blende, Fuß, Einwilligung, Newsletter, Inhalt). Was nicht
+sichtbar auf der Seite steht – Platzhalter in Feldern, Betreff von E-Mails, Meldungen, Texte mit Platzhaltern wie
+{zahl}, Titel für Suchmaschinen, Ausgeblendetes –, steht oben unter **Weitere Texte** als Feld zum Bearbeiten.
 **Navigieren** geht wie auf der Website (Menü, Links, Sprache, Auswahl oben): Die Leiste stellt sich auf die neue
 Seite um, ungespeicherte Änderungen bleiben erhalten und werden zusammen gespeichert („3 Änderungen auf 2 Seiten“).
 Texte in Links (Menü, Knöpfe): Klick folgt dem Link, **Doppelklick** bearbeitet den Text. Externe Links, Dateien und

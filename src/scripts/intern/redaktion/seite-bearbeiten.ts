@@ -4,8 +4,10 @@
  *
  * So funktioniert es: Die Seite wird in einem Rahmen geladen (gleiche Adresse). Danach sucht dieses Skript zu jedem
  * Text der Seite (und „Auf jeder Seite“) das Element, das genau diesen Text zeigt, und macht es beschreibbar.
- * Texte mit Platzhaltern ({zahl}), Texte in Attributen (Bildbeschreibung, Titel im Browser-Tab) und schon
- * ausgeblendete Texte stehen nicht so auf der Seite – sie bleiben unter Texte. Über dem Text mit dem Cursor steht eine
+ * Gefunden wird auch ein Text innerhalb eines längeren („Gestaltung: Name“), ein gleicher Text an mehreren Stellen
+ * nach Teil der Seite (Kopfleiste, Fuß, Inhalt) und ein mehrzeiliger Text Zeile für Zeile. Was nicht sichtbar auf der
+ * Seite steht (Platzhalter in Feldern, Betreff von E-Mails, Meldungen, Texte mit {zahl}, Titel für Suchmaschinen,
+ * Ausgeblendetes), steht oben unter „Weitere Texte“ – so ist jeder Text der Seite hier bearbeitbar. Über dem Text mit dem Cursor steht eine
  * kleine Leiste: wo der Text steht, Zeichen, Zurücksetzen, Ausblenden (wo erlaubt).
  *
  * Navigieren geht wie auf der Website (Menü, Links, Sprache): Die Leiste stellt sich auf die neue Seite um, und
@@ -32,7 +34,33 @@ interface Treffer {
   id: string;
   e: TextEintrag;
   els: HTMLElement[];
+  /** nur eine Zeile eines mehrzeiligen Texts (Zeilen in getrennten Elementen, z. B. Karten, Fragen und Antworten) */
+  zeile?: number;
 }
+/**
+ * Wo ein Text gesucht wird: zuerst im bevorzugten Teil der Seite, sonst wo erlaubt. So gehört ein gleicher Text an
+ * mehreren Stellen zum passenden Eintrag (Menü oder Fuß, Einwilligung oder Newsletter, Seite oder „Auf jeder Seite“).
+ */
+interface Ort {
+  bevorzugt: (el: Element) => boolean;
+  erlaubt: (el: Element) => boolean;
+}
+const KOPF = '.site-header, .login-blende';
+const FUSS = '.site-footer';
+const EINWILLIGUNG = '[data-consent-banner]';
+const ueberall = () => true;
+function ortFuer(seite: string, abschnitt: string): Ort {
+  const in_ = (sel: string) => (el: Element) => !!el.closest(sel);
+  const nicht = (sel: string) => (el: Element) => !el.closest(sel);
+  if (seite !== 'allgemein') return { bevorzugt: nicht(`${KOPF}, ${FUSS}, ${EINWILLIGUNG}`), erlaubt: nicht(`${KOPF}, ${FUSS}`) };
+  if (abschnitt === 'kopf') return { bevorzugt: in_('.site-header'), erlaubt: nicht(`${FUSS}, ${EINWILLIGUNG}`) };
+  if (abschnitt === 'fuss') return { bevorzugt: in_(FUSS), erlaubt: nicht(`${KOPF}, ${EINWILLIGUNG}`) };
+  if (abschnitt === 'einwilligung') return { bevorzugt: in_(EINWILLIGUNG), erlaubt: in_(EINWILLIGUNG) };
+  if (abschnitt === 'newsletter') return { bevorzugt: in_('.newsletter, #newsletter'), erlaubt: nicht(EINWILLIGUNG) };
+  return { bevorzugt: ueberall, erlaubt: ueberall };
+}
+/** Texte hierin sind nicht sichtbar oder gehören nicht zur Seite */
+const UNSICHTBAR = 'script, style, template, noscript, textarea, svg, .sb-leiste';
 
 const norm = (s: string) => s.replace(/\s+/g, '');
 /**
@@ -160,7 +188,78 @@ export function seiteBearbeiten(r: Redaktion) {
     neu = new Map(JSON.parse(s) as [string, Wert][]);
     letzter = s;
     for (const t of treffer) zeigen(t);
+    weitere();
     stand();
+  }
+
+  // ---------- Weitere Texte: was nicht sichtbar auf der Seite steht ----------
+  let zuletztGefunden = new Set<string>();
+  function weitere(gefunden = zuletztGefunden) {
+    zuletztGefunden = gefunden;
+    const box = $('[data-sb-weitere]');
+    if (!box) return;
+    const liste = eintraege().filter((x) => !gefunden.has(textId(x.seite, x.abschnitt, x.key)));
+    $('[data-sb-weitere-zahl]')!.textContent = String(liste.length);
+    const el = <K extends keyof HTMLElementTagNameMap>(tag: K, cls = '', text = '') => {
+      const x = document.createElement(tag);
+      if (cls) x.className = cls;
+      if (text) x.textContent = text;
+      return x;
+    };
+    const gesperrt = root.dataset.gesperrt === 'true';
+    const eintrag = (x: (typeof liste)[number]) => {
+      const id = textId(x.seite, x.abschnitt, x.key);
+      const w = wert(id, x.e);
+      const wertJetzt = lang === 'en' ? w.en : w.de;
+      const zeile = el('div', 'sb-w');
+      zeile.classList.toggle('is-geaendert', geaendert(id, x.e));
+      const fid = `sb-w-${id.replace(/\W/g, '-')}`;
+      const label = el('label', 'sb-w__wo', `${x.e.wo}${lang === 'en' ? ' · Englisch' : ''}`);
+      label.htmlFor = fid;
+      const hinweise = [platzhalter(x.e.de).length ? `${platzhalter(x.e.de).map((p) => `{${p}}`).join(', ')} bleibt stehen (wird auf der Website ersetzt)` : '', w.aus ? 'ausgeblendet' : ''].filter(Boolean);
+      const lang_ = wertJetzt.includes('\n') || wertJetzt.length > 70 || (x.e.zeilen ?? 1) > 1;
+      const feld = lang_ ? el('textarea') : el('input');
+      feld.id = fid;
+      feld.value = wertJetzt;
+      feld.disabled = gesperrt;
+      if (feld instanceof HTMLTextAreaElement) feld.rows = Math.min(6, Math.max(2, wertJetzt.split('\n').length, Math.ceil(wertJetzt.length / 60)));
+      if (lang === 'en') feld.placeholder = x.e.de;
+      const zahl = el('span', 'sb-w__zahl', x.e.max ? `${wertJetzt.length} / ${x.e.max}` : '');
+      feld.addEventListener('input', () => {
+        const w2 = wert(id, x.e);
+        neu.set(id, lang === 'en' ? { ...w2, en: feld.value } : { ...w2, de: feld.value });
+        if (x.e.max) zahl.textContent = `${feld.value.length} / ${x.e.max}`;
+        zeile.classList.toggle('is-geaendert', geaendert(id, x.e));
+        merken();
+        stand();
+      });
+      zeile.append(label, feld);
+      if (hinweise.length || x.e.max) zeile.append(el('span', 'sb-w__hinweis', hinweise.join(' · ')), zahl);
+      if (x.e.ausblendbar) {
+        const box2 = el('input');
+        box2.type = 'checkbox';
+        box2.checked = !w.aus;
+        box2.disabled = gesperrt;
+        box2.addEventListener('change', () => {
+          neu.set(id, { ...wert(id, x.e), aus: !box2.checked });
+          merken(true);
+          stand();
+          weitere();
+        });
+        const l = el('label', 'sb-w__an');
+        l.append(box2, document.createTextNode(' Auf der Website anzeigen'));
+        zeile.append(l);
+      }
+      return zeile;
+    };
+    const gruppen: [string, typeof liste][] = [
+      ['Diese Seite', liste.filter((x) => x.seite === seite)],
+      ['Auf jeder Seite (Menü, Fuß, Hinweise)', liste.filter((x) => x.seite !== seite)],
+    ];
+    box.replaceChildren(
+      el('p', 'sb-w__info', 'Texte, die nicht sichtbar auf der Seite stehen: Platzhalter in Feldern, Betreff von E-Mails, Meldungen, Texte mit Zahlen, Titel für Suchmaschinen, Ausgeblendetes.'),
+      ...gruppen.filter(([, xs]) => xs.length).flatMap(([titel, xs]) => [el('h3', 'sb-w__h', titel), ...xs.map(eintrag)]),
+    );
   }
 
   function inhalteListe() {
@@ -206,9 +305,15 @@ export function seiteBearbeiten(r: Redaktion) {
 
   // ---------- Texte auf der Seite finden und beschreibbar machen ----------
   /** Text im Element zeigen (aus den Änderungen oder dem gespeicherten Stand) */
+  /** aktueller Text eines Treffers (bei einer Zeile nur diese) */
+  const textVon = (t: Treffer) => {
+    const w = wert(t.id, t.e);
+    const ganz = (lang === 'en' && w.en) || w.de;
+    return t.zeile === undefined ? ganz : (ganz.split('\n')[t.zeile] ?? '');
+  };
   function zeigen(t: Treffer) {
     const w = wert(t.id, t.e);
-    const text = (lang === 'en' && w.en) || w.de;
+    const text = textVon(t);
     const anders = geaendert(t.id, t.e);
     for (const el of t.els) {
       const d = el.ownerDocument;
@@ -255,7 +360,7 @@ export function seiteBearbeiten(r: Redaktion) {
     // Elemente nach Text (ohne Leerraum), nur sichtbare Inhalte
     const index = new Map<string, HTMLElement[]>();
     for (const el of d.body.querySelectorAll<HTMLElement>('*')) {
-      if (/^(SCRIPT|STYLE|SVG|CANVAS|NOSCRIPT|TEMPLATE|IFRAME|IMG)$/i.test(el.tagName) || el.closest('svg')) continue;
+      if (/^(SCRIPT|STYLE|SVG|CANVAS|NOSCRIPT|TEMPLATE|IFRAME|IMG|TEXTAREA)$/i.test(el.tagName) || el.closest('svg')) continue;
       const k = norm(el.textContent ?? '');
       if (!k || k.length > 600) continue;
       const liste = index.get(k);
@@ -266,29 +371,99 @@ export function seiteBearbeiten(r: Redaktion) {
     leiste.className = 'sb-leiste';
     leiste.hidden = true;
     d.body.append(leiste);
+    const frei = (n: Node) => !(n.nodeType === Node.ELEMENT_NODE ? (n as Element) : n.parentElement)?.closest(`[data-sb-text], ${UNSICHTBAR}`);
+    /** Textstück in einem Textknoten als eigenes Element (damit es beschreibbar wird) */
+    const umhuellen = (n: Text, von: number, bis: number) => {
+      const span = d.createElement('span');
+      span.className = 'sb-teil';
+      const r = d.createRange();
+      r.setStart(n, von);
+      r.setEnd(n, bis);
+      r.surroundContents(span);
+      return span;
+    };
+    const textknoten = () => {
+      const out: Text[] = [];
+      const w = d.createTreeWalker(d.body, NodeFilter.SHOW_TEXT);
+      for (let n = w.nextNode() as Text | null; n; n = w.nextNode() as Text | null) if (n.data.trim() && frei(n)) out.push(n);
+      return out;
+    };
+    /** im bevorzugten Teil der Seite, sonst wo erlaubt */
+    const passend = <T extends Node>(liste: T[], ort: Ort) => {
+      const el = (x: T) => (x.nodeType === Node.ELEMENT_NODE ? (x as unknown as Element) : x.parentElement!);
+      const hier = liste.filter((x) => ort.bevorzugt(el(x)));
+      return hier.length ? hier : liste.filter((x) => ort.erlaubt(el(x)));
+    };
+    const BUCHSTABE = /[\p{L}\p{N}]/u;
+    /**
+     * Stellen, die genau diesen Text zeigen: 1. ein Element mit genau diesem Text, 2. ein Textknoten mit genau diesem
+     * Text (z. B. vor einem Link), 3. der Text als abgegrenztes Stück eines kurzen Textknotens („Gestaltung: Name“).
+     */
+    const finden = (text: string, b: Ort): HTMLElement[] => {
+      const k = norm(text);
+      if (!k) return [];
+      const gefunden = (index.get(k) ?? []).filter(frei);
+      const els = passend(gefunden.filter((el) => !gefunden.some((o) => o !== el && el.contains(o))), b);
+      if (els.length) return els;
+      const knoten = textknoten();
+      const genau = passend(knoten.filter((n) => norm(n.data) === k), b);
+      if (genau.length) {
+        return genau.map((n) => {
+          const anfang = n.data.length - n.data.trimStart().length;
+          return umhuellen(n, anfang, anfang + n.data.trim().length);
+        });
+      }
+      if (text.trim().length < 3) return [];
+      const t = text.trim();
+      const teil = passend(knoten.filter((n) => {
+        const i = n.data.indexOf(t);
+        if (i < 0 || n.data.indexOf(t, i + 1) >= 0 || n.data.length > t.length + 60) return false;
+        return !BUCHSTABE.test(n.data[i - 1] ?? '') && !BUCHSTABE.test(n.data[i + t.length] ?? '');
+      }), b);
+      return teil.map((n) => {
+        const i = n.data.indexOf(t);
+        return umhuellen(n, i, i + t.length);
+      });
+    };
 
     treffer = [];
-    for (const { seite: s, abschnitt, key, e } of eintraege()) {
+    const gefundenIds = new Set<string>();
+    // zuerst die Texte dieser Seite, dann „Auf jeder Seite“ (Menü, Fuß, Hinweise)
+    const reihe = [...eintraege().filter((x) => x.seite !== 'allgemein'), ...eintraege().filter((x) => x.seite === 'allgemein')];
+    for (const { seite: s, abschnitt, key, e } of reihe) {
       if (e.aus || platzhalter(e.de).length || /Browser-Tab|Suchmaschinen/.test(e.wo)) continue;
       const id = textId(s, abschnitt, key);
+      const b = ortFuer(s, abschnitt);
       // wie die Website den Text gerade zeigt: gespeicherter Stand oder (fester Testlauf) die ursprüngliche Fassung
       const kandidaten = lang === 'en' ? [e.en || e.de, e.ursprung?.en || e.ursprung?.de] : [e.de, e.ursprung?.de];
-      let els: HTMLElement[] = [];
+      const mehrzeilig = (e.zeilen ?? 1) > 1 || e.de.includes('\n');
+      const neueTreffer: Treffer[] = [];
       for (const k of kandidaten) {
         if (!k) continue;
-        const gefunden = index.get(norm(k)) ?? [];
-        // das innerste Element mit genau diesem Text (nicht schon vergeben)
-        els = gefunden.filter((el) => !gefunden.some((o) => o !== el && el.contains(o)) && !el.closest('[data-sb-text]'));
-        if (els.length) break;
+        const els = finden(k, b);
+        if (els.length) {
+          neueTreffer.push({ id, e, els });
+          break;
+        }
+        // mehrzeilig, Zeilen in getrennten Elementen: jede Zeile für sich
+        const zeilen = k.split('\n');
+        if (zeilen.length > 1) {
+          const je = zeilen.map((z) => finden(z, b));
+          if (je.every((x) => x.length)) {
+            je.forEach((x, i) => neueTreffer.push({ id, e, els: x, zeile: i }));
+            break;
+          }
+        }
       }
-      if (!els.length) continue;
-      const t: Treffer = { id, e, els };
-      treffer.push(t);
-      const mehrzeilig = (e.zeilen ?? 1) > 1 || e.de.includes('\n');
-      for (const el of els) beschreibbar(el, t, mehrzeilig, leiste);
-      zeigen(t);
+      for (const t of neueTreffer) {
+        treffer.push(t);
+        for (const el of t.els) beschreibbar(el, t, mehrzeilig && t.zeile === undefined, leiste);
+        zeigen(t);
+      }
+      if (neueTreffer.length) gefundenIds.add(id);
     }
-    $('[data-sb-zahl]')!.textContent = `${treffer.length} Texte auf dieser Seite beschreibbar`;
+    weitere(gefundenIds);
+    $('[data-sb-zahl]')!.textContent = `${gefundenIds.size} Texte direkt auf der Seite`;
   }
 
   function beschreibbar(el: HTMLElement, t: Treffer, mehrzeilig: boolean, leiste: HTMLElement) {
@@ -381,10 +556,17 @@ export function seiteBearbeiten(r: Redaktion) {
     });
     el.addEventListener('input', () => {
       const w = wert(t.id, t.e);
-      const text = lesen(el, mehrzeilig);
+      const eigen = lesen(el, mehrzeilig);
+      // eine Zeile eines mehrzeiligen Texts: nur diese Zeile ersetzen
+      let text = eigen;
+      if (t.zeile !== undefined) {
+        const zeilen = ((lang === 'en' && w.en) || w.de).split('\n');
+        zeilen[t.zeile] = eigen;
+        text = zeilen.join('\n');
+      }
       neu.set(t.id, lang === 'en' ? { ...w, en: text } : { ...w, de: text });
-      // dieselbe Stelle anderswo auf der Seite (z. B. Menü und Fuß) mitziehen
-      for (const o of t.els) if (o !== el) o.textContent = text;
+      // dieselbe Stelle anderswo auf der Seite mitziehen
+      for (const o of t.els) if (o !== el) o.textContent = eigen;
       el.classList.toggle('sb-geaendert', geaendert(t.id, t.e));
       merken();
       stand();
@@ -531,6 +713,7 @@ export function seiteBearbeiten(r: Redaktion) {
       vorL.length = 0;
       letzter = '[]';
       for (const t of treffer) zeigen(t);
+      weitere();
       meldung(`Gespeichert: ${n} ${n === 1 ? 'Text' : 'Texte'}. Die Website zeigt das in 2–3 Minuten.`, 'ok', $('[data-sb-meldung]'));
     } catch (e) {
       meldung((e as Error).message, 'error', $('[data-sb-meldung]'));

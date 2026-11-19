@@ -43,13 +43,17 @@ const gruppen = [...new Set(plan.map((s) => s.gruppe))];
         <button type="button" data-sb-sprache="en" aria-pressed="false">EN</button>
       </div>
       <div class="sb__gruppe" role="group" aria-label="Verlauf">
-        <button type="button" data-sb-zurueck disabled title="Rückgängig (Strg+Z)">↶ Zurück</button>
-        <button type="button" data-sb-vor disabled title="Wiederholen (Strg+Umschalt+Z)">↷ Vor</button>
+        <button type="button" data-sb-zurueck disabled title="Rückgängig (Strg+Z)" aria-label="Rückgängig">↶</button>
+        <button type="button" data-sb-vor disabled title="Wiederholen (Strg+Umschalt+Z)" aria-label="Wiederholen">↷</button>
       </div>
       <a class="sb__beitrag" data-sb-beitrag hidden href="#">Diesen Beitrag bearbeiten →</a>
       <details class="sb__inhalte">
         <summary>Listen und Inhalte</summary>
         <ul data-sb-inhalte></ul>
+      </details>
+      <details class="sb__inhalte sb__weitere">
+        <summary>Weitere Texte (<span data-sb-weitere-zahl>0</span>)</summary>
+        <div class="sb__weitere-liste" data-sb-weitere></div>
       </details>
       <span class="sb__stand" data-sb-stand aria-live="polite"></span>
       <button type="button" data-sb-verwerfen disabled>Verwerfen</button>
@@ -80,7 +84,7 @@ const gruppen = [...new Set(plan.map((s) => s.gruppe))];
     padding: 8px 12px; border: 1.5px solid rgba(255, 255, 255, 0.55); border-radius: 0; background: transparent; color: #fff; cursor: pointer;
     font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
   }
-  .sb__bar select { max-width: 220px; background: var(--purple); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
+  .sb__bar select { max-width: 190px; background: var(--purple); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
   .sb__bar button:disabled { opacity: 0.45; cursor: default; }
   .sb__bar button[aria-pressed='true'] { background: #fff; color: var(--purple); border-color: #fff; }
   .sb__bar button:not(:disabled):hover, .sb__inhalte summary:hover { border-color: var(--magenta); }
@@ -103,6 +107,22 @@ const gruppen = [...new Set(plan.map((s) => s.gruppe))];
   .sb__inhalte a { display: block; padding: 8px 14px; color: var(--purple); text-decoration: none; font-size: 14px; line-height: var(--lh-text); }
   .sb__inhalte a:hover { background: var(--tint); color: var(--magenta-2); }
   .sb__meldung { margin: 0; }
+  /* Weitere Texte: Klappfeld mit Eingabefeldern (vom Skript gefüllt, daher :global) */
+  .sb__weitere-liste {
+    position: absolute; z-index: 5; top: calc(100% + 4px); right: 0; width: min(560px, 92vw); max-height: 72vh; overflow: auto;
+    padding: 12px 16px 16px; background: var(--paper); color: var(--ink); border: 1.5px solid var(--purple);
+  }
+  .sb__weitere-liste :global(.sb-w__info) { margin: 0 0 8px; font-size: 13px; line-height: var(--lh-text); color: var(--ink-soft); }
+  .sb__weitere-liste :global(.sb-w__h) { margin: 14px 0 4px; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--magenta-2); }
+  .sb__weitere-liste :global(.sb-w) { display: grid; grid-template-columns: 1fr auto; gap: 4px 10px; padding: 10px 0; border-bottom: 1px solid var(--rule); }
+  .sb__weitere-liste :global(.sb-w.is-geaendert) { border-left: 3px solid var(--magenta); padding-left: 8px; }
+  .sb__weitere-liste :global(.sb-w__wo) { grid-column: 1 / -1; font-size: 13px; font-weight: 600; color: var(--purple); }
+  .sb__weitere-liste :global(input:not([type='checkbox'])), .sb__weitere-liste :global(textarea) {
+    grid-column: 1 / -1; width: 100%; padding: 6px 8px; border: 1px solid var(--rule); border-radius: 0; font: inherit; font-size: 14px; line-height: var(--lh-text); color: var(--ink); background: var(--paper);
+  }
+  .sb__weitere-liste :global(.sb-w__hinweis), .sb__weitere-liste :global(.sb-w__zahl) { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-muted); }
+  .sb__weitere-liste :global(:disabled) { opacity: 0.55; cursor: not-allowed; }
+  .sb__weitere-liste :global(.sb-w__an) { grid-column: 1 / -1; font-size: 13px; color: var(--purple); }
   .sb__hinweis { margin: 0; padding: 6px clamp(12px, 2vw, 24px); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--ink-muted); }
   .sb__buehne { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; border-top: 1px solid var(--rule); }
   .sb__buehne iframe { display: block; border: 0; background: var(--paper); transform-origin: 0 0; }
