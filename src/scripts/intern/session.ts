@@ -33,6 +33,15 @@ export const ROLLEN: Record<Profile['role'], string> = t(
 );
 
 const root = () => document.querySelector<HTMLElement>('[data-intern]');
+/** darf die Website bearbeiten? (nur ein Hinweis für den Knopf auf der Website, keine Berechtigung) */
+const merken = (redaktion: boolean) => {
+  try {
+    if (redaktion) localStorage.setItem('tndd-redaktion', '1');
+    else localStorage.removeItem('tndd-redaktion');
+  } catch {
+    /* privates Fenster: dann eben ohne Knopf */
+  }
+};
 export const setState = (state: 'loading' | 'setup' | 'login' | 'ready') => {
   const el = root();
   if (el) el.dataset.state = state;
@@ -102,6 +111,7 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
       location.replace(`${internUrl()}?weiter=${encodeURIComponent(location.pathname)}${fehler ? '&link=abgelaufen' : ''}`);
     } else {
       setState('login');
+      merken(false);
       if (fehler || q.get('link') === 'abgelaufen') showMessage(document.querySelector('[data-login-msg]'), LINK_ABGELAUFEN());
     }
     return null;
@@ -110,6 +120,8 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
   const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle<Profile>();
   const isVorstand = profile?.role === 'vorstand' || profile?.role === 'admin';
   const isRedaktion = isVorstand || profile?.role === 'presse';
+  // Merkzeichen für „Seite bearbeiten“ auf der Website (src/components/BearbeitenKnopf.astro)
+  merken(isRedaktion);
 
   document.querySelectorAll<HTMLElement>('[data-intern-name]').forEach((el) => (el.textContent = profile?.display_name || user.email || ''));
   document.querySelectorAll<HTMLElement>('[data-intern-rolle]').forEach((el) => (el.textContent = profile ? ROLLEN[profile.role] ?? '' : ''));
@@ -117,12 +129,16 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
   document.querySelectorAll<HTMLElement>('[data-redaktion-only]').forEach((el) => (el.hidden = !isRedaktion));
   document.querySelectorAll<HTMLButtonElement>('[data-logout]').forEach((btn) =>
     btn.addEventListener('click', async () => {
+      merken(false);
       await sb.auth.signOut();
       location.href = internUrl();
     }),
   );
   sb.auth.onAuthStateChange((event) => {
-    if (event === 'SIGNED_OUT') location.href = internUrl();
+    if (event === 'SIGNED_OUT') {
+      merken(false);
+      location.href = internUrl();
+    }
   });
   setState('ready');
   const ctx = { sb, user, profile: profile ?? null, isVorstand, isRedaktion };

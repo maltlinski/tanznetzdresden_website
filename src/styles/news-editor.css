@@ -414,6 +414,12 @@
 .nv button[aria-pressed='true'] { background: #fff; color: var(--purple); border-color: #fff; }
 .nv button:hover { border-color: var(--magenta); }
 .nv__zu { background: var(--magenta) !important; border-color: var(--magenta) !important; }
+.nv__h { margin-right: 0; }
+.nv__stand { margin-right: auto; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); }
+.nv__pub { border-color: var(--cyan) !important; }
+.nv:fullscreen { width: 100vw; height: 100vh; }
+.ne-top__knopf--voll { border-color: var(--purple); background: var(--purple); color: #fff; }
+.ne-top__knopf--voll:hover { background: var(--magenta); border-color: var(--magenta); color: #fff; }
 .nv__buehne, .ne-vp__buehne { position: relative; min-height: 0; overflow: hidden; }
 .nv__buehne iframe, .ne-vp__buehne iframe { display: block; border: 0; background: var(--paper); transform-origin: 0 0; }
 .nv__buehne[data-geraet='handy'], .ne-vp__buehne[data-geraet='handy'] { padding: 12px; display: flex; justify-content: center; }
@@ -509,3 +515,6 @@
 .lw__art { flex: none; width: 64px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--magenta-2); }
 .lw__eigen { display: flex; flex-wrap: wrap; align-items: flex-end; gap: 10px; }
 .lw__eigen .i-field { flex: 1 1 280px; }
+
+/* schmal öffnet „Vorschau“ schon das Vollbild (src/scripts/intern/news/vorschau.ts) */
+@media (max-width: 1179px) { .ne-top__knopf--voll { display: none; } }

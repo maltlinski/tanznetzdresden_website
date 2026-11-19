@@ -56,6 +56,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
     <span class="ne-top__stand" data-sicher aria-live="polite"></span>
     <div class="ne-top__rechts" data-editor-only hidden>
       <button type="button" class="ne-top__knopf" data-vp-schalter>Vorschau</button>
+      <button type="button" class="ne-top__knopf ne-top__knopf--voll" data-preview-open title="Den Beitrag im Vollbild direkt auf der Seite bearbeiten">Auf der Seite bearbeiten</button>
       <button type="button" class="btn btn--primary btn--marker btn--sm" data-pub-oeffnen>Veröffentlichen</button>
     </div>
   </div>
@@ -290,7 +291,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
             <button type="button" data-wiederholen disabled title="Wiederholen (Strg+Umschalt+Z)">↷ Vor</button>
           </div>
           <button type="button" class="ne-vp__direkt" data-direkt aria-pressed="true" title="Texte und Fotos direkt in der Vorschau ändern">Direkt bearbeiten</button>
-          <button type="button" class="ne-vp__gross" data-preview-open title="Vorschau groß zeigen">Groß</button>
+          <button type="button" class="ne-vp__gross" data-preview-open title="Im Vollbild bearbeiten">Vollbild</button>
         </div>
       </div>
       <div class="ne-vp__buehne" data-geraet="computer">
@@ -304,6 +305,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
   <dialog class="nv" data-vorschau data-geraet="computer" aria-labelledby="nv-h">
     <div class="nv__bar">
       <strong id="nv-h" class="nv__h">Vorschau</strong>
+      <span class="nv__stand" data-sicher-kopie aria-hidden="true"></span>
       <div class="nv__gruppe" role="group" aria-label="Bildschirm">
         <button type="button" data-geraet="computer" aria-pressed="true">Desktop</button>
         <button type="button" data-geraet="handy" aria-pressed="false">Mobil</button>
@@ -317,6 +319,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         <button type="button" data-wiederholen disabled title="Wiederholen (Strg+Umschalt+Z)">↷ Vor</button>
       </div>
       <button type="button" class="nv__direkt" data-direkt aria-pressed="true">Direkt bearbeiten</button>
+      <button type="button" class="nv__pub" data-pub-kopie>Veröffentlichen</button>
       <button type="button" class="nv__zu" data-vorschau-zu>Schließen</button>
     </div>
     <div class="nv__buehne" data-geraet="computer">
@@ -929,7 +932,18 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         live.href = `${base}news/${row.slug}/`;
         document.title = `${row.title || 'Neuer Beitrag'} · Redaktion`;
       };
-      const stand = (text: string) => (sicherEl.textContent = text);
+      // Speicherstand auch in der Leiste des Vollbilds
+      const stand = (text: string) => {
+        sicherEl.textContent = text;
+        const kopie = $('[data-sicher-kopie]');
+        if (kopie) kopie.textContent = text;
+      };
+      // „Veröffentlichen“ im Vollbild: dasselbe Panel (liegt darüber)
+      $('[data-pub-kopie]')?.addEventListener('click', () => {
+        const knopf = $<HTMLButtonElement>('[data-pub-oeffnen]')!;
+        $('[data-pub-kopie]')!.textContent = knopf.textContent;
+        knopf.click();
+      });
       renderStatus();
       stand(row.updated_at ? `Gespeichert · ${new Date(row.updated_at).toLocaleString('de-DE', { day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit' })}` : 'Noch nicht gespeichert');
 
@@ -1312,6 +1326,8 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
 
       updateEn();
       if (!id0) titel.focus();
+      // von der Website („Seite bearbeiten“): gleich auf der Seite bearbeiten
+      if (new URLSearchParams(location.search).get('direkt')) $<HTMLButtonElement>('[data-preview-open]')?.click();
     }
   }
 </script>

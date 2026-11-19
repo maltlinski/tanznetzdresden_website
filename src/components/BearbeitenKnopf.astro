@@ -1,0 +1,38 @@
+---
+/**
+ * „Seite bearbeiten“ unten links auf jeder Seite der Website – nur für angemeldete Presse, Vorstand und Admin.
+ * Nichts davon steht im HTML: Das Skript prüft zwei Merkzeichen im Browser (Anmeldung von Supabase und
+ * `tndd-redaktion`, gesetzt von src/scripts/intern/session.ts) und baut erst dann den Knopf. Kein Laden von Supabase,
+ * keine Anfrage. Die Rechte prüft weiter der interne Bereich; der Knopf ist nur ein Link
+ * (Ziel: src/pages/intern/redaktion/bearbeiten/).
+ */
+---
+<script>
+  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+  const angemeldet = () => {
+    try {
+      return localStorage.getItem('tndd-redaktion') === '1' && Object.keys(localStorage).some((k) => /^sb-.*-auth-token$/.test(k));
+    } catch {
+      return false;
+    }
+  };
+  const pfad = location.pathname.startsWith(base) ? location.pathname.slice(base.length) : location.pathname.replace(/^\//, '');
+  if (angemeldet() && !/^(en\/)?intern\//.test(pfad) && window.parent === window) {
+    const a = document.createElement('a');
+    a.className = 'bearbeiten-knopf';
+    a.href = `${base}intern/redaktion/bearbeiten/?seite=${encodeURIComponent(pfad)}`;
+    a.textContent = 'Seite bearbeiten';
+    document.body.append(a);
+  }
+</script>
+
+<style is:global>
+  .bearbeiten-knopf {
+    position: fixed; z-index: 90; left: 16px; bottom: 16px; padding: 10px 14px; background: var(--purple); color: #fff;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    text-decoration: none; border-left: 4px solid var(--magenta);
+  }
+  .bearbeiten-knopf:hover, .bearbeiten-knopf:focus-visible { background: var(--magenta); color: #fff; }
+  .bearbeiten-knopf:focus-visible { outline: 2px solid var(--cyan); outline-offset: 2px; }
+  @media print { .bearbeiten-knopf { display: none; } }
+</style>

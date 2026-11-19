@@ -91,6 +91,11 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
 - **Live-Vorschau** rechts (ab etwa 1180 px Breite): zeigt den Beitrag beim Schreiben genau wie auf der Website,
   Desktop oder Mobil, Deutsch oder Englisch. Ein Klick in die Vorschau springt zum Block, beim Schreiben scrollt sie
   mit und markiert die Stelle. Auf kleinen Bildschirmen öffnet „Vorschau“ sie groß.
+- **Auf der Seite bearbeiten** (Knopf oben im Editor, in der Vorschau „Vollbild“; auf schmalen Bildschirmen
+  „Vorschau“): die Vorschau im echten Vollbild des Browsers, Desktop in voller Breite, mit Speicherstand,
+  Rückgängig und „Veröffentlichen“ in der Leiste. Von der Website aus: „Seite bearbeiten“ unten links (nur für
+  angemeldete Presse, Vorstand, Admin; `src/components/BearbeitenKnopf.astro`) öffnet einen Beitrag gleich so
+  (`src/pages/intern/redaktion/bearbeiten/` → `?id=…&direkt=1`), andere Seiten unter Website-Inhalte → Seiten.
 - **Direkt bearbeiten** (Knopf in der Leiste der Vorschau, daneben und groß; Standard an, der Browser merkt sich die
   Wahl) – der Beitrag lässt sich wie in einem Seiten-Editor auf der Seite selbst bearbeiten:
   - **Schreiben:** Titel, Teaser, Zwischentitel, Absätze und Bildunterschriften direkt auf der Seite (Strg+B fett,

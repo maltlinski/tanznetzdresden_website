@@ -1,0 +1,53 @@
+---
+/**
+ * Einstieg von der Website: „Seite bearbeiten“ (src/components/BearbeitenKnopf.astro) führt hierher und von hier
+ * an die passende Stelle der Redaktion.
+ *   ?seite=news/<adresse>/   Beitrag aus dem internen Bereich → News-Editor, gleich „Auf der Seite bearbeiten“
+ *                             älterer Beitrag (Datei) → Website-Inhalte → Ältere Beiträge
+ *   ?seite=<pfad>            Seite der Website → Website-Inhalte → Seiten → diese Seite
+ */
+import Redaktion from '../../../../layouts/Redaktion.astro';
+import texte from '../../../../settings/texte.json';
+import { seitenplan } from '../../../../scripts/intern/redaktion/seitenplan';
+import '../../../../styles/redaktion.css';
+
+// Pfad → Seite im Seitenplan („allgemein“ steht auf jeder Seite und ist kein Ziel)
+const seiten = seitenplan(texte)
+  .filter((s) => s.id !== 'allgemein')
+  .map((s) => [s.pfad, s.id] as const);
+const json = JSON.stringify(seiten).replace(/</g, '\\u003c');
+---
+<Redaktion title="Seite bearbeiten" current="inhalte">
+  <div class="i-card" data-no-access hidden>
+    <p>Die Website bearbeiten dürfen Mitglieder mit der Rolle Presse, Vorstand oder Admin.</p>
+  </div>
+  <p class="i-card" data-bearbeiten-stand>Die Seite wird geöffnet …</p>
+  <script type="application/json" data-seiten set:html={json} />
+</Redaktion>
+
+<script>
+  import { initIntern, internUrl } from '../../../../scripts/intern/session';
+  import { redaktionUrl, seitenUrl } from '../../../../scripts/intern/redaktion/seite';
+
+  const ctx = await initIntern(true);
+  if (ctx && !ctx.isRedaktion) {
+    document.querySelector<HTMLElement>('[data-no-access]')!.hidden = false;
+    document.querySelector<HTMLElement>('[data-bearbeiten-stand]')!.hidden = true;
+  } else if (ctx) {
+    const seiten = JSON.parse(document.querySelector('[data-seiten]')?.textContent ?? '[]') as [string, string][];
+    const pfad = (new URLSearchParams(location.search).get('seite') ?? '').replace(/^\/+/, '').replace(/^en\//, '');
+    const beitrag = /^news\/([^/]+)\/?$/.exec(pfad);
+    let ziel = redaktionUrl();
+    if (beitrag) {
+      const { data } = await ctx.sb.from('news_posts').select('id').eq('slug', beitrag[1]).maybeSingle<{ id: string }>();
+      ziel = data ? `${internUrl('news/bearbeiten/')}?id=${data.id}&direkt=1` : redaktionUrl('liste/', { b: 'news' });
+    } else {
+      // genau diese Seite, sonst die mit dem längsten passenden Anfang (z. B. ein Profil unter netzwerk/)
+      const genau = seiten.find(([p]) => p === pfad);
+      const teil = seiten.filter(([p]) => p && pfad.startsWith(p)).sort((a, b) => b[0].length - a[0].length)[0];
+      const s = genau ?? (teil ? seiten.filter(([p]) => p === teil[0]).at(-1) : undefined);
+      if (s) ziel = seitenUrl(s[1]);
+    }
+    location.replace(ziel);
+  }
+</script>

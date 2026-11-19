@@ -22,6 +22,12 @@ Zustand und Verlauf, Demo-Ansicht, Datenbank
 
 Auf schmalen Bildschirmen klappt der Knopf „Menü“ die Leiste auf.
 
+**Von der Website aus:** Wer als Presse, Vorstand oder Admin angemeldet ist (einmal im internen Bereich gewesen),
+sieht auf jeder Seite der Website unten links „Seite bearbeiten“ (`src/components/BearbeitenKnopf.astro`, nur im
+Browser gebaut, nichts im HTML). Er führt über `src/pages/intern/redaktion/bearbeiten/` zum Beitrag im Editor oder
+zur Seite unter Seiten. Das Merkzeichen `tndd-redaktion` setzt `src/scripts/intern/session.ts`; es ist kein Recht,
+die Rolle prüft weiter der interne Bereich.
+
 Jede Seite zeigt oben Breadcrumbs („Website-Inhalte › Seiten › Startseite › Kopf › …“), jeder Bereich, wo er auf der
 Website erscheint („Erscheint auf der Website: …“). Selten gebrauchte Felder stehen im Formular unter **Erweitert**,
 die englischen Felder blendet „Englische Fassung zeigen“ ein (die Wahl merkt sich der Browser).

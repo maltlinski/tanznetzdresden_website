@@ -1,6 +1,8 @@
 /**
  * Vorschau im News-Editor: neben dem Editor (große Bildschirme) und als Vollbild (Knopf „Vorschau“).
  * Beide zeigen src/pages/intern/news/vorschau/ in einem Rahmen und bekommen den Stand per postMessage.
+ * Vollbild („Auf der Seite bearbeiten“): echtes Vollbild des Browsers, Desktop in voller Breite (ab 1280 px
+ * unverkleinert), damit die Seite so groß erscheint wie auf der Website.
  * Klick in der Vorschau springt im Editor an die Stelle; beim Schreiben scrollt die Vorschau mit.
  * „Direkt bearbeiten“ (Knopf in beiden Leisten, Standard an, gemerkt): Texte und Fotos in der Vorschau ändern;
  * die Änderungen kommen als `news-direkt` zurück (src/scripts/intern/news/direkt.ts).
@@ -55,12 +57,12 @@ export function vorschau(opt: {
       rahmen.forEach(senden);
     });
   });
-  const rahmen: { frame: HTMLIFrameElement; buehne: HTMLElement; geraet: Geraet; sprache: Sprache; geladen: boolean; sichtbar: () => boolean }[] = [];
+  const rahmen: { frame: HTMLIFrameElement; buehne: HTMLElement; geraet: Geraet; sprache: Sprache; geladen: boolean; sichtbar: () => boolean; voll: boolean }[] = [];
 
   function einrichten(root: HTMLElement, sichtbar: () => boolean) {
     const frame = root.querySelector<HTMLIFrameElement>('iframe')!;
     const buehne = frame.parentElement as HTMLElement;
-    const r = { frame, buehne, geraet: (root.dataset.geraet as Geraet) ?? 'computer', sprache: 'de' as Sprache, geladen: false, sichtbar };
+    const r = { frame, buehne, geraet: (root.dataset.geraet as Geraet) ?? 'computer', sprache: 'de' as Sprache, geladen: false, sichtbar, voll: root.tagName === 'DIALOG' };
     rahmen.push(r);
     frame.addEventListener('load', () => {
       r.geladen = true;
@@ -87,8 +89,9 @@ export function vorschau(opt: {
 
   /** Rahmen in Computer- oder Handybreite darstellen und auf den Platz verkleinern */
   function groesse(r: (typeof rahmen)[number]) {
-    const breite = r.geraet === 'handy' ? HANDY : COMPUTER;
     const platz = r.buehne.clientWidth - (r.geraet === 'handy' ? 24 : 0);
+    // im Vollbild so breit wie der Bildschirm (mindestens Desktop-Breite, schmaler wird verkleinert)
+    const breite = r.geraet === 'handy' ? HANDY : r.voll ? Math.max(COMPUTER, platz) : COMPUTER;
     const hoehe = r.buehne.clientHeight - (r.geraet === 'handy' ? 24 : 0);
     const s = Math.min(1, platz / breite);
     r.frame.style.width = `${breite}px`;
@@ -151,6 +154,8 @@ export function vorschau(opt: {
   function grossOeffnen() {
     if (!dlg || !gross) return;
     dlg.showModal();
+    // echtes Vollbild (ohne Leisten des Browsers), wo erlaubt; sonst bleibt es beim Dialog über die ganze Seite
+    dlg.requestFullscreen?.().catch(() => {});
     laden(gross);
     senden(gross);
   }
@@ -158,6 +163,10 @@ export function vorschau(opt: {
   if (dlg) {
     document.querySelectorAll<HTMLButtonElement>('[data-preview-open]').forEach((b) => b.addEventListener('click', grossOeffnen));
     dlg.querySelector('[data-vorschau-zu]')?.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('close', () => {
+      if (document.fullscreenElement) void document.exitFullscreen().catch(() => {});
+    });
+    document.addEventListener('fullscreenchange', () => gross && groesse(gross));
   }
 
   // Klick in der Vorschau → Editor
