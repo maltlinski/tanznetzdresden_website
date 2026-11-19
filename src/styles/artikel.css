@@ -189,6 +189,14 @@ html:not(.js) .ak__knoten { opacity: 1; left: auto; top: auto; right: var(--gutt
   font-size: clamp(24px, 2.4vw, 30px); line-height: 1.1; letter-spacing: -0.02em; color: var(--purple); margin: 1.4em 0 0.7em;
 }
 .ab__text h3:not(.ns__titel) { font-size: 22px; }
+/* Schriftgröße eines Absatzes oder Zwischentitels (Redaktion: feste Stufen, src/lib/news-bloecke.ts GROESSEN) */
+.ab__text .gr--klein { --gr: 0.85; }
+.ab__text .gr--gross { --gr: 1.25; }
+.ab__text .gr--sehr-gross { --gr: 1.6; }
+.ab__text p.gr, .ab__text ul.gr, .ab__text ol.gr { font-size: calc(1em * var(--gr)); }
+.ab__text p.gr--gross, .ab__text p.gr--sehr-gross { line-height: var(--lh-text); }
+.ab__text h2.gr { font-size: calc(clamp(24px, 2.4vw, 30px) * var(--gr)); }
+.ab__text h3.gr:not(.ns__titel) { font-size: calc(22px * var(--gr)); }
 .ab__text h2::before { content: ''; flex: none; width: 10px; height: 10px; background: var(--magenta); }
 .ab__text a:not(.nb__item) { overflow-wrap: anywhere; color: var(--purple); text-decoration: underline; text-decoration-color: var(--magenta); text-underline-offset: 3px; text-decoration-thickness: 1.5px; }
 .ab__text a:not(.nb__item):hover { color: var(--magenta-2); }

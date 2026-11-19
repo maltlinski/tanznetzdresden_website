@@ -31,7 +31,8 @@
  *   :::
  *
  * Zwischentitel sind Markdown-Überschriften (`## Titel`), Zitate Markdown-Zitate (`> Text`, darunter
- * `> — Name`). Beim Einlesen wird Text an diesen Stellen in eigene Abschnitte geteilt.
+ * `> — Name`). Absätze und Zwischentitel in einer anderen Schriftgröße (feste Stufen, src/styles/artikel.css)
+ * stehen zwischen `::: klein`, `::: gross` oder `::: sehr-gross` und `:::`. Beim Einlesen wird Text an diesen Stellen in eigene Abschnitte geteilt.
  *
  * Der Editor (Intern → News) zeigt die Abschnitte als Karten; niemand muss das Format kennen.
  * Die englische Fassung (body_en) hat dieselben Abschnitte mit englischen Texten.
@@ -47,6 +48,11 @@ export const FORMAT_R: Record<Exclude<Format, 'original'>, number> = { quer: 3 /
 export const BREITEN = ['text', 'weit', 'randlos'] as const;
 export type Breite = (typeof BREITEN)[number];
 export const DARSTELLUNGEN = ['raster', 'neben', 'paar', 'strecke'] as const;
+/** Schriftgröße eines Absatzes oder Zwischentitels: feste Stufen des Designs, „standard“ = ohne Angabe */
+export const GROESSEN = ['klein', 'standard', 'gross', 'sehr-gross'] as const;
+export type Groesse = (typeof GROESSEN)[number];
+/** Abschnitt mit einer Schriftgröße (nur Absatz und Zwischentitel) */
+export const GROESSE = /^::: ?(klein|gross|sehr-gross)[ \t]*\n([\s\S]*?)\n:::[ \t]*(?=\n|$)/gm;
 export type Darstellung = (typeof DARSTELLUNGEN)[number];
 
 export interface Bild {
@@ -106,6 +112,8 @@ export interface TextBlock {
   en: string;
   /** nur Zitat: wer das sagt („Name · Rolle“) */
   wer?: string;
+  /** nur Absatz und Zwischentitel: Schriftgröße (fehlt = standard) */
+  groesse?: Groesse;
 }
 export type Block = TextBlock | BilderBlock | SchritteBlock;
 
@@ -198,7 +206,16 @@ function textTeilen(src: string, out: Block[]) {
 function zerlegen(md: string): Block[] {
   const out: Block[] = [];
   const text = (s: string) => {
-    if (s.trim()) textTeilen(s, out);
+    // Abschnitte mit eigener Schriftgröße: Inhalt teilen wie sonst, die Größe gilt für jeden Teil
+    let ab = 0;
+    for (const m of s.matchAll(GROESSE)) {
+      if (s.slice(ab, m.index).trim()) textTeilen(s.slice(ab, m.index), out);
+      const teile: Block[] = [];
+      textTeilen(m[2], teile);
+      for (const t of teile) out.push(t.typ === 'text' || t.typ === 'zwischentitel' ? { ...t, groesse: m[1] as Groesse } : t);
+      ab = m.index! + m[0].length;
+    }
+    if (s.slice(ab).trim()) textTeilen(s.slice(ab), out);
   };
   const src = (md ?? '').replace(/\r\n?/g, '\n');
   let last = 0;
@@ -290,13 +307,14 @@ export function zuMarkdown(bloecke: Block[], lang: 'de' | 'en' = 'de'): string {
       if (b.typ !== 'bilder') {
         const t = ((en && b.en.trim()) || b.de).trim();
         if (!t) return '';
-        if (b.typ === 'zwischentitel') return `## ${t.replace(/\s*\n\s*/g, ' ')}`;
+        const gr = (md: string) => (b.groesse && b.groesse !== 'standard' ? `::: ${b.groesse}\n${md}\n:::` : md);
+        if (b.typ === 'zwischentitel') return gr(`## ${t.replace(/\s*\n\s*/g, ' ')}`);
         if (b.typ === 'zitat') {
           const teile = t.split(/\n\s*\n/).map((a) => a.trim().replace(/\n/g, '\n> '));
           if (b.wer?.trim()) teile.push(`— ${b.wer.trim()}`);
           return teile.map((a) => `> ${a}`).join('\n>\n');
         }
-        return b.typ === 'text' ? t : `::: hinweis\n${t}\n:::`;
+        return b.typ === 'text' ? gr(t) : `::: hinweis\n${t}\n:::`;
       }
       if (!b.bilder.length) return '';
       const n = b.bilder.length;

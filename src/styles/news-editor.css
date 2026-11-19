@@ -292,6 +292,8 @@
   width: 100%; border: 0; border-top: 1px solid var(--rule); background: transparent; padding: 10px 0 0; outline: none;
   font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--ink-soft);
 }
+.ab-groesse { display: inline-flex; align-items: center; gap: 8px; margin-top: 8px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-muted); }
+.ab-groesse select { padding: 4px 8px; border: 1px solid var(--rule); border-radius: 0; background: var(--paper); font: inherit; letter-spacing: 0.06em; color: var(--purple); }
 .ab-ta::placeholder, .ab-zt::placeholder, .ab-zitat::placeholder, .ab-wer::placeholder { color: var(--ink-muted); opacity: 1; }
 .ab-en > summary {
   padding: 4px 0; cursor: pointer; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em;

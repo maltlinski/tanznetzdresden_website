@@ -436,11 +436,13 @@ test('Direkt bearbeiten: Titel, Absätze und Fotobreite in der Vorschau ändern'
   await expect(page.getByLabel('Zwischentitel, Block 2', { exact: true })).toHaveValue('Die Residenzen 2024');
   await page.keyboard.press('Escape');
 
-  // Foto: Breite über die Knöpfe …
+  // Foto: Breite über die Leiste des Blocks …
+  const leiste = vs.locator('.vs-block');
   const fig = vs.locator('[data-abschnitt="2"] figure');
   await expect(fig).toHaveClass(/nb--weit/);
   await fig.hover();
-  await fig.getByRole('button', { name: 'Randlos' }).click();
+  await expect(leiste).toHaveAttribute('aria-label', 'Block 3: Bild');
+  await leiste.getByRole('button', { name: 'Breite: Randlos' }).click();
   await expect(page.locator('.ab-block').nth(2).getByRole('button', { name: 'Randlos' })).toHaveAttribute('aria-pressed', 'true');
   await expect(vs.locator('[data-abschnitt="2"] figure')).toHaveClass(/nb--randlos/);
   // … oder am Griff ziehen: weit nach innen = neben dem Text
@@ -453,6 +455,80 @@ test('Direkt bearbeiten: Titel, Absätze und Fotobreite in der Vorschau ändern'
   await page.mouse.up();
   await expect(page.locator('.ab-block').nth(2).getByRole('button', { name: 'Neben dem Text' })).toHaveAttribute('aria-pressed', 'true');
   await expect(vs.locator('[data-abschnitt="2"] figure')).toHaveClass(/nb--neben/);
+  // Zurücksetzen: Textbreite im Original
+  await vs.locator('[data-abschnitt="2"] figure').hover();
+  await leiste.getByRole('button', { name: /^Zurücksetzen/ }).click();
+  await expect(page.locator('.ab-block').nth(2).getByRole('button', { name: 'Textbreite' })).toHaveAttribute('aria-pressed', 'true');
+  // Bildunterschrift direkt im Foto
+  await vs.locator('[data-abschnitt="2"] .nb__text').click();
+  await page.keyboard.type('Probe im Studio');
+  await expect(page.getByLabel('Bildunterschrift', { exact: true })).toHaveValue('Probe im Studio');
+  await page.keyboard.press('Escape');
+});
+
+test('Direkt bearbeiten: Schriftgröße, neue Blöcke, Verdoppeln, Löschen, Rückgängig', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vorschau neben dem Formular nur auf breiten Bildschirmen');
+  await redaktion(page);
+  await page.goto('/intern/news/bearbeiten/');
+  await page.getByLabel('Titel', { exact: true }).fill('Größen');
+  await page.getByLabel('Absatz, Block 1', { exact: true }).fill('Ein Absatz.');
+  const vs = page.frameLocator('[data-vp] iframe');
+  const leiste = vs.locator('.vs-block');
+  const p = vs.locator('[data-abschnitt="0"] p').first();
+  await expect(p).toHaveText('Ein Absatz.');
+
+  // Schriftgröße: feste Stufen, sofort sichtbar, im Formular und gespeicherten Text
+  await p.click();
+  await leiste.getByRole('button', { name: 'Schriftgröße: Groß' }).click();
+  await expect(p).toHaveClass(/gr--gross/);
+  await expect(page.getByLabel('Absatz, Block 1: Schriftgröße')).toHaveValue('gross');
+  await page.keyboard.press('Escape');
+  // Zurücksetzen → Standard
+  await p.hover();
+  await leiste.getByRole('button', { name: /^Zurücksetzen/ }).click();
+  await expect(page.getByLabel('Absatz, Block 1: Schriftgröße')).toHaveValue('standard');
+  await expect(vs.locator('[data-abschnitt="0"] p').first()).not.toHaveClass(/gr--/);
+
+  // „+“: neuer Zwischentitel dahinter, gleich beschreibbar
+  await vs.locator('[data-abschnitt="0"] p').first().hover();
+  await leiste.getByRole('button', { name: 'Neuen Block dahinter einfügen' }).click();
+  await vs.locator('.vs-menue').getByRole('button', { name: 'Zwischentitel einfügen' }).click();
+  await expect(page.locator('.ab-block__typ')).toHaveText(['Absatz', 'Zwischentitel']);
+  await expect(vs.locator('[data-abschnitt="1"] h2')).toBeFocused();
+  await page.keyboard.type('Neu');
+  await expect(page.getByLabel('Zwischentitel, Block 2', { exact: true })).toHaveValue('Neu');
+  await page.keyboard.press('Escape');
+
+  // Verdoppeln, verschieben, löschen
+  await vs.locator('[data-abschnitt="1"] h2').hover();
+  await leiste.getByRole('button', { name: 'Verdoppeln' }).click();
+  await expect(page.locator('.ab-block__typ')).toHaveText(['Absatz', 'Zwischentitel', 'Zwischentitel']);
+  await vs.locator('[data-abschnitt="1"] h2').hover();
+  await leiste.getByRole('button', { name: 'Nach oben' }).click();
+  await expect(page.locator('.ab-block__typ')).toHaveText(['Zwischentitel', 'Absatz', 'Zwischentitel']);
+
+  // Rückgängig (Knopf in der Leiste der Vorschau) und Wiederholen
+  const seite = page.locator('[data-vp]');
+  await seite.getByRole('button', { name: '↶ Zurück' }).click();
+  await expect(page.locator('.ab-block__typ')).toHaveText(['Absatz', 'Zwischentitel', 'Zwischentitel']);
+  await seite.getByRole('button', { name: '↷ Vor' }).click();
+  await expect(page.locator('.ab-block__typ')).toHaveText(['Zwischentitel', 'Absatz', 'Zwischentitel']);
+  // Strg+Z in der Vorschau
+  await vs.locator('[data-abschnitt="1"] p').first().click();
+  await page.keyboard.press('Control+z');
+  await expect(page.locator('.ab-block__typ')).toHaveText(['Absatz', 'Zwischentitel', 'Zwischentitel']);
+
+  page.once('dialog', (d) => d.accept());
+  await vs.locator('[data-abschnitt="2"] h2').hover();
+  await leiste.getByRole('button', { name: 'Löschen' }).click();
+  await expect(page.locator('.ab-block__typ')).toHaveText(['Absatz', 'Zwischentitel']);
+});
+
+test('Schriftgröße bleibt beim Hin und Her (Markdown) erhalten', async () => {
+  const md = 'Normal.\n\n::: gross\nGroßer Absatz.\n:::\n\n::: klein\n## Kleiner Titel\n:::';
+  const { bloecke } = abschnitte(md);
+  expect(bloecke.map((b) => (b.typ === 'text' || b.typ === 'zwischentitel' ? (b.groesse ?? 'standard') : ''))).toEqual(['standard', 'gross', 'klein']);
+  expect(zuMarkdown(bloecke)).toBe(md);
 });
 
 test('Vorschau: lange Zitate werden kleiner gesetzt', async ({ page, isMobile }) => {

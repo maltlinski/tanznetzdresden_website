@@ -10,7 +10,7 @@ import { h } from './dom';
 import { fokusFlaeche } from './medien';
 import { RAHMEN_NEWS_BLOECKE } from '../../../lib/bild-zuschnitt';
 import { newsBildUrl } from '../../../lib/markdown';
-import { FORMATE, type Bild, type BilderBlock, type Block, type Breite, type Format, type Schritt, type SchritteBlock, type TextBlock } from '../../../lib/news-bloecke';
+import { FORMATE, GROESSEN, type Groesse, type Bild, type BilderBlock, type Block, type Breite, type Format, type Schritt, type SchritteBlock, type TextBlock } from '../../../lib/news-bloecke';
 
 export { h };
 
@@ -65,6 +65,7 @@ export const TYP_LABEL: Record<Typ, string> = { text: 'Absatz', zwischentitel: '
 const ART_LABEL: Record<Art, string> = { text: 'Absatz', zwischentitel: 'Zwischentitel', zitat: 'Zitat', bild: 'Bild', paar: 'Bildpaar', strecke: 'Bildstrecke', schritte: 'Bild & Text', hinweis: 'Hinweiskasten' };
 const BREITE_LABEL: [Breite | 'neben', string][] = [['text', 'Textbreite'], ['weit', 'Weit'], ['randlos', 'Randlos'], ['neben', 'Neben dem Text']];
 const FORMAT_LABEL: Record<Format, string> = { original: 'Original (nicht zuschneiden)', quer: 'Querformat 3 : 2', hoch: 'Hochformat 3 : 4', quadrat: 'Quadrat' };
+export const GROESSE_LABEL: Record<Groesse, string> = { klein: 'Klein', standard: 'Standard', gross: 'Groß', 'sehr-gross': 'Sehr groß' };
 const FORMAT_KURZ: Record<Format, string> = { original: 'Original', quer: 'Querformat', hoch: 'Hochformat', quadrat: 'Quadrat' };
 const WERKZEUGE = [
   { cmd: 'b', label: 'Fett', icon: 'B' },
@@ -235,10 +236,20 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
       b[k] = (e.target as HTMLInputElement).value;
       geaendert();
     };
+    // Schriftgröße (feste Stufen): Absatz und Zwischentitel
+    const groesse = () =>
+      h('label', { class: 'ab-groesse' }, h('span', { text: 'Größe' }),
+        h('select', {
+          'aria-label': `${label}: Schriftgröße`,
+          onchange: (e: Event) => {
+            b.groesse = (e.target as HTMLSelectElement).value as Groesse;
+            geaendert();
+          },
+        }, ...GROESSEN.map((g) => h('option', { value: g, text: GROESSE_LABEL[g], selected: (b.groesse ?? 'standard') === g }))));
     if (b.typ === 'zwischentitel') {
       const de = h('input', { class: 'ab-zt', value: b.de, maxLength: 160, 'aria-label': label, 'data-key': `${i}-de`, placeholder: b.platzhalter ?? 'Zwischentitel', oninput: setze('de') });
       const en = h('input', { class: 'ab-zt ab-zt--en', value: b.en, maxLength: 160, lang: 'en', 'aria-label': `${label}: Englisch`, 'data-key': `${i}-en`, placeholder: 'Heading (optional)', oninput: setze('en') });
-      return [de, englisch(b, [en], () => !!b.en.trim())];
+      return [de, groesse(), englisch(b, [en], () => !!b.en.trim())];
     }
     if (b.typ === 'zitat') {
       const de = wachsend(h('textarea', { class: 'ab-zitat', rows: 2, value: b.de, 'aria-label': label, 'data-key': `${i}-de`, placeholder: b.platzhalter ?? 'Zitat ohne Anführungszeichen', oninput: setze('de') }) as HTMLTextAreaElement, 56);
@@ -257,7 +268,7 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
     }) as HTMLTextAreaElement, 60);
     const en = englisch(b, [werkzeuge(taEn, `${label} Englisch`, opt.linkWaehlen), taEn], () => !!b.en.trim());
     en.addEventListener('toggle', () => en.open && taEn.dispatchEvent(new Event('groesse')));
-    return [werkzeuge(ta, label, opt.linkWaehlen), ta, en];
+    return [werkzeuge(ta, label, opt.linkWaehlen), ta, b.typ === 'text' ? groesse() : null, en];
   }
 
   // ---------- Bilder ----------
@@ -938,6 +949,70 @@ export function abschnittEditor(root: HTMLElement, opt: AbschnittOptionen) {
       zeichnen();
       geaendert();
     },
+    /** Direkt bearbeiten: Schriftgröße eines Absatzes oder Zwischentitels */
+    groesseSetzen(i: number, g: Groesse) {
+      const b = bloecke[i];
+      if (!b || (b.typ !== 'text' && b.typ !== 'zwischentitel')) return;
+      b.groesse = g;
+      zeichnen();
+      geaendert();
+    },
+    /** Direkt bearbeiten: Format eines Bild-Blocks */
+    formatSetzen(i: number, f: Format) {
+      const b = bloecke[i];
+      if (b?.typ !== 'bilder') return;
+      b.format = f;
+      zeichnen();
+      geaendert();
+    },
+    /** Direkt bearbeiten: Bildunterschrift eines Bild-Blocks */
+    unterschriftSetzen(i: number, wert: string, lang: 'de' | 'en') {
+      const b = bloecke[i];
+      if (b?.typ !== 'bilder') return;
+      b[lang === 'en' ? 'text_en' : 'text'] = wert;
+      const el = root.querySelector<HTMLInputElement>(`[data-i="${i}"] [data-key="${i}-cap${lang === 'en' ? 'en' : ''}"]`);
+      if (el) el.value = wert;
+      geaendert();
+    },
+    /** Direkt bearbeiten: Ausschnitt-Editor des (ersten) Fotos öffnen */
+    ausschnitt(i: number) {
+      const karte = root.querySelector<HTMLElement>(`.ab-block[data-i="${i}"]`);
+      const knopf = karte?.querySelector<HTMLButtonElement>('.md-fokus__editor');
+      if (knopf) knopf.click();
+      else springen(i);
+    },
+    /** Direkt bearbeiten: Blöcke verschieben, einfügen, verdoppeln, löschen */
+    schieben: (i: number, d: number) => verschieben(i, i + d),
+    /** neuer Block an Stelle i (ohne in den Editor zu springen: geschrieben wird in der Vorschau) */
+    neuerBlock(i: number, art: Art) {
+      bloecke.splice(i, 0, neu(art));
+      zeichnen();
+      geaendert();
+    },
+    /** Standard des Designs: Schriftgröße, Breite und Format */
+    zuruecksetzen(i: number) {
+      const b = bloecke[i];
+      if (!b) return;
+      if (b.typ === 'text' || b.typ === 'zwischentitel') delete b.groesse;
+      else if (b.typ === 'bilder') {
+        // wie beim Anlegen: ein Foto Textbreite im Original, Galerie im Querformat, Bildpaar/-strecke im Original
+        const galerie = b.darstellung === 'raster' && b.bilder.length > 1;
+        Object.assign(b, { darstellung: b.darstellung === 'neben' ? 'raster' : b.darstellung, breite: 'text', format: galerie ? 'quer' : 'original' });
+      }
+      else return;
+      zeichnen();
+      geaendert();
+    },
+    verdoppeln(i: number) {
+      const b = bloecke[i];
+      if (!b) return;
+      bloecke.splice(i + 1, 0, structuredClone(b));
+      zeichnen();
+      geaendert();
+    },
+    loeschen,
+    /** Stand aller Blöcke (Rückgängig) */
+    stand: () => structuredClone(bloecke),
     /** Direkt bearbeiten: Foto eines Bild-Blocks aus der Mediathek tauschen */
     fotoTauschen(i: number) {
       const b = bloecke[i];

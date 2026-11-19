@@ -92,12 +92,27 @@ eine Bildbeschreibung fehlt oder die für den Newsletter vorgemerkt sind.
   Desktop oder Mobil, Deutsch oder Englisch. Ein Klick in die Vorschau springt zum Block, beim Schreiben scrollt sie
   mit und markiert die Stelle. Auf kleinen Bildschirmen öffnet „Vorschau“ sie groß.
 - **Direkt bearbeiten** (Knopf in der Leiste der Vorschau, daneben und groß; Standard an, der Browser merkt sich die
-  Wahl): Titel, Teaser, Zwischentitel und Absätze schreibt man direkt auf der Seite (Strg+B/Strg+I, Enter beginnt einen
-  neuen Absatz, Esc beendet). Ein einzelnes Foto bekommt beim Darüberfahren eine Leiste (Neben dem Text, Textbreite,
-  Weit, Randlos, Foto tauschen) und Griffe links und rechts: Ziehen macht es breiter oder schmaler, es rastet in diesen
-  Stufen ein, frei wählbare Größen gibt es bewusst nicht (Designsystem, Handy). Oben im Kopf „Titelbild wählen/tauschen“.
-  Alles landet sofort im Formular (gespeichert wird wie sonst). Absätze, deren Darstellung der Rückweg nicht genau
-  trifft (z. B. Personenkarten), Zitate, Galerien, Eckdaten und der Kopf öffnen weiter per Klick die Stelle im Editor.
+  Wahl) – der Beitrag lässt sich wie in einem Seiten-Editor auf der Seite selbst bearbeiten:
+  - **Schreiben:** Titel, Teaser, Zwischentitel, Absätze und Bildunterschriften direkt auf der Seite (Strg+B fett,
+    Strg+I kursiv, Strg+K Link, Enter neuer Absatz, Esc beendet). Ein neuer Absatz oder Zwischentitel ist sofort
+    beschreibbar.
+  - **Leiste über dem Block** (erscheint beim Darüberfahren oder Klicken): Fett, Kursiv, Link, Aufzählung an/aus,
+    Formatierung entfernen; **Schriftgröße** Klein · Standard · Groß · Sehr groß (feste Stufen, nur Absatz und
+    Zwischentitel); beim Foto **Breite** (Neben dem Text, Textbreite, Weit, Randlos), **Format** (Original, 3 : 2, 3 : 4,
+    1 : 1), Foto tauschen, Ausschnitt; **↺ Zurücksetzen** auf den Standard des Designs (Größe Standard, Foto Textbreite
+    im Original, Galerie im Querformat); ↑ ↓ verschieben, ⧉ verdoppeln, ✕ löschen, **+** neuer Block dahinter (Absatz,
+    Zwischentitel, Bild, Zitat, Hinweiskasten) und „Formular“ (springt zum Block im Editor).
+  - **Fotos ziehen:** Ein einzelnes Foto hat Griffe links und rechts; Ziehen macht es breiter oder schmaler, es rastet
+    in den Stufen ein. Frei wählbare Größen gibt es bewusst nicht (Designsystem, Handy).
+  - **Rückgängig/Wiederholen:** „↶ Zurück“ und „↷ Vor“ in beiden Leisten, Strg+Z / Strg+Umschalt+Z (in der Vorschau
+    und außerhalb von Eingabefeldern). Umfasst Blöcke und Formularfelder, nicht Eckdaten und Titelbild. Tippen wird
+    kurz gesammelt, Änderungen am Aufbau sind je ein eigener Schritt.
+  - Oben im Kopf „Titelbild wählen/tauschen“. Alles landet sofort im Formular (gespeichert wird wie sonst).
+  - Absätze, deren Darstellung der Rückweg nach Markdown nicht genau trifft (z. B. Personenkarten), bleiben über die
+    Leiste und „Formular“ bearbeitbar; Zitate, Galerien und Bild & Text ebenso.
+  - Schriftgröße im gespeicherten Text: `::: gross` … `:::` (auch `klein`, `sehr-gross`) um Absatz oder Zwischentitel,
+    gelesen und geschrieben in `src/lib/news-bloecke.ts` (`GROESSEN`), dargestellt in `src/lib/markdown.ts` (Klassen
+    `gr gr--…`), Stufen in `src/styles/artikel.css`. Im Formular steht dieselbe Wahl als „Größe“ am Block.
   Logik: `src/scripts/intern/news/direkt.ts` (läuft in der Vorschau, schickt `news-direkt` an den Editor).
 
 **Speichern:** Entwürfe speichert der Editor selbst, sobald ein Titel da ist („Gespeichert · 14:32“). Änderungen an

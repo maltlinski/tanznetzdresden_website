@@ -28,8 +28,8 @@ export function vorschau(opt: {
   /** aktueller Stand für eine Sprache */
   daten: (lang: Sprache) => unknown;
   springen: (z: Sprungziel) => void;
-  /** Änderung aus der Vorschau (Direkt bearbeiten) */
-  direkt?: (m: DirektNachricht) => void;
+  /** Änderung aus der Vorschau (Direkt bearbeiten); ein Ergebnis (z. B. gewählter Link) geht an die Vorschau zurück */
+  direkt?: (m: DirektNachricht) => void | Promise<unknown>;
 }): Vorschau {
   const panel = document.querySelector<HTMLElement>('[data-vp]');
   const dlg = document.querySelector<HTMLDialogElement>('[data-vorschau]');
@@ -162,7 +162,12 @@ export function vorschau(opt: {
 
   // Klick in der Vorschau → Editor
   addEventListener('message', (e) => {
-    if (e.origin === location.origin && e.data?.typ === 'news-direkt') return opt.direkt?.(e.data as DirektNachricht);
+    if (e.origin === location.origin && e.data?.typ === 'news-direkt') {
+      const m = e.data as DirektNachricht;
+      const r = opt.direkt?.(m);
+      if (r && 'id' in m) void r.then((daten) => (e.source as Window | null)?.postMessage({ typ: 'news-antwort', id: m.id, daten }, location.origin));
+      return;
+    }
     if (e.origin !== location.origin || e.data?.typ !== 'news-springen') return;
     if (dlg?.open) dlg.close();
     opt.springen(e.data.ziel === 'abschnitt' ? { ziel: 'abschnitt', i: Number(e.data.i) } : { ziel: e.data.ziel });

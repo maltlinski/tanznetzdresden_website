@@ -157,6 +157,24 @@ export function renderMarkdown(src: string, base = '/', opt: MarkdownOptionen = 
   md.use({
     extensions: [
       {
+        // Absatz oder Zwischentitel in einer anderen Schriftgröße (src/lib/news-bloecke.ts, GROESSE)
+        name: 'groesse',
+        level: 'block',
+        start: (s: string) => s.match(/^::: ?(klein|gross|sehr-gross)[ \t]*$/m)?.index,
+        tokenizer(s: string) {
+          const m = /^::: ?(klein|gross|sehr-gross)[ \t]*\n([\s\S]*?)\n:::[ \t]*(?:\n+|$)/.exec(s);
+          if (!m) return undefined;
+          const token = { type: 'groesse', raw: m[0], stufe: m[1], tokens: [] as Tokens.Generic[] };
+          this.lexer.blockTokens(m[2], token.tokens);
+          return token;
+        },
+        renderer(token) {
+          // Klasse an jedes Element der obersten Ebene (kein Rahmen, damit die Abstände im Text gleich bleiben)
+          const cls = `gr gr--${token.stufe}`;
+          return this.parser.parse(token.tokens ?? []).replace(/^<(p|h2|h3|ul|ol)( class="([^"]*)")?/gm, (_, tag: string, _k, alt?: string) => `<${tag} class="${alt ? `${alt} ` : ''}${cls}"`);
+        },
+      },
+      {
         name: 'direktive',
         level: 'block',
         start: (s: string) => s.match(/^::: ?(bilder|hinweis|schritte)[ \t]*$/m)?.index,

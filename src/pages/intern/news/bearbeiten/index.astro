@@ -285,6 +285,10 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
             <button type="button" data-sprache="de" aria-pressed="true">DE</button>
             <button type="button" data-sprache="en" aria-pressed="false">EN</button>
           </div>
+          <div class="ne-vp__gruppe" role="group" aria-label="Verlauf">
+            <button type="button" data-rueckgaengig disabled title="Rückgängig (Strg+Z)">↶ Zurück</button>
+            <button type="button" data-wiederholen disabled title="Wiederholen (Strg+Umschalt+Z)">↷ Vor</button>
+          </div>
           <button type="button" class="ne-vp__direkt" data-direkt aria-pressed="true" title="Texte und Fotos direkt in der Vorschau ändern">Direkt bearbeiten</button>
           <button type="button" class="ne-vp__gross" data-preview-open title="Vorschau groß zeigen">Groß</button>
         </div>
@@ -307,6 +311,10 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
       <div class="nv__gruppe" role="group" aria-label="Sprache">
         <button type="button" data-sprache="de" aria-pressed="true">Deutsch</button>
         <button type="button" data-sprache="en" aria-pressed="false">Englisch</button>
+      </div>
+      <div class="nv__gruppe" role="group" aria-label="Verlauf">
+        <button type="button" data-rueckgaengig disabled title="Rückgängig (Strg+Z)">↶ Zurück</button>
+        <button type="button" data-wiederholen disabled title="Wiederholen (Strg+Umschalt+Z)">↷ Vor</button>
       </div>
       <button type="button" class="nv__direkt" data-direkt aria-pressed="true">Direkt bearbeiten</button>
       <button type="button" class="nv__zu" data-vorschau-zu>Schließen</button>
@@ -607,11 +615,12 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         hinweis.textContent = 'Der englische Text dieses Beitrags passt nicht zu den Blöcken. Er steht jetzt komplett beim ersten Absatz unter „Englisch“. Bitte dort aufteilen.';
         hinweis.hidden = false;
       }
+      const linkWaehlen = linkAuswahl(lesenJson<Linkziel[]>('[data-linkziele]', []));
       const editor = abschnittEditor($('[data-abschnitte]')!, {
         start: start.bloecke,
         hochladen,
         drehen: (d) => drehen(ctx.sb, d, slug.value),
-        linkWaehlen: linkAuswahl(lesenJson<Linkziel[]>('[data-linkziele]', [])),
+        linkWaehlen,
         mediathek,
         bausteine: lesenJson<Baustein[]>('[data-bausteine]', []),
         geaendert: () => geaendert(),
@@ -792,6 +801,8 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
           ...daten(row.status ?? 'entwurf'), ...kopf(), image_focus: imageFocus,
           abschnitte: bloecke.map((b) => zuMarkdown([b], lang)),
           arten: bloecke.map((b) => (b.typ === 'bilder' ? `bilder:${b.darstellung}:${b.bilder.length}` : b.typ)),
+          groessen: bloecke.map((b) => (b.typ === 'text' || b.typ === 'zwischentitel' ? (b.groesse ?? 'standard') : '')),
+          formate: bloecke.map((b) => (b.typ === 'bilder' ? b.format : '')),
         };
       };
 
@@ -816,15 +827,37 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
       const kopfFeld = $('[data-kopf-feld]')!;
       /** Direkt bearbeiten in der Vorschau: Änderung ins Formular übernehmen (wie getippt) */
       const direkt = (m: DirektNachricht) => {
+        const aufbau = m.art !== 'feld' && m.art !== 'text' && m.art !== 'unterschrift' && m.art !== 'rueckgaengig' && m.art !== 'wiederholen' && m.art !== 'link';
+        if (aufbau) verlauf.abschliessen();
+        const r = direktAnwenden(m);
+        if (aufbau) verlauf.abschliessen();
+        return r;
+      };
+      const direktAnwenden = (m: DirektNachricht) => {
         if (m.art === 'feld') {
           const el = m.lang === 'en' ? field<HTMLTextAreaElement>(m.feld === 'titel' ? 'title_en' : 'teaser_en') : m.feld === 'titel' ? titel : teaser;
           if (!el || el.value === m.wert) return;
           el.value = m.wert;
           el.dispatchEvent(new Event('input', { bubbles: true }));
         } else if (m.art === 'text') editor.textSetzen(m.i, m.wert, m.lang);
+        else if (m.art === 'unterschrift') editor.unterschriftSetzen(m.i, m.wert, m.lang);
         else if (m.art === 'breite') editor.breiteSetzen(m.i, m.wert);
+        else if (m.art === 'groesse') editor.groesseSetzen(m.i, m.wert);
+        else if (m.art === 'format') editor.formatSetzen(m.i, m.wert);
         else if (m.art === 'foto') editor.fotoTauschen(m.i);
+        else if (m.art === 'ausschnitt') editor.ausschnitt(m.i);
+        else if (m.art === 'zuruecksetzen') editor.zuruecksetzen(m.i);
+        else if (m.art === 'schieben') editor.schieben(m.i, m.d);
+        else if (m.art === 'verdoppeln') editor.verdoppeln(m.i);
+        else if (m.art === 'loeschen') editor.loeschen(m.i);
+        else if (m.art === 'einfuegen') {
+          editor.neuerBlock(m.i, m.neu);
+          if (m.neu === 'bild') editor.fotoTauschen(m.i);
+        } else if (m.art === 'formular') springen({ ziel: 'abschnitt', i: m.i });
         else if (m.art === 'titelbild') $('[data-cover-mediathek]')?.click();
+        else if (m.art === 'rueckgaengig') verlauf.zurueck();
+        else if (m.art === 'wiederholen') verlauf.vor();
+        else if (m.art === 'link') return linkWaehlen(m.text);
       };
       const vp = vorschau({ url: `${internUrl('news/vorschau/')}?eingebettet=1`, daten: vorschauDaten, springen, direkt });
       titel.addEventListener('focus', () => vp.zeigen('titel'));
@@ -1013,6 +1046,88 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         }, 2500);
       };
 
+      // ---------- Rückgängig / Wiederholen (auch aus der Vorschau: Strg+Z, Knöpfe in beiden Leisten) ----------
+      // Umfasst Blöcke und Formularfelder; Eckdaten (Zeilen kommen und gehen) und das Titelbild nicht.
+      const verlauf = (() => {
+        const zurueckL: string[] = [];
+        const vorL: string[] = [];
+        let still = false;
+        let timer = 0;
+        const felder = () =>
+          [...form.elements].filter((e): e is HTMLInputElement =>
+            (e instanceof HTMLInputElement || e instanceof HTMLTextAreaElement || e instanceof HTMLSelectElement) && !!e.name && e.type !== 'file' && !e.closest('[data-fakten]'));
+        const foto = () => JSON.stringify({ b: editor.stand(), f: felder().map((e) => (e.type === 'checkbox' || e.type === 'radio' ? e.checked : e.value)) });
+        let jetzt = foto();
+        const knoepfe = () => {
+          document.querySelectorAll<HTMLButtonElement>('[data-rueckgaengig]').forEach((b) => (b.disabled = !zurueckL.length));
+          document.querySelectorAll<HTMLButtonElement>('[data-wiederholen]').forEach((b) => (b.disabled = !vorL.length));
+        };
+        const merken = () => {
+          if (still) return;
+          const neu = foto();
+          if (neu === jetzt) return;
+          zurueckL.push(jetzt);
+          if (zurueckL.length > 100) zurueckL.shift();
+          jetzt = neu;
+          vorL.length = 0;
+          knoepfe();
+        };
+        const anwenden = (st: string) => {
+          const x = JSON.parse(st) as { b: EBlock[]; f: (string | boolean)[] };
+          still = true;
+          editor.setzen(x.b);
+          felder().forEach((e, j) => {
+            const v = x.f[j];
+            if (typeof v === 'boolean') e.checked = v;
+            else if (v !== undefined) e.value = v;
+          });
+          rubrik();
+          kopfZeigen();
+          jetzt = st;
+          still = false;
+          knoepfe();
+          geaendert();
+        };
+        // Änderungen kurz sammeln, damit nicht jeder Buchstabe ein Schritt ist
+        addEventListener('news-geaendert', () => {
+          window.clearTimeout(timer);
+          timer = window.setTimeout(merken, 600);
+        });
+        const zurueck = () => {
+          window.clearTimeout(timer);
+          merken();
+          if (zurueckL.length) {
+            vorL.push(jetzt);
+            anwenden(zurueckL.pop()!);
+          }
+        };
+        const vor = () => {
+          window.clearTimeout(timer);
+          merken();
+          if (vorL.length) {
+            zurueckL.push(jetzt);
+            anwenden(vorL.pop()!);
+          }
+        };
+        document.querySelectorAll('[data-rueckgaengig]').forEach((b) => b.addEventListener('click', zurueck));
+        document.querySelectorAll('[data-wiederholen]').forEach((b) => b.addEventListener('click', vor));
+        // Strg+Z außerhalb von Eingabefeldern (dort gilt das Rückgängig des Feldes)
+        document.addEventListener('keydown', (e) => {
+          if (!(e.ctrlKey || e.metaKey)) return;
+          const k = e.key.toLowerCase();
+          if ((k !== 'z' && k !== 'y') || (e.target as Element).closest('input, textarea, select, [contenteditable]')) return;
+          e.preventDefault();
+          if (k === 'y' || e.shiftKey) vor();
+          else zurueck();
+        });
+        /** eigener Schritt: offenes Tippen abschließen (vor und nach Änderungen am Aufbau) */
+        const abschliessen = () => {
+          window.clearTimeout(timer);
+          merken();
+        };
+        return { zurueck, vor, abschliessen };
+      })();
+
       // ---------- Änderungen ----------
       let sicherTimer = 0;
       function geaendert() {
@@ -1025,6 +1140,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         autoSpeichern();
         if (!online()) stand('Ungespeicherte Änderungen');
         $('[data-vorlagen]')!.hidden = !!id0 || !!row.id || vorlageGewaehlt || editor.hatText();
+        dispatchEvent(new Event('news-geaendert'));
       }
       form.addEventListener('input', geaendert);
       form.addEventListener('change', (e) => {
