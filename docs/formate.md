@@ -60,6 +60,14 @@ Plakate landen als WebP in `src/assets/tanzkalender/<id>.webp` (Astro erzeugt da
 `public/downloads/tanzkalender/` bzw. `public/downloads/archiv/`. Vorhandene Dateien bleiben. Solange eine Datei
 fehlt, zeigt die Seite die Fassung der alten Website. Danach Build, Commit.
 
+Stand 23.11.2026: alle Plakate und PDFs sind übernommen. Große PDFs wurden mit Ghostscript auf 150 dpi verkleinert
+(Text bleibt scharf, Bilder am Bildschirm unverändert; z. B. 16 MB → 4 MB):
+
+```bash
+gs -q -dNOPAUSE -dBATCH -dSAFER -sDEVICE=pdfwrite -dPDFSETTINGS=/printer -dColorImageResolution=150 \
+  -dGrayImageResolution=150 -dColorImageDownsampleThreshold=1.1 -sOutputFile=klein.pdf gross.pdf
+```
+
 Alte Adressen (`/tanzkalender/`, `/studio-round/`, `/tanzpakt-in-residence/`, `/linie-8/` …) leiten auf die
 Formate-Seite bzw. das Tanzkalender-Archiv weiter (`src/content/news/weiterleitungen.json`).
 

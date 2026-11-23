@@ -170,7 +170,8 @@ test('Tanzkalender-Archiv: Jahrgänge, Großansicht zum Blättern, PDF', async (
   await expect(dlg.getByRole('button', { name: 'Vorherige Ausgabe' })).toBeDisabled();
   await page.keyboard.press('ArrowRight');
   await expect(dlg.locator('[data-lb-label]')).toHaveText('November 2024');
-  await expect(dlg.locator('[data-lb-pdf]')).toHaveAttribute('href', ausgaben.find((a) => a.id === '2024-11')!.pdf);
+  // die PDFs liegen auf der eigenen Website (npm run archiv:laden), nicht mehr auf der alten
+  await expect(dlg.locator('[data-lb-pdf]')).toHaveAttribute('href', /\/downloads\/tanzkalender\/2024-11\.pdf$/);
   await page.keyboard.press('Escape');
   await expect(dlg).toBeHidden();
   await expect(page.getByRole('button', { name: 'November 2024 ansehen' })).toBeFocused();
