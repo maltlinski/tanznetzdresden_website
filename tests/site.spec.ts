@@ -227,7 +227,7 @@ test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
   await expect(page.locator('.event').first()).toContainText(titel.replace(/&amp;/g, '&'));
 });
 
-test('Netzwerk: Statements im Kopf unter der lila Leiste, Blättern und Pause', async ({ page }) => {
+test('Netzwerk: Statements im Kopf, Leiste oben halbdurchsichtig, Blättern und Pause', async ({ page, isMobile }) => {
   // Statements aus der Datei (sichtbare); Zitat steht im Bild, die Beschreibung trägt es für Screenreader
   const statements = [...readFileSync('src/content/netzwerk/statements.yaml', 'utf8').matchAll(/^- id: (\S+)[\s\S]*?zitat: "([^"]+)"/gm)].map((m) => ({ id: m[1], zitat: m[2] }));
   await page.goto('/netzwerk/');
@@ -245,7 +245,20 @@ test('Netzwerk: Statements im Kopf unter der lila Leiste, Blättern und Pause', 
   expect(Math.round(kopf.y)).toBe(Math.round(leiste.y + leiste.height));
   const buehne = (await page.locator('[data-nk-buehne]').boundingBox())!;
   expect([Math.round(buehne.y), Math.round(buehne.width)]).toEqual([Math.round(kopf.y), Math.round(kopf.width)]);
-  await expect(page.locator('[data-header]')).toHaveCSS('background-color', 'rgb(46, 26, 77)');
+  // Querformat: das Foto reicht unter die halbdurchsichtige Leiste, der Ausschnitt darunter bleibt mittig wie ohne
+  // Verlängerung (Mitte des Fotos = Mitte des Bereichs zwischen Leiste und Band); beim Scrollen wird die Leiste lila
+  const lila = 'rgb(46, 26, 77)';
+  if (!isMobile) {
+    await expect(page.locator('[data-header]')).not.toHaveCSS('background-color', lila);
+    const bild = (await page.locator('[data-nk-dia].is-aktiv img').boundingBox())!;
+    expect(bild.y).toBeLessThanOrEqual(0);
+    expect(Math.abs(bild.y + bild.height / 2 - (buehne.y + buehne.height / 2))).toBeLessThan(2);
+    await page.evaluate(() => scrollTo(0, 300));
+    await expect(page.locator('[data-header]')).toHaveCSS('background-color', lila);
+    await page.evaluate(() => scrollTo(0, 0));
+  } else {
+    await expect(page.locator('[data-header]')).toHaveCSS('background-color', lila);
+  }
   await expect(page.getByRole('heading', { level: 1 })).toContainText('Wer im Netz');
   // Fotonachweis des gezeigten Statements im Band
   const foto = await page.locator('[data-nk-dia].is-aktiv').getAttribute('data-foto');
