@@ -21,9 +21,10 @@ const t = {
 };
 ---
 <Page title={t.title} description={t.desc} route="netzwerk">
-  <StatementsKopf lang={lang} kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} stimmen={k.stimmen} />
+  <StatementsKopf lang={lang} kicker={t.kicker} title={t.h1} accent={t.accent} stimmen={k.stimmen} foto={k.foto} />
   <section class="section">
     <div class="wrap">
+      {t.lead && <p class="net-lead">{t.lead}</p>}
       <div class="net-tools">
         <div class="chips" role="group" aria-label={t.group} data-net-filter>
           <button type="button" class="chip" data-value="alle" aria-pressed="true">{t.all}</button>
@@ -96,6 +97,7 @@ const t = {
 </script>
 
 <style>
+  .net-lead { max-width: 60ch; margin: 0 0 40px; font-size: clamp(17px, 1.5vw, 20px); line-height: var(--lh-text); color: var(--ink-soft); }
   .net-tools { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 20px 40px; margin-bottom: 36px; }
   .net-search { display: flex; flex-direction: column; gap: 7px; min-width: min(100%, 300px); }
   .net-search label { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2); }

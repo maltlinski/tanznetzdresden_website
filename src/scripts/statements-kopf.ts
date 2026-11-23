@@ -1,6 +1,7 @@
 /**
  * Diashow der Statements im Kopf der Netzwerk-Seite (src/components/StatementsKopf.astro).
  *
+ * - zeigt den Fotonachweis des gezeigten Statements im Band
  * - startet beim Statement, das das kleine Skript im HTML zufällig gewählt hat (data-start)
  * - alle DAUER ms das nächste (Überblenden per CSS), Fortschritt als Magenta-Linie
  * - hält an, solange die Maus darauf zeigt oder der Fokus in der Steuerung ist, und über den Pause-Knopf
@@ -15,10 +16,19 @@ const DAUER = 7000;
 
 export function statementsKopf(kopf: HTMLElement | null): void {
   const buehne = kopf?.querySelector<HTMLElement>('[data-nk-buehne]');
-  const steuer = kopf?.querySelector<HTMLElement>('[data-nk-steuer]');
-  if (!kopf || !buehne || !steuer) return;
+  if (!kopf || !buehne) return;
   const dias = [...buehne.querySelectorAll<HTMLElement>('[data-nk-dia]')];
-  if (dias.length < 2) return;
+  // Fotonachweis des gezeigten Statements im Band (für Screenreader steht er in der Bildbeschreibung)
+  const fotoZeile = kopf.querySelector<HTMLElement>('[data-nk-foto-zeile]');
+  const foto = kopf.querySelector<HTMLElement>('[data-nk-foto]');
+  const nachweis = (d: HTMLElement | undefined) => {
+    if (!fotoZeile || !foto) return;
+    foto.textContent = d?.dataset.foto ?? '';
+    fotoZeile.hidden = !foto.textContent;
+  };
+  nachweis(dias.find((d) => d.classList.contains('is-aktiv')) ?? dias[0]);
+  const steuer = kopf.querySelector<HTMLElement>('[data-nk-steuer]');
+  if (!steuer || dias.length < 2) return;
   const nr = steuer.querySelector<HTMLElement>('[data-nk-nr]')!;
   const balken = steuer.querySelector<HTMLElement>('[data-nk-balken]')!;
   const pauseKnopf = steuer.querySelector<HTMLButtonElement>('[data-nk-pause]')!;
@@ -42,6 +52,7 @@ export function statementsKopf(kopf: HTMLElement | null): void {
       if (k === (aktiv + 1) % dias.length) d.querySelector('img')?.setAttribute('loading', 'eager');
     });
     nr.textContent = String(aktiv + 1).padStart(2, '0');
+    nachweis(dias[aktiv]);
     verstrichen = 0;
     balken.style.transform = 'scaleX(0)';
   };

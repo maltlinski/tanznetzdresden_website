@@ -1,8 +1,10 @@
 ---
 /**
- * Kopf der Netzwerk-Seite: Statements aus dem Netz als Diashow über die ganze Breite, darüber die durchsichtige
- * Kopfleiste (wie der Vollbild-Kopf der Beiträge, Klasse `unter-leiste`), darunter das lila Band mit Kicker,
- * Headline und Einleitung. Die Statements stehen in src/content/netzwerk/statements.yaml (Redaktion → Statements).
+ * Kopf der Netzwerk-Seite: Statements aus dem Netz als Diashow über die ganze Breite, darunter ein lila Band mit
+ * Kicker, Headline, Fotonachweis und Steuerung. Der Kopf beginnt unter der lila Kopfleiste und ist so hoch wie die
+ * Köpfe der anderen Seiten (--buehne-h), unten der Keil. Auf breiten Bildschirmen füllt das Foto alles über dem
+ * Band (oben und unten etwas abgeschnitten), im Hochformat steht es ganz (16:9) und das Band füllt den Rest.
+ * Die Statements stehen in src/content/netzwerk/statements.yaml (Redaktion → Statements).
  *
  * Bewegung (src/scripts/statements-kopf.ts): Start bei einem zufälligen Statement, alle 7 s das nächste mit
  * Überblenden; Pause beim Zeigen mit der Maus, beim Fokus und über den Knopf; Wischen auf dem Handy. Bei „Bewegung
@@ -19,11 +21,12 @@ interface Props {
   kicker: string;
   title: string;
   accent?: string;
-  lead?: string;
   /** kleine Zeile neben dem Zähler */
   stimmen: string;
+  /** vor dem Fotonachweis */
+  foto: string;
 }
-const { lang, kicker, title, accent, lead, stimmen } = Astro.props;
+const { lang, kicker, title, accent, stimmen, foto } = Astro.props;
 const statements = await getStatements();
 const t = tr(lang, {
   de: { region: 'Statements aus dem Netzwerk', zurueck: 'Vorheriges Statement', weiter: 'Nächstes Statement', pause: 'Diashow anhalten', start: 'Diashow fortsetzen', von: 'von' },
@@ -33,12 +36,12 @@ const dias = await Promise.all(
   statements.map(async (s) => {
     const img = await getImage({ src: s.data.bild, widths: [640, 960, 1280, 1600, 1920], format: 'webp', quality: 80 });
     const wer = [s.data.name, s.data.rolle].filter(Boolean).join(', ');
-    return { id: s.id, img, alt: `„${s.data.zitat}“ – ${wer}${s.data.foto ? ` (Foto: ${s.data.foto})` : ''}`, sprache: s.data.sprache };
+    return { id: s.id, img, foto: s.data.foto ?? '', alt: `„${s.data.zitat}“ – ${wer}${s.data.foto ? ` (Foto: ${s.data.foto})` : ''}`, sprache: s.data.sprache };
   }),
 );
 const zwei = (n: number) => String(n).padStart(2, '0');
 ---
-<section class="nk unter-leiste" data-nk data-kopf-auftritt>
+<section class="nk" data-nk data-kopf-auftritt>
   {dias.length > 0 && (
     <div class="nk__buehne" role="region" aria-roledescription={lang === 'en' ? 'carousel' : 'Diashow'} aria-label={t.region} data-nk-buehne>
       {dias.map((d, i) => (
@@ -49,6 +52,7 @@ const zwei = (n: number) => String(n).padStart(2, '0');
           aria-label={`${i + 1} ${t.von} ${dias.length}`}
           aria-hidden={i === 0 ? undefined : 'true'}
           data-nk-dia
+          data-foto={d.foto}
         >
           <img
             src={d.img.src}
@@ -75,78 +79,75 @@ const zwei = (n: number) => String(n).padStart(2, '0');
       </script>
     </div>
   )}
-  <div class="nk__band">
-    <KeilBar color="var(--cyan)" class="nk__keil" />
-    <div class="wrap nk__innen">
-      <div class="nk__text">
-        <Tag color="cyan" class="kopf__kicker">{kicker}</Tag>
-        <h1 class="nk__titel">{title}{accent && <><br /><em>{accent}</em></>}</h1>
-        {lead && <p class="nk__lead" data-kopf-folgt>{lead}</p>}
-      </div>
-      {dias.length > 1 && (
-        <div class="nk__steuer" data-kopf-folgt data-nk-steuer hidden>
-          <span class="nk__stimmen">{stimmen}</span>
-          <span class="nk__zahl" aria-hidden="true"><span data-nk-nr>01</span> / {zwei(dias.length)}</span>
-          <div class="nk__knoepfe">
-            <button type="button" class="nk__knopf" data-nk-zurueck aria-label={t.zurueck}><span aria-hidden="true">←</span></button>
-            <button type="button" class="nk__knopf" data-nk-pause aria-label={t.pause} data-pause={t.pause} data-start={t.start} aria-pressed="false">
-              <span class="nk__pause" aria-hidden="true"></span>
-            </button>
-            <button type="button" class="nk__knopf" data-nk-weiter aria-label={t.weiter}><span aria-hidden="true">→</span></button>
-          </div>
-          <div class="nk__fortschritt" aria-hidden="true"><span data-nk-balken></span></div>
-        </div>
-      )}
+  <div class="wrap nk__band">
+    <div class="nk__text">
+      <Tag color="cyan" class="kopf__kicker">{kicker}</Tag>
+      <h1 class="nk__titel">{title}{accent && <><br /> <em>{accent}</em></>}</h1>
     </div>
+    {dias.length > 0 && (
+      <div class="nk__steuer" data-kopf-folgt>
+        <span class="nk__foto" aria-hidden="true" data-nk-foto-zeile hidden>{foto} · <span data-nk-foto></span></span>
+        {dias.length > 1 && (
+          <div class="nk__leiste" data-nk-steuer hidden>
+            <span class="nk__stimmen">{stimmen}</span>
+            <span class="nk__zahl" aria-hidden="true"><span data-nk-nr>01</span> / {zwei(dias.length)}</span>
+            <div class="nk__knoepfe">
+              <button type="button" class="nk__knopf" data-nk-zurueck aria-label={t.zurueck}><span aria-hidden="true">←</span></button>
+              <button type="button" class="nk__knopf" data-nk-pause aria-label={t.pause} data-pause={t.pause} data-start={t.start} aria-pressed="false">
+                <span class="nk__pause" aria-hidden="true"></span>
+              </button>
+              <button type="button" class="nk__knopf" data-nk-weiter aria-label={t.weiter}><span aria-hidden="true">→</span></button>
+            </div>
+            <div class="nk__fortschritt" aria-hidden="true"><span data-nk-balken></span></div>
+          </div>
+        )}
+      </div>
+    )}
   </div>
+  <KeilBar class="nk__keil" />
 </section>
 
 <script>
   import { initKopfAuftritt } from '../scripts/kopf-auftritt';
-  import { unterLeiste } from '../scripts/unter-leiste';
   import { statementsKopf } from '../scripts/statements-kopf';
-  unterLeiste();
   statementsKopf(document.querySelector<HTMLElement>('[data-nk]'));
   initKopfAuftritt();
 </script>
 
 <style>
-  /*
-   * Fotos 16:9 mit Zitat: auf breiten Bildschirmen fast der ganze Bildschirm (höchstens so hoch wie das Foto in voller
-   * Breite, also wenig abgeschnitten; das Band beginnt knapp darunter), auf schmalen steht das ganze Foto unter der Kopfleiste, damit kein Text verdeckt ist.
-   */
-  .nk { position: relative; display: flex; flex-direction: column; background: var(--purple); color: #fff; }
-  .nk__buehne {
-    position: relative; width: 100%; overflow: hidden; background: var(--purple);
-    height: min(56.25vw, max(420px, 100svh - 150px)); touch-action: pan-y;
-  }
+  /* so hoch wie die anderen Köpfe; Foto oben, Band unten, Keil am unteren Rand */
+  .nk { position: relative; display: flex; flex-direction: column; min-height: var(--buehne-h); background: var(--purple); color: #fff; overflow: hidden; }
+  .nk__buehne { position: relative; flex: none; width: 100%; aspect-ratio: 16 / 9; overflow: hidden; touch-action: pan-y; }
   .nk__dia { position: absolute; inset: 0; margin: 0; opacity: 0; transition: opacity 1.4s var(--ease-out); }
   .nk__dia.is-aktiv { opacity: 1; z-index: 1; }
-  .nk__dia img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; }
-  @media (max-width: 900px) {
-    .nk__buehne { height: auto; padding-top: var(--kopfleiste-h); }
-    .nk__dia { position: absolute; inset: var(--kopfleiste-h) 0 0; }
-    .nk__dia:first-child { position: relative; inset: auto; }
-    .nk__dia img { height: auto; aspect-ratio: 16 / 9; }
-    /* das jeweils aktive Foto gibt die Höhe vor (alle gleich groß) */
+  .nk__dia img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 50% 50%; }
+  /* Querformat: der Kopf hat genau die Höhe der anderen Köpfe, das Foto füllt alles über dem Band */
+  @media (min-width: 900px) and (orientation: landscape) {
+    .nk { height: var(--buehne-h); }
+    .nk__buehne { flex: 1 1 auto; min-height: 0; aspect-ratio: auto; }
+    .nk__titel br { display: none; }
   }
 
-  .nk__band { position: relative; }
-  .nk :global(.nk__keil) { position: absolute; left: 0; bottom: 100%; width: 40%; z-index: 2; }
-  .nk__innen {
-    display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 28px 48px;
-    padding-block: clamp(28px, 3.4vw, 48px) clamp(40px, 4.4vw, 64px);
+  .nk__band {
+    position: relative; flex: none; width: 100%; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between;
+    gap: 20px 48px; padding-block: clamp(20px, 2.4vw, 32px) calc(var(--kopf-unten) + 22px);
   }
-  .nk__text { flex: 1 1 520px; min-width: 0; }
+  @media (max-width: 899px), (orientation: portrait) {
+    /* Hochformat: Foto ganz, das Band füllt den Rest bis zur Höhe der anderen Köpfe */
+    .nk__band { flex: 1 0 auto; align-items: flex-start; align-content: flex-start; }
+  }
+  .nk__text { flex: 1 1 420px; min-width: 0; }
   .nk__titel {
-    margin: var(--kopf-kicker) 0 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(40px, 5.4vw, 84px);
-    line-height: 0.94; letter-spacing: -0.035em; max-width: 16ch; text-wrap: balance; hyphens: auto;
+    margin: var(--kopf-kicker) 0 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(36px, 4.4vw, 68px);
+    line-height: 0.96; letter-spacing: -0.035em; text-wrap: balance; hyphens: auto;
   }
   .nk__titel em { font-style: normal; color: var(--magenta); }
-  .nk__lead { max-width: 560px; margin: 22px 0 0; font-size: clamp(16px, 1.4vw, 19px); line-height: 1.6; color: rgba(255, 255, 255, 0.86); }
+  .nk :global(.nk__keil) { position: absolute; left: 0; bottom: 0; width: 34%; z-index: 2; }
 
-  .nk__steuer { flex: none; display: grid; grid-template-columns: auto auto; align-items: center; gap: 12px 20px; margin-left: auto; }
-  .nk__steuer[hidden] { display: none; }
+  .nk__steuer { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 14px; margin-left: auto; }
+  .nk__foto { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-dark-soft); }
+  .nk__foto[hidden], .nk__leiste[hidden] { display: none; }
+  .nk__leiste { display: grid; grid-template-columns: auto auto; align-items: center; gap: 12px 20px; }
   .nk__stimmen, .nk__zahl { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-dark-soft); }
   .nk__zahl { justify-self: end; color: #fff; }
   .nk__knoepfe { grid-column: 1 / -1; display: flex; justify-content: flex-end; }
@@ -163,12 +164,7 @@ const zwei = (n: number) => String(n).padStart(2, '0');
   .nk__fortschritt { grid-column: 1 / -1; height: 2px; background: rgba(255, 255, 255, 0.2); }
   .nk__fortschritt span { display: block; height: 100%; background: var(--magenta); transform: scaleX(0); transform-origin: 0 50%; }
   @media (max-width: 640px) {
-    .nk__steuer { width: 100%; grid-template-columns: 1fr auto; }
-  }
-
-  /* Kopfleiste über hellen Fotos: lila Schleier statt ganz durchsichtig, damit Logo und Menü lesbar bleiben */
-  :global(.js body:has(.nk)) :global(.site-header:not(.ist-gescrollt):not(.is-open)) {
-    background-color: color-mix(in srgb, var(--purple) 62%, transparent);
-    -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    .nk__steuer { width: 100%; align-items: stretch; }
+    .nk__leiste { grid-template-columns: 1fr auto; }
   }
 </style>

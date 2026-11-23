@@ -17,7 +17,7 @@ import { readFileSync, existsSync } from 'node:fs';
 
 /** Menüseiten: müssen einen Kopf nach der Regel haben */
 const MENUE = ['/', '/termine/', '/formate/', '/profitraining/', '/news/', '/verein/', '/spenden/'];
-/** Seiten mit Kopf eigener Art (Netzwerk: Statements über die ganze Breite, Beitrag, Termin) oder ohne Kopf (Dokument zum Drucken) */
+/** Seiten mit Kopf eigener Art (Netzwerk: Diashow der Statements über der Headline, Beitrag, Termin) oder ohne Kopf (Dokument zum Drucken) */
 const OHNE = [/^\/(netzwerk|en\/network)\/$/, /^\/(en\/)?news\/.+/, /^\/(en\/)?termine\/.+/, /^\/(en\/)?spenden\/nachweis\//, /^\/(en\/)?mitglied\/pruefen\//];
 
 function seiten(): string[] {
