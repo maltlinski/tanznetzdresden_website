@@ -7,8 +7,38 @@
 -- Ergebnis: eine Tabelle mit einer Zeile je Prüfung; in der Spalte „ergebnis“ muss überall „ok“ stehen.
 -- Nichts bleibt zurück: Der Lauf legt zwei Testpersonen mit Foto, Mitgliedschaft und Antrag an, spielt ein
 -- normales Mitglied, ein zweites Mitglied und einen Besuch ohne Anmeldung durch und nimmt danach alles
--- zurück. Die Prüffunktion liegt nur in dieser Sitzung (pg_temp) und verschwindet von selbst.
+-- zurück. Die Prüffunktionen liegen nur in dieser Sitzung (pg_temp) und verschwinden von selbst.
+-- Fotos: Supabase verbietet direktes Löschen im Speicher (auch zum Testen). Darum prüft der Lauf, ob die Regeln
+-- Löschen oder Überschreiben erlauben würden, ohne es zu versuchen (speicher_darf).
 -- =====================================================================
+
+-- Wie viele der Fotos (Bucket „profilbilder“) dürfte die aktuelle Rolle löschen bzw. überschreiben?
+-- Wertet die Regeln aus pg_policies so aus wie Postgres: mindestens eine erlaubende Regel, alle einschränkenden,
+-- und die Zeile muss lesbar sein (das gilt von selbst, weil die Abfrage mit der Rolle des Mitglieds läuft).
+create or replace function pg_temp.speicher_darf(befehl text, pfade text[])
+returns int
+language plpgsql
+as $$
+declare
+  erlaubt text;
+  pflicht text;
+  n int;
+begin
+  select string_agg('(' || qual || ')', ' or ') filter (where permissive = 'PERMISSIVE'),
+         string_agg('(' || qual || ')', ' and ') filter (where permissive = 'RESTRICTIVE')
+    into erlaubt, pflicht
+    from pg_policies
+    where schemaname = 'storage' and tablename = 'objects' and cmd in (befehl, 'ALL') and qual is not null
+      and roles && array['public', current_user]::name[];
+  if erlaubt is null then
+    return 0;
+  end if;
+  execute format('select count(*) from storage.objects where bucket_id = %L and name = any($1) and (%s) and (%s)',
+                 'profilbilder', erlaubt, coalesce(pflicht, 'true'))
+    into n using pfade;
+  return n;
+end;
+$$;
 
 create or replace function pg_temp.pruefen()
 returns table (nr int, pruefung text, ergebnis text)
@@ -81,10 +111,9 @@ begin
     liste := liste || text 'Fremdes Profil lässt sich nicht ändern';
     ergebnisse := ergebnisse || case when n = 0 then 'ok' else 'FEHLER: fremdes Profil geändert' end;
 
-    delete from storage.objects where bucket_id = 'profilbilder' and name = b || '/neu-verworfen.jpg';
-    get diagnostics n = row_count;
+    n := pg_temp.speicher_darf('DELETE', array[b || '/neu-verworfen.jpg']);
     liste := liste || text 'Fremde Fotos lassen sich nicht löschen';
-    ergebnisse := ergebnisse || case when n = 0 then 'ok' else 'FEHLER: fremdes Foto gelöscht' end;
+    ergebnisse := ergebnisse || case when n = 0 then 'ok' else 'FEHLER: fremdes Foto löschbar' end;
 
     select count(*) into n from public.mitgliedschaften where person <> a;
     liste := liste || text 'Fremde Mitgliedschaften sind nicht lesbar';
@@ -108,20 +137,17 @@ begin
     perform set_config('request.jwt.claims', json_build_object('sub', b, 'role', 'authenticated')::text, true);
     perform set_config('role', 'authenticated', true);
 
-    update storage.objects set name = name where bucket_id = 'profilbilder' and name = b || '/portraet.jpg';
-    get diagnostics n = row_count;
+    n := pg_temp.speicher_darf('UPDATE', array[b || '/portraet.jpg']);
     liste := liste || text 'Freigegebenes Porträt lässt sich nicht überschreiben';
     ergebnisse := ergebnisse || case when n = 0 then 'ok' else 'FEHLER: Porträt ohne Freigabe austauschbar' end;
 
-    delete from storage.objects where bucket_id = 'profilbilder' and name in (b || '/portraet.jpg', b || '/galerie-frei.jpg');
-    get diagnostics n = row_count;
+    n := pg_temp.speicher_darf('DELETE', array[b || '/portraet.jpg', b || '/galerie-frei.jpg']);
     liste := liste || text 'Freigegebene Fotos lassen sich nicht löschen und neu hochladen';
-    ergebnisse := ergebnisse || case when n = 0 then 'ok' else 'FEHLER: ' || n || ' freigegebene Fotos gelöscht' end;
+    ergebnisse := ergebnisse || case when n = 0 then 'ok' else 'FEHLER: ' || n || ' freigegebene Fotos löschbar' end;
 
-    delete from storage.objects where bucket_id = 'profilbilder' and name = b || '/neu-verworfen.jpg';
-    get diagnostics n = row_count;
+    n := pg_temp.speicher_darf('DELETE', array[b || '/neu-verworfen.jpg']);
     liste := liste || text 'Eigenes, nicht freigegebenes Foto lässt sich löschen („Foto verwerfen“)';
-    ergebnisse := ergebnisse || case when n = 1 then 'ok' else 'FEHLER: eigenes Foto bleibt liegen' end;
+    ergebnisse := ergebnisse || case when n = 1 then 'ok' else 'FEHLER: eigenes Foto ließe sich nicht löschen' end;
 
     select count(*) into n from public.profil_privat where person = b;
     liste := liste || text 'Eigene Telefonnummer ist lesbar';
