@@ -476,7 +476,7 @@ export const bereiche: Bereich[] = [
     label: 'Personen',
     einzahl: 'Person',
     gruppe: 'Netzwerk & Partner',
-    beschreibung: 'Mitglieder:innen und Trainer:innen auf /netzwerk/ mit eigenem Profil. Reihenfolge = Anzeige.',
+    beschreibung: 'Mitglieder und Trainer:innen auf /netzwerk/ mit eigenem Profil. Reihenfolge = Anzeige.',
     datei: 'src/content/personen.yaml',
     anlegen: true,
     loeschen: true,

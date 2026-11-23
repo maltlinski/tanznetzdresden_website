@@ -24,6 +24,7 @@ import { DEMO_KEY } from '../lib/demo';
 import Analytics from '../components/Analytics.astro';
 import ogSource from '../assets/photos/duo-rot.jpg';
 import { token } from '../lib/tokens';
+import { jsonImHtml } from '../lib/json-im-html';
 
 export interface Alternates { de?: string | null; en?: string | null }
 
@@ -134,7 +135,7 @@ const jsonLd = {
         if (localStorage.getItem(key) === '1') document.documentElement.classList.add('demo');
       } catch {}
     </script>
-    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+    <script type="application/ld+json" set:html={jsonImHtml(jsonLd)} />
     <slot name="head" />
   </head>
   <body>

@@ -13,6 +13,7 @@ import KopfNetz from '../components/KopfNetz.astro';
 import { getTanzkalenderAusgaben, type Ausgabe } from '../lib/formate';
 import { getLang, tr, url } from '../lib/i18n';
 import { fuellen, texte, zeilen } from '../lib/texte';
+import { jsonImHtml } from '../lib/json-im-html';
 
 const lang = getLang(Astro);
 const k = texte(lang, 'tanzkalenderArchiv', 'kopf');
@@ -36,9 +37,9 @@ const gross = await Promise.all(
 );
 const kopfAusgaben = ausgaben.filter((a) => a.kopf).slice(0, 3);
 const versatz = ['0px', '48px', '16px'];
-const daten = JSON.stringify(
+const daten = jsonImHtml(
   ausgaben.map((a, i) => ({ nr: a.nr, label: a.label, gross: gross[i], pdf: a.pdf, alt: fuellen(sr.plakat, { label: a.label }), jahr: a.jahr })),
-).replace(/</g, '\\u003c');
+);
 ---
 <Page title={k.title} description={k.desc} route="tanzkalenderArchiv">
   <section class="tka-kopf kopf" data-kopf-auftritt>
@@ -145,7 +146,7 @@ const daten = JSON.stringify(
     <p class="tka-lb__hinweis" aria-hidden="true">{v.hinweis}</p>
   </dialog>
   <script type="application/json" id="tka-daten" set:html={daten} />
-  <script type="application/json" id="tka-texte" set:html={JSON.stringify({ kopf: v.kopf, gesamt })} />
+  <script type="application/json" id="tka-texte" set:html={jsonImHtml({ kopf: v.kopf, gesamt })} />
 </Page>
 
 <script>

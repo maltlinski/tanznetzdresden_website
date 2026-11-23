@@ -243,6 +243,27 @@ test.describe('Mein Profil und Freigaben', () => {
     expect(m.profilGespeichert.at(-1)).not.toHaveProperty('gallery');
   });
 
+  test('Telefon: steht nur in profil_privat, nicht in der für alle lesbaren Profiltabelle', async ({ page }) => {
+    const m = await redaktion(page, { profil: { ...profil, phone: null }, privat: { person: 'u1', phone: '0351 111' } });
+    await page.goto('/intern/profil/');
+    await expect(page.locator('#p-phone')).toHaveValue('0351 111');
+    await page.locator('#p-phone').fill('0351 222');
+    await page.getByRole('button', { name: 'Speichern' }).click();
+    await expect(page.locator('[data-profile-msg]')).toHaveText('Gespeichert.');
+    expect(m.profilGespeichert.at(-1)).not.toHaveProperty('phone');
+    expect(m.privatGespeichert).toEqual([{ person: 'u1', phone: '0351 222' }]);
+
+    // ohne Migration 20261123: wie bisher in profiles
+    await page.unrouteAll({ behavior: 'ignoreErrors' });
+    const alt = await redaktion(page, { profil: { ...profil, phone: '0351 333' } });
+    await page.goto('/intern/profil/');
+    await expect(page.locator('#p-phone')).toHaveValue('0351 333');
+    await page.getByRole('button', { name: 'Speichern' }).click();
+    await expect(page.locator('[data-profile-msg]')).toHaveText('Gespeichert.');
+    expect(alt.profilGespeichert.at(-1)).toMatchObject({ phone: '0351 333' });
+    expect(alt.privatGespeichert).toEqual([]);
+  });
+
   test('Freigaben: wartende Galeriefotos freigeben und ablehnen', async ({ page }) => {
     const m = await redaktion(page, {
       freigaben: [

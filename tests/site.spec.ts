@@ -35,8 +35,9 @@ async function trackExternal(page: Page) {
   return external;
 }
 
-async function dismissConsent(page: Page) {
-  await page.getByRole('button', { name: /^(Nur notwendige|Necessary only)$/ }).click();
+/** Ohne Statistik erscheint kein Hinweis von selbst; externe Inhalte fragen dort, wo sie stehen */
+async function keinHinweis(page: Page) {
+  await expect(page.locator('[data-consent-banner]')).toBeHidden();
 }
 
 for (const path of pages) {
@@ -62,30 +63,39 @@ for (const path of pages) {
     // ohne Einblend-Animationen messen, sonst zählt halbe Deckkraft als Kontrastfehler
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(path);
-    await dismissConsent(page);
+    await keinHinweis(page);
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa']).analyze();
     const serious = results.violations.filter((v) => v.impact === 'serious' || v.impact === 'critical');
     expect(serious.map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(', ')}`)).toEqual([]);
   });
 }
 
-test('Einwilligung: Auswahl wird gespeichert und ist wieder aufrufbar', async ({ page }) => {
+test('Einwilligung: kein Hinweis beim ersten Besuch, Auswahl über „Cookie-Einstellungen“ wird gespeichert', async ({ page }) => {
   await page.goto('/');
   const banner = page.getByRole('dialog', { name: 'Deine Privatsphäre' });
-  await expect(banner).toBeVisible();
-  await dismissConsent(page);
-  await expect(banner).toBeHidden();
-  await page.reload();
+  await page.waitForLoadState('load');
   await expect(banner).toBeHidden();
   await page.getByRole('button', { name: 'Cookie-Einstellungen' }).click();
   await expect(banner).toBeVisible();
+  // das Kästchen ist gestaltet (consent__box), geklickt wird die Beschriftung
+  await banner.locator('label', { hasText: 'Externe Medien' }).click();
+  await banner.getByRole('button', { name: 'Auswahl speichern' }).click();
+  await expect(banner).toBeHidden();
+  await page.reload();
+  await page.waitForLoadState('load');
+  await expect(banner).toBeHidden();
+  await page.getByRole('button', { name: 'Cookie-Einstellungen' }).click();
+  await expect(banner.getByRole('checkbox', { name: /Externe Medien/ })).toBeChecked();
+  await banner.getByRole('button', { name: 'Nur notwendige' }).click();
+  await expect(banner).toBeHidden();
+  await page.getByRole('button', { name: 'Cookie-Einstellungen' }).click();
   await expect(banner.getByRole('checkbox', { name: /Externe Medien/ })).not.toBeChecked();
 });
 
 test('Karte lädt erst nach Zustimmung', async ({ page }) => {
   await page.route('https://www.openstreetmap.org/**', (r) => r.fulfill({ body: '<html></html>', contentType: 'text/html' }));
   await page.goto('/kontakt/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   await expect(page.locator('iframe')).toHaveCount(0);
   await page.getByRole('button', { name: 'Einmal laden' }).click();
   await expect(page.locator('iframe[title^="Karte"]')).toHaveCount(1);
@@ -95,14 +105,14 @@ test('E-Mail-Adresse steht nicht im HTML und lässt sich per Klick anzeigen', as
   const html = await (await request.get('/kontakt/')).text();
   expect(html).not.toMatch(/(kontakt|vorstand)@tanznetzdresden\.de/);
   await page.goto('/kontakt/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   await page.locator('#vorstand').getByRole('button', { name: /E-Mail an den Vorstand/ }).click();
   await expect(page.locator('#vorstand a[href^="mailto:"]')).toHaveText(/@/, { timeout: 15_000 });
 });
 
 test('Terminfilter zeigt nur die gewählte Kategorie', async ({ page }) => {
   await page.goto('/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   await page.getByRole('group', { name: /Termine/ }).getByRole('button', { name: /^Training/ }).click();
   const visible = page.locator('#home-events .event:visible');
   await expect(visible.first()).toBeVisible();
@@ -147,7 +157,7 @@ test('Geschützte interne Seiten leiten ohne Anmeldung zum Login', async ({ page
 test('Mobiles Menü öffnet und schließt', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'nur mobil');
   await page.goto('/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   const toggle = page.getByRole('button', { name: 'Menü' });
   await toggle.click();
   await expect(page.getByRole('navigation', { name: 'Hauptnavigation' })).toBeVisible();
@@ -160,7 +170,7 @@ test('Menü auf dem Handy: Unterstrich sitzt dicht unter dem aktiven Punkt und i
   test.skip(!isMobile, 'nur mobil');
   for (const [i, pfad] of ['/formate/', '/profitraining/', '/en/news/'].entries()) {
     await page.goto(pfad);
-    if (i === 0) await dismissConsent(page);
+    if (i === 0) await keinHinweis(page);
     await page.getByRole('button', { name: /^(Menü|Menu)$/ }).click();
     const m = await page.locator('.site-nav a[aria-current]').evaluate((a) => {
       const r = document.createRange();
@@ -178,7 +188,7 @@ test('Menü auf dem Handy: Unterstrich sitzt dicht unter dem aktiven Punkt und i
 
 test('Sprachumschalter führt zur passenden Seite in der anderen Sprache', async ({ page, isMobile }) => {
   await page.goto('/termine/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
   await page.getByRole('link', { name: 'English', exact: true }).click();
   await expect(page).toHaveURL(/\/en\/events\/$/);
@@ -213,7 +223,7 @@ test('Förderhinweis steht auf jeder Seite', async ({ page }) => {
 
 test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
   await page.goto('/netzwerk/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   await page.getByLabel('Suchen').fill('justine');
   await expect(page.locator('[data-net-list] .card:visible')).toHaveCount(1);
   await page.locator('[data-net-list] .card:visible a').click();
@@ -231,7 +241,7 @@ test('Netzwerk: Statements im Kopf, Leiste oben halbdurchsichtig, Blättern und 
   // Statements aus der Datei (sichtbare); Zitat steht im Bild, die Beschreibung trägt es für Screenreader
   const statements = [...readFileSync('src/content/netzwerk/statements.yaml', 'utf8').matchAll(/^- id: (\S+)[\s\S]*?zitat: "([^"]+)"/gm)].map((m) => ({ id: m[1], zitat: m[2] }));
   await page.goto('/netzwerk/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   const dias = page.locator('[data-nk-dia]');
   await expect(dias).toHaveCount(statements.length);
   await expect(page.locator('[data-nk-dia].is-aktiv')).toHaveCount(1);
@@ -283,7 +293,7 @@ test('News: Galerie mit Großansicht, Archivbilder in zwei Größen', async ({ p
   test.skip(!p, 'kein Beitrag mit Galerie (Import ohne Bilder?)');
   const g = galerie(p!)!;
   await page.goto(`/news/${p!.id}/`);
-  await dismissConsent(page);
+  await keinHinweis(page);
   const fig = page.locator('figure.nb--galerie').first();
   await expect(fig.locator('img')).toHaveCount(g.n);
   // Bilder der alten Website liegen fertig verkleinert vor (800 px und 1600 px), neue werden beim Build optimiert
@@ -311,7 +321,7 @@ test('News: Galerie mit Großansicht, Archivbilder in zwei Größen', async ({ p
 test('News: Kopf mit Titelbild, Großansicht ab dem Titelbild, Zeile zum Teilen und Fuß', async ({ page }) => {
   const p = veroeffentlicht().find((x) => x.image)!;
   await page.goto(`/news/${p.id}/`);
-  await dismissConsent(page);
+  await keinHinweis(page);
   const kopf = page.locator('.ak');
   await expect(kopf).toHaveClass(/ak--(vollbild|hochkant|split|typo)/);
   await expect(kopf.getByRole('heading', { level: 1 })).toHaveText(p.title);
@@ -395,13 +405,13 @@ test('Alte Adressen der WordPress-Website leiten auf die neuen weiter', async ({
 async function openKalender(page: Page, path = '/profitraining/') {
   await page.clock.install({ time: new Date('2026-10-12T08:00:00+02:00') });
   await page.goto(path);
-  await dismissConsent(page);
+  await keinHinweis(page);
   return page.locator('#kalender');
 }
 
 test('Demo-Ansicht: Beispielinhalte nur mit Schalter, Echtes bleibt', async ({ page }) => {
   await page.goto('/netzwerk/alina-lucifero/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   await expect(page.getByText('Dieses Profil wird gerade aufgebaut.')).toBeVisible();
   await expect(page.getByText(/^Beispieltext/)).toBeHidden();
   await expect(page.getByRole('note')).toBeHidden();
@@ -421,7 +431,7 @@ test('Demo-Ansicht: Beispielinhalte nur mit Schalter, Echtes bleibt', async ({ p
 
 test('Spendenseite: ohne IBAN kein GiroCode, dafür Kontaktweg; Formate, andere Wege, Fragen', async ({ page }) => {
   await page.goto('/spenden/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(/Tanz braucht\s*Rückhalt\./);
   await expect(page.locator('.konto__code')).toHaveCount(0);
   await expect(page.locator('#spende').getByRole('button', { name: /Bankverbindung anfragen/ })).toBeVisible();
@@ -454,7 +464,7 @@ test('Kooperationen: Orte in Datei-Reihenfolge, Karte erst nach Klick', async ({
     return r.fulfill({ status: 204 });
   });
   await page.goto('/kooperationen/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   await expect(page.locator('.venue__name').first()).toHaveText('TENZA Schmiede');
   await expect(page.locator('.venue.is-seed')).toHaveCount(1);
   await expect(page.locator('.group')).toHaveCount(8);
@@ -487,7 +497,7 @@ test('News: Chronik als Archiv mit Rubriken, Jahren, Suche, Sortierung, Ansicht 
   const lead = veroeffentlicht().find((p) => p.image) ?? neuester;
   const alle = veroeffentlicht().filter((p) => p.id !== lead.id);
   await page.goto('/news/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   const chronik = page.locator('#journal');
   const posts = chronik.locator('[data-liste] [data-post]');
   const ergebnis = chronik.locator('[data-ergebnis]');
@@ -573,7 +583,7 @@ test('Header: TNDD-Zeichen führt zur Startseite, News und Über uns im Menü', 
   const nav = page.getByRole('navigation', { name: 'Hauptnavigation' });
   // Profile gehören zu „Über uns“
   await page.goto('/netzwerk/alina-lucifero/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   if (isMobile) await page.getByRole('button', { name: 'Menü' }).click();
   await expect(nav.getByRole('link')).toHaveText(['Kalender', 'News', 'Über uns', 'Formate', 'Training', 'Spenden']);
   // „Kalender“ führt zum ganzen Tanzkalender, nicht zum Ausschnitt auf der Startseite
@@ -608,7 +618,7 @@ test('Header: Unterstreichung gleitet beim Wechsel im Menü zum neuen Punkt', as
   const strich = nav.locator('[data-nav-strich]');
   const lage = (name: string) => nav.getByRole('link', { name }).evaluate((a: HTMLElement) => ({ x: a.offsetLeft, w: a.offsetWidth }));
   await page.goto('/termine/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   // der Strich ersetzt die Unterstreichung des aktiven Punkts
   await expect(strich).toHaveCSS('opacity', '1');
   await expect(nav.getByRole('link', { name: 'Kalender' })).toHaveCSS('border-bottom-color', 'rgba(0, 0, 0, 0)');
@@ -655,7 +665,7 @@ test('Startseite: Überschrift und Claim sind ohne Animation sofort lesbar', asy
 
 test('Startseite: Namen bei „Wer im Netz tanzt“ blenden beim Scrollen ein', async ({ page }) => {
   await page.goto('/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   const erster = page.locator('.netz__namen [data-name]').first();
   // vor dem Scrollen noch ausgeblendet
   await expect.poll(() => erster.evaluate((el) => getComputedStyle(el).opacity)).toBe('0');
@@ -668,7 +678,7 @@ test('Startseite: Namen bei „Wer im Netz tanzt“ blenden beim Scrollen ein', 
 
 test('Startseite: Einstiege im Hero, Netz mit Profilen, Formate zum Blättern', async ({ page }) => {
   await page.goto('/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   const wege = page.getByRole('navigation', { name: 'Einstiege' });
   await expect(wege.getByRole('link')).toHaveCount(3);
   // Texte ändert die Redaktion (texte.json): gesucht wird nach der großen Zeile
@@ -714,7 +724,7 @@ test('Hero: zeigt den nächsten Termin und verlinkt ihn', async ({ page }) => {
 
 test('Startseite: Termine und News führen auf ihre eigene Seite', async ({ page }) => {
   await page.goto('/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   const ev = page.locator('#home-events a').first();
   const evTitle = (await ev.locator('h3').textContent())!.trim();
   await ev.click();
@@ -754,7 +764,7 @@ test('Über uns: Haltung & Wirkung mit Partnern', async ({ page }) => {
 test('Weiches Scrollen: Lenis aktiv, Sprungmarke landet unter dem Header; aus bei „Bewegung reduzieren“', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Touch scrollt nativ');
   await page.goto('/');
-  await dismissConsent(page);
+  await keinHinweis(page);
   await expect(page.locator('html')).toHaveClass(/\blenis\b/);
   const link = page.locator('[data-hero-floor] a[href$="#termine"]').first();
   await link.scrollIntoViewIfNeeded();
@@ -781,7 +791,7 @@ async function openTraining(page: Page, path = '/profitraining/') {
   const tag = ERSTER?.datum ?? new Date().toISOString().slice(0, 10);
   await page.clock.install({ time: new Date(`${tag}T08:00:00+01:00`) });
   await page.goto(path);
-  await dismissConsent(page);
+  await keinHinweis(page);
 }
 const ohneTraining = () => test.skip(!ERSTER, 'kein Trainingstag im Plan ab dem Build-Monat (Platzhalter-Plan abgelaufen?)');
 const tagKnopf = (page: Page, datum: string) => page.locator(`#kalender [data-date="${datum}"]`);

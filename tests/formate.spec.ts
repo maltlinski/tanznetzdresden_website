@@ -14,7 +14,6 @@ const ausgaben = parse(readFileSync('src/content/formate-archiv/tanzkalender.yam
 async function oeffnen(page: Page, pfad: string) {
   await page.clock.install({ time: new Date('2026-11-02T08:00:00+01:00') });
   await page.goto(pfad);
-  await page.getByRole('button', { name: /^(Nur notwendige|Necessary only)$/ }).click();
 }
 
 test('Formate: Menü, Kopf als Netz, Kurzbeschreibung unter der Maus, neu knüpfen', async ({ page, isMobile }) => {

@@ -6,7 +6,7 @@
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { redaktion, menue } from './redaktion-mock';
-import { montag, plusTage, status, inhalt, bereit, zeitNorm, kalenderwoche, type KeepUpTermin } from '../src/lib/keep-up-plan';
+import { montag, plusTage, status, inhalt, bereit, zeitGueltig, zeitNorm, kalenderwoche, type KeepUpTermin } from '../src/lib/keep-up-plan';
 
 const heute = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Europe/Berlin' }).format(new Date());
 const mo = montag(heute);
@@ -72,6 +72,13 @@ test('Planung: einplanen, Überschneidung, bearbeiten, löschen und rückgängig
   await dlg.locator('[data-s-woche="7"]').click();
   await expect(dlg.locator('[data-s-konflikt]')).toBeHidden();
   await dlg.getByLabel('Notiz an die Dozent:in').fill('Raum 2');
+  // Uhrzeit ohne „bis“ wird nicht gespeichert (sonst fehlt das Ende im Kalender-Abo)
+  await dlg.getByLabel('Uhrzeit', { exact: true }).fill('18 Uhr');
+  await dlg.getByRole('button', { name: 'Einplanen' }).click();
+  await expect(dlg).toContainText('Bitte die Uhrzeit als „von–bis“ eintragen, z. B. 10:00–11:30.');
+  await expect(dlg.getByLabel('Uhrzeit', { exact: true })).toBeFocused();
+  expect(m.keepupAenderungen).toEqual([]);
+  await dlg.getByLabel('Uhrzeit', { exact: true }).fill('10:00 - 11:30');
   await dlg.getByRole('button', { name: 'Einplanen' }).click();
   await expect(dlg).toBeHidden();
   await expect(page.locator('[data-ku-toast]')).toContainText('Eingeplant. Laura Gary sieht den Termin jetzt und kann ihn beschreiben.');
@@ -287,6 +294,10 @@ test('Logik: Status, Veröffentlichen nur mit Titel und Kurzbeschreibung, Zeitan
   expect(bereit(t({ titel: 'A', kurz: 'x'.repeat(241) }))).toBe(false);
   expect(bereit(t({ titel: 'A', kurz: 'x'.repeat(240) }))).toBe(true);
   expect(zeitNorm('10:00 - 11:30')).toBe('10:00–11:30');
+  expect(zeitNorm('9:00-10:30')).toBe('09:00–10:30');
+  expect(zeitGueltig('9:00 – 10:30')).toBe(true);
+  expect(zeitGueltig('18:00')).toBe(false);
+  expect(zeitGueltig('18 Uhr')).toBe(false);
   expect(montag('2026-11-01')).toBe('2026-10-26');
   expect(kalenderwoche('2026-10-26')).toBe(44);
   expect(kalenderwoche('2027-01-01')).toBe(53);

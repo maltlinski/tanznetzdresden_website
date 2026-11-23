@@ -13,6 +13,7 @@ import { getLang, url } from '../../lib/i18n';
 import { href } from '../../lib/url';
 import type { KalenderDaten, KeepUpDaten } from '../../scripts/intern/keep-up';
 import '../../styles/intern-bausteine.css';
+import { jsonImHtml } from '../../lib/json-im-html';
 
 interface Props {
   /** zusätzlich die Daten für Intern → Kalender */
@@ -59,7 +60,7 @@ if (kalender) {
   };
   daten.kalender = k;
 }
-const json = JSON.stringify(daten).replace(/</g, '\\u003c');
+const json = jsonImHtml(daten);
 ---
 <script type="application/json" data-ku-daten set:html={json} />
 <div class="ku-toast" role="status" data-ku-toast hidden>

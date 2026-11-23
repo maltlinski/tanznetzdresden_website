@@ -17,6 +17,7 @@ import { escapeHtml as esc } from '../lib/news-format';
 import { getVerein } from '../lib/settings';
 import { getLang, tr, url } from '../lib/i18n';
 import { texte } from '../lib/texte';
+import { jsonImHtml } from '../lib/json-im-html';
 
 interface Props {
   post: NewsPost;
@@ -81,7 +82,7 @@ const jsonLd = {
   ogType="article"
   published={post.date}
 >
-  <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  <script slot="head" type="application/ld+json" set:html={jsonImHtml(jsonLd)} />
 
   <article data-article data-lang={lang} data-seed={post.id}>
     <Fragment set:html={kopf} />

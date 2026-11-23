@@ -20,6 +20,8 @@ import { getNews } from '../../../../lib/news';
 import { newsBausteine } from '../../../../settings/news-bausteine';
 import '../../../../styles/news-editor.css';
 import '../../../../styles/mediathek.css';
+import { jsonImHtml } from '../../../../lib/json-im-html';
+import { getCollection } from 'astro:content';
 
 // Ziele für „Link einfügen“ (Adressen ohne Basis-Pfad, den ergänzt die Website selbst)
 const basis = import.meta.env.BASE_URL.replace(/\/?$/, '/');
@@ -29,13 +31,15 @@ const seiten: [RouteKey, string][] = [
   ['kooperationen', 'Kooperationen'], ['verein', 'Über uns'], ['mitglied', 'Mitglied werden'], ['kontakt', 'Kontakt'],
   ['spenden', 'Spenden'], ['transparenz', 'Transparenz'],
 ];
+// Adressen der Beiträge aus Dateien (alte Website): ein Beitrag aus dem internen Bereich mit derselben Adresse
+// erschiene nicht (src/lib/news.ts) – darum meldet der Editor sie schon beim Tippen und beim Veröffentlichen
+const dateiAdressen = (await getCollection('news')).map((n) => n.id);
 const linkziele = [
   ...seiten.map(([k, titel]) => ({ art: 'Seite', titel, href: ohneBasis(url('de', k)) })),
   ...(await getProfiles()).map((p) => ({ art: 'Person', titel: p.name, href: ohneBasis(url('de', 'netzwerk', `${p.id}/`)) })),
   ...(await getTermine()).reverse().map((t) => ({ art: 'Termin', titel: `${t.data.title} · ${t.data.start.slice(0, 10).split('-').reverse().join('.')}`, href: ohneBasis(url('de', 'termine', `${t.id}/`)) })),
   ...(await getNews('de')).map((n) => ({ art: 'News', titel: n.title, href: ohneBasis(url('de', 'news', `${n.id}/`)) })),
 ];
-const json = (v: unknown) => JSON.stringify(v).replace(/</g, '\\u003c');
 
 // Kopfbereich: kleine Skizzen der Varianten (Entwurf Redaktion v2); „bild“ = dort steht das Titelbild
 type Teil = { l: string; t: string; w: string; h: string; bg?: string; bild?: boolean };
@@ -262,6 +266,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
               <label for="ne-slug">Adresse</label>
               <input id="ne-slug" name="slug" maxlength="80" pattern="[a-z0-9]+(-[a-z0-9]+)*" />
               <span class="i-hint">Wird aus dem Titel gebildet. Nach dem Veröffentlichen besser nicht mehr ändern.</span>
+              <span class="i-hint ne-belegt" data-slug-belegt hidden>Diese Adresse hat schon ein älterer Beitrag. Bitte eine andere wählen, sonst erscheint der Beitrag nicht auf der Website.</span>
             </div>
             <div class="ne-weitere__knoepfe">
               <a class="md-leise" data-view-live hidden target="_blank" rel="noopener">Auf der Website ansehen ↗</a>
@@ -383,8 +388,9 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
 
   <div class="ne-toast" role="status" aria-live="polite" data-msg hidden></div>
 
-  <script type="application/json" data-bausteine set:html={json(newsBausteine)} />
-  <script type="application/json" data-linkziele set:html={json(linkziele)} />
+  <script type="application/json" data-bausteine set:html={jsonImHtml(newsBausteine)} />
+  <script type="application/json" data-linkziele set:html={jsonImHtml(linkziele)} />
+  <script type="application/json" data-datei-adressen set:html={jsonImHtml(dateiAdressen)} />
 </Redaktion>
 
 <script>
@@ -588,7 +594,12 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
       count();
       const slug = field<HTMLInputElement>('slug')!;
       const adresse = () => `${location.host}${base}news/${slug.value || '…'}/`;
-      const showSlug = () => ($('[data-vp-adresse]')!.textContent = adresse());
+      const dateiAdressen = new Set<string>(JSON.parse($('[data-datei-adressen]')?.textContent || '[]'));
+      const belegt = () => dateiAdressen.has(slug.value);
+      const showSlug = () => {
+        $('[data-vp-adresse]')!.textContent = adresse();
+        $('[data-slug-belegt]')!.hidden = !belegt();
+      };
       titel.addEventListener('input', () => {
         if (!slugTouched) slug.value = slugify(titel.value).slice(0, 80).replace(/-+$/, '');
         showSlug();
@@ -897,6 +908,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         p.push({ text: 'Keine leeren oder unvollständigen Blöcke', ok: leer < 0, pflicht: false, ziel: () => leer >= 0 && springen({ ziel: 'abschnitt', i: leer }) });
         const alles = JSON.stringify(daten('entwurf'));
         p.push({ text: 'Keine Emoji (Gestaltungsregel)', ok: !EMOJI.test(alles), pflicht: true, ziel: () => springen({ ziel: 'titel' }) });
+        if (belegt()) p.push({ text: 'Adresse frei (ein älterer Beitrag hat sie schon)', ok: false, pflicht: true, ziel: () => hin(slug) });
         p.push({ text: 'Englische Fassung', ok: !!val('title_en') || hatEnglisch(editor.bloecke()), pflicht: false, ziel: () => {
           $<HTMLDetailsElement>('[data-en]')!.open = true;
           hin(field('title_en') as HTMLElement);
@@ -994,6 +1006,11 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
         if (speichertGerade) await speichertGerade;
         const lauf = (async () => {
           const payload = daten(status);
+          if (status === 'veroeffentlicht' && belegt()) {
+            stand('Nicht gespeichert');
+            melden('Diese Adresse hat schon ein älterer Beitrag. Bitte unter „Weitere Angaben → Adresse“ eine andere wählen.');
+            return false;
+          }
           const vorher = standJson();
           if (!auto) stand('Speichert …');
           const q = row.id

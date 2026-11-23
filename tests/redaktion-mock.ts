@@ -24,6 +24,8 @@ export interface Mock {
   neubau: number;
   /** jede Änderung am eigenen Profil (PATCH profiles) */
   profilGespeichert: Record<string, unknown>[];
+  /** jede Speicherung in profil_privat (Telefon, Migration 20261123000000) */
+  privatGespeichert: Record<string, unknown>[];
   /** Aufrufe von rpc/galerie_freigabe */
   galerieFreigaben: Record<string, unknown>[];
   /** Speicherungen in mitgliedschaften (Vorstand) */
@@ -56,6 +58,8 @@ export interface MockOptionen {
   ohneMediathek?: boolean;
   /** Felder des eigenen Profils (Pia); ohne „gallery“ = Migration 20261020 fehlt */
   profil?: Record<string, unknown>;
+  /** eigene Zeile in profil_privat (Telefon); null = noch keine; undefined = Tabelle fehlt (Migration 20261123) */
+  privat?: Record<string, unknown> | null;
   /** Mitgliederprofile für Redaktion → Freigaben */
   freigaben?: Record<string, unknown>[];
   /** eigene Zeile in mitgliedschaften; null = noch nicht angelegt; undefined = Tabelle fehlt (Migration 20261022) */
@@ -105,9 +109,10 @@ export async function menue(page: Page) {
 
 export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock> {
   const ref = new URL(SB).hostname.split('.')[0];
-  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), hochgeladenDaten: [], neubau: 0, profilGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, einladen: [], keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [],
+  const m: Mock = { gespeichert: [], hochgeladen: [], geloescht: [], medien: new Map((o.medien ?? []).map((r) => [String(r.datei), r])), hochgeladenDaten: [], neubau: 0, profilGespeichert: [], privatGespeichert: [], galerieFreigaben: [], mitgliedschaftGespeichert: [], wallet: 0, einladen: [], keepup: (o.keepup ?? []).map(keepupZeile), keepupAenderungen: [], kalender: [...(o.kalender ?? [])], kalenderAenderungen: [],
     openCalls: (o.openCalls ?? []).map(openCallZeile), ocStand: [...(o.ocStand ?? [])], ocNetz: [...(o.ocNetz ?? [])], ocAenderungen: [] };
   const mitglieder = new Map<string, Record<string, unknown>>([...(o.mitgliedschaft ? [o.mitgliedschaft] : []), ...(o.mitgliedschaften ?? [])].map((z) => [String(z.person), z]));
+  let privat = o.privat;
   let profil: Record<string, unknown> = { id: 'u1', display_name: 'Pia Presse', role: 'presse', verified: false, public_listing: false, tags: [], ags: [], ...o.profil };
   const dateien = new Map<string, Buffer>();
   let zeile = o.zeile;
@@ -154,6 +159,16 @@ export async function redaktion(page: Page, o: MockOptionen = {}): Promise<Mock>
       // eigenes Profil (id=eq.u1, auch per maybeSingle als Liste), sonst die Liste für die Freigaben
       if (o.freigaben && url.searchParams.get('id') !== 'eq.u1') return json(o.freigaben);
       return json(einzeln ? profil : [profil]);
+    }
+    if (url.pathname === '/rest/v1/profil_privat') {
+      if (privat === undefined) return json({ message: 'Could not find the table public.profil_privat in the schema cache', code: 'PGRST205' }, 404);
+      if (req.method() === 'POST') {
+        const body = req.postDataJSON() as Record<string, unknown>;
+        m.privatGespeichert.push(body);
+        privat = { ...privat, ...body };
+        return route.fulfill({ status: 201, headers: cors, body: '' });
+      }
+      return json(privat ? [privat] : []);
     }
     if (url.pathname === '/rest/v1/rpc/galerie_freigabe') {
       const body = req.postDataJSON() as Record<string, unknown>;

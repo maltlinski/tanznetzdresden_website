@@ -10,12 +10,13 @@ import Redaktion from '../../../../layouts/Redaktion.astro';
 import texte from '../../../../settings/texte.json';
 import { seitenplan } from '../../../../scripts/intern/redaktion/seitenplan';
 import '../../../../styles/redaktion.css';
+import { jsonImHtml } from '../../../../lib/json-im-html';
 
 // Pfad → Seite im Seitenplan („allgemein“ steht auf jeder Seite und ist kein Ziel)
 const seiten = seitenplan(texte)
   .filter((s) => s.id !== 'allgemein')
   .map((s) => [s.pfad, s.id] as const);
-const json = JSON.stringify(seiten).replace(/</g, '\\u003c');
+const json = jsonImHtml(seiten);
 ---
 <Redaktion title="Seite bearbeiten" current="inhalte">
   <div class="i-card" data-no-access hidden>

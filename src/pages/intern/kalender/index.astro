@@ -208,7 +208,8 @@ import { href } from '../../../lib/url';
           <div class="pl-zwei" data-s-teil>
             <div class="i-field">
               <label for="pl-zeit">Uhrzeit</label>
-              <input id="pl-zeit" maxlength="40" data-s-zeit />
+              <input id="pl-zeit" maxlength="40" placeholder="10:00–11:30" pattern="\s*\d{1,2}:\d{2}\s*[–\-]\s*\d{1,2}:\d{2}\s*" aria-describedby="pl-zeit-hilfe" data-s-zeit />
+              <p class="i-hint" id="pl-zeit-hilfe">von–bis, z. B. 10:00–11:30</p>
             </div>
             <div class="i-field">
               <label for="pl-ort">Ort</label>
@@ -249,7 +250,7 @@ import { href } from '../../../lib/url';
     daten, ladeTermine, heute, monatName, tagKurz, tagLang, zeitraum, tageText, wocheText, istVorbei, tageBis, artText, initialen,
     badge, toast, DS, DOWL, FEHLT, tabelleFehlt, SPALTEN, wochentag, type KalenderDaten,
   } from '../../../scripts/intern/keep-up';
-  import { STANDARD, STATUS, status, plusTage, montag, tagDatum, ersterTag, kalenderwoche, zeitNorm, type KeepUpTermin } from '../../../lib/keep-up-plan';
+  import { STANDARD, STATUS, status, plusTage, montag, tagDatum, ersterTag, kalenderwoche, zeitGueltig, zeitNorm, type KeepUpTermin } from '../../../lib/keep-up-plan';
   import { KURZ_MAX, slugAus, uhr, type KalenderTermin, type Kategorie } from '../../../lib/kalender-intern';
   import { href } from '../../../lib/url';
 
@@ -744,6 +745,11 @@ import { href } from '../../../lib/url';
   async function keepupSpeichern() {
     if (!ctx || !e.dozent || !e.tage.length) return;
     if (!keepupDa) return showMessage(sMsg, FEHLT);
+    const zeitFeld = $('[data-s-zeit]') as HTMLInputElement;
+    if (zeitFeld.value.trim() && !zeitGueltig(zeitFeld.value)) {
+      zeitFeld.focus();
+      return showMessage(sMsg, 'Bitte die Uhrzeit als „von–bis“ eintragen, z. B. 10:00–11:30.');
+    }
     const felder = {
       art: e.art, dozent: e.dozent, woche: e.woche, tage: [...e.tage].sort(),
       zeit: zeitNorm(($('[data-s-zeit]') as HTMLInputElement).value) || STANDARD[e.art].zeit,

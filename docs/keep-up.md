@@ -33,7 +33,9 @@ Seit Migration `20261026000000_kalender.sql` dürfen Presse, Vorstand und Admin 
 
 - Pro Woche eine Zeile mit den sieben Tagen (cyan = Profitraining, magenta = Workshop, Rahmen = heute) und rechts den
   Einplanungen mit Status: **Ohne Beschreibung**, **Entwurf**, **Online**, **Änderungen offen**.
-- **Training einplanen** oder ein freier Tag öffnet die Schublade: Art, Dozent:in, Woche und Tage, Uhrzeit, Ort und
+- **Training einplanen** oder ein freier Tag öffnet die Schublade: Art, Dozent:in, Woche und Tage, Uhrzeit (nur
+  „von–bis“, z. B. 10:00–11:30 – sonst fehlt das Ende im Kalender-Abo; die Datenbank prüft es ab Migration
+  20261123000000), Ort und
   eine **Notiz an die Dozent:in** (nur intern sichtbar). Überschneidungen mit einer anderen Einplanung gleicher Art
   werden angezeigt. Löschen fragt einmal nach und lässt sich in der Meldung rückgängig machen.
 - **Erinnern:** Termine der nächsten drei Wochen ohne veröffentlichte Beschreibung stehen oben im lila Kasten.

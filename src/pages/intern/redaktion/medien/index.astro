@@ -15,6 +15,7 @@ import RedaktionStatus from '../../../../components/intern/RedaktionStatus.astro
 import { heroFotos } from '../../../../settings/hero';
 import '../../../../styles/redaktion.css';
 import '../../../../styles/mediathek.css';
+import { jsonImHtml } from '../../../../lib/json-im-html';
 
 // fest eingebaute Fotos (nicht über die Redaktion änderbar): Bühnenfotos im Kopf der Startseite
 const fest = heroFotos.map((f) => f.datei);
@@ -69,7 +70,7 @@ const fest = heroFotos.map((f) => f.datei);
       </div>
     </form>
   </dialog>
-  <script type="application/json" data-fest set:html={JSON.stringify(fest)} />
+  <script type="application/json" data-fest set:html={jsonImHtml(fest)} />
 </Redaktion>
 
 <script>

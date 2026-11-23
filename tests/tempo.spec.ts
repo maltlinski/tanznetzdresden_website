@@ -4,7 +4,7 @@ import { veroeffentlicht } from './news-daten';
 
 /**
  * Festlegungen aus der Durchsicht vom November 2026 (docs/entwicklung.md, „Tempo und Technik“):
- * Mitgliedsantrag, schmaler Cookie-Hinweis, bildschirmfüllendes Handy-Menü, Schriften als WOFF2,
+ * Mitgliedsantrag, Cookie-Hinweis nur auf Wunsch, bildschirmfüllendes Handy-Menü, Schriften als WOFF2,
  * Silbentrennung nur im Fließtext, kleine News-Übersicht, Angaben für geteilte Links und Startbildschirm.
  */
 
@@ -49,22 +49,18 @@ test('Mitglied werden: kein Platzhalter sichtbar, Formular prüft die Angaben un
   });
 });
 
-test('Cookie-Hinweis: schmale Leiste, die Seite bleibt lesbar; ausführlich erst mit „Einstellungen“', async ({ page }) => {
+test('Cookie-Hinweis: verdeckt beim ersten Besuch nichts; ausführlich über „Cookie-Einstellungen“', async ({ page }) => {
   await page.goto('/');
+  await page.waitForLoadState('load');
   const banner = page.getByRole('dialog', { name: 'Deine Privatsphäre' });
-  await expect(banner).toBeVisible();
-  const hoehe = page.viewportSize()!.height;
-  const kurz = (await banner.boundingBox())!;
-  // höchstens ein gutes Viertel des Bildschirms, am unteren Rand
-  expect(kurz.height).toBeLessThanOrEqual(hoehe * 0.28);
-  expect(kurz.y + kurz.height).toBeGreaterThan(hoehe - 40);
+  // ohne Statistik nichts zum Wegklicken: externe Inhalte fragen dort, wo sie stehen
+  await expect(banner).toBeHidden();
+  await page.getByRole('button', { name: 'Cookie-Einstellungen' }).click();
+  await expect(banner.getByRole('heading', { name: 'Deine Privatsphäre' })).toBeVisible();
+  await expect(banner.getByRole('checkbox', { name: /Externe Medien/ })).toBeVisible();
   // beide Hauptknöpfe gleich gewichtet (gleiche Farben)
   const farbe = (name: string) => banner.getByRole('button', { name }).evaluate((b) => `${getComputedStyle(b).backgroundColor} ${getComputedStyle(b).color}`);
   expect(await farbe('Alle akzeptieren')).toBe(await farbe('Nur notwendige'));
-  await expect(banner.getByRole('checkbox', { name: /Externe Medien/ })).toBeHidden();
-  await banner.getByRole('button', { name: 'Einstellungen', exact: true }).click();
-  await expect(banner.getByRole('heading', { name: 'Deine Privatsphäre' })).toBeVisible();
-  await expect(banner.getByRole('checkbox', { name: /Externe Medien/ })).toBeVisible();
 });
 
 test('Menü auf dem Handy füllt den Bildschirm und führt auch zu Netzwerk und Kontakt', async ({ page, isMobile }) => {

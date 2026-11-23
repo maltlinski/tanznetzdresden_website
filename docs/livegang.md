@@ -98,7 +98,8 @@ Maßgeblich ist immer der Wortlaut im jeweiligen Bescheid bzw. dessen Anlage zur
 **Supabase** (docs/intern.md)
 
 - [ ] **Alle Migrationen** aus `supabase/migrations/` der Reihe nach im SQL-Editor ausgeführt
-      (bis `20261115000000_mitgliedsantraege.sql`, die letzte speichert die Anträge aus dem Formular „Mitglied werden“).
+      (bis `20261123000000_pruefung.sql`: Telefonnummer privat, freigegebene Fotos geschützt, KEEP UP-Uhrzeit).
+- [ ] **`supabase/pruefen.sql`** im SQL-Editor ausgeführt: überall „ok“ (prüft die Zugriffsregeln, nimmt alles zurück).
 - [ ] *Authentication*: Selbst-Registrierung aus, Site URL gesetzt, **Redirect URLs** `…/intern/**` und
       `…/en/intern/**`.
 - [ ] **E-Mails** (*Authentication → Emails*): Vorlagen für Einladung, Login-Link und Passwort auf Deutsch (und

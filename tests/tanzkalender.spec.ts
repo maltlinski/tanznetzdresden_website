@@ -14,7 +14,6 @@ const ausschreibung = newsDateien().filter((p) => p.deadline && !p.draft).sort((
 async function oeffnen(page: Page, pfad = '/termine/') {
   await page.clock.install({ time: new Date('2026-10-12T08:00:00+02:00') });
   await page.goto(pfad);
-  await page.getByRole('button', { name: /^(Nur notwendige|Necessary only)$/ }).click();
 }
 const liste = (page: Page) => page.locator('#tk-liste');
 

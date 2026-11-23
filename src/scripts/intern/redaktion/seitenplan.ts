@@ -11,6 +11,7 @@
  * (sonst findet ihn die Redaktion unter „Seiten“ nicht; tests/redaktion-struktur.spec.ts prüft das).
  */
 import type { TextSeite } from '../../../lib/texte-regeln';
+import { jsonImHtml } from '../../../lib/json-im-html';
 
 export interface PlanZiel {
   text: string;
@@ -80,7 +81,7 @@ export function ortNach(plan: PlanSeite[], von: string | null): Ort | null {
 }
 
 /** Plan als JSON für ein <script type="application/json"> (sicher im HTML) */
-export const planJson = (plan: PlanSeite[]) => JSON.stringify(plan).replace(/</g, '\\u003c');
+export const planJson = (plan: PlanSeite[]) => jsonImHtml(plan);
 
 /** Plan aus der Seite lesen (siehe planJson) */
 export function planLesen(): PlanSeite[] {

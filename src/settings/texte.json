@@ -346,7 +346,7 @@
           "callsText": { "wo": "Kasten ohne offene Ausschreibung: Text", "de": "Neue Open Calls erscheinen im Journal.", "en": "New open calls are published in the journal.", "max": 80 },
           "zuCalls": { "wo": "Kasten ohne offene Ausschreibung: Link", "de": "Zum Journal →", "en": "To the journal →", "max": 30 },
           "ags": { "wo": "Überschrift rechts", "de": "Arbeitsgruppen", "en": "Working groups", "max": 30 },
-          "agsText": { "wo": "Text unter „Arbeitsgruppen“", "de": "Hinter jedem Format steht eine AG. Mitglieder:innen können jederzeit einsteigen.", "en": "Each format is run by a working group. Members can join at any time.", "max": 160 },
+          "agsText": { "wo": "Text unter „Arbeitsgruppen“", "de": "Hinter jedem Format steht eine AG. Mitglieder können jederzeit einsteigen.", "en": "Each format is run by a working group. Members can join at any time.", "max": 160 },
           "join": { "wo": "Knopf", "de": "Mitglied werden", "en": "Become a member", "max": 30 }
         }
       }
@@ -501,7 +501,7 @@
         "titel": "Kopf",
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Über uns", "en": "About us", "max": 60 },
-          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "TanzNetzDresden ist das selbstorganisierte Netzwerk der freien Tanzszene in Dresden. Wir sind ein Verein mit zahlreichen Arbeitsgruppen und Mitglieder:innen.", "en": "TanzNetzDresden is a self-organized network of the independent dance scene in Dresden. We are an association with numerous working groups and members.", "max": 160, "ursprung": { "de": "TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden e.V.: self-organised network of Dresden's independent dance scene. Board, working groups and members." } },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "TanzNetzDresden ist das selbstorganisierte Netzwerk der freien Tanzszene in Dresden. Wir sind ein Verein mit zahlreichen Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden is a self-organized network of the independent dance scene in Dresden. We are an association with numerous working groups and members.", "max": 160, "ursprung": { "de": "TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden e.V.: self-organised network of Dresden's independent dance scene. Board, working groups and members." } },
           "kicker": { "wo": "Kleine Zeile über der Überschrift ({jahr} = Gründungsjahr)", "de": "Über uns · seit {jahr}", "en": "About us · since {jahr}", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Das Netzwerk der freien Tanzszene.\nIn und für Dresden.", "en": "The network of the independent dance scene.\nIn and for Dresden.", "max": 80, "ursprung": { "de": "Dezentrale Kulturinstitution.\nUnd Bildungsort.", "en": "A decentralised cultural institution.\nAnd a place of learning." } },
           "lead": { "wo": "Text unter der Überschrift ({jahr} = Gründungsjahr)", "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden im TanzNetzDresden. Seit 2020 in Form eines gemeinnützigen Vereins. Wir organisieren Formate, Trainingsangebote, Beratung, Diskurse, Residenzen und Kooperationen und setzen uns für bessere Arbeitsbedingungen und mehr Sichtbarkeit des Tanz in Dresden ein.", "en": "Since {jahr}, dance professionals from Dresden’s independent dance scene have been connecting through TanzNetzDresden. Since 2020, it has operated as a nonprofit organization. We organize events, training programs, counseling, discussions, residencies, and collaborations, and we advocate for better working conditions and greater visibility for dance in Dresden.", "max": 400, "ausblendbar": true, "ursprung": { "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.", "en": "Since {jahr}, dance artists of Dresden's independent scene have been building this network, since 2020 as a registered non-profit association. We organise formats, training, discourse and residencies and advocate for better working conditions in dance." } }
@@ -533,14 +533,14 @@
         "texte": {
           "agKicker": { "wo": "Kleine Zeile über der Überschrift ({anzahl} = Zahl der AGs)", "de": "{anzahl} Arbeitsgruppen", "en": "{anzahl} working groups", "max": 40 },
           "agH": { "wo": "Überschrift", "de": "Wer die Arbeit trägt", "en": "Who carries the work", "max": 40 },
-          "agIntro": { "wo": "Text unter der Überschrift", "de": "Jedes Format hat eine eigene AG. Mitglieder:innen können jederzeit einsteigen.", "en": "Each format has its own working group. Members can join at any time.", "max": 200, "ausblendbar": true }
+          "agIntro": { "wo": "Text unter der Überschrift", "de": "Jedes Format hat eine eigene AG. Mitglieder können jederzeit einsteigen.", "en": "Each format has its own working group. Members can join at any time.", "max": 200, "ausblendbar": true }
         }
       },
       "netz": {
         "titel": "Das Netz",
         "ausblendbar": true,
         "texte": {
-          "netKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitglieder:innen & Trainer:innen", "en": "Members & teachers", "max": 40 },
+          "netKicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Mitglieder & Trainer:innen", "en": "Members & teachers", "max": 40 },
           "netH": { "wo": "Überschrift", "de": "Das Netz", "en": "The network", "max": 40 },
           "member": { "wo": "Kennzeichen auf einer Karte", "de": "Mitglied", "en": "Member", "max": 20 },
           "trainer": { "wo": "Kennzeichen auf einer Karte", "de": "Training", "en": "Training", "max": 20 },
@@ -646,7 +646,7 @@
         "auch": [{ "text": "Statements im Kopf", "ziel": "redaktion:statements" }],
         "texte": {
           "seitentitel": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Netzwerk", "en": "Network", "max": 60 },
-          "beschreibung": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Die Tanzschaffenden im TanzNetzDresden: Profile von Mitglieder:innen und Trainer:innen.", "en": "The dance artists of TanzNetzDresden: profiles of members and teachers.", "max": 160 },
+          "beschreibung": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Die Tanzschaffenden im TanzNetzDresden: Profile von Mitgliedern und Trainer:innen.", "en": "The dance artists of TanzNetzDresden: profiles of members and teachers.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Netzwerk", "en": "Network", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Wer im Netz\ntanzt.", "en": "Who dances\nin the network.", "max": 40 },
           "stimmen": { "wo": "Kleine Zeile über dem Zähler der Statements im Kopf", "de": "Stimmen aus dem Netz", "en": "Voices from the network", "max": 40 },
@@ -659,7 +659,7 @@
         "auch": [{ "text": "Profile freigeben", "ziel": "intern/redaktion/freigaben/" }, { "text": "Personen aus der Datei", "ziel": "redaktion:personen" }],
         "texte": {
           "alle": { "wo": "Filter: alle Profile", "de": "Alle", "en": "All", "max": 20 },
-          "mitglieder": { "wo": "Filter: nur Mitglieder", "de": "Mitglieder:innen", "en": "Members", "max": 24 },
+          "mitglieder": { "wo": "Filter: nur Mitglieder", "de": "Mitglieder", "en": "Members", "max": 24 },
           "trainerinnen": { "wo": "Filter: nur Trainer:innen", "de": "Trainer:innen", "en": "Teachers", "max": 24 },
           "suchen": { "wo": "Beschriftung des Suchfelds", "de": "Suchen", "en": "Search", "max": 20 },
           "suchhilfe": { "wo": "Grauer Text im leeren Suchfeld", "de": "Name oder Schwerpunkt", "en": "Name or focus", "max": 40 },

@@ -50,6 +50,8 @@
 .ne-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 14px 18px; }
 .ne-kurz { max-width: 280px; }
 .ne .i-field > .i-hint, .ne-feld > .i-hint { margin: 0; }
+.ne-belegt { color: var(--magenta-2); font-weight: 600; }
+.ne-belegt[hidden] { display: none; }
 
 /* Rubrik als Chips */
 .ne-chips { display: flex; flex-wrap: wrap; gap: 6px; }

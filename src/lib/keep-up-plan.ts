@@ -103,8 +103,10 @@ export function kalenderwoche(iso: string): number {
   return Math.ceil(((+d - Date.UTC(d.getUTCFullYear(), 0, 1)) / 86400000 + 1) / 7);
 }
 
-/** „Uhrzeit“ einheitlich mit Halbgeviertstrich */
-export const zeitNorm = (z: string) => z.trim().replace(/\s*[–-]\s*/, '–');
+/** „Uhrzeit“ einheitlich: Halbgeviertstrich, Stunden zweistellig („9:00 - 10:30“ → „09:00–10:30“) */
+export const zeitNorm = (z: string) => z.trim().replace(/\s*[–-]\s*/, '–').replace(/(^|–)(\d):/g, '$10$2:');
+/** Uhrzeit von–bis, wie sie Kalender-Abo und Website brauchen (gleiche Regel wie wochen.yaml und die Datenbank) */
+export const zeitGueltig = (z: string) => /^\d{2}:\d{2}–\d{2}:\d{2}$/.test(zeitNorm(z));
 
 /** Adresse eines Bildes im Bucket „keepup“ */
 export const bucketUrl = (supabaseUrl: string, pfad: string) => `${supabaseUrl}/storage/v1/object/public/keepup/${pfad.split('/').map(encodeURIComponent).join('/')}`;

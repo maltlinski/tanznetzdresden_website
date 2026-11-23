@@ -19,12 +19,12 @@ const en = lang === 'en';
 const t = tr(lang, {
   de: {
     titel: 'Mein Profil',
-    lead: 'Was du hier einträgst, sehen alle angemeldeten Mitglieder:innen. E-Mail und Telefon nur, wenn du sie freigibst. Ein öffentliches Profil auf der Website ist freiwillig.',
+    lead: 'Was du hier einträgst, sehen alle angemeldeten Mitglieder. E-Mail und Telefon nur, wenn du sie freigibst. Ein öffentliches Profil auf der Website ist freiwillig.',
     name: 'Name', optional: 'optional', pronomen: 'Pronomen', pronomenBsp: 'z. B. sie/ihr', bio: 'Kurzbio',
     bioHinweis: 'Höchstens 1.200 Zeichen. Woran arbeitest du, was bietest du an? Absätze mit einer Leerzeile trennen.',
     website: 'Website', telefon: 'Telefon', ags: 'Arbeitsgruppen', sichtbar: 'Für Mitglieder sichtbar',
-    trainer: 'Ich gebe Training (KEEP UP, Workshops)', zeigeMail: 'Meine E-Mail-Adresse für Mitglieder:innen anzeigen',
-    zeigeTel: 'Meine Telefonnummer für Mitglieder:innen anzeigen', oeffentlich: 'Öffentliches Profil auf der Website',
+    trainer: 'Ich gebe Training (KEEP UP, Workshops)', zeigeMail: 'Meine E-Mail-Adresse für Mitglieder anzeigen',
+    zeigeTel: 'Meine Telefonnummer für Mitglieder anzeigen', oeffentlich: 'Öffentliches Profil auf der Website',
     oeffentlichWahl: 'Ich möchte ein öffentliches Profil unter „Netzwerk“ (Name, Kurzbio, Fotos, Arbeiten, Kontakt)',
     adresse: 'Adresse', adresseHinweis: 'Kleinbuchstaben, Ziffern, Bindestriche. Steht dein Name schon auf der Website, nimm dasselbe Kürzel – dann wird das bestehende Profil ergänzt.',
     taetigkeit: 'Tätigkeit', taetigkeitBsp: 'z. B. Tänzerin und Choreografin', basis: 'Basis', basisBsp: 'z. B. Dresden-Neustadt',
@@ -275,7 +275,7 @@ const t = tr(lang, {
   const ctx = await initIntern(true);
   const form = document.querySelector<HTMLFormElement>('[data-profile-form]');
   const msg = document.querySelector<HTMLElement>('[data-profile-msg]');
-  const textFields = ['display_name', 'pronouns', 'bio', 'bio_en', 'website', 'instagram', 'phone', 'slug', 'vimeo', 'photo_credit'] as const;
+  const textFields = ['display_name', 'pronouns', 'bio', 'bio_en', 'website', 'instagram', 'slug', 'vimeo', 'photo_credit'] as const;
   const flags = ['is_trainer', 'show_email', 'show_phone', 'public_listing'] as const;
   // ab Migration 20261020000000_profil_seite.sql
   const neueTexte = ['profession', 'profession_en', 'base', 'pitch', 'pitch_en', 'education', 'techniques', 'languages', 'regions', 'height', 'available', 'public_email'] as const;
@@ -359,6 +359,12 @@ const t = tr(lang, {
       form.querySelector<HTMLElement>('input[name="open_for"]')!.closest<HTMLElement>('fieldset')!.hidden = true;
       document.querySelector<HTMLElement>('[data-neu-fehlt]')!.hidden = false;
     }
+    // Telefon: ab Migration 20261123000000 in profil_privat (nur für die Person selbst und den Vorstand lesbar),
+    // vorher in profiles. `privat` = die Tabelle gibt es.
+    const telefon = await ctx.sb.from('profil_privat').select('phone').eq('person', ctx.user.id).maybeSingle<{ phone: string | null }>();
+    const privat = !telefon.error || !/profil_privat|does not exist|schema cache|PGRST20[05]|42P01/i.test(`${telefon.error.message} ${telefon.error.code}`);
+    const telefonFeld = feld('phone');
+    if (telefonFeld) telefonFeld.value = (privat ? telefon.data?.phone : p?.phone) ?? '';
     if (p) {
       for (const f of textFields) {
         const el = form.elements.namedItem(f) as HTMLInputElement | HTMLTextAreaElement | null;
@@ -593,7 +599,7 @@ const t = tr(lang, {
         website: clean(fd.get('website')),
         instagram: clean(fd.get('instagram'))?.replace(/^@/, '') ?? null,
         vimeo: clean(fd.get('vimeo')),
-        phone: clean(fd.get('phone')),
+        ...(privat ? {} : { phone: clean(fd.get('phone')) }),
         slug: clean(fd.get('slug')),
         photo_credit: clean(fd.get('photo_credit')),
         tags: String(fd.get('tags') ?? '').split(',').map((t) => t.trim()).filter(Boolean).slice(0, 6),
@@ -619,6 +625,10 @@ const t = tr(lang, {
         return showMessage(msg, /duplicate|unique/i.test(error.message)
           ? t('Diese Adresse ist schon vergeben. Bitte wähle eine andere.', 'This address is already taken. Please choose another one.')
           : errorText(error));
+      }
+      if (privat) {
+        const { error: fehler } = await ctx.sb.from('profil_privat').upsert({ person: ctx.user.id, phone: clean(fd.get('phone')) });
+        if (fehler) return showMessage(msg, errorText(fehler));
       }
       document.querySelectorAll<HTMLElement>('[data-intern-name]').forEach((el) => (el.textContent = update.display_name));
       verified = data.verified;

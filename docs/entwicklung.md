@@ -284,7 +284,9 @@ Festlegungen aus der Durchsicht vom November 2026. Bei neuen Seiten und Baustein
   Profile haben `Person`-Daten für Suchmaschinen (`ogType`, `published`, `ogImage` am Layout `Page`).
 - **Startbildschirm.** Web-Manifest je Sprache (`src/lib/manifest.ts`), Symbole aus dem Zeichen des Favicons
   (`src/lib/icon.ts`, `src/pages/icon-[name].png.ts`).
-- **Cookie-Hinweis** als schmale Leiste (`src/components/ConsentBanner.astro`): kurzer Text, beide Knöpfe gleich
-  gewichtet; Überschrift, langer Text und Kategorien erst mit „Einstellungen“.
+- **Cookie-Hinweis** (`src/components/ConsentBanner.astro`) erscheint von selbst nur, wenn eine Statistik
+  eingerichtet ist (verein.json → analytics); Karte und Videos fragen dort, wo sie stehen (Zwei-Klick-Lösung,
+  `ConsentEmbed.astro`). Sonst öffnet ihn nur „Cookie-Einstellungen“ im Fuß. Von selbst als schmale Leiste:
+  kurzer Text, beide Knöpfe gleich gewichtet; Überschrift, langer Text und Kategorien erst mit „Einstellungen“.
 - **Handy-Menü** füllt den Bildschirm, die Seite dahinter scrollt nicht (`src/components/sections/Header.astro`);
   darin zusätzlich „Netzwerk & Profile“ und „Kontakt & Presse“.

@@ -23,9 +23,15 @@ sorgt dafür, dass nur angemeldete Mitglieder:innen Daten sehen. Der öffentlich
    `supabase/migrations/20261026000000_kalender.sql` (Termine im internen Kalender eintragen, siehe [kalender.md](kalender.md)) und
    `supabase/migrations/20261027000000_open_calls.sql` (Open Calls, siehe [open-calls.md](open-calls.md)) und
    `supabase/migrations/20261028000000_kalender_eintritt.sql` (Eintritt bei Terminen, siehe [kalender.md](kalender.md)),
-   danach alle weiteren Dateien im Ordner in der Reihenfolge ihres Datums, zuletzt
-   `supabase/migrations/20261115000000_mitgliedsantraege.sql` (Anträge aus dem Formular „Mitglied werden“, siehe unten).
+   danach alle weiteren Dateien im Ordner in der Reihenfolge ihres Datums, darunter
+   `supabase/migrations/20261115000000_mitgliedsantraege.sql` (Anträge aus dem Formular „Mitglied werden“, siehe unten),
+   zuletzt `supabase/migrations/20261123000000_pruefung.sql` (Telefonnummer nur für die Person selbst und den
+   Vorstand, freigegebene Fotos nicht mehr austauschbar, KEEP UP-Uhrzeit nur „von–bis“).
    Oben rechts im SQL-Editor muss als Rolle `postgres` stehen. Alle Dateien dürfen erneut ausgeführt werden.
+4. **Danach und nach jeder neuen Migration:** `supabase/pruefen.sql` im SQL-Editor ausführen. Es spielt ein normales
+   Mitglied, ein zweites Mitglied und einen Besuch ohne Anmeldung durch und zeigt eine Tabelle; in der Spalte
+   „ergebnis“ muss überall „ok“ stehen. Der Lauf nimmt alles wieder zurück. Neue Tabelle mit privaten Daten → dort
+   eine Prüfung ergänzen.
 
 ## 2. Login konfigurieren
 
@@ -162,11 +168,11 @@ und die Prüfseite `/mitglied/pruefen/`.
 
 | Daten | Wer sieht es |
 |---|---|
-| Name, Pronomen, Kurzbio, Website, Instagram, AGs | alle angemeldeten Mitglieder:innen |
-| E-Mail, Telefon | nur, wenn die Person es freigibt |
+| Name, Pronomen, Kurzbio, Website, Instagram, AGs | alle angemeldeten Mitglieder |
+| E-Mail, Telefon | in der Mitgliederliste nur, wenn die Person es freigibt; das Telefon steht in `profil_privat` (lesen: die Person selbst und der Vorstand), nicht in der für alle lesbaren Tabelle `profiles` |
 | `public_listing` | öffentliches Profil gewünscht; erscheint nach Freigabe (`verified`) in der Ansicht `public_profiles` |
-| Porträt (Bucket `profilbilder`) | öffentlich; ein neues Foto (`photo_pending`) erscheint erst nach Freigabe auf der Website |
-| Dokumente (Bucket `intern`) | Lesen: alle Mitglieder:innen · Hochladen/Löschen: Vorstand |
+| Porträt (Bucket `profilbilder`) | öffentlich; ein neues Foto (`photo_pending`) erscheint erst nach Freigabe auf der Website. Freigegebene Fotos lassen sich weder überschreiben noch löschen und neu hochladen (erst austragen, dann löschen) |
+| Dokumente (Bucket `intern`) | Lesen: alle Mitglieder · Hochladen/Löschen: Vorstand |
 | Rolle | ändern kann nur der Vorstand |
 | News (`news_posts`, Bucket `newsbilder`) | Entwürfe: nur Presse/Vorstand/Admin · veröffentlicht: öffentlich über `public_news` |
 

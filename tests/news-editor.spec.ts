@@ -4,6 +4,7 @@
  */
 import { test, expect, type Page } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { readdirSync } from 'node:fs';
 import { abschnitte, medienAnwenden, zuMarkdown } from '../src/lib/news-bloecke';
 import { supabase } from '../src/settings/supabase';
 import { redaktion, FOTOS } from './redaktion-mock';
@@ -112,6 +113,30 @@ test('Pflichtpunkte sperren das Veröffentlichen, die Bildbeschreibung ist nur e
   await panel(page).getByRole('button', { name: 'Jetzt veröffentlichen' }).click();
   await expect(msg(page)).toContainText('Veröffentlicht.');
   expect(m.gespeichert.at(-1)).toMatchObject({ status: 'veroeffentlicht' });
+});
+
+test('Adresse eines älteren Beitrags sperrt das Veröffentlichen (er erschiene sonst nicht)', async ({ page }) => {
+  const alt = readdirSync('src/content/news/de').find((n) => n.endsWith('.md'))!.replace(/\.md$/, '');
+  const m = await redaktion(page);
+  await page.goto('/intern/news/bearbeiten/');
+  await page.getByLabel('Titel', { exact: true }).fill('Neuer Beitrag');
+  await page.getByLabel('Teaser', { exact: true }).fill('Kurz.');
+  const hinweis = page.locator('[data-slug-belegt]');
+  await expect(hinweis).toBeHidden();
+  await page.locator('[data-weitere] summary').click();
+  await page.getByLabel('Adresse', { exact: true }).fill(alt);
+  await expect(hinweis).toBeVisible();
+  await panelOeffnen(page);
+  await expect(panel(page).locator('li').filter({ hasText: 'Adresse frei' })).toContainText('Pflicht');
+  await expect(panel(page).getByRole('button', { name: 'Jetzt veröffentlichen' })).toBeDisabled();
+  await panel(page).getByRole('button', { name: /Adresse frei.*beheben/ }).click();
+  await expect(page.getByLabel('Adresse', { exact: true })).toBeFocused();
+  await page.getByLabel('Adresse', { exact: true }).fill(`${alt}-2026`);
+  await expect(hinweis).toBeHidden();
+  await panelOeffnen(page);
+  await panel(page).getByRole('button', { name: 'Jetzt veröffentlichen' }).click();
+  await expect(msg(page)).toContainText('Veröffentlicht.');
+  expect(m.gespeichert.at(-1)).toMatchObject({ status: 'veroeffentlicht', slug: `${alt}-2026` });
 });
 
 test('Emoji im Titel sperren das Veröffentlichen (Gestaltungsregel)', async ({ page }) => {

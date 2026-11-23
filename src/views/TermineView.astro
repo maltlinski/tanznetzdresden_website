@@ -16,6 +16,7 @@ import { todayKey } from '../lib/keep-up';
 import { href } from '../lib/url';
 import { dateLocale, getLang, tr, url } from '../lib/i18n';
 import { texte, zeilen } from '../lib/texte';
+import { jsonImHtml } from '../lib/json-im-html';
 
 const lang = getLang(Astro);
 const termine = await getTanzkalenderDaten(lang);
@@ -48,11 +49,11 @@ const naechste = termine.filter((t) => t.datum >= heute && t.kat !== 'Training')
 const n = netz(0.7);
 const chipKats: ('' | (typeof FILTER)[number])[] = ['', ...FILTER];
 
-const json = JSON.stringify({
+const json = jsonImHtml({
   termine,
   locale,
   texte: { ...a, ...e, kat, keine: sr.keine },
-}).replace(/</g, '\\u003c');
+});
 ---
 <Page title={k.title} description={k.desc} route="termine" fortschritt>
   <section class="tk-kopf kopf" data-hero data-tk-kopf>

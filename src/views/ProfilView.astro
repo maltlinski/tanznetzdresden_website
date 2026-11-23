@@ -24,6 +24,7 @@ import { demoFuer } from '../lib/demo';
 import { getTermineFor } from '../lib/content';
 import { getLang, tr, url } from '../lib/i18n';
 import { fuellen, texte, zeilen } from '../lib/texte';
+import { jsonImHtml } from '../lib/json-im-html';
 
 interface Props {
   profile: PublicProfile;
@@ -152,7 +153,7 @@ const jsonLd = {
 };
 ---
 <Page title={p.name} description={description} route="netzwerk" rest={`${p.id}/`} ogImage={typeof p.photo === 'object' ? p.photo : undefined} noindex={vorlage}>
-  {!vorlage && <script slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)} />}
+  {!vorlage && <script slot="head" type="application/ld+json" set:html={jsonImHtml(jsonLd)} />}
   <div class="profil" data-profil>
     <section class="ph kopf" data-ph data-kopf-frei data-kopf-auftritt>
       {/* Netz über die Fläche, solange kein Foto den Platz füllt (je Profil eigene Struktur) */}
@@ -318,7 +319,7 @@ const jsonLd = {
                 ))}
               </div>
             </div>
-            <script type="application/json" data-lb-daten set:html={JSON.stringify(g.vollbild.map((v) => ({ ...v, nr: `${v.nr} / ${pad(g.anzahl)}` }))).replace(/</g, '\\u003c')} />
+            <script type="application/json" data-lb-daten set:html={jsonImHtml(g.vollbild.map((v) => ({ ...v, nr: `${v.nr} / ${pad(g.anzahl)}` })))} />
           </dialog>
         </section>
       );
@@ -435,10 +436,10 @@ const jsonLd = {
     )}
 
     {vorlage && (
-      <script type="application/json" data-pv-texte set:html={JSON.stringify({
+      <script type="application/json" data-pv-texte set:html={jsonImHtml({
         kicker: t.kicker, member: t.member, trainer: t.trainer, ueber: inhalt.ueber, kontakt: kontakt.titel, photos: t.photos,
         entries: t.entries, soon: t.soon, focus: t.focus, base: t.base, website: t.website, video: t.video, photo: t.photo,
-      }).replace(/</g, '\\u003c')} />
+      })} />
     )}
 
     <slot />

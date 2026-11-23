@@ -23,9 +23,9 @@ const wallet = supabase.wallet;
 const domain = new URL(Astro.site ?? 'https://tanznetzdresden.de').hostname.replace(/^www\./, '');
 const t = tr(lang, {
   de: {
-    titel: 'Mein Status', anmelden: 'Anmelden', loginLead: 'Für Mitglieder:innen von TanzNetzDresden. Zugänge vergibt der Vorstand per Einladung.',
+    titel: 'Mein Status', anmelden: 'Anmelden', loginLead: 'Für Mitglieder von TanzNetzDresden. Zugänge vergibt der Vorstand per Einladung.',
     email: 'E-Mail', passwort: 'Passwort', linkStatt: 'Stattdessen Login-Link per E-Mail', vergessen: 'Passwort vergessen?',
-    keinZugang: 'Noch kein Zugang?', keinZugangText: 'Mitglieder:innen bekommen eine Einladung per E-Mail. Du bist Mitglied, hast aber keine bekommen? Melde dich beim Vorstand.',
+    keinZugang: 'Noch kein Zugang?', keinZugangText: 'Mitglieder bekommen eine Einladung per E-Mail. Du bist Mitglied, hast aber keine bekommen? Melde dich beim Vorstand.',
     vorstand: 'Vorstand kontaktieren →', mitgliedschaft: 'Mitgliedschaft', ausweis: 'Mitgliedsausweis', umdrehen: 'Ausweis umdrehen',
     istMitglied: 'ist Mitglied im', pruefen: 'Zum Prüfen den Code scannen. Er zeigt den aktuellen Status der Mitgliedschaft.',
     seite: 'Seite des Ausweises', vorne: 'Vorderseite', hinten: 'Rückseite', zahlung: 'Zahlungsinfos anfragen', zahlungBetreff: 'Mitgliedsbeitrag',

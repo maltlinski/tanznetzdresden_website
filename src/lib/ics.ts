@@ -10,6 +10,7 @@ import { verein } from './settings';
 import { escapeIcs as escape, foldIcs as fold, VTIMEZONE } from './ics-text';
 
 const pad = (n: number) => String(n).padStart(2, '0');
+const UHR = /^\d{1,2}:\d{2}$/;
 const local = (s: string) => {
   const p = parseLocal(s);
   return `${p.y}${pad(p.m)}${pad(p.d)}T${pad(p.hh)}${pad(p.mm)}00`;
@@ -57,13 +58,18 @@ export function icsResponse(termine: Termin[], { site, pageUrl, feed = false, tr
   }
   for (const e of trainings) {
     const [from, to] = e.time.split('–');
+    // Unlesbare Uhrzeit (alte Einträge vor der Formatregel): Eintrag weglassen statt das ganze Abo unlesbar zu machen
+    if (!UHR.test(from)) {
+      console.warn(`[ics] KEEP UP am ${e.date}: Uhrzeit „${e.time}“ ist nicht „von–bis“ – nicht im Kalender-Abo.`);
+      continue;
+    }
     const page = trainingUrl && site ? new URL(trainingUrl, site).href : undefined;
     lines.push(
       'BEGIN:VEVENT',
       `UID:keep-up-${e.date}-${from.replace(':', '')}@${host}`,
       `DTSTAMP:${stamp}`,
       `DTSTART;TZID=Europe/Berlin:${local(`${e.date} ${from}`)}`,
-      `DTEND;TZID=Europe/Berlin:${local(`${e.date} ${to}`)}`,
+      to && UHR.test(to) ? `DTEND;TZID=Europe/Berlin:${local(`${e.date} ${to}`)}` : 'DURATION:PT2H',
       `SUMMARY:${escape(`KEEP UP · ${e.art === 'workshop' ? 'Workshop' : 'Profitraining'} mit ${e.dozentin.name}${e.titel ? `: ${e.titel}` : ''}`)}`,
       `LOCATION:${escape(e.where)}`,
       `DESCRIPTION:${escape(e.kurz ?? e.dozentin.stil)}`,

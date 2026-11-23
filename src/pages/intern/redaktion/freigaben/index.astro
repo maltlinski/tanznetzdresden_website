@@ -9,9 +9,10 @@ import Brotkrumen from '../../../../components/intern/Brotkrumen.astro';
 import { getPersonen } from '../../../../lib/content';
 import { href } from '../../../../lib/url';
 import '../../../../styles/redaktion.css';
+import { jsonImHtml } from '../../../../lib/json-im-html';
 
 // Personen, die schon auf der Website stehen: Ein Mitgliederprofil mit gleichem Kürzel ergänzt sie.
-const personen = JSON.stringify((await getPersonen()).map((p) => ({ id: p.id, name: p.data.name }))).replace(/</g, '\\u003c');
+const personen = jsonImHtml((await getPersonen()).map((p) => ({ id: p.id, name: p.data.name })));
 ---
 <Redaktion title="Freigaben" current="freigaben">
   <Brotkrumen pfad={[{ label: 'Freigaben' }]} />

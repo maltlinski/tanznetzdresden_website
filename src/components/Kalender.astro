@@ -13,6 +13,7 @@ import { dateLocale, getLang, tr } from '../lib/i18n';
 import { texte } from '../lib/texte';
 import { todayKey } from '../lib/keep-up';
 import type { Farbe, Monat, Tage } from '../lib/kalender';
+import { jsonImHtml } from '../lib/json-im-html';
 
 interface Props {
   days: Tage;
@@ -50,7 +51,7 @@ const today = todayKey();
 const nextKey = Object.keys(days).find((d) => d >= today);
 const shown = nextKey ? Math.max(0, months.findIndex((m) => nextKey.startsWith(m.key))) : months.length - 1;
 
-const json = JSON.stringify({ days }).replace(/</g, '\\u003c');
+const json = jsonImHtml({ days });
 const hId = `${id}-h`;
 ---
 <section id={id} class:list={['kcal section', breit && 'kcal--breit']} aria-labelledby={hId} data-kcal data-locale={locale} data-none={t.none} data-free={t.free} data-today={t.today} data-text-lang={lang === 'en' ? 'de' : undefined}>
