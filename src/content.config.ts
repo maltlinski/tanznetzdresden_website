@@ -281,6 +281,22 @@ const orte = defineCollection({
   }),
 });
 
+/** Statements im Kopf der Netzwerk-Seite: Foto mit Zitat; die Textfelder beschreiben das Bild (Screenreader) */
+const statements = defineCollection({
+  loader: file('./src/content/netzwerk/statements.yaml'),
+  schema: ({ image }: SchemaContext) =>
+    z.object({
+      bild: image(),
+      name: z.string(),
+      rolle: z.string().optional(),
+      zitat: z.string(),
+      sprache: z.enum(['de', 'en']).default('de'),
+      /** Fotonachweis (steht auch im Bild) */
+      foto: z.string().optional(),
+      sichtbar,
+    }),
+});
+
 const partner = z.object({
   name: z.string(),
   rolle: z.string(),
@@ -354,4 +370,4 @@ const newsEn = defineCollection({
   schema: ({ image }) => z.object(newsTranslatable(image)).partial(),
 });
 
-export const collections = { termine, formate, projekte, chronik, tanzkalenderAusgaben, keepUpDozentinnen, keepUpWochen, personen, seiten, orte, partnergruppen, news, newsEn };
+export const collections = { termine, formate, projekte, chronik, tanzkalenderAusgaben, keepUpDozentinnen, keepUpWochen, personen, seiten, orte, partnergruppen, statements, news, newsEn };

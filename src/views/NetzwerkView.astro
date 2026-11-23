@@ -1,6 +1,6 @@
 ---
 import Page from '../layouts/Page.astro';
-import PageIntro from '../components/PageIntro.astro';
+import StatementsKopf from '../components/StatementsKopf.astro';
 import ProfilePhoto from '../components/ProfilePhoto.astro';
 import { bioParagraphs, getProfiles } from '../lib/profiles';
 import { demoFuer } from '../lib/demo';
@@ -21,7 +21,7 @@ const t = {
 };
 ---
 <Page title={t.title} description={t.desc} route="netzwerk">
-  <PageIntro kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} netz="netzwerk" />
+  <StatementsKopf lang={lang} kicker={t.kicker} title={t.h1} accent={t.accent} lead={t.lead} stimmen={k.stimmen} />
   <section class="section">
     <div class="wrap">
       <div class="net-tools">

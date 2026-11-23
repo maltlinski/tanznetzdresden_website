@@ -58,13 +58,8 @@ a.ak__back:hover { color: var(--cyan); }
 .ak--vollbild .ak__titel.ak__titel--lang { font-size: clamp(26px, 3vw, 46px); line-height: 1.02; max-width: 30ch; }
 .ak--vollbild .ak__block { flex: none; max-width: 100%; margin-left: auto; align-items: flex-end; gap: 10px; text-align: right; }
 .ak--vollbild .ak__meta { flex-direction: column; align-items: flex-end; gap: 10px; }
-:root { --kopfleiste-h: 73px; }
-.ak--unter { margin-top: calc(-1 * var(--kopfleiste-h)); }
+/* unter der Kopfleiste: Klasse unter-leiste (global.css, src/scripts/unter-leiste.ts) */
 .ak--unter .ak__oben { top: var(--kopfleiste-h); }
-/* Kopfleiste über dem Foto: durchsichtig, solange die Seite ganz oben steht (Klasse setzt NewsArticleView.astro) */
-.site-header { transition: background-color 0.25s ease, border-color 0.25s ease; }
-.js body:has(.ak--unter) .site-header:not(.ist-gescrollt):not(.is-open) { background-color: transparent; border-bottom-color: transparent; }
-@media (prefers-reduced-motion: reduce) { .site-header { transition: none; } }
 
 /* Hochkant: Text links, das hohe Foto rechts mit Magenta-Kante */
 .ak--hochkant .ak__innen {

@@ -643,11 +643,13 @@
     "abschnitte": {
       "kopf": {
         "titel": "Kopf",
+        "auch": [{ "text": "Statements im Kopf", "ziel": "redaktion:statements" }],
         "texte": {
           "seitentitel": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Netzwerk", "en": "Network", "max": 60 },
           "beschreibung": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Die Tanzschaffenden im TanzNetzDresden: Profile von Mitglieder:innen und Trainer:innen.", "en": "The dance artists of TanzNetzDresden: profiles of members and teachers.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Netzwerk", "en": "Network", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Wer im Netz\ntanzt.", "en": "Who dances\nin the network.", "max": 40 },
+          "stimmen": { "wo": "Kleine Zeile über dem Zähler der Statements im Kopf", "de": "Stimmen aus dem Netz", "en": "Voices from the network", "max": 40 },
           "lead": { "wo": "Text unter der Überschrift", "de": "Tänzer:innen, Choreograf:innen und Dozent:innen der freien Szene in Dresden. Finde Menschen für dein nächstes Projekt, dein Training oder einen Austausch.", "en": "Dancers, choreographers and teachers of Dresden's independent scene. Find people for your next project, your training or an exchange.", "max": 400, "ausblendbar": true }
         }
       },

@@ -65,6 +65,12 @@ time { font-family: var(--font-datum); }
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 0.22s; animation-timing-function: var(--ease-out); }
 .site-header { view-transition-name: kopfleiste; }
 ::view-transition-group(kopfleiste) { animation: none; }
+/* Kopf mit Foto unter der Kopfleiste (Beitrag mit Vollbild-Kopf, Netzwerk): die Leiste ist durchsichtig, solange die
+   Seite ganz oben steht; Klasse `unter-leiste` am Kopf, Höhe und Klasse `ist-gescrollt` setzt src/scripts/unter-leiste.ts */
+:root { --kopfleiste-h: 73px; }
+.unter-leiste { margin-top: calc(-1 * var(--kopfleiste-h)); }
+.site-header { transition: background-color 0.25s ease, border-color 0.25s ease; }
+.js body:has(.unter-leiste) .site-header:not(.ist-gescrollt):not(.is-open) { background-color: transparent; border-bottom-color: transparent; }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header-h); }
 /* Lenis (src/scripts/smooth-scroll.ts) scrollt selbst – das Browser-Gleiten würde dagegen arbeiten */
 html.lenis { scroll-behavior: auto; }

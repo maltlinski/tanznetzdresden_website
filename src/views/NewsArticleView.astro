@@ -138,6 +138,7 @@ const jsonLd = {
   import { initLightbox } from '../scripts/lightbox';
   import { initArtikel, kartenNetze } from '../scripts/news-artikel';
   import { initProtectedEmails } from '../scripts/protected-email';
+  import { unterLeiste } from '../scripts/unter-leiste';
   import '../scripts/deadline';
 
   const article = document.querySelector<HTMLElement>('[data-article]');
@@ -158,17 +159,8 @@ const jsonLd = {
 
   // Lesefortschritt als Magenta-Linie unter dem Header
   const header = document.querySelector<HTMLElement>('[data-header]');
-  // Vollbild-Kopf liegt unter der Kopfleiste: genaue Höhe melden, Leiste nur ganz oben durchsichtig
-  const unter = article?.querySelector<HTMLElement>('.ak--unter');
-  if (header && unter) {
-    const leiste = () => {
-      if (!header.classList.contains('is-open')) document.documentElement.style.setProperty('--kopfleiste-h', `${Math.round(header.getBoundingClientRect().height)}px`);
-      header.classList.toggle('ist-gescrollt', scrollY >= 24);
-    };
-    addEventListener('scroll', leiste, { passive: true });
-    addEventListener('resize', leiste);
-    leiste();
-  }
+  // Vollbild-Kopf liegt unter der Kopfleiste
+  unterLeiste();
   if (header && article) {
     const bar = document.createElement('div');
     bar.className = 'read-progress';

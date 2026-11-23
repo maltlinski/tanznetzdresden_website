@@ -5,6 +5,7 @@ import { alsTerminDaten, type OeffentlicherKalenderTermin } from './kalender-int
 import personenRaw from '../content/personen.yaml?raw';
 import orteRaw from '../content/kooperation/orte.yaml?raw';
 import gruppenRaw from '../content/kooperation/gruppen.yaml?raw';
+import statementsRaw from '../content/netzwerk/statements.yaml?raw';
 import { istSichtbar, nurSichtbare } from './sichtbar';
 
 /**
@@ -37,6 +38,9 @@ export const getPartnergruppen = async () =>
   inFileOrder(await getCollection('partnergruppen', istSichtbar), gruppenRaw)
     .map((g) => ({ ...g, data: { ...g.data, partner: nurSichtbare(g.data.partner) } }))
     .filter((g) => g.data.partner.length > 0);
+
+/** Statements im Kopf der Netzwerk-Seite, in der Reihenfolge der Datei */
+export const getStatements = async () => inFileOrder(await getCollection('statements', istSichtbar), statementsRaw);
 
 export type Termin = CollectionEntry<'termine'>;
 

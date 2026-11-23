@@ -79,6 +79,7 @@ Die Rolle vergibt der Vorstand unter *Intern → Mitglieder*.
 | **Dozent:innen**, **Seite Profitraining** | Foto-Mosaik, Überschrift, Einleitung, Infos, Kopffoto | Seiten → Profitraining |
 | **Personen** | Mitglieder:innen und Trainer:innen mit Profil | Seiten → Netzwerk, Über uns |
 | **Orte auf der Karte**, **Partner** | Kooperationsseite | Seiten → Kooperationen |
+| **Statements** | Fotos mit Zitat im Kopf der Netzwerk-Seite (Diashow, Start bei einem zufälligen Statement; Zitat, Name und Fotonachweis stehen im Bild, die Felder beschreiben es für Screenreader) | Seiten → Netzwerk |
 | **Arbeitsgruppen**, **Über uns: Haltung** | Vereinsseite | Seiten → Über uns |
 | **Startseite: Kopf** | „Tanz für …“ mit den wechselnden Wörtern | Seiten → Startseite → Kopf |
 | **Vereinsdaten** | Claim, Zahlen, Training, Mitgliedschaft, Presse, Partner, Förderer, Spenden; Rechtliches nur Vorstand | Seiten → Auf jeder Seite, Verwaltung |
@@ -129,7 +130,7 @@ jederzeit wieder einblenden. Auf der Website fehlt es ganz, auch im Quelltext de
 
 | Was | Wo der Schalter steht |
 |---|---|
-| Einträge: Termine, ältere Beiträge, Formate, Archiv, Chronik, Tanzkalender-Ausgaben, Dozent:innen, Trainingswochen, Personen, Orte, Partnergruppen | oben im Formular |
+| Einträge: Termine, ältere Beiträge, Formate, Archiv, Chronik, Tanzkalender-Ausgaben, Dozent:innen, Trainingswochen, Personen, Orte, Partnergruppen, Statements | oben im Formular |
 | Listeneinträge: Eckdaten und Links der Formate, Galerie und Arbeiten einer Person, Partner, Säulen, Zahlen, Förderer, Spenden-Formate, Arbeitsgruppen | im jeweiligen Listeneintrag |
 | einzelne Wörter: wechselnde Wörter, Auszeichnungen, Partner auf der Startseite, Ereignisse der Chronik | „Ausblenden“ neben dem Wort (gilt je Sprache) |
 | Texte: Einleitungen und Hinweise, z. B. der Text unter einer Überschrift | Texte → am Text |

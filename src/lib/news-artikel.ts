@@ -70,7 +70,7 @@ export function kopfHtml(d: KopfDaten): string {
   switch (d.modus) {
     case 'vollbild':
       return (
-        `<header class="ak ak--vollbild${d.unterLeiste ? ' ak--unter' : ''}" data-kopf>${zoom('ak__buehne')}` +
+        `<header class="ak ak--vollbild${d.unterLeiste ? ' ak--unter unter-leiste' : ''}" data-kopf>${zoom('ak__buehne')}` +
         `<div class="ak__oben"><div class="wrap">${zurueck(' ak__back--fahne')}</div></div>` +
         `<div class="ak__band">${keil('var(--cyan)', 'ak__keil-oben')}<div class="wrap ak__band-innen">` +
         `${h1}<div class="ak__block">${meta()}${credit}</div></div></div></header>`

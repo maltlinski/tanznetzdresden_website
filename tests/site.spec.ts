@@ -227,6 +227,41 @@ test('Netzwerk: Suche und Filter, Profil mit Terminen', async ({ page }) => {
   await expect(page.locator('.event').first()).toContainText(titel.replace(/&amp;/g, '&'));
 });
 
+test('Netzwerk: Statements im Kopf unter der durchsichtigen Kopfleiste, Blättern und Pause', async ({ page }) => {
+  // Statements aus der Datei (sichtbare); Zitat steht im Bild, die Beschreibung trägt es für Screenreader
+  const statements = [...readFileSync('src/content/netzwerk/statements.yaml', 'utf8').matchAll(/^- id: (\S+)[\s\S]*?zitat: "([^"]+)"/gm)].map((m) => ({ id: m[1], zitat: m[2] }));
+  await page.goto('/netzwerk/');
+  await dismissConsent(page);
+  const dias = page.locator('[data-nk-dia]');
+  await expect(dias).toHaveCount(statements.length);
+  await expect(page.locator('[data-nk-dia].is-aktiv')).toHaveCount(1);
+  const alts = await dias.locator('img').evaluateAll((els) => els.map((e) => e.getAttribute('alt') ?? ''));
+  for (const s of statements) expect(alts.some((a) => a.includes(s.zitat.slice(0, 40)))).toBe(true);
+  // Bilder liegen auf der eigenen Website, nicht mehr auf der alten
+  await expect(dias.first().locator('img')).toHaveAttribute('src', /\/_astro\/statement-.+\.webp/);
+  // Kopf reicht unter die Kopfleiste, die oben durchsichtig ist und beim Scrollen wieder lila wird
+  const kopf = page.locator('[data-nk]');
+  expect(Math.round((await kopf.boundingBox())!.y)).toBe(0);
+  const leiste = page.locator('[data-header]');
+  await expect(leiste).not.toHaveClass(/ist-gescrollt/);
+  await expect(page.getByRole('heading', { level: 1 })).toContainText('Wer im Netz');
+
+  // Blättern: Zähler und aktives Statement wechseln; Pause hält an
+  const nr = page.locator('[data-nk-nr]');
+  const vorher = Number(await nr.textContent());
+  await page.getByRole('button', { name: 'Nächstes Statement' }).click();
+  await expect(nr).toHaveText(String((vorher % statements.length) + 1).padStart(2, '0'));
+  await page.getByRole('button', { name: 'Vorheriges Statement' }).click();
+  await expect(nr).toHaveText(String(vorher).padStart(2, '0'));
+  await expect(page.locator('[data-nk-dia]:not([aria-hidden])')).toHaveCount(1);
+  const pause = page.getByRole('button', { name: 'Diashow anhalten' });
+  await pause.click();
+  await expect(page.getByRole('button', { name: 'Diashow fortsetzen' })).toHaveAttribute('aria-pressed', 'true');
+
+  await page.evaluate(() => scrollTo(0, 400));
+  await expect(leiste).toHaveClass(/ist-gescrollt/);
+});
+
 test('News: Galerie mit Großansicht, Archivbilder in zwei Größen', async ({ page }) => {
   const p = veroeffentlicht().find((x) => galerie(x));
   test.skip(!p, 'kein Beitrag mit Galerie (Import ohne Bilder?)');
@@ -583,7 +618,8 @@ test('Lila Kopf der Unterseiten ist so hoch wie auf der Startseite', async ({ pa
     return page.locator('main section, main header').first().evaluate((el) => Math.round(el.getBoundingClientRect().height));
   };
   const start = await hoehe('/');
-  for (const pfad of ['/verein/', '/termine/', '/kontakt/', '/mitglied-werden/', '/netzwerk/', '/kooperationen/', '/profitraining/', '/spenden/', '/news/', '/en/news/']) {
+  // Netzwerk nicht: dort stehen Statements über die ganze Breite über dem lila Band (eigener Test oben)
+  for (const pfad of ['/verein/', '/termine/', '/kontakt/', '/mitglied-werden/', '/kooperationen/', '/profitraining/', '/spenden/', '/news/', '/en/news/']) {
     expect(await hoehe(pfad), pfad).toBe(start);
   }
   // Rechtstexte bleiben kompakt

@@ -1,0 +1,66 @@
+# Statements im Kopf der Netzwerk-Seite (Diashow). Reihenfolge = Anzeige ab dem ersten Bild; die Seite beginnt
+# bei jedem Aufruf mit einem zufälligen Statement. Zitat, Name und Fotonachweis stehen schon im Bild; die Felder
+# hier sind die Beschreibung für Screenreader und Suchmaschinen.
+#   bild    Foto mit Zitat (1920 × 1080, Text links), unter src/assets/photos/
+#   sprache Sprache des Zitats im Bild (de oder en)
+# Übernommen von der früheren Website (Kopf der Startseite, 2020).
+- id: anna-till
+  bild: ../../assets/photos/statement-anna-till.webp
+  name: "Anna Till"
+  rolle: "Choreografin und Tänzerin, Künstlerische Leitung „situation productions“"
+  zitat: "Dieses einmalige Netzwerk ist der Grund, warum ich mich für die Stadt Dresden als Basis meiner künstlerischen Arbeit entschieden habe."
+  foto: "Volker Metzler"
+- id: alba-alvarez
+  bild: ../../assets/photos/statement-alba-alvarez.webp
+  name: "Alba Álvarez"
+  rolle: "freischaffende Künstlerin und Choreografin"
+  zitat: "TanzNetzDresden hat mir geholfen, meinen Weg in der freien Szene einzuschlagen, nachdem ich mein Studium beendet hatte. Es hat mir einen sicheren Ort in einer unsicheren Zeit geboten."
+  foto: "Jonathan Reimann"
+- id: cindy-hammer
+  bild: ../../assets/photos/statement-cindy-hammer.webp
+  name: "Cindy Hammer"
+  rolle: "Diplomierte Bühnentänzerin, Choreografin, Künstlerische Leiterin go plastic company"
+  zitat: "Das TanzNetzDresden ist für mich ein Nährboden; für Neues, bereits Dagewesenes, wieder Belebtes, für Austausch, Kollaboration und Miteinander. Es ist einer der großen Gründe, warum Dresden für mich Arbeits- und Wirkungsstätte ist."
+  foto: "Stephan Tautz"
+- id: daniela-lehmann
+  bild: ../../assets/photos/statement-daniela-lehmann.webp
+  name: "Daniela Lehmann"
+  rolle: "Choreografin und Tänzerin"
+  zitat: "Wieder neu nach Dresden gezogen, konnte ich mich durch das TanzNetzDresden in der Kunstszene schnell orientieren und meine Arbeit als freischaffende Choreografin nahtlos fortsetzen."
+  foto: "Dirk Skiba"
+- id: frederic-coupet
+  bild: ../../assets/photos/statement-frederic-coupet.webp
+  name: "Frédéric Coupet"
+  rolle: "ex company manager"
+  zitat: "One of the first things I appreciated when I arrived in Dresden was the presence of a real network for dance and creation. As a dance passionated, it seems essential to me that Tanznetz can continue to develop."
+  sprache: en
+  foto: "Marian Adreani"
+- id: johanna-roggan
+  bild: ../../assets/photos/statement-johanna-roggan.webp
+  name: "Johanna Roggan"
+  rolle: "Tänzerin und Choreografin, künstlerische Leitung the guts company"
+  zitat: "Das TanzNetzDresden ist für mich eines der besten Beispiele, wie durch ein Netzwerk eine kraftvolle Stimme für den Tanz in Dresden entstehen kann."
+  foto: "Dirk Skiba"
+- id: magdalena-weniger
+  bild: ../../assets/photos/statement-magdalena-weniger.webp
+  name: "Magdalena Weniger / KOMA"
+  rolle: "Performance- und Tanzschaffende und Sängerin"
+  zitat: "Ich bin aus privaten Gründen 2015 nach Dresden gezogen. Das Netzwerk hat mir geholfen, in kürzester Zeit in der freien Szene anzukommen und mich als Künstlerin in der Stadt zu etablieren."
+- id: natalie-wagner
+  bild: ../../assets/photos/statement-natalie-wagner.webp
+  name: "Natalie Wagner"
+  rolle: "Choreografin, Mentorin für Tanzschaffende"
+  zitat: "Ich hab schon an den unterschiedlichsten Orten als Tanzschaffende gelebt, aber so ein selbstorganisiertes Tanz-Netzwerk wie hier habe ich selten erlebt! Anschluss zu finden war einfach, ich fühlte mich willkommen und der Informationsfluss ist transparent, was für jede:n Kunstschaffende:n essenziell ist!"
+  foto: "Sonia Bartuccelli"
+- id: reimo-sandau
+  bild: ../../assets/photos/statement-reimo-sandau.webp
+  name: "Reimo Sandau"
+  rolle: "Performer, Bewegter, Beweger, Tanzschaffender"
+  zitat: "Es tut gut, von Anbeginn, seit dem Ausruf des TanzNetzDresden, Teil der gemeinsamen engagierten Arbeit von Akteur:innen, Politiker:innen, Verwalter:innen sein zu können. Einer Arbeit, in der dem Tanz als Kunst, Bewegung, Betrachtungsweise, Beschäftigung im persönlichen, sozialen, gesellschaftlichen Kontext im Studio, Kiez, Stadt … mehr Aufmerksamkeit geschenkt wird."
+  foto: "people in dresden"
+- id: tabea-wittulsky
+  bild: ../../assets/photos/statement-tabea-wittulsky.webp
+  name: "Tabea Wittulsky"
+  rolle: "Tänzerin, Choreografin"
+  zitat: "Der Anschluss zum Netzwerk verhilft mir immer wieder zu neuen Kontakten, wichtigen Informationen, Training und Arbeit in der Stadt Dresden."
+  foto: "Hamish John Appleby"

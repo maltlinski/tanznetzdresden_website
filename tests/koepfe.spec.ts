@@ -17,8 +17,8 @@ import { readFileSync, existsSync } from 'node:fs';
 
 /** Menüseiten: müssen einen Kopf nach der Regel haben */
 const MENUE = ['/', '/termine/', '/formate/', '/profitraining/', '/news/', '/verein/', '/spenden/'];
-/** Seiten mit kurzem Kopf eigener Art (Beitrag, Termin) oder ohne Kopf (Dokument zum Drucken) */
-const OHNE = [/^\/(en\/)?news\/.+/, /^\/(en\/)?termine\/.+/, /^\/(en\/)?spenden\/nachweis\//, /^\/(en\/)?mitglied\/pruefen\//];
+/** Seiten mit Kopf eigener Art (Netzwerk: Statements über die ganze Breite, Beitrag, Termin) oder ohne Kopf (Dokument zum Drucken) */
+const OHNE = [/^\/(netzwerk|en\/network)\/$/, /^\/(en\/)?news\/.+/, /^\/(en\/)?termine\/.+/, /^\/(en\/)?spenden\/nachweis\//, /^\/(en\/)?mitglied\/pruefen\//];
 
 function seiten(): string[] {
   const datei = 'dist/sitemap-0.xml';
