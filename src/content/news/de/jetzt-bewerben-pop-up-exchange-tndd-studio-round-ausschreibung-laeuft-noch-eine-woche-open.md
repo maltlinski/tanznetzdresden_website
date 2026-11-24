@@ -15,7 +15,7 @@ Mit unserem bewährten Format POP UP exchange suchen wir diesmal den Austausch m
 
 Konkret gesucht werden für POP UP exchange 2024 jeweils eine Performer:in aus Freiburg, Frankfurt und Bremen, drei Performer:innen aus Dresden. Für die drei Editionen der TNDD studio round werden hingegen für jede Edition je ein lokaler Beitrag und zwei Gast-Beiträge (Solo oder Duo, zwischen 5 und max. 20 Minuten) gesucht. Idee ist es außerdem, die Beiträge mit einer Publikums-Interaktion und einem anschließenden Q&A zu rahmen.
 
-## POP UP exchange & TNDD studio round 2024 - die Ausschreibungen
+## POP UP exchange & TNDD studio round 2024 – die Ausschreibungen
 
 Sämtliche informationen zu beiden Ausschreibungen, die alle am 3. September 2024 um 23:59 Uhr enden, findet ihr in den hier verlinkten Beiträgen. **(Nachtrag, 03.09.2024: Die Ausschreibung wurde bis zum 10. September 2024 verlängert.)**
 
@@ -51,13 +51,13 @@ bilder:
 
 ## POP UP exchange & TNDD studio round 2024 (en)
 
-*The calls for applications for the upcoming editions of POP UP exchange and TNDD studio round will run until September 3, 2024. Take the chance and apply for the dates in Dresden, Freiburg, Frankfurt and Bremen. You can find all the information about the call for applications in today's blog post. (scroll up for german version)*
+*The calls for applications for the upcoming editions of POP UP exchange and TNDD studio round will run until September 3, 2024. Take the chance and apply for the dates in Dresden, Freiburg, Frankfurt and Bremen. You can find all the information about the call for applications in today’s blog post. (scroll up for german version)*
 
 POP UP exchange is going into a second round: with our established presentation format POP UP, we are seeking exchanges this time with members of [Tanznetz Freiburg](https://tanznetz-freiburg.de/), [tanz\_netzwerk\_bremen](https://lafdk-bremen.de/) and [ID\_Tanzhaus Frankfurt Rhein-Main](https://www.idtanzhausfrm.de/). And also our exchange and presentation format TNDD studio round is touring für three editions together with [Tanznetz Freiburg](https://tanznetz-freiburg.de/), [tanz\_netzwerk\_bremen](https://lafdk-bremen.de/) and ID\_Tanzhaus Frankfurt Rhein-Main and will take place Dresden, Freiburg and Frankfurt am Main between October and December.
 
 For POP UP exchange 2024, we are seeking one performer each from Freiburg, Frankfurt, and Bremen, three performers from Dresden. For the three editions of the TNDD studio round, on the other hand, one local contribution and two guest contributions (solo or duo, between 5 and max. 20 minutes) are being sought for each edition. The idea is also to frame the contributions with an audience interaction and a subsequent Q&A.
 
-## POP UP exchange & TNDD studio round 2024 - the open calls
+## POP UP exchange & TNDD studio round 2024 – the open calls
 
 All information on both calls, which all end on September 3, 2024 at 11:59 p.m., can be found in the articles linked here. **(Update, 03.09.2024: The open call has been extended until September 10, 2024).**
 
@@ -74,7 +74,7 @@ The submission should include the following:
 - Pronouns
 - References in the form of image and video material (please only links, no downloads).
 
-[Here you'll get to the application form](https://tanzhausfrm.limequery.com/426436?lang=en)
+[Here you’ll get to the application form](https://tanzhausfrm.limequery.com/426436?lang=en)
 
 More information is available under:  
 [https://www.idtanzhausfrm.de/en/news/open-calls/](https://www.idtanzhausfrm.de/en/news/open-calls/)
@@ -96,4 +96,4 @@ bilder:
     alt: ""
 :::
 
-Header-Photo: Marcin Motyl „TEN" @TNDD studio round II (05.11.2021); Shot by Stephan Tautz
+Header-Photo: Marcin Motyl „TEN“ @TNDD studio round II (05.11.2021); Shot by Stephan Tautz

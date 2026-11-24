@@ -9,7 +9,7 @@ teaser: Im heutigen Blog-Beitrag teilen wir den Aufruf von Kompliz. Hierbei hand
 
 *Im heutigen Blog-Beitrag teilen wir den Aufruf von Kompliz. Hierbei handelt es sich um einem Zusammenschluss von Künstler:innen und Kulturschaffenden in Sachsen, die sich für die Demokratie einzusetzen. Aktuell werden im Rahmen von Kompliz Angebote für sogenannte Wahlfeste gesucht. Alle weiteren Informationen zu Kompliz, Kontaktmöglichkeiten und Teilnahmebedingungen folgen nun im Beitrag.*
 
-Um den Ansatz von Kompliz\* knapp zusammenzufassen, lassen wir am besten zuerst die Initiator:innen hinter hinter der Initiative zu Wort kommen:
+Um den Ansatz von Kompliz\* knapp zusammenzufassen, lassen wir am besten zuerst die Initiator:innen hinter der Initiative zu Wort kommen:
 
 > Kompliz\* ist eine Initiative von Künstler:innen und Kulturschaffenden in Sachsen, die sich für einen respektvollen gesellschaftlichen Austausch einsetzt. Wir nehmen einen immer größer werdenden Abstand zwischen unterschiedlichen Lebensentwürfen und politischen Haltungen wahr – ob in der Stadt oder auf dem Land. Viele Menschen richten sich in ihrer Wahrnehmung der Realität ein – auch wir schließen uns davon nicht aus. Wir wollen diesen Entwicklungen mit Dialog und gemeinsamen Aktionen entgegentreten. Ziel von Kompliz\* ist es, möglichst viele Institutionen, Initiativen, Vereine und engagierte Einzelpersonen, die sich für ein demokratisches Sachsen einsetzen, miteinander ins Gespräch zu bringen und zur Zusammenarbeit anzuregen.
 
@@ -28,7 +28,7 @@ Seit Mai 2019 wurden unter dem Namen Kompliz\* seitdem regelmäßig Aktionstage,
 Weitere Informationen zu den Aktionstagen und den Kooperationen gibt es unter  
 [kompliz.de](https://www.kompliz.de/)
 
-## Kompliz\* - der aktuelle Hintergrund
+## Kompliz\* – der aktuelle Hintergrund
 
 Aktuellen Bezug bzw. Dringlichkeit gewinnt die Initiative durch die in diesem Jahr anstehenden Wahlen und der gegenwärtigen Stimmung in unserer Gesellschaft. Hierzu sagen die Macher:innen von Kompliz\* Folgendes:
 

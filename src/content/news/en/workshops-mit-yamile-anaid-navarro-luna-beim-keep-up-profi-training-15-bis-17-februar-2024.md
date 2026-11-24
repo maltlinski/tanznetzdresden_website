@@ -3,7 +3,7 @@ title: Workshops with Yamile Anaid Navarro Luna at KEEP UP professional training
 teaser: In addition to the Special Week with Tiago Manquinho, there will be a small three-part workshop series with Yamile Anaid Navarro Luna from February 15 to 17 as part of the KEEP UP professional training.
 ---
 
-*In addition to the Special Week with Tiago Manquinho, there will be a small three-part workshop series with Yamile Anaid Navarro Luna from February 15 to 17 as part of the KEEP UP professional training. You can find more information about this offer in today's blog post, which as always will be published in both [German](/news/workshops-mit-yamile-anaid-navarro-luna-beim-keep-up-profi-training-15-bis-17-februar-2024/) and English.*
+*In addition to the Special Week with Tiago Manquinho, there will be a small three-part workshop series with Yamile Anaid Navarro Luna from February 15 to 17 as part of the KEEP UP professional training. You can find more information about this offer in today’s blog post, which as always will be published in both [German](/news/workshops-mit-yamile-anaid-navarro-luna-beim-keep-up-profi-training-15-bis-17-februar-2024/) and English.*
 
 ## Yamile Anaid Navarro Luna
 
@@ -29,7 +29,7 @@ More about Yamile Anaid Navarro Luna can be found at:
 
 ## Workshops with Yamile Anaid Navarro Luna at TNDD professional training
 
-Yamile Anaid Navarro Luna is offering a three-day series of workshops from February 15 to 17 as part of the KEEP UP professional training at [Ballettstudio Espiral](https://www.ballettstudio-espiral.de/). The workshops are entitled "Voice-Body Connection" and will be held in English and German. Yamile Navarro started diving deeper into the connection between the body and the voice in 2020. In 2022 thanks to a #TakeHeart residency she consolidated the Voice-Body Connection practices. In her journey, she has discovered that the more she gets to know her voice, the better she gets to know her movement and vice-versa.
+Yamile Anaid Navarro Luna is offering a three-day series of workshops from February 15 to 17 as part of the KEEP UP professional training at [Ballettstudio Espiral](https://www.ballettstudio-espiral.de/). The workshops are entitled “Voice-Body Connection” and will be held in English and German. Yamile Navarro started diving deeper into the connection between the body and the voice in 2020. In 2022 thanks to a #TakeHeart residency she consolidated the Voice-Body Connection practices. In her journey, she has discovered that the more she gets to know her voice, the better she gets to know her movement and vice-versa.
 
 The Voice-Body Connection practices are open to anyone who wants to reconnect with their true powerful voice and explore the connection between the voice and the movement. The practice is one hour long; it starts with a full voice-body warm-up, followed by visualization games and embodiment practices going deeper into the discovery and the exploration of the connection between the voice and the body. Since the experience is unique to each person, the Voice-Body connection provides a base which will allow each individual to take the practice as far as they want.
 
@@ -43,11 +43,11 @@ bilder:
 
 ### Who is this for?
 
-> Whether you're a seasoned artist or someone just beginning to explore your voice, this workshop is designed for anyone eager to discover their true, powerful voice. It's an open invitation to those curious about the intricate dance between vocal expression and bodily movement.
+> Whether you’re a seasoned artist or someone just beginning to explore your voice, this workshop is designed for anyone eager to discover their true, powerful voice. It’s an open invitation to those curious about the intricate dance between vocal expression and bodily movement.
 
 ### What will you experience?
 
-> Our 1.5-hour sessions are a blend of dynamic activities: Start with a comprehensive voice-body warm-up to awaken your senses. Relax into the discovery of your true voice through games. Engage in embodiment practices that deepen your understanding of voice-body harmony. Each session is a unique journey tailored to the individual, providing a solid foundation for personal exploration and growth. The practices are a reflection of Yamile's ongoing exploration and learning in this field, offering a space for continuous discovery. After this 3-day workshop, you will feel free and confident to express yourself. Reconnect with your inner voice and movement, and be a part of our ever-evolving artistic community. We can't wait to welcome you to our Voice-Body Connection Workshop – where your voice finds its true expression.
+> Our 1.5-hour sessions are a blend of dynamic activities: Start with a comprehensive voice-body warm-up to awaken your senses. Relax into the discovery of your true voice through games. Engage in embodiment practices that deepen your understanding of voice-body harmony. Each session is a unique journey tailored to the individual, providing a solid foundation for personal exploration and growth. The practices are a reflection of Yamile’s ongoing exploration and learning in this field, offering a space for continuous discovery. After this 3-day workshop, you will feel free and confident to express yourself. Reconnect with your inner voice and movement, and be a part of our ever-evolving artistic community. We can’t wait to welcome you to our Voice-Body Connection Workshop – where your voice finds its true expression.
 
 ## Informationen on the workshops with Yamile Anaid Navarro Luna
 

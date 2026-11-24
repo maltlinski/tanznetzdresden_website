@@ -22,7 +22,7 @@ Die Website wird bei [BITTE ERGÄNZEN: Hosting-Anbieter, Anschrift] betrieben. B
 
 ## Lokale Speicherung und Einwilligung
 
-Deine Auswahl im Einwilligungs-Dialog speichern wir in deinem Browser (localStorage), damit wir nicht bei jedem Besuch erneut fragen müssen. Das ist technisch notwendig (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst deine Auswahl jederzeit über „Cookie-Einstellungen“ im Footer ändern oder widerrufen.
+Deine Auswahl im Einwilligungs-Dialog speichern wir in deinem Browser (localStorage), damit wir nicht bei jedem Besuch erneut fragen müssen. Das ist technisch notwendig (§ 25 Abs. 2 Nr. 2 TDDDG). Du kannst deine Auswahl jederzeit über „Cookie-Einstellungen“ unten auf jeder Seite ändern oder widerrufen.
 
 Alle anderen Dienste setzen wir nur mit deiner Einwilligung ein (§ 25 Abs. 1 TDDDG, Art. 6 Abs. 1 lit. a DSGVO).
 

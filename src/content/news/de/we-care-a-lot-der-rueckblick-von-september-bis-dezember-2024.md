@@ -7,13 +7,13 @@ image: ../../../assets/news/2025/web-tndd-studio-round-7402367-c2-a9fotojennifer
 teaser: Heute möchten wir auf das 2024er TanzNetzDresden Projekt »we CARE a lot« zurückblicken und zeigen, was wir im Rahmen jener Initiative in den Monaten September bis Dezember 2024 umsetzen konnten.
 ---
 
-*Heute möchten wir auf das 2024er TanzNetzDresden Projekt »we CARE a lot« zurückblicken und zeigen, was wir im Rahmen jener Initiative in den Monaten September bis Dezember 2024 umsetzen konnten. Explizit wird es in diesem Beitrag um die Formate KEEP UP Profi Training, POP UP exchange, die TNDD Studio Round und um VISION DANCEABLE gehen. Seid gespannt auf einen umfassenden Rückblick und schöne Filme und Fotos, die im Zuge von "we CARE a lot" entstanden sind.*
+*Heute möchten wir auf das 2024er TanzNetzDresden Projekt »we CARE a lot« zurückblicken und zeigen, was wir im Rahmen jener Initiative in den Monaten September bis Dezember 2024 umsetzen konnten. Explizit wird es in diesem Beitrag um die Formate KEEP UP Profi Training, POP UP exchange, die TNDD Studio Round und um VISION DANCEABLE gehen. Seid gespannt auf einen umfassenden Rückblick und schöne Filme und Fotos, die im Zuge von „we CARE a lot“ entstanden sind.*
 
 ## »we CARE a lot«
 
-Das Projekt "we CARE a lot" vom TNDD förderte einmal mehr die Freie Szene durch Weiterbildung, Vernetzung und Austausch. In Kooperation zwischen uns sowie dem tanznetz Freiburg und ID Frankfurt konnten die Formate KEEP UP, STUDIO ROUND und POP UP exchange umgesetzt werden. Einmal mehr wurde so der künstlerischen Austausch und die Verbindungen zwischen Dresden, Freiburg und Frankfurt gestärkt.
+Das Projekt „we CARE a lot“ vom TNDD förderte einmal mehr die Freie Szene durch Weiterbildung, Vernetzung und Austausch. In Kooperation zwischen uns sowie dem tanznetz Freiburg und ID Frankfurt konnten die Formate KEEP UP, STUDIO ROUND und POP UP exchange umgesetzt werden. Einmal mehr wurde so der künstlerischen Austausch und die Verbindungen zwischen Dresden, Freiburg und Frankfurt gestärkt.
 
-KEEP UP erweiterte hierbei das hiesige Trainingsangebot in Dresden, während STUDIO ROUND regionale Künstler:innen in verschiedenen Städten präsentierte. POP UP exchange brachte hingegen Künstler:innen aus Dresden, Freiburg, Bremen und Frankfurt am Main an ungewöhnlichen Orten zusammen. Das Format VISION DANCEABLE bot darüber hinaus eine weitere Plattform für lokale und überregionale Künstler im Dresdner Societaetstheater. Der positive Zuspruch aller Formate hat uns sehr gefreut und bestätigte erneut die Relevanz von Initiativen wie "we CARE a lot".
+KEEP UP erweiterte hierbei das hiesige Trainingsangebot in Dresden, während STUDIO ROUND regionale Künstler:innen in verschiedenen Städten präsentierte. POP UP exchange brachte hingegen Künstler:innen aus Dresden, Freiburg, Bremen und Frankfurt am Main an ungewöhnlichen Orten zusammen. Das Format VISION DANCEABLE bot darüber hinaus eine weitere Plattform für lokale und überregionale Künstler im Dresdner Societaetstheater. Der positive Zuspruch aller Formate hat uns sehr gefreut und bestätigte erneut die Relevanz von Initiativen wie „we CARE a lot“.
 
 ### Für Einblicke in die einzelnen Aktivitäten im Rahmen von »we CARE a lot« haben wir einen eigenen Blog-Beitrag erstellt und wünschen viel Spaß beim Durchlesen und Entdecken der einzelnen Beiträge, Fotos und Videos.
 
@@ -36,8 +36,8 @@ Im Rahmen des Projekts »CARE ABOUT« fand am 25. Oktober 2024 in der Dresdner T
 
 Neben der »TNDD studio round« Ausgabe in Dresden finden im Zuge unserer Kooperation 2024 noch zwei weitere Editionen in Frankfurt am Main und Freiburg statt. Konkret handelt es hierbei um folgendes Programm:
 
-- **06\. Dezember 2024,** [Südufer](https://suedufer-freiburg.de/), Freiburg – **Marion Plantey** (Frankfurt am Main) “HUG”, **Sophia Barr** (Freiburg) “Cette pierre qui marche sur l’eau et refuse obstinément d’y couler – A Stone That Walks on Water and Stubbornly Refuses to Sink“, **Joao Pedro de Paula** (Dresden) “The Percin Show”
-- **13\. Dezember 2024,** [Z-Zentrum für Proben und Forschung](https://kultur-frankfurt.de/portal/de/Buehne/Proberaeume/1920/2456/0/0/4.aspx), Frankfurt am Main – **Cindy Hammer** (Dresden) “MELANCHOLIC MARATHON” (Ausschnitt)**, Karolin Stächele** (Freiburg) “YOU HAVE NO IDEA” & **Maria Kobzeva** (Frankfurt am Main) “Maybe we’ll see”
+- **06\. Dezember 2024,** [Südufer](https://suedufer-freiburg.de/), Freiburg – **Marion Plantey** (Frankfurt am Main) „HUG“, **Sophia Barr** (Freiburg) „Cette pierre qui marche sur l’eau et refuse obstinément d’y couler – A Stone That Walks on Water and Stubbornly Refuses to Sink“, **Joao Pedro de Paula** (Dresden) „The Percin Show“
+- **13\. Dezember 2024,** [Z-Zentrum für Proben und Forschung](https://kultur-frankfurt.de/portal/de/Buehne/Proberaeume/1920/2456/0/0/4.aspx), Frankfurt am Main – **Cindy Hammer** (Dresden) „MELANCHOLIC MARATHON“ (Ausschnitt)**, Karolin Stächele** (Freiburg) „YOU HAVE NO IDEA“ & **Maria Kobzeva** (Frankfurt am Main) „Maybe we’ll see“
 
 ::: bilder
 format: quer

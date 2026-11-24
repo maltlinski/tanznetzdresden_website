@@ -25,7 +25,7 @@ Die Gäst:innen dieses Pop Up Salons:
 
 **Florence Freitag (Berlin)**
 
-Florence Freitag arbeitet als Performer\*in, Video- & Stimmkünstlerin, Autor\*in, Kurator\*in & Vermittler\*in und ist maßgeblich von der Arbeit an und in Gemeinschaft inspiriert. Alleine und mit Kollaborateur\*innen praktiziert Florence verkörpertes Denken, Erzählen & ZuHören und reflektiert in ihren "compostist practices" sensorische und sinnliche Arten des Seins in der Welt sowie der Verbindungen zwischen (Zell-, Pflanzen-, Tier- und Menschen-) Körpern, Klängen und Umgebungen. Florence ist Teil des queer feministischen Kollektivs Altes Finanzamt e.V. in Berlin sowie Mitbegründer\*in des TanzRaumGörlitz und des Neisse Center for Contemporary Arts e.V.
+Florence Freitag arbeitet als Performer:in, Video- & Stimmkünstlerin, Autor:in, Kurator:in & Vermittler:in und ist maßgeblich von der Arbeit an und in Gemeinschaft inspiriert. Alleine und mit Kollaborateur:innen praktiziert Florence verkörpertes Denken, Erzählen & ZuHören und reflektiert in ihren „compostist practices“ sensorische und sinnliche Arten des Seins in der Welt sowie der Verbindungen zwischen (Zell-, Pflanzen-, Tier- und Menschen-) Körpern, Klängen und Umgebungen. Florence ist Teil des queer feministischen Kollektivs Altes Finanzamt e.V. in Berlin sowie Mitbegründer:in des TanzRaumGörlitz und des Neisse Center for Contemporary Arts e.V.
 
 [www.florencefreitag.com](http://www.florencefreitag.com/)
 
@@ -41,7 +41,7 @@ Vanessa Haehnel ist Studentin an der HFBK Dresden und Universität für angewan
 
 **Theresa Zwerschke (Leipzig)**
 
-Theresa Zwerschke liebt Unkraut, das durch Pflastersteinritzen kriecht, Betonflächen der dominanten Geschichte(n) aufbricht und andere widerspenstige Gewächse, die determinierte Kategorien und Zuschreibungen mit Gegennarrativen überwuchern. Sie studierte außerschulische Kunstpädagogik, sowie Medienkunst in Leipzig und Amsterdam. Ab September 2021 ist sie Teil des Post Graduate Programms "Art Practice" am Dutch Art Institut, Arnhem. Sie entwickelte kürzlich einen Audiowalk durch den botanischen Garten und eine Hörpsielserie inspiriert von der Nachtkerze.
+Theresa Zwerschke liebt Unkraut, das durch Pflastersteinritzen kriecht, Betonflächen der dominanten Geschichte(n) aufbricht und andere widerspenstige Gewächse, die determinierte Kategorien und Zuschreibungen mit Gegennarrativen überwuchern. Sie studierte außerschulische Kunstpädagogik, sowie Medienkunst in Leipzig und Amsterdam. Ab September 2021 ist sie Teil des Post Graduate Programms „Art Practice“ am Dutch Art Institut, Arnhem. Sie entwickelte kürzlich einen Audiowalk durch den botanischen Garten und eine Hörpsielserie inspiriert von der Nachtkerze.
 
 Datum: 4. September; ab 14 Uhr  
 Dauer: 2 Stunden 30 Minuten  

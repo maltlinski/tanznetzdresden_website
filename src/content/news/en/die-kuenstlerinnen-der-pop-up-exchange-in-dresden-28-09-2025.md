@@ -5,7 +5,7 @@ teaser: We are very pleased to present the program for the edition of POP UP exc
 
 *We are very pleased to present the program for the edition of POP UP exchange taking place in Dresden on 26 October 2024. Not only will there be numerous and diverse artists, but also three different locations in the Dresden city area, which will be played as part of POP UP exchange. Everything else can be found in the following blog post.*
 
-We are pleased to announce that TanzNetzDresden in cooperation with [ID\_Tanzhaus Frankfurt Rhein-Main](https://tanzhausfrm.de/), [tanz\_netzwerk\_bremen](https://lafdk-bremen.de/) and [Tanznetz Freiburg](https://tanznetz-freiburg.de/) and in cooperation with the locations [TENZA](https://tenza.de/), [ZENTRALWERK](https://zentralwerk.de/) and [STUDIO 56](https://www.studio-56.org/) will today present the program of this year's POP UP exchange format, which will take place in Dresden on 26 October 2024.
+We are pleased to announce that TanzNetzDresden in cooperation with [ID\_Tanzhaus Frankfurt Rhein-Main](https://tanzhausfrm.de/), [tanz\_netzwerk\_bremen](https://lafdk-bremen.de/) and [Tanznetz Freiburg](https://tanznetz-freiburg.de/) and in cooperation with the locations [TENZA](https://tenza.de/), [ZENTRALWERK](https://zentralwerk.de/) and [STUDIO 56](https://www.studio-56.org/) will today present the program of this year’s POP UP exchange format, which will take place in Dresden on 26 October 2024.
 
 The POP UP exchange jury consisted of two coordinators and dance artists from each of the aforementioned cooperation networks, who reviewed all applications and decided on the final participants.
 
@@ -13,7 +13,7 @@ The POP UP exchange format, which will now take place on October 26, 2024, will 
 
 For the POP UP exchange performances, three Dresdeners will each be brought together with a supra-regional guest with whom they have never worked before. The three resulting performance duos, inspired and surprised by the new artistic exchange, will develop and present short public POP UP performances. These are explicitly not tried and tested works, but improvisations inspired by scores, selected music or similar in joint consultation.
 
-We would also like to explicitly point out that the public format TNDD studio round will take place at TENZA just one day before (25.10.2024). This year's TNDD studio round will also take place in cooperation with [ID\_Tanzhaus Frankfurt Rhein-Main](https://tanzhausfrm.de/) and [Tanznetz Freiburg](https://tanznetz-freiburg.de/).
+We would also like to explicitly point out that the public format TNDD studio round will take place at TENZA just one day before (25.10.2024). This year’s TNDD studio round will also take place in cooperation with [ID\_Tanzhaus Frankfurt Rhein-Main](https://tanzhausfrm.de/) and [Tanznetz Freiburg](https://tanznetz-freiburg.de/).
 
 Further information on this date is available at:  
 [https://tanznetzdresden.de/studio-round](/#formate)
@@ -67,4 +67,4 @@ bilder:
     alt: ""
 :::
 
-Header-Photo: Silvia Remigio & Veronica Parlagreco „Has Someone Seen Tyler Durden“ @TNDD studio round II (05.11.2021); Shot by Stephan Tautz
+Header-Photo: Silvia Remigio & Veronica Parlagreco “Has Someone Seen Tyler Durden” @TNDD studio round II (05.11.2021); Shot by Stephan Tautz

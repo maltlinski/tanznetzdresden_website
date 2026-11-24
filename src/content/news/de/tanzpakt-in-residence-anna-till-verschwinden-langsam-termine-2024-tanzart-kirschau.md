@@ -43,8 +43,8 @@ Jetzt gleiten ihr die Dinge aus den Händen, rinnen ihr Informationen und Daten 
 
 Im Rahmen meiner Recherche zu dem Thema Alter/n und Übergänge im Tanz beschäftigt sich dieser Tanz-Workshop mit Transformation und Veränderung in Bewegung. Wir beginnen mit Übungen zur Verbindung von Atmung und Bewegung und tauchen dann in verschiedene Improvisationsübungen ein. Die eigene Biografie kann eine Rolle spielen, muss aber nicht. Wichtig ist mir das Experimentieren im Umgang mit (schleichenden/ abrupten/ unmerklichen/ gewünschten…) Veränderungen & Transformationen und der Austausch untereinander zu persönlichen Erfahrungen und Sichtweisen.
 
-**Termine!voraussichtlich: Do: 05.09.2024; ca. 19:15 – 20:15 Uhr & 20:30 – 21:30 Uhr!  
-Do: 12.09.2024; ca. 19:15 – 20:15 Uhr & 20:30 – 21:30 Uhr**
+**Termine!voraussichtlich: Do: 05.09.2024; ca. 19:15–20:15 Uhr & 20:30–21:30 Uhr!  
+Do: 12.09.2024; ca. 19:15–20:15 Uhr & 20:30–21:30 Uhr**
 
 Die Workshops finden in den üblichen Unterrichtszeiten von tanzART statt. Auf diese Weise ist gesichert, dass die regelmäßigen Teilnehmer:innen anwesend sein können/ werden. Die Workshops sind dennoch für weitere Interessierte offen. Es ist jederzeit möglich, zu einer der Workshop-Zeiten dazuzukommen.
 
@@ -75,7 +75,7 @@ Gerade wurde ihr Stück „Schwanensee in Sneakers“ (von Nora Otte, Anna Till,
 
 ## Über TanzART Kirschau
 
-TanzART – Atelier für Tanz, Bewegung & Kunst ist ein Zentrum für zeitgenössischen Tanz mit partizipativen Projekten im wunderschönen Schirgiswalde-Kirschau. Hier im ländlichen Raum hat Kunst Platz – viel Platz! In der ehemaligen Textilfabrik, die nun das Herz der Kunst-Inititiative „Im Friese“ bildet, hat jeder kreative Gedanke Raum. Das Studio (70 qm), ein Residenz-Zimmer, Gemeinschaftsküche und Bad sind eine gute Basis für Kreativität. In der Galerie finden Performances sowie Austausch mit bildenden Künstler:innen und regionalen Tanzschaffenden statt. Hier sind besonders Resident:innen willkommen,die mit Menschen und Kunstschaffenden vor Ort arbeiten wollen. Bei TanzART verbindet sich ländliche Idylle mit überregionalen und internationalen Netzwerken und es wurden in den letzten Jahren schon Gäste aus Indonesien, USA, Indien und den Niederlanden empfangen.
+TanzART – Atelier für Tanz, Bewegung & Kunst ist ein Zentrum für zeitgenössischen Tanz mit partizipativen Projekten im wunderschönen Schirgiswalde-Kirschau. Hier im ländlichen Raum hat Kunst Platz – viel Platz! In der ehemaligen Textilfabrik, die nun das Herz der Kunst-Inititiative „Im Friese“ bildet, hat jeder kreative Gedanke Raum. Das Studio (70 qm), ein Residenz-Zimmer, Gemeinschaftsküche und Bad sind eine gute Basis für Kreativität. In der Galerie finden Performances sowie Austausch mit bildenden Künstler:innen und regionalen Tanzschaffenden statt. Hier sind besonders Resident:innen willkommen, die mit Menschen und Kunstschaffenden vor Ort arbeiten wollen. Bei TanzART verbindet sich ländliche Idylle mit überregionalen und internationalen Netzwerken und es wurden in den letzten Jahren schon Gäste aus Indonesien, USA, Indien und den Niederlanden empfangen.
 
 Mehr zu TanzART Kirschau gibt es unter folgenden Links:  
 [Website](http://www.tanzart-kirschau.de/)  
@@ -84,10 +84,10 @@ Mehr zu TanzART Kirschau gibt es unter folgenden Links:
 
 ## Über TANZPAKT in residence
 
-TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022-24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
+TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022–24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
 
 TANZPAKT in residence versteht sich als grundlegendes Instrument, Künstler:innen in die Exzellenz zu befördern, indem es Zeit-Räume für Forschung zur Verfügung stellt und nachhaltige Strukturen schafft, die der Tanzszene der Region ein professionelles und kontinuierliches Arbeiten ermöglichen.  
-Von 2022-2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.
+Von 2022–2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.
 
 Weitere Informationen zu TANZPAKT in residence gibt es unter  
 [villawigman.de/tanzpakt-in-residence](https://villawigman.de/tanzpakt-in-residence/)

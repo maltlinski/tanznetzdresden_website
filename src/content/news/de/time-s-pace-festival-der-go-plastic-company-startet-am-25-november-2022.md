@@ -9,7 +9,7 @@ teaser: Am kommenden Freitag, dem 25. November startet in HELLERAU das time & s\
 
 Am kommenden Freitag, dem 25. November startet in HELLERAU das time & s\_pace Festival der go plastic company. Eine wunderbare Zeit, um unzählige künstlerische Beiträge zu erleben und mindestens ebenso viele Mitglieder:innen des TanzNetzDresden zu treffen. Alle weiteren Infos zum anstehenden Festival gibt es nun im folgenden Beitrag.
 
-## time & s\_pace - 10 Jahre go plastic
+## time & s\_pace – 10 Jahre go plastic
 
 Mit time & s\_pace zelebriert die go plastic company eine Dekade Bestehen und richtet vom 25. November bis zum 3. Dezember 2022 in HELLERAU einen Festakt aus. Geplant ist ein umfassendes Programm aus einer Company-Werkschau der letzten fünf Jahre, die Dresden-Premiere der 2022er go plastic-Neuproduktion „mind the rage“ sowie ein Zusammentreffen zahlreicher assoziierter Künstler:innen verschiedener Disziplinen und Genres.
 
@@ -25,13 +25,13 @@ Aber es wäre kein Festival von go plastic ohne die zahlreichen Kolleg:innen, G�
 
 ## Wer ist alles bei time & s\_pace dabei?
 
-Die Liste der beteiligten Künstler:innen des time & s\_pace Festivals ist lang. Daher seien hier einmal alle aufgelistet: go plastic company, the guts company, TILL/LUBICH, HARTMANNMUELLER, Joy Alpuerto Ritter, Miller De Nobili, Magdalena Weniger KOMA & Ko, Douglas Bateman, Pinkmetalpetal Productions, Dolphin Boys, Cocktail Napkin, ZWEATLANA, Enrico Sutter, Joseph Hernandez, Caroline Beach, Joao Pedro De Paula, DJ M.over, Tinted House, Alphonsine Koh, PLAN MEE / Eva Borrmann, u.a.
+Die Liste der beteiligten Künstler:innen des time & s\_pace Festivals ist lang. Daher seien hier einmal alle aufgelistet: go plastic company, the guts company, TILL/LUBICH, HARTMANNMUELLER, Joy Alpuerto Ritter, Miller De Nobili, Magdalena Weniger KOMA & Ko, Douglas Bateman, Pinkmetalpetal Productions, Dolphin Boys, Cocktail Napkin, ZWEATLANA, Enrico Sutter, Joseph Hernandez, Caroline Beach, Joao Pedro De Paula, DJ M.over, Tinted House, Alphonsine Koh, PLAN MEE / Eva Borrmann, u. a.
 
 Außerdem wird es während der Veranstaltungstage fotografische Impressionen aus 10 Jahren go plastic company geben. Ausstellende sind: Thomas Victor, Adam Dreessen, Josefine Schulz, Stephan Tautz, Jana Mila Lippitz und andere.
 
-## time & s\_pace Festival - der Termin
+## time & s\_pace Festival – der Termin
 
-● time & s\_pace – go plastic wird 10 Jahre alt - Festakt vom 25. November bis 3. Dezember 2022  
+● time & s\_pace – go plastic wird 10 Jahre alt – Festakt vom 25. November bis 3. Dezember 2022  
 **Ort**: HELLERAU – Europäisches Zentrum der Künste
 
 +++ Tickets gibt es unter [https://hellerau.reservix.de/events](https://hellerau.reservix.de/events) +++

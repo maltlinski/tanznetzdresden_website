@@ -9,7 +9,7 @@ teaser: Die beiden TNDD-Mitglieder:innen Daniela Lehmann und Marita Matzk haben 
 
 Die beiden TNDD-Mitglieder:innen Daniela Lehmann und Marita Matzk haben eine gemeinsame Zusammenarbeit gestartet, bei der es darum geht, Unternehmen und deren Mitarbeiter:innen in punkto Haltung und Präsenz zu coachen. Ein Angebot, das in Kooperation mit Wir gestalten Dresden entstand und bei dem beide ihr ganzes Wissen und ihre Erfahrung einbringen. Das Ziel: Stress bei Mitarbeite:innen zu reduzieren sowie die Ausstrahlung und das unternehmensinterne Arbeitsklima zu verbessern. Wie dieses besondere Angebot von Daniela Lehmann und Marita Matzk entstand und weshalb Unternehmen sich unbedingt anmelden sollten – all das haben wir in einem gemeinsamen Gespräch erfragt.
 
-### Marita, wie entstand die Idee eures gemeinsamen Projektes?
+## Marita, wie entstand die Idee eures gemeinsamen Projektes?
 
 > Die Idee entstand durch eine Anfrage aus dem Netzwerk „[Wir gestalten Dresden](https://www.wir-gestalten-dresden.de/)“. Ein IT-Unternehmen war auf der Suche nach Coach:innen, die die Mitarbeiter in Bezug auf Präsenz und Haltung bei Präsentationen schulen. Beim Erstellen des Konzeptes ist uns dann aufgefallen, wie gut unsere Erfahrungen ineinandergreifen und wie hilfreich diese Kombi auch für andere Unternehmen sein kann.
 
@@ -39,7 +39,7 @@ Nach Aussage von Daniela und Marita ist das gemeinsame Angebot für Unternehmen 
 >
 > Unser Körper und unsere Haltung spiegeln wider, wie es uns geht. Wir können also unser Leben beeinflussen, indem wir akzeptieren, wie sehr unser körperliches Dasein mit unserer mentalen Anwesenheit zusammenhängt. Als Choreografinnen und Tänzerinnen sind wir Expertinnen auf diesem Gebiet. Dabei arbeiten wir ganzheitlich und sehen immer den Menschen mit seinen Gewohnheiten, Möglichkeiten und Ängsten und auch, in welchem Umfeld die Person sich bewegt. Wir erkennen Möglichkeiten, mit denen positive Bewegung in unser individuelles und gemeinschaftliches System kommen kann.
 >
-> Marita: Kaum jemand beschäftigt sich so intensiv mit Präsenz, einer guten Haltung und dem Erhalt der eigenen Arbeitsbereitschaft unter Druck und Stress, wie das professionelle Tänzer:innen tun. Kaum jemand muss so sehr „auf Knopfdruck“ kreativ werden und Ideen konkret umsetzen können, wie die für eine Bühnenproduktion verantwortlichen Künstler:innen, beispielsweise wir Choreografinnen Zum Beispiel ist der Termin einer Premiere als Deadline so zuverlässig und umverschiebbar wie in wenigen anderen Gewerken. Gleichzeitig müssen in diesem engen Zeitrahmen Prozesse eingeleitet werden, die die Kreativität nicht ersticken, sondern ein Gefühl von Machbarkeit und Motivation erzeugen - und im Idealfall den Spaß aller Beteiligten an der Sache befördern. Das kann ein unglaublich hilfreicher Impuls für viele Unternehmen sein.
+> Marita: Kaum jemand beschäftigt sich so intensiv mit Präsenz, einer guten Haltung und dem Erhalt der eigenen Arbeitsbereitschaft unter Druck und Stress, wie das professionelle Tänzer:innen tun. Kaum jemand muss so sehr „auf Knopfdruck“ kreativ werden und Ideen konkret umsetzen können, wie die für eine Bühnenproduktion verantwortlichen Künstler:innen, beispielsweise wir Choreografinnen Zum Beispiel ist der Termin einer Premiere als Deadline so zuverlässig und umverschiebbar wie in wenigen anderen Gewerken. Gleichzeitig müssen in diesem engen Zeitrahmen Prozesse eingeleitet werden, die die Kreativität nicht ersticken, sondern ein Gefühl von Machbarkeit und Motivation erzeugen – und im Idealfall den Spaß aller Beteiligten an der Sache befördern. Das kann ein unglaublich hilfreicher Impuls für viele Unternehmen sein.
 
 Wir wünschen an dieser Stelle daher ganz viel Erfolg für das gemeinsame Projekt und bedanken uns bei Daniela Lehmann und Marita Matzk herzlich für das Gespräch und die interessanten Antworten.
 
@@ -49,7 +49,7 @@ Wir wünschen an dieser Stelle daher ganz viel Erfolg für das gemeinsame Projek
 
 Eine Vermittlung an [Wir gestalten Dresden](https://www.wir-gestalten-dresden.de/) bezüglich der Fördermöglichkeiten der Coachings kann über Daniela Lehmann und Marita Matzk ebenfalls erfolgen. Bitte hierfür die Kontaktmöglichkeiten auf der Website nutzen.
 
-Wer außerdem Informationen zum Förderprogramm "Unternehmen helfen Unternehmen" sucht, der wird hier fündig:
+Wer außerdem Informationen zum Förderprogramm „Unternehmen helfen Unternehmen“ sucht, der wird hier fündig:
 
 [https://www.wir-gestalten-dresden.de/uhu/](https://www.wir-gestalten-dresden.de/uhu/)
 

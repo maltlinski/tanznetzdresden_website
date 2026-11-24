@@ -9,7 +9,7 @@ teaser: TanzNetzDresden-Mitglied Makhina Dzhuraeva war mit einem ihrer früheren
 
 *TanzNetzDresden-Mitglied Makhina Dzhuraeva war mit einem ihrer früheren Produktionen bereits der [TNDD Studio Round](/#formate) zu Gast. Nun ist mit Zarina Tadjibaeva und der gemeinsamen Company [ReBelle Art](http://www.rebelle-art.ch/) und dem Stück »METAMORPHOSE« Am 23. und 24. März im [Societaetstheater](https://www.societaetstheater.de/veranstaltung/metamorphose/) zu Gast. Alle Informationen zu beiden Terminen gibt es im heutigen Beitrag.*
 
-## »METAMORPHOSE
+## »METAMORPHOSE«
 
 Der Weg eines Mädchens im zentralasiatischen Tadschikistan ist vorgezeichnet: Geburt, Heirat, Kinder, Familie. Doch zwei junge Frauen wählten einen anderen Pfad. Sie hatten genug vom engen Korsett der Gesellschaft, in der Frauen nichts zu sagen haben und Gewalt innerhalb und außerhalb der Familie erleben. Auf ihrem Weg zu einem selbstbestimmten Leben begegneten sie sich in der Schweiz. Zum ersten Mal fühlten sich die zwei geschundenen Seelen wirklich verstanden. Das Tanztheaterstück *Metamorphose* erzählt von der ewigen Scham und Schuld, die Frauen aufgebürdet wird, aber auch von Mut und Solidarität.
 
@@ -19,7 +19,7 @@ Der Weg eines Mädchens im zentralasiatischen Tadschikistan ist vorgezeichnet: G
 darstellung: neben
 text: |-
   Metamorphose, von Re Belle Art
-  Mit Zarina Tadjibaeva, und Makhina Dzhuraeva .
+  Mit Zarina Tadjibaeva und Makhina Dzhuraeva.
   (Yoshiko Kusano)
 bilder:
   - datei: /news/archiv/2024/photo-yoshiko-kusano-metamorphose-zarina-0305.webp

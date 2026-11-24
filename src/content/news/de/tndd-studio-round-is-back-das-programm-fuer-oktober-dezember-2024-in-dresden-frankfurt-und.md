@@ -24,11 +24,11 @@ Explizit hinweisen möchten wir darauf, dass nur einen Tag nach der Edition in D
 Weitere Informationen zu diesem Termin gibt es unter:  
 [https://tanznetzdresden.de/pop-up-exchange](/#formate)
 
-## TNDD studio round - die beteiligten Künstler:innen & Stücke
+## TNDD studio round – die beteiligten Künstler:innen & Stücke
 
-- **25\. Oktober 2024**, **20 Uhr**, [TENZA](http://www.tenza.de/), Dresden – Romy Schwarzer "Serbski Kosmus / Einblick“, Eva Krause (Freiburg): „OneBodyOrchestra“ & Felix Chang (Frankfurt am Main) „Wú | 壹“
-- **06\. Dezember 2024**, [Südufer](https://suedufer-freiburg.de/), Freiburg – Marion Plantey (Frankfurt am Main) “HUG”, Sophia Barr (Freiburg) “Cette pierre qui marche sur l'eau et refuse obstinément d'y couler - A Stone That Walks on Water and Stubbornly Refuses to Sink“, Joao Pedro de Paula (Dresden) “The Percin Show”
-- **13\. Dezember 2024**, [Z-Zentrum für Proben und Forschung](https://kultur-frankfurt.de/portal/de/Buehne/Proberaeume/1920/2456/0/0/4.aspx), Frankfurt am Main – Cindy Hammer (Dresden) “MELANCHOLIC MARATHON” (Ausschnitt), Karolin Stächele (Freiburg) “YOU HAVE NO IDEA” & Maria Kobzeva (Frankfurt am Main) “Maybe we’ll see”
+- **25\. Oktober 2024**, **20 Uhr**, [TENZA](http://www.tenza.de/), Dresden – Romy Schwarzer „Serbski Kosmus / Einblick“, Eva Krause (Freiburg): „OneBodyOrchestra“ & Felix Chang (Frankfurt am Main) „Wú | 壹“
+- **06\. Dezember 2024**, [Südufer](https://suedufer-freiburg.de/), Freiburg – Marion Plantey (Frankfurt am Main) „HUG“, Sophia Barr (Freiburg) „Cette pierre qui marche sur l’eau et refuse obstinément d’y couler – A Stone That Walks on Water and Stubbornly Refuses to Sink“, Joao Pedro de Paula (Dresden) „The Percin Show“
+- **13\. Dezember 2024**, [Z-Zentrum für Proben und Forschung](https://kultur-frankfurt.de/portal/de/Buehne/Proberaeume/1920/2456/0/0/4.aspx), Frankfurt am Main – Cindy Hammer (Dresden) „MELANCHOLIC MARATHON“ (Ausschnitt), Karolin Stächele (Freiburg) „YOU HAVE NO IDEA“ & Maria Kobzeva (Frankfurt am Main) „Maybe we’ll see“
 
 Der Eintritt ist frei. Alle Interessierten sind herzlich willkommen. Weitere Informationen folgen in Kürze.
 

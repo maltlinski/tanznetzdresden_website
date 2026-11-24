@@ -28,7 +28,7 @@ a.ak__back:hover { color: var(--cyan); }
 .ak__teaser { margin: 0; max-width: 560px; font-size: clamp(17px, 1.5vw, 20px); line-height: 1.55; color: rgba(255, 255, 255, 0.9); text-wrap: pretty; }
 .ak__autor { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--on-dark-soft); }
 .ak__credit {
-  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-dark-soft);
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--on-dark-soft);
 }
 .ak .ak__keil { position: absolute; left: 0; bottom: 0; width: 34%; z-index: 2; }
 .ak__zoom { position: relative; display: block; overflow: hidden; background: var(--purple); cursor: zoom-in; }
@@ -60,6 +60,16 @@ a.ak__back:hover { color: var(--cyan); }
 .ak--vollbild .ak__meta { flex-direction: column; align-items: flex-end; gap: 10px; }
 /* unter der Kopfleiste: Klasse unter-leiste (global.css, src/scripts/unter-leiste.ts) */
 .ak--unter .ak__oben { top: var(--kopfleiste-h); }
+/*
+ * Handy hochkant: Ein bildschirmhoher Kopf würde das (meist quer aufgenommene) Foto stark beschneiden und
+ * vergrößern. Dort zeigt der Kopf das Foto quer in seinem Seitenverhältnis (--r, aus news-artikel.ts), der Titel
+ * steht darunter im Band; unter der durchsichtigen Kopfleiste liegt Lila statt Foto.
+ */
+@media (max-width: 760px) and (orientation: portrait) {
+  .ak--vollbild { min-height: 0; background: var(--purple); }
+  .ak--vollbild.ak--unter { padding-top: var(--kopfleiste-h); }
+  .ak--vollbild .ak__buehne { flex: none; min-height: 0; aspect-ratio: var(--r, 1.5); }
+}
 
 /* Hochkant: Text links, das hohe Foto rechts mit Magenta-Kante */
 .ak--hochkant .ak__innen {
@@ -157,7 +167,7 @@ html:not(.js) .ak__knoten { opacity: 1; left: auto; top: auto; right: var(--gutt
 .ab__teilen { display: flex; flex-wrap: wrap; gap: 8px; }
 .ab__knopf {
   padding: 8px 12px; border: 1.5px solid var(--purple); border-radius: 0; background: transparent; color: var(--purple); cursor: pointer;
-  font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+  font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
 }
 .ab__knopf:hover { border-color: var(--magenta); color: var(--magenta-2); }
 .ab__knopf[aria-pressed='true'] { background: var(--purple); color: #fff; }
@@ -169,10 +179,10 @@ html:not(.js) .ak__knoten { opacity: 1; left: auto; top: auto; right: var(--gutt
 }
 .ab__dl { display: contents; }
 .ab__dl > div { padding: 16px 0 18px; border-bottom: 1px solid var(--rule); display: flex; flex-direction: column; gap: 6px; min-width: 0; }
-.ab__dl dt { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+.ab__dl dt { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
 .ab__dl dd { margin: 0; font-family: var(--font-display); font-size: 16px; line-height: 1.4; font-weight: 800; letter-spacing: -0.01em; color: var(--purple); }
 .ab__call { background: var(--purple); color: #fff; padding: 16px 20px 20px; display: flex; flex-direction: column; gap: 6px; }
-.ab__call-k, .ab__call-u { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
+.ab__call-k, .ab__call-u { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; }
 .ab__call-k { color: var(--cyan); }
 .ab__call-n { font-family: var(--font-display); font-weight: 800; font-size: 64px; line-height: 0.86; letter-spacing: -0.045em; color: var(--magenta); }
 
@@ -182,6 +192,8 @@ html:not(.js) .ak__knoten { opacity: 1; left: auto; top: auto; right: var(--gutt
 .ab__text h2, .ab__text h3:not(.ns__titel) {
   display: flex; align-items: center; gap: 14px; font-family: var(--font-display); font-weight: 800;
   font-size: clamp(24px, 2.4vw, 30px); line-height: 1.1; letter-spacing: -0.02em; color: var(--purple); margin: 1.4em 0 0.7em;
+  /* der Text ist hier ein Flex-Element: ohne „anywhere“ schöbe ein sehr langes Wort die Seite am Handy breiter */
+  overflow-wrap: anywhere;
 }
 .ab__text h3:not(.ns__titel) { font-size: 22px; }
 /* Schriftgröße eines Absatzes oder Zwischentitels (Redaktion: feste Stufen, src/lib/news-bloecke.ts GROESSEN) */
@@ -273,7 +285,7 @@ html:not(.js) .ak__knoten { opacity: 1; left: auto; top: auto; right: var(--gutt
 .ab__text .nb--neben { margin-block: 0.35em 1.2em; }
 .nb__cap { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 14px; margin-top: 12px; font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); }
 .nb__text { flex: 1 1 240px; text-wrap: pretty; }
-.nb__k, .nb__credit { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
+.nb__k, .nb__credit { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; }
 .nb__k { color: var(--magenta-2); }
 .nb__credit { color: var(--ink-muted); }
 .nb__cap > .nb__credit { margin-left: auto; }
@@ -345,10 +357,10 @@ html:not(.js) .ak__knoten { opacity: 1; left: auto; top: auto; right: var(--gutt
 .ns__kopf { display: flex; flex-direction: column; gap: 14px; background: var(--tint); padding: 8px 0; }
 .ab__text .ns__titel { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(32px, 3.6vw, 52px); line-height: 0.98; letter-spacing: -0.03em; color: var(--purple); text-wrap: balance; }
 .ns__schritt { background: var(--paper); border-top: 3px solid var(--magenta); padding: 22px 24px 26px; display: flex; flex-direction: column; gap: 10px; }
-.ns__k { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2); }
+.ns__k { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--magenta-2); }
 .ab__text .ns__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(22px, 2.2vw, 28px); line-height: 1.08; letter-spacing: -0.02em; color: var(--purple); }
 .ab__text .ns__p { margin: 0; font-size: 16px; line-height: var(--lh-text); color: var(--ink); }
-.ns__credit { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+.ns__credit { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
 
 /* ---------- Hinweiskasten (::: hinweis), z. B. Förderhinweis ---------- */
 .ab__text .nh {
@@ -394,7 +406,7 @@ html:not(.js) .ak__knoten { opacity: 1; left: auto; top: auto; right: var(--gutt
 .lb__fuss { flex: none; display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px 32px; padding: 14px clamp(16px, 3vw, 32px) 18px; border-top: 1px solid var(--on-dark-rule); }
 .lb__info { flex: 1 1 320px; min-width: 0; display: flex; flex-direction: column; gap: 6px; }
 .lb__cap { font-size: 15px; line-height: 1.5; color: #fff; min-height: 1.5em; }
-.lb__credit { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
+.lb__credit { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.7); }
 .lb__daumen { display: flex; gap: 8px; overflow-x: auto; max-width: 100%; padding: 4px; }
 .lb__daumen[hidden] { display: none; }
 .lb__daumen-b { flex: none; position: relative; width: 60px; height: 42px; padding: 0; border: 0; border-radius: 0; background: #000; cursor: pointer; overflow: hidden; opacity: 0.55; outline: 2px solid transparent; outline-offset: 2px; }

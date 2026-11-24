@@ -31,7 +31,7 @@ import '../../../../styles/artikel.css';
 <script>
   import { renderMarkdown } from '../../../../lib/markdown';
   import { newsPhotoUrl, getSupabase, type NewsRow } from '../../../../lib/supabase';
-  import { faktenHtml, fussHtml, kopfHtml, kopfModus, nachweise, zeileHtml, type Flaeche } from '../../../../lib/news-artikel';
+  import { faktenHtml, fussHtml, kopfHtml, kopfModus, nachweise, teaserWiederholt, zeileHtml, type Flaeche } from '../../../../lib/news-artikel';
   import { texte } from '../../../../lib/texte';
   import { escapeHtml as esc } from '../../../../lib/news-format';
   import { initLightbox } from '../../../../scripts/lightbox';
@@ -83,7 +83,9 @@ import '../../../../styles/artikel.css';
     const date = b.date || new Date().toISOString().slice(0, 10);
     const words = `${b.teaser ?? ''} ${body}`.replace(/::: (bilder|schritte)[\s\S]*?:::/g, '').split(/\s+/).filter(Boolean).length;
     const titel = pick(b.title ?? '', b.title_en) || (en ? 'Title' : 'Titel des Beitrags');
-    const teaser = pick(b.teaser ?? '', b.teaser_en);
+    const teaserText = pick(b.teaser ?? '', b.teaser_en);
+    // wie auf der Beitragsseite: ein Teaser, der nur den Textanfang wiederholt, steht nicht noch einmal darüber
+    const teaser = teaserWiederholt(teaserText, renderMarkdown(b.abschnitte ? b.abschnitte.join('\n\n') : body, base, { lang, abb: { n: 0 } })) ? '' : teaserText;
     const cover = newsPhotoUrl(b.image_path ?? null);
     const r = cover ? await verhaeltnis(cover) : undefined;
     if (zuletzt?.b !== b) return; // inzwischen neuer Stand

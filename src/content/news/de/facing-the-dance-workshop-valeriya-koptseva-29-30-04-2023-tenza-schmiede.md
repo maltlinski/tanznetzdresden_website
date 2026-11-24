@@ -32,7 +32,7 @@ Mehr zu Valeriya Koptseva gibt es unter
 
 ## Termin
 
-**Datum:** Freitag, 29. April (14 - 15:30 Uhr) & Samstag, 30. April (10 - 11:30 Uhr)  
+**Datum:** Freitag, 29. April (14–15:30 Uhr) & Samstag, 30. April (10–11:30 Uhr)  
 **Ort:** [TENZA Schmiede](https://www.tenza.de/), Pfotenhauerstraße 59, 01307 Dresden**  
 Gebühr & Anmeldung:** regulär: 8 Euro / TNDD Mitglieder:innen: 5 Euro (Bezahlung vor Ort in Bar)
 

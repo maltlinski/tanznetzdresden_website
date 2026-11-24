@@ -9,7 +9,7 @@ teaser: "Es ist definitiv ein wichtiger, aber vor allem ein längst überfällig
 
 Es ist definitiv ein wichtiger, aber vor allem ein längst überfälliger Schritt: die Einführung von Basishonoraren für selbstständige Künstler:innen. Genau diese Einführung kündigte Kulturstaatsministerin Claudia Roth nämlich bei der Mitgliederversammlung des Deutschen Kulturrat am 21. September 2023 an. Demzufolge sollen vom Bund geförderten Kultureinrichtungen ab dem kommenden Jahr für Leistungen von freiberuflich arbeitenden Künstlerinnen und Künstler mindestens Honorare in Höhe einer Honoraruntergrenze zahlen müssen. Was das genau bedeutet und was alles damit verknüpft ist, soll der heutige Beitrag beschreiben.
 
-## Basishonorare für Künstler:innen - eine längere Geschichte
+## Basishonorare für Künstler:innen – eine längere Geschichte
 
 Der Deutsche Kulturrat fordert schon seit Jahren eine deutlich höhere Entlohnung der freiberuflich arbeitenden Künstlerinnen und Künstler. In einigen Bundesländern (NRW, Brandenburg, Bremen und Sachsen) sind die sogenannten Basishonorare bereits in Vorbereitung.
 

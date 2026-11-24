@@ -2,7 +2,7 @@
  * Gemeinsames der Redaktionsseiten: Anmeldung und Rolle prüfen, Stand laden, Namen für Verweise,
  * Website-Status („wird aktualisiert“) und Hinweise.
  */
-import { initIntern, internUrl, type InternContext } from '../session';
+import { fuerAnzeige, initIntern, internUrl, type InternContext } from '../session';
 import { api, type Api, type Stand, type WebsiteStatus } from './api';
 import { bereich as bereichNach, type Bereich, type Kontext, type Option } from './bereiche';
 import { laden, verweisFelder, type Eintrag, type Geladen } from './daten';
@@ -19,6 +19,7 @@ export const $ = <T extends HTMLElement = HTMLElement>(sel: string, root: Parent
 
 export function meldung(text: string, art: 'error' | 'ok' = 'error', el = $('[data-msg]')) {
   if (!el) return;
+  text = fuerAnzeige(text, art);
   el.textContent = text;
   el.dataset.kind = art;
   el.hidden = !text;

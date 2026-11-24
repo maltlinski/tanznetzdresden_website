@@ -9,7 +9,7 @@ teaser: Die 143. Ausgabe vom undsonstso am 5. Februar in der TENZA war ein schö
 
 *Die 143. Ausgabe vom undsonstso am 5. Februar in der TENZA war ein schöner, spannender und wirklich inspirierender Abend. Daniela Lehmann gab einen umfassenden Einblick in die Entstehung und die Mission vom TanzNetzDresden und auch die Gründer:innen des Dresdner Musik-Labels [HTXSTHSTX](https://undsonstso.us6.list-manage.com/track/click?u=300e54c69b65ea0dbacdfab53&id=f606429f38&e=1eeec7f2aa) lieferten Einblicke in den musikalischen Kosmos ihres Schaffens. Sehr gefreut haben wir uns daher, dass Judith Ziegenthaler tolle Fotos gemacht hat, die wir euch in dem heutigen Beitrag präsentieren möchten.*
 
-## undsonstso #143 - der Fotorückblick von Judith Ziegenthaler
+## undsonstso #143 – der Fotorückblick von Judith Ziegenthaler
 
 ::: bilder
 format: quer
@@ -56,7 +56,7 @@ bilder:
     alt: ""
 :::
 
-### undsonstso - Das Format
+### undsonstso – Das Format
 
 Ein Blick über den Tellerrand von Gestalter:innen, Ingenieur:innen und Kreativen. Mit Erzählenswertem aus Design, Kunst, Wirt- und Wissenschaft. Dresden ist unser Ort der Ideen und Möglichkeiten. An jedem ersten Donnerstag im Monat haben wir die Chance, dies hautnah zu erleben. Mit zwei Kurzvorträgen und genügend Zeit für Fragen und Diskussionen, bieten wir einen Rahmen, um Dresden und seine Macher:innen näher kennen zu lernen.
 

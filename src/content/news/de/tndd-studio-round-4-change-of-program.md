@@ -4,10 +4,10 @@ date: 2022-07-06
 category: Netzwerk
 author: TanzNetzDresden
 image: ../../../assets/news/2022/tndd-studio-round-2022-therese-benjus-daria-belous-soft-2-kopie.webp
-teaser: The upcoming TNDD studio round edition, which will take place on July 8th as usual from 8pm at the TENZA Schmiede, sadly has to change it's program.
+teaser: The upcoming TNDD studio round edition, which will take place on July 8th as usual from 8pm at the TENZA Schmiede, sadly has to change it’s program.
 ---
 
-The upcoming TNDD studio round edition, which will take place on July 8th as usual from 8pm at the [TENZA Schmiede](http://www.tenza.de/), sadly has to change it's program. The reason is that Therese Bendjus and Daria Belous had to cancel their part because of illness. That is indeed a great pity, but we can already announce that their piece "Studies of Softening" will be part of the upcoming fifth edition of TNDD studio round in the fall.
+The upcoming TNDD studio round edition, which will take place on July 8th as usual from 8pm at the [TENZA Schmiede](http://www.tenza.de/), sadly has to change it’s program. The reason is that Therese Bendjus and Daria Belous had to cancel their part because of illness. That is indeed a great pity, but we can already announce that their piece “Studies of Softening” will be part of the upcoming fifth edition of TNDD studio round in the fall.
 
 All other contributions of the fourth TNDD studio round will remain and can be viewed directly on the [studio round subpage](/#formate). There you will also find all information in English.
 

@@ -1,19 +1,19 @@
 ---
-title: Ausschreibung für POP UP 2023 "touching shame" gestartet • Call for proposals for POP UP 2023 "touching shame" launched
+title: Ausschreibung für POP UP 2023 „touching shame“ gestartet • Call for proposals for POP UP 2023 „touching shame“ launched
 date: 2023-06-09
 category: Ausschreibung
 author: TanzNetzDresden
 image: ../../../assets/news/2023/tanznetzdresden-pop-up-open-call-2023-mimomse.webp
-teaser: Für den 23. September 2023 ist im Dresdner Industriegelände eine POP UP-Performance unter dem Motto "touching shame" geplant, für die sich Interessierte ab sofort bis zum 30.
+teaser: Für den 23. September 2023 ist im Dresdner Industriegelände eine POP UP-Performance unter dem Motto „touching shame“ geplant, für die sich Interessierte ab sofort bis zum 30.
 ---
 
-Für den 23. September 2023 ist im Dresdner Industriegelände eine POP UP-Performance unter dem Motto "touching shame" geplant, für die sich Interessierte ab sofort bis zum 30. Juni 2023 mit einem künstlerischen Beitrag zum genannten Motto bewerben können. Alle Details des Open Calls folgen nun im Beitrag (please scroll down for information in english)
+Für den 23. September 2023 ist im Dresdner Industriegelände eine POP UP-Performance unter dem Motto „touching shame“ geplant, für die sich Interessierte ab sofort bis zum 30. Juni 2023 mit einem künstlerischen Beitrag zum genannten Motto bewerben können. Alle Details des Open Calls folgen nun im Beitrag (please scroll down for information in english)
 
-## "touching shame" - der POP UP Open Call für 2023
+## „touching shame“ – der POP UP Open Call für 2023
 
 - **Wann:** 23. September 2023
 - **W0:** Der Halle ([Meschwitzstraße 9-13, 01099 Dresden](http://www.openstreetmap.org/?mlat=51.0842572&mlon=13.765633999999977#map=18/51.0842572/13.765633999999977))
-- **Kooperationen:** Tanznetzdresden und Der Halle
+- **Kooperationen:** TanzNetzDresden und Der Halle
 - **Musik:** Albrecht Ernst
 - **Hosts:** Chiara Detscher und Alina Lucifero
 
@@ -40,11 +40,11 @@ bilder:
     alt: ""
 :::
 
-## "touching shame" - the POP UP Open Call for 2023
+## „touching shame“ – the POP UP Open Call for 2023
 
 - **When:** September 23, 2023
 - **Where:** Der Halle ([Meschwitzstraße 9-13, 01099 Dresden](http://www.openstreetmap.org/?mlat=51.0842572&mlon=13.765633999999977#map=18/51.0842572/13.765633999999977))
-- **Cooperations:** Tanznetzdresden and Der Halle
+- **Cooperations:** TanzNetzDresden and Der Halle
 - **Music:** Albrecht Ernst
 - **Hosts:** Chiara Detscher and Alina Lucifero
 

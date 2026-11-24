@@ -4,10 +4,10 @@ date: 2022-09-13
 category: Netzwerk
 author: TanzNetzDresden
 image: ../../../assets/news/2022/tanznetzdresden-kulturgefluster-header-2022-e1663072898295.webp
-teaser: Um eine junge Redaktion für die Bereiche Tanz und Medien unter dem Titel Kulturgeflüster aufzubauen und den Journalismus in Dresden in genau diesen Bereichen zu verstärken, sucht HELLERAU - Zentrum …
+teaser: Um eine junge Redaktion für die Bereiche Tanz und Medien unter dem Titel Kulturgeflüster aufzubauen und den Journalismus in Dresden in genau diesen Bereichen zu verstärken, sucht HELLERAU – Zentrum …
 ---
 
-Um eine junge Redaktion für die Bereiche Tanz und Medien unter dem Titel *Kulturgeflüster* aufzubauen und den Journalismus in Dresden in genau diesen Bereichen zu verstärken, sucht [HELLERAU - Zentrum für europäische Künste](https://www.hellerau.org/) aktuell Verstärkung für das noch im Aufbau befindliche Team. Aus diesem Anlass findet am 14. Oktober 2022 überdies auch ein Initialtreffen direkt in HELLERAU statt. Alle Informationen gibt es nun im aktuellen Blog-Beitrag.
+Um eine junge Redaktion für die Bereiche Tanz und Medien unter dem Titel *Kulturgeflüster* aufzubauen und den Journalismus in Dresden in genau diesen Bereichen zu verstärken, sucht [HELLERAU – Zentrum für europäische Künste](https://www.hellerau.org/) aktuell Verstärkung für das noch im Aufbau befindliche Team. Aus diesem Anlass findet am 14. Oktober 2022 überdies auch ein Initialtreffen direkt in HELLERAU statt. Alle Informationen gibt es nun im aktuellen Blog-Beitrag.
 
 ## Kulturgeflüster baut junge Redaktion auf
 
@@ -21,14 +21,14 @@ Konkret gesucht werden Menschen zwischen 16 und 20 Jahren. Es können sich aber 
 
 Das erste Treffen zur Initialzündung von *Kulturgeflüster* findet übrigens am Freitag, dem 14. Oktober 2022 von 17:30 bis 19:30 Uhr in HELLERAU statt. Der Launch bzw. die Reaktivierung der dazugehörigen Website mitsamt Social Media-Profilen ist für den gleichen Zeitraum geplant.
 
-In diesem Sinne: Meldet euch zahlreich, streut den Aufruf - und tragt so oder so dazu bei, dass Journalismus in den Bereichen Tanz und Medien in Dresden und darüber hinaus durch *Kulturgeflüster* frischen und kräftigen Aufwind erfahren.
+In diesem Sinne: Meldet euch zahlreich, streut den Aufruf – und tragt so oder so dazu bei, dass Journalismus in den Bereichen Tanz und Medien in Dresden und darüber hinaus durch *Kulturgeflüster* frischen und kräftigen Aufwind erfahren.
 
-### Kulturgeflüster - das Kick-off-Meeting
+### Kulturgeflüster – das Kick-off-Meeting
 
-**Termin**: Freitag, 14. Oktober 2022; 17:30 - 19:30 Uhr  
-**Location**: [HELLERAU - Zentrum für europäische Künste](https://www.hellerau.org/), Karl-Liebknecht-Straße 56, 01109 Dresden  
+**Termin**: Freitag, 14. Oktober 2022; 17:30–19:30 Uhr  
+**Location**: [HELLERAU – Zentrum für europäische Künste](https://www.hellerau.org/), Karl-Liebknecht-Straße 56, 01109 Dresden  
 **Informationen**: [hellerau.org/de/event/kulturgefluester](https://www.hellerau.org/de/event/kulturgefluester)
 
 **Der Eintritt ist frei. Um Anmeldung unter **[kulturgefluester@hellerau.org](mailto:kulturgefluester@hellerau.org) **wird gebeten.Für Rückfragen darf und sollte ebenfalls die gleiche Mail-Adresse genutzt werden. Der Ansprechpartner in Fragen zum Kulturgeflüster ist Christopher Utpadel.**
 
-Grafik: HELLERAU - Zentrum für europäische Künste
+Grafik: HELLERAU – Zentrum für europäische Künste

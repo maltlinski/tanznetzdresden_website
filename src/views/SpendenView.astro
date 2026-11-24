@@ -13,7 +13,8 @@ import { getFormate } from '../lib/content';
 import { formatIban, giroCodeSvg, isValidIban } from '../lib/girocode';
 import { getLang, loc, tr, url } from '../lib/i18n';
 import { abschnittZeigen, fuellen, texte, zeilen } from '../lib/texte';
-import sprung from '../assets/photos/sprung.jpg';
+// Kopf: ein anderes Foto als die Karten darunter (Welttanztag zeigt den Sprung)
+import kopfFoto from '../assets/photos/ensemble-curtain-call.jpg';
 import KopfNetz from '../components/KopfNetz.astro';
 
 const lang = getLang(Astro);
@@ -49,7 +50,7 @@ const t = {
   ...fr, status: (amt: string, datum: string) => fuellen(fr.status, { amt, datum }),
   faqs: [frage(fr.frage1, fr.frage1Link), frage(fr.frage2), frage(fr.frage3)],
   // nur für Screenreader
-  ...tr(lang, { de: { photoAlt: 'Sprung auf der Bühne', qrAlt: 'GiroCode für eine Überweisung' }, en: { photoAlt: 'A leap on stage', qrAlt: 'EPC QR code for a bank transfer' } }),
+  ...tr(lang, { de: { photoAlt: 'Ensemble beim Schlussapplaus auf der Bühne', qrAlt: 'GiroCode für eine Überweisung' }, en: { photoAlt: 'Ensemble taking a bow on stage', qrAlt: 'EPC QR code for a bank transfer' } }),
 };
 const provider = d.onlineProvider || 'betterplace';
 const kopieren = [
@@ -68,7 +69,7 @@ const kopieren = [
         <h1 id="spenden-h" class="sk__h">{t.h1}{' '}<br /><span>{t.accent}</span></h1>
         {t.lead && <p class="sk__lead" data-kopf-folgt>{t.lead}</p>}
         <div class="sk__foto" data-kopf-folgt>
-          <Image src={sprung} alt={t.photoAlt} widths={[480, 760, 1120]} sizes="(min-width: 1000px) 560px, 100vw" loading="eager" />
+          <Image src={kopfFoto} alt={t.photoAlt} widths={[480, 760, 1120]} sizes="(min-width: 1000px) 560px, 100vw" loading="eager" />
         </div>
       </div>
 
@@ -233,12 +234,12 @@ const kopieren = [
   .konto__h { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(28px, 2.8vw, 36px); line-height: 1; letter-spacing: -0.025em; color: var(--purple); }
   .konto__liste { margin: 0; border-top: 1px solid var(--rule); }
   .konto__z { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 16px; align-items: center; padding: 14px 0; border-bottom: 1px solid var(--rule); }
-  .konto__z dt { grid-column: 1; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
+  .konto__z dt { grid-column: 1; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink-muted); }
   .konto__z dd { grid-column: 1; margin: 0; font-family: var(--font-display); font-size: 18px; font-weight: 600; letter-spacing: -0.01em; color: var(--purple); overflow-wrap: anywhere; }
   .konto__z dd.is-mono { font-family: var(--font-mono); font-size: 16px; letter-spacing: 0.04em; }
   .konto__copy {
     grid-column: 2; grid-row: 1 / 3; min-width: 92px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 0; background: #fff; color: var(--purple); cursor: pointer;
-    font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
     transition: background var(--dur-base), color var(--dur-base), border-color var(--dur-base);
   }
   .konto__copy:hover { border-color: var(--magenta); }

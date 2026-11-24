@@ -23,6 +23,8 @@ export interface ConsentCategory {
   /** Kategorie erscheint nur, wenn aktiv */
   enabled: boolean;
   services: string[];
+  /** Dienste auf Englisch (fehlt: wie deutsch) */
+  services_en?: string[];
 }
 
 const analytics = verein.analytics.provider;
@@ -39,6 +41,7 @@ export const consentCategories: ConsentCategory[] = [
     required: true,
     enabled: true,
     services: ['Einwilligungs-Speicher (lokal)', 'Login-Sitzung (Supabase, nur intern)'],
+    services_en: ['Consent storage (local)', 'Login session (Supabase, members area only)'],
   },
   {
     id: 'medien',
@@ -59,5 +62,6 @@ export const consentCategories: ConsentCategory[] = [
     description_en: 'Anonymous, cookie-free audience measurement. We need the figures for our funding reports.',
     enabled: analytics !== '',
     services: analytics === 'matomo' ? ['Matomo (cookielos)'] : analytics === 'plausible' ? ['Plausible Analytics'] : [],
+    services_en: analytics === 'matomo' ? ['Matomo (cookie-free)'] : analytics === 'plausible' ? ['Plausible Analytics'] : [],
   },
 ];

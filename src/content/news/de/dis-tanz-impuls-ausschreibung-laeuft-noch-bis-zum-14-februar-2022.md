@@ -20,7 +20,7 @@ Mehr Informationen und sämtliche relevanten Pressemitteilungen zum Thema gibt e
 
 **Pressekontakt**  
 Leoni Walter / Alexa Junge  
-T.: +49(0)30 - 37 44 33 92  
+T.: +49(0)30 – 37 44 33 92  
 [presse@dachverband-tanz.de](mailto:presse@dachverband-tanz.de)
 
 Der Dachverband Tanz Deutschland e.V., die gemeinnützige Kulturorganisation DIEHL+RITTER und JOINT ADVENTURES / NATIONALES PERFORMANCE NETZ sind mit ihrer gemeinsam entwickelten und koordinierten Bundestanzförderung Teil des Rettungs- und Zukunftsprogramms NEUSTART KULTUR der Beauftragten der Bundesregierung für Kultur und Medien (BKM).

@@ -45,7 +45,7 @@ const personen = jsonImHtml((await getPersonen()).map((p) => ({ id: p.id, name: 
 </Redaktion>
 
 <script>
-  import { initIntern, errorText } from '../../../../scripts/intern/session';
+  import { initIntern, errorText, nochNichtEingerichtet } from '../../../../scripts/intern/session';
   import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
   import { photoUrl, slugify, type GalerieEintrag } from '../../../../lib/supabase';
   import { meldung, websiteUrl } from '../../../../scripts/intern/redaktion/seite';
@@ -167,12 +167,17 @@ const personen = jsonImHtml((await getPersonen()).map((p) => ({ id: p.id, name: 
     body.append(top);
 
     const adr = h('p', 'fg__adr');
-    const a = h('a', '', `/netzwerk/${z.slug}/`);
-    a.href = websiteUrl(`netzwerk/${z.slug}/`);
-    a.target = '_blank';
-    a.rel = 'noopener';
-    adr.append(a);
-    if (!z.verified) adr.append(document.createTextNode(' (erst nach der Freigabe erreichbar)'));
+    if (z.slug) {
+      const a = h('a', '', `/netzwerk/${z.slug}/`);
+      a.href = websiteUrl(`netzwerk/${z.slug}/`);
+      a.target = '_blank';
+      a.rel = 'noopener';
+      adr.append(a);
+      if (!z.verified) adr.append(document.createTextNode(' (erst nach der Freigabe erreichbar)'));
+    } else {
+      // ohne Adresse gibt es (noch) keine Profilseite – die Person trägt sie unter „Mein Profil“ ein
+      adr.textContent = 'Noch keine Adresse – die Person trägt sie unter „Mein Profil“ ein.';
+    }
     body.append(adr);
 
     if (offen) {
@@ -257,7 +262,7 @@ const personen = jsonImHtml((await getPersonen()).map((p) => ({ id: p.id, name: 
     const { data, error } = await ctx!.sb.rpc('galerie_freigabe', { person: z.id, pfad, ok });
     if (error) {
       return /galerie_freigabe|could not find the function/i.test(error.message)
-        ? 'Die Datenbank kennt die Galerie noch nicht: Bitte die Migration 20261020000000_profil_seite.sql im SQL-Editor ausführen.'
+        ? nochNichtEingerichtet('Die Freigabe von Galeriefotos ist noch nicht eingerichtet. Bitte gib dem Vorstand Bescheid.', 'Migration 20261020000000_profil_seite.sql im SQL-Editor ausführen.')
         : errorText(error);
     }
     // abgelehnte Fotos aus dem Bucket löschen
@@ -286,7 +291,7 @@ const personen = jsonImHtml((await getPersonen()).map((p) => ({ id: p.id, name: 
     btn.disabled = false;
     if (error) {
       return meldung(/function .*freigabe|could not find the function/i.test(error.message)
-        ? 'Die Datenbank kennt die Freigabe noch nicht: Bitte die Migration 20261013000000_freigaben.sql im SQL-Editor ausführen.'
+        ? nochNichtEingerichtet('Die Freigabe ist noch nicht eingerichtet. Bitte gib dem Vorstand Bescheid.', 'Migration 20261013000000_freigaben.sql im SQL-Editor ausführen.')
         : errorText(error));
     }
     // ersetztes oder abgelehntes Foto aufräumen

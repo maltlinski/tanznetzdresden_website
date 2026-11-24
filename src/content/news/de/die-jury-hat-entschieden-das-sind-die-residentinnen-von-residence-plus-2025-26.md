@@ -7,7 +7,7 @@ image: ../../../assets/news/2026/tanznetzdresden-residence-plus-2026-artists-e17
 teaser: Im heutigen Blog-Beitrag freuen wir uns, die sechs Resident\innen für residence plus 2025/26 bekanntzugeben.
 ---
 
-Im heutigen Blog-Beitrag freuen wir uns, die sechs Resident\*innen für residence plus 2025/26 bekanntzugeben. Auf wen die Wahl gefallen ist und was residence plus den ausgewählten Künstler:innen bietet, das erfahrt ihr im heutigen Blog-Beitrag.
+Im heutigen Blog-Beitrag freuen wir uns, die sechs Resident:innen für residence plus 2025/26 bekanntzugeben. Auf wen die Wahl gefallen ist und was residence plus den ausgewählten Künstler:innen bietet, das erfahrt ihr im heutigen Blog-Beitrag.
 
 ## Die Resident:innen von residence plus in 2025/26
 
@@ -24,7 +24,7 @@ Zusammenfassend können wir sagen, dass die Vielfalt der Vorhaben und künstleri
 
 ## residence plus
 
-residence plus ist ein Projekt von Villa Wigman für Tanz e.V. in Kooperation mit [TanzNetzDresden e.V.](/) mit den Partnerorten [TanzART Kirschau](https://www.tanzart-kirschau.de/), [TanzRaumGörlitz](https://ncca.eu/TRG) des Neisse Centre for the Contemporary Arts, [KOMPLEX - OFF Bühne des Taupunkt e.V. Chemnitz](https://www.chemnitzkomplex.de/), [TENZA](https://www.tenza.de/) Dresden und [KulturOrt Heymannbaude](https://www.heymannbaude.org/) – Kulturbaude und Landkunst e.V.
+residence plus ist ein Projekt von Villa Wigman für Tanz e.V. in Kooperation mit [TanzNetzDresden e.V.](/) mit den Partnerorten [TanzART Kirschau](https://www.tanzart-kirschau.de/), [TanzRaumGörlitz](https://ncca.eu/TRG) des Neisse Centre for the Contemporary Arts, [KOMPLEX – OFF Bühne des Taupunkt e.V. Chemnitz](https://www.chemnitzkomplex.de/), [TENZA](https://www.tenza.de/) Dresden und [KulturOrt Heymannbaude](https://www.heymannbaude.org/) – Kulturbaude und Landkunst e.V.
 
 Realisiert wird das Residenzprogramm residence plus für insgesamt sechs Residenzen in den Jahren 2025/2026, die über ein Bewerbungs- und Auswahlverfahren von einer dreiköpfigen Jury ausgewählt werden. Dieses Residenzprogramm arbeitet am Abbau von Barrieren, indem mit der Ausschreibung auch dezidiert ältere Künstler:innen, Nachwuchskünstler:innen, Künstler:innen mit Einschränkungen und Künstler:innen in Care-Arbeit angesprochen werden. Bewerben können sich professionelle Tanzschaffende, die in folgenden Bereichen tätig sind: Tanz, Choreografie, Pädagogik, Dramaturgie, Produktion, Wissenschaft, Kritik etc.
 
@@ -43,8 +43,8 @@ Weitere Informationen zum Programm gibt es unter:
 - Unterstützung besonderer Bedarfe
 - Vergabe:
 
-    - 4 Residenzen im Zeitraum 01.01. - 31.05.2026
-    - 2 Residenzen im Zeitraum 01.06. - 31.10.2026
+    - 4 Residenzen im Zeitraum 01.01. – 31.05.2026
+    - 2 Residenzen im Zeitraum 01.06. – 31.10.2026
 
 ### Residenzorte:
 

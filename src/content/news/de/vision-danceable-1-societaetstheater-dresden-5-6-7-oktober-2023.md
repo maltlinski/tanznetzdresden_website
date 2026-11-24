@@ -11,7 +11,7 @@ Im Oktober wird es im Dresdner Societaetstheater den Auftakt eines Formats unter
 
 ## VISION DANCEABLE #1
 
-VISION DANCEABLE #1 soll den Grundstein für ein wiederkehrendes Format legen, welches Interessierten die Vielfalt der Ausdrucksmöglichkeiten des Tanzes nahebringt. Gleichermaßen bietet sich damit den Künstler:innen eine Plattform des Austausches und der Präsentation, in wertschätzender Erinnerung an das Format LINIE 08, das bis Ende 2018 in HELLERAU - Europäisches Zentrum der Künste veranstaltet wurde, um eine nachhaltige Präsenz der freien Dresdner Tanzszene mit überregionaler Ausstrahlung zu ermöglichen. Das ABOUT BLANK Collective sowie Chiara Detscher von der 4roomsCompany freuen sicher daher, dieses Format weiterzudenken, noch einmal neu anzustoßen und laden alle Interessierten herzlich zu den anstehenden Terminen im Oktober ein.
+VISION DANCEABLE #1 soll den Grundstein für ein wiederkehrendes Format legen, welches Interessierten die Vielfalt der Ausdrucksmöglichkeiten des Tanzes nahebringt. Gleichermaßen bietet sich damit den Künstler:innen eine Plattform des Austausches und der Präsentation, in wertschätzender Erinnerung an das Format LINIE 08, das bis Ende 2018 in HELLERAU – Europäisches Zentrum der Künste veranstaltet wurde, um eine nachhaltige Präsenz der freien Dresdner Tanzszene mit überregionaler Ausstrahlung zu ermöglichen. Das ABOUT BLANK Collective sowie Chiara Detscher von der 4roomsCompany freuen sicher daher, dieses Format weiterzudenken, noch einmal neu anzustoßen und laden alle Interessierten herzlich zu den anstehenden Terminen im Oktober ein.
 
 Bei VISION DANCEABLE sind konkret Tänzer:innen und spartenübergreifend arbeitende Künstler:innen Dresdens eingeladen, ihre Arbeit in Form von Kurzstücken, künstlerischen Interventionen und Tanzfilmen zu zeigen. Ausgehend von dieser Basis wird nun an drei Abenden im Oktober dem Publikum mit einem abwechslungsreichen Programm Einblick in die Arbeit der hiesigen Tanzschaffenden geboten.
 
@@ -31,7 +31,7 @@ Die einzelnen Programmpunkte der Abend gibt es in detaillierter Form auf der ***
 - **Termin**: 5. & 7. Oktober sowie am 6. Oktober im Rahmen der Langen Socie Nacht; immer jeweils ab 20 Uhr
 - **Gesamtdauer aller Beiträge**: ca. 70 Minuten
 - **Ort**: Gutmann-Saal, [Societaetstheater](https://www.societaetstheater.de/), An d. Dreikönigskirche 1A, 01097 Dresden
-- **Eintritt**: 18 Euro (13 Euro, erm.) sowie 8 Euro für Schüler:innen, Studierende, Bürgergeld-Empfänger - [Hier geht es zu den Tickets](https://societaetstheater-ticketshop.reservix.de/events)
+- **Eintritt**: 18 Euro (13 Euro, erm.) sowie 8 Euro für Schüler:innen, Studierende, Bürgergeld-Empfänger – [Hier geht es zu den Tickets](https://societaetstheater-ticketshop.reservix.de/events)
 - **Wichtig**: Jede:r mit einem TNDD Ausweis kann an der Theaterkasse eine Steuerkarte erhalten
 
 VISION DANCEABLE #1 wird gefördert durch die Landeshauptstadt Dresden Amt für Kultur und Denkmalschutz.

@@ -15,7 +15,7 @@ Wir freuen uns sehr, euch nun das komplette und online vollständig abgebildetes
 
 Alle Informationen zu den jeweiligen Stücken des Abends, die im Anschluss selbstverständlich auch wieder besprochen werden können, gibt es [**hier**](/#formate).
 
-### /// (eng)
+## /// (eng)
 
 We are very happy to announce the complete line up for the upcoming TNDD studio round, which will take place on April 8, 2022 at the TENZA Schmiede and will once again bring together artists and guests in one studio event. Full of anticipation we can now announce that the participants of the now third edition of our exchange & presentation format are the following artists:
 

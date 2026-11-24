@@ -41,9 +41,9 @@ bilder:
     alt: ""
 :::
 
-Als Teil des Programms des diesjährigen TANZFORUM wird Mitglied Yamile Navarro einen Workshop unter dem Titel "Voice-Body-Connection" anbieten, welcher am 4. Oktober von 10 bis 13 Uhr sowie am 6. Oktober von 14 bis 18 Uhr stattfinden wird. Darüber hinaus wird es am Sonntag des Festivals um 20 Uhr ein öffentliches Showing bzw. eine Performance von Yamile Navarro und ihrem Stück "Herz 1670" geben, zu dem natürlich auch alle Workshop-Teilnehmenden eingeladen sind. Im Anschluss daran findet ein Austausch mit den Künstler:innen statt, der von Angelika Waniek von [you are warmly invited](https://www.youarewarmlyinvited.com/) moderiert wird.
+Als Teil des Programms des diesjährigen TANZFORUM wird Mitglied Yamile Navarro einen Workshop unter dem Titel „Voice-Body-Connection“ anbieten, welcher am 4. Oktober von 10 bis 13 Uhr sowie am 6. Oktober von 14 bis 18 Uhr stattfinden wird. Darüber hinaus wird es am Sonntag des Festivals um 20 Uhr ein öffentliches Showing bzw. eine Performance von Yamile Navarro und ihrem Stück „Herz 1670“ geben, zu dem natürlich auch alle Workshop-Teilnehmenden eingeladen sind. Im Anschluss daran findet ein Austausch mit den Künstler:innen statt, der von Angelika Waniek von [you are warmly invited](https://www.youarewarmlyinvited.com/) moderiert wird.
 
-Im Workshop selbst teilt Yamile Navarro die performativen und choreographischen Werkzeuge und Methoden, die den kreativen Prozess ihres Stücks "Herz 1670" begleitet haben. Für die Durchführung des Workshops wird sie von der Tänzerin und Choreografin Gui Yuexuan assistiert.
+Im Workshop selbst teilt Yamile Navarro die performativen und choreographischen Werkzeuge und Methoden, die den kreativen Prozess ihres Stücks „Herz 1670“ begleitet haben. Für die Durchführung des Workshops wird sie von der Tänzerin und Choreografin Gui Yuexuan assistiert.
 
 Der Workshop richtet sich an alle, die ihre wahre, kraftvolle Stimme entdecken möchten. Es ist eine offene Einladung für diejenigen, die neugierig auf das Zusammenspiel von stimmlichem Ausdruck und körperlicher Bewegung sind.
 

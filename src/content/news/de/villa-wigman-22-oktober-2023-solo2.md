@@ -11,7 +11,7 @@ Die villa\\wigman öffnet mit [SOLO2](https://villawigman.de/solo-hoch-zwei-2023
 
 Für [SOLO2](https://villawigman.de/solo-hoch-zwei-2023/) hat sich das Team der villa/wigman wirklich wieder ordentlich ins Zeug gelegt, denn zahlreiche Kurzstücke an verschiedenen Orten der villa\\wigman laden das interessierte Publikum ein, die Künstler:innen in ihrer Experimentierlust, ihren künstlerischen Sichtweisen und ihrem Mut zum Wagnis kennenzulernen. Und natürlich sind auch zahlreiche Mitglieder:innen des TanzNetzDresden sind mit dabei und können mit eigenen Stücken entdeckt werden.
 
-### Konkret werden die folgenden Künstler:innen an SOLO2 auftreten:
+## Konkret werden die folgenden Künstler:innen an SOLO2 auftreten:
 
 **Tanz, Theater & Performance:** Amit Abend, Julia Amme, Odbayar Batsuuri, Makhina Dzhuraeva, Katja Erfurth, Cindy Hammer, Michael McCrae, Ferdinand Nowitzky, Nora Otte, Jule Rottluff, Olimpia Scardi, Romy Schwarzer, Anna Till
 
@@ -22,14 +22,14 @@ Für [SOLO2](https://villawigman.de/solo-hoch-zwei-2023/) hat sich das Team der 
 11 & 13:20 & 15:40 Uhr  
 **Romy Schwarzer** | Chanson
 
-11:10 &  13.30 Uhr  
+11:10 &  13:30 Uhr  
 **Olimpia Scardi** | SPACCANAPOLI
 
 11:20 & 13:40 & 15:50 Uhr  
 **Benjamin Rottluff** | the musician is the medium
 
 11:30 & 13:50 & 16 Uhr  
-**Amit Abend** | An excerpt from: "Wayfaring Stranger"
+**Amit Abend** | An excerpt from: „Wayfaring Stranger“
 
 11:40 & 14 & 16:10 Uhr  
 **Cindy Hammer** | MELANCHOLIC MARATHON work in progress
@@ -41,7 +41,7 @@ Für [SOLO2](https://villawigman.de/solo-hoch-zwei-2023/) hat sich das Team der 
 **Katja Erfurth** | Ver\_Wand\_Lung
 
 12:10 & 14:30 & 16:40 Uhr  
-**Julia Amme** | Ukraine – woandershin / Україна -Деінде - ein Hörstück
+**Julia Amme** | Ukraine – woandershin / Україна -Деінде – ein Hörstück
 
 12:20 & 14:40 & 16:50 Uhr  
 **Jule Rottluff** | a present from the past
@@ -56,7 +56,7 @@ Für [SOLO2](https://villawigman.de/solo-hoch-zwei-2023/) hat sich das Team der 
 **Makhina Dzhuraeva** | InOutside
 
 13 & 15:20 & 17:30 Uhr  
-**Michael McCrae** | Ein Mann / Ein Wort - eine Recherche über Männlichkeit(en)
+**Michael McCrae** | Ein Mann / Ein Wort – eine Recherche über Männlichkeit(en)
 
 13:10 & 15:30 & 17:40 Uhr  
 **Anna Till & Irene Sieben** | Probe zu „Von außen bewegt“  (1959/60) nach Manja Chmièl

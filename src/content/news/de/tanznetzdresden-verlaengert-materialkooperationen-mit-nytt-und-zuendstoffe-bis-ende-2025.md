@@ -7,7 +7,7 @@ image: ../../../assets/news/2024/tanznetzdresden-materialkooperationen-2025-e172
 teaser: Wir freuen uns mitteilen zu können, dass wir die seit 2021 laufenden Materialkooperationen mit dem nytt Materialdepot sowie mit ZÜNDSTOFFE / Konglomerat e.V. bis Ende 2025 verlängert haben.
 ---
 
-*Wir freuen uns mitteilen zu können, dass wir die seit 2021 laufenden Materialkooperationen mit dem nytt Materialdepot sowie mit ZÜNDSTOFFE / Konglomerat e.V. bis Ende 2025 verlängert haben. Konkrete Informationen zu den beiden Anbietern sowie zum genauen Umfang der Kooperationen, die den Mitglieder:innen des TanznetzDresden vorbehalten ist, gibt es im folgenden Blog-Beitrag.*
+*Wir freuen uns mitteilen zu können, dass wir die seit 2021 laufenden Materialkooperationen mit dem nytt Materialdepot sowie mit ZÜNDSTOFFE / Konglomerat e.V. bis Ende 2025 verlängert haben. Konkrete Informationen zu den beiden Anbietern sowie zum genauen Umfang der Kooperationen, die den Mitglieder:innen des TanzNetzDresden vorbehalten ist, gibt es im folgenden Blog-Beitrag.*
 
 ::: bilder
 text: Screenshot
@@ -18,7 +18,7 @@ bilder:
 
 ## ZÜNDSTOFFE / Konglomerat e.V.
 
-Die „Zündstoffe-Materialvermittlung Dresden“ hat sich dem Grundgedanken der Kreislaufwirtschaft verschrieben und ist Teil des Konglomerat e. V.. Der CoMaking Space und Ort des gemeinsamen Lernens und Handelns, wird seit 2015 ehrenamtlich und kollektiv durch den Verein betrieben. Der Werkbereich „Zündstoffe“ verschreibt sich dem Gedanken, dass Abfall nicht gleich Abfall ist und viele der anfallenden Stoffe wieder- oder weiterverwendet werden, bevor sie auf den Deponien der Stadt landen. Wieder- und Weiterverwendung kann in den unterschiedlichsten Zusammenhängen stattfinden. Leider wissen die Materialgeber\*innen in den meisten Fällen nicht von den Materialnehmer\*innen. Neben dem Lager im Rosenwerk wurde, im Rahmen der „Zukunftsstadt Dresden“, eine digitale Materialvermittlungsplattform entwickelt. So bietet sich sowohl ein analoger Raum, in dem mit Material experimentiert werden kann, als auch eine digitale Plattform, um die Materialvermittlung innerhalb von Dresden effizienter zu gestalten.
+Die „Zündstoffe-Materialvermittlung Dresden“ hat sich dem Grundgedanken der Kreislaufwirtschaft verschrieben und ist Teil des Konglomerat e. V.. Der CoMaking Space und Ort des gemeinsamen Lernens und Handelns, wird seit 2015 ehrenamtlich und kollektiv durch den Verein betrieben. Der Werkbereich „Zündstoffe“ verschreibt sich dem Gedanken, dass Abfall nicht gleich Abfall ist und viele der anfallenden Stoffe wieder- oder weiterverwendet werden, bevor sie auf den Deponien der Stadt landen. Wieder- und Weiterverwendung kann in den unterschiedlichsten Zusammenhängen stattfinden. Leider wissen die Materialgeber:innen in den meisten Fällen nicht von den Materialnehmer:innen. Neben dem Lager im Rosenwerk wurde, im Rahmen der „Zukunftsstadt Dresden“, eine digitale Materialvermittlungsplattform entwickelt. So bietet sich sowohl ein analoger Raum, in dem mit Material experimentiert werden kann, als auch eine digitale Plattform, um die Materialvermittlung innerhalb von Dresden effizienter zu gestalten.
 
 Hier könnt ihr direkt einiges an Material online einsehen:  
 [https://zuendstoffe.materialvermittlung.org](https://zuendstoffe.materialvermittlung.org/)

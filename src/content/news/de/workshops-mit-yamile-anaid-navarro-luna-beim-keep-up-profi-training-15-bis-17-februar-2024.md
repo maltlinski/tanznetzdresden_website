@@ -20,7 +20,7 @@ bilder:
 
 Yamile Anaid Navarro Luna, wurde in Mexiko-Stadt geboren. Sie begann ihre professionelle Tanzausbildung an der Agora Cultural Center Dance School in Villahermosa, Tabasco, Mexiko. Jahre später zog sie nach Spanien, um ihre professionelle Tanzausbildung in Barcelona fortzusetzen. Im Jahr 2009 machte sie ihren Abschluss als Klassische Tänzerin am Institut del Teatre, im selben Jahr schrieb sie sich für das dreijährige Bachelor-Programm an der Palucca Hochschule für Tanz in Dresden ein.
 
-Ihren Abschluss machte sie 2012 mit ihrer praktischen Abschlussarbeit "In Nirelurgenrewop...En la Nada" als erste professionelle Choreografie.
+Ihren Abschluss machte sie 2012 mit ihrer praktischen Abschlussarbeit „In Nirelurgenrewop…En la Nada“ als erste professionelle Choreografie.
 
 Heute lebt sie in Dresden und arbeitet als freischaffende Tänzerin, gastiert und kollaboriert mit verschiedenen Kompanien und Künstlern aus der ganzen Welt. Gleichzeitig produziert sie ihre Tanzprojekte als Choreografin. Für ihre choreografische Arbeit nutzt sie verschiedene Tanzstile und andere szenische Künste, um ihre Arbeit zu vervollständigen und ihre Ideen zu bereichern, ohne den Fokus auf Tanz und Bewegung als Hauptquelle des Ausdrucks zu verlieren.
 
@@ -40,7 +40,7 @@ Yamile Anaid Navarro Luna bietet in der Zeit vom 15. bis 17. Februar eine an dre
 > Wir freuen uns darauf, Dich zu unserem Voice-Body Connection Workshop zu begrüßen. Dort, wo deine Stimme ihren wahren Ausdruck findet. Entwickelt und geleitet wird er von mir, Yamile Anaid Navarro Luna. Wir freuen uns außerdem, bekannt zu geben, dass die Tänzerin und Choreografin Gui Yuexuan uns unterstützen wird. Gui Yuexuan, die von Anfang an bei den Voice-Body Connection Praktiken dabei war, wird da sein, um Dich zu inspirieren und zu demonstrieren, welche bemerkenswerte Reise man unternehmen kann, wenn man Stimme und Körper verbindet.
 
 ::: bilder
-foto: "-Credit: Shi Yu"
+foto: Shi Yu
 bilder:
   - datei: /news/archiv/2024/screenshot-2023-12-22-at-12-10-28.webp
     alt: ""
@@ -56,7 +56,7 @@ bilder:
 
 ## Informationen zu den Workshops mit Yamile Anaid Navarro Luna
 
-- **Termine**: 15. bis 17. Februar 2024 (Do-Sa), 11:00 - 12:30 Uhr
+- **Termine**: 15. bis 17. Februar 2024 (Do–Sa), 11:00–12:30 Uhr
 - **Ort:** [Ballettstudio Espiral](https://www.ballettstudio-espiral.de/), Alaunstraße 70, 01099 Dresden
 - **Sprache:** Englisch oder Deutsch
 - **Dauer:** Jeder Workshop-Tag dauert 1,5 Stunden

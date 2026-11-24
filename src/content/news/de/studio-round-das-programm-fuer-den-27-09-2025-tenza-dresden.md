@@ -27,7 +27,7 @@ Explizit hinweisen möchten wir außerdem darauf, dass nur einen Tag nach der Ed
 Weitere Informationen zu diesem Termin gibt es unter:  
 [https://tanznetzdresden.de/pop-up-exchange](/#formate)
 
-## STUDIO ROUND - die beteiligten Künstler:innen & Stücke für Dresden
+## STUDIO ROUND – die beteiligten Künstler:innen & Stücke für Dresden
 
 Am 27. September 2025 werden in der TENZA in Dresden ab 20 Uhr (Doors open: 19 Uhr) die folgenden vier Künstler:innen vertreten sein. Weitere Informationen zu den einzelnen Produktionen folgen weiter unten im Blog-Beitrag.
 
@@ -143,4 +143,4 @@ bilder:
     alt: ""
 :::
 
-Header-Foto: Anna Till & Cindy Hammer "selected shots"
+Header-Foto: Anna Till & Cindy Hammer „selected shots“

@@ -1,5 +1,5 @@
 ---
-title: TANZPAKT in residence • Alina Walter - Fluid • Residenz im TanzART Kirschau
+title: TANZPAKT in residence • Alina Walter – Fluid • Residenz im TanzART Kirschau
 date: 2022-11-30
 category: Netzwerk
 author: TanzNetzDresden
@@ -9,7 +9,7 @@ teaser: Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das ein
 
 Im Rahmen der aktuell laufenden TANZPAKT in residence-Programms, das eine Kooperation zwischen villa\\wigman und TanzNetzDresden ist, wird die Künstler:in Alina Walter im Dezember 2022 sowie im März 2023 im Rahmen einer Residenz im TanzART – Atelier für Tanz, Bewegung & Kunst in Schirgiswalde-Kirschau arbeiten. Weitere Informationen zum Aufenthalt, der Arbeit, dem TanzART – Atelier für Tanz, Bewegung & Kunst sowie zu den im Dezember anstehenden Workshops von und mit Alina Walter gibt es nun im Beitrag.
 
-## Alina Walter - Fluid
+## Alina Walter – Fluid
 
 Wasser spiegelt, es fließt, taucht ein und ruht. Es reist mit und verschwindet. Der menschliche Körper ist durchlässig für Wasser, lässt sich davon formen und besteht zum größten Teil daraus. Die innewohnende Intelligenz des Körpers versteht den Körper des Wassers und könnte somit seine Formen annehmen. Wie lassen sich die Attribute des Wassers und dessen Wandelbarkeit ausdrücken? Ein einzelner Mensch als vielgestaltiges Wesen. Die Residenz dient als poetisch-physische Recherche zu Wasser, seinen Eigenschaften & Metamorphosen wie auch der Übersetzung dieser in die Sprache der Kunst.
 
@@ -44,7 +44,7 @@ Anmeldung [via E-Mail](mailto:%20alina.walter@posteo.de) bei Alina Walter.
 
 ### Workshops:
 
-Termine: 12.12. & 19.12.2022; ab 18.30 Uhr  
+Termine: 12.12. & 19.12.2022; ab 18:30 Uhr  
 Dauer: 2 Stunden  
 Der Ort wird nach Anmeldung bekanntgegeben.  
 Eine Anmeldung kann E-Mail unter [alina.walter@posteo.de](mailto:alina.walter@posteo.de) vorgenommen werden.
@@ -62,16 +62,16 @@ TanzART – Atelier für Tanz, Bewegung & Kunst ist ein Zentrum für zeitgenöss
 
 ## Über TANZPAKT in residence
 
-TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022-24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
+TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022–24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
 
 Von Januar bis Dezember 2023 werden acht (8) Solo-Recherche-Residenzen an den sächsischen Produktions- und Theaterstätten in Kirschau, Zwickau, Görlitz, Chemnitz, Leipzig und Dresden vergeben werden. Die Dauer beträgt pro Residenz vier Wochen, welche auch gesplittet werden kann.  
 Für das Jahr 2023 konnten sich Künstler:innen mit Arbeitsschwerpunkt in Sachsen bis zum 30. September 2022 bewerben.
 
 TANZPAKT in residence versteht sich als grundlegendes Instrument, Künstler:innen in die Exzellenz zu befördern, indem es Zeit-Räume für Forschung zur Verfügung stellt und nachhaltige Strukturen schafft, die der Tanzszene der Region ein professionelles und kontinuierliches Arbeiten ermöglichen.  
-Von 2022-2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.  
+Von 2022–2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.  
 Ein Residenzplatz für ein:e ukrainische:n Künstler:in ist vorgesehen. (die Ausschreibung auf Ukrainisch gibt es [**hier**](https://villawigman.de/wp-content/uploads/2022/08/TPiR_VW_Ausschreibung_2023_ua.pdf))
 
-## TANZPAKT in residence - Open Call 2023
+## TANZPAKT in residence – Open Call 2023
 
 Von Januar bis Dezember 2023 werden acht (8) Solo-Recherche-Residenzen an den sächsischen Produktions- und Theaterstätten in Kirschau, Zwickau, Görlitz, Chemnitz, Leipzig und Dresden vergeben. Die Dauer beträgt pro Residenz vier Wochen, welche auch gesplittet werden kann.  
 Für das Jahr 2023 konnten sich Künstler:innen mit Arbeitsschwerpunkt in Sachsen bis zum 30. September 2022 bewerben.  
@@ -80,11 +80,11 @@ Residenzort und eine Werkstattpräsentation zum Abschluss der Residenzzeit.
 
 **Residenzorte:**
 
-- [tanzART Kirschau](https://www.tanzart-kirschau.de/) / Februar 2023 / Juli - August 2023
+- [tanzART Kirschau](https://www.tanzart-kirschau.de/) / Februar 2023 / Juli – August 2023
 - [Mondstaubtheater Zwickau](https://www.mondstaubtheater.de/) / August, September 2023
 - [TanzRaumGörlitz](https://trg.persona.co/) / Neisse Centre For Contemporary Arts e.V. / August / September 2023
-- [KOMPLEX - OFF Bühne für Darstellende Künste Chemnitz](https://www.chemnitzkomplex.de/info) / Januar, August, September 2023
-- [LOFFT - DAS THEATER](https://www.lofft.de/) (Leipzig) ganzjährig nach Absprache außer 10.07.-18.08.2023
+- [KOMPLEX – OFF Bühne für Darstellende Künste Chemnitz](https://www.chemnitzkomplex.de/info) / Januar, August, September 2023
+- [LOFFT – DAS THEATER](https://www.lofft.de/) (Leipzig) ganzjährig nach Absprache außer 10.07.–18.08.2023
 - [Villa Wigman](http://villawigman.de/tanzpakt-in-residence/) (Dresden) / ganzjährig 2023
 - [TanzNetzDresden](/) / [TENZA](https://www.tenza.de/) (Dresden) Februar, April, Juli-August, Oktober 2023
 

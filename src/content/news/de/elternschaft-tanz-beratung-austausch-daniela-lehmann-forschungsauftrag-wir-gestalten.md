@@ -14,7 +14,7 @@ Beim Projekt »Elternschaft & Tanz« des TanzNetzDresden geht es um die Vereinba
 **Mehr zur damaligen Veranstaltung findet ihr in diesem Blog-Beitrag:  
 **[tanznetzdresden.de/elternschaft-tanz-ein-film-von-simon-garbe-zur-kick-off-veranstaltung-vom-1-april-2023-2](/news/elternschaft-tanz-ein-film-von-simon-garbe-zur-kick-off-veranstaltung-vom-1-april-2023-2/)
 
-## Austausch und ein offenes Ohr - mit Daniela Lehmann und Wir gestalten Dresden
+## Austausch und ein offenes Ohr – mit Daniela Lehmann und Wir gestalten Dresden
 
 ::: bilder
 bilder:
@@ -28,7 +28,7 @@ Aus diesem Grund ist Daniela Lehmann nun vom 28. August bis 1. September an der 
 
 Es gibt jede Menge Platz und selbstverständlich können auch die Kinder mitgebracht werden. Malzeug ist ebenfalls vorhanden.
 
-## »Elternschaft & Tanz« - die Elternsprechstunde mit Daniela Lehmann
+## »Elternschaft & Tanz« – die Elternsprechstunde mit Daniela Lehmann
 
 ### Termin: 31. August von 11 bis 15 Uhr Ort: [KreativRaumBörse](https://www.wir-gestalten-dresden.de/kreativraum/) von [Wir gestalten Dresden](https://www.wir-gestalten-dresden.de/), Wilsdruffer Straße 16, 01067 Dresden Das Angebot ist kostenfrei Kinder können sehr gern mitgebracht werden
 
@@ -43,6 +43,6 @@ Wer Informationen zu vergangenen Veranstaltungen der Veranstaltungsreihe „Elte
 Informationen zu dieser Kick Off-Veranstaltung des TanzNetzDresden gibt es unter folgendem Link:  
 [tanznetzdresden.de/elternschaft-und-tanz-kick-off-1-april-2023-tenza-schmiede](/news/elternschaft-und-tanz-kick-off-1-april-2023-tenza-schmiede/)
 
-Die Aktivitäten von TanzNetzDresden werden gefördert vom Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien im Rahmen von NEUSTART KULTUR, TANZPAKT in residence (2022–2024), den DACHVERBAND TANZ Deutschland, der Institutionellen Förderung der Landeshauptstadt Dresden , der Projektförderung der Kulturstiftung des Freistaates Sachsen und der Bürgerstiftung Dresden.
+Die Aktivitäten von TanzNetzDresden werden gefördert vom Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien im Rahmen von NEUSTART KULTUR, TANZPAKT in residence (2022–2024), den DACHVERBAND TANZ Deutschland, der Institutionellen Förderung der Landeshauptstadt Dresden, der Projektförderung der Kulturstiftung des Freistaates Sachsen und der Bürgerstiftung Dresden.
 
 Fotos: Daniela Lehmann

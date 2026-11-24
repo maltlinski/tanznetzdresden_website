@@ -9,7 +9,7 @@ teaser: "Unter dem Titel »TRAUERTÄNZE: Crying At The Discothek« findet am Fre
 
 Unter dem Titel »TRAUERTÄNZE: Crying At The Discothek« findet am Freitag, dem 25. November 2022 ein POP UP-Salon von und mit Lars Neupert, Anno Kirchner und Aurélie Strohmeier im Objekt Klein a statt. Bei dem Termin handelt es sich um die POP UP Edition, die im Juli diesen Jahres krankheitsbedingt kurzfristig abgesagt werden musste.
 
-### TRAUERTÄNZE: Crying At The Discothek
+## TRAUERTÄNZE: Crying At The Discothek
 
 Trauern?! Warum überhaupt? Und wie und wo? Wie ist es dabei erlaubt zu lachen, sich zu bewegen, sich anderen zu öffnen? Wie können wir auch in Gruppen trauern? Mit unseren Körpern, Stimmen, und im Miteinander laden wir zum Austausch, Ausdruck und gemeinsamen Tanzen ein und erkunden die Rolle von Körperlichkeit in Trauerprozessen.
 

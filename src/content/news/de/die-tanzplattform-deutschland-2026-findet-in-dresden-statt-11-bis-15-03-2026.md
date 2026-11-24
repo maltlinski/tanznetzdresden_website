@@ -13,7 +13,7 @@ teaser: Wir freuen uns sehr, dass die nächste Tanzplattform Deutschland im Jahr
 
 In diesem Zusammenhang weisen wir deutlich daraufhin, dass sich auch alle Künstler:innen, Gruppen und Companys der regionalen Tanz- und Performance-Szene bewerben können.
 
-### +++ Nutzt hier bitte den folgenden Link, den ihr [HIER](https://forms.office.com/Pages/ResponsePage.aspx?id=tkdM6lpGAEeviNs2ylctWfSXuCyQ6TRDgstJfmNQkPRUMkFVSVI0WjJTQjZTWUpNMlQwMzYxTUE5RC4u%20) findet. +++
+## +++ Nutzt hier bitte den folgenden Link, den ihr [HIER](https://forms.office.com/Pages/ResponsePage.aspx?id=tkdM6lpGAEeviNs2ylctWfSXuCyQ6TRDgstJfmNQkPRUMkFVSVI0WjJTQjZTWUpNMlQwMzYxTUE5RC4u%20) findet. +++
 
 ## Jury der Tanzplattform Deutschland 2026
 
@@ -36,7 +36,7 @@ Weitere Informationen zur Tanzplattform Deutschland 20026 findet ihr auf der Web
 ## Tanzplattform Deutschland
 
 Die Tanzplattform ist das wichtigste Festival für zeitgenössischen Tanz in Deutschland und versteht sich als Forum zur Präsentation aktueller Entwicklungen und innovativer Strömungen im zeitgenössischen Tanz in und aus Deutschland. Die Tanzplattform findet dafür alle zwei Jahre an wechselnden Orten statt.  
-Gegründet wurde die Tanzplattform 1994 von Nele Hertling, Walter Heun und Dieter Buroch gegründet und von diesen als Trilogie in Berlin, Frankfurt und München begonnen. Seitdem findet sie biennal in wechselnden deutschen Städten statt und wird von der Gemeinschaft der Ko-Veranstalter\_innen vergeben.
+Gegründet wurde die Tanzplattform 1994 von Nele Hertling, Walter Heun und Dieter Buroch gegründet und von diesen als Trilogie in Berlin, Frankfurt und München begonnen. Seitdem findet sie biennal in wechselnden deutschen Städten statt und wird von der Gemeinschaft der Ko-Veranstalter:innen vergeben.
 
 [Video auf Vimeo ansehen ↗](https://vimeo.com/893320088)
 

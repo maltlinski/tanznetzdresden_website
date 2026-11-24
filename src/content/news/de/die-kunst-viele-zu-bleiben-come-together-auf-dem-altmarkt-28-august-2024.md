@@ -9,7 +9,7 @@ teaser: Der Fonds Darstellende Künste realisiert gemeinsam mit Partner:innen au
 
 *Der Fonds Darstellende Künste realisiert gemeinsam mit Partner:innen aus der vielgestaltigen Landschaft der Freien Darstellenden Künste bundesweit Foren an neun Stationen – mit Kunst, Aktion und Debatte. Seit Mai ist der Theater-Truck unterwegs mit Stopps in Berlin, Leipzig, Düsseldorf, Bitterfeld-Wolfen, Potsdam, Erfurt (16. + 17. August) und Weimar (24. + 25. August) und einem vielseitigen Programm rund um Kunst, Freiheit und Demokratie. Alles zum geplanten Programm am 28. August auf dem Altmarkt in Dresden gibt es im heutigen Blog-Beitrag.*
 
-Folgendes lassen die Macher:innen für den 28. August 2024 und das geplante Programm von COME TOGETHER im Vorfeld der Veranstaltung verlauten: »Zum Finale laden wir unter dem Motto COME TOGETHER gemeinsam mit dem Europäischen Zentrum der Künste HELLERAU, dem Zirkustheater-Festival des Societaetstheaters und dem Zentralwerk e.V. am 28. August auf den Dresdener Altmarkt zu einem großen Fest der Kunst ein. Zwischen einem den öffentlichen Raum aktivierenden Chor und den Fahrrad-Akrobat\*innen der französischen Compagnie La Bande à Tyrex feiern wir im Vorfeld der anstehenden Wahlen die Gemeinschaft und den Zusammenhalt (der Vielen).«
+Folgendes lassen die Macher:innen für den 28. August 2024 und das geplante Programm von COME TOGETHER im Vorfeld der Veranstaltung verlauten: »Zum Finale laden wir unter dem Motto COME TOGETHER gemeinsam mit dem Europäischen Zentrum der Künste HELLERAU, dem Zirkustheater-Festival des Societaetstheaters und dem Zentralwerk e.V. am 28. August auf den Dresdener Altmarkt zu einem großen Fest der Kunst ein. Zwischen einem den öffentlichen Raum aktivierenden Chor und den Fahrrad-Akrobat:innen der französischen Compagnie La Bande à Tyrex feiern wir im Vorfeld der anstehenden Wahlen die Gemeinschaft und den Zusammenhalt (der Vielen).«
 
 ::: bilder
 bilder:
@@ -17,15 +17,15 @@ bilder:
     alt: ""
 :::
 
-## COME TOGETHER - Das Programm
+## COME TOGETHER – Das Programm
 
-### 10:00 - 21:00 Uhr
+### 10:00–21:00 Uhr
 
 ### Unser wunderschönes Sachsen
 
 *Interaktive Fahrradtouren von fachbetrieb rita grechen*
 
-Da pedaliert er: der post-moderne Mensch. Mit verspiegelter Sonnenbrille und Helmkamera saust er die Straße entlang und spricht seinen eigenen Dokumentationsfilm-Text. „Unser wunderschönes Sachsen" sind drei Fahrradtouren, die vom Dresdener Altmarkt in sächsische Funklöcher führen. Das Publikum kann entweder mitfahren oder bei Pizza von Calzone Revoluzione und einem kühlen Getränk über das Livestreaming-Video-Portal Twitch, sein Team anfeuern und das Geschehen kommentieren. Ästhetiken der traditionellen Fernseh-Heimatdokumentation überlagern sich mit Ästhetiken des Real-Life-Streams. Auf ihrem Weg loten die Fahrradtouren das Verhältnis von Heimat, Sehnsucht, Erreichbarkeit, Technologie und Idylle aus.
+Da pedaliert er: der post-moderne Mensch. Mit verspiegelter Sonnenbrille und Helmkamera saust er die Straße entlang und spricht seinen eigenen Dokumentationsfilm-Text. „Unser wunderschönes Sachsen“ sind drei Fahrradtouren, die vom Dresdener Altmarkt in sächsische Funklöcher führen. Das Publikum kann entweder mitfahren oder bei Pizza von Calzone Revoluzione und einem kühlen Getränk über das Livestreaming-Video-Portal Twitch, sein Team anfeuern und das Geschehen kommentieren. Ästhetiken der traditionellen Fernseh-Heimatdokumentation überlagern sich mit Ästhetiken des Real-Life-Streams. Auf ihrem Weg loten die Fahrradtouren das Verhältnis von Heimat, Sehnsucht, Erreichbarkeit, Technologie und Idylle aus.
 
 Unterbrochen wird das nur durch die spektakulären Aufführungen auf dem Altmarkt – oder beim Erreichen des Sehnsuchtsorts Funkloch.
 
@@ -34,14 +34,14 @@ Unterbrochen wird das nur durch die spektakulären Aufführungen auf dem Altmark
 - **Anmeldung**: Wer mitfahren möchte, wird um Anmeldung unter [workshop@hellerau.org](mailto:workshop@hellerau.org) gebeten
 - **Trailer:** [https://www.youtube.com/watch?v=O8RSG9j0ors](https://www.youtube.com/watch?v=O8RSG9j0ors)
 
-**### 10:00 Uhr**  
+### 10:00 Uhr  
 ### Truck Time
 
-Die Truck Time ist eine aktive und aktivierende Chill Out Zeit und Ort der konstanten Auseinandersetzung über die KUNST, VIELE ZU BLEIBEN: Kommt vorbei, informiert euch und uns, tauscht euch aus - über Ängste, Fragen, Wünsche zur Zeitgeschichte. Auf unserer Reise durch 9 Veranstaltungsorte schenkt euch der Truck ein offenes Ohr und verbindet die Erfahrungen, Orte und Berichte mittels analogem CHAT. Und wer konkret was zu tun haben will, baut mit uns DIY-Windräder – um gemeinsam zu messen, wie und woher der politische Wind weht. In Dresden wird der Truck außerdem zur Schaltzentrale von „Unser wunderschönes Sachsen“ und zum „Safe Harbour“ der Polizeiklasse Dresden.
+Die Truck Time ist eine aktive und aktivierende Chill Out Zeit und Ort der konstanten Auseinandersetzung über die KUNST, VIELE ZU BLEIBEN: Kommt vorbei, informiert euch und uns, tauscht euch aus – über Ängste, Fragen, Wünsche zur Zeitgeschichte. Auf unserer Reise durch 9 Veranstaltungsorte schenkt euch der Truck ein offenes Ohr und verbindet die Erfahrungen, Orte und Berichte mittels analogem CHAT. Und wer konkret was zu tun haben will, baut mit uns DIY-Windräder – um gemeinsam zu messen, wie und woher der politische Wind weht. In Dresden wird der Truck außerdem zur Schaltzentrale von „Unser wunderschönes Sachsen“ und zum „Safe Harbour“ der Polizeiklasse Dresden.
 
 - **Ort**: Altmarkt
 
-**### 10:00 Uhr**  
+### 10:00 Uhr  
 ### Polizeiklasse Dresden  - Safe Harbour // Safe Space
 
 Wir alle brauchen sichere Räume. Räume, in denen wir uns ohne Angst bewegen und austauschen können. Doch in einer Zeit von zunehmendem Rechtsruck und Spaltung werden diese Räume immer häufiger verbal und physisch angegriffen.  
@@ -52,8 +52,8 @@ Egal ob Nachbarschaftscafés, migrantische Vereine, Jugendzentren, Wohnungslosen
 
 - **Ort**: Truck auf dem Altmarkt
 
-**### 12:00 - 12:20 Uhr**  
-### „TRY No. 1 - Erster Versuch, die Welt zu retten"
+### 12:00–12:20 Uhr  
+### „TRY No. 1 – Erster Versuch, die Welt zu retten“
 
 performative Installation der Kompanie Lotte Mueller
 
@@ -61,22 +61,22 @@ Eine Veranstaltung des Zirkustheater-Festivals. Weitere Informationen gibt es [h
 
 - **Ort**: Altmarkt
 
-**### 16:30 - 17:00 Uhr**  
+### 16:30–17:00 Uhr  
 ### Straßenband Krambambuli
 
 Eine Veranstaltung des Zirkustheater-Festivals. Weitere Informationen gibt es [hier](https://zirkustheater-festival.de/krambambuli-d/).
 
 - **Ort**: Altmarkt
 
-**### 17:00 – 18:20 Uhr**  
+### 17:00–18:20 Uhr  
 ### LA BANDE À TYREX
 
-"LA BANDE À TYREX" ist ein schwirrendes Fahrrad- und Musikballett. Es rollt, es stapelt, es beschleunigt, es rutscht – ein fröhliches, zügelloses und musikalisches Gedränge. "LA BANDE À TYREX" rollt von einem Fahrrad zum anderen und dekliniert eine Unzahl von Formen, Gleichgewichten und Ungleichgewichten. Eine einzigartige kollektive Kreation mit atemberaubender Akrobatik und einer mitreißenden Atmosphäre. Ein Schwärmen, ein Aufruhr.
+„LA BANDE À TYREX“ ist ein schwirrendes Fahrrad- und Musikballett. Es rollt, es stapelt, es beschleunigt, es rutscht – ein fröhliches, zügelloses und musikalisches Gedränge. „LA BANDE À TYREX“ rollt von einem Fahrrad zum anderen und dekliniert eine Unzahl von Formen, Gleichgewichten und Ungleichgewichten. Eine einzigartige kollektive Kreation mit atemberaubender Akrobatik und einer mitreißenden Atmosphäre. Ein Schwärmen, ein Aufruhr.
 
 - **Ort**: Altmarkt
 
-**### 18:30 - 18:50 Uhr**  
-### „TRY No. 2 - Zweiter Versuch, die Welt zu retten"
+### 18:30–18:50 Uhr  
+### „TRY No. 2 – Zweiter Versuch, die Welt zu retten“
 
 performative Installation der Kompanie Lotte Mueller
 
@@ -84,19 +84,19 @@ Eine Veranstaltung des Zirkustheater-Festivals. Weitere Informationen gibt es [h
 
 - **Ort**: Altmarkt
 
-**### 19:00-19:50 Uhr**  
+### 19:00–19:50 Uhr  
 ### Offene Probe des Zentralwerk Chor
 
 **Leitung**: Marieluise Herrmann und Jakoba Schönbrodt-Rühl
 
-Im Zentralwerkchor können alle mitsingen, die Lust haben, gemeinsam Atem, Stimme und Körper zu erkunden und neben dem Singen von Liedern aus verschiedenen Kulturen auch Gesangsimprovisationen und Bewegungsexperimente auszuprobieren. Ob mit oder ohne Vorkenntnisse, solo oder tutti - wichtig ist, wir hören uns zu!
+Im Zentralwerkchor können alle mitsingen, die Lust haben, gemeinsam Atem, Stimme und Körper zu erkunden und neben dem Singen von Liedern aus verschiedenen Kulturen auch Gesangsimprovisationen und Bewegungsexperimente auszuprobieren. Ob mit oder ohne Vorkenntnisse, solo oder tutti – wichtig ist, wir hören uns zu!
 
 - **Ort**: Altmarkt
 
-**### 20:00-21:00 Uhr**  
+### 20:00–21:00 Uhr  
 ### ANNAMEDEA und ihr Meckerchor
 
-Meckerchor von anna stiede und Susann Neuenfeldt, eine Kooperation mit Panzerkreuzer Rotkäppchen | Chor: Tanja Krone, Tommy Neuwirth, Anica Happich, Maren Barnikow, Anna Barth, u.v.m.
+Meckerchor von anna stiede und Susann Neuenfeldt, eine Kooperation mit Panzerkreuzer Rotkäppchen | Chor: Tanja Krone, Tommy Neuwirth, Anica Happich, Maren Barnikow, Anna Barth, u. v. m.
 
 Das ostdeutsche Schimpfen und Meckern ist eine Meinungskundgabe und eine noch zu DDR-Zeiten entstandene subversive Praxis der Vertrauenssuche. Welche Wünsche und Träume stecken in den heutigen Schimpftiraden? Die aus Thüringen stammende Performance-Künstlerin anna stiede hat gemeinsam mit der Regisseurin Susann Neuenfeldt die Bürgerin ANNAMEDEA entwickelt. Nun wirkt und wandert ANNAMEDEA im Angesicht der bevorstehenden Landtagswahlen durch den Osten mit einem wachsenden, lebensbejahenden Meckerchor, offen für alle, die meckern müssen. Eine Einladung zu einem kollektiv, sinnlich-kraftvollen Akt des Schimpfens. Nächster Halt: Dresden!
 

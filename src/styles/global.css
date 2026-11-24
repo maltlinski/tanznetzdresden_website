@@ -74,12 +74,17 @@ time { font-family: var(--font-datum); }
 html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; scroll-padding-top: var(--header-h); }
 /* Lenis (src/scripts/smooth-scroll.ts) scrollt selbst – das Browser-Gleiten würde dagegen arbeiten */
 html.lenis { scroll-behavior: auto; }
-body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); hyphens: auto; overflow-wrap: break-word; }
-/* Silbentrennung nur im Fließtext: Knöpfe, Menüpunkte, Felder und kleine Zeilen in Versalien werden nie getrennt
-   („NEU-ESTE“), Überschriften nur bei langen Wörtern („Vereinsangelegenheiten“, nicht „Dres-den“). */
+body { margin: 0; background: var(--paper); color: var(--ink); font-family: var(--font-body); hyphens: manual; overflow-wrap: break-word; }
+/* Silbentrennung nur im Fließtext (Absätze, Bildunterschriften, Listen im Lesetext – nicht jede Liste: Kartenraster
+   sind auch Listen). Kartentitel, Namen, Knöpfe, Menüpunkte,
+   Felder und kleine Zeilen in Versalien trennen nie („NEU-ESTE“). Überschriften trennen nur sehr lange Wörter ab
+   16 Buchstaben („Vereinsangelegen-heiten“) – nie Namen wie „TanzNetz-Dresden“, englische Wörter („resi-dence“)
+   oder kurze Versalien („MOTHER-HOOD“) – und brechen ausgewogen um (kein einzelnes Wort in der letzten Zeile). */
+p, dd, blockquote, figcaption, td, .prose, .prose li, .ab__text li { hyphens: auto; }
 button, .btn, .chip, .tag, .badge, .mono-link, label, input, select, summary, time, .datum { hyphens: manual; }
 h1, h2, h3, h4, h5, h6, .up__title {
-  hyphenate-limit-chars: 10 4 4; -webkit-hyphenate-limit-before: 4; -webkit-hyphenate-limit-after: 4;
+  hyphens: auto; hyphenate-limit-chars: 16 6 6; -webkit-hyphenate-limit-before: 6; -webkit-hyphenate-limit-after: 6;
+  text-wrap: balance;
 }
 a { color: var(--magenta); text-decoration: none; }
 a:hover { color: var(--purple); }
@@ -195,6 +200,15 @@ main > .kopf + .kopf-leiste, main > .kopf + :is(script, style) + .kopf-leiste { 
 .chip:hover { border-color: var(--magenta); }
 .chip[aria-pressed='true'] { background: var(--purple); color: #fff; }
 .chip__count { opacity: 0.75; } /* 0.6 lag knapp unter 4,5 : 1 Kontrast */
+/* Handy: Filter in einer Zeile zum Wischen (wie in den News), statt Umbruch mit einem einzelnen Knopf darunter
+   (eigene Reihen der Bauteile: Klasse chips-wisch; !important, weil die Bauteile flex-wrap selbst setzen).
+   Der letzte Knopf ist angeschnitten, damit man sieht, dass es weitergeht. */
+@media (max-width: 600px) {
+  /* position: relative hält die unsichtbaren Screenreader-Texte (absolut) in der Reihe – sonst ragen sie über den Rand */
+  .chips, .chips-wisch { position: relative; flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; }
+  .chips::-webkit-scrollbar, .chips-wisch::-webkit-scrollbar { display: none; }
+  .chips > *, .chips-wisch > * { flex: none; }
+}
 
 /* ---------- Section heads ---------- */
 .section-head {

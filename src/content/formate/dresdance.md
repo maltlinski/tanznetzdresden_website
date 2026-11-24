@@ -1,8 +1,8 @@
 ---
 title: "Dresdance Gala"
 order: 7
-since: "Beteiligung"
-since_en: "Participation"
+since: "seit 2025"
+since_en: "since 2025"
 rubriken: [buehne]
 summary: "Das Netz ist bei der Dresdance Gala vertreten."
 summary_en: "The network is part of the Dresdance Gala."

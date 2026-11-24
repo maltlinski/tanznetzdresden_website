@@ -9,13 +9,13 @@ teaser: Unter dem Titel »Feel the vibe« findet am Donnerstag, dem 27. April 20
 
 Unter dem Titel »Feel the  vibe« findet am Donnerstag, dem 27. April 2023 eine POP UP-Performance auf der Studiobühne der Landesbühnen Sachsen statt. Diese Ausgabe von POP UP ist zugleich der Auftakt für 2023, denn in diesem Jahr werden noch einige Ausgaben dieses besonderen Formats folgen. Alle weiteren Infos folgen nun im Beitrag.
 
-### »Feel the vibe« - eine POP UP Performance auf den Landesbühnen Sachsen
+## »Feel the vibe« – eine POP UP Performance auf den Landesbühnen Sachsen
 
-Bei »Feel the vibe« handelt es sich um eine immersive Performance, die das Publikum einlädt, die Kraft der Frequenzen und Vibrationen zu spüren. Zwei Musiker:innen, zwei Tänzer:innen und eine Sängerin erkunden “die Grauzone”. Den Ort, in dem die Grenzen zwischen Stimme, Musik und Bewegung verschwimmen.
+Bei »Feel the vibe« handelt es sich um eine immersive Performance, die das Publikum einlädt, die Kraft der Frequenzen und Vibrationen zu spüren. Zwei Musiker:innen, zwei Tänzer:innen und eine Sängerin erkunden „die Grauzone“. Den Ort, in dem die Grenzen zwischen Stimme, Musik und Bewegung verschwimmen.
 
-### Host Yamile Navarro über »Feel the vibe«:
+## Host Yamile Navarro über »Feel the vibe«:
 
-> »Feel the vibe« ist ein Abenteuer, ein Risiko und eine Erfahrung, sowohl für die beteiligten Künstler als auch für das Publikum. Es wird Tanz, Gesang und Musik geben. Die Hauptidee besteht darin, das "Dazwischen" zu finden - was passiert zwischen Stimme und Körper, Körper und Musik, Stimme und Musik, was passiert zwischen den Tänzerinnen und dem Publikum?
+> »Feel the vibe« ist ein Abenteuer, ein Risiko und eine Erfahrung, sowohl für die beteiligten Künstler als auch für das Publikum. Es wird Tanz, Gesang und Musik geben. Die Hauptidee besteht darin, das „Dazwischen“ zu finden – was passiert zwischen Stimme und Körper, Körper und Musik, Stimme und Musik, was passiert zwischen den Tänzerinnen und dem Publikum?
 >
 > Der Abend ist eine strukturierte Improvisation, die von Daniel Williams und mir gemeinsam gestaltet wird. Daniel übernimmt den musikalischen Teil der Performance und ich den tänzerischen und stimmlichen Teil. Die Aufführung hat eine sehr klare Struktur (einige Teile sind sogar minutengenau!), aber es gibt viel Raum für die Tänzerinnen und Musiker:innen, um ihre Stimmen, ihre Bewegungen und die Musik zu erforschen, und das macht es so aufregend, denn obwohl ich eine Vorstellung davon habe, wie der Abend ausfallen könnte, habe ich eigentlich keine Ahnung, wohin er gehen wird und wie er wahrgenommen wird.
 >

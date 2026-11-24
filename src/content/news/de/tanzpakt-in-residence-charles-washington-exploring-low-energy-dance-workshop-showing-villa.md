@@ -14,7 +14,7 @@ teaser: Im Rahmen von TANZPAKT in residence arbeitet Charles Washington in diese
 Sind Sie erschöpft? Sehnen sich Ihr Geist und Ihr Körper nach tiefer Entspannung? Wie würde eine Tanzaufführung entstehen oder aussehen, wenn sie aus der Perspektive der Ruhe geschaffen oder betrachtet würde? Und wie könnte sich kreative Arbeit manifestieren, wenn Ruhe die Grundlage wäre?  
 Während seines TANZPAKT-Aufenthalts erforscht Charles A. Washington den Low-Energy-Tanz: Virtuosität, Nachhaltigkeit und Energiemanagement bei einem Tänzer mittleren Alters. Das Forschungsprojekt zielt darauf ab, somatische Methoden und die Bedeutung von Low-Energy-Dance als nachhaltige Praktiken im Tanz zu untersuchen.
 
-### Workshop »Exploring Low Energy Dance« (24.–28.9.2024 @LOFFT - DAS THEATER, Leipzig)
+### Workshop »Exploring Low Energy Dance« (24.–28.9.2024 @LOFFT – DAS THEATER, Leipzig)
 
 Während des einwöchigen Workshops werden die Teilnehmer:innen die Möglichkeit haben, durch tiefe Ruhephasen eine Revitalisierung auf zellulärer Ebene zu erfahren. Der Workshop ist so konzipiert, dass die Kraft der Ruhe als Anregung für die Improvisation genutzt wird. Jeder Tag wird sich auf einen anderen Aspekt der Zellbiologie konzentrieren: die Homöostase der Körperzellen durch Ruhe, das Bewusstsein für die dynamischen Eigenschaften der Flüssigkeiten innerhalb (intrazellulär) und außerhalb (extrazellulär) der Zellen und das Gleichgewicht zwischen Zellstruktur und Fluidität. Außerdem wird die Verbindung zwischen dem Bewusstsein und dem Unterbewusstsein erforscht und wie sie sich gegenseitig beeinflussen. Kreativität entspringt dem Unterbewusstsein und bringt das Unbekannte hervor, das vom Bewusstsein als Muster wahrgenommen wird, die sich im kreativen Prozess entfalten. Entdecke mit uns, wie tiefe Ruhe deine kreative Kraft freisetzen kann!
 
@@ -22,7 +22,7 @@ Während des einwöchigen Workshops werden die Teilnehmer:innen die Möglichkeit
 
 **24\. bis 27. September 2024** (jeweils von 10 bis 15 Uhr)  
 **28\. September 2024** (15 bis 18 Uhr)  
-**Ort**: [LOFFT - DAS THEATER](https://www.lofft.de/), Spinnereistraße 7/Halle 7, 04179 Leipzig
+**Ort**: [LOFFT – DAS THEATER](https://www.lofft.de/), Spinnereistraße 7/Halle 7, 04179 Leipzig
 
 Die Ergebnisse des Workshops werden in einer öffentlichen Vorführung präsentiert. Aufgrund des künstlerischen Charakters der Untersuchung sind auch ältere Teilnehmer:innen willkommen. Das Showing ist Teil des Workshops und der Recherche. Eine Teilnahme ist nur möglich, wenn die Mitwirkung am Showing gewährleistet ist.  
 Die Teilnahmegebühr für den Workshop beträgt 25 Euro.
@@ -30,7 +30,7 @@ Die Teilnahmegebühr für den Workshop beträgt 25 Euro.
 ### Showing & Nachgespräch
 
 **Termin**: 28. September 2024, 18 bis 19:30 Uhr  
-**Ort**: [LOFFT - DAS THEATER](https://www.lofft.de/), Spinnereistraße 7/Halle 7, 04179 Leipzig
+**Ort**: [LOFFT – DAS THEATER](https://www.lofft.de/), Spinnereistraße 7/Halle 7, 04179 Leipzig
 
 Weitere Informationen gibt es unter folgendem Link:  
 [villawigman.de/residenz-charles-washington](https://villawigman.de/residenz-charles-washington/)
@@ -51,11 +51,11 @@ Charles A. Washington, 1982 in Perth geboren, ist ein schottischer Tänzer und C
 [Website](https://pinkmetalpetalproductions.com/)  
 [Instagram](https://instagram.com/pinkmetalpetal/)
 
-## Über LOFFT - DAS THEATER
+## Über LOFFT – DAS THEATER
 
 Das Theater steht seit der Gründung im Jahre 1997 für die Förderung der Darstellenden Künste in Leipzig und Sachsen, für Nachwuchsförderung im lokalen Raum und für nationale und internationale Produktionen im Bereich der Tanz-, Performance und Theaterkunst. Es ist eines der bedeutenden Orte der freien Darstellenden Künste in Sachsen und hat seinen Standort seit 2019 auf dem Gelände der Spinnerei Leipzig. Sein Profil entwickelt sich organisch in nationalen wie internationalen Kontexten und stärkt weiterhin die Beziehung zum Leipziger und zum sächsischen Kulturleben und deren Akteur:innen. Ein gestaffeltes Nachwuchsprogramm unterstützt neue Künstler:innen vom ersten Experiment in der Werkstattreihe, über das mentorisch-begleitende Impulsprogramm, bis zum Artist Development Programme, das lokale Künstler:innen national und international etabliert und vernetzt. Offen ausgeschriebene Koproduktionen, thematische Festivals und zahlreiche Kooperationen führen zu einem Spielplan mit etwa 150 Veranstaltungen im Jahr, die von einem Vermittlungsprogramm begleitet werden. Das LOFFT engagiert sich für die Interessen von freien darstellenden Künstler:innen in der Kulturpolitik auf lokaler, regionaler und Bundesebene.
 
-Mehr zu LOFFT - DAS THEATER gibt es unter folgenden Links:
+Mehr zu LOFFT – DAS THEATER gibt es unter folgenden Links:
 
 [lofft.de](https://www.lofft.de/)  
 [Instagram](https://www.instagram.com/lofft_theater/)  
@@ -63,10 +63,10 @@ Mehr zu LOFFT - DAS THEATER gibt es unter folgenden Links:
 
 ## Über TANZPAKT in residence
 
-TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022-24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
+TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022–24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
 
 TANZPAKT in residence versteht sich als grundlegendes Instrument, Künstler:innen in die Exzellenz zu befördern, indem es Zeit-Räume für Forschung zur Verfügung stellt und nachhaltige Strukturen schafft, die der Tanzszene der Region ein professionelles und kontinuierliches Arbeiten ermöglichen.  
-Von 2022-2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.
+Von 2022–2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.
 
 Weitere Informationen zu TANZPAKT in residence gibt es unter  
 [villawigman.de/tanzpakt-in-residence](https://villawigman.de/tanzpakt-in-residence/)

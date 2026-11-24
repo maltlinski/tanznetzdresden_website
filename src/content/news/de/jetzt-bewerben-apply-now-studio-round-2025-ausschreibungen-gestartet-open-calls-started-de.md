@@ -13,19 +13,19 @@ teaser: Wir freuen uns sehr, mitteilen zu können, dass unser beliebtes Format S
 
 [STUDIO ROUND](/#formate), das Austausch- und Präsentationsformat des TanzNetzDresden, führt 2025 den begonnenen Städteaustausch weiter: Gemeinsam mit den Partner:innen [ID\_Tanzhaus Frankfurt Rhein-Main](https://tanzhausfrm.de/), dem [Tanznetz Freiburg](https://tanznetz-freiburg.de/) und der [Tanzzentrale der Region Nürnberg](https://tanzzentrale.de/) finden zwischen September und Dezember 2025 vier Editionen in den Städten Dresden, Frankfurt am Main, Freiburg und Nürnberg statt.
 
-### STUDIO ROUND 2025 - eine Ausschreibung für alle vier Termine
+### STUDIO ROUND 2025 – eine Ausschreibung für alle vier Termine
 
 Gesucht werden pro Edition von STUDIO ROUND je ein lokaler Beitrag und zwei Gast-Beiträge (Solo oder Duo, zwischen 5 und max. 20 Minuten). Idee ist es außerdem, die Beiträge mit einer Publikums-Interaktion und einem anschließenden Q&A zu rahmen.
 
 Tagsüber kann in dem Studio geprobt und vorbereitet werden. Zu beachten ist, dass es ein simples technisches Setting geben wird und möglichst ohne bzw. mit einfachen Umbauten geplant werden sollte. Die technische Ausstattung beinhaltet eine Soundanlage, an die sich angeschlossen werden kann, sowie einfache Lichtstimmungen (ohne szenische Wechsel).
 
-Das Event wird dokumentiert und danach den Beteiligten zur Verfügung gestellt. Als Honorar können pro Beitrag und pro Person 350 Euro gezahlt werden. Für die Künstler:innen von außerhalb wird zudem die An-und Abreise sowie Unterkunft für 1 - 2 Nächte übernommen. Alles Weitere nach Absprache.
+Das Event wird dokumentiert und danach den Beteiligten zur Verfügung gestellt. Als Honorar können pro Beitrag und pro Person 350 Euro gezahlt werden. Für die Künstler:innen von außerhalb wird zudem die An-und Abreise sowie Unterkunft für 1 – 2 Nächte übernommen. Alles Weitere nach Absprache.
 
 **Die Einreichungen sollte Folgendes beinhalten:**
 
 - Kontaktdaten: Vorname, Nachname, Straße und Hausnummer, PLZ und Stadt, E-Mailadresse, Telefonnummer
 - Pronomen
-- Name der Künstler\*in/Gruppe
+- Name der Künstler:in/Gruppe
 - Titel des Beitrags
 - Dauer des Beitrags
 - eine kurze Beschreibung des Beitrags (max. 1.000 Zeichen)
@@ -98,7 +98,7 @@ Each performer will receive a fee of 350 Euro. Travel and accommodation costs fo
 
 ## +++ The deadline for submissions for all of the four upcoming editions von STUDIO ROUND is August 1st, 2025, 11:59 p.m. +++
 
-The jury will consist of members from TanzNetzDresden, Tanznetz Freiburg, ID\_Tanzhaus Frankfurt Rhein-Main, and Tanzzentrale der Region Nürnberg. The jury's decision will be announced by mid-August. Before the events, there will be a joint online meeting (via Zoom) to go over the schedule and clarify any questions.
+The jury will consist of members from TanzNetzDresden, Tanznetz Freiburg, ID\_Tanzhaus Frankfurt Rhein-Main, and Tanzzentrale der Region Nürnberg. The jury’s decision will be announced by mid-August. Before the events, there will be a joint online meeting (via Zoom) to go over the schedule and clarify any questions.
 
 You can find the forms for the submissions in German and English under the following two links:
 

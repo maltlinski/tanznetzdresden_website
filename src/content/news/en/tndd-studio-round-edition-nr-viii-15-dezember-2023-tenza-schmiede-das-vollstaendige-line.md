@@ -7,11 +7,11 @@ The line up of the upcoming and meanwhile eighth TNDD studio round edition, whic
 
 More than ever, visitors to the upcoming TNDD studio round can expect three exciting contributions from very different artists and collectives, which will be presented and discussed with the guests of the evening in our special studio atmosphere. As always, the format is free of charge. More about the upcoming are now online in this blog post.
 
-### The participants of the upcoming eighth edition are:
+## The participants of the upcoming eighth edition are:
 
-- **Yuexuan Gui & Shiyu Liu** (Dresden): „nuán“
-- **Sophie Sengle & Franziska Ullrich** (Hannover/Kassel): „Never enough hands to unknot“
-- **M.over X Rothe** (Leipzig): „ROMANTIC MODE“
+- **Yuexuan Gui & Shiyu Liu** (Dresden): “nuán”
+- **Sophie Sengle & Franziska Ullrich** (Hannover/Kassel): “Never enough hands to unknot”
+- **M.over X Rothe** (Leipzig): “ROMANTIC MODE”
 
 Detailed information on the individual contributions to the eighth TNDD studio round will now follow or can be viewed directly on the [studio round subpage](/#formate). There, all information is also available in English. An additional blog post in German is available [***here***](/news/tndd-studio-round-edition-nr-viii-15-dezember-2023-tenza-schmiede-das-vollstaendige-line/).
 
@@ -23,7 +23,7 @@ bilder:
 
 ## Yuexuan Gui & Shiyu Liu
 
-**Yuexuan Gui** is a Chinese freelance dancer-choreographer, currently based in Dresden, Germany. She has presented her own works at festivals, theatres, galleries both in Germany and China, such as: Theater Pforzheim, Beijing Dance Festival, CloudMove - International Online Dance Festival, SoloDuo festival NRW, Oktogon HfBK Dresden, Zukunft Tanzt Festival 2022, Bauhaus Museum, Venice Biennale di Danza. She has started researching and questioning the thin line of absurdity in 2020, and discovered her interest lies in interdisciplinary performance mixing her dance experience with theatrical ideas.
+**Yuexuan Gui** is a Chinese freelance dancer-choreographer, currently based in Dresden, Germany. She has presented her own works at festivals, theatres, galleries both in Germany and China, such as: Theater Pforzheim, Beijing Dance Festival, CloudMove – International Online Dance Festival, SoloDuo festival NRW, Oktogon HfBK Dresden, Zukunft Tanzt Festival 2022, Bauhaus Museum, Venice Biennale di Danza. She has started researching and questioning the thin line of absurdity in 2020, and discovered her interest lies in interdisciplinary performance mixing her dance experience with theatrical ideas.
 
 More information about Yuexuan Gui is available at:  
 [yuexuangui.com](http://www.yuexuangui.com/)
@@ -34,7 +34,7 @@ More information about Yuexuan Gui is available at:
 
 ## »nuán«
 
-nuán is a duet piece about the friendship between two women. It was inspired by both ideographic and semantic perspectives of Chinese characters, '奻'(nuán), which consisted of the character '女' which represents women. When forming two women / '女' together, the meaning of ‘奻’ change into quarrel/ dispute or doltish. Intrigued by this word, nuán is focused on exploring the physical embodiment of the peculiarity of the woman's friendship, and transforming the collision when attachment, affinity and companionship clashes with the emotional sensation of jealousy, envy and competitiveness.
+nuán is a duet piece about the friendship between two women. It was inspired by both ideographic and semantic perspectives of Chinese characters, '奻'(nuán), which consisted of the character '女' which represents women. When forming two women / '女' together, the meaning of ‘奻’ change into quarrel/ dispute or doltish. Intrigued by this word, nuán is focused on exploring the physical embodiment of the peculiarity of the woman’s friendship, and transforming the collision when attachment, affinity and companionship clashes with the emotional sensation of jealousy, envy and competitiveness.
 
 **Performers:** Yuexuan Gui & Shiyu Liu  
 **Duration:** around 12 minutes
@@ -77,7 +77,7 @@ Photo: Jana Slaby
 
 ## »ROMANTIC MODE«
 
-Surrounded by Theresa Rothe's objects in a world that eludes reality, dancer Mandy Unger will explore the relationship between closeness and intimacy with her own body. Inspired by Rothe's exhibition space "Romantic Mode", an experience between touch, suggestion and expectations will be created with the audience.
+Surrounded by Theresa Rothe’s objects in a world that eludes reality, dancer Mandy Unger will explore the relationship between closeness and intimacy with her own body. Inspired by Rothe’s exhibition space “Romantic Mode”, an experience between touch, suggestion and expectations will be created with the audience.
 
 **Performer**: Mandy Unger a.k.a. M.over
 
@@ -91,7 +91,7 @@ bilder:
 
 ### Sophie Sengle (Hannover)
 
-[**Sophie Sengle**](https://www.instagram.com/so_phite) (she/her or none) is a freelance dance artist based in Hanover, Kassel and Barcelona. In July 2022, S. received her state-approved professional degree as a contemporary stage dancer at Sozo vim Kassel. Before S. started dancing professionally, S. studied special education and art (BA) in Hanover. During this time, her main interests were performance art and community projects. As a dancer, S. has collaborated/performed with Taiat Dansa, Annamarie Keskinen, Regina van Berkel, Sebastian Blasius, Janina Rohlik, Franziska Ullrich, Quim Vilagran and Miguel Barcelona, among others. With collective works, S. has explored the themes of "female friendship in patriarchal environment", "FLINTA rage" and "embodied activism" and draws her inspiration from the non-human environment, preferably from nature. In addition, S. teaches contemporary dance and gives workshops. S. is interested in collaborating with different communities and individuals, using dance to move, explore, create and perform together. Following the principle of "Rehearse the social world we want to be part of .
+[**Sophie Sengle**](https://www.instagram.com/so_phite) (she/her or none) is a freelance dance artist based in Hanover, Kassel and Barcelona. In July 2022, S. received her state-approved professional degree as a contemporary stage dancer at Sozo vim Kassel. Before S. started dancing professionally, S. studied special education and art (BA) in Hanover. During this time, her main interests were performance art and community projects. As a dancer, S. has collaborated/performed with Taiat Dansa, Annamarie Keskinen, Regina van Berkel, Sebastian Blasius, Janina Rohlik, Franziska Ullrich, Quim Vilagran and Miguel Barcelona, among others. With collective works, S. has explored the themes of “female friendship in patriarchal environment”, “FLINTA rage” and “embodied activism” and draws her inspiration from the non-human environment, preferably from nature. In addition, S. teaches contemporary dance and gives workshops. S. is interested in collaborating with different communities and individuals, using dance to move, explore, create and perform together. Following the principle of “Rehearse the social world we want to be part of.
 
 **Instagram**: [instagram.com/so\_phite](https://www.instagram.com/so_phite)
 
@@ -107,7 +107,7 @@ bilder:
 
 ## »Niemals genug Hände, um uns zu entknoten« (engl. »Never enough hands to unknot«)
 
-You see nothing, it's there. Invisibly engraved in the memory of the air. The hairs on the back of your neck rise, measuring the tension. it spits Too much friction. What was liquid becomes sticky solid. What if we accept being connected, with pain and with pleasure? We accept dependency. We move in our powerlessness, power and the in-between. Identify with other species and listen to the sounds of mushrooms. Let's expand our androcentric perspective and slip away into a world of fluid identities!
+You see nothing, it’s there. Invisibly engraved in the memory of the air. The hairs on the back of your neck rise, measuring the tension. it spits Too much friction. What was liquid becomes sticky solid. What if we accept being connected, with pain and with pleasure? We accept dependency. We move in our powerlessness, power and the in-between. Identify with other species and listen to the sounds of mushrooms. Let’s expand our androcentric perspective and slip away into a world of fluid identities!
 
 ### We are very much looking forward to the contributions and the subsequent exchange and cordially invite all interested parties to join us on December 15, 2023 from 8 p.m. at the [TENZA Schmiede](https://www.tenza.de/).
 
@@ -115,4 +115,4 @@ You see nothing, it's there. Invisibly engraved in the memory of the air. The ha
 
 TNDD studio round is a project by TanzNetzDresden. Funded by the Office for Culture and Monument Protection and the Cultural Foundation of the Free State of Saxony. The measure is co-financed by tax funds on the basis of the budget passed by the Saxon State Parliament.
 
-**Header-Photo:** Therese Bendjus & Daria Belous: "Studies of Softening"; Photo by Darya Hauryk
+**Header-Photo:** Therese Bendjus & Daria Belous: “Studies of Softening”; Photo by Darya Hauryk

@@ -1,13 +1,13 @@
 ---
-title: "residence plus • Showing von und mit Rika Yotsumoto: »MOTHERHOOD - a body of work«• 01.07.2026 • villla/wigman"
+title: "residence plus • Showing von und mit Rika Yotsumoto: »MOTHERHOOD – a body of work« • 01.07.2026 • villa/wigman"
 date: 2026-05-27
 category: Netzwerk
 author: TanzNetzDresden
 image: ../../../assets/news/2026/residence-plus-2026-villa-wigman-juni-rika-yotsumoto-scaled-e1779894752196.webp
-teaser: Im heutigen Blog-Beitrag möchten wir euch einladen, denn die Künstlerin Rika Yotsumoto lädt im Rahmen ihrer Residenz von residence plus am 1. Juli 2026 zu einem Showing unter dem Titel "MOTHERHOOD - a body of work"
+teaser: Im heutigen Blog-Beitrag möchten wir euch einladen, denn die Künstlerin Rika Yotsumoto lädt im Rahmen ihrer Residenz von residence plus am 1. Juli 2026 zu einem Showing unter dem Titel „MOTHERHOOD – a body of work“
 ---
 
-*Im heutigen Blog-Beitrag möchten wir euch einladen, denn die Künstlerin Rika Yotsumoto lädt im Rahmen ihrer Residenz von residence plus am 1. Juli 2026 zu einem Showing unter dem Titel "MOTHERHOOD - a body of work" in der villa wigman ein. Alles weitere zu diesem Termin erfahrt ihr im heutigen Blog-Beitrag.*
+*Im heutigen Blog-Beitrag möchten wir euch einladen, denn die Künstlerin Rika Yotsumoto lädt im Rahmen ihrer Residenz von residence plus am 1. Juli 2026 zu einem Showing unter dem Titel „MOTHERHOOD – a body of work“ in der villa wigman ein. Alles weitere zu diesem Termin erfahrt ihr im heutigen Blog-Beitrag.*
 
 ## MOTHERHOOD – a body of work // choreographic reflections
 
@@ -52,7 +52,7 @@ Aus allen Bewerbungen hat die Jury von residence plus die folgenden sechs Künst
 
 ### residence plus
 
-residence plus ist ein Projekt von Villa Wigman für Tanz e.V. in Kooperation mit [TanzNetzDresden e.V.](/) mit den Partnerorten [TanzART Kirschau](https://www.tanzart-kirschau.de/), [TanzRaumGörlitz](https://ncca.eu/TRG) des Neisse Centre for the Contemporary Arts, [KOMPLEX - OFF Bühne des Taupunkt e.V. Chemnitz](https://www.chemnitzkomplex.de/), [TENZA](https://www.tenza.de/) Dresden und [KulturOrt Heymannbaude](https://www.heymannbaude.org/) – Kulturbaude und Landkunst e.V.
+residence plus ist ein Projekt von Villa Wigman für Tanz e.V. in Kooperation mit [TanzNetzDresden e.V.](/) mit den Partnerorten [TanzART Kirschau](https://www.tanzart-kirschau.de/), [TanzRaumGörlitz](https://ncca.eu/TRG) des Neisse Centre for the Contemporary Arts, [KOMPLEX – OFF Bühne des Taupunkt e.V. Chemnitz](https://www.chemnitzkomplex.de/), [TENZA](https://www.tenza.de/) Dresden und [KulturOrt Heymannbaude](https://www.heymannbaude.org/) – Kulturbaude und Landkunst e.V.
 
 Realisiert wird das Residenzprogramm residence plus für insgesamt sechs Residenzen in den Jahren 2025/2026, die über ein Bewerbungs- und Auswahlverfahren von einer dreiköpfigen Jury ausgewählt werden. Dieses Residenzprogramm arbeitet am Abbau von Barrieren, indem mit der Ausschreibung auch dezidiert ältere Künstler:innen, Nachwuchskünstler:innen, Künstler:innen mit Einschränkungen und Künstler:innen in Care-Arbeit angesprochen werden. Bewerben können sich professionelle Tanzschaffende, die in folgenden Bereichen tätig sind: Tanz, Choreografie, Pädagogik, Dramaturgie, Produktion, Wissenschaft, Kritik etc.
 

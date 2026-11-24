@@ -331,13 +331,22 @@ test('News: Kopf mit Titelbild, Großansicht ab dem Titelbild, Zeile zum Teilen 
   // das Titelbild ist das erste Foto der Großansicht
   const zoom = page.locator('.ak__zoom');
   const box = (await zoom.boundingBox())!;
-  // Vollbild (Entwurf v5): Kopf füllt den Bildschirm, Foto reicht bis unter die oben durchsichtige Kopfleiste
+  // Vollbild (Entwurf v5): Kopf füllt den Bildschirm, Foto reicht bis unter die oben durchsichtige Kopfleiste.
+  // Handy hochkant: Foto quer in seinem Seitenverhältnis direkt unter der Kopfleiste, Titel darunter
   if (await page.locator('.ak--vollbild').count()) {
     const leiste = page.locator('[data-header]');
-    expect(Math.round(box.y)).toBe(0);
-    await expect(leiste).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     const kopfBox = (await kopf.boundingBox())!;
-    expect(kopfBox.height).toBeGreaterThanOrEqual(Math.min(940, page.viewportSize()!.height) - 1);
+    const vp = page.viewportSize()!;
+    expect(Math.round(kopfBox.y)).toBe(0);
+    await expect(leiste).toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
+    if (vp.width <= 760 && vp.height > vp.width) {
+      const leisteBox = (await leiste.boundingBox())!;
+      expect(Math.abs(box.y - leisteBox.height)).toBeLessThanOrEqual(2);
+      expect(box.width / box.height).toBeGreaterThanOrEqual(1.19);
+    } else {
+      expect(Math.round(box.y)).toBe(0);
+      expect(kopfBox.height).toBeGreaterThanOrEqual(Math.min(940, vp.height) - 1);
+    }
     await page.mouse.wheel(0, 200);
     await expect(leiste).not.toHaveCSS('background-color', 'rgba(0, 0, 0, 0)');
     await page.mouse.wheel(0, -600);
@@ -716,7 +725,7 @@ test('Hero: zeigt den nächsten Termin und verlinkt ihn', async ({ page }) => {
   await page.goto('/');
   const up = page.locator('[data-hero-up]:visible');
   await expect(up).toHaveCount(1);
-  await expect(up).toContainText('Upcoming');
+  await expect(up).toContainText('Demnächst');
   await up.click();
   await expect(page).toHaveURL(/\/termine\/\d{4}-\d{2}-\d{2}-[a-z0-9-]+\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
@@ -730,7 +739,7 @@ test('Startseite: Termine und News führen auf ihre eigene Seite', async ({ page
   await ev.click();
   await expect(page).toHaveURL(/\/termine\/[^/#]+\/$/);
   await expect(page.getByRole('heading', { level: 1 })).toHaveText(evTitle);
-  await expect(page.getByRole('link', { name: 'In meinen Kalender (.ics)' })).toHaveAttribute('href', /\/termine\/[^/]+\.ics$/);
+  await expect(page.getByRole('link', { name: 'In meinen Kalender', exact: true })).toHaveAttribute('href', /\/termine\/[^/]+\.ics$/);
 
   await page.goto('/');
   const lead = page.locator('#news .jl');

@@ -3,9 +3,9 @@ title: Special Week with Amit Abend at the KEEP UP professional training • Jan
 teaser: The year 2024 is also getting off to an intense and exciting start in terms of KEEP UP professional training, as there will be a Special Week with Amit Abend at the TENZA Schmiede from January 22 to …
 ---
 
-*The year 2024 is also getting off to an intense and exciting start in terms of KEEP UP professional training, as there will be a Special Week with Amit Abend at the TENZA Schmiede from January 22 to 26, 2024, which will open up a broad spectrum of technique and perception for professional dancers. You can find everything else about this date and Amit Abend in today's blog post, which will be published in both [German](/news/special-week-amit-abend-keep-up-profi-training-22-bis-26-januar/) and English this time.*
+*The year 2024 is also getting off to an intense and exciting start in terms of KEEP UP professional training, as there will be a Special Week with Amit Abend at the TENZA Schmiede from January 22 to 26, 2024, which will open up a broad spectrum of technique and perception for professional dancers. You can find everything else about this date and Amit Abend in today’s blog post, which will be published in both [German](/news/special-week-amit-abend-keep-up-profi-training-22-bis-26-januar/) and English this time.*
 
-Amit Abend is an Israeli dance artist currently based in Dresden. She studied dance professionally at the Jerusalem high- school Academy for Music and Dance. At the age of 18, Amit was accepted into the Kibbutz Contemporary Dance Company II. Amit Abend worked as a company member with KCDC 2, Ephemera Dance Company, G-H-T, and the late Yaara Dolev. She collaborated with renowned artist Sandro Kopp and was a guest choreographer at Theater Görlitz. Her dance film „Stav“ is currently screening in festivals around the world.
+Amit Abend is an Israeli dance artist currently based in Dresden. She studied dance professionally at the Jerusalem high- school Academy for Music and Dance. At the age of 18, Amit was accepted into the Kibbutz Contemporary Dance Company II. Amit Abend worked as a company member with KCDC 2, Ephemera Dance Company, G-H-T, and the late Yaara Dolev. She collaborated with renowned artist Sandro Kopp and was a guest choreographer at Theater Görlitz. Her dance film “Stav” is currently screening in festivals around the world.
 
 ::: bilder
 darstellung: neben
@@ -23,13 +23,13 @@ More about Amit Abend can be found at:
 
 ## Special Week with Amit Abend at the TNDD professional training
 
-From January 22 to 26, Amit Abend is offering a five-day Special Week as part of the KEEP UP professional training at the TENZA Schmiede. Here's what Amit has to say about the approach and what participants can expect:
+From January 22 to 26, Amit Abend is offering a five-day Special Week as part of the KEEP UP professional training at the TENZA Schmiede. Here’s what Amit has to say about the approach and what participants can expect:
 
 > This special week presents a perfect opportunity to start the new year with a fresh perspective. We will use various exercises to challenge our perception of what we are capable of, surprise ourselves, and try out different ways of moving. We will invite qualities that we wish to experience more of in the coming year, using meditation, writing, and movement to reflect on the year that has passed and set intentions for the year to come. More particularly, we will welcome the new year with joy, excitement, and a celebration of movement.
 
 ## Informationen on the professional training with Amit Abend
 
-**Termine**: January 22 until 26, 2024 (Mo-Fr), 10:00 – 11:30 a.m.  
+**Termine**: January 22 until 26, 2024 (Mo–Fr), 10:00–11:30 a.m.  
 **Stil**: Contemporary  
 **Level**: Open level  
 **Registration**: via mail to [profitraining.tndd@gmail.com](mailto:profitraining.tndd@gmail.com)  

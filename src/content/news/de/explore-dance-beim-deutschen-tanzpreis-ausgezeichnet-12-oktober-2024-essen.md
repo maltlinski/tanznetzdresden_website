@@ -7,9 +7,9 @@ image: ../../../assets/news/2024/deutschertanzpreis2024-kultursalon-c2-a9ursula-
 teaser: Am 12. Oktober wurde im Rahmen des Deutschen Tanzpreises 2024 in Essen explore dance, das Netzwerk Tanz für junges Publikum, geehrt.
 ---
 
-*Am 12. Oktober wurde im Rahmen des Deutschen Tanzpreises 2024 in Essen explore dance, das Netzwerk Tanz für junges Publikum, geehrt. Aus Dresden vor Ort waren Carena Schlewitt, André Schallenberg, Franziska Ruoss von HELLERAU - Europäisches Zentrum der Künste sowie TanzNetzDresden-Vorständin und freie Tänzerin und Choreografin Anna Till, die erst im vergangenen Jahr im Rahmen von explore dance ihre gefeierte Produktion »Schwanensee in Sneakers« entwickelte. Weitere Neuigkeiten zur Verleihung gibt es im heutigen Blog-Beitrag.*
+*Am 12. Oktober wurde im Rahmen des Deutschen Tanzpreises 2024 in Essen explore dance, das Netzwerk Tanz für junges Publikum, geehrt. Aus Dresden vor Ort waren Carena Schlewitt, André Schallenberg, Franziska Ruoss von HELLERAU – Europäisches Zentrum der Künste sowie TanzNetzDresden-Vorständin und freie Tänzerin und Choreografin Anna Till, die erst im vergangenen Jahr im Rahmen von explore dance ihre gefeierte Produktion »Schwanensee in Sneakers« entwickelte. Weitere Neuigkeiten zur Verleihung gibt es im heutigen Blog-Beitrag.*
 
-## explore dance - ausgezeichnet beim Deutschen Tanzpreis 2024
+## explore dance – ausgezeichnet beim Deutschen Tanzpreis 2024
 
 Am 12. Oktober wurde [explore dance](https://explore-dance.de/) – Netzwerk Tanz für junges Publikum beim Deutschen Tanzpreis in Essen für herausragende Entwicklung im Tanz geehrt. Das bundesweite Netzwerk, das seit seiner Gründung 2018 den Zugang von Kindern und Jugendlichen zum zeitgenössischen Tanz fördert und damit erfolgreich eine Lücke im Kulturangebot in Deutschland schließt, erhält eine der höchsten und renommiertesten Auszeichnungen, die der Tanz in Deutschland zu vergeben hat. Die Ehrung ist ein vielversprechendes Signal für die Zukunft des Netzwerks, dem weiterhin eine langfristige Finanzierungsperspektive insbesondere auf Bundesebene fehlt, aber dessen Bedeutung und Erfolgsbilanz für die Entwicklung der Kunstform Tanz sowie auch die ästhetische Bildung auf Bundes- und Länderebene unbestritten ist.
 
@@ -53,7 +53,7 @@ Im Rahmen von explore dance und gemeinsam mit Nora Otte, Konstanze Grotkopp und 
 
 > »Mich freut die Ehrung für explore dance besonders, weil es ein sehr einzigartiges Modell ist, um Tanz Kindern und Jugendlichen näherzubringen. Die Ehrung macht sehr gut deutlich, das erkannt wurde, dass es sich hier um ein ganz besonderes Netzwerk handelt, das kontinuierlich verschiedene Produktionshäuser der freien darstellenden Künste miteinander verknüpft, was letztlich für uns Künstler:innen überaus wichtig ist. Nur durch explore dance ist letztlich auch mein Stück »Schwanensee in Sneakers« entstanden. Und mit diesem touren wir nach wie vor durch ganz Deutschland.«
 
-Und auch von der [go plastic company](https://www.goplasticcompany.de/) sowie von [Caroline Beach](https://www.carolinebeach.com/) - beide aus Dresden - wird es bereits im November - einerseits mit dem Projekt »[Fight For Your Fairytale](https://www.goplasticcompany.de/fight-for-your-fairytale/)« andererseits mit der Produktion »Was geht, Erdling?« - die nächsten Premieren im Rahmen von explore dance in Dresden geben.
+Und auch von der [go plastic company](https://www.goplasticcompany.de/) sowie von [Caroline Beach](https://www.carolinebeach.com/) - beide aus Dresden – wird es bereits im November – einerseits mit dem Projekt »[Fight For Your Fairytale](https://www.goplasticcompany.de/fight-for-your-fairytale/)« andererseits mit der Produktion »Was geht, Erdling?« – die nächsten Premieren im Rahmen von explore dance in Dresden geben.
 
 Mehr Informationen gibt es unter den folgenden Links:  
 [goplasticcompany.de/fight-for-your-fairytale](https://www.goplasticcompany.de/fight-for-your-fairytale/)  

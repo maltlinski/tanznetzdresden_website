@@ -8,7 +8,7 @@
  *  - Mitglieder melden Calls zur Prüfung; die Redaktion trägt ein, bearbeitet, gibt frei oder lehnt ab.
  * Rechte prüft die Datenbank (supabase/migrations/20261027000000_open_calls.sql), Logik in src/lib/open-calls.ts.
  */
-import { initIntern, errorText, showMessage } from './session';
+import { initIntern, errorText, showMessage, nochNichtEingerichtet } from './session';
 import { h } from './news/dom';
 import { sprache, t } from './sprache';
 import { badge, initialen, toast } from './keep-up';
@@ -43,9 +43,9 @@ function melde(text: string, dort?: HTMLElement) {
 /** Fehler: oben auf der Seite, bei offener Schublade unten links */
 const meldung = (text: string) => (document.querySelector('dialog[open]') ? melde(text) : showMessage(msg, text));
 
-const FEHLT = t(
-  'Open Calls gibt es, sobald die Migration supabase/migrations/20261027000000_open_calls.sql im SQL-Editor ausgeführt ist (docs/open-calls.md).',
-  'Open calls are not set up yet. Please ask the board to run the database migration (docs/open-calls.md).',
+const FEHLT = nochNichtEingerichtet(
+  t('Open Calls sind noch nicht eingerichtet. Bitte gib dem Vorstand Bescheid.', 'Open calls are not set up yet. Please let the board know.'),
+  'Migration supabase/migrations/20261027000000_open_calls.sql im SQL-Editor ausführen (docs/open-calls.md).',
 );
 const tabelleFehlt = (e: { message?: string; code?: string }) => /open_call|does not exist|schema cache|PGRST20[05]|42P01/i.test(`${e.message ?? ''} ${e.code ?? ''}`);
 

@@ -4,10 +4,10 @@ date: 2024-07-22
 category: Ausschreibung
 author: TanzNetzDresden
 image: ../../../assets/news/2023/tanznetzdresden-studio-round-ausschreibung-2023.webp
-teaser: Wir melden uns langsam aus der Sommerpause zurück und freuen uns gleich, mitteilen zu können, dass unser beliebtes Formate TNDD studio round (sowie POP UP Exchange - aber hierzu folgt ein gesonderter …
+teaser: Wir melden uns langsam aus der Sommerpause zurück und freuen uns gleich, mitteilen zu können, dass unser beliebtes Formate TNDD studio round (sowie POP UP Exchange – aber hierzu folgt ein gesonderter …
 ---
 
-*Wir melden uns langsam aus der Sommerpause zurück und freuen uns gleich, mitteilen zu können, dass unser beliebtes Formate TNDD studio round (sowie POP UP Exchange - aber hierzu folgt ein gesonderter Beitrag) in 2024 weitergehen wird. Ganz konkret bedeutet das, dass ihr euch ab sofort bewerben könnt. Mehr zu allem Kommenden, den Details und konkreten Terminen gibt es im heutigen Blog-Beitrag. (scroll down for english version)*
+*Wir melden uns langsam aus der Sommerpause zurück und freuen uns gleich, mitteilen zu können, dass unser beliebtes Formate TNDD studio round (sowie POP UP Exchange – aber hierzu folgt ein gesonderter Beitrag) in 2024 weitergehen wird. Ganz konkret bedeutet das, dass ihr euch ab sofort bewerben könnt. Mehr zu allem Kommenden, den Details und konkreten Terminen gibt es im heutigen Blog-Beitrag. (scroll down for english version)*
 
 ## TNDD studio round 2024 (de)
 
@@ -15,12 +15,12 @@ Das Austausch- und Präsentationsformat des TanzNetzDresden geht 2024 auf Tour. 
 
 Zur Information: TNDD studio round ist ein Präsentations- und Austauschformat, das lokale Künstler:innen mit Künstler:innen aus den jeweils anderen Städten in Kontakt bringen soll.
 
-### TNDD Studio Round 2024 - eine Ausschreibung für alle drei Termine
+### TNDD Studio Round 2024 – eine Ausschreibung für alle drei Termine
 
 Gesucht werden pro Edition von TNDD studio round je ein lokaler Beitrag und zwei Gast-Beiträge (Solo oder Duo, zwischen 5 und max. 20 Minuten). Idee ist es außerdem, die Beiträge mit einer Publikums-Interaktion und einem anschließenden Q&A zu rahmen.  
 Tagsüber kann in dem Studio geprobt und vorbereitet werden. Zu beachten ist, dass es ein simples technisches Setting geben wird und möglichst ohne bzw. mit einfachen Umbauten geplant werden sollte. Die technische Ausstattung beinhaltet eine Soundanlage, an die sich angeschlossen werden kann, sowie einfache Lichtstimmungen (ohne szenische Wechsel).
 
-Das Event wird dokumentiert und danach den Beteiligten zur Verfügung gestellt. Als Honorar können pro Beitrag und pro Person 350 EURO gezahlt werden. Für die Künstler:innen von außerhalb wird zudem die An-und Abreise sowie Unterkunft für 1 - 2 Nächte übernommen. Alles Weitere nach Absprache.
+Das Event wird dokumentiert und danach den Beteiligten zur Verfügung gestellt. Als Honorar können pro Beitrag und pro Person 350 EURO gezahlt werden. Für die Künstler:innen von außerhalb wird zudem die An-und Abreise sowie Unterkunft für 1 – 2 Nächte übernommen. Alles Weitere nach Absprache.
 
 **Die Einreichungen sollte Folgendes beinhalten:**
 
@@ -55,7 +55,7 @@ Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschut
 
 ## TNDD Studio Round 2024 (en)
 
-*We are slowly coming back from the summer break and are pleased to announce that our popular TNDD studio round format (as well as POP UP Exchange - but a separate blog article will follow) will continue in 2024. In concrete terms, this means that you can now apply for the calls for proposals. You can find out more about what's coming, the details and specific dates in today's blog post. (scroll on top for german version)*
+*We are slowly coming back from the summer break and are pleased to announce that our popular TNDD studio round format (as well as POP UP Exchange – but a separate blog article will follow) will continue in 2024. In concrete terms, this means that you can now apply for the calls for proposals. You can find out more about what’s coming, the details and specific dates in today’s blog post. (scroll on top for german version)*
 
 The exchange and presentation format of TanzNetzDresden is going on tour in 2024: Together with partners [Tanznetz Freiburg](https://tanznetz-freiburg.de/) and [ID\_Tanzhaus Frankfurt Rhein-Main](https://www.idtanzhausfrm.de/), three editions will take place in the cities of Dresden, Freiburg and Frankfurt am Main between October and December 2024.
 

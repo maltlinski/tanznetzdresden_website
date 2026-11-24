@@ -24,7 +24,7 @@ Seine Prozesse führen zu einer Form der Zusammenarbeit, bei der ein künstleris
 
 Foto credit: Iryna Rogava
 
-Max' choreografische Arbeit wurde in Zusammenarbeit mit dem Künstlerhaus Mousonturm, saasfee\*pavillon, Roxy Ulm, Eisfabrik e.V. Hannover, Ballett Staatstheater Nürnberg, PAF Berlin, Freier Tanz im Delta Festival und Gdansk Dance Festival aufgeführt, sowie als Top-Finalist beim 32. Internationalen Choreografiewettbewerb Hannover, Rotterdam International Duet Choreography Competition 2019 und als bester Tänzer bei SOLOCOREGRAFICO 2017 ausgezeichnet. Er ist Resident Artist am STL Tallinn als Mitglied des MODINA Netzwerks, sowie zuvor am Künstlerhaus Mousonturm, Staatstheater Darmstadt, Tanzplattform Rhein-Main und ChoreoLab - Made in Ulm, sowie dem Choreographic Coding Lab Köln 2023. Seine Filme wurden außerdem auf dem TANZAHOi Hamburg, dem Rollout Macao Film Festival und den Gießener Auftritten gezeigt.
+Max' choreografische Arbeit wurde in Zusammenarbeit mit dem Künstlerhaus Mousonturm, saasfee\*pavillon, Roxy Ulm, Eisfabrik e.V. Hannover, Ballett Staatstheater Nürnberg, PAF Berlin, Freier Tanz im Delta Festival und Gdansk Dance Festival aufgeführt, sowie als Top-Finalist beim 32. Internationalen Choreografiewettbewerb Hannover, Rotterdam International Duet Choreography Competition 2019 und als bester Tänzer bei SOLOCOREGRAFICO 2017 ausgezeichnet. Er ist Resident Artist am STL Tallinn als Mitglied des MODINA Netzwerks, sowie zuvor am Künstlerhaus Mousonturm, Staatstheater Darmstadt, Tanzplattform Rhein-Main und ChoreoLab – Made in Ulm, sowie dem Choreographic Coding Lab Köln 2023. Seine Filme wurden außerdem auf dem TANZAHOi Hamburg, dem Rollout Macao Film Festival und den Gießener Auftritten gezeigt.
 
 [Video auf Vimeo ansehen ↗](https://vimeo.com/416657386)
 
@@ -38,7 +38,7 @@ Max' Training ist eine Mischung aus mentaler Vorbereitung, geführter Improvisat
 
 ## Informationen zur Special Week mit Max Levy
 
-- **Termine**: 11. bis 15. März 2024 (Montag bis Freitag), 11 – 12:30 Uhr
+- **Termine**: 11. bis 15. März 2024 (Montag bis Freitag), 11–12:30 Uhr
 - **Ort**: [TENZA Schmiede,](https://www.tenza.de/) Pfotenhauerstraße 59 HH, 01307 Dresden
 - **Registrierung**: via mail an [profitraining.tndd@gmail.com](mailto:profitraining.tndd@gmail.com)
 - **Dauer:** 1,5 Stunden pro Tag

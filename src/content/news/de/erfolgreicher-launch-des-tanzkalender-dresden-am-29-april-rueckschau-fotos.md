@@ -9,7 +9,7 @@ teaser: "Es ist vollbracht: der Tanzkalender Dresden wurde vom TanzNetzDresden a
 
 *Es ist vollbracht: der Tanzkalender Dresden wurde vom TanzNetzDresden am 29. April, dem diesjährigen Welttanztag, gelauncht. Bei der Präsentation mit dabei: unzählige tanzende Menschen, bestes Wetter, fast der gesamte Vorstand des TanzNetzDresden sowie Kulturbürgermeisterin Annekatrin Klepsch. Eine Rückschau sowie eine Galerie mit Bildern von Fotograf Simon Garbe gibt es im heutigen Blog-Beitrag.*
 
-## Launch des Tanzkalender Dresden - Check!
+## Launch des Tanzkalender Dresden – Check!
 
 Bestes Wetter erwartete die Besuchenden am 29. April vor der Semperoper Dresden, wo das Programm zum Launch des Tanzkalender Dresden seinen Anfang nahm. Mehrere Walking-Dances waren geplant, die im weiteren Spaziergang von der Semperoper bis zum Kräutergarten des Societaetstheaters zahlreiche Passant:innen zum Mitmachen und Mitlaufen animierten.
 
@@ -63,7 +63,7 @@ Der Tanzkalender Dresden wird ab sofort monatlich im Großraum Dresden in gedruc
 - **Semperoper Dresden**
 - **Staatsschauspiel Dresden**
 - **Staatsoperette Dresden**
-- **HELLERAU - Europäisches Zentrum der Künste**
+- **HELLERAU – Europäisches Zentrum der Künste**
 - **Societaetstheater Dresden**
 - **Projekttheater Dresden**
 - **Landesbühnen Sachsen**

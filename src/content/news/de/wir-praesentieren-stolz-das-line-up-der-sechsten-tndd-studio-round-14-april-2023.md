@@ -9,9 +9,9 @@ teaser: Das komplette Line up der kommenden und nunmehr sechsten TNDD studio rou
 
 Das komplette Line up der kommenden und nunmehr sechsten TNDD studio round Ausgabe, die am 14. April 2023 wie gewohnt ab 20 Uhr in der [TENZA Schmiede](http://www.tenza.de/) stattfinden wird, ist nun online und kann durchstöbert werden. Es erwarten euch erneut drei spannende Beiträge ganz unterschiedlicher Künstler:innen und Kollektive, die in unserer besonderen Studio-Atmosphäre mit den Gäst:innen des Abends präsentiert und besprochen werden. Das Format ist wie immer kostenfrei. Die Beteiligten der anstehenden sechsten Ausgabe sind:
 
-- **Ka Dietze** (Deutschland): "# 2.1.2.1 I Wo beginnt Tanz ... endet\_beginnt Klang ... endet Tanz?"
-- **Makhina Dzhuraeva** (Deutschland): "Red Herring"
-- **YoY collective - Emma Zani & Roberto Doveri** (Italien): „INESORABILMENTEUNAVIA"
+- **Ka Dietze** (Deutschland): „# 2.1.2.1 I Wo beginnt Tanz … endet\_beginnt Klang … endet Tanz?“
+- **Makhina Dzhuraeva** (Deutschland): „Red Herring“
+- **YoY collective – Emma Zani & Roberto Doveri** (Italien): „INESORABILMENTEUNAVIA“
 
 Detaillierte Informationen zu den einzelnen Beiträgen der sechsten TNDD studio round folgen nun oder können direkt auf der [Unterseite der studio round](/#formate) eingesehen werden. Dort befinden sich alle Informationen auch in englischer Sprache. Ein zusätzlicher Blog-Beitrag in englischer Sprache gibt es [***hier***](/news/we-proudly-present-line-up-of-the-sixth-tndd-studio-round-april-14-2023/).
 
@@ -78,7 +78,7 @@ bilder:
     alt: ""
 :::
 
-## YoY Collective - Emma Zani & Roberto Doveri (Italien)
+## YoY Collective – Emma Zani & Roberto Doveri (Italien)
 
 YoY ist ein junges, 2020 gegründetes Kollektiv, bestehend aus Emma Zani und Roberto Doveri. (Tänzer und Choreographen) und Timoteo Carbone (Komponist). Ein Projekt, das Tanz, Musik und zeitgenössische Kunst verbindet, auf der Suche nach Kontamination und neuen Ausdrucksformen. YoY versteht sich als ein kultureller Organismus mit einem gemeinsamen Ziel: Ideen zu teilen.
 
@@ -121,4 +121,4 @@ Alle Informationen zu den jeweiligen Stücken des Abends, die im Anschluss selbs
 
 Die TNDD studio round ist ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz und der Kulturstiftung des Freistaates Sachsen. Die Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
-Header Foto: YoY Collective mit ihrer Produktion "INESORABILMENTEUNAVIA"; Performance im Teatro di Anghiari
+Header Foto: YoY Collective mit ihrer Produktion „INESORABILMENTEUNAVIA“; Performance im Teatro di Anghiari

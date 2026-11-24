@@ -101,7 +101,7 @@ const json = jsonImHtml({
         <button type="button" role="tab" id="tk-tab-liste" aria-controls="tk-liste" aria-selected="true" data-tk-ansicht="liste">{a.liste}</button>
         <button type="button" role="tab" id="tk-tab-monat" aria-controls="tk-monat" aria-selected="false" tabindex="-1" data-tk-ansicht="monat">{a.monat}</button>
       </div>
-      <div class="tk-chips" role="group" aria-label={sr.filter} data-tk-chips>
+      <div class="tk-chips chips-wisch" role="group" aria-label={sr.filter} data-tk-chips>
         {chipKats.map((c) => (
           <button type="button" class="tk-chip" data-kat={c} aria-pressed={c === '' ? 'true' : 'false'}>
             <span class="tk-sq" data-kat={c || undefined} aria-hidden="true"></span>{c ? kat[c] : kat.Alle}<span class="tk-chip__n" data-n></span>
@@ -242,7 +242,7 @@ const json = jsonImHtml({
   .tk-chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .tk-chip {
     display: flex; align-items: center; gap: 8px; padding: 8px 12px; border: 1.5px solid var(--purple); background: transparent;
-    color: var(--purple); font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em;
+    color: var(--purple); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em;
     text-transform: uppercase; cursor: pointer; border-radius: 0; transition: border-color var(--dur-base);
   }
   .tk-chip:hover { border-color: var(--magenta); }
@@ -291,7 +291,7 @@ const json = jsonImHtml({
   .tk-pfeil--voll:hover:not(:disabled) { background: var(--magenta); border-color: var(--magenta); color: #fff; }
   .tk-wt { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 2px; margin-bottom: 4px; }
   .tk-wt span {
-    text-align: center; padding: 4px 0; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em;
+    text-align: center; padding: 4px 0; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em;
     text-transform: uppercase; color: var(--ink-soft);
   }
   .tk-wt--gross { gap: 0; margin: 0; }
@@ -356,7 +356,7 @@ const json = jsonImHtml({
   .tk-spalte :global(.is-vergangen .tk-datum__n) { color: var(--ink-soft); }
   :global(.tk-heute-mk) {
     align-self: flex-start; margin-top: 4px; background: var(--magenta-2); color: #fff; padding: 2px 6px; font-family: var(--font-mono);
-    font-size: 10px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase;
   }
   .tk-spalte :global(.tk-items) { display: flex; flex-direction: column; min-width: 0; }
   .tk-spalte :global(.tk-items__leer) { margin: 0; padding: 14px 8px; font-size: 15px; color: var(--ink-soft); }
@@ -389,7 +389,7 @@ const json = jsonImHtml({
   }
   :global(.tk-fakten) { display: flex; flex-wrap: wrap; gap: 12px 40px; margin: 0; }
   :global(.tk-fakten div) { display: flex; flex-direction: column; gap: 4px; }
-  :global(.tk-fakten dt) { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
+  :global(.tk-fakten dt) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-soft); }
   :global(.tk-fakten dd) { margin: 0; font-size: 14px; line-height: var(--lh-text); color: var(--purple); }
   :global(.tk-fakten dd + dd) { color: var(--ink-soft); }
   :global(.tk-links) { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
@@ -425,8 +425,8 @@ const json = jsonImHtml({
   .tk-raster :global(.is-vergangen .chip1) { color: var(--ink-soft); }
   .tk-raster :global(.chip1 .tk-sq) { width: 7px; height: 7px; }
   .tk-raster :global(.chip1 > span:last-child) { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .tk-raster :global(.chip1 b) { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; color: var(--ink-soft); }
-  .tk-raster :global(.mehr) { font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--magenta-2); }
+  .tk-raster :global(.chip1 b) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; color: var(--ink-soft); }
+  .tk-raster :global(.mehr) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--magenta-2); }
 
   .tk-tag { flex: 0 1 380px; min-width: 280px; position: sticky; top: calc(var(--tk-oben) + 24px); border-top: 3px solid var(--magenta); padding-top: 18px; }
   .tk-tag :global(.tk-tag__k) { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta-2); }
@@ -461,6 +461,6 @@ const json = jsonImHtml({
     .tk-raster :global(button) { min-height: 54px; padding: 5px 4px; }
     .tk-raster :global(.chip1 > span:last-child) { display: none; }
     .tk-raster :global(.chips) { flex-direction: row; flex-wrap: wrap; }
-    .tk-raster :global(.mehr) { font-size: 9px; letter-spacing: 0.04em; }
+    .tk-raster :global(.mehr) { font-size: 11px; letter-spacing: 0.04em; }
   }
 </style>

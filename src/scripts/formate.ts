@@ -56,6 +56,8 @@ function termineAktualisieren(d: Daten) {
     t.textContent = text;
     // Termin in der Datumsschrift (src/lib/datum-schrift.ts), „Termin folgt“ nicht
     t.classList.toggle('datum', !!n);
+    // ohne Termin nur eine kleine Zeile (FormateView.astro)
+    cta.classList.toggle('fo-cta--leer', !n);
     cta.querySelector('[data-w]')!.textContent = n?.wo ?? d.folgtText;
   }
 }

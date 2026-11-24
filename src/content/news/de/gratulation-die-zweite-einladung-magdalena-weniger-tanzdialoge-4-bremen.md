@@ -15,7 +15,7 @@ Das Format TanzDialoge ist eine Plattform für die künstlerische Auseinanderset
 
 ### TanzDialoge #4
 
-In diesem Jahr findet die nunmehr vierte Edition des Formats in Bremen statt, das 2023 unter dem Titel »Darf ich bitten?« steht. Die TanzDialoge #4 nehmen dabei in den kommenden Tagen die Vernetzung der Bremer Tanzschaffenden mit Künstler:innen anderer Bundesländer in den Fokus. Es werden fünf Duos aus jeweils zwei Tanzschaffenden - eine Person aus Bremen plus eine aus einem anderen Bundesland - zusammengestellt, die noch nicht miteinander gearbeitet haben. Am Ende der Probenwoche gibt es eine gemeinsame Aufführung der entstandenen Dialoge in Bremen und eine in Bremerhaven.
+In diesem Jahr findet die nunmehr vierte Edition des Formats in Bremen statt, das 2023 unter dem Titel »Darf ich bitten?« steht. Die TanzDialoge #4 nehmen dabei in den kommenden Tagen die Vernetzung der Bremer Tanzschaffenden mit Künstler:innen anderer Bundesländer in den Fokus. Es werden fünf Duos aus jeweils zwei Tanzschaffenden – eine Person aus Bremen plus eine aus einem anderen Bundesland – zusammengestellt, die noch nicht miteinander gearbeitet haben. Am Ende der Probenwoche gibt es eine gemeinsame Aufführung der entstandenen Dialoge in Bremen und eine in Bremerhaven.
 
 ### Rahmenbedingungen
 
@@ -35,9 +35,9 @@ Weitere Informationen zu Young-Won Song gibt es weiter unten.
 ### Termine & Tickets
 
 - 30.10. bis 2.11.23  - Proben in Bremen (Schaulust und theaterkontor)
-- 3.11.23 - Generalprobe in der Schaulust (Bremen)
-- 4.11.23 - Vorstellung in der Schaulust (Bremen)
-- 5.11.23 - Generalprobe und Vorstellung im Theater im Fischereihafen (Bremerhaven)
+- 3.11.23 – Generalprobe in der Schaulust (Bremen)
+- 4.11.23 – Vorstellung in der Schaulust (Bremen)
+- 5.11.23 – Generalprobe und Vorstellung im Theater im Fischereihafen (Bremerhaven)
 
 ### Karten für die diesjährigen Tanzdialoge können hier gekauft werden:
 
@@ -49,6 +49,6 @@ Weitere Information den TanzDialogen gibt es unter folgendem Link:
 
 ## Young-Won Song
 
-[Young-Won Song](https://www.theaterbremen.de/de_DE/ensemble/young-won-song.158009) studierte Tanz an der Salzburg Experimental Academy of Dance. Nach Abschluss ihres Studiums war sie Mitglied der Salzburger Postgraduate-Kompanie Bodhi Project, wo sie mit Choreograf:innen wie Sita Ostheimer, Eldad Ben Sasson, Paul Blackman und Christine Gouzelis (Jukstapoz) und Mark Lorimer arbeitete. Daneben tanzte sie in Choreografien von Claire Croizé und Etienne Guilloteau (ECCE), Núria Guiu Sagarra, Máté Mészáros, Adrienn Hód (HODWORKS), Samir Akika, Helder Seabra, kainkollektiv, Barnaby Rooth, Ryan Mason und der in Berlin ansässigen Frantics Dance Company. Ihr gemeinsam mit dem Tänzer Diego de la Rosa entwickeltes Duett „One's“ gewann 2017 den Residenzpreis HELLERAU beim 31. Internationalen Wettbewerb für Choreographie Hannover. Seit der Spielzeit 2018/19 ist sie festes Mitglied der Tanzkompanie Unusual Symptoms am Theater Bremen. In der Spielzeit 2020/21 wirkte sie in Belgien als Tänzerin und Choreografin an der Produktion „Vuur/toren“ (Laika/hetpaleis) in der Regie von Michai Geyzen mit.
+[Young-Won Song](https://www.theaterbremen.de/de_DE/ensemble/young-won-song.158009) studierte Tanz an der Salzburg Experimental Academy of Dance. Nach Abschluss ihres Studiums war sie Mitglied der Salzburger Postgraduate-Kompanie Bodhi Project, wo sie mit Choreograf:innen wie Sita Ostheimer, Eldad Ben Sasson, Paul Blackman und Christine Gouzelis (Jukstapoz) und Mark Lorimer arbeitete. Daneben tanzte sie in Choreografien von Claire Croizé und Etienne Guilloteau (ECCE), Núria Guiu Sagarra, Máté Mészáros, Adrienn Hód (HODWORKS), Samir Akika, Helder Seabra, kainkollektiv, Barnaby Rooth, Ryan Mason und der in Berlin ansässigen Frantics Dance Company. Ihr gemeinsam mit dem Tänzer Diego de la Rosa entwickeltes Duett „One’s“ gewann 2017 den Residenzpreis HELLERAU beim 31. Internationalen Wettbewerb für Choreographie Hannover. Seit der Spielzeit 2018/19 ist sie festes Mitglied der Tanzkompanie Unusual Symptoms am Theater Bremen. In der Spielzeit 2020/21 wirkte sie in Belgien als Tänzerin und Choreografin an der Produktion „Vuur/toren“ (Laika/hetpaleis) in der Regie von Michai Geyzen mit.
 
 Titelfoto: Young-Won Song; Quelle: [Theater Bremen](https://www.theaterbremen.de/de_DE/ensemble/young-won-song.158009)

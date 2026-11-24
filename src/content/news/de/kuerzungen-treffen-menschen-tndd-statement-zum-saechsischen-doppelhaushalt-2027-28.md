@@ -9,7 +9,7 @@ teaser: Mit großer Sorgen und Verunsicherung verfolgt auch das TanzNetzDresden 
 
 *Mit großer Sorgen und Verunsicherung verfolgt auch das TanzNetzDresden die Ereignisse im Zuge der Planung des sächsischen Haushaltes für die Jahre 2027 und 2028, welche unter anderem massive Kürzungen im Bereich Kunst und Kultur beabsichtigt. Um konkret die Haltung und das Anliegen der Freien Szene zu verdeutlichen, um haben wir das folgende Statement entwickelt und veröffentlicht, dem sich nicht nur der Vorstand des TanzNetzDresden und seine Mitglieder:innen, sondern auch zahlreiche weitere Kulturschaffende, Künstler:innen, Choreografinnen, Tänzerinnen angeschlossen haben.*
 
-### »Kürzungen treffen Menschen«
+## »Kürzungen treffen Menschen«
 
 Das verfasste Statement zur Situation soloselbstständiger Tanzschaffender ist ebenso an einzelne Mitglieder:innen des sächsischen Landtages geschickt worden, um auch auf direkten Wege auf die Sorgen und die Anliegen der Freien Szene hinzuweisen und zugleich zu verdeutlichen, welche Konsequenzen die beabsichtigten Kürzungen hätten. Sowohl für das künstlerische Angebot der Stadt Dresden, das Renommee der Stadt Dresden in punkto Tanz, aber vor allem auch welche Bedeutung die Kürzungen für das Arbeiten und Leben all jener Künstler:innen hätte, die in der Freien Szene aktiv sind und ihr die Lebendigkeit und Qualität verleihen, mit der sich die Stadt auch gern schmückt und die wiederum weit über die Stadt hinaus Strahlkraft und Bedeutung besitzt.
 
@@ -33,7 +33,7 @@ Explizit die vergangenen Jahre als Dresden 2025 das Debüt des Tanzjahres (eine 
 
 ### Kürzungen in der freien Szene treffen Menschen.
 
-Kürzungen der Mittel für Institutionen von Kunst und Kultur gefährden die Arbeit jener Einrichtungen. Eine Kürzung der Mittel der Freien Szene gefährdet direkt die Menschen, die in ihr arbeiten. Es ist uns daher wichtig, dass nicht nur über die Förderung von Institutionen gesprochen wird - die zweifelsohne wichtig ist - sondern dass auch die Anliegen der Künstler\*innen Gehör finden, die diese Kunst überhaupt erst hervorbringen.
+Kürzungen der Mittel für Institutionen von Kunst und Kultur gefährden die Arbeit jener Einrichtungen. Eine Kürzung der Mittel der Freien Szene gefährdet direkt die Menschen, die in ihr arbeiten. Es ist uns daher wichtig, dass nicht nur über die Förderung von Institutionen gesprochen wird – die zweifelsohne wichtig ist – sondern dass auch die Anliegen der Künstler:innen Gehör finden, die diese Kunst überhaupt erst hervorbringen.
 
 Faire Arbeitsbedingungen und angemessene Honorarstandards sind hierbei zentrale Eckpfeiler, die in den letzten Jahren hart erkämpft wurden und die mit einer Kürzung finanzieller Mittel unmittelbar erneut zur Disposition stünden.
 

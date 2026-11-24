@@ -7,9 +7,9 @@ image: ../../../assets/news/2025/tndd-studioround2025-05.webp
 teaser: Am 27. und 28. September 2025 fanden in Dresden zwei weitere Ausgaben von POP UP exchange und STUDIO ROUND statt.
 ---
 
-*Am 27. und 28. September 2025 fanden in Dresden zwei weitere Ausgaben von POP UP exchange und STUDIO ROUND statt. Im Falle der POP UP exchange waren die GrooveStation und das projekttheater die beiden Orte des Geschehens. Die STUDIO ROUND fand hingegen an ihrem bewährten Ort, der TENZA statt. Heute geben wir auch eine kleine Review auf die beiden Termine - mit dabei: eine Menge Fotos und ein Statement von TNDD Vorständin Susan Schubert.*
+*Am 27. und 28. September 2025 fanden in Dresden zwei weitere Ausgaben von POP UP exchange und STUDIO ROUND statt. Im Falle der POP UP exchange waren die GrooveStation und das projekttheater die beiden Orte des Geschehens. Die STUDIO ROUND fand hingegen an ihrem bewährten Ort, der TENZA statt. Heute geben wir auch eine kleine Review auf die beiden Termine – mit dabei: eine Menge Fotos und ein Statement von TNDD Vorständin Susan Schubert.*
 
-## STUDIO ROUND 2025 in Dresden - die Rückschau
+## STUDIO ROUND 2025 in Dresden – die Rückschau
 
 Das Austausch- und Präsentationsformat STUDIO ROUND des TanzNetzDresden ist auch in 2025 in Kooperation mit [ID\_Tanzhaus Frankfurt Rhein-Main](https://tanzhausfrm.de/), der Tanzzentrale der Region Nürnberg und [Tanznetz Freiburg](https://tanznetz-freiburg.de/) im vierten Quartal erneut auf Tour in vier deutschen Städten und war in diesem Zuge am 27. September 2025 in Dresden zu Gast.Erneut fungiert die STUDIO ROUND somit einmal mehr als Präsentations- und Austauschformat, das lokale Künstler:innen in diesem Fall zusätzlich mit Künstler:innen aus den jeweils anderen Städten in Kontakt bringen wird. Auch in diesem Jahr findet die STUDIO ROUND dabei in Kooperation mit dem [ID\_Tanzhaus Frankfurt Rhein-Main](https://tanzhausfrm.de/), dem [Tanznetz Freiburg](https://tanznetz-freiburg.de/) sowie zusätzlich mit dem [tanz\_netzwerk\_bremen](https://lafdk-bremen.de/) statt.
 
@@ -24,7 +24,7 @@ Der Eintritt war frei. Alle Interessierten war herzlich willkommen.
 
 TanzNetzDresden Vorständin Susan Schubert rückblickend zur nunmehr zehnten Ausgabe der STUDIO ROUND in Dresden:
 
-> Nach einem get together aller Künstler:innen, die an diesem Wochenende an den Formaten partizipierten, hatten wir einen warmherzigen und reichhaltigen Abend. Die Stücke des Abends der STUDIO ROUND waren sowohl Debüts von Choreografinnen nach ihrer Ausbildung im Übergang in die freischaffende Tätigkeit, Kurzstücke und Auszüge bis hin zu einem fertigen Stück. Die zehnte STUDIO ROUND war ein reiner female Artist Abend mit sehr nahbaren Gesprächen und intimen Details zur Entstehung und Motivation. Ein facettenreicher Austausch über die zeitgenössische Bearbeitung von menschlichen Zuständen - sei es allein oder zu zweit.
+> Nach einem get together aller Künstler:innen, die an diesem Wochenende an den Formaten partizipierten, hatten wir einen warmherzigen und reichhaltigen Abend. Die Stücke des Abends der STUDIO ROUND waren sowohl Debüts von Choreografinnen nach ihrer Ausbildung im Übergang in die freischaffende Tätigkeit, Kurzstücke und Auszüge bis hin zu einem fertigen Stück. Die zehnte STUDIO ROUND war ein reiner female Artist Abend mit sehr nahbaren Gesprächen und intimen Details zur Entstehung und Motivation. Ein facettenreicher Austausch über die zeitgenössische Bearbeitung von menschlichen Zuständen – sei es allein oder zu zweit.
 
 ::: bilder
 format: quer
@@ -62,7 +62,7 @@ Alle Termine der STUDIO ROUND in 2025 sind die Folgenden:
 Weitere Informationen zu den einzelnen Produktionen gibt es unter den folgenden Links:  
 [tanznetzdresden.de/studio-round](/#formate) & [tanznetzdresden.de/studio-round-das-programm-fuer-den-27-09-2025-tenza-dresden](/news/studio-round-das-programm-fuer-den-27-09-2025-tenza-dresden/)
 
-## POP UP exchange - der Rückblick
+## POP UP exchange – der Rückblick
 
 TNDD-Vorständin Susan Schubert über die Dresdner Ausgabe von POP UP exchange:
 

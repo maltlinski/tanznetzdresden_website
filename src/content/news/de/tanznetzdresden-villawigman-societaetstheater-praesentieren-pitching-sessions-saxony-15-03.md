@@ -26,11 +26,11 @@ bilder:
     alt: ""
 :::
 
-Die FORWARD DANCE COMPANY ist die mixed-abled Tanzcompany von LOFFT – DAS THEATER in Leipzig. Unter der künstlerischen Projektleitung von Gustavo Fijalkow bearbeitet sie mit wechselnden Choreograf\*innen gesellschafts-politische Themen. Dabei entstehen Tanzperformances sowohl für spezifische Orte im öffentlichen Raum als auch für die Bühne. Seit der Gründung 2020 bespielte die FORWARD DANCE COMPANY u.a. den Deutschen Pavillon auf der Biennale di Venezia 2023 und eröffnete das Kunstfest Weimar 2024.
+Die FORWARD DANCE COMPANY ist die mixed-abled Tanzcompany von LOFFT – DAS THEATER in Leipzig. Unter der künstlerischen Projektleitung von Gustavo Fijalkow bearbeitet sie mit wechselnden Choreograf:innen gesellschafts-politische Themen. Dabei entstehen Tanzperformances sowohl für spezifische Orte im öffentlichen Raum als auch für die Bühne. Seit der Gründung 2020 bespielte die FORWARD DANCE COMPANY u. a. den Deutschen Pavillon auf der Biennale di Venezia 2023 und eröffnete das Kunstfest Weimar 2024.
 
 Die FORWARD DANCE COMPANY hinterfragt mit künstlerischen Mitteln des Tanzes ästhetisch und diskursiv etablierte Denkweisen, Machtverhältnisse sowie Körperbilder. Sie möchte unerforschtes Tanzvokabular entdecken und auf der Bühne sichtbar machen.
 
-Die FORWARD DANCE COMPANY ist außerdem die erste und einzige dauerhaft in Sachsen arbeitende professionelle Tanzcompany, in der Tänzer\*innen mit unterschiedlichen Körperlichkeiten unter professionellen Bedingungen zusammenarbeiten.
+Die FORWARD DANCE COMPANY ist außerdem die erste und einzige dauerhaft in Sachsen arbeitende professionelle Tanzcompany, in der Tänzer:innen mit unterschiedlichen Körperlichkeiten unter professionellen Bedingungen zusammenarbeiten.
 
 **Web**: [forward-dance-company.de](https://www.forward-dance-company.de/)  
 **Instagram**: [instagram.com/forward.dance.company](https://www.instagram.com/forward.dance.company/)
@@ -120,7 +120,7 @@ In diesem Jahr ist HELLERAU die veranstaltende Institution, die die Tanzplattfor
 Eine unabhängige Jury hat die Produktionen für das Programm ausgewählt, das Mitte März 2026 in HELLERAU und weiteren Dresdner Institutionen gezeigt wird. Berücksichtigt wurden Produktionen, die zwischen September 2023 und August 2025 in Deutschland entstanden sind.
 
 ::: bilder
-text: '"Spiegelneuronen" von Sasha Waltz & Guests mit Rimini Protokoll;'
+text: „Spiegelneuronen“ von Sasha Waltz & Guests mit Rimini Protokoll;
 foto: Bernd Uhlig
 bilder:
   - datei: /news/archiv/2026/tanznetzdresden-tanzplattform-deutschland-2026-spiegelneuronen-sasha-waltz-rimini.webp
@@ -131,7 +131,7 @@ bilder:
 
 Aus rund 550 Produktionen hat eine Jury 13 Stücke ausgewählt, die exemplarisch für die künstlerische Vielfalt und Innovationskraft des zeitgenössischen Tanzes in Deutschland stehen. Die 13 Produktionen sind in 32 Aufführungen auf 11 Bühnen in Dresden zu sehen – neben HELLERAU – Europäisches Zentrum der Künste im Staatsschauspiel (Schauspielhaus und Kleines Haus), Staatsoperette, tjg. theater junge generation, Societaetstheater und villa\\wigman.
 
-Insgesamt sind 150 Künstler\*innen beteiligt, darunter Sasha Waltz & Guests mit Rimini Protokoll, Adam Linder & Solistenensemble Kaleidoskop, Claire Cunningham, Eszter Salamon, die bereits bei der Tanzplattform Deutschland 2012 in Dresden zu Gast war, und die Dresdner Company Charles A. Washington/Pinkmetalpetal Productions. Darüber hinaus zeigen Jessica Nupen, Katharina Senzenberger, Elsa Artmann/SANFTE ARBEIT, Ewa Dziarnowska, MOUVOIR Stephanie Thiersch/Alesandra Seutin, Regina Rossi, Ceren Oran & Moving Borders und Kat Válastur ihre Arbeiten.
+Insgesamt sind 150 Künstler:innen beteiligt, darunter Sasha Waltz & Guests mit Rimini Protokoll, Adam Linder & Solistenensemble Kaleidoskop, Claire Cunningham, Eszter Salamon, die bereits bei der Tanzplattform Deutschland 2012 in Dresden zu Gast war, und die Dresdner Company Charles A. Washington/Pinkmetalpetal Productions. Darüber hinaus zeigen Jessica Nupen, Katharina Senzenberger, Elsa Artmann/SANFTE ARBEIT, Ewa Dziarnowska, MOUVOIR Stephanie Thiersch/Alesandra Seutin, Regina Rossi, Ceren Oran & Moving Borders und Kat Válastur ihre Arbeiten.
 
 Die Auswahl 2026 sowie das vollständige Plattform Plus-Programm gibt es unter folgendem Link:  
 [tanzplattform2026.de](http://www.tanzplattform2026.de/)

@@ -7,13 +7,13 @@ image: ../../../assets/news/2026/header-e1791459880915.webp
 teaser: "Manch eine:r hat es schon gehört, andere noch nicht: das TanzNetzDresden hat einen neuen Vorstand bestehend aus vier Personen gewählt, der in den kommenden Jahren das Netzwerk repräsentieren und …"
 ---
 
-*Manch eine:r hat es schon gehört, andere noch nicht: das TanzNetzDresden hat einen neuen Vorstand bestehend aus vier Personen gewählt, der in den kommenden Jahren das Netzwerk repräsentieren und ausrichten sowie für die Bedürfnisse der freien Tanzszene in Dresden und die kommunalen Politiker:innen Ansprechpartnerin sein wird. Um wen es sich handelt und was für Ziele und Visionen die personelle Neubesetzung für das TanzNetzDresden mitbringen - all das gibt es im heutigen Blog-Beitrag.*
+*Manch eine:r hat es schon gehört, andere noch nicht: das TanzNetzDresden hat einen neuen Vorstand bestehend aus vier Personen gewählt, der in den kommenden Jahren das Netzwerk repräsentieren und ausrichten sowie für die Bedürfnisse der freien Tanzszene in Dresden und die kommunalen Politiker:innen Ansprechpartnerin sein wird. Um wen es sich handelt und was für Ziele und Visionen die personelle Neubesetzung für das TanzNetzDresden mitbringen – all das gibt es im heutigen Blog-Beitrag.*
 
 ## Rouquart • Yotsumoto • Lucifero • Herz
 
 So lauten die Nachnamen des neuen Vorstandes des TanzNetzDresden. Vollständig ausgeschrieben handelt es sich um **Justine Rouquart**, **Rika Yotsumoto**, **Alina Lucifero** und **Malte Leonard Herz**, die zu den neuen Vorständ:innen des TanzNetzDresden gewählt wurden. Die Wahl löst zugleich den langjährig bestehenden Vorstand des TanzNetzDresden ab.
 
-An dieser Stelle möchten wir den ehemaligen Vorständ:innen Cindy Hammer, Daniela Lehmann, Susan Schubert, Anna Till, Magdalena Weniger und Charles A. Washington ausdrücklich für ihren unermüdlichen und leidenschaftlichen Einsatz in all den vergangenen Jahren für das TanzNetzDresden und all seine Belange danken. Wir danken ebenso für eure ausdauernde und stets persönliche Netzwerkarbeit, das offene Ohr, eure Kreativität und Flexibilität sowie für euren Einsatz im Austausch mit Institutionen, Politiker:innen und nicht zuletzt mit den freien Künstler:innen - sei es in Dresden sowie im gesamten Bundesgebiet.
+An dieser Stelle möchten wir den ehemaligen Vorständ:innen Cindy Hammer, Daniela Lehmann, Susan Schubert, Anna Till, Magdalena Weniger und Charles A. Washington ausdrücklich für ihren unermüdlichen und leidenschaftlichen Einsatz in all den vergangenen Jahren für das TanzNetzDresden und all seine Belange danken. Wir danken ebenso für eure ausdauernde und stets persönliche Netzwerkarbeit, das offene Ohr, eure Kreativität und Flexibilität sowie für euren Einsatz im Austausch mit Institutionen, Politiker:innen und nicht zuletzt mit den freien Künstler:innen – sei es in Dresden sowie im gesamten Bundesgebiet.
 
 Mit dem neu gewählten Vorstand findet auch ein Generationswechsel statt, wie aus der folgenden Vorstellung der vier Vorstände deutlich wird. Antreten wird der Vorstand sein Amt in vollem Umfang ab dem heutigen Tage (08.10.2026), da die notarielle Bestätigung zu jenem Datum vollzogen wurde. Doch auch im Vorfeld tat sich bereits einiges hinter den Kulissen. Doch dazu werden wir in einem der kommenden Beiträge mehr verraten, denn nun sollen die einzelnen Vorständinnen vorgestellt werden.
 
@@ -43,11 +43,11 @@ bilder:
     alt: ""
 :::
 
-Rika Yotsumoto ist Tänzerin und Choreografin aus Dresden. Sie studierte zeitgenössischen Tanz in Portland und tanzte in dieser Zeit für Oriantheatre Dance Company in Frankreich und Deutschland. Seit 2018 lebt Rika in Dresden und ist besonders als Tänzerin in der Freien Szene tätig. Ihre künstlerische Tätigkeit umfasst sowohl die Arbeit an festen Häusern wie der Semperoper Dresden und dem StaatsschauspielDresden als auch Zusammenarbeiten mit freien Choreograf:innen und Tanzkompanien, darunter go plastic company, Polymer DMT, KOMA&Ko,situation productions, Natalie Wagner und Joseph Hernandez. Darüber hinaus engagiert sich Rika seit 2019 aktiv im TanzNetzDresden und ist seit 2026 Vorstandsmitglied des Netzwerks. Zu ihren eigenen choreografischen Arbeiten zählen „Porcelain Madness“ (2020) und „Peng! Peng!“ (2023, gefördert von explore dance – Netzwerk Tanz für junges Publikum).
+Rika Yotsumoto ist Tänzerin und Choreografin aus Dresden. Sie studierte zeitgenössischen Tanz in Portland und tanzte in dieser Zeit für Oriantheatre Dance Company in Frankreich und Deutschland. Seit 2018 lebt Rika in Dresden und ist besonders als Tänzerin in der Freien Szene tätig. Ihre künstlerische Tätigkeit umfasst sowohl die Arbeit an festen Häusern wie der Semperoper Dresden und dem StaatsschauspielDresden als auch Zusammenarbeiten mit freien Choreograf:innen und Tanzkompanien, darunter go plastic company, Polymer DMT, KOMA&Ko, situation productions, Natalie Wagner und Joseph Hernandez. Darüber hinaus engagiert sich Rika seit 2019 aktiv im TanzNetzDresden und ist seit 2026 Vorstandsmitglied des Netzwerks. Zu ihren eigenen choreografischen Arbeiten zählen „Porcelain Madness“ (2020) und „Peng! Peng!“ (2023, gefördert von explore dance – Netzwerk Tanz für junges Publikum).
 
 Rika Yotsumoto ist bereits langjähriges TNDD-Mitglied und als solches in den vergangenen Jahres maßgeblich für die Koordination des Profi-Trainings zuständig. Zur Bedeutung des Netzwerks und ihren Visionen für die Zukunft lässt sie Folgendes verlauten:
 
-> Das TanzNetzDresden hat die freie Tanzszene in Dresden enorm vorangebracht - als Interessenvertreter freischaffender, als zentrale Anknüpf- und Vernetzungspunkt der lokalen Szene sowie als Raumgestalter für künstlerischen Austausch und Vielfalt. Als neues Vorstandsmitglied freue ich mich, diese Arbeit aktiv weiterzugestalten: bestehende Strukturen stärken, neue Impulse geben und ein aktives Miteinander anstoßen, um gemeinsam die lebendige und vielfältige Tanzlandschaft Dresdens zu stärken.
+> Das TanzNetzDresden hat die freie Tanzszene in Dresden enorm vorangebracht – als Interessenvertreter freischaffender, als zentrale Anknüpf- und Vernetzungspunkt der lokalen Szene sowie als Raumgestalter für künstlerischen Austausch und Vielfalt. Als neues Vorstandsmitglied freue ich mich, diese Arbeit aktiv weiterzugestalten: bestehende Strukturen stärken, neue Impulse geben und ein aktives Miteinander anstoßen, um gemeinsam die lebendige und vielfältige Tanzlandschaft Dresdens zu stärken.
 
 **Instagram**: [@rika.eln](https://www.instagram.com/rika.eln/)
 
@@ -60,7 +60,7 @@ bilder:
     alt: ""
 :::
 
-Alina Lucifero studierte nach ihrem Abitur in Mönchengladbach an der Palucca Hochschule für Tanz in Dresden Tanzpädagogik und ist als Pädagogin und Choreografin für das Heinrich–Schütz–Konservatorium in Dresden tätig. Sie entwickelt als freiberufliche Tänzerin und Choreografin eigene Stücke wie „Exogen“, „Ein halbes Pfund Hoffnung bitte“ und „touching shame". Sie schloss im Jahr 2021 eine Ausbildung am Tanztherapiezentrum Berlin mit Schwerpunkt Heilpädagogischer Tanz ab.
+Alina Lucifero studierte nach ihrem Abitur in Mönchengladbach an der Palucca Hochschule für Tanz in Dresden Tanzpädagogik und ist als Pädagogin und Choreografin für das Heinrich–Schütz–Konservatorium in Dresden tätig. Sie entwickelt als freiberufliche Tänzerin und Choreografin eigene Stücke wie „Exogen“, „Ein halbes Pfund Hoffnung bitte“ und „touching shame“. Sie schloss im Jahr 2021 eine Ausbildung am Tanztherapiezentrum Berlin mit Schwerpunkt Heilpädagogischer Tanz ab.
 
 Ihre Motivation im Rahmen des Vorstandes fasst Alina folgendermaßen zusammen:
 

@@ -206,15 +206,18 @@ const daten = jsonImHtml(
   .tka-jahr__zahl { margin: 0; font-family: var(--font-display); font-weight: 800; font-size: clamp(48px, 5.4vw, 80px); line-height: 0.85; letter-spacing: -0.045em; color: var(--purple); }
   .tka-jahr__n { display: flex; align-items: center; gap: 10px; margin: 14px 0 0; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
   .tka-jahr__n span { width: 8px; height: 8px; background: var(--magenta); flex: none; }
-  .tka-grid { min-width: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 36px clamp(16px, 2vw, 28px); align-items: start; margin: 0; padding: 0; list-style: none; }
+  .tka-grid { --tka-luecke: clamp(16px, 2vw, 28px); min-width: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 36px var(--tka-luecke); align-items: start; margin: 0; padding: 0; list-style: none; }
   .tka-ausgabe { min-width: 0; display: flex; flex-direction: column; }
   .tka-ausgabe--breit { grid-column: span 2; }
   .tka-plakat { position: relative; display: block; width: 100%; padding: 0; border: 0; border-radius: 0; background: var(--tint); cursor: zoom-in; aspect-ratio: 367 / 1024; overflow: hidden; }
-  .tka-ausgabe--breit .tka-plakat { aspect-ratio: 734 / 1024; }
+  /* Doppelausgabe über zwei Spalten, aber genau so hoch wie die anderen Plakate (Bezeichnungen auf einer Linie):
+     Höhe = (Breite − Lücke) / 2 · 1024 / 367; das Plakat wird oben und unten minimal beschnitten */
+  .tka-ausgabe--breit .tka-plakat { aspect-ratio: auto; height: 0; padding-top: calc((100% - var(--tka-luecke)) * 1024 / 734); }
+  .tka-ausgabe--breit .tka-plakat img { object-position: 50% 50%; }
   .tka-plakat:hover { outline: 3px solid var(--magenta); outline-offset: 0; }
   .tka-plakat img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 0; display: block; }
   .tka-ausgabe__text { display: flex; flex-direction: column; gap: 6px; padding-top: 14px; }
-  .tka-ausgabe__nr { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta-2); }
+  .tka-ausgabe__nr { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta-2); }
   .tka-ausgabe__label { font-family: var(--font-display); font-weight: 800; font-size: 19px; line-height: 1.1; letter-spacing: -0.015em; color: var(--purple); }
   .tka-ausgabe__links { display: flex; flex-wrap: wrap; gap: 8px 18px; margin-top: 4px; }
   .tka-ansehen { padding: 0; border: 0; background: transparent; cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--purple); }
@@ -229,7 +232,8 @@ const daten = jsonImHtml(
     .tka-jahr { grid-template-columns: minmax(0, 1fr); }
     .tka-jahr__sticky { position: static; }
   }
-  @media (max-width: 559px) {
+  /* nur eine Spalte (sehr schmal): die Doppelausgabe in der Spalte statt daneben */
+  @media (max-width: 359px) {
     .tka-ausgabe--breit { grid-column: auto; }
   }
 
@@ -253,5 +257,5 @@ const daten = jsonImHtml(
   .tka-lb__buehne { flex: 1; min-height: 0; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: clamp(8px, 2vw, 24px); padding: clamp(12px, 2vw, 24px) clamp(8px, 2vw, 24px); }
   .tka-lb__flaeche { height: 100%; min-height: 0; display: flex; align-items: center; justify-content: center; }
   .tka-lb__img { max-width: 100%; max-height: 100%; object-fit: contain; display: block; outline: 1px solid rgba(255, 255, 255, 0.12); }
-  .tka-lb__hinweis { margin: 0; padding: 0 0 14px; text-align: center; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); }
+  .tka-lb__hinweis { margin: 0; padding: 0 0 14px; text-align: center; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255, 255, 255, 0.6); }
 </style>

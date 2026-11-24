@@ -13,9 +13,9 @@ Aktuell arbeitet die Künstlerin Helena Fernandino im Rahmen von TANZPAKT in res
 
 Helena Fernandino begann 1990 ihre Tanzausbildung in ihrer Heimatstadt Barbacena, Brasilien. Ihre Tanztechnik entwickelte sie in Brasilien, aber auch in anderen Ländern wie Deutschland, Belgien und Osterreich fort. Helena studierte Sprachwissenschaft und erhielt den Master-Abschluss in Linguistik. Als zeitgenössische Tänzerin erhielt sie Auszeichnungen bei Tanzfestivals wie dem Festival Internacional de Dança da Tápias(RJ) und dem Festival de Dança do Triângulo Mineiro.
 
-Seit 2003 lebt Helena in Deutschland, wo sie als Tänzerin, Lehrerin und Choreografin arbeitet unter der Leitung von und in Zusammenarbeit mit renommierten Choreografen und Regisseuren. Als Tänzerin arbeitete sie u.a. beim Theater Münster (unter der Leitung von Daniel Goldin) und beim Gerhart Hauptmann Theater Görlitz/Zittau.
+Seit 2003 lebt Helena in Deutschland, wo sie als Tänzerin, Lehrerin und Choreografin arbeitet unter der Leitung von und in Zusammenarbeit mit renommierten Choreografen und Regisseuren. Als Tänzerin arbeitete sie u. a. beim Theater Münster (unter der Leitung von Daniel Goldin) und beim Gerhart Hauptmann Theater Görlitz/Zittau.
 
-Ihre Arbeit als Tänzerin und Choreografin umfasst, neben der Bühne, andere Formate wie Video-Tanz, site-specific-Performances und Interventionen im öffentlichen Raum. 2013-2016 erhielt Helena Fernandino das Sächsische Landesstipendium für die Künstlerische Meisterklasse der Palucca Hochschule für Tanz Dresden. In ihrer Recherche untersuchte sie die Schnittstelle zwischen dem Tanzenlernen und -lehren und der kognitiven Linguistik.
+Ihre Arbeit als Tänzerin und Choreografin umfasst, neben der Bühne, andere Formate wie Video-Tanz, site-specific-Performances und Interventionen im öffentlichen Raum. 2013–2016 erhielt Helena Fernandino das Sächsische Landesstipendium für die Künstlerische Meisterklasse der Palucca Hochschule für Tanz Dresden. In ihrer Recherche untersuchte sie die Schnittstelle zwischen dem Tanzenlernen und -lehren und der kognitiven Linguistik.
 
 - Mehr über Helena Fernandino gibt es unter:  
     [Website](http://www.helenamfernandino.wordpress.com/)  
@@ -35,8 +35,8 @@ Als Abschluss der künstlerischen Residenz in der villa\\wigman, lädt die Küns
 - **Dauer**: 11–15 Uhr
 - **Ablauf**:
 
-    - 11:00 - 12:30 Uhr: Bewegte Einführung für jedermensch
-    - 12:30 - 14:00 Uhr: Küchengespräche
+    - 11:00–12:30 Uhr: Bewegte Einführung für jedermensch
+    - 12:30–14:00 Uhr: Küchengespräche
     - 14:00 Uhr: Performance
 - **Ort**: [Villa Wigman](https://villawigman.de/), Bautzner Straße 107, 01099 Dresden
 - Der Eintritt ist frei
@@ -92,7 +92,7 @@ Die Veranstaltung findet im Rahmen des Programms „TANZPAKT in residence“ sta
 
 »TANZPAKT in residence« wird gefördert von TANZPAKT Stadt-Land-Bund aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien, sowie kofinanziert durch das Staatsministerium für Wissenschaft, Kultur und Tourismus und der Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
 
-TANZPAKT STADT LAND BUND - Eine gemeinsame Initiative von Kommunen, Bundesländern und der Beauftragten der Bundesregierung für Kultur und Medien zur Exzellenzförderung im Tanz.
+TANZPAKT STADT LAND BUND – Eine gemeinsame Initiative von Kommunen, Bundesländern und der Beauftragten der Bundesregierung für Kultur und Medien zur Exzellenzförderung im Tanz.
 
 Weitere Informationen u TANZPAKT in residence gibt es unter:  
 [villawigman.de/tanzpakt-in-residence](https://villawigman.de/tanzpakt-in-residence/)

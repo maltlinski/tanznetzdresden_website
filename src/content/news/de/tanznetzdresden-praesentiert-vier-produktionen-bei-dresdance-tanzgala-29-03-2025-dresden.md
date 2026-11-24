@@ -4,10 +4,10 @@ date: 2025-02-21
 category: Netzwerk
 author: TanzNetzDresden
 image: ../../../assets/news/2025/carousel-of-time-3-e1740164042470.webp
-teaser: Dresden steht 2025 im Zeichen des Tanzes. Da darf natürlich eine große Gala nicht fehlen. Diese trägt den Titel "DRESDANCE" und wird schon recht bald, nämlich am 29.
+teaser: Dresden steht 2025 im Zeichen des Tanzes. Da darf natürlich eine große Gala nicht fehlen. Diese trägt den Titel „DRESDANCE“ und wird schon recht bald, nämlich am 29.
 ---
 
-*Dresden steht 2025 im Zeichen des Tanzes. Da darf natürlich eine große Gala nicht fehlen. Diese trägt den Titel "DRESDANCE" und wird schon recht bald, nämlich am 29. März 2025 in der Staatsoperette Dresden im Kraftwerk Mitte stattfinden. Auch das TanzNetzDresden ist involviert und präsentiert vier Beiträge in Kooperation mit freien Tanzschaffenden und Companies aus Dresden. Mehr Informationen zu DRESDANCE sowie den vier Produktionen, die am 29. März bei der jetzt schon ausverkauften Gala zu erleben sein werden, gibt es im heutigen Blog-Beitrag.*
+*Dresden steht 2025 im Zeichen des Tanzes. Da darf natürlich eine große Gala nicht fehlen. Diese trägt den Titel „DRESDANCE“ und wird schon recht bald, nämlich am 29. März 2025 in der Staatsoperette Dresden im Kraftwerk Mitte stattfinden. Auch das TanzNetzDresden ist involviert und präsentiert vier Beiträge in Kooperation mit freien Tanzschaffenden und Companies aus Dresden. Mehr Informationen zu DRESDANCE sowie den vier Produktionen, die am 29. März bei der jetzt schon ausverkauften Gala zu erleben sein werden, gibt es im heutigen Blog-Beitrag.*
 
 ## Tanzstadt Dresden 2025
 
@@ -18,8 +18,8 @@ Gefeiert wird der Tanz in Dresden das gesamte Jahr über, ganz besonders groß j
 Zahlreiche Protagonisten wurden in das Programm der Gala eingebunden, um die einzigartige Tanztradition Dresdens erlebbar machen. Und so werden sich unter dem Dach der Staatsoperette erstmals das Ballett der Staatsoperette Dresden, das Tanzensemble der Landesbühnen Sachsen, die Palucca Hochschule für Tanz Dresden, das TanzNetzDresden und die Freie Szene, die Dresden Frankfurt Dance Company sowie das Semperoper Ballett vereinen. Die vier Beiträge, die das TNDD bei DRESDANCE am 29. März beisteuert sollen nun im Folgenden einzeln dargestellt werden:
 
 ::: bilder
-text: Generalprobe für „Karussell der Zeit“ von der Dresdner Tanzkompanie the guts company,
-foto: "grafiert am 28. Mai 2024 in der Dresdner Neustadt. Foto: André Wirsig"
+text: Generalprobe für „Karussell der Zeit“ von der Dresdner Tanzkompanie the guts company, fotografiert am 28. Mai 2024 in der Dresdner Neustadt
+foto: André Wirsig
 bilder:
   - datei: /news/archiv/2025/carousel-of-time-2.webp
     alt: ""
@@ -140,7 +140,7 @@ Wir sind bereit, alles zu geben – für uns selbst, füreinander und für das, 
 
 ### Informationen
 
-**Veranstaltung**: [DRESDANCE 2025 - Tanzgala](https://www.staatsoperette.de/spielplan/monatsplan/dresdance/1772/)  
+**Veranstaltung**: [DRESDANCE 2025 – Tanzgala](https://www.staatsoperette.de/spielplan/monatsplan/dresdance/1772/)  
 **Termin**: Samstag, 29\. März 2025; ab 19:30  
 **Ort**: Staatsoperette Dresden (im Kraftwerk Mitte)
 

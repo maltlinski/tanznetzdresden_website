@@ -12,7 +12,7 @@ Die GrooveStation im Herzen der Dresdner Neustadt verwandelt ihren Innenhof von 
 Detailliertere Informationen zum Line up des Festivals gibt es im Beitrag weiter unten sowie auf [www.groovestation.de](https://www.groovestation.de/).
 
 **GrooveGarden Festival 2021**  
-20\. - 22.08.2021
+20\. – 22.08.2021
 
 Das TanzNetzDresden kooperiert zum Vernetzen zwischen Künstler:innen des TanzNetzDresden und den Groove Garden Festival Veranstalter:innen. In Kooperation mit Music S Women\* wird erstmalig ein 3-tägiges-Festival im Außenbereich der GrooveStation stattfinden. Gemeinsam mit den Kuratorinnen des MusiSHEans Festival legen wir den Fokus auf regionale Künstlerinnen und geschlechtergemischte Gruppen. Musik aus den Genren Folk, Singer-Songwriter, Akustik und Elektronik. Dresdner Künstler:innen der Bildenden Kunst erarbeiten kollektiv die Gestaltung des Festivalgeländes.  
 Site-specific performances von Dresdner Künstler:innen der darstellenden/performativen Kunst werden in Kooperation mit TanzNetzDresden programmiert. Das Festival der Groove Station ist ein Projekt im Rahmen des offiziellen Dresdner Kultursommers 2021.
@@ -47,7 +47,7 @@ Tagesticket: 15€ + Gebühren
 
 Erhältlich bei SZ-Ticketservice & SAX Ticket.
 
-Das GrooveGarden Festival wird präsentiert von [SAX - Das Dresdner Stadtmagazin](https://cybersax.de/), [Augusto Magazin](https://augusto-sachsen.de/) und [Rauze](https://www.rauze.de/) und erfolgt in Kooperation mit [Music S Women\*](https://www.musicswomen.de/), [MusiSHEans](https://musisheans.com/), [oh my music!](https://www.ohmymusic.de/), TanzNetzDresden, [KlubNetzDresden](https://klubnetzdresden.de/), Kulturage e.V.
+Das GrooveGarden Festival wird präsentiert von [SAX – Das Dresdner Stadtmagazin](https://cybersax.de/), [Augusto Magazin](https://augusto-sachsen.de/) und [Rauze](https://www.rauze.de/) und erfolgt in Kooperation mit [Music S Women\*](https://www.musicswomen.de/), [MusiSHEans](https://musisheans.com/), [oh my music!](https://www.ohmymusic.de/), TanzNetzDresden, [KlubNetzDresden](https://klubnetzdresden.de/), Kulturage e.V.
 
 Das GrooveGarden Festival wird im Programm Kultursommer 2021 durch die Beauftrage der Bundesregierung für Kultur und Medien (BKM) mit Mitteln aus NEUSTART KULTUR gefördert.
 

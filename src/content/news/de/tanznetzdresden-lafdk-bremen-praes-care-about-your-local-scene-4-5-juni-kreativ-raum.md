@@ -39,10 +39,10 @@ Mehr hierzu findet ihr unter unserem Blog-Beitrag unter:
 
 »CARE ABOUT« ist ein Projekt von TanzNetzDresden in Kooperation mit tanz\_netzwerk\_Bremen (LAFDK Bremen) und wird gefördert von Fonds Darstellende Künste, Kulturstiftung des Freistaates Sachsen, Landeshauptstadt Dresden.
 
-“Fensterblicke” ist eine Veranstaltungsreihe innerhalb der “Kreativ.Raum.Börse“ kuratiert und organisiert von der 4roomscompany um Seraphine Detscher mit Wiebke Bickhardt, umgesetzt durch viele weitere Beteiligte und Unterstützer. Es handelt sich um eine Kooperation der 4roomscompany und WIR GESTALTEN DRESDEN sowie der Landeshauptstadt Dresden / Cityfonds, Amt für Geschäftsbereich Stadtentwicklung, Bau, Verkehr und Liegenschaften | Amt für Stadtplanung und Mobilität | Abt. Stadterneuerung.
+„Fensterblicke“ ist eine Veranstaltungsreihe innerhalb der „Kreativ.Raum.Börse“ kuratiert und organisiert von der 4roomscompany um Seraphine Detscher mit Wiebke Bickhardt, umgesetzt durch viele weitere Beteiligte und Unterstützer. Es handelt sich um eine Kooperation der 4roomscompany und WIR GESTALTEN DRESDEN sowie der Landeshauptstadt Dresden / Cityfonds, Amt für Geschäftsbereich Stadtentwicklung, Bau, Verkehr und Liegenschaften | Amt für Stadtplanung und Mobilität | Abt. Stadterneuerung.
 
 Das Projekt ist gefördert durch das Bundesministerium für Wohnen, Stadtentwicklung und Bauwesen (BMWSB), Dresdner Cityfonds und dem Amt für Kultur und Denkmalschutz.
 
-Das Projekt “Kreativ.Raum.Börse“ findet in Kooperation zwischen der Landeshauptstadt Dresden und WIR GESTALTEN DRESDEN statt und wird im Rahmen des Bundesprogramms Zukunftsfähige Innenstädte und Zentren des Bundesministeriums für Wohnen, Stadtentwicklung und Bauwesen gefördert.
+Das Projekt „Kreativ.Raum.Börse“ findet in Kooperation zwischen der Landeshauptstadt Dresden und WIR GESTALTEN DRESDEN statt und wird im Rahmen des Bundesprogramms Zukunftsfähige Innenstädte und Zentren des Bundesministeriums für Wohnen, Stadtentwicklung und Bauwesen gefördert.
 
 Header-Grafik: Wir gestalten Dresden

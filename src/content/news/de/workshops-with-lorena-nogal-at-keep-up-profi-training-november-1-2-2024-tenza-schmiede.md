@@ -8,7 +8,7 @@ draft: true
 teaser: In November, we will be offering two workshops with Lorena Nogal at the TENZA Schmiede at November 1 and 2 as part of our KEEP UP profi training.
 ---
 
-*In November, we will be offering two workshops with Lorena Nogal at the [TENZA Schmiede](https://www.tenza.de/) at November 1 and 2 as part of our [KEEP UP profi training](/profitraining/). More information about this very special offer can be found in today's blog post.*
+*In November, we will be offering two workshops with Lorena Nogal at the [TENZA Schmiede](https://www.tenza.de/) at November 1 and 2 as part of our [KEEP UP profi training](/profitraining/). More information about this very special offer can be found in today’s blog post.*
 
 ## Lorena Nogal
 
@@ -19,9 +19,9 @@ bilder:
     alt: ""
 :::
 
-Born in Barcelona in 1984. Lorena Nogal trained as a dancer at the Institut del Teatre in Barcelona, where she graduated in 2005, and at the IT Dansa company, where she worked repertoire of internationally renowned choreographers: Ohad Naharin, Alexander Ekman , Jirí Kilyán, Stijn Celis or Nacho Duato.
+Born in Barcelona in 1984. Lorena Nogal trained as a dancer at the Institut del Teatre in Barcelona, where she graduated in 2005, and at the IT Dansa company, where she worked repertoire of internationally renowned choreographers: Ohad Naharin, Alexander Ekman, Jirí Kilyán, Stijn Celis or Nacho Duato.
 
-Since 2008 she has been part of the artistic team of LA VERONAL working as a choreographer and dancer. With Marcos Morau she also created for: The Royal Danish Ballet , Beijing dance teather, Göteborgsoperans danskompani, National dance company Wales, Compañía Nacional de Danza, Scapino Ballet, Carte Blanche, Norrdans, Skanes Dansteater, Ballet Zürich, Ballet Nacional de España or Nederlands Dans Theater.
+Since 2008 she has been part of the artistic team of LA VERONAL working as a choreographer and dancer. With Marcos Morau she also created for: The Royal Danish Ballet, Beijing dance teather, Göteborgsoperans danskompani, National dance company Wales, Compañía Nacional de Danza, Scapino Ballet, Carte Blanche, Norrdans, Skanes Dansteater, Ballet Zürich, Ballet Nacional de España or Nederlands Dans Theater.
 
 In 2024 she has been awarded as best female performer with the PREMIO TALÍA by the Academy of Performing Arts of Spain. In 2016 she was distinguished as the best dancer at the critics’ prizes of Catalonia. In 2018, with several dancers launched the project called HOTEL col.lecitu escènic. This is a Catalan dance company that is born with the wish to build crossroads which will allows us to inhabit other creators’ worlds and imaginaries.  Company with which he has worked with choreographers such as Marie Gyselbrecht (Peeping Tom), Quim Bigas or Lisi Estaras (Les Ballets C de la B) .
 

@@ -38,7 +38,7 @@ Gefördert und unterstützt wird »Layers of Identity« vom Kulturamt der Landes
 
 ### Informationen
 
-**Titel**: »Layers of Identity / Schichten der Identität« - eine audiovisuelle Tanz-Performance  
+**Titel**: »Layers of Identity / Schichten der Identität« – eine audiovisuelle Tanz-Performance  
 **Termin**: 15. Juni, 19 Uhr (Veranstaltungsende: 23 Uhr)  
 **Ort**: Kreativ.Raum.Börse, Wilsdruffer Straße 16, Dresden  
 Der Eintritt ist kostenfrei. Um Spenden wird gebeten.
@@ -53,10 +53,10 @@ Der Eintritt ist kostenfrei. Um Spenden wird gebeten.
 **Weitere Informationen gibt es unter:**  
 [t-m-a.de/projekte/layers-of-identity](https://t-m-a.de/projekte/layers-of-identity/) & [@layers\_of\_identity.24](https://www.instagram.com/layers_of_identity.24)
 
-“Fensterblicke” ist eine Veranstaltungsreihe innerhalb der “Kreativ.Raum.Börse“ kuratiert und organisiert von der 4roomscompany um Seraphine Detscher mit Wiebke Bickhardt, umgesetzt durch viele weitere Beteiligte und Unterstützer. Es handelt sich um eine Kooperation der 4roomscompany und WIR GESTALTEN DRESDEN sowie der Landeshauptstadt Dresden / Cityfonds, Amt für Geschäftsbereich Stadtentwicklung, Bau, Verkehr und Liegenschaften | Amt für Stadtplanung und Mobilität | Abt. Stadterneuerung.
+„Fensterblicke“ ist eine Veranstaltungsreihe innerhalb der „Kreativ.Raum.Börse“ kuratiert und organisiert von der 4roomscompany um Seraphine Detscher mit Wiebke Bickhardt, umgesetzt durch viele weitere Beteiligte und Unterstützer. Es handelt sich um eine Kooperation der 4roomscompany und WIR GESTALTEN DRESDEN sowie der Landeshauptstadt Dresden / Cityfonds, Amt für Geschäftsbereich Stadtentwicklung, Bau, Verkehr und Liegenschaften | Amt für Stadtplanung und Mobilität | Abt. Stadterneuerung.
 
 Das Projekt ist gefördert durch das Bundesministerium für Wohnen, Stadtentwicklung und Bauwesen (BMWSB), Dresdner Cityfonds und dem Amt für Kultur und Denkmalschutz.
 
-Das Projekt “Kreativ.Raum.Börse“ findet in Kooperation zwischen der Landeshauptstadt Dresden und WIR GESTALTEN DRESDEN statt und wird im Rahmen des Bundesprogramms Zukunftsfähige Innenstädte und Zentren des Bundesministeriums für Wohnen, Stadtentwicklung und Bauwesen gefördert.
+Das Projekt „Kreativ.Raum.Börse“ findet in Kooperation zwischen der Landeshauptstadt Dresden und WIR GESTALTEN DRESDEN statt und wird im Rahmen des Bundesprogramms Zukunftsfähige Innenstädte und Zentren des Bundesministeriums für Wohnen, Stadtentwicklung und Bauwesen gefördert.
 
 **Headerbild**: Evelyn Sigmund ©

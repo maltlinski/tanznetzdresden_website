@@ -328,7 +328,9 @@ test('Open Calls auf Englisch, Hinweis ohne Tabelle', async ({ page }) => {
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await redaktion(page, { profil: lea });
   await page.goto('/intern/open-calls/');
-  await expect(page.locator('[data-msg]')).toContainText('Open Calls gibt es, sobald die Migration');
+  // Mitglieder sehen eine verständliche Meldung, keinen Dateinamen (den sehen nur Vorstand und Admin)
+  await expect(page.locator('[data-msg]')).toContainText('Open Calls sind noch nicht eingerichtet. Bitte gib dem Vorstand Bescheid.');
+  await expect(page.locator('[data-msg]')).not.toContainText('supabase/migrations');
   await expect(page.locator('[data-oc-bereich]')).toBeHidden();
 });
 

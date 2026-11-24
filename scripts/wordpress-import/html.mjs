@@ -222,7 +222,7 @@ function bloeckeEinsetzen(md, marken) {
 
 /** Bildunterschrift → Text und Fotonachweis („Foto: Name“, „© Name“) */
 export function nachweisTrennen(text) {
-  const m = /(?:^|[\s(|•·–-])(?:Fotos?|Photos?|Bild|Credits?|Fotografie|©)\s*[:©]?\s*(?:©\s*)?([^|•·()]+?)\)?\s*$/i.exec(text ?? '');
+  const m = /(?:^|[\s(|•·–-])(?:Foto-?Credits?|Fotos?|Photos?|Bild|Credits?|Fotografie|©)(?![a-zäöüß])\s*[:©]?\s*(?:©\s*)?([^|•·()]+?)\)?\s*$/i.exec(text ?? '');
   if (!m) return { text: (text ?? '').trim(), foto: '' };
   return { text: text.slice(0, m.index).replace(/[\s|•·–(-]+$/, '').trim(), foto: m[1].trim() };
 }

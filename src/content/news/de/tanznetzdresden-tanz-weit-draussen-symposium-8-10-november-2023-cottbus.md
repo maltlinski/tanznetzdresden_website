@@ -7,7 +7,7 @@ image: ../../../assets/news/2023/tanznetzdresden-tanz-weit-draussen-cottbus-nove
 teaser: TanzNetzDresden-Mitglied Anna Till war drei Tage lang in Cottbus und nahm für das TNDD am Symposium »Empowerment, Zusammenhalten und Teilen!« des Netzwerks tanz weit draußen teil.
 ---
 
-TanzNetzDresden-Mitglied Anna Till war drei Tage lang in Cottbus und nahm für das TNDD am Symposium »Empowerment, Zusammenhalten und Teilen!« des Netzwerks [*tanz weit draußen*](https://aktiontanz.de/tanz-weit-draussen) teil. Worum es dabei ging, wie die Stimmung war und was erreicht wurde - all das gibt es im heutigen Blog-Beitrag.
+TanzNetzDresden-Mitglied Anna Till war drei Tage lang in Cottbus und nahm für das TNDD am Symposium »Empowerment, Zusammenhalten und Teilen!« des Netzwerks [*tanz weit draußen*](https://aktiontanz.de/tanz-weit-draussen) teil. Worum es dabei ging, wie die Stimmung war und was erreicht wurde – all das gibt es im heutigen Blog-Beitrag.
 
 ::: bilder
 darstellung: neben
@@ -16,11 +16,11 @@ bilder:
     alt: ""
 :::
 
-## »Empowerment, Zusammenhalten und Teilen!« - Das tanz weit draußen-Symposium
+## »Empowerment, Zusammenhalten und Teilen!« – Das tanz weit draußen-Symposium
 
 Gemeinsam mit Künstler:innen und Vertreter:innen aus den Tanzszenen verschiedener Regionen war Anna Till eingeladen, um auszuloten, wie sich Tanz in ländlichen Räumen entfaltet und damit einen wichtigen Beitrag zur kulturellen Grundversorgung sowie zu Demokratiebildung und -erhalt vor Ort leistet bzw. leisten kann.
 
-Flankiert von künstlerischen Produktionen werden Gesprächsrunden und Workshops mit den Schwerpunkten Netzwerke & Verbindungen, Formate für Recherche, Produktion und Performance, Wissens- und Erfahrungsweitergabe und "Tanz zeigt Haltung" angeboten – Themen, die für die Stärkung von Tanzschaffenden in ländlichen Regionen in besonderer Weise von Bedeutung sind.
+Flankiert von künstlerischen Produktionen werden Gesprächsrunden und Workshops mit den Schwerpunkten Netzwerke & Verbindungen, Formate für Recherche, Produktion und Performance, Wissens- und Erfahrungsweitergabe und „Tanz zeigt Haltung“ angeboten – Themen, die für die Stärkung von Tanzschaffenden in ländlichen Regionen in besonderer Weise von Bedeutung sind.
 
 ## Neue Ziele: Den städtischen mit dem ländlichen Raum verbinden
 

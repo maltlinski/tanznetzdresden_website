@@ -1,5 +1,5 @@
 ---
-title: 'tanz_netzwerk_bremen CONNECTION presents: Workshop with Guy Cools "Who needs a dramaturg?" • June 2023 in Dresden at Villa Wigman'
+title: "tanz_netzwerk_bremen CONNECTION presents: Workshop with Guy Cools “Who needs a dramaturg?” • June 2023 in Dresden at Villa Wigman"
 date: 2023-02-21
 category: Training
 author: TanzNetzDresden
@@ -7,9 +7,9 @@ image: ../../../assets/news/2023/tanznetzdresden-connection-2023-guy-cools.webp
 teaser: In context of our 2023 joint project tanz\netzwerk\bremen CONNECTION TanzNetzDresden, TanzXchange Münster and the Landesverband freie darstellende Künste Bremen are organizing not just a Peer to …
 ---
 
-In context of our 2023 joint project [tanz\_netzwerk\_bremen CONNECTION](https://lafdk-bremen.de//projekte/tanznetzwerkbremen-connection) TanzNetzDresden, [TanzXchange Münster](https://tanzxchange-muenster.de/) and the [Landesverband freie darstellende Künste Bremen](https://lafdk-bremen.de/) are organizing not just a [Peer to Peer-Academy](https://lafdk-bremen.de/en/projects/tanznetzwerkbremen-connection/peer-to-peer-academy) but also a row of workshops. All information about our workshop "Who needs a dramaturg" with Guy Cools which will take place in June 2023 in Dresden can now be found in the following blog-article.
+In context of our 2023 joint project [tanz\_netzwerk\_bremen CONNECTION](https://lafdk-bremen.de//projekte/tanznetzwerkbremen-connection) TanzNetzDresden, [TanzXchange Münster](https://tanzxchange-muenster.de/) and the [Landesverband freie darstellende Künste Bremen](https://lafdk-bremen.de/) are organizing not just a [Peer to Peer-Academy](https://lafdk-bremen.de/en/projects/tanznetzwerkbremen-connection/peer-to-peer-academy) but also a row of workshops. All information about our workshop “Who needs a dramaturg” with Guy Cools which will take place in June 2023 in Dresden can now be found in the following blog-article.
 
-## "Who needs a dramaturg?" - Workshop with Guy Cools at villa/wigman
+## „Who needs a dramaturg?“ – Workshop with Guy Cools at villa/wigman
 
 The underlying idea of the workshop is that as a choreographer you don’t necessarily need a dramaturg but you should develop your own dramaturgical reflection on your artistic practice.
 

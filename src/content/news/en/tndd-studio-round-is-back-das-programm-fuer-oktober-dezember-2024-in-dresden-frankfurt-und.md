@@ -1,9 +1,9 @@
 ---
 title: TNDD studio round is back • Program for October & December 2024 in Dresden, Frankfurt and Freiburg (eng)
-teaser: Our calls for entries for the next three editions of TNDD studio round were successful and that's why we can reveal to you today who will be taking part in the three editions of TNDD studio round in …
+teaser: Our calls for entries for the next three editions of TNDD studio round were successful and that’s why we can reveal to you today who will be taking part in the three editions of TNDD studio round in …
 ---
 
-*Our calls for entries for the next three editions of TNDD studio round were successful and that's why we can reveal to you today who will be taking part in the three editions of TNDD studio round in Dresden, Frankfurt am Main and Freiburg in October and December. All the others in the following blog post.*
+*Our calls for entries for the next three editions of TNDD studio round were successful and that’s why we can reveal to you today who will be taking part in the three editions of TNDD studio round in Dresden, Frankfurt am Main and Freiburg in October and December. All the others in the following blog post.*
 
 We are pleased to announce that the exchange and presentation format TNDD studio round of TanzNetzDresden in cooperation with [ID\_Tanzhaus Frankfurt Rhein-Main](https://tanzhausfrm.de/) and [Tanznetz Freiburg](https://tanznetz-freiburg.de/) will go on tour through three German cities in the fourth quarter of 2024.
 
@@ -20,10 +20,10 @@ We would like to explicitly point out that only one day after the edition in Dre
 Further information on this date is available at:  
 [https://tanznetzdresden.de/pop-up-exchange](/#formate)
 
-## TNDD studio round - the participating artists & works
+## TNDD studio round – the participating artists & works
 
-- **October 25, 2024**, **8 p.m.** [TENZA](http://www.tenza.de/), Dresden – Romy Schwarzer "Serbski Kosmus / Insight“, Eva Krause (Freiburg): „OneBodyOrchestra“ & Felix Chang (Frankfurt am Main) „Wú | 壹“
-- **Dezember 06, 2024**, [Südufer](https://suedufer-freiburg.de/), Freiburg – Marion Plantey (Frankfurt am Main) “HUG”, Sophia Barr (Freiburg) “Cette pierre qui marche sur l'eau et refuse obstinément d'y couler - A Stone That Walks on Water and Stubbornly Refuses to Sink“, Joao Pedro de Paula (Dresden) “The Percin Show”
+- **October 25, 2024**, **8 p.m.** [TENZA](http://www.tenza.de/), Dresden – Romy Schwarzer “Serbski Kosmus / Insight”, Eva Krause (Freiburg): “OneBodyOrchestra” & Felix Chang (Frankfurt am Main) “Wú | 壹”
+- **December 06, 2024**, [Südufer](https://suedufer-freiburg.de/), Freiburg – Marion Plantey (Frankfurt am Main) “HUG”, Sophia Barr (Freiburg) “Cette pierre qui marche sur l’eau et refuse obstinément d’y couler – A Stone That Walks on Water and Stubbornly Refuses to Sink”, Joao Pedro de Paula (Dresden) “The Percin Show”
 - **December 13, 2024**, [Z-Zentrum für Proben und Forschung](https://kultur-frankfurt.de/portal/de/Buehne/Proberaeume/1920/2456/0/0/4.aspx), Frankfurt am Main – Cindy Hammer (Dresden) “MELANCHOLIC MARATHON” (Excerpt), Karolin Stächele (Freiburg) “YOU HAVE NO IDEA” & Maria Kobzeva (Frankfurt am Main) “Maybe we’ll see”
 
 Admission is free. All interested parties are welcome. Further information will follow shortly.
@@ -45,4 +45,4 @@ bilder:
     alt: ""
 :::
 
-Header-Photo: Silvia Remigio & Veronica Parlagreco „Has Someone Seen Tyler Durden“ @TNDD studio round II (05.11.2021); Shot by Stephan Tautz
+Header-Photo: Silvia Remigio & Veronica Parlagreco “Has Someone Seen Tyler Durden” @TNDD studio round II (05.11.2021); Shot by Stephan Tautz

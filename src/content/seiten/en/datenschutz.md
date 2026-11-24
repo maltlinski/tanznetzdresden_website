@@ -20,7 +20,7 @@ The website is hosted by [PLEASE ADD: hosting provider, address]. When a page is
 
 ## Local storage and consent
 
-We store your choice in the consent dialog in your browser (localStorage) so that we do not have to ask again on every visit. This is technically necessary (§ 25(2) no. 2 TDDDG). You can change or withdraw your choice at any time via “Cookie settings” in the footer.
+We store your choice in the consent dialog in your browser (localStorage) so that we do not have to ask again on every visit. This is technically necessary (§ 25(2) no. 2 TDDDG). You can change or withdraw your choice at any time via “Cookie settings” at the bottom of every page.
 
 We only use all other services with your consent (§ 25(1) TDDDG, Art. 6(1)(a) GDPR).
 

@@ -17,7 +17,7 @@ Die Preisgelder des Wettbewerbs für Popularmusik in Sachsen 2024 in Höhe von i
 
 Die Juryvorsitzende Alex Pagel von KREATIVES SACHSEN sagte: »Die sächsische Musikbranche zeigt einmal mehr, dass sie voller Energie und Inspiration steckt! Auch in der Juryarbeit hat sich gezeigt, dass die vielen facettenreichen und tollen Ideen und Vorhaben genau sondiert werden mussten, damit wir eine finale Entscheidung fällen konnten. Jede einzelne Einreichung ist ein starkes Zeichen für Sachsen.«
 
-Die Preisverleihung fand am 06. Juni 2024 um 16.00 Uhr in der [Hochschule Mittweida](https://www.hs-mittweida.de/) statt und kann nun auch via YouTube nachträglich angesehen werden:
+Die Preisverleihung fand am 06. Juni 2024 um 16:00 Uhr in der [Hochschule Mittweida](https://www.hs-mittweida.de/) statt und kann nun auch via YouTube nachträglich angesehen werden:
 
 [Video auf YouTube ansehen ↗](https://youtu.be/-Zcy1u9Yazk)
 
@@ -27,7 +27,7 @@ Zu den fünf Kategorien, die im Rahmen des Wettbewerbes ausgerufen wurden, zähl
 
 ### »femme avant!«
 
-“*Die Idee ist nicht besonders – besonders ist, dass dies alles noch keine Selbstverständlichkeit ist.*” hieß es in der Bewerbung der [Groovestation Dresden](https://www.groovestation.de/), die für ihr Vorhaben in enger Kooperation mit dem TanzNetzDresden mit dem Sonderpreis Nachtökonomie ausgezeichnet wurde. Ziel des 1994 eröffneten Clubs ist es, mit “**femme avant!**” nachhaltig Sichtbarkeit und ein Bewusstsein für die konsequente und gleichberechtigte Besetzung von Frauen und weiblich gelesener Personen in allen Arbeitsfeldern kultureller Veranstaltungen zu schaffen, sei es auf oder hinter der Bühne, am Mischpult oder Tresen, am Einlass oder im künstlerischen Booking. Letztendlich lässt sich so auch der Boden für den potentiellen Nachwuchs und weitere Fachkräfte ebnen. Empowerment durch eine zeitgenössische Clubkultur.
+„*Die Idee ist nicht besonders – besonders ist, dass dies alles noch keine Selbstverständlichkeit ist.*“ hieß es in der Bewerbung der [Groovestation Dresden](https://www.groovestation.de/), die für ihr Vorhaben in enger Kooperation mit dem TanzNetzDresden mit dem Sonderpreis Nachtökonomie ausgezeichnet wurde. Ziel des 1994 eröffneten Clubs ist es, mit „**femme avant!**“ nachhaltig Sichtbarkeit und ein Bewusstsein für die konsequente und gleichberechtigte Besetzung von Frauen und weiblich gelesener Personen in allen Arbeitsfeldern kultureller Veranstaltungen zu schaffen, sei es auf oder hinter der Bühne, am Mischpult oder Tresen, am Einlass oder im künstlerischen Booking. Letztendlich lässt sich so auch der Boden für den potentiellen Nachwuchs und weitere Fachkräfte ebnen. Empowerment durch eine zeitgenössische Clubkultur.
 
 Hierfür fand auch Martin Dulig, Staatsminister für Wirtschaft, Arbeit und Verkehr des Freistaates Sachsen, passende Worte, als er im Rahmen der Preisverleihung über die Bedeutung der Kultur- und Kreativwirtschaft Folgendes sagte:
 

@@ -1,5 +1,5 @@
 ---
-title: "Apply until February 19, 2023: for the Peer to Peer-Academy • May 8 - 12, 2023 in Bremen"
+title: "Apply until February 19, 2023: for the Peer to Peer-Academy • May 8 – 12, 2023 in Bremen"
 date: 2023-02-14
 category: Ausschreibung
 author: TanzNetzDresden
@@ -16,7 +16,7 @@ The Peer to Peer-Academy takes place at the [Zentrum für Kunst at the Tabakquar
 
 The exchange involves each participant organizing the procedure of one day and benefiting from the expertise of the other participants on the other four days. In each group, multi-perspective working approaches from the field of dance will be brought together. Participation is possible in full time or in part time.
 
-You'll find more information by folliwing this link:  
+You’ll find more information by folliwing this link:  
 [lafdk-bremen.de/en/projects/tanznetzwerkbremen-connection/peer-to-peer-academy](https://lafdk-bremen.de/en/projects/tanznetzwerkbremen-connection/peer-to-peer-academy)
 
 As a conclusion of the Peer to Peer-Academy, [tanz\_netzwerk\_bremen CONNECTION](https://lafdk-bremen.de//projekte/tanznetzwerkbremen-connection) in cooperation with TanzNetzDresden and [TanzXchange Münster](https://tanzxchange-muenster.de/) will additionally organize an open symposium in Bremen. There will be expert contributions and the results of the Peer to Peer-Academy will be compiled.
@@ -41,10 +41,10 @@ Registration for the symposium will be available soon. Please use the following 
 
 - You work professionally in the field of dance with a base in Germany.
 - You can be present during the five days, ideally six days including participation at the symposium.
-- Due to several inquiries about the possibility of reconciling participation in the Peer to Peer Academy with family commitments, the announcement was modified to allow one of the three groups to take place on a part-time basis (e.g., 9 a.m. - 1 p.m. or as agreed upon among participants).
+- Due to several inquiries about the possibility of reconciling participation in the Peer to Peer Academy with family commitments, the announcement was modified to allow one of the three groups to take place on a part-time basis (e.g., 9 a.m. – 1 p.m. or as agreed upon among participants).
 - You are open to engage in a variety of topics and working methods.
 - You want to share your skills and knowledge with others in a structured way.
-- You will create a documentation that is well prepared and understandable for other participants. You decide on the form of the documentation yourself (text, photos, videos...).
+- You will create a documentation that is well prepared and understandable for other participants. You decide on the form of the documentation yourself (text, photos, videos…).
 
 ### Application
 

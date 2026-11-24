@@ -16,6 +16,7 @@ import Tag from '../ui/Tag.astro';
 import { getLang, tr } from '../../lib/i18n';
 import { texte } from '../../lib/texte';
 import type { Dozentin } from '../../lib/keep-up';
+import { initials } from '../../lib/profiles';
 import { keepUp, mosaikTempo } from '../../settings/keep-up';
 
 interface Props {
@@ -70,7 +71,10 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
                   aria-label={`${d.name}, ${d.stil}: ${t.toCal}`}
                   tabindex={kopie ? -1 : undefined}
                 >
-                  {typeof d.photo === 'string'
+                  {/* ohne eigenes Porträt Initialen wie im Netzwerk – kein Bühnenfoto einer anderen Person */}
+                  {d.placeholder
+                    ? <span class="kachel__initialen" aria-hidden="true">{initials(d.name)}</span>
+                    : typeof d.photo === 'string'
                     ? <Image src={d.photo} alt="" inferSize widths={[300, 560]} sizes="280px" style={d.photoFocus && `object-position: ${d.photoFocus}`} />
                     : <Image src={d.photo} alt="" widths={[300, 560]} sizes="280px" style={d.photoFocus && `object-position: ${d.photoFocus}`} />}
                   <span class="kachel__text">
@@ -234,11 +238,16 @@ const TEMPO = { langsam: 28, mittel: 48, schnell: 80 };
   .kachel::after { content: ''; position: absolute; inset: 0; border: 3px solid var(--magenta); opacity: 0; transition: opacity var(--dur-base); pointer-events: none; }
   .kachel:hover::after, .kachel:focus-visible::after, .kachel.is-hl::after { opacity: 1; }
   .kachel:focus-visible { outline: none; }
+  .kachel__initialen {
+    position: absolute; inset: 0 0 auto; height: 72%; display: grid; place-items: center;
+    font-family: var(--font-display); font-weight: 800; font-size: calc(var(--u) * 0.36); line-height: 1; letter-spacing: -0.04em; color: #fff;
+  }
+  .kachel__initialen::before { content: ''; position: absolute; left: 0; top: 0; width: 20px; height: 20px; background: var(--magenta); }
   .kachel__text {
     position: absolute; left: 0; right: 0; bottom: 0; display: flex; flex-direction: column; gap: 6px; padding: 12px 14px 14px;
     background: color-mix(in srgb, var(--purple) 90%, transparent);
   }
-  .kachel__stil { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 10px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan); }
+  .kachel__stil { display: flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.16em; text-transform: uppercase; color: var(--cyan); }
   .kachel__sq { width: 8px; height: 8px; background: var(--magenta); flex: none; }
   .kachel__name { font-family: var(--font-display); font-weight: 800; font-size: clamp(19px, 1.8vw, 24px); line-height: 1; letter-spacing: -0.025em; text-wrap: balance; }
 </style>

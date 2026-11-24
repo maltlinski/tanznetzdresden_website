@@ -18,7 +18,7 @@ In den vergangenen Jahren hat der Zusammenschluss der Dresdner Kunst- und Kultur
 
 Wie gehen wir mit dem Erbe der uns vorangegangenen Generationen um? Wie verwandelt sich eine Gesellschaft von einer Ausnahmesituation der Ausgrenzung, der Gewalt und des Krieges in ein friedliches, demokratisches Miteinander?
 
-Frieden ist immer noch nicht selbstverständlich. Die vergangenen Monate haben gezeigt, wie schnell eine Normalität durch eine neue abgelöst werden kann und welche gesellschaftlichen Kraftanstrengungen dies beinhaltet. Manchmal braucht es nur einen kleinen Impuls, um eine ganze Bewegung ins Rollen zu bringen. Die Menschheit und damit auch der Frieden stehen vor riesigen globalen Herausforderungen, sei es das Klima, die Corona-Pandemie , Menschenrechtsverletzungen oder wirtschaftliche Konflikte. In der Woche um den 13. Februar 2022 lenkt #WOD den Blick in die Zukunft: Wo setzen sich Menschen aktuell für den Frieden ein? Wie können wir gemeinsam *WELT – OFFEN – (GE)DENKEN*?
+Frieden ist immer noch nicht selbstverständlich. Die vergangenen Monate haben gezeigt, wie schnell eine Normalität durch eine neue abgelöst werden kann und welche gesellschaftlichen Kraftanstrengungen dies beinhaltet. Manchmal braucht es nur einen kleinen Impuls, um eine ganze Bewegung ins Rollen zu bringen. Die Menschheit und damit auch der Frieden stehen vor riesigen globalen Herausforderungen, sei es das Klima, die Corona-Pandemie, Menschenrechtsverletzungen oder wirtschaftliche Konflikte. In der Woche um den 13. Februar 2022 lenkt #WOD den Blick in die Zukunft: Wo setzen sich Menschen aktuell für den Frieden ein? Wie können wir gemeinsam *WELT – OFFEN – (GE)DENKEN*?
 
 ## TanzNetzDresden, KLUBNETZ Dresden und Lars P. Krause
 

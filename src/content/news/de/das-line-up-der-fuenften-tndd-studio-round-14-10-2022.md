@@ -1,5 +1,5 @@
 ---
-title: Ta-dah! - das Line up der fünften TNDD studio round (14.10.2022)
+title: Ta-dah! – das Line up der fünften TNDD studio round (14.10.2022)
 date: 2022-10-10
 category: Netzwerk
 author: TanzNetzDresden
@@ -7,7 +7,7 @@ image: ../../../assets/news/2022/tanznetzdresden-studio-round-5-2022-elia-pangar
 teaser: Das komplette Line up der kommenden TNDD studio round Ausgabe, die am 14. Juli wie gewohnt ab 20 Uhr in der TENZA Schmiede stattfinden wird, ist nun online und kann durchstöbert werden.
 ---
 
-Das komplette Line up der kommenden TNDD studio round Ausgabe, die am 14. Juli wie gewohnt ab 20 Uhr in der [TENZA Schmiede](http://www.tenza.de/) stattfinden wird, ist nun online und kann durchstöbert werden. Es erwarten euch drei spannende Beiträge ganz unterschiedlicher Künstler:innen, die in unserer besonderen Studio-Atmosphäre mit den Gäst:innen des Abends präsentiert und besprochen werden. Einer davon ist "Studies of Softeting", jene Oroduktion die im Sommer kurzfristig abgesagt werden musste und nun glücklicherweise nachgeholt werden kann. Das Format ist wie immer kostenfrei. Die Beteiligten der anstehenden vierten Ausgabe sind:
+Das komplette Line up der kommenden TNDD studio round Ausgabe, die am 14. Juli wie gewohnt ab 20 Uhr in der [TENZA Schmiede](http://www.tenza.de/) stattfinden wird, ist nun online und kann durchstöbert werden. Es erwarten euch drei spannende Beiträge ganz unterschiedlicher Künstler:innen, die in unserer besonderen Studio-Atmosphäre mit den Gäst:innen des Abends präsentiert und besprochen werden. Einer davon ist „Studies of Softeting“, jene Oroduktion die im Sommer kurzfristig abgesagt werden musste und nun glücklicherweise nachgeholt werden kann. Das Format ist wie immer kostenfrei. Die Beteiligten der anstehenden vierten Ausgabe sind:
 
 - Elia Pangaro (Italien)
 - Jack Bannerman (Deutschland)
@@ -15,9 +15,9 @@ Das komplette Line up der kommenden TNDD studio round Ausgabe, die am 14. Juli w
 
 Detaillierte Informationen zu den einzelnen Beiträgen der vierten TNDD studio round folgen nun oder können direkt auf der [Unterseite der studio round](/#formate) eingesehen werden. Dort befinden sich alle Informationen auch in englischer Sprache.
 
-## Elia Pangaro: "AMOEBA"
+## Elia Pangaro: „AMOEBA“
 
-Elia Pangaro wurde in Perugia, Italien, geboren. Eingefangen von der Ästhetik urbaner Techniken begann er im Alter von 10 Jahren zu tanzen. Durch seine Ausbildung bei verschiedenen Lehrern begann er, seine Bewegungssignatur zu formen. Mit 16 Jahren begann Elia Pangaro seine professionelle Karriere als Tänzer im INC innprogress\_collective unter der Leitung von Afshin Varjavandi. Seitdem arbeitet er als freischaffender Tänzer mit vielen Choreographen, Regisseuren und Theatern zusammen, wie z.B.: Michele Merola, Stefano Poda, Giuseppe Tornatore, Teatro Regio di Torino, Opera Royal De Wallonie, Paolo Rosini, Vangelis Legakis, Jose Agudo und anderen.
+Elia Pangaro wurde in Perugia, Italien, geboren. Eingefangen von der Ästhetik urbaner Techniken begann er im Alter von 10 Jahren zu tanzen. Durch seine Ausbildung bei verschiedenen Lehrern begann er, seine Bewegungssignatur zu formen. Mit 16 Jahren begann Elia Pangaro seine professionelle Karriere als Tänzer im INC innprogress\_collective unter der Leitung von Afshin Varjavandi. Seitdem arbeitet er als freischaffender Tänzer mit vielen Choreographen, Regisseuren und Theatern zusammen, wie z. B.: Michele Merola, Stefano Poda, Giuseppe Tornatore, Teatro Regio di Torino, Opera Royal De Wallonie, Paolo Rosini, Vangelis Legakis, Jose Agudo und anderen.
 
 2019 gründete Elia Pangaro zusammen mit Alexander De Vries das MITS Collective und begann, Aufführungen auf der ganzen Welt zu kreieren und mitzugestalten. Einige seiner Werke sind: „Anatomy of a Living Body“, eine Lecture-Performance, die gemeinsam mit dem Psychiater Maurizio Venezi für VID Art/Science in Bologna, Italien, entwickelt wurde. „MÊME-BRAIN“, ein 50-minütiges Stück, das gemeinsam mit den Mitgliedern des MITS-Kollektivs für ISB in Bangkok, Thailand, choreografiert wurde. „spiegarsi/spje’garsi“, ein von UNITY SPACE (Hongkong) produziertes und von MOVES (Mexiko) unterstütztes Stück, das in Guatemala und Mexiko aufgeführt wurde. Gegenwärtig arbeitet er als freischaffender Performer und Choreograph und kreiert mit verschiedenen Kollaborateuren integrative, interdisziplinäre Werke.
 
@@ -53,7 +53,7 @@ Präsentiert in Oaxaca, Mexiko und in München bei TANZWERKSTATT EUROPA im Rahme
 
 Besonderen Dank an Hanna Schaar & Pierre d’Haveloose für die Zusammenarbeit.
 
-## Jack Bannerman: "Baby Blue"
+## Jack Bannerman: „Baby Blue“
 
 ::: bilder
 darstellung: neben
@@ -68,7 +68,7 @@ Ursprünglich aus Australien stammend, arbeitet Jack seit sieben Jahren professi
 
 „The empty handed painter from your streets  
 Is drawing crazy patterns on your sheets  
-The sky too is fallin‘ in over you  
+The sky too is fallin’ in over you  
 And it’s all over now, baby blue“
 
 Die Soloarbeit *Baby Blue* hebt die Perspektive des Betrachters an und erzwingt ein Gefühl der Beobachtung und Beurteilung. Das Werk wird in den Dimensionen eines großen Wohnzimmerteppichs verpackt und präsentiert, in der der Künstler ein Produkt dieser Realität ist. Eine Realität, in der seine Identität nur durch die Aufführung in diesem begrenzten Raum ausgedrückt werden kann. Das Stück ist eine Tanzperformance, aber es hinterfragt auch den Akt des Aufführens und wie dieser ominöse Druck in unser Leben eindringen und uns in die Irre führen kann.

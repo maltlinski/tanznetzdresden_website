@@ -119,6 +119,8 @@ const t = tr(getLang(Astro), {
     .vs__zu { display: inline-block; }
     .vs__gross { display: none; }
     .vs-auf { display: inline-flex; position: fixed; right: 16px; bottom: 88px; z-index: 55; }
+    /* neben einem Formular steht der Knopf oben im Fluss statt schwebend – sonst läge er über einem Feld */
+    :global(.r-split) > .vs-auf { position: static; order: -1; justify-self: start; }
     .vs-auf[hidden] { display: none; }
   }
 </style>

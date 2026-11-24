@@ -1,5 +1,5 @@
 ---
-title: 31. Off Europa-Festival vom 16. - 22. Mai 2022 in Dresden, Leipzig & Chemnitz
+title: 31. Off Europa-Festival vom 16.–22. Mai 2022 in Dresden, Leipzig & Chemnitz
 date: 2022-04-08
 category: Netzwerk
 author: TanzNetzDresden
@@ -9,14 +9,14 @@ teaser: 8Vom 16. bis 22. Mai 2022 findet in Dresden, Leipzig und Chemnitz das 31
 
 8Vom 16. bis 22. Mai 2022 findet in Dresden, Leipzig und Chemnitz das 31. »Off Europa« Festival unter dem Motto »Kunststücke« statt und lädt an unterschiedlichste Orte in den drei sächsischen Großstädten zu einer riesigen Werkschau in Sachen Tanz, Theater, Performance und Musik ein. Auch Dresden ist mit dem Societaetstheater als Partner dabei, um im Zentralwerk eine beachtliche Reihe an Darbietungen zu präsentieren.
 
-Off Europa ist üblicherweise Theater, Performance und Tanz eines einzelnen Landes gewidmet. Da die aktuellen Reisebeschränkungen noch immer keine neuen, ausgiebigen Recherchen erlauben, entstanden die im Programm des Festivals versammelten „Kunststücke“ - wie schon die „Meisterstücke“ der 30. Ausgabe im Jahr 2021 - als Ergebnis langjähriger Sichtungen.
+Off Europa ist üblicherweise Theater, Performance und Tanz eines einzelnen Landes gewidmet. Da die aktuellen Reisebeschränkungen noch immer keine neuen, ausgiebigen Recherchen erlauben, entstanden die im Programm des Festivals versammelten „Kunststücke“ – wie schon die „Meisterstücke“ der 30. Ausgabe im Jahr 2021 – als Ergebnis langjähriger Sichtungen.
 
 Konkret handelt es sich im Falle von Dresden um die folgenden Termine, die man sich im Mai freihalten beziehungsweise besuchen sollte:
 
 - 17.05. [V.I.P. VERY ISOLATED PEOPLE von Paula Breuer und Olga Török](https://www.societaetstheater.de/veranstaltung/vip-very-isolated-person/) und dem deutschen Staatstheater Temeswar (Rumänien) als Zoom Live Performance
 - 18.05. [ANI-MA + ME, AND ALL OF THAT BODY von Roni Chadash (ISR)](https://www.societaetstheater.de/veranstaltung/ani-ma-me-and-all-of-that-body/)
 - 19.05. [KUKUŁKA von Grupa Coincidentia, Lehmann und Wenzel, Wilde & Vogel (D/PL)](https://www.societaetstheater.de/veranstaltung/kukulka/)
-- 20.05. [OUT OF SEASON - UNDANCING VIVALDI von Rafał Dziemidok (PL/D)](https://www.societaetstheater.de/veranstaltung/out-of-season-undancing-vivaldi/)
+- 20.05. [OUT OF SEASON – UNDANCING VIVALDI von Rafał Dziemidok (PL/D)](https://www.societaetstheater.de/veranstaltung/out-of-season-undancing-vivaldi/)
 - 20.05. [AM I IN THE PICTURE? von Zuzana Kakalíková / Compagnie TDU (SVK/CH)](https://www.societaetstheater.de/veranstaltung/am-i-in-the-picture/)
 - 21.05. [TOGETHER von Leja Jurišić & Marko Mandić (SVN)](https://www.societaetstheater.de/veranstaltung/together/)
 

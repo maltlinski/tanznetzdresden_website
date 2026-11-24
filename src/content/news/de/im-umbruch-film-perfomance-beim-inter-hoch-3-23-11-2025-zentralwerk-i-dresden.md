@@ -4,14 +4,14 @@ date: 2025-10-21
 category: Netzwerk
 author: TanzNetzDresden
 image: ../../../assets/news/2022/tanznetzdresden-barbara-lubich-im-umbruch-michael-sommermeyer-hechtfilm-scaled.webp
-teaser: Am 15. Mai 2022 feierte der Dokumentarfilm "IM UMBRUCH Go.Stay.Dance." von Barbara Lubich Premiere. Am 26.
+teaser: Am 15. Mai 2022 feierte der Dokumentarfilm „IM UMBRUCH Go.Stay.Dance.“ von Barbara Lubich Premiere. Am 26.
 ---
 
-*Am 15. Mai 2022 feierte der Dokumentarfilm "IM UMBRUCH Go.Stay.Dance." von Barbara Lubich Premiere. Am 26. November wird das Werk im Rahmen des Festivals INTER HOCH 3 erstmals im Zentralwerk gezeigt und durch ein Gespräch sowie eine Performance umrahmt. Die Veranstaltung findet in Kooperation mit dem TanzNetzDresden statt. Alle weiteren Informationen gibt es im heutigen Blog-Beitrag.*
+*Am 15. Mai 2022 feierte der Dokumentarfilm „IM UMBRUCH Go.Stay.Dance.“ von Barbara Lubich Premiere. Am 26. November wird das Werk im Rahmen des Festivals INTER HOCH 3 erstmals im Zentralwerk gezeigt und durch ein Gespräch sowie eine Performance umrahmt. Die Veranstaltung findet in Kooperation mit dem TanzNetzDresden statt. Alle weiteren Informationen gibt es im heutigen Blog-Beitrag.*
 
-### Eine Blende in drei Leben.
+## Eine Blende in drei Leben.
 
-"IM UMBRUCH Go.Stay.Dance."  in ein Dokumentarfilm von Barbara Lubich, in dem unter anderem auch mehrere Mitgliederinnnen des TanzNetzDresden zu sehen sind. Doch worum geht es genau?
+„IM UMBRUCH Go.Stay.Dance.“  in ein Dokumentarfilm von Barbara Lubich, in dem unter anderem auch mehrere Mitgliederinnnen des TanzNetzDresden zu sehen sind. Doch worum geht es genau?
 
 Fine Kwiatkowski, Daniela Lehmann und Cindy Hammer – drei Frauen in Bewegung. Gehen. Bleiben. Tanzen. IM UMBRUCH ist die filmische Begegnung mit drei Künstlerinnen aus drei Jahrgängen. Zwischen Alltag und Vision, Kunst und Kunstbetrieb, Eigensinn und Gemeinschaft, verschwundenen Grenzen und beständigen Werten.
 
@@ -43,15 +43,15 @@ bilder:
 
 Alle genannte Künstler:innen waren Mitwirkende der Intermedia I. Doch der Film bleibt nicht in der Vergangenheit sondern wird zur Begegnung zwischen den Generationen.
 
-**Mehr zu "IM UMBRUCH" gibt es unter folgendem Link**:  
+**Mehr zu „IM UMBRUCH“ gibt es unter folgendem Link**:  
 [hechtfilm.de/projekte/im-umbruch/](https://hechtfilm.de/projekte/im-umbruch/)
 
 **In einem früheren und ausführlichen Beitrag auf unserem Blog haben wir unter folgendem Link berichtet:**  
 [tanznetzdresden.de/premiere-dokumentarfilm-im-umbruch-barbara-lubich-fine-kwiatkowski-daniela-lehmann-cindy-hammer/](/news/premiere-dokumentarfilm-im-umbruch-barbara-lubich-fine-kwiatkowski-daniela-lehmann-cindy/)
 
-### IM UMBRUCH zu Gast beim INTER HOCH 3 Festival im Zentralwerk
+## IM UMBRUCH zu Gast beim INTER HOCH 3 Festival im Zentralwerk
 
-Am 23. November nach dem Film begegnen sich Regisseurin Barbara Lubich und die Protagonistinnen Fine Kwiatkowski, Daniela Lehmann und Cindy Hammer für ein Gespräch. Zu ihnen gesellt sich eine weitere Künstler\*in der Generation Z, die mit einer 15 minütigen Performance zu Gast ist.
+Am 23. November nach dem Film begegnen sich Regisseurin Barbara Lubich und die Protagonistinnen Fine Kwiatkowski, Daniela Lehmann und Cindy Hammer für ein Gespräch. Zu ihnen gesellt sich eine weitere Künstler:in der Generation Z, die mit einer 15 minütigen Performance zu Gast ist.
 
 Es wird wieder um die Frage gehen: Gehen. Bleiben.Tanzen? Was kann Kunst heute, in Zeiten des Umbruchs?
 
@@ -60,7 +60,7 @@ Die Veranstaltung ist Teil des Festival [INTER HOCH 3](https://zentralwerk.de/ar
 
 Die Veranstaltung wird gefördert von Kulturstiftung des Freistaates Sachsen und des Deutsch-Tschechischen Zukunftsfonds und findet in Kooperation mit dem TanzNetzDresden statt.
 
-### Informationen
+## Informationen
 
 **Was**? IM UMBRUCH Go.Stay.Dance. (R: Barbara Lubich  D, 2022, 76 min) Deutsch mit engl. UT)  
 Film, Performance und Gespräch ([weitere Informationen](https://zentralwerk.de/archiv/inter-hoch-3-pt-2/)) im Rahmen des Festival [INTER HOCH 3](https://zentralwerk.de/archiv/inter-hoch-3/)  

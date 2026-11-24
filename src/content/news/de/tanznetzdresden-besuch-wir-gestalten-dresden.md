@@ -19,7 +19,7 @@ bilder:
 
 ## Einblicke in die zeitgenössische Tanzszene Dresdens
 
-Entstanden ist final ein kurzweiliger Film, der in knapp 9 Minuten abwechslungsreiche und umfassende Einblicke in die verschiedenen Sparten, Berufsbilder und Schaffensorte eines Teils der hiesigen freischaffenden Tanzszene gibt und einmal mehr vermittelt, was es heißt, in Dresden im Bereich des zeitgenössischen Tanzes selbstständig zu arbeiten. Darüber hinaus wird gut portraitiert, wie die hiesige Tanzszene vom TanzNetzDresden e.V. profitiert und sich - auf die Möglichkeiten es Netzwerkes aufbauend - eigene Strukturen schafft.
+Entstanden ist final ein kurzweiliger Film, der in knapp 9 Minuten abwechslungsreiche und umfassende Einblicke in die verschiedenen Sparten, Berufsbilder und Schaffensorte eines Teils der hiesigen freischaffenden Tanzszene gibt und einmal mehr vermittelt, was es heißt, in Dresden im Bereich des zeitgenössischen Tanzes selbstständig zu arbeiten. Darüber hinaus wird gut portraitiert, wie die hiesige Tanzszene vom TanzNetzDresden e.V. profitiert und sich – auf die Möglichkeiten es Netzwerkes aufbauend – eigene Strukturen schafft.
 
 [Video auf YouTube ansehen ↗](https://youtu.be/HVjgbfHkSN8)
 

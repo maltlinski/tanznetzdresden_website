@@ -17,6 +17,7 @@ const categories = consentCategories.filter((c) => c.enabled).map((c) => ({
   ...c,
   label: lang === 'en' ? c.label_en : c.label,
   description: lang === 'en' ? c.description_en : c.description,
+  services: lang === 'en' ? (c.services_en ?? c.services) : c.services,
 }));
 const optional = categories.filter((c) => !c.required);
 const vonSelbst = optional.some((c) => c.id !== 'medien');
@@ -71,6 +72,8 @@ const vonSelbst = optional.some((c) => c.id !== 'medien');
       save.hidden = !show;
       banner.classList.toggle('consent--offen', show);
       toggle.setAttribute('aria-expanded', String(show));
+      // „Einstellungen“ nur, solange die Einstellungen zu sind
+      toggle.hidden = show;
     };
     const open = (details = false, focus = true) => {
       sync();
@@ -134,7 +137,7 @@ const vonSelbst = optional.some((c) => c.id !== 'medien');
   .consent__cat input:disabled + .consent__box { opacity: 0.6; }
   .consent__cat input:focus-visible + .consent__box { outline: 2px solid var(--cyan); outline-offset: 2px; }
   .consent__desc { display: block; color: var(--on-dark-soft); font-size: 13px; margin-top: 2px; }
-  .consent__svc { display: block; font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-top: 6px; }
+  .consent__svc { display: block; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); margin-top: 6px; }
   .consent__actions { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; }
   /* Beide Hauptoptionen gleich gewichtet (rechtlich gefordert) */
   .consent__btn { background: var(--cyan); color: var(--purple); }

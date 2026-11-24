@@ -10,11 +10,11 @@ teaser: Wir möchten heute nochmals darauf hinweisen, dass die Frist der Ausschr
 
 Wir möchten heute nochmals darauf hinweisen, dass die Frist der Ausschreibung der aktuellen TANZPAKT in residence noch nicht abgelaufen ist. Konkret können noch bis zum **1\. April 2022** Anträge eingereicht werden. Nutzt daher eure Chance, um euch für eine teilnehmenden Locations zu bewerben und ein Künstler:innenhonorar für die Zeit von 2022 bis 2024 sowie vieles weitere mehr zu erhalten und außerdem eine großartige Chance für professionelle Arbeitsbedingungen zu bekommen. Netzwerkeffekt garantiert. Alle Details folgen nun noch einmal hier im Beitrag.
 
-### TANZPAKT in residence - die Details
+## TANZPAKT in residence – die Details
 
-TANZPAKT in residence - eine Kooperation zwischen VILLA WIGMAN und TanzNetzDresden - realisiert in den Jahren 2022-24 ein umfangreiches Residenzprogramm für das Land Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat zum Ziel hat. Das Residenzprogramm versteht sich als grundlegendes Instrument, Künstler:innen in die Exzellenz zu befördern, indem es Zeit-Räume für Forschung zur Verfügung stellt und nachhaltige Strukturen schafft, die der Tanzszene der Region ein professionelles und kontinuierliches Arbeiten ermöglichen. Vorgesehen sind die Schwerpunkte „Netzwerk und Austausch“, „Wissensgewinn und Erfahrung“ sowie „Vermittlung und Partizipation“.
+TANZPAKT in residence – eine Kooperation zwischen VILLA WIGMAN und TanzNetzDresden – realisiert in den Jahren 2022–24 ein umfangreiches Residenzprogramm für das Land Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat zum Ziel hat. Das Residenzprogramm versteht sich als grundlegendes Instrument, Künstler:innen in die Exzellenz zu befördern, indem es Zeit-Räume für Forschung zur Verfügung stellt und nachhaltige Strukturen schafft, die der Tanzszene der Region ein professionelles und kontinuierliches Arbeiten ermöglichen. Vorgesehen sind die Schwerpunkte „Netzwerk und Austausch“, „Wissensgewinn und Erfahrung“ sowie „Vermittlung und Partizipation“.
 
-Von 2022-2024 werden insgesamt 18 Residenzen ermöglicht, die Vergabe erfolgt über eine Jury. Darüber hinaus ermöglicht die Förderung weitere investive Maßnahmen für den Ausbau der VILLA WIGMAN als Proben- und Produktionsort der lokalen und regionalen Szene.
+Von 2022–2024 werden insgesamt 18 Residenzen ermöglicht, die Vergabe erfolgt über eine Jury. Darüber hinaus ermöglicht die Förderung weitere investive Maßnahmen für den Ausbau der VILLA WIGMAN als Proben- und Produktionsort der lokalen und regionalen Szene.
 
 Für die Monate Juli-Dezember 2022 sollen fünf 4-wöchige Solo-Recherche Residenzen an sächsischen Produktions- und Theaterstätten in Kirschau, Zwickau, Görlitz, Chemnitz, Leipzig und Dresden vergeben werden.  
 Hierfür können sich Künstler:innen mit Arbeitsschwerpunkt in Sachsen bis zum **01.04.2022** bewerben.
@@ -22,23 +22,23 @@ Hierfür können sich Künstler:innen mit Arbeitsschwerpunkt in Sachsen bis zum 
 Zur Residenz gehört die Durchführung eines oder mehrerer Trainings bzw. Workshops am Residenzort und eine Werkstattpräsentation zum Abschluss der Residenzzeit.  
 Das Programm ist besonders daran interessiert, einen Wissenstransfer zwischen Tanzschaffenden und (auch) tanzfernen Institutionen und Orten zu fördern, woraus weitere Recherchepartnerschaften entstehen können.
 
-### TANZPAKT in residence bietet:
+## TANZPAKT in residence bietet:
 
 - Künstler:innenhonorar: 2.000,00 Euro
 - Materialkosten: 200,00 Euro
 - Reisekosten & Unterkunft (nach Absprache)
-- Studio / Arbeitsraum - Organisatorische / räumliche (keine technische) Unterstützung
+- Studio / Arbeitsraum – Organisatorische / räumliche (keine technische) Unterstützung
 
-### Residenzorte:
+## Residenzorte:
 
-- [TanzART Kirschau](https://www.tanzart-kirschau.de/) / 2022-2024
-- [Mondstaubtheater Zwickau](https://www.mondstaubtheater.de/) / Fokus: Tanzpädagogische Arbeit mit Kindern, Jugendlichen oder Senioren / 2023-2024
-- [TanzRaumGörlitz](https://trg.persona.co/) / 2022-2024
-- [KOMPLEX Chemnitz](https://www.chemnitzkomplex.de/) / 2023-2024
+- [TanzART Kirschau](https://www.tanzart-kirschau.de/) / 2022–2024
+- [Mondstaubtheater Zwickau](https://www.mondstaubtheater.de/) / Fokus: Tanzpädagogische Arbeit mit Kindern, Jugendlichen oder Senioren / 2023–2024
+- [TanzRaumGörlitz](https://trg.persona.co/) / 2022–2024
+- [KOMPLEX Chemnitz](https://www.chemnitzkomplex.de/) / 2023–2024
 - [4fürTANZ](https://4fuertanz.de/) (Leipzig) / 2022
-- [VILLA WIGMAN](https://www.villa-wigman.de/) (Dresden) / 2022-2024
+- [VILLA WIGMAN](https://www.villa-wigman.de/) (Dresden) / 2022–2024
 
-### Einreichung:
+## Einreichung:
 
 Das Exposé (auf deutsch oder englisch, maximal 2 Seiten) sollte folgende Punkte beinhalten:
 
@@ -51,7 +51,7 @@ Das Exposé (auf deutsch oder englisch, maximal 2 Seiten) sollte folgende Punkte
 - Angabe zu gewünschtem Zeitraum und Alternativzeitraum
 
 **Einsendeschluss**: 1. April 2022 an: [info@villa-wigman.de](mailto:info@villa-wigman.de)  
-**Betreff**: "Bewerbung TANZPAKT in residence #2022"
+**Betreff**: „Bewerbung TANZPAKT in residence #2022“
 
 Eventuelle Fragen bitte an [info@villa-wigman.de](mailto:info@villa-wigman.de) richten.
 

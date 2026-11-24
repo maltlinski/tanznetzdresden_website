@@ -24,15 +24,15 @@ Einer der Beiträge der kommenden Abende wird die Produktion »Demise, because w
 Mehr zu Joao Pedro de Paula findet ihr unter:  
 [joaopedrodepaula.com](https://www.joaopedrodepaula.com/)
 
-### Termine & Tickets
+## Termine & Tickets
 
 - Donnerstag, 14. Dezember 2023, 19:30 Uhr / [Tickets](https://indiv.themisweb.fr/0412/fEventChoiceIsMade.aspx?idstructure=0412&idevent=2243&idsession=7488&yymm=20231214&title=Fall)
 - Sonntag, 4. Februar 2024, 19:30 Uhr / [Tickets](https://indiv.themisweb.fr/0412/fEventChoiceIsMade.aspx?idstructure=0412&idevent=2243&idsession=7489&yymm=20240204&title=Fall)
 - Samstag, 10. Februar 2024, 19:00 Uhr / VVK-Link folgt
-- **Ort**: [Landesbühnen Sachsen - Studiobühne](https://www.landesbuehnen-sachsen.de/theater-radebeul)
+- **Ort**: [Landesbühnen Sachsen – Studiobühne](https://www.landesbuehnen-sachsen.de/theater-radebeul)
 - Gesamtdauer des Abends:  1 Stunde, 20 Minuten (mit Pause)
 
-### Steuerkarten für TanzNetzDresden Mitglieder:innen
+## Steuerkarten für TanzNetzDresden Mitglieder:innen
 
 TNDD Mitglieder:innen bekommen zu allen Tanzproduktionen an der Landesbühnen Sachsen Steuerkarten. **Wichtig**: Die Tickets können jedoch nur telefonisch an der Theaterkasse unter der Nummer 0351 89 54321 oder via Mail unter [kasse@landesbuehnen-sachsen.de](mailto:kasse@landesbuehnen-sachsen.de) (nicht online) bestellt werden.
 

@@ -14,6 +14,21 @@ export type KopfModus = 'vollbild' | 'hochkant' | 'split' | 'typo' | 'netz';
 export type Flaeche = 'purple' | 'cyan' | 'tint';
 
 
+/** Nur Buchstaben und Ziffern, klein, ohne Tags und Zeichen – zum Vergleichen von Texten */
+const flach = (s: string) =>
+  s.replace(/<[^>]+>/g, ' ').replace(/&[a-z0-9#]+;/gi, ' ').replace(/[^\p{L}\p{N}]+/gu, ' ').trim().toLowerCase();
+
+/**
+ * Wiederholt der Teaser nur den Anfang des Textes? Bei den alten Beiträgen der früheren Website ist der Teaser oft
+ * der erste Satz (oder sein Anfang mit „…“). Dann zeigen wir ihn nicht noch einmal über dem Text.
+ */
+export function teaserWiederholt(teaser: string, html: string): boolean {
+  const t = flach(teaser.replace(/\s*(…|\.\.\.|\[…\]|\[\.\.\.\])\s*$/, ''));
+  if (t.length < 20) return false;
+  const erster = html.match(/<p[^>]*>([\s\S]*?)<\/p>/)?.[1] ?? html;
+  return flach(erster).startsWith(t) || flach(html).startsWith(t);
+}
+
 /** Welcher Kopf: ohne Titelbild das Netz, „auto“ = Vollbild, Hochkant-Fotos bekommen den Hochkant-Kopf */
 export function kopfModus(hero: string | undefined, hatBild: boolean, verhaeltnis?: number): KopfModus {
   if (!hatBild) return 'netz';
@@ -68,13 +83,16 @@ export function kopfHtml(d: KopfDaten): string {
       : '';
 
   switch (d.modus) {
-    case 'vollbild':
+    case 'vollbild': {
+      // Seitenverhältnis fürs Handy hochkant: dort zeigt der Kopf das Foto quer statt bildschirmhoch (artikel.css)
+      const r = Math.min(2.4, Math.max(1.2, d.bild?.verhaeltnis ?? 1.5)).toFixed(3);
       return (
-        `<header class="ak ak--vollbild${d.unterLeiste ? ' ak--unter unter-leiste' : ''}" data-kopf>${zoom('ak__buehne')}` +
+        `<header class="ak ak--vollbild${d.unterLeiste ? ' ak--unter unter-leiste' : ''}" style="--r:${r}" data-kopf>${zoom('ak__buehne')}` +
         `<div class="ak__oben"><div class="wrap">${zurueck(' ak__back--fahne')}</div></div>` +
         `<div class="ak__band">${keil('var(--cyan)', 'ak__keil-oben')}<div class="wrap ak__band-innen">` +
         `${h1}<div class="ak__block">${meta()}${credit}</div></div></div></header>`
       );
+    }
     case 'hochkant':
       return (
         `<header class="ak ak--hochkant" data-kopf><div class="wrap ak__innen">` +

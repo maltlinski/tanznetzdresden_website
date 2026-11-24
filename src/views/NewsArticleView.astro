@@ -12,7 +12,7 @@ import Badge from '../components/ui/Badge.astro';
 import NewsImage from '../components/NewsImage.astro';
 import '../styles/artikel.css';
 import { getNews, dateShort, newsBadge, newsCategoryLabel, type NewsPost } from '../lib/news';
-import { faktenHtml, fussHtml, kopfHtml, kopfModus, nachweise, zeileHtml } from '../lib/news-artikel';
+import { faktenHtml, fussHtml, kopfHtml, kopfModus, nachweise, teaserWiederholt, zeileHtml } from '../lib/news-artikel';
 import { escapeHtml as esc } from '../lib/news-format';
 import { getVerein } from '../lib/settings';
 import { getLang, tr, url } from '../lib/i18n';
@@ -56,8 +56,10 @@ if (post.image) {
     credit: post.imageCredit,
   };
 }
+// Teaser, der nur den Textanfang wiederholt (alte Beiträge), nicht noch einmal über dem Text zeigen
+const teaser = teaserWiederholt(post.teaser, post.html) ? '' : post.teaser;
 const kopf = kopfHtml({
-  lang, modus, flaeche: post.heroTheme, kategorie: post.category, titel: post.title, teaser: post.teaser, autor: post.author,
+  lang, modus, flaeche: post.heroTheme, kategorie: post.category, titel: post.title, teaser, autor: post.author,
   nr: post.nr, datum: post.date, minuten: post.minutes, zurueck: url(lang, 'news', '#journal'), bild, knoten: post.node, frist: post.deadline, unterLeiste: true,
 });
 const liste = nachweise(post.html, bild?.credit ? { k: t.cover, credit: bild.credit } : undefined);
@@ -89,7 +91,7 @@ const jsonLd = {
 
     <div class="ab">
       <div class="ab__spalte">
-        {modus === 'vollbild' && post.teaser && <p class="ab__stand">{post.teaser}</p>}
+        {modus === 'vollbild' && teaser && <p class="ab__stand">{teaser}</p>}
         {!post.translated && <p class="ab__note" lang="en">{t.onlyDe}</p>}
         <Fragment set:html={zeileHtml(lang, post.author, post.date, mail)} />
         <Fragment set:html={faktenHtml(lang, post.facts, post.deadline)} />

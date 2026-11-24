@@ -13,7 +13,7 @@ Im Rahmen des neuen Profitraining-Programms KEEP UP des TanzNetzDresdens findet 
 
 ## »Caring in Motion«
 
-Der englischsprachige Workshop “CARING IN MOTION” von Alexandre May beschäftigt sich mit der emotionalen Intelligenz und der Achtsamkeit des Körpers und des Geistes. Beeinflusst vom zeitgenössischen Tanz, von verschiedenen somatischen Praktiken und der Neurowissenschaften, lädt der Workshop die Teilnehmer:innen dazu ein, den eigenen Körper durch Sinneswahrnehmung, Visualisierung und den Gebrauch von Atem und Stimme zu erkunden und damit Wege zu erproben, mit welchen durch Bewegung die emotionale und körperliche Achtsamkeit kultiviert werden können.
+Der englischsprachige Workshop „CARING IN MOTION“ von Alexandre May beschäftigt sich mit der emotionalen Intelligenz und der Achtsamkeit des Körpers und des Geistes. Beeinflusst vom zeitgenössischen Tanz, von verschiedenen somatischen Praktiken und der Neurowissenschaften, lädt der Workshop die Teilnehmer:innen dazu ein, den eigenen Körper durch Sinneswahrnehmung, Visualisierung und den Gebrauch von Atem und Stimme zu erkunden und damit Wege zu erproben, mit welchen durch Bewegung die emotionale und körperliche Achtsamkeit kultiviert werden können.
 
 Der Workshop richtet sich dabei sowohl an Profis als auch an Nicht-Profis und findet in englischer Sprache statt. Es wird empfohlen, eine warme Decke oder eine weiche Unterlage zum Liegen mitzubringen. Eine Teilnahme an beiden Tagen ist nicht zwingend erforderlich, jedoch empfohlen, da der Workshop aufbauend strukturiert ist.
 

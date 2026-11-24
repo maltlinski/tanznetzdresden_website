@@ -9,7 +9,7 @@ teaser: Der TNDD-Kooperationspartner Nytt ist ein Fundus für Requisiten, Bühne
 
 Der TNDD-Kooperationspartner Nytt ist ein Fundus für Requisiten, Bühnenbilder und Veranstaltungszubehör. Und genau als solche Institution hat Nytt im März 2022 das neueste Musikvideo von futurebae & Schorl3 mit dem Titel »Fieber« ausgestattet. Vom lässigen Song mit seiner eingängigen Hook einmal abgesehen möchten wir diesen Anlass nun nutzen, um auf das besondere Angebot von Nytt hinzuweisen, welches wir dank unserer Kooperation Mitglieder:innen des TanzNetzDresden zur Verfügung stellen können.
 
-### Was genau ist Nytt?
+## Was genau ist Nytt?
 
 Nytt ist ein gemeinnütziges Projekt, dass sich zum Ziel gesetzt hat, ein Materialdepot aufzubauen. Die Aufgabe von Nytt ist es, Materialien aus dem Bereich Theater, Messebau und Film vor der Entsorgung zu bewahren, aufzuarbeiten und an kreative Projekte, Kultureinrichtungen, Schulen oder Initiativen weiterzuvermitteln.
 
@@ -21,7 +21,7 @@ Nytt will allen einen Zugang zu Materialien ermöglichen, unabhängig von finanz
 
 Die Mission ist somit klar: Nytt will Material vor der Entsorgung retten und diesem ein zweites Leben geben, indem die Materialien in einen nachhaltigen Kreislauf eingebracht werden.
 
-### Was kostet das?
+## Was kostet das?
 
 Jede:r kann ausleihen und kaufen. Die Preisgestaltung richtet sich nach dem Zweck für das Material erworben werden soll: kommerziell, förderungswürdig oder non-profit. Man kann Nytt hier direkt kontaktieren oder die **hier** verknüpfte PDF nutzen, um sich den genauen Ablauf anzuschauen.
 

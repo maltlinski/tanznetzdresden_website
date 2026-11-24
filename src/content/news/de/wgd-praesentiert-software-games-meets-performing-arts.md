@@ -9,16 +9,16 @@ teaser: Unter dem Motto »Cross Innovation Made in Saxony!« präsentierte Wir g
 
 Unter dem Motto »Cross Innovation Made in Saxony!« präsentierte [Wir gestalten Dresden – Branchenverband der Dresdner Kultuir- und Kreativwirtschaft e. V.](https://www.wir-gestalten-dresden.de/) diverse Showreel-Abende, an denen Akteur:innen unterschiedlicher kreativer Teilbranchen zusammen kamen.
 
-Cross Industry oder Cross Sektor Innovation ist hierbei das aktuelle Buzzword, wenn es um Transformationsaufgaben und neue Lösungen für “wicked problems” geht. Mit Cross-Industry Innovation ist gemeint, dass Wissen aus verschiedenen Branchen kombiniert wird, um Innovationen zu schaffen. Neue Ideen. Außergewöhnliche Herangehensweisen. Zukunftsgewandte Prozesse.
+Cross Industry oder Cross Sektor Innovation ist hierbei das aktuelle Buzzword, wenn es um Transformationsaufgaben und neue Lösungen für „wicked problems“ geht. Mit Cross-Industry Innovation ist gemeint, dass Wissen aus verschiedenen Branchen kombiniert wird, um Innovationen zu schaffen. Neue Ideen. Außergewöhnliche Herangehensweisen. Zukunftsgewandte Prozesse.
 
-Am 15. März 2023 trafen unter dem Titel "Software & Games meets Performing Arts" nun zwei weitere kreative Ressorts aufeinander, um neue Ideen und Wege zu präsentieren und miteinander ins Gespräch zu kommen. Entstanden ist hierzu nun ein hübscher After-Movie, in dem auch die am 15. März anwesende Susan Schubert vom TNDD zu Wort kommt. All das möchten wir euch nun in diesem Beitrag zeigen.
+Am 15. März 2023 trafen unter dem Titel „Software & Games meets Performing Arts“ nun zwei weitere kreative Ressorts aufeinander, um neue Ideen und Wege zu präsentieren und miteinander ins Gespräch zu kommen. Entstanden ist hierzu nun ein hübscher After-Movie, in dem auch die am 15. März anwesende Susan Schubert vom TNDD zu Wort kommt. All das möchten wir euch nun in diesem Beitrag zeigen.
 
 ## Software & Games meets Performing Arts
 
 Welche Synergien entstehen, wenn Code und Choreography, digitales und analoges Erzählen aufeinander treffen? Diese Frage stand am 15. März 2023 in der LEVEL 44 Gaming & eSportsbar in Dresden im Zentrum. Moderiert von Tino Göhlert (WAKU robotics) stellte jeweils eine der beiden folgenden Personen ein Projekt vor:
 
-- **Severin Taranko** von queo/xr sprach über "Potentiale von Virtual Showrooms für Marketing & Vertrieb"
-- **Katharina Groß** von neue raeume gab Insights über „Kollektive Zusammenarbeit und künstlerisches Programmieren"
+- **Severin Taranko** von queo/xr sprach über „Potentiale von Virtual Showrooms für Marketing & Vertrieb“
+- **Katharina Groß** von neue raeume gab Insights über „Kollektive Zusammenarbeit und künstlerisches Programmieren“
 
 Gemeinsam kamen die Gäst:innen und Besucher:innen ins Gespräch. In diesem Zuge äußerste sich auch die anwesende Susan Schubert über das Potenzial von Virtual Reality für den Bereich der Darstellende Künste (ihr Statement gibt es im Video ab Sekunde 38). Im Anschluss an die Vorträge konnten außerdem Fragen eingebracht und beim Get-together weiter diskutiert werden.
 

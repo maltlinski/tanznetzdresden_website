@@ -9,7 +9,7 @@ teaser: Aufgrund der aktuellen Situation, dass das TanzNetzDresden ab 2026 von e
 
 *Aufgrund der aktuellen Situation, dass das TanzNetzDresden ab 2026 von einer gänzlichen Streichung der institutionellen Förderung bedroht ist, wird am Dienstag, den 25. November 2025 vor dem Rathaus Dresden und begleitet zur darin stattfindenden Sitzung ein Protest des Netzwerks stattfinden, um das Schlimmste abzuwenden.*
 
-### Mit Dir antreten oder abtanzen?!
+## Mit Dir antreten oder abtanzen?!
 
 Wir rufen heute alle Mitglieder:innen des TanzNetzDresden sowie all jene, denen eine lebendige und vielseitige Tanzszene am Herzen liegt, am 25. November ab 16 Uhr vor das Rathaus in Dresden zu kommen und gegen eine Streichung der institutionellen Förderung des TanzNetzDresden Gesicht zu zeigen.
 

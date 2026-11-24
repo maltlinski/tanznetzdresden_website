@@ -7,7 +7,7 @@ image: ../../../assets/news/2022/tndd-studio-round-2022-therese-benjus-daria-bel
 teaser: Die kommende TNDD studio round, die am 8. Juli ab 20 Uhr in der TENZA Schmiede stattfindet, muss leider eine Programmänderung vornehmen.
 ---
 
-Die kommende TNDD studio round, die am 8. Juli ab 20 Uhr in der [TENZA Schmiede](https://www.tenza.de/) stattfindet, muss leider eine Programmänderung vornehmen. Der Grund dafür ist, dass Therese Bendjus und Daria Belous krankheitsbedingt ihren Part absagen mussten. Das ist sehr schade, aber wir können bereits ankündigen, dass ihr Stück "Studies of Softening" Teil der kommenden fünften Ausgabe der TNDD-Atelierrunde im Herbst sein wird.
+Die kommende TNDD studio round, die am 8. Juli ab 20 Uhr in der [TENZA Schmiede](https://www.tenza.de/) stattfindet, muss leider eine Programmänderung vornehmen. Der Grund dafür ist, dass Therese Bendjus und Daria Belous krankheitsbedingt ihren Part absagen mussten. Das ist sehr schade, aber wir können bereits ankündigen, dass ihr Stück „Studies of Softening“ Teil der kommenden fünften Ausgabe der TNDD-Atelierrunde im Herbst sein wird.
 
 Alle anderen Beiträge der vierten TNDD-Atelierrunde bleiben bestehen und können direkt auf der [Unterseite der studio round](/#formate) eingesehen werden. Dort gibt es auch alle Informationen in englischer Sprache. *(if you scroll down there you also can find all the information in english)*
 

@@ -11,7 +11,7 @@ Auch 2023 soll und wird es wieder die beliebten POP UP-Formate des TanzNetzDresd
 
 Also this year there should and will be again the popular POP UP formats. To be quite precise, there are three dates planned for this year. From now until February 12, 2023, members of the network of TanzNetzDresden can apply and submit their concepts. All information about the call for proposals follows now in the article. *(eng)*
 
-### Informationen zur POP UP-Ausschreibung (deutsch)
+## Informationen zur POP UP-Ausschreibung (deutsch)
 
 Die Mission lautet auch für 2023: Wir wollen auch diejenigen unter euch ermutigen dabei zu sein, die noch nie ein POP UP-Host waren, denn das POP UP Format ist perfekt, um unser Netzwerk kennenzulernen, aktiv Kontakte zu knüpfen und in der Tanzszene in Dresden sichtbar aufzupoppen. Sowohl mit euren Diskurs als auch mit euren Performance-Ideen. Natürlich können sich aber auch diejenigen bewerben, die schon einmal Host waren.
 
@@ -19,7 +19,7 @@ Die Deadline für Einreichung ist in jedem Fall der **12\. Februar 2023**. Zuges
 
 Wer hingegen die AG POP UP beim Auswahlverfahren der kommenden POP UP-Ausgaben unterstützen möchte, der kann sich bis **31\. Januar 2023** ebenfalls per Mail an [zaira.morasso@arcor.de](mailto:zaira.morasso@arcor.de). Rückmeldungen zu euren Einreichungen erhaltet ihr bis Ende Februar.
 
-Ein Info ZOOM für alle ausgewählten POP UPs planen wir 17.03.2023 um 10Uhr - diesen Termin also bitte vormerken.
+Ein Info ZOOM für alle ausgewählten POP UPs planen wir 17.03.2023 um 10 Uhr – diesen Termin also bitte vormerken.
 
 p.s.: Dieses Jahr gibt es das Angebot, dass eine POP UP-Veranstaltung am 27.04.2023  im Rahmen der [Tanzwoche Dresden](http://www.tanzwoche.de/2020tw/index.php) in der Studiobühne/Landesbühne Sachsen stattfindet. Bitte schreibt in eure Einreichung, wenn ihr daran interessiert seid!
 
@@ -28,7 +28,7 @@ Alle weiteren Informationen zur Ausschreibung und zum POP UP-Format als PDF find
 - Mehr Information über POP UP gibt es außerdem unter  
     [tanznetzdresden.de/pop-up](/#formate)
 
-### Informations for the POP UP proposals (englisch)
+## Informations for the POP UP proposals (englisch)
 
 The mission for 2023 is clear: again we want to encourage those of you who have never been a POP UP host to join us, because the POP UP format is perfect to get to know our network, to actively make contacts and to visibly pop up in the dance scene in Dresden. Both with your discourse and with your performance ideas. Of course, those who have already been a host can also apply.
 
@@ -36,7 +36,7 @@ The deadline for submission is **February 6, 2023**. Concepts must be sent by e-
 
 You will receive feedback on your submissions by the end of February.
 
-An Info ZOOM for all selected POP UPs is planned for 17.03.2023 at 10am - so please mark this date.
+An Info ZOOM for all selected POP UPs is planned for 17.03.2023 at 10am – so please mark this date.
 
 On the other hand, if you would like to support the POP UP working group in the selection process for the upcoming POP UP editions, you can also send an e-mail to [zaira.morasso@arcor.de](mailto:zaira.morasso@arcor.de) by **January 31, 2023**.
 

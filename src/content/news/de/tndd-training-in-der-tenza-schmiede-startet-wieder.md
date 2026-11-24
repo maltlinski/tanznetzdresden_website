@@ -9,7 +9,7 @@ teaser: Das TNDD Training in der TENZA Schmiede startet wieder. Das vollständig
 
 Das TNDD Training in der TENZA Schmiede startet wieder. Das vollständige Angebot für die Zeit vom 20. September bis 28. Oktober sowie alle Informationen zu den aktuellen Hygiene-Auflagen, unter denen das Training stattfinden darf findet ihr weiter unten im Beitrag.
 
-### TNDD Training in der TENZA Schmiede
+## TNDD Training in der TENZA Schmiede
 
 Das Wichtigste gleich zu Beginn: sämtliche Termine des TNDD Trainings für die Zeit vom 20. September bis zum 28. Oktober. Hinter dem jeweiligen Termin findet ihr das konkrete Angebot, den Grad der Vorkenntnisse sowie die vermittelnde Person, die den Kurs anbietet.
 
@@ -37,8 +37,8 @@ Das Wichtigste gleich zu Beginn: sämtliche Termine des TNDD Trainings für die 
 
 28.10.2021: Zeitgenössisch – für Profis und Laien mit Dominik Strobl
 
-### Ort aller Kurse ist die TENZA Schmiede (Adresse: Pfotenhauerstraße 59, 01307 Dresden)
+## Ort aller Kurse ist die TENZA Schmiede (Adresse: Pfotenhauerstraße 59, 01307 Dresden)
 
-### WICHTIG: Im Moment gilt in der TENZA Schmiede (wenn Unterricht ohne Maske), dass alle Teilnehmer:innen tagesaktuell getestet sein müssen. Trotz Impfung oder Genesen. Zusätzlich muss ein Check-In über die Corona Warn App vorgenommen werden.
+## WICHTIG: Im Moment gilt in der TENZA Schmiede (wenn Unterricht ohne Maske), dass alle Teilnehmer:innen tagesaktuell getestet sein müssen. Trotz Impfung oder Genesen. Zusätzlich muss ein Check-In über die Corona Warn App vorgenommen werden.
 
 Mehr Informationen zum Programm und den Terminen gibt es [**auf der Website der TENZA Schmiede**](https://www.tenza.de/) und **hier**.

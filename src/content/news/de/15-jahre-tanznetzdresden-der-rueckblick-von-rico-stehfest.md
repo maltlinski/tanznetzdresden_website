@@ -9,7 +9,7 @@ teaser: Das TanzNetzDresden feierte am 29. April 2025, dem diesjährigen Welttan
 
 *Das TanzNetzDresden feierte am 29. April 2025, dem diesjährigen Welttanztag, sein 15jähriges Bestehen. Mit dabei war ebenfalls Journalist und Redakteur Rico Stehfest, der in all den Jahren bereits schon häufig über die Aktivitäten des TanzNetzDresden berichtet hat. Vor diesem Hintergrund freuen wir uns umso mehr, dass er die Ereignisse dieses 29. April für uns in einem Gastbeitrag für unseren Blog beschrieben hat.*
 
-### Tie-En-Didi, work!
+## Tie-En-Didi, work!
 
 Ein Partner auf Augenhöhe – so sieht André Schallenberg, Programmleiter Theater und Tanz für HELLERAU – Europäisches Zentrum der Künste das TanzNetzDresden. Als Vertreter einer der wichtigsten Institutionen für den Tanz in Dresden und damit auch für die freie Szene würdigt er damit auch eine Zusammenarbeit, die über die Veranstaltungsreihe „Linie 08“ im Festspielhaus Hellerau mit der Geburtsstunde des TanzNetzDresden eng verbunden ist. Seitdem sind 15 Jahre vergangen, 15 Jahre, in denen das TanzNetzDresden immer weiterwachsen und seine Wurzeln in der Stadt ausbreiten konnte. Mit der Vereinsgründung 2020 wurde schließlich die heutige Organisationstruktur begründet, in der sich aktuell mehr als 50 Mitglieder verbunden haben.
 
@@ -33,7 +33,7 @@ bilder:
     alt: ""
 :::
 
-### »Geh ich oder bleib ich?«
+## »Geh ich oder bleib ich?«
 
 Eine grundsätzlich wichtige Frage, die zum einen in die Geschichte des TanzNetzDresden blickt, zum anderen auch den Kern der Aktivitäten des Vereins trifft, stellte Josefine Wosahlo: „Geh ich oder bleib ich?“ Die Produzentin ist langjähriges Mitglied des TanzNetzDresden und gratulierte als Vertreterin des Vereins Villa Wigman. Ihre Frage stellte sich für sie selbst in der Vergangenheit als Künstlerin der freien Szene, zu einer Zeit, als die Strukturen und Arbeitsbedingungen für Freischaffende in den Darstellenden Künsten in Dresden alles andere als rosig waren. Genau an diesem Punkt hat das TanzNetzDresden angesetzt. Mit Erfolg.  
 Mit gut 80 Mitfeiernden startete die Geburtstagfeier noch im Garten des Societaetstheaters mit einem Solo von Laura Gary von der Tanzinitiative Brandenburg. Damit wurde auch ein klares Zeichen für die gewachsene Bedeutung des TanzNetzDresden gesetzt: Über die Initiative Tanzallianzen „Strukturen & Strategien für den Tanz“ ist der Verein auch bundesweit in größere Strukturen des Austauschs und der Förderung des Tanzes eingebunden.
@@ -56,7 +56,7 @@ bilder:
     alt: ""
 :::
 
-### Partner:innen, Kooperationen und jede Menge Performances
+## Partner:innen, Kooperationen und jede Menge Performances
 
 Als lokale Partner beteiligten sich an diesem Tag ganze sieben Tanzschulen. Auf dem Weg vom Societaetstheater bis in den Alaunpark zeigten die beteiligten Schülerinnen und Schüler an mehreren Orten die Choreografie aus dem Video zu Lady Gagas „Abracadabra“. Zum Mittanzen eingeladen waren auch alle, die zufällig den Weg der Feiernden gekreuzt haben. Zu „Celebration“ (Kool & The Gang) konnte jeder eine kurze Choreografie lernen und damit Teil des großen Ganzen werden.
 

@@ -10,7 +10,7 @@ teaser: Unter dem Titel »RESONANZRAUM« findet am Samstag, dem 9. Oktober 2021 
 
 Unter dem Titel »RESONANZRAUM« findet am Samstag, dem 9. Oktober 2021 ein POP UP-Salon für Ausdruckskünstler:innen und Heilkünstler:innen von Heidi Morgenstern und Daniela Lehmann in der Charlottenpraxis statt. Gäste des Salons sind Ulrike Aurig-Böttcher (Psychologin) und Ka Dietze (KlangTanzHeilKünstlerin).
 
-### POP UP im Oktober: »RESONANZRAUM«
+## POP UP im Oktober: »RESONANZRAUM«
 
 U: Wie erlebst du eigentlich die Rolle der Zuschauer in deiner künstlerischen Arbeit?  
 K: Aus meiner Sicht vollenden die einzelnen Zuschauer:innen einer Aufführung durch ihr Erleben ihre eigene Geschichte.  
@@ -23,7 +23,7 @@ Was passiert, wenn sich Kunstschaffende mit Menschen aus der Heilkunst treffen? 
 
 Wir laden Dich herzlich zu einem sensitiven Experiment ein, was sich durch alle Anwesenden und nicht Anwesenden gestaltet, formt und bewegt. Grenzerweiterung statt Grenzüberschreitung. Gleich einer systemischen Aufstellung UND einer Performance. Du kannst dir darunter nix vorstellen? Auch gut, wir bereiten den Raum für Dich und uns und eine einzigartige Erfahrung. Neugierig?
 
-### RESONANZRAUM Hosted by Heidi Morgenstern und Daniela Lehmann
+## RESONANZRAUM Hosted by Heidi Morgenstern und Daniela Lehmann
 
 Datum: 9. Oktober 2021; ab 15 Uhr  
 Dauer: 3 Stunden  

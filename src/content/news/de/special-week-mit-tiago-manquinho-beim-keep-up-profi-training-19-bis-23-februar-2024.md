@@ -38,7 +38,7 @@ Tiago Manquinho bietet in der Zeit vom 19. bis 23. Februar eine an fünf Tagen s
 
 ## Informationen zum Profi-Training mit Tiago Manquinho
 
-**Termine**: 19. bis 23. Februar 2024 (Mo-Fr), 10:00 - 11:30 Uhr  
+**Termine**: 19. bis 23. Februar 2024 (Mo–Fr), 10:00–11:30 Uhr  
 **Stil**: Zeitgenössisch  
 **Anmeldung**: per Mail an [profitraining.tndd@gmail.com](mailto:profitraining.tndd@gmail.com)  
 **Kosten**: 5 Euro für TNDD-Mitglieder / 8 Euro für Nicht-Mitglieder; in bar vor Ort zu bezahlen  

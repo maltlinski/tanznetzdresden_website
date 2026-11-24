@@ -7,11 +7,11 @@ The line up of the upcoming and meanwhile seventh TNDD studio round edition, whi
 
 More than ever, visitors to the upcoming TNDD studio round can expect three exciting contributions from very different artists and collectives, which will be presented and discussed with the guests of the evening in our special studio atmosphere. As always, the format is free of charge. New is that one contribution will be shown in cooperation with the [Satellite Art Network](https://linktr.ee/satellite_art_network) (SAN). More about this, however, also in the article.
 
-### The participants of the upcoming seventh edition are:
+## The participants of the upcoming seventh edition are:
 
-- **Daniela Lehmann** (Dresden): "LEFT OVER“ – a dance performance based on historical sound recordings"
-- **Meggie Blankschyn** (Cremingen): "The craftly uncanniness behind the semblance of things"
-- **Paco Ladrón de Guevara** (Ulm): "How noisy is too noisy?"
+- **Daniela Lehmann** (Dresden): “LEFT OVER” – a dance performance based on historical sound recordings”
+- **Meggie Blankschyn** (Cremingen): “The craftly uncanniness behind the semblance of things”
+- **Paco Ladrón de Guevara** (Ulm): “How noisy is too noisy?”
 
 Detailed information on the individual contributions to the seventh TNDD studio round will now follow or can be viewed directly on the [studio round subpage](/#formate). There, all information is also available in English. An additional blog post in German is available [***here***](/news/tndd-studio-round-vii-08-09-2023-tenza-schmiede-line-up/).
 
@@ -23,14 +23,14 @@ bilder:
 
 ## Daniela Lehmann
 
-Daniela Lehmann (\*1979) studied dance, philosophy and choreography in Dresden, Freiburg im Breisgau and Berlin and specialized in instant composing. In 2005 she was awarded the prize for "The Best German Dance Solo" for her performance "Mina" at the Festival Euroscene in Leipzig. Her extensive repertoire includes cross-disciplinary stage pieces and site-specific dance compositions. In 2020, she graduated with honors from her master's degree in choreography at the Palucca University of Dance. In her choreographic work, she explores the tension between fulfilling defined social roles and revealing the pure human self.
+Daniela Lehmann (\*1979) studied dance, philosophy and choreography in Dresden, Freiburg im Breisgau and Berlin and specialized in instant composing. In 2005 she was awarded the prize for “The Best German Dance Solo” for her performance “Mina” at the Festival Euroscene in Leipzig. Her extensive repertoire includes cross-disciplinary stage pieces and site-specific dance compositions. In 2020, she graduated with honors from her master’s degree in choreography at the Palucca University of Dance. In her choreographic work, she explores the tension between fulfilling defined social roles and revealing the pure human self.
 
 - [More about Daniela Lehmann](/verein/)
 
-### "LEFT OVER" - a dance performance based on historical sound recordings
+### “LEFT OVER” – a dance performance based on historical sound recordings
 
-"LEFT OVER" is a dance improvisation in which unheard voices and hidden spaces of the past are transferred into the now. Daniela Lehmann works with interviews that are not accessible to the public and in which contemporary witnesses speak about significant events in history. With headphones on her ears, she simultaneously translates voices, spaces and content into dance movements that bear witness to the historical sound recording.  
-Her present body shares experiences and impressions of previous bodies. Spaces of that time coincide with the present space. The development of this working method is part of the project "Lab of applied history in the arts" initiated by Barbara Lubich.
+“LEFT OVER” is a dance improvisation in which unheard voices and hidden spaces of the past are transferred into the now. Daniela Lehmann works with interviews that are not accessible to the public and in which contemporary witnesses speak about significant events in history. With headphones on her ears, she simultaneously translates voices, spaces and content into dance movements that bear witness to the historical sound recording.  
+Her present body shares experiences and impressions of previous bodies. Spaces of that time coincide with the present space. The development of this working method is part of the project “Lab of applied history in the arts” initiated by Barbara Lubich.
 
 **Piece length:** 20min  
 **Performer:** Daniela Lehmann  
@@ -44,9 +44,9 @@ bilder:
 
 ## Meggie Blankschyn
 
-Meggie Blankschyn was born in Northern Germany and started her dance training at Tanzfabrik Berlin e.V. followed by the Bachelor course at the Budapest Contemporary Dance Academy and La Manufacture - Haute école des arts de la scène (direction Thomas Hauert) in Lausanne from where she graduated recently. During her studies she got in touch with various contemporary dance techniques, Hungarian folk dance and Shaolim Kung Fu. She met and worked with several choreographers and dancers, including David Zambrano, Jonathan Burrows, Krisa Parkinson, Shelly Senter (Trisha Brown Company), Horacio Macuacua, Yasmine Hugonnet, Loïc Touzé. For the graduation tour she performed in two creations by Salva Sanchis (Les Noces - Stravinsky) and Alma Söderberg (Piece of Ensemble). She continues working with Judith Sanchez Ruiz (JSR Company), Tomáš Danielis & Radical Empathy (SK), Bloom Bloom Company (CH) and dives into her own creations.
+Meggie Blankschyn was born in Northern Germany and started her dance training at Tanzfabrik Berlin e.V. followed by the Bachelor course at the Budapest Contemporary Dance Academy and La Manufacture – Haute école des arts de la scène (direction Thomas Hauert) in Lausanne from where she graduated recently. During her studies she got in touch with various contemporary dance techniques, Hungarian folk dance and Shaolim Kung Fu. She met and worked with several choreographers and dancers, including David Zambrano, Jonathan Burrows, Krisa Parkinson, Shelly Senter (Trisha Brown Company), Horacio Macuacua, Yasmine Hugonnet, Loïc Touzé. For the graduation tour she performed in two creations by Salva Sanchis (Les Noces – Stravinsky) and Alma Söderberg (Piece of Ensemble). She continues working with Judith Sanchez Ruiz (JSR Company), Tomáš Danielis & Radical Empathy (SK), Bloom Bloom Company (CH) and dives into her own creations.
 
-### "The craftly uncanniness behind the semblance of things“
+### “The craftly uncanniness behind the semblance of things”
 
 *“I am terrified by this black thing that sleeps in me, all day I feel its softness, its feathery turnings; its malignity.”*  
 (Sylvia Plath)
@@ -64,7 +64,7 @@ My body is the vessel that holds this fluid in place, it is the battlefield that
 What does the body do when it expresses itself musically? My body stomps, my body clenches, it explodes, it cuts, it pricks or it stretches, it weaves delicately. Every single movement is connected to a real experience through an unconscious umbilical cord. Imagination is a particularly good memory for the real.«
 
 **Length:** 16 minutes  
-**Music:** Axel Kolb & Caterina de Nicola "*MHX Birthdaymix“*, Meredith Monk "*Cow Song“,* Hildegard Knef "*Hör’ nicht auf mich“  
+**Music:** Axel Kolb & Caterina de Nicola „*MHX Birthdaymix“*, Meredith Monk „*Cow Song“,* Hildegard Knef „*Hör’ nicht auf mich“  
 ***Supported by:** [La Manufacture – Haute école des Arts de la Scène](https://www.manufacture.ch/) & [TANZKOOP](https://www.tanzkoop.com/)
 
 **Fotos:** Gregory Batardon
@@ -81,15 +81,15 @@ Focusing his artistic research in performance and visual arts, Francisco Ladrón
 
 - **Instagram:** [f\_ladrong](https://www.instagram.com/f_ladrong/)
 
-### "How noisy is too noisy?"
+### “How noisy is too noisy?”
 
 Having the theater play “The Public” by Federico García Lorca as a big reference, this solo work dives into the research of how the eye of the other is important to build our own identity. This work stands for a generation full of contradictions, slaves of the aesthetic, the same one that we use to express ourselves and try to be unique, constantly exposing information to thousands of eyes. Information and information… Noise and noise. I want you to look, I need you to notice. The only thing that matters is to shine, even if we become the reflection of thesomeone else’s shine.
 
 ### Used music:
 
-Thomas Köner: "Substrate (Binaural)“  
-Raül Refree: "Que te vayas“  
-Thomas Köner: "Tientos de la Luz 1“
+Thomas Köner: “Substrate (Binaural)”  
+Raül Refree: “Que te vayas”  
+Thomas Köner: “Tientos de la Luz 1”
 
 ## Satellite Art Network (SAN)
 
@@ -112,4 +112,4 @@ Supported by the NATIONAL PERFORMANCE NETWORK Impulsförderung Tanz & Theater, f
 
 TNDD studio round is a project by TanzNetzDresden. Funded by the Office for Culture and Monument Protection and the Cultural Foundation of the Free State of Saxony. The measure is co-financed by tax funds on the basis of the budget passed by the Saxon State Parliament.
 
-Header-Photo: Makhina Dzhuraeva: „Red Herring“, performed at TNDD studio round VI (14.04.2023), TENZA Schmiede
+Header-Photo: Makhina Dzhuraeva: “Red Herring”, performed at TNDD studio round VI (14.04.2023), TENZA Schmiede

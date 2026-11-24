@@ -110,6 +110,8 @@ test('Planung: nur für Redaktion und Vorstand, Hinweis ohne Migration', async (
   await page.unrouteAll({ behavior: 'ignoreErrors' });
   await redaktion(page, { profil: vorstand });
   await page.goto('/intern/kalender/');
+  // Vorstand: verständliche Meldung plus technischer Hinweis
+  await expect(page.locator('[data-msg]')).toContainText('KEEP UP ist noch nicht eingerichtet');
   await expect(page.locator('[data-msg]')).toContainText('20261025000000_keepup.sql');
   await expect(page.locator('[data-msg]')).toContainText('20261026000000_kalender.sql');
   await expect(page.getByRole('button', { name: 'Termin eintragen', exact: true })).toBeDisabled();

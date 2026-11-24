@@ -61,7 +61,15 @@ const newsletter = url(lang, 'home', '#newsletter');
 const kasten = (f: (typeof formate)[number]) => {
   if (f.beendet && f.rueckblick) return { k: d.abgeschlossen, t: f.rueckblick.titel, w: dateShort(f.rueckblick.datum, lang), href: f.rueckblick.link, datum: 'w' };
   const n = naechster(f.termine, heute);
-  return n ? { k: k.naechster, t: terminText(n, locale, k.heute, heute), w: n.wo, href: n.link, datum: 't' } : { k: k.naechster, t: k.folgt, w: d.folgtText, href: newsletter, datum: '' };
+  return n ? { k: k.naechster, t: terminText(n, locale, k.heute, heute), w: n.wo, href: n.link, datum: 't' } : { k: k.naechster, t: k.folgt, w: d.folgtText, href: newsletter, datum: '', leer: true };
+};
+/** Erste Zeile der Eckdaten aus „seit 2021“ / „ab 2027“ / Zeitraum; anderes (z. B. „jährlich · 29. April“) steht nur oben */
+const beginn = (f: (typeof formate)[number]): [string, string] | null => {
+  if (f.beendet) return [d.laufzeit, f.seit];
+  const seit = /^(?:seit|since)\s+(.+)$/i.exec(f.seit);
+  if (seit) return [d.seit, seit[1]];
+  const ab = /^(?:ab|from)\s+(.+)$/i.exec(f.seit);
+  return ab ? [d.start, ab[1]] : null;
 };
 const filter = [
   { key: '', label: d.alle, n: formate.length },
@@ -140,7 +148,7 @@ const daten = jsonImHtml({
     <div class="wrap">
       <div class="fo-filter" role="group" aria-label={sr.filter} hidden data-fo-filter>
         <span class="fo-filter__k" aria-hidden="true">{d.ichMoechte}</span>
-        <div class="fo-chips">
+        <div class="fo-chips chips-wisch">
           {filter.map((x) => (
             <button type="button" class="fo-chip" aria-pressed={x.key === '' ? 'true' : 'false'} data-rubrik={x.key}>
               {x.label} <span class="fo-chip__n">{x.n}</span>
@@ -151,6 +159,7 @@ const daten = jsonImHtml({
       <div class="fo-kapitel">
         {formate.map((f) => {
           const b = kasten(f);
+          const anfang = beginn(f);
           return (
             <article id={f.id} class="fo-kap" data-kap={f.id} data-rubriken={f.rubriken.join(' ')} aria-labelledby={`${f.id}-h`}>
               <div class="fo-kap__bild">
@@ -171,10 +180,10 @@ const daten = jsonImHtml({
                 </div>
                 <div class="fo-kap__rechts">
                   <dl class="fo-fakten">
-                    <div><dt>{f.beendet ? d.laufzeit : d.seit}</dt><dd class:list={[{ datum: istDatum(f.seit) }]}>{f.seit}</dd></div>
+                    {anfang && <div><dt>{anfang[0]}</dt><dd class:list={[{ datum: istDatum(anfang[1]) }]}>{anfang[1]}</dd></div>}
                     {f.fakten.map((x) => <div><dt>{x.k}</dt><dd class:list={[{ datum: istDatum(x.v) }]}>{x.v}</dd></div>)}
                   </dl>
-                  <a class="fo-cta" href={b.href} data-fo-cta={f.beendet ? undefined : f.id}>
+                  <a class:list={['fo-cta', { 'fo-cta--leer': b.leer }]} href={b.href} data-fo-cta={f.beendet ? undefined : f.id}>
                     <span class="fo-cta__text">
                       <span class="fo-cta__k">{b.k}</span>
                       <span class:list={['fo-cta__t', { datum: b.datum === 't' }]} data-t>{b.t}</span>
@@ -394,17 +403,26 @@ const daten = jsonImHtml({
   .fo-kap__d { margin: 0; max-width: 560px; font-size: 17px; line-height: var(--lh-text); color: var(--ink); text-wrap: pretty; }
   .fo-fakten { margin: 0 0 26px; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 190px), 1fr)); gap: 0 24px; }
   .fo-fakten div { padding: 12px 0 14px; border-top: 1px solid var(--rule); }
-  .fo-fakten dt { margin-bottom: 4px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .fo-fakten dt { margin-bottom: 4px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
   .fo-fakten dd { margin: 0; font-size: 15px; line-height: var(--lh-text); color: var(--purple); }
   .fo-cta { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 16px; background: var(--purple); color: #fff; padding: 18px 22px; transition: background var(--dur-base); }
   .fo-cta:hover { background: var(--magenta); color: #fff; }
   .fo-cta__text { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
-  .fo-cta__k { font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
+  .fo-cta__k { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--cyan); }
   .fo-cta:hover .fo-cta__k { color: #fff; }
   .fo-cta__t { font-family: var(--font-display); font-weight: 700; font-size: 20px; line-height: 1.15; letter-spacing: -0.015em; }
   .fo-cta__t.datum { font-family: var(--font-datum); font-weight: 600; font-size: 17px; line-height: 1.3; letter-spacing: 0.01em; }
   .fo-cta__w { font-size: 14px; line-height: 1.45; color: rgba(255, 255, 255, 0.86); }
   .fo-cta__pfeil { font-family: var(--font-display); font-size: 28px; line-height: 1; }
+  /* ohne Termin nur eine kleine Zeile statt des großen Kastens */
+  .fo-cta--leer { display: flex; align-items: baseline; gap: 10px; background: none; color: var(--ink-soft); padding: 12px 0 0; border-top: 1px solid var(--rule); }
+  .fo-cta--leer:hover { background: none; color: var(--purple); }
+  .fo-cta--leer .fo-cta__text { flex-direction: row; flex-wrap: wrap; align-items: baseline; gap: 2px 8px; }
+  .fo-cta--leer .fo-cta__k { color: var(--ink-muted); }
+  .fo-cta--leer:hover .fo-cta__k { color: var(--ink-muted); }
+  .fo-cta--leer .fo-cta__t { font-family: var(--font-body); font-weight: 600; font-size: 15px; line-height: var(--lh-text); letter-spacing: 0; color: var(--purple); }
+  .fo-cta--leer .fo-cta__w { font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); }
+  .fo-cta--leer .fo-cta__pfeil { font-size: 18px; color: var(--magenta-2); }
   .fo-links { display: flex; flex-wrap: wrap; gap: 12px 28px; margin-top: 20px; }
   .fo-link { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--magenta-2); border-bottom: 1.5px solid var(--magenta); padding-bottom: 3px; }
   .fo-link:hover { color: var(--purple); border-color: var(--purple); }
@@ -458,10 +476,12 @@ const daten = jsonImHtml({
   .fo-projekt__inhalt { padding: 0 0 clamp(24px, 3vw, 36px) calc(180px + clamp(24px, 4vw, 56px)); }
   .fo-projekt__text { max-width: 620px; margin: 0 0 14px; font-size: 16px; line-height: var(--lh-text); color: var(--ink); text-wrap: pretty; }
   .fo-projekt__partner { display: flex; flex-wrap: wrap; gap: 4px 10px; margin: 0 0 22px; font-size: 14px; line-height: var(--lh-text); color: var(--ink-soft); }
-  .fo-projekt__partner span:first-child { padding-top: 2px; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
+  .fo-projekt__partner span:first-child { padding-top: 2px; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--ink-muted); }
   .fo-projekt .fo-links { margin-top: 0; }
   @media (max-width: 719px) {
     .fo-projekt__jahre { flex-basis: 100%; }
+    /* Titel schrumpft, damit das Plus rechts daneben bleibt statt in eine eigene Zeile zu rutschen */
+    .fo-projekt__name { flex: 1 1 0; }
     .fo-projekt__inhalt { padding-left: 0; }
   }
 

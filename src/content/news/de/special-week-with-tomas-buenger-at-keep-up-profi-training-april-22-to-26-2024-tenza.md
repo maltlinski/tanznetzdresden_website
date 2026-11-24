@@ -7,7 +7,7 @@ image: ../../../assets/news/2024/tanznetzdresden-keep-up-profi-training-tomas-bu
 teaser: In April, we will be offering a special week with Tomas Bünger at the TENZA Schmiede from April 22 to 26 as part of the KEEP UP training.
 ---
 
-*In April, we will be offering a special week with Tomas Bünger at the [TENZA Schmiede](https://www.tenza.de/) from April 22 to 26 as part of the [KEEP UP training](/profitraining/). More information about this very special offer can be found in today's blog post, which as always will be published in [German](/news/special-week-mit-tomas-buenger-beim-keep-up-profi-training-22-bis-26-april-2024-tenza/) and English.*
+*In April, we will be offering a special week with Tomas Bünger at the [TENZA Schmiede](https://www.tenza.de/) from April 22 to 26 as part of the [KEEP UP training](/profitraining/). More information about this very special offer can be found in today’s blog post, which as always will be published in [German](/news/special-week-mit-tomas-buenger-beim-keep-up-profi-training-22-bis-26-april-2024-tenza/) and English.*
 
 ## Tomas Bünger
 
@@ -18,7 +18,7 @@ bilder:
     alt: ""
 :::
 
-Tomas Bünger studied classical and modern stage dance and was a member of the Tanztheater Bremen for many years. He then completed an integrative dance teacher training program in New York and was a guest lecturer at the University of the Arts in Buenos Aires. He has been teaching for many years with the support of the Goethe-Institut in Bangladesh and has been a resident in Togo and Romania. He works regularly with Theater Bremen, tanzbar\_bremen and the company „of courious nature“. His choreographic works for professionals and amateurs focus on the dancing person and their relationship to the world.
+Tomas Bünger studied classical and modern stage dance and was a member of the Tanztheater Bremen for many years. He then completed an integrative dance teacher training program in New York and was a guest lecturer at the University of the Arts in Buenos Aires. He has been teaching for many years with the support of the Goethe-Institut in Bangladesh and has been a resident in Togo and Romania. He works regularly with Theater Bremen, tanzbar\_bremen and the company “of courious nature”. His choreographic works for professionals and amateurs focus on the dancing person and their relationship to the world.
 
 ## Special week with Tomas Bünger at TNDD training
 
@@ -28,7 +28,7 @@ Tomas Bünger’s training is based on his many years of experience as a perform
 
 ## Informationen about the special week with Tomas Bünger
 
-- **Dates**: April 22 until 26, 2024 (Mo-Fr), 10:00 – 11:30 a.m.
+- **Dates**: April 22 until 26, 2024 (Mo–Fr), 10:00–11:30 a.m.
 - **Style**: Contemporary
 - **Registration**: via mail to [profitraining.tndd@gmail.com](mailto:profitraining.tndd@gmail.com)
 - **Cost**: 6 Euro for TNDD-members / 9 Euro for non-members; to be paid in cash on site

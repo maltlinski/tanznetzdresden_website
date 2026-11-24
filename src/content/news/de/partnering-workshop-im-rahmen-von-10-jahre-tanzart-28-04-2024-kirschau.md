@@ -9,7 +9,7 @@ teaser: Der Workshop »Partnering«, der am 28. April 2024 im TanzART Atelier in
 
 *Der Workshop »Partnering«, der am 28. April 2024 im TanzART Atelier in Kirschau stattfindet, ist eine einzigartige Gelegenheit, in die individuellen Stile der beiden Dozent:innen Enrico Paglialunga und Sonia Rodriguez einzutauchen und die Welt des Partnerings zu entdecken. Alle Informationen zu diesem besonderen Angebot gibt es im heutigen Blog-Beitrag.*
 
-## »Partnering« - ein Workshop mit Enrico Paglialunga & Sonia Rodriguez
+## »Partnering« – ein Workshop mit Enrico Paglialunga & Sonia Rodriguez
 
 Die beiden Profi-Tänzer:innen Enrico Paglialunga und Sonia Rodriguez führen die Teilnehmer:innen im Rahmen des Workshops in die Welt des Partnerings ein. Zudem bietet der Workshop eine einzigartige Gelegenheit, die Kombination der beiden unterschiedlichen Stile zu erleben, die das Tanzvokabular von Enrico Paglialunga und Sonia Rodriguez ausmachen. Es können die persönliche energetische und physische Arbeit der beiden Künstler:innen durch Partnerübungen sowie durch Technik, Improvisation und individuellem choreografischem Material vertieft werden.
 
@@ -29,11 +29,11 @@ bilder:
     alt: ""
 :::
 
-**Sonia Rodriguez** wurde 1974 in Las Palmas de Gran Canarias (Spanien) geboren. Ihre berufliche Laufbahn begann als Dolmetscherin und Tänzerin für das Ca Provisional Dance (Madrid 1992-1996) und setzte sich dann bei Cia Charleroi Danses (Belgien 1996-1998), Cia En-Knap (Slowenien 1999-1998) und Cia Gissela Rocha (Zürich 1999) fort.
+**Sonia Rodriguez** wurde 1974 in Las Palmas de Gran Canarias (Spanien) geboren. Ihre berufliche Laufbahn begann als Dolmetscherin und Tänzerin für das Ca Provisional Dance (Madrid 1992–1996) und setzte sich dann bei Cia Charleroi Danses (Belgien 1996–1998), Cia En-Knap (Slowenien 1999–1998) und Cia Gissela Rocha (Zürich 1999) fort.
 
-Nachdem sie in verschiedenen Projekten und Kompanien gearbeitet hatte, schloss sie sich Cia Rui Horta (Deutschland 1999-2002) an, wo sie nicht nur als Tänzerin, sondern auch als Assistentin für Choreographie tätig war und Stücke für verschiedene Kompanien wie Scottish Dance Theater (Schottland) und Cia Norrdans (Schweden) kreierte.
+Nachdem sie in verschiedenen Projekten und Kompanien gearbeitet hatte, schloss sie sich Cia Rui Horta (Deutschland 1999–2002) an, wo sie nicht nur als Tänzerin, sondern auch als Assistentin für Choreographie tätig war und Stücke für verschiedene Kompanien wie Scottish Dance Theater (Schottland) und Cia Norrdans (Schweden) kreierte.
 
-Im Jahr 2002 wurde sie als beste Tänzerin des Certamen Coreográfico de Madrid ausgezeichnet, was ihr die Möglichkeit gab, am American Dance Festival 2002 (North Caroline, USA) teilzunehmen. Im Jahr 2002 führte sie ihre berufliche Laufbahn nach England, wo sie mit Cía H2dance (London 2002-2003) zusammenarbeitete. Danach war sie Assistentin für Choreographie und Dolmetscherin bei Cía Lanonima Imperial (Barcelona, Spanien 2003-2005); Cia Lior Lev (Stuttgart, Deutschland 2005); Cía Cobosmika (Barcelona, Spanien 2005-2006) und Cía La Baraka (Lyon, Frankreich 2006-2008). In den letzten Jahren schloss sie sich anderen Kompanien wie Cie Yann Lheureux (Montpellier, 2008-2013), Cie Dysoundbo (Luzern, 2013) und Hausgemacht Company (München, 2015-2013) an.
+Im Jahr 2002 wurde sie als beste Tänzerin des Certamen Coreográfico de Madrid ausgezeichnet, was ihr die Möglichkeit gab, am American Dance Festival 2002 (North Caroline, USA) teilzunehmen. Im Jahr 2002 führte sie ihre berufliche Laufbahn nach England, wo sie mit Cía H2dance (London 2002–2003) zusammenarbeitete. Danach war sie Assistentin für Choreographie und Dolmetscherin bei Cía Lanonima Imperial (Barcelona, Spanien 2003–2005); Cia Lior Lev (Stuttgart, Deutschland 2005); Cía Cobosmika (Barcelona, Spanien 2005–2006) und Cía La Baraka (Lyon, Frankreich 2006–2008). In den letzten Jahren schloss sie sich anderen Kompanien wie Cie Yann Lheureux (Montpellier, 2008–2013), Cie Dysoundbo (Luzern, 2013) und Hausgemacht Company (München, 2015–2013) an.
 
 Im Jahr 2013 wurde sie eingeladen, beim Beijing Dance Festival 2013 (China) aufzutreten. Das Attakkalari Centre for Movement Arts (Bangalore, Indien) lud sie in Zusammenarbeit mit dem Goethe Institut Bangalore ein, als Künstlerin zu arbeiten.
 

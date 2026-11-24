@@ -15,7 +15,7 @@ bilder:
     alt: ""
 :::
 
-### POP UP im Oktober: »Porcelain / New Earth«
+## POP UP im Oktober: »Porcelain / New Earth«
 
 Wie können wir in diesen bewegten Zeiten zu einer neuen Ordnung finden? Wo beginnt sie, sich zu formen – im Inneren? Oder finden wir sie vielmehr in der Welt um uns herum? Im Rahmen der Performance erforschen zwei Künstler:innen Prozesse der Zerstörung, Veränderung, des Loslassens und des Neusortierens. Im Anschluss findet ein Publikumsgespräch mit den Künstler:innen statt.
 

@@ -9,7 +9,7 @@ teaser: Der Tanzkalender Dresden befindet sich bereits in der nächsten Runde, d
 
 *Der Tanzkalender Dresden befindet sich bereits in der nächsten Runde, denn auch im Monat Juni wurde das Programm aus den Bereichen Tanz und Performance gesammelt und im Tanzkalender Dresden gebündelt aufbereitet. Alle wichtigen Informationen hierzu gibt es nun im heutigen Blog-Beitrag.*
 
-## Tanzkalender Dresden - unsere Ausgabe für den Monat Juni
+## Tanzkalender Dresden – unsere Ausgabe für den Monat Juni
 
 Manche:r hat die Plakate im Dresdner Stadtgebiet vielleicht schon gesehen, aber auch online wollten wir nicht versäumen, darauf hinzuweisen, dass der Tanzkalender Dresden für den Monat Juni bereits längst erschienen ist.
 
@@ -21,7 +21,7 @@ Zur Information: Der Tanzkalender Dresden erscheint monatlich im Großraum Dresd
 - **Semperoper Dresden**
 - **Staatsschauspiel Dresden**
 - **Staatsoperette Dresden**
-- **HELLERAU - Europäisches Zentrum der Künste**
+- **HELLERAU – Europäisches Zentrum der Künste**
 - **Societaetstheater Dresden**
 - **Projekttheater Dresden**
 - **Landesbühnen Sachsen**

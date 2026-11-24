@@ -7,6 +7,7 @@ import type { SupabaseClient } from '@supabase/supabase-js';
 import { ersterTag, letzterTag, montag, plusTage, kalenderwoche, status, type KeepUpTermin } from '../../lib/keep-up-plan';
 import { h } from './news/dom';
 import { sprache, t } from './sprache';
+import { nochNichtEingerichtet } from './session';
 import type { KalenderTermin } from '../../lib/kalender-intern';
 
 export interface Dozentin {
@@ -50,9 +51,9 @@ export const daten = (): KeepUpDaten =>
 export const SPALTEN = 'id,art,dozent,woche,tage,zeit,ort,notiz,titel,kurz,text,schwerpunkte,mitbringen,bild,bild_alt,veroeffentlicht,veroeffentlicht_am,erinnert_am';
 
 /** Tabelle fehlt, solange die Migration nicht eingespielt ist */
-export const FEHLT = t(
-  'Die Tabelle für KEEP UP fehlt noch. Bitte die Migration supabase/migrations/20261025000000_keepup.sql im SQL-Editor ausführen (docs/keep-up.md).',
-  'KEEP UP is not set up yet. Please ask the board to run the database migration (docs/keep-up.md).',
+export const FEHLT = nochNichtEingerichtet(
+  t('KEEP UP ist noch nicht eingerichtet. Bitte gib dem Vorstand Bescheid.', 'KEEP UP is not set up yet. Please let the board know.'),
+  'Migration supabase/migrations/20261025000000_keepup.sql im SQL-Editor ausführen (docs/keep-up.md).',
 );
 export const tabelleFehlt = (e: unknown) => /keepup_termine|relation .* does not exist|schema cache|PGRST20[05]/i.test(String((e as { message?: string; code?: string })?.message ?? '') + String((e as { code?: string })?.code ?? ''));
 

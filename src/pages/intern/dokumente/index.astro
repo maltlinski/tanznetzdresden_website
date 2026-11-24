@@ -13,7 +13,11 @@ import Intern from '../../../layouts/Intern.astro';
     </div>
     <div class="i-field">
       <label for="up-file">Datei hochladen (nur Vorstand)</label>
-      <input id="up-file" name="file" type="file" required />
+      <!-- eigener Knopf statt des Standardfelds des Browsers (das zeigt „Choose File“ auf Englisch) -->
+      <label class="btn btn--secondary btn--sm up-wahl">
+        <span data-up-name>Datei wählen</span>
+        <input id="up-file" name="file" type="file" required />
+      </label>
     </div>
     <div><button class="btn btn--primary btn--sm" type="submit">Hochladen</button></div>
   </form>
@@ -106,6 +110,13 @@ import Intern from '../../../layouts/Intern.astro';
     }
   }
 
+  // gewählte Datei im Knopf zeigen
+  const wahl = upload?.querySelector<HTMLInputElement>('#up-file');
+  const wahlName = upload?.querySelector<HTMLElement>('[data-up-name]');
+  const wahlZeigen = () => wahlName && (wahlName.textContent = wahl?.files?.[0]?.name || 'Datei wählen');
+  wahl?.addEventListener('change', wahlZeigen);
+  upload?.addEventListener('reset', () => setTimeout(wahlZeigen));
+
   upload?.addEventListener('submit', async (e) => {
     e.preventDefault();
     if (!ctx) return;
@@ -126,6 +137,10 @@ import Intern from '../../../layouts/Intern.astro';
 
 <style>
   .upload { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 220px), 1fr)); gap: 16px 24px; align-items: end; margin-bottom: 28px; }
+  .up-wahl { position: relative; justify-self: start; max-width: 100%; cursor: pointer; }
+  .up-wahl span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .up-wahl input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+  .up-wahl:has(input:focus-visible) { outline: 2px solid var(--magenta); outline-offset: 2px; }
   .docs { display: grid; gap: 32px; }
   .docs :global(h2) { font-family: var(--font-mono); font-size: 12px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--magenta); margin: 0 0 10px; }
   .docs :global(ul) { list-style: none; margin: 0; padding: 0; background: var(--paper); }

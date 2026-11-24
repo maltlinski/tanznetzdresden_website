@@ -18,10 +18,10 @@ TanzNetzDresden: Wie nehmen Sie den 13. Februar als Gedenktag in Dresden wahr?
 ::: bilder
 bilder:
   - datei: /news/archiv/2022/wod-2022-tanznetzdresden-klubnetz-dresden-lars-p-krause-credit-stephan-boehlig-01.webp
-    alt: Gruppenfoto aus Anlass der TanzNetzDresden, KLUBNETZ Dresden und Lars P. Krause-Teilnahme bei Weltoffenes Dresden 2022. Zu sehen sind von links nach rechts Stephan Tautz (Vorstand Klubnetz Dresden / Wir gestalten Dresden) Thomas Natzschka (Pressesprecher TanzNetzDresden) Felix Buchta (Vorstand Klubnetz Dresden / Lisa - Live Initiative Sachsen) Daniela Lehmann (Vorstand TanzNetzDresden) Annekatrin Klepsch (2. Bürgermeisterin der Landeshauptstadt Dresden und Beigeordnete für Kultur und Tourismus) Lars P. Krause (Künstler) Anna Till (Vorstand TanzNetzDresden)
+    alt: Gruppenfoto aus Anlass der TanzNetzDresden, KLUBNETZ Dresden und Lars P. Krause-Teilnahme bei Weltoffenes Dresden 2022. Zu sehen sind von links nach rechts Stephan Tautz (Vorstand Klubnetz Dresden / Wir gestalten Dresden) Thomas Natzschka (Pressesprecher TanzNetzDresden) Felix Buchta (Vorstand Klubnetz Dresden / Lisa – Live Initiative Sachsen) Daniela Lehmann (Vorstand TanzNetzDresden) Annekatrin Klepsch (2. Bürgermeisterin der Landeshauptstadt Dresden und Beigeordnete für Kultur und Tourismus) Lars P. Krause (Künstler) Anna Till (Vorstand TanzNetzDresden)
 :::
 
-TNDD: Kunst und Kultur haben zu Zeiten von Corona einen schweren Stand, wollen sie doch Räume öffnen und Menschen - unter Einhaltung aller Abstandsregeln - dennoch zusammenführen. Sind das aber nicht vielleicht sogar Ansätze, die vor dem Hintergrund des 13. Februar noch relevanter werden als sie es so schon sind?
+TNDD: Kunst und Kultur haben zu Zeiten von Corona einen schweren Stand, wollen sie doch Räume öffnen und Menschen – unter Einhaltung aller Abstandsregeln – dennoch zusammenführen. Sind das aber nicht vielleicht sogar Ansätze, die vor dem Hintergrund des 13. Februar noch relevanter werden als sie es so schon sind?
 
 > AK: Die Freiheit von Kunst und Kultur als ein wesentliches Element demokratischer Gesellschaften ist elementar. Auch im Kontext des 13. Februar. Gesellschaftliche Positionsbestimmungen, künstlerische Reflektion und diskursive Angebote für die Öffentlichkeit sind Kultur und Kunst immanent. Auch die Erinnerungskultur ist der Veränderung unterworfen, wie wir am Diskurs über den Umgang mit Denkmälern beobachten können. Die Plakatkunstaktion von WOD in der Zeit um den 13. Februar bereichert das Gedenken in unserer Stadt um einen visuellen, dezentralen und diskursiven Ansatz im Stadtzentrum.
 
@@ -30,18 +30,18 @@ format: quer
 spalten: 2
 bilder:
   - datei: /news/archiv/2022/wod-2022-tanznetzdresden-klubnetz-dresden-lars-p-krause-credit-stephan-boehlig-04.webp
-    alt: WOD-Motiv von Lars P. Krause. Zu lesen ist das Zitat des Dalai Lama "in der Wut verliert der Mensch seine Intelligenz."
+    alt: WOD-Motiv von Lars P. Krause. Zu lesen ist das Zitat des Dalai Lama „in der Wut verliert der Mensch seine Intelligenz.“
   - datei: /news/archiv/2022/wod-2022-tanznetzdresden-klubnetz-dresden-douze-i.webp
     alt: WOD-Motov von Lars P. Krause. Zu sehen sind zwei Kinder. Eines an einem Plattenspieler. Ein zweites Kind formt mit den Händen ein Herz.
 :::
 
 TNDD: Wie gefällt Ihnen das von Lars P. Krause gestaltete Motiv? Vor allem auch in Kombination des Zitats des Dalai Lamas.
 
-> AK: Das Motiv von Lars P. Krause weckt Sehnsüchte nach der Rückkehr zur Clubkultur und Tanzen, das uns durch Corona so lang verwehrt wurde. "In der Wut verliert der Mensch seine Intelligenz" ist natürlich provokant, stellt zugleich jedoch eine Chance zum Nachdenken darüber dar, wie wir miteinander umgehen.
+> AK: Das Motiv von Lars P. Krause weckt Sehnsüchte nach der Rückkehr zur Clubkultur und Tanzen, das uns durch Corona so lang verwehrt wurde. „In der Wut verliert der Mensch seine Intelligenz“ ist natürlich provokant, stellt zugleich jedoch eine Chance zum Nachdenken darüber dar, wie wir miteinander umgehen.
 
 ### Vielen herzlichen Dank für das Gespräch!
 
-Die Banner von TanzNetzDresden, KLUBNETZ Dresden und Lars P. Krause sind am Jorge-Gomondai-Platz noch bis zum 22. Februar zu sehen. Mehr zur Teilnahme sowie dem gesamten Projekt WELT - OFFEN - (GE)DENKEN von Weltoffenes Dresden gibt es [**hier**](/news/tanznetzdresden-klubnetz-dresden-lars-p-krause/) zu lesen.
+Die Banner von TanzNetzDresden, KLUBNETZ Dresden und Lars P. Krause sind am Jorge-Gomondai-Platz noch bis zum 22. Februar zu sehen. Mehr zur Teilnahme sowie dem gesamten Projekt WELT – OFFEN – (GE)DENKEN von Weltoffenes Dresden gibt es [**hier**](/news/tanznetzdresden-klubnetz-dresden-lars-p-krause/) zu lesen.
 
 Begleitend ist zu unserer Teilnahme heute noch ein Beitrag auf [www.cybersax.de](http://www.cybersax.de/) sowie Dresden am Wochenende (DAWO) erschienen. Beide Artikel kann man unter folgenden Links nachlesen:
 

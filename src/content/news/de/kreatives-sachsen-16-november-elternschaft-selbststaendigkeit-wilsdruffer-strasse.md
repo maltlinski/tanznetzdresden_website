@@ -4,10 +4,10 @@ date: 2023-11-07
 category: Netzwerk
 author: TanzNetzDresden
 image: ../../../assets/news/2023/tanznetzdresden-2023-kreatives-sachsen-elternschaft-selbststaendigkeit-e1699385560334.webp
-teaser: Die Vereinbarkeit von Familie und Beruf – vor allem im Kunstbetrieb und eben auch im Bereich des Tanzes - stellt nach wie vor eine große Herausforderung dar.
+teaser: Die Vereinbarkeit von Familie und Beruf – vor allem im Kunstbetrieb und eben auch im Bereich des Tanzes – stellt nach wie vor eine große Herausforderung dar.
 ---
 
-Die Vereinbarkeit von Familie und Beruf – vor allem im Kunstbetrieb und eben auch im Bereich des Tanzes - stellt nach wie vor eine große Herausforderung dar. Nicht nur die Beratungsangebote, die das TanzNetzDresden unter dem Titel »[Elternschaft & Tanz](/news/elternschaft-tanz-ein-film-von-simon-garbe-zur-kick-off-veranstaltung-vom-1-april-2023-2/)« in der Vergangenheit anbot spiegeln hierzu den Bedarf nach Angeboten wider. Wir freuen uns daher umso mehr, im heutigen Blog-Beitrag anzukündigen, dass [Kreatives Sachsen](https://www.kreatives-sachsen.de/) unter Trägerschaft des [Landesverband der Kultur- und Kreativwirtschaft Sachsen e. V.](https://www.lvkkwsachsen.de/) am 16. November 2023 in Dresden zu einem kostenfreien Termin auf die Wilsdruffer Straße 16 einlädt, bei dem es genau um jene Fragen von Elternschaft und Selbstständigkeit gehen wird. Alles weitere hierzu folgt nun im Beitrag.
+Die Vereinbarkeit von Familie und Beruf – vor allem im Kunstbetrieb und eben auch im Bereich des Tanzes – stellt nach wie vor eine große Herausforderung dar. Nicht nur die Beratungsangebote, die das TanzNetzDresden unter dem Titel »[Elternschaft & Tanz](/news/elternschaft-tanz-ein-film-von-simon-garbe-zur-kick-off-veranstaltung-vom-1-april-2023-2/)« in der Vergangenheit anbot spiegeln hierzu den Bedarf nach Angeboten wider. Wir freuen uns daher umso mehr, im heutigen Blog-Beitrag anzukündigen, dass [Kreatives Sachsen](https://www.kreatives-sachsen.de/) unter Trägerschaft des [Landesverband der Kultur- und Kreativwirtschaft Sachsen e. V.](https://www.lvkkwsachsen.de/) am 16. November 2023 in Dresden zu einem kostenfreien Termin auf die Wilsdruffer Straße 16 einlädt, bei dem es genau um jene Fragen von Elternschaft und Selbstständigkeit gehen wird. Alles weitere hierzu folgt nun im Beitrag.
 
 ## Elternschaft & Selbstständigkeit
 
@@ -23,7 +23,7 @@ In diesem Sinne: Kotzt euch aus. Teilt euch mit. Wir kehren euren Dreck weg! Und
 
 ### Die Fakten in Kürze
 
-**Wann?** 16\. November 2023 - von 16.00 bis 18.00 Uhr  
+**Wann?** 16\. November 2023 – von 16:00 bis 18:00 Uhr  
 **Wo?** [Wir gestalten Dresden](https://www.wir-gestalten-dresden.de/) – [Spot](https://www.wir-gestalten-dresden.de/kreativraum/) auf der Wilsdruffer Straße 16, 01067 Dresden  
 **Wer?** [STUDIO URBANISTAN](https://www.studiourbanistan.de/) aus Leipzig und ihr  
 **Wie viel kostet das?** Die Teilnahme ist kostenlos. Um eine Anmeldung im Vorfeld wird jedoch gebeten. Nutzt hierfür bitte folgenden Link:  

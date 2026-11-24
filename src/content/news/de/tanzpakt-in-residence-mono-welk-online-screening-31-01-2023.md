@@ -57,7 +57,7 @@ Mono Welk (\*1983) arbeitet als Choreograph:in, Performer:in und Kurator:in. In 
 
 Nach dem Tanzpädagogik-Studium (BA) an der *[CODARTS](https://www.codarts.nl/en/)* (Rotterdam, NL) und dem Choreographie-Studium (MA) an der Palucca Hochschule für Tanz Dresden arbeitete Mono als Choreograph:in, Performer:in, Videoproduzent:in. Von 2010 bis 2018 initiierte er Projekte gemeinsam mit dem Performance-Kollektiv [*wilde pferde*](http://www.wildepferde.net/), das an der Schnittstelle von gesellschaftlich konstruierten Körperbildern, Bewegungsgewohnheiten und kulturphilosophischen Prämissen forschte.
 
-Monos Produktionen wurden u.a. am Festspielhaus Hellerau und beim *[OpenDans Rotterdam](http://opendans.nl/)* (PhRasen der Dressur 2009/2010, wror 2011/2012), den Sophiensælen Berlin (PhRasen der Dressur 2012) und im LOFFT – Das Theater (SUPRAMATER: 2016), Zentralwerk Dresden (SUPRAMATER:2016, Der Club der Wilden Pferde ruft zur ersten Vollversammlung – Für die Enteignung der Privatsphäre! Gegen die Privatisierung der Intimität! Subjekt. manifestiert. Objekt.: 2015) und Nationaltheater Mannheim(School of SHAME: 2020) gezeigt. Mit *POLYMORA Inc.* entstanden die Produktionen *Wildnis Mensch* (2017), *Anthropomorphia 4230* (2018), *School of SHAME* (2019) aufgeführt. Seit 2016 entstanden verschiedene Projekte in Kooperation mit dem *[PENG! Kollektiv](https://pen.gg/de/)*. Gemeinsam mit Stephanie Krah organisiert Mono seit 2018 das soziokulturelle Festival *[FAMILIA\*FUTURA](http://familiafutura.de/)* zu den Themen Familien-Diversität und Care-Utopien.
+Monos Produktionen wurden u. a. am Festspielhaus Hellerau und beim *[OpenDans Rotterdam](http://opendans.nl/)* (PhRasen der Dressur 2009/2010, wror 2011/2012), den Sophiensælen Berlin (PhRasen der Dressur 2012) und im LOFFT – Das Theater (SUPRAMATER: 2016), Zentralwerk Dresden (SUPRAMATER:2016, Der Club der Wilden Pferde ruft zur ersten Vollversammlung – Für die Enteignung der Privatsphäre! Gegen die Privatisierung der Intimität! Subjekt. manifestiert. Objekt.: 2015) und Nationaltheater Mannheim(School of SHAME: 2020) gezeigt. Mit *POLYMORA Inc.* entstanden die Produktionen *Wildnis Mensch* (2017), *Anthropomorphia 4230* (2018), *School of SHAME* (2019) aufgeführt. Seit 2016 entstanden verschiedene Projekte in Kooperation mit dem *[PENG! Kollektiv](https://pen.gg/de/)*. Gemeinsam mit Stephanie Krah organisiert Mono seit 2018 das soziokulturelle Festival *[FAMILIA\*FUTURA](http://familiafutura.de/)* zu den Themen Familien-Diversität und Care-Utopien.
 
 Mono identifiziert sich als *weiß,* nicht-binär / trans maskulin, *lower-class,* kommt aus einem nicht akademischen Elternhaus und seine Großeltern haben Flucht- und Migrationsbiografien.
 
@@ -78,16 +78,16 @@ Um das Leipziger Publikum für künstlerische Prozesse zu sensibilisieren, zeige
 
 ## Über TANZPAKT in residence
 
-TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022-24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
+TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022–24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
 
 Von Januar bis Dezember 2023 werden acht (8) Solo-Recherche-Residenzen an den sächsischen Produktions- und Theaterstätten in Kirschau, Zwickau, Görlitz, Chemnitz, Leipzig und Dresden vergeben werden. Die Dauer beträgt pro Residenz vier Wochen, welche auch gesplittet werden kann.  
 Für das Jahr 2023 konnten sich Künstler:innen mit Arbeitsschwerpunkt in Sachsen bis zum 30. September 2022 bewerben.
 
 TANZPAKT in residence versteht sich als grundlegendes Instrument, Künstler:innen in die Exzellenz zu befördern, indem es Zeit-Räume für Forschung zur Verfügung stellt und nachhaltige Strukturen schafft, die der Tanzszene der Region ein professionelles und kontinuierliches Arbeiten ermöglichen.  
-Von 2022-2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.  
+Von 2022–2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.  
 Ein Residenzplatz für ein:e ukrainische:n Künstler:in ist vorgesehen. (die Ausschreibung auf Ukrainisch gibt es [**hier**](https://villawigman.de/wp-content/uploads/2022/08/TPiR_VW_Ausschreibung_2023_ua.pdf))
 
-## TANZPAKT in residence - Open Call 2023
+## TANZPAKT in residence – Open Call 2023
 
 Von Januar bis Dezember 2023 werden acht (8) Solo-Recherche-Residenzen an den sächsischen Produktions- und Theaterstätten in Kirschau, Zwickau, Görlitz, Chemnitz, Leipzig und Dresden vergeben. Die Dauer beträgt pro Residenz vier Wochen, welche auch gesplittet werden kann.  
 Für das Jahr 2023 konnte sich Künstler:innen mit Arbeitsschwerpunkt in Sachsen bis zum 30. September 2022 bewerben.  
@@ -96,11 +96,11 @@ Residenzort und eine Werkstattpräsentation zum Abschluss der Residenzzeit.
 
 **Residenzorte:**
 
-- [tanzART Kirschau](https://www.tanzart-kirschau.de/) / Februar 2023 / Juli - August 2023
+- [tanzART Kirschau](https://www.tanzart-kirschau.de/) / Februar 2023 / Juli – August 2023
 - [Mondstaubtheater Zwickau](https://www.mondstaubtheater.de/) / August, September 2023
 - [TanzRaumGörlitz](https://trg.persona.co/) / Neisse Centre For Contemporary Arts e.V. / August / September 2023
-- [KOMPLEX - OFF Bühne für Darstellende Künste Chemnitz](https://www.chemnitzkomplex.de/info) / Januar, August, September 2023
-- [LOFFT - DAS THEATER](https://www.lofft.de/) (Leipzig) ganzjährig nach Absprache außer 10.07.-18.08.2023
+- [KOMPLEX – OFF Bühne für Darstellende Künste Chemnitz](https://www.chemnitzkomplex.de/info) / Januar, August, September 2023
+- [LOFFT – DAS THEATER](https://www.lofft.de/) (Leipzig) ganzjährig nach Absprache außer 10.07.–18.08.2023
 - [Villa Wigman](http://villawigman.de/tanzpakt-in-residence/) (Dresden) / ganzjährig 2023
 - [TanzNetzDresden](/) / [TENZA](https://www.tenza.de/) (Dresden) Februar, April, Juli-August, Oktober 2023
 

@@ -278,6 +278,20 @@ in `en/`). Sie lassen sich wie alle Datei-Beiträge im CMS oder direkt bearbeite
 - E-Mail-Adressen der WordPress-Konten werden nicht übernommen. Autor:in ist „TanzNetzDresden“ (Konto „Presse“) oder
   der Anzeigename.
 
+**Typografie bereinigt** (November 2026, `scripts/wordpress-import/typografie.mjs`): Anführungszeichen je Sprache des
+Absatzes („…“ bzw. “…”), Gedankenstrich statt „ - “, Halbgeviertstrich in Spannen (10:00–16:00 Uhr, 2022–2024),
+… statt ..., „z. B.“, Uhrzeiten mit Doppelpunkt, Gendern mit Doppelpunkt, „TanzNetzDresden“ einheitlich und
+Zwischenüberschriften ohne übersprungene Ebene. Nur Zeichen, nie der Wortlaut; Adressen, Dateinamen und Code
+bleiben. Nach einem neuen Import noch einmal laufen lassen (ohne `--schreiben` nur Bericht):
+
+```bash
+node scripts/wordpress-import/typografie.mjs --schreiben --bericht bericht.md
+```
+
+**Vorspann:** Bei vielen alten Beiträgen ist der Teaser der Anfang des Textes. Dann steht er nicht noch einmal über
+dem Text (`teaserWiederholt()` in `src/lib/news-artikel.ts`, auch in der Vorschau des Editors); in der Chronik, beim
+Teilen und für Suchmaschinen bleibt er.
+
 **Noch einmal übernehmen** (z. B. mit einem neueren Export): ersetzt **alle** Datei-Beiträge und Archivbilder.
 
 ```bash

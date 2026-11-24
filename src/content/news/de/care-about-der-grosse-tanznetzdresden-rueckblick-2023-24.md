@@ -23,7 +23,7 @@ Im Nachgang ist eine Video-Dokumentation entstanden, die [Simon Garbe](https://c
 
 ### 11\. & 12.04.2024, Bremen
 
-Bereits 2022 und 2023 wurde der Austausch zwischen dem [tanz\_netzwerk\_bremen](https://lafdk-bremen.de/) und dem TanzNetzDresden begonnen und fortlaufend intensiviert. Im Frühjahr 2024 konnte nun im Rahmen der Veranstaltung »CARE ABOUT // CARE AND CONNECT - Empowering the local dance scene« eine Fortführung und Verstetigung in Bremen am 11. und 12. April durch zwei weitere Termine initiiert werden. Die Veranstaltungen stellten hierbei Themen wie Work-Life Balance und Care-Arbeit in den Fokus und integrierten dazu Workshop- & Trainings-Beiträge von Katze Greeven, Claire Lefèvre sowie Noé Valdes Vega.
+Bereits 2022 und 2023 wurde der Austausch zwischen dem [tanz\_netzwerk\_bremen](https://lafdk-bremen.de/) und dem TanzNetzDresden begonnen und fortlaufend intensiviert. Im Frühjahr 2024 konnte nun im Rahmen der Veranstaltung »CARE ABOUT // CARE AND CONNECT – Empowering the local dance scene« eine Fortführung und Verstetigung in Bremen am 11. und 12. April durch zwei weitere Termine initiiert werden. Die Veranstaltungen stellten hierbei Themen wie Work-Life Balance und Care-Arbeit in den Fokus und integrierten dazu Workshop- & Trainings-Beiträge von Katze Greeven, Claire Lefèvre sowie Noé Valdes Vega.
 
 Die Teilnahme an der Veranstaltung war kostenlos. Die Veranstaltung fand auf englischer Lautsprache im kleinen Saal des [Zentrum für Kunst](https://zentrum-fuer-kunst.de/) in Bremen statt und richtete sich an Tanzschaffende der freien Szene.
 

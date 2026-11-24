@@ -263,10 +263,16 @@ Festlegungen aus der Durchsicht vom November 2026. Bei neuen Seiten und Baustein
 - **Schriften nur als WOFF2.** Work Sans, JetBrains Mono und Open Sans kommen aus `@fontsource` (`src/layouts/Base.astro`,
   `src/styles/fonts.css`). Die TTF-Dateien in `design/system/assets/fonts` bindet die Website nicht ein. Die zwei
   Schnitte, die jede Seite sofort braucht (Work Sans 800, Open Sans 400), lädt `Base.astro` per `rel="preload"` vor.
-- **Silbentrennung nur im Fließtext.** Knöpfe, Felder, Menüpunkte und kleine Zeilen in Versalien trennen nie
-  (`hyphens: manual` in `src/styles/global.css`), Überschriften nur Wörter ab zehn Buchstaben
-  (`hyphenate-limit-chars`). Neue Bausteine mit Versalien-Zeilen: Klasse `mono-link`, `tag` oder `datum` nutzen
-  oder `hyphens: manual` setzen.
+- **Silbentrennung nur im Fließtext.** Getrennt wird nur in Absätzen, Bildunterschriften und Listen im Lesetext
+  (`p`, `dd`, `blockquote`, `figcaption`, `td`, Listen in `.prose` und `.ab__text`); alles andere – Kartentitel, Namen, Knöpfe, Felder, Menüpunkte, kleine
+  Zeilen in Versalien – trennt nie (`hyphens: manual` am `body` in `src/styles/global.css`). Überschriften trennen
+  nur sehr lange Wörter ab 16 Buchstaben (`hyphenate-limit-chars: 16 6 6`), also nie „TanzNetz-Dresden“ oder
+  englische Wörter wie „resi-dence“, und brechen ausgewogen um (`text-wrap: balance`, kein einzelnes Wort in der
+  letzten Zeile). Neue Bausteine mit Versalien-Zeilen in einem Absatz: Klasse `mono-link`, `tag` oder `datum`
+  nutzen oder `hyphens: manual` setzen.
+- **Kleinste Schrift 11 px**, auch für Zähler, Bildnummern und Zeilen in Versalien.
+- **Filterreihen am Handy** stehen in einer Zeile zum Wischen (`.chips`, eigene Reihen mit der Klasse
+  `chips-wisch`), statt umzubrechen und einen Knopf allein in die zweite Zeile zu stellen.
 - **Seitenwechsel.** Links werden beim Überfahren vorausgeladen (`prefetch` in `astro.config.mjs`), der Wechsel
   blendet weich um (View Transitions, die Kopfleiste bleibt stehen). Eingeschaltet wird das mit
   `@view-transition` direkt im Kopf jeder Seite (`src/layouts/Base.astro`), nicht in einer CSS-Datei und nicht in

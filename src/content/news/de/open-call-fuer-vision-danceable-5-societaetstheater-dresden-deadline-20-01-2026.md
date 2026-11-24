@@ -1,5 +1,5 @@
 ---
-title: "Open Call für VISION DANCEABLE #5 • Societaetstheater Dresden •Deadline: 20.01.2026"
+title: "Open Call für VISION DANCEABLE #5 • Societaetstheater Dresden • Deadline: 20.01.2026"
 date: 2026-01-08
 category: Ausschreibung
 author: TanzNetzDresden

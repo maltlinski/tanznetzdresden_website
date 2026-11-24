@@ -18,7 +18,7 @@ bilder:
     alt: ""
 :::
 
-**Tomas Bünger** hat klassischen und modernen Bühnentanz studiert und war langjähriges Mitglied des Tanztheater Bremen. Anschließend machte er eine integrative Tanzlehrerfortbildung in New York und war Gast-Dozent an der Universität der Künste in Buenos Aires. Er unterrichtet seit vielen Jahren mit Unterstützung des Goethe-Instituts in Bangladesh und war Resident in Togo und Rumänien. Er arbeitet regelmäßig mit dem Theater Bremen, tanzbar\_bremen und der Companny "of courious nature" zusammen. Im Mittelpunkt seiner choreografischen Arbeiten für Profis und Laien steht der tanzende Mensch und sein Verhältnis zur Welt.
+**Tomas Bünger** hat klassischen und modernen Bühnentanz studiert und war langjähriges Mitglied des Tanztheater Bremen. Anschließend machte er eine integrative Tanzlehrerfortbildung in New York und war Gast-Dozent an der Universität der Künste in Buenos Aires. Er unterrichtet seit vielen Jahren mit Unterstützung des Goethe-Instituts in Bangladesh und war Resident in Togo und Rumänien. Er arbeitet regelmäßig mit dem Theater Bremen, tanzbar\_bremen und der Companny „of courious nature“ zusammen. Im Mittelpunkt seiner choreografischen Arbeiten für Profis und Laien steht der tanzende Mensch und sein Verhältnis zur Welt.
 
 ## Special week mit Tomas Bünger beim TNDD Training
 
@@ -28,7 +28,7 @@ Das Training von Tomas Bünger basiert auf seinen jahrelangen Erfahrungen als Pe
 
 ## Informationen zur Special Week mit Tomas Bünger
 
-- **Termine**: 22. bis 26. April 2024 (Montag bis Freitag), 10 – 11:30 Uhr; bitte 10 Minuten vor Kursbeginn erscheinen
+- **Termine**: 22. bis 26. April 2024 (Montag bis Freitag), 10–11:30 Uhr; bitte 10 Minuten vor Kursbeginn erscheinen
 - **Stil**: Zeitgenössisch
 - **Ort**: [TENZA Schmiede,](https://www.tenza.de/) Pfotenhauerstraße 59 HH, 01307 Dresden
 - **Registrierung**: via mail an [profitraining.tndd@gmail.com](mailto:profitraining.tndd@gmail.com)

@@ -7,34 +7,34 @@ image: ../../../assets/news/2024/tndd-claire-lefevre-franzi-kreis.webp
 teaser: Bereits 2022 und 2023 wurde der Austausch zwischen dem tanz\netzwerk\bremen und dem TanzNetzDresden begonnen und fortlaufend intensiviert. Nun gibt es in Bremen am 11. und 12.
 ---
 
-*Bereits 2022 und 2023 wurde der Austausch zwischen dem tanz\_netzwerk\_bremen und dem TanzNetzDresden begonnen und fortlaufend intensiviert. Nun gibt es in Bremen am 11. und 12. April zwei weitere Kooperationsveranstaltungen beider Partner:innen im Rahmen des gemeinsamen Projekts "CARE ABOUT". Die Veranstaltungen stellen Themen wie Work-Life Balance und Care-Arbeit in den Fokus und haben hierfür unter anderem Katze Greeven, Claire Lefèvre sowie Noé Valdes Vega aus Dresden eingeladen. Alle Informationen hierzu gibt es im heutigen Beitrag.*
+*Bereits 2022 und 2023 wurde der Austausch zwischen dem tanz\_netzwerk\_bremen und dem TanzNetzDresden begonnen und fortlaufend intensiviert. Nun gibt es in Bremen am 11. und 12. April zwei weitere Kooperationsveranstaltungen beider Partner:innen im Rahmen des gemeinsamen Projekts „CARE ABOUT“. Die Veranstaltungen stellen Themen wie Work-Life Balance und Care-Arbeit in den Fokus und haben hierfür unter anderem Katze Greeven, Claire Lefèvre sowie Noé Valdes Vega aus Dresden eingeladen. Alle Informationen hierzu gibt es im heutigen Beitrag.*
 
 ## Care and Connect: Empowering the local dance scene
 
-Der Diskurs über Work-Life Balance und Care-Arbeit ist in aller Munde, vor allem im privaten Bereich. Aus beruflicher Perspektive erhält Care-Arbeit nochmal einen ganz anderen Stellenwert, besonders für selbstständig Arbeitende. Denn Care-Arbeit bedeutet auch strukturelle Arbeit, die im freiberuflichen Kontext täglich anfällt und als relevanter Teil einer tragfähigen Selbstständigkeit betrachtet werden sollte. Gerade bei Tätigkeiten in unseren Netzwerken sprechen wir über unsichtbare Arbeit, die nur schwer messbar ist und für die oft die Kapazitäten fehlen. Wir wollen im Rahmen des Projekts "CARE ABOUT" eine Plattform bieten, auf der sich Kolleg:innen der Tanzszene untereinander zu Fragen der Care-Arbeit austauschen, Care-Strukturen sichtbar machen, miteinander in Bewegung kommen und Tools zur (Selbst-)Fürsorge im Arbeitsalltag von der Care-Expertin Claire Lefèvre kennenlernen (ausführliche Beschreibung siehe unten). Bei einem Meet & Cook begegnen sich die Teilnehmenden und zelebrieren ein gemeinsames Kocherlebnis.
+Der Diskurs über Work-Life Balance und Care-Arbeit ist in aller Munde, vor allem im privaten Bereich. Aus beruflicher Perspektive erhält Care-Arbeit nochmal einen ganz anderen Stellenwert, besonders für selbstständig Arbeitende. Denn Care-Arbeit bedeutet auch strukturelle Arbeit, die im freiberuflichen Kontext täglich anfällt und als relevanter Teil einer tragfähigen Selbstständigkeit betrachtet werden sollte. Gerade bei Tätigkeiten in unseren Netzwerken sprechen wir über unsichtbare Arbeit, die nur schwer messbar ist und für die oft die Kapazitäten fehlen. Wir wollen im Rahmen des Projekts „CARE ABOUT“ eine Plattform bieten, auf der sich Kolleg:innen der Tanzszene untereinander zu Fragen der Care-Arbeit austauschen, Care-Strukturen sichtbar machen, miteinander in Bewegung kommen und Tools zur (Selbst-)Fürsorge im Arbeitsalltag von der Care-Expertin Claire Lefèvre kennenlernen (ausführliche Beschreibung siehe unten). Bei einem Meet & Cook begegnen sich die Teilnehmenden und zelebrieren ein gemeinsames Kocherlebnis.
 
 Für den Auftakt sind nun alle Interessierten recht herzlich eingeladen, am 11. April um 18 Uhr eine Improsession mit Katze Greeven zu besuchen.
 
-Die Veranstaltung ist Teil der Kooperation mit dem tanz\_netz\_bremen im Rahmen des Projekts "CARE ABOUT". Die Teilnahme an der Veranstaltung ist kostenlos. Die Veranstaltung findet auf englischer Lautsprache statt und richtet sich an Tanzschaffende der freien Szene. Weitere Events des Projekts werden Ende Mai und Anfang Juni in Dresden durchgeführt.
+Die Veranstaltung ist Teil der Kooperation mit dem tanz\_netz\_bremen im Rahmen des Projekts „CARE ABOUT“. Die Teilnahme an der Veranstaltung ist kostenlos. Die Veranstaltung findet auf englischer Lautsprache statt und richtet sich an Tanzschaffende der freien Szene. Weitere Events des Projekts werden Ende Mai und Anfang Juni in Dresden durchgeführt.
 
 ## Timetable des Programms
 
 ### Donnerstag, 11. April 2024
 
-**18:00 Uhr** // Instant Composition mit Katze Greeven: "Composing Impulses"
+**18:00 Uhr** // Instant Composition mit Katze Greeven: „Composing Impulses“
 
 Als Auftakt von CARE ABOUT kommen wir zusammen, um „live“ zu komponieren. Wie können wir innere und äußere Impulse für eine gemeinsame Komposition des Augenblicks nutzen? Es beginnt mit Übungen, um die Intuition wachzukitzeln und mündet in einer durch Scores gerahmten Improvisationssession.
 
 ### Freitag, 12. April 2024
 
 **09:30 Uhr** // Ankunft  
-**10:00 Uhr** // Bewegungseinheit mit Noé Valdes Vega (Dresden): **"Resonance Axes."  
+**10:00 Uhr** // Bewegungseinheit mit Noé Valdes Vega (Dresden): **„Resonance Axes.“  
 11:45 Uhr** // Meet&Cook  
-**14:00 Uhr** // Workshop mit [Claire Lefèvre](https://clairelefevre.com/about): **"TOGETHER FOREVER // ON NETWORKING, CAREWORKING AND BUILDING SUSTAINABLE STRUCTURES"**
+**14:00 Uhr** // Workshop mit [Claire Lefèvre](https://clairelefevre.com/about): **„TOGETHER FOREVER // ON NETWORKING, CAREWORKING AND BUILDING SUSTAINABLE STRUCTURES“**
 
 ::: bilder
-text: Claire Lefèvre I
-foto: grafiert von Franzi Kreis
+text: Claire Lefèvre
+foto: Franzi Kreis
 bilder:
   - datei: /news/archiv/2024/tanznetzdresden-bremen-claire-lefevre-franzi-kreis.webp
     alt: ""

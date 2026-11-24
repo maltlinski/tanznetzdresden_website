@@ -54,10 +54,10 @@ Mehr zur villa/wigman gibt es unter folgenden Links:
 
 ## Über TANZPAKT in residence
 
-TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022-24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
+TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022–24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
 
 TANZPAKT in residence versteht sich als grundlegendes Instrument, Künstler:innen in die Exzellenz zu befördern, indem es Zeit-Räume für Forschung zur Verfügung stellt und nachhaltige Strukturen schafft, die der Tanzszene der Region ein professionelles und kontinuierliches Arbeiten ermöglichen.  
-Von 2022-2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.
+Von 2022–2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.
 
 Weitere Informationen zu TANZPAKT in residence gibt es unter  
 [villawigman.de/tanzpakt-in-residence](https://villawigman.de/tanzpakt-in-residence/)

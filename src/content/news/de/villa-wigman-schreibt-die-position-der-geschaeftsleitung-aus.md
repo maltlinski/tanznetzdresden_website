@@ -9,7 +9,7 @@ teaser: Der Verein Villa Wigman für TANZ sucht zum 1. Juni 2023 eine Person, di
 
 Als Träger für die [villa\\wigman](https://villawigman.de/) sucht der Verein Villa Wigman für TANZ zum 1. Juni 2023 eine Person für die geschäftsleitenden Tätigkeiten (m/w/d) in Festanstellung. Der Arbeitsumfang beträgt 28 Std/ Woche. Die Stelle lehnt sich in der Vergütung an den TVÖD E11 an.
 
-### Das bringt ihr idealerweise mit:
+## Das bringt ihr idealerweise mit:
 
 • Kaufmännische Ausbildung oder eine vergleichbare Qualifikation und/oder Erfahrungen  
 • Kenntnisse der Förderrichtlinien öffentlicher Mittel sowie Zuwendungs-, und Vergaberecht sind Voraussetzung • Einsatzbereitschaft, Selbstständigkeit und Teamfähigkeit  

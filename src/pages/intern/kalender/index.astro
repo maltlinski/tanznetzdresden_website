@@ -242,7 +242,7 @@ import { href } from '../../../lib/url';
 </Intern>
 
 <script>
-  import { initIntern, errorText, showMessage } from '../../../scripts/intern/session';
+  import { initIntern, errorText, showMessage, nochNichtEingerichtet, fuerAnzeige } from '../../../scripts/intern/session';
   import { gsap, EASE, motionOk } from '../../../scripts/gsap';
   import { h } from '../../../scripts/intern/news/dom';
   import { neuBauenLassen } from '../../../scripts/intern/redaktion/api';
@@ -265,7 +265,7 @@ import { href } from '../../../lib/url';
   const profilName = new Map(kal.personen.map((p) => [p.id, p.name]));
   const bewegung = motionOk();
   const h0 = heute();
-  const FEHLT_KALENDER = 'Termine eintragen geht, sobald die Migration supabase/migrations/20261026000000_kalender.sql ausgeführt ist (docs/kalender.md).';
+  const FEHLT_KALENDER = nochNichtEingerichtet('Termine eintragen ist noch nicht eingerichtet. Bitte gib dem Vorstand Bescheid.', 'Migration supabase/migrations/20261026000000_kalender.sql im SQL-Editor ausführen (docs/kalender.md).');
   const T_BASIS = 'id,slug,titel,titel_en,datum,von,bis,zeit_text,ort,kategorie,kurz,kurz_en,text,link,format,personen,news,sichtbar';
   /** Eintritt gibt es erst mit der Migration 20261028000000_kalender_eintritt.sql; vorher ohne diese Spalten */
   let eintrittDa = true;
@@ -843,7 +843,8 @@ import { href } from '../../../lib/url';
     else kalenderDa = false;
     if (b.status === 'fulfilled') ku = b.value;
     else keepupDa = false;
-    const fehlt = [!kalenderDa && FEHLT_KALENDER, !keepupDa && FEHLT].filter(Boolean).join(' ');
+    // je Teil aufbereiten (der technische Hinweis hängt an der einzelnen Meldung, nur für Vorstand und Admin)
+    const fehlt = ([!kalenderDa && FEHLT_KALENDER, !keepupDa && FEHLT].filter(Boolean) as string[]).map((x) => fuerAnzeige(x)).join(' ');
     if (fehlt) showMessage(msg, fehlt);
     $('[data-plan]').hidden = false;
     $('[data-neu-box]').hidden = false;

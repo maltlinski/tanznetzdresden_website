@@ -394,7 +394,7 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
 </Redaktion>
 
 <script>
-  import { initIntern, errorText, internUrl } from '../../../../scripts/intern/session';
+  import { initIntern, errorText, internUrl, nochNichtEingerichtet } from '../../../../scripts/intern/session';
   import { slugify, newsPhotoUrl, type MedienRow, type NewsRow } from '../../../../lib/supabase';
   import { neuBauenLassen } from '../../../../scripts/intern/redaktion/api';
   import { abschnittEditor, type Baustein, type EBlock, type Gewaehlt } from '../../../../scripts/intern/news/abschnitte';
@@ -1020,10 +1020,11 @@ const FLAECHEN = [['purple', 'Lila', 'var(--purple)'], ['cyan', 'Cyan', 'var(--c
           if (error) {
             stand('Nicht gespeichert');
             const dup = /duplicate|unique/i.test(error.message);
-            if (/image_focus|news_image_alt/.test(error.message)) melden('Die Datenbank ist noch nicht auf dem neuen Stand: Bitte die Migration 20261015000000_news_bilder.sql im SQL-Editor ausführen.');
-            else if (/newsletter/.test(error.message)) melden('Bitte die Migration 20261016000000_mediathek.sql im SQL-Editor ausführen.');
-            else if (/hero|node_kicker|node_value/.test(error.message)) melden('Für den Kopfbereich bitte die Migration 20261029000000_news_kopf.sql im SQL-Editor ausführen.');
-            else if (/body_check|body_en_check/.test(error.message)) melden('Der Text ist zu lang. Bitte die Migration 20261015000000_news_bilder.sql ausführen (erlaubt längere Texte) oder kürzen.');
+            const veraltet = (migration: string) => melden(nochNichtEingerichtet('Die Datenbank ist noch nicht auf dem neuen Stand. Bitte gib dem Vorstand Bescheid.', `Migration ${migration} im SQL-Editor ausführen.`));
+            if (/image_focus|news_image_alt/.test(error.message)) veraltet('20261015000000_news_bilder.sql');
+            else if (/newsletter/.test(error.message)) veraltet('20261016000000_mediathek.sql');
+            else if (/hero|node_kicker|node_value/.test(error.message)) veraltet('20261029000000_news_kopf.sql');
+            else if (/body_check|body_en_check/.test(error.message)) melden(nochNichtEingerichtet('Der Text ist zu lang. Bitte kürze ihn oder gib dem Vorstand Bescheid.', 'Migration 20261015000000_news_bilder.sql erlaubt längere Texte.'));
             else melden(dup ? 'Diese Adresse ist schon vergeben. Bitte unter „Weitere Angaben → Adresse“ eine andere wählen.' : errorText(error));
             return false;
           }

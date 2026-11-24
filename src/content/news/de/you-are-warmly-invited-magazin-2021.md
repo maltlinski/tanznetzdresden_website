@@ -1,5 +1,5 @@
 ---
-title: »Wir arbeiten dran« - das Magazin von you are warmly invited
+title: »Wir arbeiten dran« – das Magazin von you are warmly invited
 date: 2021-12-17
 category: Netzwerk
 author: TanzNetzDresden
@@ -11,9 +11,9 @@ Im heutigen Beitrag geht es um die aktuelle Ausgabe von »Wir arbeiten dran«, d
 
 [https://tanznetzdresden.de/working-communities-interview-you-are-warmly-invited-hecke-waniek/](/news/working-communities-interview-you-are-warmly-invited-hecke-waniek/)
 
-## »Wir arbeiten dran« - das Magazin von *you are warmly invited*
+## »Wir arbeiten dran« – das Magazin von *you are warmly invited*
 
-Das nun veröffentlichte Magazin aus der *you are warmly invited*\-Kampagne »Wir arbeiten dran« gibt Einblick in aktuelle Arbeitsstände zahlreicher Künstler:innen. Unter Mitwirken von 20 künstlerischen Positionen und zwei Textbeiträgen sowie der Gestaltung von Jakob Kirch ([Lamm&Kirch](http://lamm-kirch.com/)) ist ein Magazin entstanden, das, wie schon die vorausgegangene Plakataktion im Frühjahr, Arbeitsstände assoziierter Künstler:innen aus dem you are warmly invited-Netzwerk zeigt. Es soll - genau wie Plakate aus März und April diesen Jahres -sichtbar machen, was gemeinhin im Verborgenen bleibt und thematisiert damit auch Fragen nach der Dokumentation und Visualisierbarkeit zeitbasierter und kollektiver Prozesse.
+Das nun veröffentlichte Magazin aus der *you are warmly invited*\-Kampagne »Wir arbeiten dran« gibt Einblick in aktuelle Arbeitsstände zahlreicher Künstler:innen. Unter Mitwirken von 20 künstlerischen Positionen und zwei Textbeiträgen sowie der Gestaltung von Jakob Kirch ([Lamm&Kirch](http://lamm-kirch.com/)) ist ein Magazin entstanden, das, wie schon die vorausgegangene Plakataktion im Frühjahr, Arbeitsstände assoziierter Künstler:innen aus dem you are warmly invited-Netzwerk zeigt. Es soll – genau wie Plakate aus März und April diesen Jahres -sichtbar machen, was gemeinhin im Verborgenen bleibt und thematisiert damit auch Fragen nach der Dokumentation und Visualisierbarkeit zeitbasierter und kollektiver Prozesse.
 
 Wir verlinken die PDF-Version des Magazins an dieser Stelle und bedanken uns abermals für die inspirierende Zusammenarbeit und den Workshop im November und freuen uns ebenfalls auf kommende Zusammenarbeiten. Wer sich für ein gedrucktes Exemplar interessiert, kann gern eine Mail an [presse@tanznetzdresden.de](mailto:presse@tanznetzdresden.de) schreiben. Wir haben einige Exemplare vorrätig und können daher auf Nachfragen eingehen.
 

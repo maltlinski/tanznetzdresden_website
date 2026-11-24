@@ -11,7 +11,7 @@ Auch im kommenden Jahr soll und wird es wieder die beliebten POP UP-Formate gebe
 
 Also in the coming year there should and will be again the popular POP UP formats. From now until January 6, 2022, members of TanzNetzDresden can apply and submit their concepts. All information about the call for proposals follows now in the article. *(eng)*
 
-### Informationen zur POP UP-Ausschreibung (deutsch)
+## Informationen zur POP UP-Ausschreibung (deutsch)
 
 Die Mission lautete auch für 2022: Wir wollen auch diejenigen unter euch ermutigen dabei zu sein, die noch nie ein POP UP-Host waren, denn das POP UP Format ist perfekt, um unser Netzwerk kennenzulernen, aktiv Kontakte zu knüpfen und in der Tanzszene in Dresden sichtbar aufzupoppen. Sowohl mit euren Diskurs als auch mit euren Performance-Ideen.
 
@@ -26,7 +26,7 @@ Bei weiteren Fragen einfach eine Mail danielalehmann(at)gmx(.)info oder magdalen
 
 Alle weiteren Informationen zur Ausschreibung als PDF findet ihr in gebündelter Form [**hier**](/news/archiv/dateien/2021/2021-ausschreibung-fu-cc-88r-hosts-von-pop-up-salon-performance.pdf).
 
-### Informations for the POP UP proposals (englisch)
+## Informations for the POP UP proposals (englisch)
 
 The mission for 2022 is clear: We want to encourage those of you who have never been a POP UP host to join us, because the POP UP format is perfect to get to know our network, to actively make contacts and to visibly pop up in the dance scene in Dresden. Both with your discourse and with your performance ideas.
 

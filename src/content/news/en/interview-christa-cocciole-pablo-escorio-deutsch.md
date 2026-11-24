@@ -1,11 +1,11 @@
 ---
 title: »A deep reflection between emotions and movement.«
-teaser: WORKING COMMUNITIES will host Christa Cocciole and Pablo Escoria on Friday, November 12, 2021 as part of their workshop "Embodiment for Social Transformation".
+teaser: WORKING COMMUNITIES will host Christa Cocciole and Pablo Escoria on Friday, November 12, 2021 as part of their workshop “Embodiment for Social Transformation”.
 ---
 
-WORKING COMMUNITIES will host Christa Cocciole and Pablo Escoria on Friday, November 12, 2021 as part of their workshop "Embodiment for Social Transformation". The workshop will be held in English and translated on site into German and we have now been able to talk to Christa Cocciole and Pablo Escoria in advance to share some insights of their and our upcoming workshop »Embodiment for Social Transformation«.
+WORKING COMMUNITIES will host Christa Cocciole and Pablo Escoria on Friday, November 12, 2021 as part of their workshop “Embodiment for Social Transformation”. The workshop will be held in English and translated on site into German and we have now been able to talk to Christa Cocciole and Pablo Escoria in advance to share some insights of their and our upcoming workshop »Embodiment for Social Transformation«.
 
-### Interview with Christa Cocciole and Pablo Escorio
+## Interview with Christa Cocciole and Pablo Escorio
 
 **The content of your workshop is surely to be found deep in your personal or professional experience. Do you want to tell a little about certain cornerstones from your biographies that have become “triggers”**
 
@@ -15,7 +15,7 @@ Pablo Escoria: *»I have been walking two different parallel tracks in my life, 
 
 **What can the participants expect from your workshop?**
 
-CC: *»With Pablo and my similar and unique background, we will be encouraging the participants to sense their own purpose and individual skills in order to bring them into their communities in embodied ways. I'd like to “distill” my intention down to “Notice, Name and Navigate” in order for us all to show up in this very troubled world in an embodied way. For example, if we can notice that a sensation is happening in the body without judgement ("I am contracting now"), then name the sensation ("it feels like I am afraid"), I can then navigate what my best next steps can be (“I take a step away from the person I am standing next to”). We often judge or ignore body sensations which ends up limiting our awareness and potential of presence. I’m particularly excited to be working with this community of dancers. We have experience that can be supportive for others that might not have the tools or safety to listen to information from body awareness. This trained experience can be transforming for people in other communities.«*
+CC: *»With Pablo and my similar and unique background, we will be encouraging the participants to sense their own purpose and individual skills in order to bring them into their communities in embodied ways. I’d like to “distill” my intention down to “Notice, Name and Navigate” in order for us all to show up in this very troubled world in an embodied way. For example, if we can notice that a sensation is happening in the body without judgement (“I am contracting now”), then name the sensation (“it feels like I am afraid”), I can then navigate what my best next steps can be (“I take a step away from the person I am standing next to”). We often judge or ignore body sensations which ends up limiting our awareness and potential of presence. I’m particularly excited to be working with this community of dancers. We have experience that can be supportive for others that might not have the tools or safety to listen to information from body awareness. This trained experience can be transforming for people in other communities.«*
 
 PE: *»A deep reflection between emotions and movement. How to ensure that our movement is guided by the right emotions and how to make sure we take care of what is important for us when moving with others?«*
 
@@ -31,7 +31,7 @@ CC: »I offer workshops and trainings around Embodiment and/or Trauma. Pablo and
 
 PE: »I am constantly working with NGOs, Civil Society Organizations CSOs and with private companies working with them on topics such as change management, wellbeing, leadership, strategic planning, and leadership. Parallel to that, I am continuously offering Biodanza workshops and dance cycles in Berlin. And other European cities. More info about what I do here [www.purposeandmortion.com](http://www.purposeandmortion.com/).«
 
-You'll find all information for the upcoming workshop »Embodiment for Social Transformation« with Christa Cocciole und Pablo Escoria at WORKING COMMUNTIES [**here**](/verein/).
+You’ll find all information for the upcoming workshop »Embodiment for Social Transformation« with Christa Cocciole und Pablo Escoria at WORKING COMMUNTIES [**here**](/verein/).
 
 Thank you very much for the interview!
 

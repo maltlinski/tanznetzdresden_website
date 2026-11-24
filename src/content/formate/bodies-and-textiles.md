@@ -13,6 +13,5 @@ alt: "Duo in rotem Licht"
 alt_en: "Duo in red light"
 fakten:
   - { label: "Partner", label_en: "Partners", wert: "Wir Gestalten Dresden · Slow Fashion Festival" }
-  - { label: "Start", label_en: "Start", wert: "2027" }
   - { label: "Projektleitung", label_en: "Project lead", wert: "Justine Rouquart" }
 ---

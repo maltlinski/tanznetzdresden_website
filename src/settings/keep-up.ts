@@ -12,8 +12,9 @@ export const keepUp = { de: data.de, en: data.en };
 export const keepUpFoto = data.foto;
 
 /**
- * PLATZHALTER: Fotos für Dozent:innen ohne eigenes Porträt (der Reihe nach, src/assets/photos/).
- * Sobald alle ein Foto haben (keep-up/dozentinnen.yaml oder Profil), wird diese Liste nicht mehr gebraucht.
+ * PLATZHALTER: Fotos für Dozent:innen ohne eigenes Porträt (der Reihe nach, src/assets/photos/). Gezeigt werden sie
+ * nicht mehr: Das Mosaik zeigt Initialen (kein fremdes Foto mit ihrem Namen darunter), der interne Bereich kein Foto.
+ * Die Liste füllt nur noch das Feld `photo`; sobald alle ein Porträt haben, wird sie nicht mehr gebraucht.
  */
 export const platzhalterFotos = ['solo-blau.jpg', 'sprung.jpg', 'duo-rot.jpg', 'kopfstand.jpg', 'duo-orange-blue.jpg', 'duo-silhouette-stage.jpg'];
 

@@ -11,9 +11,9 @@ Heute gibt es ein Interview mit Lisa Zocher und Renan Manhaes von der FORWARD DA
 
 Today we have an interview with Lisa Zocher and Renan Manhaes from FORWARD DANCE COMPANY from Leipzig. Both are guests at WORKING COMMUNITIES on Saturday, November 13, 2021 with their workshop »Domain of Expansion Randomness« and give some insights into their work in conversation.
 
-### Interview mit/with Lisa Zocher und/and Renan Manhaes with german translations below every question and answer.
+## Interview mit/with Lisa Zocher und/and Renan Manhaes with german translations below every question and answer.
 
-**The content of your workshop is surely to be found deep in your personal or professional experience. Do you want to tell a little about certain cornerstones from your biographies that have become “triggers”Der Inhalt eures Workshops ist sicher tief in eurer persönlichen bzw. beruflichen Erfahrung zu suchen. Wollt ihr ein wenig erzählen, ob es bestimmte Eckpunkte in euren Biografien gab, die „Auslöser“ eurer heutigen Arbeitsmethoden sind?**
+**The content of your workshop is surely to be found deep in your personal or professional experience. Do you want to tell a little about certain cornerstones from your biographies that have become “triggers”Der Inhalt eures Workshops ist sicher tief in eurer persönlichen bzw. beruflichen Erfahrung zu suchen. Wollt ihr ein wenig erzählen, ob es bestimmte Eckpunkte in euren Biografien gab, die “Auslöser” eurer heutigen Arbeitsmethoden sind?**
 
 Both: *»The workshop is inspired by the studies of human senses in an authentic practice level. Understanding the relations with the inner self, space and the others.«*
 
@@ -35,15 +35,15 @@ Beide: *»Wir hoffen, dass sich die Teilnehmerinnen und Teilnehmer das Funkeln i
 
 **What else can be expected from you and the FORWARD DANCE COMPANY in the future?Was ist in Zukunft noch alles so von euch und der FORWARD DANCE COMPANY zu erwarten?**
 
-Both: *»Still good dance, interesting art, dedicated research...«  
-*Beide: *»Weiterhin guter Tanz, interessante Kunst, engagierte Recherchen...«*
+Both: *»Still good dance, interesting art, dedicated research…«  
+*Beide: *»Weiterhin guter Tanz, interessante Kunst, engagierte Recherchen…«*
 
-**Do you have a few more things you'd like to share?Habt ihr noch ein paar Dinge, die ihr gern mitteilen möchtet?**
+**Do you have a few more things you’d like to share?Habt ihr noch ein paar Dinge, die ihr gern mitteilen möchtet?**
 
-Both: *»It's a pleasure to make this experience shared with TanzNetz Dresden, we're looking forward to seeing the fire from the participants and catalyzing it.«*  
-Beide: *»Es ist eine Freude, diese Erfahrung mit TanzNetz Dresden zu teilen, wir freuen uns darauf, das Feuer der Teilnehmer zu sehen und es zu katalysieren.«*
+Both: *»It’s a pleasure to make this experience shared with TanzNetzDresden, we’re looking forward to seeing the fire from the participants and catalyzing it.«*  
+Beide: *»Es ist eine Freude, diese Erfahrung mit TanzNetzDresden zu teilen, wir freuen uns darauf, das Feuer der Teilnehmer zu sehen und es zu katalysieren.«*
 
-All information about the upcoming workshop "Der Bereich zunehmender Zufälligkeit / Domain of Expansion Randomness" with Lisa Zocher and Renan Manhaes at WORKING COMMUNTIES is available [**hier**](/verein/).
+All information about the upcoming workshop “Der Bereich zunehmender Zufälligkeit / Domain of Expansion Randomness” with Lisa Zocher and Renan Manhaes at WORKING COMMUNTIES is available [**hier**](/verein/).
 
 Thank you very much for the interview!
 

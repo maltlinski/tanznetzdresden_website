@@ -19,7 +19,7 @@ Wiebke Bickhardt stellt das Programm allgemein vor und ihr könnt erste Fragen s
 Die Ausschreibung läuft vom 20.09. bis 11.10.2021 (23:59 Uhr).  
 Ab dem 10.09. sind voraussichtlich alle Informationen auf der Website zu finden [www.dis-tanzen.de](http://www.dis-tanzen.de/) Die Formulare werden erst am ersten Tag der Ausschreibung veröffentlicht.
 
-### Es ist möglich, dass alle Berufsgruppen, welche öfter in Tanzproduktionen arbeiten beantragen. Das sind z.B. auch TechnikerInnen, KostümbildnerInnen, MaskenbildnerInnen usw. Es wird berücksichtigt, dass diese evtl. zum ersten Mal einen Antrag stellen.
+### Es ist möglich, dass alle Berufsgruppen, welche öfter in Tanzproduktionen arbeiten beantragen. Das sind z. B. auch Techniker:innen, Kostümbildner:innen, Maskenbildner:innen usw. Es wird berücksichtigt, dass diese evtl. zum ersten Mal einen Antrag stellen.
 
 ### Nachtrag vom 01. September 2021:
 

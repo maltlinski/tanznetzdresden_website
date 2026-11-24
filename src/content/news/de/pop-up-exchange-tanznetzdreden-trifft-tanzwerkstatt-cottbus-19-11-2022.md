@@ -23,19 +23,19 @@ Seit 2021 ist die Tanzwerkstatt Kooperationspartnerin im Projekt „DiR- Dance i
 
 ## »WILD ACCESS Cottbus«
 
-»WILD ACCESS Cottbus« ist eine immersive Tanz/Licht Produktion, die am 19. November 2022 ab 18:30 Uhr im Brandenburgischen Landesmuseum für moderne Kunst (BLMK) und im anliegenden Goethepark stattfinden wird. In einem hybriden Format, das sich zwischen Audio-Walk und Live-Performance bewegt, wird das Publikum eingeladen - zu einem nächtlichen Erlebnis, das den Park durch Tanz, Licht und Klang verwandelt.
+»WILD ACCESS Cottbus« ist eine immersive Tanz/Licht Produktion, die am 19. November 2022 ab 18:30 Uhr im Brandenburgischen Landesmuseum für moderne Kunst (BLMK) und im anliegenden Goethepark stattfinden wird. In einem hybriden Format, das sich zwischen Audio-Walk und Live-Performance bewegt, wird das Publikum eingeladen – zu einem nächtlichen Erlebnis, das den Park durch Tanz, Licht und Klang verwandelt.
 
 Was wäre, wenn die täglichen Aktivitäten, die im Park stattfinden, in der Nacht in Erinnerung bleiben? Was wäre, wenn die unbekannten Ecken und unsichtbaren Kreaturen zu den Hauptfiguren und Aktionsräumen würden?
 
 »WILD ACCESS Cottbus« schlägt eine Brücke zwischen diesen sichtbaren und unsichtbaren Elementen des Ortes und spielt mit den vielen verschiedenen Akteuren im Park, seien sie menschlich oder nicht-menschlich, natürlich oder vom Menschen geschaffen, reell oder imaginär.
 
-**Aufführung**: 19.11.2022 , ab 19:00 Uhr  
+**Aufführung**: 19.11.2022, ab 19:00 Uhr  
 **Einlass:** ab 18:30 Uhr  
 **Dauer**: ca. 60 Minuten  
 Der Eintritt ist frei  
 **Wichtig**: Bitte bequeme Schuhe tragen und entsprechend der Wetterlage kleiden.
 
-[*Hier geht's zum Facebook-Event*](https://www.facebook.com/events/3508561182754806)
+[*Hier geht’s zum Facebook-Event*](https://www.facebook.com/events/3508561182754806)
 
 **Künstlerische Leitung/Produktion**: Beatrix Joyce  
 **Performance**: Beatrix Joyce, Michela Filzi  
@@ -79,7 +79,7 @@ Michela Filzi (IT/NL) ist eine in Berlin lebende Multimedia-Künstlerin. Ihre la
 
 ### Lena Gätjens (Lightdesign & Kostümbild)
 
-Lena Gätjens (DE) arbeitet als Lichtkünstlerin, Lichtdesignerin, Illustratorin, Bühnen- und Kostümbildnerin für Theater, freie Produktionen und Film. Seit 2013 zeigt sie multidisziplinäre Arbeiten, die u.a. (natürliches oder künstliches) Licht in Form von Installationen und Projektionen sowie Zeichnungen und Objekte (Requisiten) integrieren. Ihre Arbeiten waren unter anderem in A room that.../Spinnerei, Leipzig; Raumars, Rauma/Finnland; Lönnström Art Museum, Rauma/Finnland; Styria A.I.R., Graz und HU Berlin zu sehen.
+Lena Gätjens (DE) arbeitet als Lichtkünstlerin, Lichtdesignerin, Illustratorin, Bühnen- und Kostümbildnerin für Theater, freie Produktionen und Film. Seit 2013 zeigt sie multidisziplinäre Arbeiten, die u. a. (natürliches oder künstliches) Licht in Form von Installationen und Projektionen sowie Zeichnungen und Objekte (Requisiten) integrieren. Ihre Arbeiten waren unter anderem in A room that…/Spinnerei, Leipzig; Raumars, Rauma/Finnland; Lönnström Art Museum, Rauma/Finnland; Styria A.I.R., Graz und HU Berlin zu sehen.
 
 **Website**: [lenagaetjens.com](http://lenagaetjens.com/)  
 **Instagram**: [lena\_geht\_jetzt](https://www.instagram.com/lena_geht_jetzt/)
@@ -92,7 +92,7 @@ Im Rahmen von **POP UP exchange** besucht das TanzNetzDresden am 19. November 20
 
 **POP UP exchange** wird initiiert vom TanzNetzDresden. Zum Austausch eingeladen wurden vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus. **POP UP exchange** soll die strukturellen und künstlerischen Verbindungen sichtbar machen, vor Ort, für die Stadtgesellschaft und überregional über Soziale Medien. Die Initiativen werden sich, ihr Profil und ihre Akteur:innen vorstellen, das TanzNetzDresden ist vor Ort. Folgt uns für LIVE Interviews und Performance-Snippets.
 
-Im Rahmen der Netzwerkförderung “TanzNetzDresden all aROUND”, gefördert vom Fonds Darstellende Künste/ #takeheart, bauen wir unsere bundesweite Vernetzung aus. Bestehende Kontakte zu anderen lokalen Netzwerken werden gestärkt und die Begegnung unter Künstler:innen und Koordinator:innen befördert.
+Im Rahmen der Netzwerkförderung „TanzNetzDresden all aROUND“, gefördert vom Fonds Darstellende Künste/ #takeheart, bauen wir unsere bundesweite Vernetzung aus. Bestehende Kontakte zu anderen lokalen Netzwerken werden gestärkt und die Begegnung unter Künstler:innen und Koordinator:innen befördert.
 
 Die eingeladenen Netzwerke können sich im Rahmen von **POP UP exchange** kennenlernen und darüber hinaus am Runden Tisch der Netzwerke des TanzNetzDreden am 12.12.2022 in Dresden weiter vernetzen.
 

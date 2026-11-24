@@ -20,12 +20,12 @@ Mehr zur fünften Ausgabe von vision:danceable sowie zum Format selbst, gibt es 
 - [societaetstheater.de/veranstaltung/visiondanceable-5](https://www.societaetstheater.de/veranstaltung/visiondanceable-5/)
 - [tanznetzdresden.de/vision-danceable](/#formate)
 
-Welttanztag mit TanzNetzDresden - die Details
+Welttanztag mit TanzNetzDresden – die Details
 
 - **Wann:** 29. April 2026
 - **Treff**: 18:30 Uhr; **Start:** 18:45 Uhr
 - **Wo:** Hauptstraße 23, 01067 Dresden (vor der Dreikönigskirche)
 
-### Wir freuen uns auf auf jede:n einzelnen euch und wünschen uns den größten Flashmob, den es je zum Welttanztag in Dresden gegeben hat.
+### Wir freuen uns auf jede:n Einzelne:n von euch und wünschen uns den größten Flashmob, den es je zum Welttanztag in Dresden gegeben hat.
 
 Header-Foto: Simon Garbe

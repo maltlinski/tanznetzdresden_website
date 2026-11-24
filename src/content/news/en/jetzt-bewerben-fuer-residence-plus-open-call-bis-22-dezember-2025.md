@@ -7,7 +7,7 @@ teaser: We are pleased to draw your attention to the latest call for application
 
 ## residence plus
 
-residence plus is a project byVilla Wigman für Tanz e.V. in cooperation with [TanzNetzDresden e.V.](/) and its partner locations [TanzART Kirschau](https://www.tanzart-kirschau.de/), [TanzRaumGörlitz](https://ncca.eu/TRG) at the Neisse Centre for the Contemporary Arts, [KOMPLEX - OFF Bühne des Taupunkt e.V. Chemnitz](https://www.chemnitzkomplex.de/), [TENZA](https://www.tenza.de/) Dresden and [KulturOrt Heymannbaude](https://www.heymannbaude.org/) – Kulturbaude und Landkunst e.V. The residence programme residence plus will be realised for a total of six residencies in 2025/2026, which will be selected by a three-member jury through an application and selection process.
+residence plus is a project byVilla Wigman für Tanz e.V. in cooperation with [TanzNetzDresden e.V.](/) and its partner locations [TanzART Kirschau](https://www.tanzart-kirschau.de/), [TanzRaumGörlitz](https://ncca.eu/TRG) at the Neisse Centre for the Contemporary Arts, [KOMPLEX – OFF Bühne des Taupunkt e.V. Chemnitz](https://www.chemnitzkomplex.de/), [TENZA](https://www.tenza.de/) Dresden and [KulturOrt Heymannbaude](https://www.heymannbaude.org/) – Kulturbaude und Landkunst e.V. The residence programme residence plus will be realised for a total of six residencies in 2025/2026, which will be selected by a three-member jury through an application and selection process.
 
 This residency programme works to break down barriers by specifically addressing older artists, young artists, artists with disabilities and artists in care work in its call for applications. Professional dance practitioners working in the following areas are eligible to apply: dance, choreography, education, dramaturgy, production, science, criticism, etc.
 
@@ -50,7 +50,7 @@ More informationen is available here:
 
 ### Conditions for submission:
 
-Exposé - in German or English PDF (max. 2 A4 pages) or audio or video file (max. 4 min) with the following content:
+Exposé – in German or English PDF (max. 2 A4 pages) or audio or video file (max. 4 min) with the following content:
 
 - Description of the project
 - Motivation for applying within the residency program with a specific place of residence in Saxony
@@ -64,7 +64,7 @@ Exposé - in German or English PDF (max. 2 A4 pages) or audio or video file (max
 
 ## [+++ CLICK HERE FOT THE OPEN CALL +++](https://villawigman.de/wp-content/uploads/2025/12/Ausschreibung-residence-plus_engl.pdf)
 
-### Application deadline: December 22, 2025 (1 p.m.) Submissions and questions by email: [residence@villawigman.de](mailto:residence@villawigman.de) Subject line: "residence plus"
+### Application deadline: December 22, 2025 (1 p.m.) Submissions and questions by email: [residence@villawigman.de](mailto:residence@villawigman.de) Subject line: “residence plus”
 
 Please send questions to [residence@villawigman.de](mailto:residence@villawigman.de).
 

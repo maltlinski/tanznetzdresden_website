@@ -15,11 +15,11 @@ In Kooperation mit 4fT Tanzplattform Leipzig bietet euro scene Leipzig professio
 
 Choreograf:innen und Tänzer:innen bieten den Teilnehmenden anhand verschiedener Stile und Techniken die Möglichkeit zur Weiterbildung.
 
-- Montag, 7.11. – 10.00 bis 11.30 Uhr mit Jan Martens & GRIP (Piet Defrancq)
-- Dienstag, 8.11. – 10.00 bis 11.30 Uhr mit Panaibra Gabriel Canda
-- Mittwoch, 9.11. – 10.00 bis 11.30 Uhr mit Panaibra Gabriel Canda
-- Donnerstag, 10.11. – 10.00 bis 11.30 Uhr mit tanzmainz (Federico Longo)
-- Freitag, 11.11. – 10.00 bis 11.30 Uhr mit Compagnie Recirquel (Yevheniia Obolonina)
+- Montag, 7.11. – 10:00 bis 11:30 Uhr mit Jan Martens & GRIP (Piet Defrancq)
+- Dienstag, 8.11. – 10:00 bis 11:30 Uhr mit Panaibra Gabriel Canda
+- Mittwoch, 9.11. – 10:00 bis 11:30 Uhr mit Panaibra Gabriel Canda
+- Donnerstag, 10.11. – 10:00 bis 11:30 Uhr mit tanzmainz (Federico Longo)
+- Freitag, 11.11. – 10:00 bis 11:30 Uhr mit Compagnie Recirquel (Yevheniia Obolonina)
 
 **Ort**: jeweils Tanz-Zentrale Leipzig / Studio 2, Erich-Zeigner-Allee 64E, 04229 Leipzig
 
@@ -27,8 +27,8 @@ Choreograf:innen und Tänzer:innen bieten den Teilnehmenden anhand verschiedener
 
 In zwei Workshops von Ty Boomershine (Künstlerischer Leiter und Tänzer / Dance On Ensemble, Berlin) und Eric Oberdorff (Compagnie Humaine, Nizza) erhalten die Teilnehmenden einen exklusiven Einblick in die Entstehung eines Stücks sowie in unterschiedliche Tanztechniken und künstlerische Arbeitsweisen.
 
-- Sonntag, 6.11. – 15.00 bis 18.00 Uhr mit Ty Boomershine
-- Dienstag, 8.11. bis Samstag, 12.11. – jeweils 13.00 bis 15.00 Uhr mit Eric Oberdorff
+- Sonntag, 6.11. – 15:00 bis 18:00 Uhr mit Ty Boomershine
+- Dienstag, 8.11. bis Samstag, 12.11. – jeweils 13:00 bis 15:00 Uhr mit Eric Oberdorff
 
 Ort: jeweils Tanz-Zentrale Leipzig / Studio 2, Erich-Zeigner-Allee 64E, 04229 Leipzig
 

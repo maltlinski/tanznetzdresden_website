@@ -5,7 +5,7 @@ teaser: "Update: We are very happy to announce a new date for the workshop with 
 
 Update: We are very happy to announce a new date for the workshop with Alexandre May, which now will take place on February 4 & 5, 2023. All important details about this special offer and the registration can be found in the following blog article.
 
-As part of TanzNetzDresden's new professional training program KEEP UP, a 2-day intensive workshop with Alexandre May titled "CARING IN MOTION" will take place on February 4 and 5, 2023. All information about this special date, the costs and the registration is now available in today's article.
+As part of TanzNetzDresden’s new professional training program KEEP UP, a 2-day intensive workshop with Alexandre May titled “CARING IN MOTION” will take place on February 4 and 5, 2023. All information about this special date, the costs and the registration is now available in today’s article.
 
 ## »Caring in Motion«
 

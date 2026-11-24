@@ -13,7 +13,7 @@ Angeregt wurde das Format durch die Initiative „Arbeitsgemeinschaft Elternscha
 
 Die Stimmung jenes Termins fing [Simon Garbe](https://www.simongarbe.com/) mit der Kamera ein, um im Nachgang aus dem Material einen Film entstehen zu lassen, der gut vermittelt, was am 1. April in der TENZA Schmiede stattfand.
 
-## Und weil wir euch diesen Film nicht vorenthalten möchten, sagen wir nun "Film ab!"
+## Und weil wir euch diesen Film nicht vorenthalten möchten, sagen wir nun „Film ab!“
 
 [Video auf YouTube ansehen ↗](https://youtu.be/kgze0VwaGPw)
 
@@ -21,7 +21,7 @@ Die Stimmung jenes Termins fing [Simon Garbe](https://www.simongarbe.com/) mit d
 
 - **Titel:** Elternschaft & Tanz (Kick Off-Treffen)
 - **Termin**: 1. April 2023
-- **Timetable**: 10.30 Uhr bis 15:00 Uhr
+- **Timetable**: 10:30 Uhr bis 15:00 Uhr
 - **Ort**: [TENZA Schmiede](https://www.tenza.de/), Pfotenhauerstr. 59 HH, 01307 Dresden
 - **Der Eintritt war frei**
 
@@ -33,5 +33,5 @@ Informationen zu dieser Kick Off-Veranstaltung des TanzNetzDresden gibt es unter
 [tanznetzdresden.de/elternschaft-und-tanz-kick-off-1-april-2023-tenza-schmiede](/news/elternschaft-und-tanz-kick-off-1-april-2023-tenza-schmiede/)
 
 ::: hinweis
-Die Aktivitäten von TanzNetzDresden werden gefördert vom Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien im Rahmen von NEUSTART KULTUR, TANZPAKT in residence (2022–2024), den DACHVERBAND TANZ Deutschland, der Institutionellen Förderung der Landeshauptstadt Dresden , der Projektförderung der Kulturstiftung des Freistaates Sachsen und der Bürgerstiftung Dresden.
+Die Aktivitäten von TanzNetzDresden werden gefördert vom Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien im Rahmen von NEUSTART KULTUR, TANZPAKT in residence (2022–2024), den DACHVERBAND TANZ Deutschland, der Institutionellen Förderung der Landeshauptstadt Dresden, der Projektförderung der Kulturstiftung des Freistaates Sachsen und der Bürgerstiftung Dresden.
 :::

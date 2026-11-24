@@ -18,6 +18,8 @@ export function statementsKopf(kopf: HTMLElement | null): void {
   const buehne = kopf?.querySelector<HTMLElement>('[data-nk-buehne]');
   if (!kopf || !buehne) return;
   const dias = [...buehne.querySelectorAll<HTMLElement>('[data-nk-dia]')];
+  // Zitate als Text unter dem Foto (nur auf dem Handy sichtbar, StatementsKopf.astro)
+  const zitate = [...kopf.querySelectorAll<HTMLElement>('[data-nk-zitat]')];
   // Fotonachweis des gezeigten Statements im Band (für Screenreader steht er in der Bildbeschreibung)
   const fotoZeile = kopf.querySelector<HTMLElement>('[data-nk-foto-zeile]');
   const foto = kopf.querySelector<HTMLElement>('[data-nk-foto]');
@@ -51,6 +53,7 @@ export function statementsKopf(kopf: HTMLElement | null): void {
       // das nächste Foto schon laden
       if (k === (aktiv + 1) % dias.length) d.querySelector('img')?.setAttribute('loading', 'eager');
     });
+    zitate.forEach((z, k) => z.classList.toggle('is-aktiv', k === aktiv));
     nr.textContent = String(aktiv + 1).padStart(2, '0');
     nachweis(dias[aktiv]);
     verstrichen = 0;

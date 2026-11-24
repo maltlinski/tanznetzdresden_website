@@ -9,7 +9,7 @@ teaser: Unter dem Titel »Corporeality« findet am Sonntag, dem 4. Dezember 2022
 
 Unter dem Titel »Corporeality« findet am Sonntag, dem 4. Dezember 2022 ein POP UP-Salon in Kooperation mit [SomaticsLab](https://www.somaticslab.org/) und der [TENZA Schmiede](https://www.tenza.de/) statt. Der Salon ist offen für alle Interessierten und soll es Tänzer:innen, Tanzpädagog:innen, Choreograf:innen, Somatiker:innen ermöglichen, sich zu vernetzen und ihr wertvolles Forschen und Wissen auszutauschen. Alle weiteren Infos folgen nun im Beitrag.
 
-### POP UP im Dezember: »Corporeality«
+## POP UP im Dezember: »Corporeality«
 
 Als Professionelle, als ganz alltägliche Menschen in Bewegung: Immer sind unsere Körper zugleich unsere wichtigsten Verbündeten und unser feinstes Instrument. Wie wir uns dabei auf die eigene Körperlichkeit beziehen, wie wir sie verstehen, wahrnehmen und erfahren macht einen Unterschied für unsere Arbeit.
 
@@ -29,7 +29,7 @@ Dieser POP UP Salon ist ein Projekt von TanzNetzDresden und findet in Kooperatio
 - Der Eintritt ist frei
 - weitere Informationen gibt es unter [tanznetzdresden.de/pop-up](/#formate)
 
-### Über SomaticsLab
+## Über SomaticsLab
 
 Durch Bewegungsbildung und kreative Lernräume unterstützt das SomaticsLab Einzelpersonen, Gruppen und Organisationen im Entfalten von Stärke, Körper-Bewusstsein, Reflexions- und Handlungsfähigkeit. Gefördert wird die Vernetzung transformativer Bewegungen und die Gestaltung eines sozial-ökologischen Wandels in der Gesellschaft.
 

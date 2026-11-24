@@ -15,7 +15,7 @@ POP UP exchange geht in die nächste Runde: Mit dem bewährten Präsentationsfor
 
 Für POP UP exchange werden die vier Dresdner:innen jeweils mit eine:r überregionale:n Künstler:in zusammengebracht, mit der\* sie bisher nicht gearbeitet haben. Die vier Performance-Duos, inspiriert und überrascht durch den künstlerischen Austausch, werden kleine POP UP Performances realisieren. Diese sind explizit keine geprobten Arbeiten, sondern Improvisationen, die in gemeinsamer Absprache durch Scores, gewählte Musik oder ähnliches inspiriert sind.
 
-## POP UP exchange 2025 - Ablauf & Ausschreibung
+## POP UP exchange 2025 – Ablauf & Ausschreibung
 
 Am Sa, 27. September 2025 ist der Anreisetag. Wir treffen uns am frühen Abend für ein gemeinsames Abendessen und ein erstes Kennenlernen, danach besuchen wir gemeinsam die STUDIO ROUND in der [TENZA](https://tenza.de/) mit Beiträgen aus Dresden, Freiburg, Nürnberg/Fürth und Frankfurt am Main.
 

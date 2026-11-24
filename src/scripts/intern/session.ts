@@ -63,8 +63,36 @@ export function errorText(err: unknown): string {
   return t('Das hat nicht geklappt. Bitte versuche es erneut.', 'That did not work. Please try again.');
 }
 
+/** technische Hinweise zu Meldungen „noch nicht eingerichtet“ (nur für Vorstand und Admin) */
+const technik = new Map<string, string>();
+
+/**
+ * Meldung, wenn in der Datenbank noch etwas fehlt (Migration nicht eingespielt): verständlich für alle; den
+ * technischen Hinweis (welche Migration) hängt die Anzeige nur für Vorstand und Admin an – sie spielen sie ein.
+ */
+export function nochNichtEingerichtet(text: string, hinweis: string): string {
+  technik.set(text, hinweis);
+  return text;
+}
+
+/**
+ * Text für die Anzeige: Programmfehler auf Englisch („Cannot read properties of undefined …“) werden zu einer
+ * verständlichen Meldung (das Original steht in der Konsole); eigene deutsche Meldungen bleiben, wie sie sind.
+ */
+export function fuerAnzeige(text: string, kind: 'error' | 'ok' = 'error'): string {
+  if (kind !== 'error' || !text) return text;
+  const h = technik.get(text);
+  if (h) return document.documentElement.dataset.technik === 'ja' ? `${text} ${t('Für die Technik', 'Technical note')}: ${h}` : text;
+  if (/Cannot read|undefined|is not a function|is not defined|Failed to fetch|NetworkError|Load failed|Unexpected (token|end)|JSON|TypeError|SyntaxError|ReferenceError|status code|non-2xx|Edge Function|PGRST\d|violates|duplicate key|permission denied/i.test(text)) {
+    console.error('[intern]', text);
+    return t('Das hat nicht geklappt. Bitte versuche es erneut.', 'That did not work. Please try again.');
+  }
+  return text;
+}
+
 export function showMessage(el: HTMLElement | null, text: string, kind: 'error' | 'ok' = 'error') {
   if (!el) return;
+  text = fuerAnzeige(text, kind);
   el.textContent = text;
   el.dataset.kind = kind;
   el.hidden = !text;
@@ -119,6 +147,8 @@ export async function initIntern(requireLogin = true): Promise<InternContext | n
   if (fehler) history.replaceState(null, '', location.pathname + location.search);
   const { data: profile } = await sb.from('profiles').select('*').eq('id', user.id).maybeSingle<Profile>();
   const isVorstand = profile?.role === 'vorstand' || profile?.role === 'admin';
+  // für fuerAnzeige(): technische Hinweise nur für Vorstand und Admin (nicht data-intern-rolle: das füllt unten den Namen der Rolle)
+  document.documentElement.dataset.technik = isVorstand ? 'ja' : 'nein';
   const isRedaktion = isVorstand || profile?.role === 'presse';
   // Merkzeichen für „Seite bearbeiten“ auf der Website (src/components/BearbeitenKnopf.astro)
   merken(isRedaktion);

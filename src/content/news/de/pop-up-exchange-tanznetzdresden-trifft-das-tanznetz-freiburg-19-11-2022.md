@@ -7,7 +7,7 @@ image: ../../../assets/news/2022/tanznetz-freiburg-jennifer-rohrbacher.webp
 teaser: Initiiert vom TanzNetzDresden, werden am Wochenende des 18. und 19. November 2022 vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus im Rahmen von POP UP …
 ---
 
-Initiiert vom TanzNetzDresden, werden am Wochenende des 18. und 19. November 2022 vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus im Rahmen von POP UP exchange zum Austausch eingeladen. POP UP exchange soll die strukturellen und künstlerischen Verbindungen sichtbar machen, vor Ort, für die Stadtgesellschaft und überregional über soziale Medien. Die Initiativen werden sich, ihr Profil und ihre Akteur:innen vorstellen, das TanzNetzDresden ist vor Ort, folgt uns für Live-Interviews und Performance-Snippets. Am 19. November 2022 besuchen wir Freiburg und das Tanznetz vor Ort. Wir lernen Akteur:innen, Orte und Arbeitsfelder kennen und erleben das Performance-Format CLUB UNIQUE in der assoziierten Spielstätte E-WERK FREIBURG. Was sich alles hinter dem besonderen Clubformat versteckt und was das Tanznetz Freiburg macht - all das steht im heutigen POP UP exchange-Blog-Beitrag.
+Initiiert vom TanzNetzDresden, werden am Wochenende des 18. und 19. November 2022 vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus im Rahmen von POP UP exchange zum Austausch eingeladen. POP UP exchange soll die strukturellen und künstlerischen Verbindungen sichtbar machen, vor Ort, für die Stadtgesellschaft und überregional über soziale Medien. Die Initiativen werden sich, ihr Profil und ihre Akteur:innen vorstellen, das TanzNetzDresden ist vor Ort, folgt uns für Live-Interviews und Performance-Snippets. Am 19. November 2022 besuchen wir Freiburg und das Tanznetz vor Ort. Wir lernen Akteur:innen, Orte und Arbeitsfelder kennen und erleben das Performance-Format CLUB UNIQUE in der assoziierten Spielstätte E-WERK FREIBURG. Was sich alles hinter dem besonderen Clubformat versteckt und was das Tanznetz Freiburg macht – all das steht im heutigen POP UP exchange-Blog-Beitrag.
 
 ## Tanznetz Freiburg
 
@@ -18,7 +18,7 @@ bilder:
     alt: ""
 :::
 
-Die Tanznetz Freiburg gUG ist die Interessensvertretung für professionelle freie Tanzschaffende in Freiburg und Region. Ziel ist es nachhaltige und tragfähige Strukturen aufzubauen, welche Künstler\*innen im Tanzbereich unterstützen. Die gemeinnützige Unternehmergesellschaft setzt ein qualifizierendes sowie künstlerisches Programm um und vernetzt mit Akteur\*innen auf nationaler und internationaler Ebene, fördert Diversität sowie den künstlerischen Austausch – über (Landes)grenzen hinweg. Die Anbindung an die Szene wird durch den Beirat aus sechs Tanzkünstler\*innen der freien Szene gewährleistet.
+Die Tanznetz Freiburg gUG ist die Interessensvertretung für professionelle freie Tanzschaffende in Freiburg und Region. Ziel ist es nachhaltige und tragfähige Strukturen aufzubauen, welche Künstler:innen im Tanzbereich unterstützen. Die gemeinnützige Unternehmergesellschaft setzt ein qualifizierendes sowie künstlerisches Programm um und vernetzt mit Akteur:innen auf nationaler und internationaler Ebene, fördert Diversität sowie den künstlerischen Austausch – über (Landes)grenzen hinweg. Die Anbindung an die Szene wird durch den Beirat aus sechs Tanzkünstler:innen der freien Szene gewährleistet.
 
 - [tanznetz-freiburg.de](http://www.tanznetz-freiburg.de/)
 - [instagram.com/tanznetz](http://www.instagram.com/tanznetz)
@@ -46,7 +46,7 @@ CLUB UNIQUE ist eine Ode an den Moment, an der Gäste und Gastgeber gleichermaß
 Natalie Stark
 
 **Performances**:  
-Emi Miyoshi, Ewelina Kotwa, Fiona Combosch, Janik Seib, Karolin Stächele, Kevin Albancando Tuntaquimba, Laura Heinecke, Mike Planz, Miriam Cheema, Zina Vaessen u.a.
+Emi Miyoshi, Ewelina Kotwa, Fiona Combosch, Janik Seib, Karolin Stächele, Kevin Albancando Tuntaquimba, Laura Heinecke, Mike Planz, Miriam Cheema, Zina Vaessen u. a.
 
 **DJs:  
 **[Sui](https://soundcloud.com/sui_so) (Weimar) & [Moses Joses](https://soundcloud.com/mosesjoses) (Offenbach/M.)
@@ -64,7 +64,7 @@ Im Rahmen von **POP UP exchange** besucht das TanzNetzDresden am 19. November 20
 
 **POP UP exchange** wird initiiert vom TanzNetzDresden. Zum Austausch eingeladen wurden vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus. **POP UP exchange** soll die strukturellen und künstlerischen Verbindungen sichtbar machen, vor Ort, für die Stadtgesellschaft und überregional über Soziale Medien. Die Initiativen werden sich, ihr Profil und ihre Akteur:innen vorstellen, das TanzNetzDresden ist vor Ort. Folgt uns für LIVE Interviews und Performance-Snippets.
 
-Im Rahmen der Netzwerkförderung “TanzNetzDresden all aROUND”, gefördert vom Fonds Darstellende Künste/ #takeheart, bauen wir unsere bundesweite Vernetzung aus. Bestehende Kontakte zu anderen lokalen Netzwerken werden gestärkt und die Begegnung unter Künstler:innen und Koordinator:innen befördert.
+Im Rahmen der Netzwerkförderung „TanzNetzDresden all aROUND“, gefördert vom Fonds Darstellende Künste/ #takeheart, bauen wir unsere bundesweite Vernetzung aus. Bestehende Kontakte zu anderen lokalen Netzwerken werden gestärkt und die Begegnung unter Künstler:innen und Koordinator:innen befördert.
 
 Die eingeladenen Netzwerke können sich im Rahmen von **POP UP exchange** kennenlernen und darüber hinaus am Runden Tisch der Netzwerke des TanzNetzDreden am 12.12.2022 in Dresden weiter vernetzten.
 

@@ -39,7 +39,7 @@ Eine POP UP exchange PERFORMANCE für drinnen und draußen von und mit: Johanna 
 
 Ort & Zeit: werden noch bekanntgegeben
 
-[*Hier geht's zum Facebook-Event*](https://www.facebook.com/events/431482725854507)
+[*Hier geht’s zum Facebook-Event*](https://www.facebook.com/events/431482725854507)
 
 ::: bilder
 text: Pretty Playful Productions (c) Beate C. Koehler
@@ -66,7 +66,7 @@ Jahren. Premiere ist am 04. Februar 2023 in der Schaulust Bremen.
 
 **POP UP exchange** wird initiiert vom TanzNetzDresden. Zum Austausch eingeladen wurden vier Netzwerke der freien Tanz-/Performance-Szene in Bremen, Essen, Freiburg und Cottbus. **POP UP exchange** soll die strukturellen und künstlerischen Verbindungen sichtbar machen, vor Ort, für die Stadtgesellschaft und überregional über Soziale Medien. Die Initiativen werden sich, ihr Profil und ihre Akteur:innen vorstellen, das TanzNetzDresden ist vor Ort. Folgt uns für LIVE Interviews und Performance-Snippets.
 
-Im Rahmen der Netzwerkförderung “TanzNetzDresden all aROUND”, gefördert vom Fonds Darstellende Künste/ #takeheart, bauen wir unsere bundesweite Vernetzung aus. Bestehende Kontakte zu anderen lokalen Netzwerken werden gestärkt und die Begegnung unter Künstler:innen und Koordinator:innen befördert.
+Im Rahmen der Netzwerkförderung „TanzNetzDresden all aROUND“, gefördert vom Fonds Darstellende Künste/ #takeheart, bauen wir unsere bundesweite Vernetzung aus. Bestehende Kontakte zu anderen lokalen Netzwerken werden gestärkt und die Begegnung unter Künstler:innen und Koordinator:innen befördert.
 
 Die eingeladenen Netzwerke können sich im Rahmen von **POP UP exchange** kennenlernen und darüber hinaus am Runden Tisch der Netzwerke des TanzNetzDreden am 12.12.2022 in Dresden weiter vernetzen.
 

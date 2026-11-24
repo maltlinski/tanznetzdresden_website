@@ -1,5 +1,5 @@
 ---
-title: Now it's official - Line up of the fourth TNDD studio round (July 8, 2022)
+title: Now it’s official – Line up of the fourth TNDD studio round (July 8, 2022)
 date: 2022-06-17
 category: Netzwerk
 author: TanzNetzDresden
@@ -16,7 +16,7 @@ The complete line up of the upcoming TNDD studio round edition, which will take 
 
 Detailed information on the individual contributions to the fourth TNDD studio round will now follow in German or can be viewed directly on the [studio round subpage](/#formate). There you will also find all information in English.
 
-### Charles A. Washington: "Acid"
+## Charles A. Washington: „Acid“
 
 ::: bilder
 darstellung: neben
@@ -35,17 +35,17 @@ Charles A. Washington is looking at different approaches to movement through env
 
 [Video auf YouTube ansehen ↗](https://www.youtube.com/watch?v=sxUgzz6wCGg)
 
-### Antonia Peris: "Something missing"
+## Antonia Peris: „Something missing“
 
 Antonia Peris is a Colombian artist active in the field of performing arts with a background in physical theater and object manipulation. She is interested in signifying the raw stories of everyday life in theatrical and poetic universes through movement, the mobility of the body and its physicality. With experience as a performer in small and large format shows as well as under the role of creator.
 
-Imagine that you wake up and realize that there is an inner emptiness that does not allow you to be or to be. And now, what do I do? Where do I go? „Something missing“ is my opportunity and possibility to touch that sensitive point, to vomit fears, to translate the personal emptiness into creative possibilities, to give life to what seemed dead. A nameless body that sinks, holds back, breaks, sways, ruminates, suspends and constantly loses balance. A body prostrated in the corner of a room, oscillating between mind and reality. The insipid present devours his soul, his coming and going becomes a step towards emptiness, or who knows if an opportunity to breathe again.
+Imagine that you wake up and realize that there is an inner emptiness that does not allow you to be or to be. And now, what do I do? Where do I go? “Something missing” is my opportunity and possibility to touch that sensitive point, to vomit fears, to translate the personal emptiness into creative possibilities, to give life to what seemed dead. A nameless body that sinks, holds back, breaks, sways, ruminates, suspends and constantly loses balance. A body prostrated in the corner of a room, oscillating between mind and reality. The insipid present devours his soul, his coming and going becomes a step towards emptiness, or who knows if an opportunity to breathe again.
 
 Instagram: [antoniaperis.vpm](https://www.instagram.com/antoniaperis.vpm/)
 
 [Video auf YouTube ansehen ↗](https://www.youtube.com/watch?v=oGn2CppFN0E)
 
-### Paula Caldirola: Manifest
+## Paula Caldirola: Manifest
 
 ::: bilder
 darstellung: neben
@@ -66,7 +66,7 @@ Instagram: [instagram.com/lapau.li](https://www.instagram.com/lapau.li/)
 
 [Video auf Vimeo ansehen ↗](https://vimeo.com/716946331?embedded=true&source=video_title&owner=98272959)
 
-### Therese Bendjus & Daria Belous: Studies of Softening *(unfortunately cancelled due to illness and will be made up at the TNDD studio round#5 next fall)*
+## Therese Bendjus & Daria Belous: Studies of Softening *(unfortunately cancelled due to illness and will be made up at the TNDD studio round#5 next fall)*
 
 ::: bilder
 darstellung: neben

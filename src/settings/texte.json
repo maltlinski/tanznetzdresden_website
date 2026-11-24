@@ -24,7 +24,7 @@
         "titel": "Fuß der Seite",
         "auch": [{ "text": "Adresse, E-Mail-Adressen, Instagram und Telegram", "ziel": "redaktion:verein" }],
         "texte": {
-          "blurb": { "wo": "Text unter dem Logo ({jahr} = Gründungsjahr aus den Vereinsdaten)", "de": "Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit {jahr}, seit 2020 als gemeinnütziger Verein.", "en": "Self-organised network of Dresden's independent dance scene. Since {jahr}, a registered non-profit association since 2020.", "max": 200 },
+          "blurb": { "wo": "Text unter dem Logo ({jahr} = Gründungsjahr aus den Vereinsdaten)", "de": "Selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Seit {jahr}, seit 2020 als gemeinnütziger Verein.", "en": "Self-organised network of Dresden’s independent dance scene. Since {jahr}, a registered non-profit association since 2020.", "max": 200 },
           "contact": { "wo": "Spalte 1: Überschrift", "de": "Kontakt", "en": "Contact", "max": 24 },
           "writeMail": { "wo": "Spalte 1: Link zur E-Mail", "de": "E-Mail schreiben", "en": "Send an email", "max": 30 },
           "club": { "wo": "Spalte 2: Überschrift", "de": "Verein", "en": "Association", "max": 24 },
@@ -41,7 +41,7 @@
           "intern": { "wo": "Spalte 2: Link", "de": "Interner Bereich", "en": "Members area", "max": 30 },
           "follow": { "wo": "Spalte 3: Überschrift", "de": "Folgen", "en": "Follow", "max": 24 },
           "newsletter": { "wo": "Spalte 3: Link", "de": "Newsletter", "en": "Newsletter", "max": 30 },
-          "ics": { "wo": "Spalte 3: Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to calendar (.ics)", "max": 40 },
+          "ics": { "wo": "Spalte 3: Link zum Kalender-Abo", "de": "Kalender abonnieren", "en": "Subscribe to calendar", "max": 40 },
           "rss": { "wo": "Spalte 3: Link zum RSS-Feed", "de": "News als RSS-Feed", "en": "News as RSS feed", "max": 30 },
           "design": { "wo": "Unterste Zeile: vor dem Namen der Person, die die Website gestaltet hat (Link zum Impressum)", "de": "Gestaltung:", "en": "Design:", "max": 24 },
           "imprint": { "wo": "Unterste Zeile: Link", "de": "Impressum", "en": "Legal notice", "max": 24 },
@@ -73,7 +73,7 @@
         "titel": "Hinweis zu Cookies und externen Inhalten",
         "texte": {
           "h": { "wo": "Überschrift", "de": "Deine Privatsphäre", "en": "Your privacy", "max": 40 },
-          "text": { "wo": "Text (danach folgt der Link zur Datenschutzerklärung)", "de": "Wir verwenden keine Tracking-Cookies. Für Karten, Videos und Social-Media-Beiträge brauchen wir aber deine Zustimmung, weil dabei Daten an andere Anbieter gehen. Du kannst sie jederzeit im Footer unter „Cookie-Einstellungen“ ändern. Mehr dazu in der", "en": "We do not use tracking cookies. For maps, videos and social media posts we need your consent, because data is sent to other providers. You can change your choice at any time under “Cookie settings” in the footer. More in our", "max": 500 },
+          "text": { "wo": "Text (danach folgt der Link zur Datenschutzerklärung)", "de": "Wir verwenden keine Tracking-Cookies. Für Karten, Videos und Social-Media-Beiträge brauchen wir aber deine Zustimmung, weil dabei Daten an andere Anbieter gehen. Du kannst sie jederzeit unten auf der Seite unter „Cookie-Einstellungen“ ändern. Mehr dazu in der", "en": "We do not use tracking cookies. For maps, videos and social media posts we need your consent, because data is sent to other providers. You can change your choice at any time under “Cookie settings” at the bottom of the page. More in our", "max": 500 },
           "kurz": { "wo": "Kurzer Text in der schmalen Leiste (der lange Text oben erscheint erst unter „Einstellungen“)", "de": "Karten, Videos und Social-Media-Beiträge laden wir erst mit deiner Zustimmung. Tracking gibt es bei uns nicht.", "en": "We only load maps, videos and social media posts with your consent. We do not track you.", "max": 160 },
           "privacy": { "wo": "Link am Ende des Texts", "de": "Datenschutzerklärung", "en": "privacy policy", "max": 40 },
           "all": { "wo": "Knopf", "de": "Alle akzeptieren", "en": "Accept all", "max": 30 },
@@ -107,7 +107,7 @@
         "titel": "Kopf",
         "auch": [{ "text": "„Tanz für …“ mit den wechselnden Wörtern", "ziel": "redaktion:hero" }, { "text": "Der nächste Termin kommt aus dem Kalender", "ziel": "intern/kalender/" }],
         "texte": {
-          "naechster": { "wo": "Kleine Zeile über dem nächsten Termin", "de": "Upcoming", "en": "Upcoming", "max": 24 },
+          "naechster": { "wo": "Kleine Zeile über dem nächsten Termin", "de": "Demnächst", "en": "Upcoming", "max": 24 },
           "sehen": { "wo": "Einstieg 1 (zu den Terminen): kleine Zeile, darunter groß", "zeilen": 2, "de": "Zuschauen\nErlebt Tanz", "en": "Watch\nExperience dance", "max": 50, "ursprung": { "de": "Zuschauen\nTanz sehen", "en": "Watch\nSee dance" } },
           "trainieren": { "wo": "Einstieg 2 (zum Profitraining): kleine Zeile, darunter groß", "zeilen": 2, "de": "Trainieren\nEntdeckt unser Profitraining", "en": "Train\nDiscover our professional training", "max": 50, "ursprung": { "de": "Trainieren\nMittrainieren", "en": "Train\nTrain with us" } },
           "mitmachen": { "wo": "Einstieg 3 (Mitglied werden): kleine Zeile, darunter groß", "zeilen": 2, "de": "Mitmachen\nWerdet Teil des Netzwerks", "en": "Join\nBecome part of the network", "max": 50, "ursprung": { "de": "Mitmachen\nTeil des Netzes werden", "en": "Join\nBecome part of the network" }, "enPruefen": true },
@@ -121,7 +121,7 @@
           "kicker": { "wo": "Termine: kleine Zeile über der Überschrift", "de": "Tanzkalender", "en": "Dance calendar", "max": 40 },
           "titel": { "wo": "Termine: Überschrift", "de": "Termine", "en": "Events", "max": 30 },
           "alle": { "wo": "Termine: Link zum ganzen Kalender", "de": "Ganzer Kalender →", "en": "Full calendar →", "max": 40 },
-          "abo": { "wo": "Termine: Link zum Kalender-Abo", "de": "Abonnieren (.ics)", "en": "Subscribe (.ics)", "max": 40 },
+          "abo": { "wo": "Termine: Link zum Kalender-Abo", "de": "Abonnieren", "en": "Subscribe", "max": 40 },
           "einreichen": { "wo": "Termine: Link „Termin einreichen“", "de": "Termin einreichen", "en": "Submit an event", "max": 40 },
           "newsKicker": { "wo": "News: kleine Zeile über der Überschrift", "de": "News", "en": "News", "max": 40 },
           "newsTitel": { "wo": "News: Überschrift", "de": "Aktuelles", "en": "Latest news", "max": 30, "ursprung": { "de": "Aus dem Netz", "en": "From the network" } },
@@ -176,12 +176,12 @@
         "auch": [{ "text": "Termine eintragen", "ziel": "intern/kalender/" }, { "text": "Ältere Termine von vor dem Kalender", "ziel": "redaktion:termine" }],
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Tanzkalender", "en": "Dance calendar", "max": 60 },
-          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Alle Termine der freien Tanzszene Dresden: Bühne, Training und Diskurs, dazu das Profitraining KEEP UP.", "en": "All events of Dresden's independent dance scene: stage, training and discourse, plus the KEEP UP professional training.", "max": 160 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Alle Termine der freien Tanzszene Dresden: Bühne, Training und Diskurs, dazu das Profitraining KEEP UP.", "en": "All events of Dresden’s independent dance scene: stage, training and discourse, plus the KEEP UP professional training.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Tanzkalender · Dresden", "en": "Dance calendar · Dresden", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Cyan", "zeilen": 2, "de": "Tanz in Dresden.\nAlle Termine.", "en": "Dance in Dresden.\nEvery date.", "max": 40 },
           "lead": { "wo": "Text unter der Überschrift", "de": "Bühne, Training und Diskurs aus dem Netz an einem Ort. Nach Format filtern, im Monat blättern und Termine direkt in den eigenen Kalender übernehmen.", "en": "Stage, training and discourse from the network in one place. Filter by format, browse by month and add dates straight to your own calendar.", "max": 400, "ausblendbar": true },
           "next": { "wo": "Kasten rechts: Überschrift über den nächsten drei Terminen", "de": "Als Nächstes", "en": "Up next", "max": 30 },
-          "ics": { "wo": "Spalte links: Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to calendar (.ics)", "max": 40 },
+          "ics": { "wo": "Spalte links: Link zum Kalender-Abo", "de": "Kalender abonnieren", "en": "Subscribe to calendar", "max": 40 },
           "submit": { "wo": "Spalte links: Link „Termin einreichen“", "de": "Termin einreichen →", "en": "Submit an event →", "max": 40 }
         }
       },
@@ -197,7 +197,7 @@
           "diskursText": { "wo": "Legende: nach „Diskurs“", "de": "Gespräche, Treffen", "en": "Talks, meetings", "max": 40 },
           "frist": { "wo": "Kennzeichen für Bewerbungsfristen (Ausschreibungen in den News)", "de": "Frist", "en": "Deadline", "max": 16 },
           "fristText": { "wo": "Legende: nach „Frist“", "de": "Open Calls", "en": "Open calls", "max": 40 },
-          "auswahl": { "wo": "Spalte links: alle gezeigten Termine als Kalenderdatei", "de": "Auswahl als .ics laden", "en": "Download selection (.ics)", "max": 40 },
+          "auswahl": { "wo": "Spalte links: alle gezeigten Termine als Kalenderdatei", "de": "Auswahl in den eigenen Kalender", "en": "Add selection to my calendar", "max": 40 },
           "treffer": { "wo": "Über der Liste und je Monat ({zahl} = Anzahl)", "de": "{zahl} Termine", "en": "{zahl} events", "max": 30 },
           "treffer1": { "wo": "Über der Liste und je Monat, genau ein Termin", "de": "1 Termin", "en": "1 event", "max": 30 },
           "abHeute": { "wo": "Über der Liste, nach der Anzahl", "de": "ab heute", "en": "from today", "max": 20 },
@@ -254,7 +254,7 @@
           "back": { "wo": "Link oben", "de": "← Ganzer Kalender", "en": "← Full calendar", "max": 30 },
           "past": { "wo": "Hinweis bei vergangenen Terminen", "de": "Dieser Termin ist vorbei.", "en": "This event has already taken place.", "max": 80 },
           "link": { "wo": "Knopf zu Tickets oder Anmeldung", "de": "Tickets & Anmeldung", "en": "Tickets & registration", "max": 30 },
-          "ics": { "wo": "Link zum Eintragen in den eigenen Kalender", "de": "In meinen Kalender (.ics)", "en": "Add to my calendar (.ics)", "max": 40 },
+          "ics": { "wo": "Link zum Eintragen in den eigenen Kalender", "de": "In meinen Kalender", "en": "Add to my calendar", "max": 40 },
           "when": { "wo": "Angabe", "de": "Wann", "en": "When", "max": 16 },
           "where": { "wo": "Angabe", "de": "Wo", "en": "Where", "max": 16 },
           "what": { "wo": "Angabe", "de": "Was", "en": "What", "max": 16 },
@@ -306,6 +306,7 @@
           "residenz": { "wo": "Rubrik (Badge)", "de": "Residenz", "en": "Residency", "max": 16 },
           "seit": { "wo": "Eckdaten: Beginn", "de": "Seit", "en": "Since", "max": 20 },
           "laufzeit": { "wo": "Eckdaten: Zeitraum eines beendeten Formats", "de": "Laufzeit", "en": "Duration", "max": 20 },
+          "start": { "wo": "Eckdaten: Beginn eines neuen Formats", "de": "Start", "en": "Start", "max": 20 },
           "folgtText": { "wo": "Kasten ohne Termin: Text", "de": "Wir kündigen ihn im Newsletter an.", "en": "We will announce it in the newsletter.", "max": 80 },
           "abgeschlossen": { "wo": "Kasten bei beendeten Formaten", "de": "Programm abgeschlossen", "en": "Programme completed", "max": 30 },
           "alleTermine": { "wo": "Link zum Kalender", "de": "Alle Termine", "en": "All dates", "max": 30 },
@@ -362,7 +363,7 @@
         "auch": [{ "text": "Beiträge schreiben", "ziel": "intern/news/" }, { "text": "Ältere Beiträge von der früheren Website", "ziel": "redaktion:news" }, { "text": "Wiederkehrende Texte wie Förderhinweise", "ziel": "redaktion:news-bausteine" }],
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "News", "en": "News", "max": 60 },
-          "description": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Neues aus der freien Tanzszene in Dresden: Ausschreibungen, Formate, Stimmen und Neuigkeiten aus dem Verein.", "en": "News from Dresden's independent dance scene: open calls, formats, voices and updates from the association.", "max": 160 },
+          "description": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Neues aus der freien Tanzszene in Dresden: Ausschreibungen, Formate, Stimmen und Neuigkeiten aus dem Verein.", "en": "News from Dresden’s independent dance scene: open calls, formats, voices and updates from the association.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "News · Neues aus der freien Szene", "en": "News · News from the independent scene", "max": 60 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Aus dem\nNetz.", "en": "From the\nnetwork.", "max": 40 },
           "featured": { "wo": "Kennzeichen des Titelthemas", "de": "Titelthema", "en": "Featured", "max": 24 },
@@ -440,7 +441,7 @@
         "auch": [{ "text": "Überschrift, Einleitung, Infos und Kopffoto", "ziel": "redaktion:keep-up-texte" }],
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "KEEP UP · Profitraining", "en": "KEEP UP · Professional training", "max": 60 },
-          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Profitraining für Tänzer:innen der freien Szene in Dresden: Kalender, Dozent:innen, Ort und Beitrag.", "en": "Professional training for dancers of Dresden's independent scene: calendar, teachers, venue and fee.", "max": 160 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Profitraining für Tänzer:innen der freien Szene in Dresden: Kalender, Dozent:innen, Ort und Beitrag.", "en": "Professional training for dancers of Dresden’s independent scene: calendar, teachers, venue and fee.", "max": 160 },
           "toCal": { "wo": "Knopf im Kopf", "de": "Zum Kalender", "en": "To the calendar", "max": 30 },
           "who": { "wo": "Link im Kopf", "de": "Wer unterrichtet →", "en": "Who teaches →", "max": 30 },
           "next": { "wo": "Kasten mit dem nächsten Training: Überschrift", "de": "Nächste Einheit", "en": "Next class", "max": 30 }
@@ -473,7 +474,7 @@
           "signup": { "wo": "Rechts: Überschrift Anmeldung", "de": "Anmeldung", "en": "Registration", "max": 30 },
           "telegram": { "wo": "Rechts: Link", "de": "Telegram-Gruppe →", "en": "Telegram group →", "max": 30 },
           "contact": { "wo": "Rechts: Link", "de": "Kontakt →", "en": "Contact →", "max": 30 },
-          "abo": { "wo": "Rechts: Link zum Kalender-Abo", "de": "Kalender abonnieren (.ics)", "en": "Subscribe to the calendar (.ics)", "max": 40 },
+          "abo": { "wo": "Rechts: Link zum Kalender-Abo", "de": "Kalender abonnieren", "en": "Subscribe to the calendar", "max": 40 },
           "weeks": { "wo": "Rechts: Überschrift der Liste", "de": "Trainingswochen", "en": "Training weeks", "max": 30 },
           "workshops": { "wo": "Rechts: Überschrift der Liste", "de": "Workshops", "en": "Workshops", "max": 30 }
         }
@@ -501,10 +502,10 @@
         "titel": "Kopf",
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Über uns", "en": "About us", "max": 60 },
-          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "TanzNetzDresden ist das selbstorganisierte Netzwerk der freien Tanzszene in Dresden. Wir sind ein Verein mit zahlreichen Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden is a self-organized network of the independent dance scene in Dresden. We are an association with numerous working groups and members.", "max": 160, "ursprung": { "de": "TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden e.V.: self-organised network of Dresden's independent dance scene. Board, working groups and members." } },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "TanzNetzDresden ist das selbstorganisierte Netzwerk der freien Tanzszene in Dresden. Wir sind ein Verein mit zahlreichen Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden is a self-organized network of the independent dance scene in Dresden. We are an association with numerous working groups and members.", "max": 160, "ursprung": { "de": "TanzNetzDresden e.V.: selbstorganisiertes Netzwerk der freien Tanzszene in Dresden. Vorstand, Arbeitsgruppen und Mitglieder.", "en": "TanzNetzDresden e.V.: self-organised network of Dresden’s independent dance scene. Board, working groups and members." } },
           "kicker": { "wo": "Kleine Zeile über der Überschrift ({jahr} = Gründungsjahr)", "de": "Über uns · seit {jahr}", "en": "About us · since {jahr}", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Das Netzwerk der freien Tanzszene.\nIn und für Dresden.", "en": "The network of the independent dance scene.\nIn and for Dresden.", "max": 80, "ursprung": { "de": "Dezentrale Kulturinstitution.\nUnd Bildungsort.", "en": "A decentralised cultural institution.\nAnd a place of learning." } },
-          "lead": { "wo": "Text unter der Überschrift ({jahr} = Gründungsjahr)", "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden im TanzNetzDresden. Seit 2020 in Form eines gemeinnützigen Vereins. Wir organisieren Formate, Trainingsangebote, Beratung, Diskurse, Residenzen und Kooperationen und setzen uns für bessere Arbeitsbedingungen und mehr Sichtbarkeit des Tanz in Dresden ein.", "en": "Since {jahr}, dance professionals from Dresden’s independent dance scene have been connecting through TanzNetzDresden. Since 2020, it has operated as a nonprofit organization. We organize events, training programs, counseling, discussions, residencies, and collaborations, and we advocate for better working conditions and greater visibility for dance in Dresden.", "max": 400, "ausblendbar": true, "ursprung": { "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.", "en": "Since {jahr}, dance artists of Dresden's independent scene have been building this network, since 2020 as a registered non-profit association. We organise formats, training, discourse and residencies and advocate for better working conditions in dance." } }
+          "lead": { "wo": "Text unter der Überschrift ({jahr} = Gründungsjahr)", "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden im TanzNetzDresden. Seit 2020 in Form eines gemeinnützigen Vereins. Wir organisieren Formate, Trainingsangebote, Beratung, Diskurse, Residenzen und Kooperationen und setzen uns für bessere Arbeitsbedingungen und mehr Sichtbarkeit des Tanz in Dresden ein.", "en": "Since {jahr}, dance professionals from Dresden’s independent dance scene have been connecting through TanzNetzDresden. Since 2020, it has operated as a nonprofit organization. We organize events, training programs, counseling, discussions, residencies, and collaborations, and we advocate for better working conditions and greater visibility for dance in Dresden.", "max": 400, "ausblendbar": true, "ursprung": { "de": "Seit {jahr} vernetzen sich Tanzschaffende der freien Szene in Dresden, seit 2020 als gemeinnütziger Verein. Wir organisieren Formate, Training, Diskurs und Residenzen und setzen uns für bessere Arbeitsbedingungen im Tanz ein.", "en": "Since {jahr}, dance artists of Dresden’s independent scene have been building this network, since 2020 as a registered non-profit association. We organise formats, training, discourse and residencies and advocate for better working conditions in dance." } }
         }
       },
       "haltung": {
@@ -560,10 +561,10 @@
         "titel": "Kopf",
         "texte": {
           "title": { "wo": "Titel im Browser-Tab und bei Suchmaschinen", "de": "Spenden", "en": "Donate", "max": 60 },
-          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Unterstütze die freie Tanzszene in Dresden: mit einer Spende an TanzNetzDresden e.V. – steuerlich absetzbar.", "en": "Support Dresden's independent dance scene with a donation to TanzNetzDresden e.V. – tax-deductible in Germany.", "max": 160 },
+          "desc": { "wo": "Beschreibung für Suchmaschinen und geteilte Links", "de": "Unterstütze die freie Tanzszene in Dresden: mit einer Spende an TanzNetzDresden e.V. – steuerlich absetzbar.", "en": "Support Dresden’s independent dance scene with a donation to TanzNetzDresden e.V. – tax-deductible in Germany.", "max": 160 },
           "kicker": { "wo": "Kleine Zeile über der Überschrift", "de": "Spenden", "en": "Donate", "max": 40 },
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Tanz braucht\nRückhalt.", "en": "Dance needs\nbacking.", "max": 40 },
-          "lead": { "wo": "Text unter der Überschrift", "de": "Seit über 15 Jahren verbinden wir die freie Tanzszene Dresdens. Mit deiner Spende bleiben Training, Bühnen und Austausch für über 70 Tanzschaffende offen und bezahlbar.", "en": "For more than 15 years we have connected Dresden's independent dance scene. Your donation keeps training, stages and exchange open and affordable for more than 70 dance artists.", "max": 400, "ausblendbar": true }
+          "lead": { "wo": "Text unter der Überschrift", "de": "Seit über 15 Jahren verbinden wir die freie Tanzszene Dresdens. Mit deiner Spende bleiben Training, Bühnen und Austausch für über 70 Tanzschaffende offen und bezahlbar.", "en": "For more than 15 years we have connected Dresden’s independent dance scene. Your donation keeps training, stages and exchange open and affordable for more than 70 dance artists.", "max": 400, "ausblendbar": true }
         }
       },
       "konto": {
@@ -651,7 +652,7 @@
           "titel": { "wo": "Überschrift, zweite Zeile in Magenta", "zeilen": 2, "de": "Wer im Netz\ntanzt.", "en": "Who dances\nin the network.", "max": 40 },
           "stimmen": { "wo": "Kleine Zeile über dem Zähler der Statements im Kopf", "de": "Stimmen aus dem Netz", "en": "Voices from the network", "max": 40 },
           "foto": { "wo": "Vor dem Fotonachweis des Statements im Kopf", "de": "Foto", "en": "Photo", "max": 20 },
-          "lead": { "wo": "Text über der Liste der Profile (unter dem Kopf)", "de": "Tänzer:innen, Choreograf:innen und Dozent:innen der freien Szene in Dresden. Finde Menschen für dein nächstes Projekt, dein Training oder einen Austausch.", "en": "Dancers, choreographers and teachers of Dresden's independent scene. Find people for your next project, your training or an exchange.", "max": 400, "ausblendbar": true }
+          "lead": { "wo": "Text über der Liste der Profile (unter dem Kopf)", "de": "Tänzer:innen, Choreograf:innen und Dozent:innen der freien Szene in Dresden. Finde Menschen für dein nächstes Projekt, dein Training oder einen Austausch.", "en": "Dancers, choreographers and teachers of Dresden’s independent scene. Find people for your next project, your training or an exchange.", "max": 400, "ausblendbar": true }
         }
       },
       "liste": {

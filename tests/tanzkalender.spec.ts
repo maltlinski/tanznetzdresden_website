@@ -200,7 +200,7 @@ test('Kalenderdateien: ein Termin, eine Trainingswoche und die Auswahl', async (
   expect(woche).toContain('SUMMARY:KEEP UP · Profitraining · Leon Börgens');
 
   await page.locator('[data-tk-chips]').getByRole('button', { name: /^Bühne/ }).click();
-  const auswahl = await text(() => page.getByRole('button', { name: 'Auswahl als .ics laden' }).click());
+  const auswahl = await text(() => page.getByRole('button', { name: 'Auswahl in den eigenen Kalender' }).click());
   expect(auswahl.match(/BEGIN:VEVENT/g)).toHaveLength(2);
 });
 

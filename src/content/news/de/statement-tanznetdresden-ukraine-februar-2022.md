@@ -11,7 +11,7 @@ teaser: Solidarität mit den Menschen in der Ukraine / Solidarity with the peopl
 
 ## Unsere Gedanken und unsere Solidarität gelten in diesen Tagen den Menschen in der Ukraine. Darüber hinaus möchten auch wir dazu aufrufen, sich an den zahlreichen Spendenaktionen für die Ukraine zu beteiligen, um zumindest auf dieser Weise das Leid zu mildern, das die aktuelle Lage mit sich bringt.
 
-## We feel dismay and bewilderment in the face of Russia's attack on Ukraine. As we did a few weeks ago, we therefore once again stand up for liberal and humanistic values as well as peaceful and democratic coexistence and expressly oppose war and intolerance.
+## We feel dismay and bewilderment in the face of Russia’s attack on Ukraine. As we did a few weeks ago, we therefore once again stand up for liberal and humanistic values as well as peaceful and democratic coexistence and expressly oppose war and intolerance.
 
 ## Our thoughts and solidarity are with the people in Ukraine at this time. In addition, we would also like to call on people to participate in the numerous fundraising campaigns for Ukraine, in order to at least in this way alleviate the suffering that the current situation is bringing.
 

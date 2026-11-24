@@ -19,7 +19,7 @@ Gesucht werden für POP UP exchange 2024 jeweils eine Performer:in aus Freiburg,
 
 Für den POP UP exchange werden die drei Dresdner:innen jeweils mit einer überregionalen Gäst:in zusammengebracht, mit der sie wahrscheinlich bisher nicht gearbeitet haben.  Die drei Performance-Duos, inspirierend und überraschend durch den neuen künstlerischen Austausch, werden kleine POP UP Performances realisieren. Diese sind explizit keine geprobten Arbeiten, sondern Improvisationen, die in gemeinsamer Absprache durch Scores, gewählte Musik oder ähnliches inspiriert sind.
 
-## POP UP exchange 2024 - Ablauf & Ausschreibung
+## POP UP exchange 2024 – Ablauf & Ausschreibung
 
 Am 25.10.2024 ist Anreisetag. Wir treffen uns am frühen Abend für ein gemeinsames Abendessen und ein erstes Kennenlernen, danach besuchen wir gemeinsam die Studio Round  in der TENZA mit Beiträgen aus Dresden, Freiburg und Frankfurt. Am  26. Oktober 2024 gibt es morgens im Studio TENZA Zeit für Try-Outs, danach finden die POP UP exchanges in Dresden an verschiedenen Orten statt. Ende ca. 16 Uhr. (Eine Doppelbewerbung mit einem Beitrag zur Studio Round Edition in Dresden ist somit nicht möglich.)
 
@@ -60,7 +60,7 @@ bilder:
 
 ## POP UP exchange 2024 (en)
 
-*Our second format returning after the summer break is POP UP exchange. Find out more about everything coming up, the details of the already running submission phase and the corresponding date on October 26, 2024 in today's blog post. (scroll up for german version)*
+*Our second format returning after the summer break is POP UP exchange. Find out more about everything coming up, the details of the already running submission phase and the corresponding date on October 26, 2024 in today’s blog post. (scroll up for german version)*
 
 POP UP exchange is going into a second round: with our established presentation format POP UP, we are seeking exchanges this time with members of [Tanznetz Freiburg](https://tanznetz-freiburg.de/), [tanz\_netzwerk\_bremen](https://lafdk-bremen.de/) and [ID\_Tanzhaus Frankfurt Rhein-Main](https://www.idtanzhausfrm.de/).
 
@@ -83,7 +83,7 @@ The submission should include the following:
 - Pronouns
 - References in the form of image and video material (please only links, no downloads).
 
-[Here you'll get to the application form](https://tanzhausfrm.limequery.com/426436?lang=en)
+[Here you’ll get to the application form](https://tanzhausfrm.limequery.com/426436?lang=en)
 
 More information is available under:  
 [https://www.idtanzhausfrm.de/en/news/open-calls/](https://www.idtanzhausfrm.de/en/news/open-calls/)

@@ -16,7 +16,7 @@ Bei jedem Format sollen die Prinzipien Kontinuität, Qualifizierung, Vernetzung 
 
 In Zusammenarbeit mit [TanzXchange Münster](https://tanzxchange-muenster.de/), dem TanzNetzDresden und dem [Landesverband freie darstellende Künste Bremen](https://lafdk-bremen.de/) bzw. [tanz\_netzwerk\_bremen PROFESSIONAL](https://lafdk-bremen.de/) startete im März 2023 das Projekt [tanz\_netzwerk\_bremen CONNECTION.](https://lafdk-bremen.de//projekte/tanznetzwerkbremen-connection)
 
-Im Rahmen des Projekts findet unter anderem eine Peer to Peer-Akademie vom 08. - 12. Mai 2023 im [Zentrum für Kunst im Tabakquartier Bremen](https://tabakquartier.com/zentrum-fuer-kunst/) statt, für die man sich bis zum 19. Februar 2023 bewerben konnte. Diese Ausschreibung richtete sich an alle, deren Arbeitsschwerpunkt im Bereich Tanz liegt (freischaffende Tänzer:innen, Dramaturg:innen, Tanztheoretiker:innen, Choreograph:innen, etc.).
+Im Rahmen des Projekts findet unter anderem eine Peer to Peer-Akademie vom 08.–12. Mai 2023 im [Zentrum für Kunst im Tabakquartier Bremen](https://tabakquartier.com/zentrum-fuer-kunst/) statt, für die man sich bis zum 19. Februar 2023 bewerben konnte. Diese Ausschreibung richtete sich an alle, deren Arbeitsschwerpunkt im Bereich Tanz liegt (freischaffende Tänzer:innen, Dramaturg:innen, Tanztheoretiker:innen, Choreograph:innen, etc.).
 
 Insgesamt 15 professionelle Tanzschaffende, die sich auf drei Gruppen à fünf Personen aufteilen, erhalten bei der Akademie die Möglichkeit, sich fünf Tage lang auszutauschen. In jeder Gruppe werden Fachwissen und professionelle Erfahrungen unter den Teilnehmenden geteilt. Verschiedene ästhetische und fachliche Ansätze sowie Arbeitsbiografien kommen zusammen. Der Austausch beinhaltet, dass jede:r Teilnehmer:in einen Tag gestaltet und an den weiteren vier Tagen von der Expertise der anderen Teilnehmenden profitiert. Die Teilnahme wird honoriert.
 
@@ -46,7 +46,7 @@ Die Anmeldung für das Symposium kann jedoch bereits jetzt schon unter folgendem
 
 - Ihr seid professionelle Tanzschaffende.
 - Ihr könnt an allen fünf Tagen (entweder Vollzeit, ca. 9:00 bis 16:30 Uhr oder Teilzeit, individuell nach Absprache) live vor Ort dabei sein, optimalerweise sechs Tage inkl. der Teilnahme am Symposium. Falls ihr nur in Teilzeit teilnehmen könnt, schreibt bitte in das Motivationsschreiben einen Hinweis, zu welchen Zeiten ihr am Veranstaltungsort anwesend sein könnt.
-- Nachtrag: Aufgrund von mehreren Rückfragen zur Möglichkeit der Vereinbarkeit der Teilnahme an der Peer to Peer-Akademie mit familiären Verpflichtungen, wurde die Ausschreibung dahingehend abgeändert, dass eine der drei Gruppen auch in Teilzeit stattfinden kann (z.B. 9-13 Uhr oder je nach Absprache unter den Teilnehmenden).
+- Nachtrag: Aufgrund von mehreren Rückfragen zur Möglichkeit der Vereinbarkeit der Teilnahme an der Peer to Peer-Akademie mit familiären Verpflichtungen, wurde die Ausschreibung dahingehend abgeändert, dass eine der drei Gruppen auch in Teilzeit stattfinden kann (z. B. 9–13 Uhr oder je nach Absprache unter den Teilnehmenden).
 - Ihr seid offen, euch auf vielfältige Themen und Arbeitsmethoden einzulassen.
 - Ihr wollt eure Fähigkeiten und euer Wissen mit anderen in strukturierter Form teilen.
 - Ihr erstellt eine Dokumentation, die auch für andere Akteur:innen gut und verständlich aufbereitet ist. Ihr entscheidet über die Form der Dokumentation (Text, Fotos, Videos…).

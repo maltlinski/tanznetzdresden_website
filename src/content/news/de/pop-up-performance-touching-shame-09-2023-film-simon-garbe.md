@@ -9,7 +9,7 @@ teaser: Unter dem Titel »touching shame« fand am 23. April diesen Jahres eine 
 
 Unter dem Titel »touching shame« fand am 23. April diesen Jahres eine POP UP-Performance in der Dresdner Location »Der Halle« statt. Diese Ausgabe von POP UP war ein Anlass, bei dem ein Film entstanden ist, der die Stimmung von »touching shame« in bewegten Bildern gebündelt hat. Mehr dazu gibt es nun im heutigen Beitrag.
 
-## »touching shame« - eine POP UP-Performance in "Der Halle" in Dresden
+## »touching shame« – eine POP UP-Performance in „Der Halle“ in Dresden
 
 »Ein Raum gespickt mit lauter kleinen Mimosen. Traust Du Dich, sie zu berühren? Ihre Blätter ziehen sich zusammen und verschließen sich vor Dir. Schäm Dich! Was bleibt ist Sprachlosigkeit und der Drang sich zu inszenieren, um sich nicht zu offenbaren. Doch ein paar dieser zarten Pflänzchen versuchen sich Deinem Blick nicht zu entziehen. Was ist möglich, wenn das, was beschämt, in den Mittelpunkt der Inszenierung gerückt wird? Kann wieder ein Gefühl der Verbundenheit entstehen?«
 
@@ -17,7 +17,7 @@ Chiara Detscher und Alina Lucifero erkundeten gemeinsam mit sechs weiteren Akteu
 
 In kurzen Solobeiträgen von Jule Oeft-Rottluff, Amit Abend und Odbayar Batsuuri sowie gemeinsamen Improvisationen, musikalisch begleitet von Jannicke Hagen und Albrecht Ernst, haben wir unterschiedliche Perspektiven und Nuancen des Themas beleuchtet. Denn Scham ist immer abhängig von Herkunft, sozialer Prägung und gesellschaftlichen Kontexten.
 
-## »touching shame« - der Film
+## »touching shame« – der Film
 
 Die Stimmung von »touching shame« fing erneut [Simon Garbe](https://www.simongarbe.com/) mit der Kamera ein, um im Nachgang aus dem Material einen Film entstehen zu lassen.
 
@@ -36,6 +36,6 @@ Die Stimmung von »touching shame« fing erneut [Simon Garbe](https://www.simong
 Mehr zu POP UP gibt es unter folgendem Link:  
 [tanznetzdresden.de/pop-up](/#formate)
 
-Die Aktivitäten von TanzNetzDresden werden gefördert vom Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien im Rahmen von NEUSTART KULTUR, TANZPAKT in residence (2022–2024), den DACHVERBAND TANZ Deutschland, der Institutionellen Förderung der Landeshauptstadt Dresden , der Projektförderung der Kulturstiftung des Freistaates Sachsen und der Bürgerstiftung Dresden.
+Die Aktivitäten von TanzNetzDresden werden gefördert vom Fonds Darstellende Künste aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien im Rahmen von NEUSTART KULTUR, TANZPAKT in residence (2022–2024), den DACHVERBAND TANZ Deutschland, der Institutionellen Förderung der Landeshauptstadt Dresden, der Projektförderung der Kulturstiftung des Freistaates Sachsen und der Bürgerstiftung Dresden.
 
 Header-Foto: Filmstill von Simon Garbe

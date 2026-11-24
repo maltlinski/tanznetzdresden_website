@@ -15,17 +15,17 @@ Die beiden maßgeblichen Initiator:innen hierzu:
 
 »Ausgehend von der ersten Idee, über Menschen finden, die die Idee gut finden und mit uns umsetzen wollen, hin zur Konzeption und intensiven Beratungen, gefolgt von Finanzierungen zusammenkriegen, den künstlerischen Inhalt erarbeiten, einen Programmierer (ganz liebe Grüße gehen raus an Ralf) finden, bis hin zu zahllosen Treffen, Testphasen und Verschiebungen. Kurzum: nach allem, was zu einem echten Herzensprojekt so dazugehört, ist es nach zwei Jahren nun vollbracht und die offizielle ASPHALTWELTEN App der go plastic company ist fertig. Daher freuen wir uns riesig, euch, die ihr alle fleißig und auf unterschiedliche Weise mitgewirkt habt, zum Release der App am 5. Juli 2023 in die GrooveStation Dresden einladen zu dürfen.«
 
-### Folgendes Programm wird die Besucher:innen am 5. Juli in der Dresdner GrooveStation erwarten:
+## Folgendes Programm wird die Besucher:innen am 5. Juli in der Dresdner GrooveStation erwarten:
 
-**20:00 Uhr** \- Getränke / Reden / Danksagungen
+**20:00 Uhr** – Getränke / Reden / Danksagungen
 
-**21:00 Uhr** \- ASPHALT Performance Part I
+**21:00 Uhr** – ASPHALT Performance Part I
 
-**21:15 Uhr** \- ASPHALTWELTEN App-RELEASE
+**21:15 Uhr** – ASPHALTWELTEN App-RELEASE
 
-**22:00 Uhr** \- Feiern! (im Rahmen der midi Mittwochsdisko)
+**22:00 Uhr** – Feiern! (im Rahmen der midi Mittwochsdisko)
 
-**0:00 Uhr** \- ASPHALT Performance Part II
+**0:00 Uhr** – ASPHALT Performance Part II
 
 ### Wichtig: Der Eintritt zum Release-Event ab 20 Uhr ist kostenfrei.
 
@@ -45,7 +45,7 @@ bilder:
 
 ### Wie die App funktioniert
 
-Diese fordert User\*innen einmal täglich mit kleinen Aufgaben zu einer Challenge im öffentlichen Raum auf - sei es, an Laternenpfählen gelehnt den Tag zu genießen oder eine örtlichen Parkverbotszone zu betanzen. Mittels Video, Foto, Text oder Sprache sollst Du hierbei eine Aufgabe bearbeiten und mit einem der angebotenen Tools innerhalb der App dokumentieren. Vorkenntnisse oder Fähigkeiten braucht man dafür keine. Ein Smartphone, jede Menge Neugier und ein wenig Kreativität genügen völlig aus.
+Diese fordert User:innen einmal täglich mit kleinen Aufgaben zu einer Challenge im öffentlichen Raum auf – sei es, an Laternenpfählen gelehnt den Tag zu genießen oder eine örtlichen Parkverbotszone zu betanzen. Mittels Video, Foto, Text oder Sprache sollst Du hierbei eine Aufgabe bearbeiten und mit einem der angebotenen Tools innerhalb der App dokumentieren. Vorkenntnisse oder Fähigkeiten braucht man dafür keine. Ein Smartphone, jede Menge Neugier und ein wenig Kreativität genügen völlig aus.
 
 ### Das Team hinter der ASPHALTWELTEN App
 

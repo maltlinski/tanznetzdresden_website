@@ -9,7 +9,7 @@ teaser: Der Tanzkalender Dresden hat gerufen und unsere beteiligten Institutione
 
 *Der Tanzkalender Dresden hat gerufen und unsere beteiligten Institutionen sowie Vertreter:innen der Freien Szene haben ihr Programm aus Tanz und Performance für den Monat September gesammelt und in den Tanzkalender Dresden eingetragen. Alle wichtigen Informationen zur neuen Ausgabe für den Saisonstart in Dresden gibt es im heutigen Blog-Beitrag.*
 
-## Tanzkalender Dresden - die Ausgabe für den Saisonstart im September
+## Tanzkalender Dresden – die Ausgabe für den Saisonstart im September
 
 Die Saison in Sachen Tanz und Performance in Dresden kann beginnen. Zumindest was die finale Erstellung des kommenden TNDD Tanzkalenders für den Monat September angeht. Darin enthalten sind erneut zahlreiche Termine aus unseren beteiligten Institutionen sowie Ankündigungen aus der Freien Szene aus den Bereichen Tanz und Performance, unter anderem von go plastic company, 4roomsCompany, ABOUT BLANK Collective oder Pinkmetalpetal Productions. Ihr seht, es gibt wieder eine Menge zu entdecken. Online schon jetzt. Und in gedruckter Form ab der kommenden Woche.
 
@@ -21,7 +21,7 @@ Der Tanzkalender Dresden erscheint monatlich im Großraum Dresden in gedruckter 
 - **Semperoper Dresden**
 - **Staatsschauspiel Dresden**
 - **Staatsoperette Dresden**
-- **HELLERAU - Europäisches Zentrum der Künste**
+- **HELLERAU – Europäisches Zentrum der Künste**
 - **Societaetstheater Dresden**
 - **Projekttheater Dresden**
 - **Landesbühnen Sachsen**

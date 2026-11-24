@@ -92,14 +92,20 @@ test('Schriften kommen als WOFF2, Überschrift und Fließtext werden vorab gelad
   expect(vorab.some((h) => /open-sans-latin-400-normal/.test(h))).toBe(true);
 });
 
-test('Silbentrennung: Knöpfe und kleine Zeilen trennen nie, Überschriften nur lange Wörter', async ({ page }) => {
+test('Silbentrennung: Knöpfe, Kartentitel und kleine Zeilen trennen nie, Überschriften nur sehr lange Wörter', async ({ page }) => {
   await ohneHinweis(page);
   await page.goto('/news/');
   const trennung = (sel: string) => page.locator(sel).first().evaluate((e) => getComputedStyle(e).hyphens);
   expect(await trennung('[data-sort]')).toBe('manual');
   expect(await trennung('.mono-link')).toBe('manual');
   expect(await trennung('main p')).toBe('auto');
-  expect(await page.locator('h1').evaluate((e) => getComputedStyle(e).getPropertyValue('hyphenate-limit-chars'))).toMatch(/^10\b/);
+  // Überschriften: erst ab 16 Buchstaben („TanzNetzDresden“ hat 15), Zeilen ausgewogen
+  const h1 = page.locator('h1');
+  expect(await h1.evaluate((e) => getComputedStyle(e).getPropertyValue('hyphenate-limit-chars'))).toMatch(/^16\b/);
+  expect(await h1.evaluate((e) => getComputedStyle(e).textWrap || getComputedStyle(e).getPropertyValue('text-wrap-style'))).toMatch(/balance/);
+  // Kartentitel außerhalb von Überschriften (Netzwerk) trennen gar nicht
+  await page.goto('/netzwerk/');
+  expect(await trennung('.card__name')).toBe('manual');
 });
 
 test('News-Übersicht bleibt klein: neueste Beiträge im HTML, ältere werden nachgeladen', async ({ page, request }) => {

@@ -10,11 +10,11 @@ teaser: "Unsere beliebte Reihe TNDD studio round geht in die nächste Runde. Gro
 
 Unsere beliebte Reihe *TNDD studio round* geht in die nächste Runde. Großer Unterschied dieses Mal: ihr könnt euch mit künstlerischen Beiträge, die bei der siebenten und achten Edition gezeigt werden sollen im Rahmen von nur einer Ausschreibung bewerben. Alle Interessierten sind daher ab sofort aufgerufen, sich mit Beiträgen für die kommenden beiden Ausgaben von TNDD studio round zu bewerben. Alle Details zur Ausschreibung findet ihr im Beitrag weiter unten. (for english version please click and scroll down)
 
-## – studio round - das Austausch- & Präsentationsformat von TanzNetzDresden –
+## – studio round – das Austausch- & Präsentationsformat von TanzNetzDresden –
 
 TNDD studio round bringt lokale Künstler:innen und Gäst:innen in einem Studioevent zusammen. Zu den jeweiligen Solobeiträgen, die an dem Abend präsentiert werden, gibt es ein Begleitprogramm, in dem der Austausch mit den Beteiligten und dem Publikum befördert wird.
 
-Gesucht werden pro Event **2 lokale Beiträge (aus Dresden oder Sachsen) und 2 Gast-Beiträge** (Solo - oder Duo, **zwischen 5 und 20 Minuten maximal**). Außerdem gibt es die Idee, die Beiträge mit einem Publikums-Warm-Up und einem anschließenden Q+A zu rahmen.
+Gesucht werden pro Event **2 lokale Beiträge (aus Dresden oder Sachsen) und 2 Gast-Beiträge** (Solo – oder Duo, **zwischen 5 und 20 Minuten maximal**). Außerdem gibt es die Idee, die Beiträge mit einem Publikums-Warm-Up und einem anschließenden Q+A zu rahmen.
 
 Die nächsten zwei Editionen werden am **08\. September 2023** und am **15. Dezember 2023** in der [TENZA Schmiede](http://www.tenza.de/) stattfinden. Tagsüber kann in dem Studio geprobt und vorbereitet werden.
 
@@ -43,9 +43,9 @@ Die vollständige Ausschreibung kann [***hier***](/news/archiv/dateien/2023/auss
 
 Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz. Gefördert von der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
-## – studio round - the exchange & presentation format of TanzNetzDresden –
+## – studio round – the exchange & presentation format of TanzNetzDresden –
 
-TNDD's studio round is again looking for artistic contributions. The next editions are scheduled to take place on **September 8th** and **December 15th, 2023** at [TENZA Schmiede](http://www.tenza.de/). *TNDD studio round* is a presentation and exchange format, to bring the local scene and guests in contact. We are looking for 2 local contributions (from Dresden or Saxony) and 2 guest contributions (solo or duo, between 5 and 20 minutes maximum) per event.
+TNDD’s studio round is again looking for artistic contributions. The next editions are scheduled to take place on **September 8th** and **December 15th, 2023** at [TENZA Schmiede](http://www.tenza.de/). *TNDD studio round* is a presentation and exchange format, to bring the local scene and guests in contact. We are looking for 2 local contributions (from Dresden or Saxony) and 2 guest contributions (solo or duo, between 5 and 20 minutes maximum) per event.
 
 It is intended that each TNDD studio round will include an audience warm-up and a Q + A. We are interested to talk with the artist from each edition how this can support their artist process. During the date of the event, rehearsals and preparations can take place in the studio.
 

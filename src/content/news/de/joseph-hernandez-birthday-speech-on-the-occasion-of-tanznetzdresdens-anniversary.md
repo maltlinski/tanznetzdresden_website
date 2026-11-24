@@ -1,15 +1,15 @@
 ---
-title: The speech of Joseph Hernandez on the occasion of TanzNetzDresden's anniversary.
+title: The speech of Joseph Hernandez on the occasion of TanzNetzDresden’s anniversary.
 date: 2021-12-02
 category: Netzwerk
 author: TanzNetzDresden
 image: ../../../assets/news/2021/joseph-hernandez-alice-blangero-e1639390295268.webp
-teaser: On November 11, 2021, artist Joseph Hernandez presented an intensive and empathic birthday speech at the TENZA Schmiede on the occasion of TanzNetzDresden's anniversary. We were very moved and entertained as well.
+teaser: On November 11, 2021, artist Joseph Hernandez presented an intensive and empathic birthday speech at the TENZA Schmiede on the occasion of TanzNetzDresden’s anniversary. We were very moved and entertained as well.
 ---
 
-On November 11, 2021, artist Joseph Hernandez presented an intensive and empathic birthday speech at the TENZA Schmiede on the occasion of TanzNetzDresden's anniversary. We were very moved and entertained as well. Therefore we would like to give you the opportunity to read Joseph's speech again today in full length.
+On November 11, 2021, artist Joseph Hernandez presented an intensive and empathic birthday speech at the TENZA Schmiede on the occasion of TanzNetzDresden’s anniversary. We were very moved and entertained as well. Therefore we would like to give you the opportunity to read Joseph’s speech again today in full length.
 
-### »On community«
+## »On community«
 
 > On Community I open my eyes in a place that I know. I think that is something that I, as an artist in this century take for granted. I look around me and I see the signs of connection everywhere, though I think that, at times, this is something that, if I don’t focus on it enough, it can become blurred and discounted.
 >

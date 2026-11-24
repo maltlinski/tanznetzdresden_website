@@ -9,13 +9,13 @@ teaser: Vom 11. bis zum 13. November 2021 finden sowohl das Jubiläum des TanzNe
 
 Vom 11. bis zum 13. November 2021 finden sowohl das Jubiläum des TanzNetzDresden als auch die Workshops von WORKING COMMUNITIES statt. Die Anmeldefrist für die drei Workshops läuft noch bis zum 7. November 2021. Mehr Informationen gibt es im Beitrag weiter unten.
 
-### WORKING COMMUNITIES
+## WORKING COMMUNITIES
 
 Aufbauend auf die bisherige – überwiegend lokale – Netzwerkarbeit markierte der Fachtag am 29. September 2021 im Festspielhaus Hellerau den Beginn des intensiven Austauschs mit Akteur:innen aus dem überregionalen und internationalen Raum aus dem Bereich Tanz und Performing Arts. Der Titel des Formats »WORKING COMMUNITIES« ist zugleich aber auch der Name des Jubiläums des TanzNetzDresden, das am 11. November groß gefeiert und außerdem das Motto der drei Workshops, die am 12. und 13. November stattfinden.
 
 Im Zentrum der Workshops im November stehen abermals: interdisziplinärer Wissenstransfer, Impulsgebung innerhalb des aktuellen Diskurses der Performing Arts und die verstärkte Netzwerkbildung zwischen den Akteur:innen der Region Sachsen sowie den angrenzenden Bundesländern Sachsen-Anhalt, Thüringen und Brandenburg als auch den angrenzenden Ländern Tschechien und Polen.
 
-### Die WORKING COMMUNITIES-Workshops
+## Die WORKING COMMUNITIES-Workshops
 
 Die Workshops von WORKING COMMUNITIES beleuchtet aus drei Perspektiven das Thema „Gemeinschaftliches Handeln im Tanz“ und greifen aktuelle Fragen der Szene auf. Es wird gemeinsam getanzt, reflektiert und die Diversität von Körperbildern und künstlerischen Zugängen gefeiert.
 

@@ -9,17 +9,17 @@ teaser: Die TNDD studio round feiert am 14. Oktober ihre nunmehr fünfte Auflage
 
 Die TNDD studio round feiert am 14. Oktober ihre nunmehr fünfte Auflage. Für dieses erste Jubiläum werden aktuell noch bis zum 18. September 2022 künstlerische Beiträge gesucht, die bei der kommenden Auflage in der TENZA Schmiede gezeigt werden. Alle Details zur Ausschreibung findet ihr im Beitrag weiter unten. (for english version please click and scroll down)
 
-## – studio round - das Austausch & Präsentationsformat von TanzNetzDresden –
+## – studio round – das Austausch & Präsentationsformat von TanzNetzDresden –
 
 TNDD studio round bringt lokale Künstler:innen und Gäst:innen in einem Studioevent zusammen. Zu den jeweiligen Solobeiträgen, die an dem Abend präsentiert werden, gibt es ein Begleitprogramm, in dem der Austausch mit den Beteiligten und dem Publikum befördert wird.
 
-Gesucht werden pro Event **2 lokale Beiträge (aus Dresden oder Sachsen) und 2 Gast Beiträge** (Solo - oder Duo, **zwischen 5 und 20 Minuten maxima**l). Idee ist es außerdem, die Beiträge mit einem Publikums-Warm-Up und einem anschließenden Q+A zu rahmen.
+Gesucht werden pro Event **2 lokale Beiträge (aus Dresden oder Sachsen) und 2 Gast Beiträge** (Solo – oder Duo, **zwischen 5 und 20 Minuten maxima**l). Idee ist es außerdem, die Beiträge mit einem Publikums-Warm-Up und einem anschließenden Q+A zu rahmen.
 
 Die **fünfte Edition wird am 14. Oktober 2022** in der [TENZA Schmiede](http://www.tenza.de/) stattfinden. Tagsüber kann in dem Studio geprobt und vorbereitet werden.
 
 Zu beachten ist, dass es ein simples technisches Setting geben wird und möglichst ohne Umbauten geplant werden sollte. Die technische Ausstattung beinhaltet eine Sound-Anlage, an die sich angeschlossen werden kann, sowie eine Lichtstimmung in warm und kalt. Das Event wird dokumentiert (Foto und Video) und danach den Beteiligten zur Verfügung gestellt.
 
-Als Honorar können pro Beitrag und pro Person 250 Euro gezahlt werden. Für die Künstler\*innen von außerhalb wird zudem die An-und Abreise, sowie Unterkunft für maximal eine Nacht übernommen. Der Rest erfolgt nach Absprache.
+Als Honorar können pro Beitrag und pro Person 250 Euro gezahlt werden. Für die Künstler:innen von außerhalb wird zudem die An-und Abreise, sowie Unterkunft für maximal eine Nacht übernommen. Der Rest erfolgt nach Absprache.
 
 ### Die Deadline für die Einreichungen ist der 18. September 2022.
 
@@ -45,9 +45,9 @@ Die vollständige Ausschreibung kann [hier](/news/archiv/dateien/2022/ausschreib
 
 Ein Projekt von TanzNetzDresden. Gefördert vom Amt für Kultur und Denkmalschutz. Gefördert von der Kulturstiftung des Freistaates Sachsen. Diese Maßnahme wird mitfinanziert durch Steuermittel auf Grundlage des vom Sächsischen Landtag beschlossenen Haushalts.
 
-## – studio round - the exchange & presentation format of TanzNetzDresden –
+## – studio round – the exchange & presentation format of TanzNetzDresden –
 
-**TNDD's studio round is again looking for artistic contributions**, which will take place within the next edition on October 14th, 2022 at [TENZA Schmiede](http://www.tenza.de/). *TNDD studio round* is a presentation and exchange format, to bring the local scene and guests in contact. We are looking for **2 local contributions (from Dresden or Saxony) and 2 guest contributions** (solo or duo, **between 5 and 20 minutes maximum**) per event.
+**TNDD’s studio round is again looking for artistic contributions**, which will take place within the next edition on October 14th, 2022 at [TENZA Schmiede](http://www.tenza.de/). *TNDD studio round* is a presentation and exchange format, to bring the local scene and guests in contact. We are looking for **2 local contributions (from Dresden or Saxony) and 2 guest contributions** (solo or duo, **between 5 and 20 minutes maximum**) per event.
 
 It is intended that each TNDD studio round will include an audience warm-up and a Q + A. We are interested to talk with the artist from each edition how this can support their artist process. During the October 8th, 2022, rehearsals and preparations can take place in the studio.
 

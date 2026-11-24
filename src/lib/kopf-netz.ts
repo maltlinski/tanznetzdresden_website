@@ -52,6 +52,12 @@ function zufall(seed: number) {
 
 const f = (v: number) => +v.toFixed(1);
 
+/**
+ * Quadrat nur für Punkte im Bild: Punkte auf dem Rand (dort laufen nur Linien hinaus) und ganz oben oder unten
+ * bekommen keins – sonst säße es angeschnitten direkt unter der Kopfleiste oder am Keil.
+ */
+const mitQuadrat = ([x, y]: [number, number], W: number, H: number) => x > 0 && x < W && y > H * 0.07 && y < H * 0.95;
+
 export function kopfNetz(form: NetzForm = KALENDER): Netz {
   const W = 1600;
   const H = 640;
@@ -94,6 +100,7 @@ export function kopfNetz(form: NetzForm = KALENDER): Netz {
   E.sort((e1, e2) => Math.min(P[e1[0]][0], P[e1[1]][0]) - Math.min(P[e2[0]][0], P[e2[1]][0]));
   const linien = E.map(([i, j, dick]) => ({ x1: f(P[i][0]), y1: f(P[i][1]), x2: f(P[j][0]), y2: f(P[j][1]), dick }));
   const punkte = P.map((_, i) => i)
+    .filter((i) => mitQuadrat(P[i], W, H))
     .sort((i, j) => P[i][0] - P[j][0])
     .map((i) => {
       const mg = r() < (form.magenta ?? 0.35);
@@ -174,7 +181,7 @@ export function unterseitenNetz(schluessel: string): Netz {
   E.sort((e1, e2) => Math.min(P[e1[0]][0], P[e1[1]][0]) - Math.min(P[e2[0]][0], P[e2[1]][0]));
   const linien = E.map(([i, j, dick]) => ({ x1: f(P[i][0]), y1: f(P[i][1]), x2: f(P[j][0]), y2: f(P[j][1]), dick }));
   const punkte = P.map((_, i) => i)
-    .filter((i) => verbunden.has(i))
+    .filter((i) => verbunden.has(i) && mitQuadrat(P[i], W, H))
     .sort((i, j) => P[i][0] - P[j][0])
     .map((i) => {
       const mg = r() < 0.35;

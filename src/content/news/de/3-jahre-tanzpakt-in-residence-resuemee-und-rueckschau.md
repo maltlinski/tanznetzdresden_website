@@ -14,9 +14,9 @@ teaser: Das dreijährige Kooperationsprogramm »TANZPAKT in residence« ist abge
 TanzNetzDresden initiierte in Kooperation mit dem Verein [Villa Wigman für Tanz](https://villawigman.de/) und den Partnerorganisationen [TanzART Kirschau](https://www.tanzart-kirschau.de/), dem [Mondstaubtheater Zwickau](https://www.mondstaubtheater.de/), [TanzRaumGörlitz](https://trg.persona.co/), [Off-Bühne KOMPLEX in Chemnitz](https://www.chemnitzkomplex.de/), [LOFFT](https://www.lofft.de/) und [4fürTANZ Leipzig](https://4fuertanz.de/) sowie der [TENZA schmiede](https://www.tenza.de/) in Dresden von 2022 bis 2024 mit dem Programm »TANZPAKT in residence« ein umfangreiches Residenzprogramm, welches die Stärkung und Entwicklung der künstlerischen Qualität  
 der Tanzschaffenden in Sachsen zum Ziel hatte.
 
-Das Residenzprogramm und die investiven Maßnahmen des Programms TANZPAKT in residence (2022-2024) beförderte maßgeblich Künstler:innen aus Sachsen, mit ihren unterschiedlichen Biografien und künstlerischen Wegen in eine unverwechselbare und strahlkräftige Entwicklung, die auch überregional und international Bestand hat. Das öffentliche Sichtbarmachen der Residenzergebnisse ließ zum einen die regional Tanzinteressierten an diesen Prozessen teilhaben, wie es zum anderen die Möglichkeit bot, zukünftige überregionale Partner einzuladen, um den fortschreitenden Austausch über die Landesgrenzen hinweg voranzutreiben.
+Das Residenzprogramm und die investiven Maßnahmen des Programms TANZPAKT in residence (2022–2024) beförderte maßgeblich Künstler:innen aus Sachsen, mit ihren unterschiedlichen Biografien und künstlerischen Wegen in eine unverwechselbare und strahlkräftige Entwicklung, die auch überregional und international Bestand hat. Das öffentliche Sichtbarmachen der Residenzergebnisse ließ zum einen die regional Tanzinteressierten an diesen Prozessen teilhaben, wie es zum anderen die Möglichkeit bot, zukünftige überregionale Partner einzuladen, um den fortschreitenden Austausch über die Landesgrenzen hinweg voranzutreiben.
 
-In den Jahren 2022-24 wurden insgesamt 18 Residenzen ausgeschrieben. Eine Jury entschied über die Vergabe. Jede Residenz beinhaltete neben der eigenen Recherchearbeit einen Workshop der Residenzkünstler:innen für interessierte Profis und Amateur:innen und eine Werkstattpräsentation.
+In den Jahren 2022–24 wurden insgesamt 18 Residenzen ausgeschrieben. Eine Jury entschied über die Vergabe. Jede Residenz beinhaltete neben der eigenen Recherchearbeit einen Workshop der Residenzkünstler:innen für interessierte Profis und Amateur:innen und eine Werkstattpräsentation.
 
 ::: bilder
 format: quer
@@ -40,7 +40,7 @@ bilder:
     alt: ""
 :::
 
-### TANZPAKT in residence - alle Resident:innen
+### TANZPAKT in residence – alle Resident:innen
 
 Um einen Überblick über alle Resident:innen zu geben, die in den drei Jahren von TANZPAKT in residence ausgewählt wurden, möchten wir noch einmal die jeweiligen Jurys aus all den Jahren sowie die ausgewählten Künstler:innen präsentieren.
 
@@ -140,6 +140,6 @@ Das vollständige Programm von TANZPAKT in residence.re-preview kann [***hier***
 
 »TANZPAKT in residence« wurde gefördert von TANZPAKT Stadt-Land-Bund aus Mitteln der Beauftragten der Bundesregierung für Kultur und Medien, sowie kofinanziert durch das Staatsministerium für Wissenschaft, Kultur und Tourismus und der Landeshauptstadt Dresden, Amt für Kultur und Denkmalschutz. Die Maßnahme wurde mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
 
-TANZPAKT STADT LAND BUND - Eine gemeinsame Initiative von Kommunen, Bundesländern und der Beauftragten der Bundesregierung für Kultur und Medien zur Exzellenzförderung im Tanz.
+TANZPAKT STADT LAND BUND – Eine gemeinsame Initiative von Kommunen, Bundesländern und der Beauftragten der Bundesregierung für Kultur und Medien zur Exzellenzförderung im Tanz.
 
 **Fotos**: André Wirsig

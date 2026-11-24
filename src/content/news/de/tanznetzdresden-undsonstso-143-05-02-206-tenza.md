@@ -13,7 +13,7 @@ teaser: "Der Winterschlaf scheint vorbei und zack beginnt auch das neue Jahr gan
 
 Für das erste undsonstso in 2026 laden wir euch am **Donnerstag, den 5. Februar 2026, ab 19 Uhr** in die [TENZA](https://www.tenza.de/)  ein. Und passend zur Wahl der Location wurde hierfür das TanzNetzDresden eingeladen. Außerdem mit am Start: [HTXSTHSTX](https://undsonstso.us6.list-manage.com/track/click?u=300e54c69b65ea0dbacdfab53&id=f606429f38&e=1eeec7f2aa) – hinter der Buchstabenkombination die wirkt als wäre man auf der Tastatur ausgerutscht verbirgt sich ein elektronisches Musiklabel zwischen Ambient, Techno und Rave. Das Label vereint Künstler:innen, die eigene Musik produzieren, diese in DJ Sets als auch in Live-Formaten präsentieren und Veranstaltungen organisieren und kuratieren.
 
-Ein Abend – zwei Perspektiven: Beat trifft auf Bewegung, Netzwerk trifft Kollektiv, Tanzfläche trifft Plattenteller. Und für die kleinen Tanzmäuse gibt's auch ne Kinderspielecke.
+Ein Abend – zwei Perspektiven: Beat trifft auf Bewegung, Netzwerk trifft Kollektiv, Tanzfläche trifft Plattenteller. Und für die kleinen Tanzmäuse gibt’s auch ne Kinderspielecke.
 
 Kommt vorbei und startet mit dem TanzNetzDresden ins neue undsonstso-Jahr.
 

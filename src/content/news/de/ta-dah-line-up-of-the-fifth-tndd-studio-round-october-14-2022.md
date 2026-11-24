@@ -1,5 +1,5 @@
 ---
-title: Ta-dah! - Line up of the fifth TNDD studio round (October 14, 2022)
+title: Ta-dah! – Line up of the fifth TNDD studio round (October 14, 2022)
 date: 2022-10-10
 category: Netzwerk
 author: TanzNetzDresden
@@ -7,7 +7,7 @@ image: ../../../assets/news/2022/tanznetzdresden-studio-round-5-2022-1-e16654143
 teaser: The complete line up of the upcoming TNDD studio round edition, which will take place on October 14th as usual from 8pm at the TENZA Schmiede, is now online and can be browsed.
 ---
 
-The complete line up of the upcoming TNDD studio round edition, which will take place on October 14th as usual from 8pm at the [TENZA Schmiede](http://www.tenza.de/), is now online and can be browsed. Once again, you can expect three exciting contributions from very different artists, which will be presented and discussed with the guests of the evening in our special studio atmosphere. One of them is "Studies of Softeting", the production that had to be cancelled at short notice in the summer and can now fortunately be made up for. As always, the format is free of charge. The participants of the upcoming fourth edition are:
+The complete line up of the upcoming TNDD studio round edition, which will take place on October 14th as usual from 8pm at the [TENZA Schmiede](http://www.tenza.de/), is now online and can be browsed. Once again, you can expect three exciting contributions from very different artists, which will be presented and discussed with the guests of the evening in our special studio atmosphere. One of them is “Studies of Softeting”, the production that had to be cancelled at short notice in the summer and can now fortunately be made up for. As always, the format is free of charge. The participants of the upcoming fourth edition are:
 
 - Elia Pangaro (Italy)
 - Jack Bannerman (Germany)
@@ -15,7 +15,7 @@ The complete line up of the upcoming TNDD studio round edition, which will take 
 
 Detailed information on the individual contributions to the fifth TNDD studio round will now follow in German or can be viewed directly on the [studio round subpage](/#formate). There you will also find all information in English.
 
-## Elia Pangaro "AMOEBA"
+## Elia Pangaro „AMOEBA“
 
 ::: bilder
 bilder:
@@ -62,7 +62,7 @@ Special thanks to Hanna Schaar & Pierre d’Haveloose for the collaboration.
 
 Photos: Michael Rennecke
 
-## Jack Bannerman: "Baby Blue"
+## Jack Bannerman: „Baby Blue“
 
 ::: bilder
 bilder:
@@ -76,7 +76,7 @@ Originally from Australia, Jack has worked professionally as a dancer in both Au
 
 „The empty handed painter from your streets  
 Is drawing crazy patterns on your sheets  
-The sky too is fallin‘ in over you  
+The sky too is fallin’ in over you  
 And it’s all over now, baby blue“
 
 The solo work *Baby Blue* elevates the perspective of the viewer, enforcing a feeling of observation and judgement. The work is packaged and presented within the dimensions of a large piece of living room carpet, the performer is now a product of this reality. This reality where their identity can only be expressed through performing in this confined space. The piece is a dance performance, but it also questions the act of performing, and how this ominous pressure can infiltrate our lives, and lead us astray.
@@ -88,7 +88,7 @@ Videography and editing: Maxi Richter
 Costume design and creation: Philipp Fritsche  
 Music: intro – Awfultune, It’s all over now, Baby Blue – Anohni & lakes – Gia Margaret
 
-Photo: Filmstill of „Baby Blue“; filmed on the stage of the Landestheater Eisenach, September 2021.
+Photo: Filmstill of “Baby Blue”; filmed on the stage of the Landestheater Eisenach, September 2021.
 
 ::: bilder
 text: Therese Bendjus
@@ -113,4 +113,4 @@ All information about the respective pieces of the evening, which of course can 
 
 TNDD studio round is a project by TanzNetzDresden. Funded by the Office for Culture and Monument Protection and the Cultural Foundation of the Free State of Saxony. The measure is co-financed by tax funds on the basis of the budget passed by the Saxon State Parliament.
 
-Header photo: Jack Bannerman; Filmstill of „Baby Blue“; shot on the stage of Landestheater Eisenach, September 2021.
+Header photo: Jack Bannerman; Filmstill of “Baby Blue”; shot on the stage of Landestheater Eisenach, September 2021.

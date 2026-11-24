@@ -9,7 +9,7 @@ teaser: Das Projekt tanz\netzwerk\bremen CONNECTION ist die Intensivierung des 2
 
 Das Projekt [tanz\_netzwerk\_bremen CONNECTION](https://lafdk-bremen.de//projekte/tanznetzwerkbremen-connection) ist die Intensivierung des 2022 begonnenen Austauschs zwischen dem tanz\_netzwerk\_bremen PROFESSIONAL des [Landesverband freie darstellende Künste Bremen](https://lafdk-bremen.de/), dem TanzNetzDresden und [TanzXchange Münster](https://tanzxchange-muenster.de/). Gemeinsam werden in diesem Jahr Workshops, eine [Peer to Peer-Akademie](https://lafdk-bremen.de/projekte/tanznetzwerkbremen-connection/peer-to-peer-akademie) im Mai und ein zweitägiges [Symposium](https://lafdk-bremen.de/veranstaltung/symposium-tanznetzwerkbremen-connection-2308) in Bremen organisiert. Einer der kommenden Workshops trägt den Titel »Performing Self-Promotion«, wird von Jessica Buchholz von STÜCKLIESEL Productions aus Hamburg gehalten und findet am 22. Mai in Bremen statt. Alle Informationen zu diesem Workshop folgen nun im heutigen Beitrag.
 
-## »Performing Self-Promotion« - Workshop mit Jessica Buchholz im theaterkontor Bremen
+## »Performing Self-Promotion« – Workshop mit Jessica Buchholz im theaterkontor Bremen
 
 »Performing Self-Promotion« ist ein Workshop zum Thema Selbstdarstellung und Akquise für frei darstellende Künstler:innen. Die Initiatorin des Workshops, Jessica Buchholz, ist Co- Gründerin und Co-Geschäftsführerin von [STÜCKLIESEL Productions](https://stueckliesel.com/) in Hamburg und arbeitet seit 2008 als Creative Producer, Konzeptionerin, Fundraiserin, Pressereferentin sowie seit 2022 als Business Coach und Business Facilitator in den Freien Darstellenden Künsten.
 

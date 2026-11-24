@@ -44,7 +44,7 @@ Der Streik richtet sich nicht nur an Frauen, sondern an alle Menschen, die von U
 
 In Dresden findet der Frauenstreik 2026 konkret an diesem Termin statt:
 
-### Montag, 9. März 2026 I 16 - 18 Uhr Postplatz Für Social Media bitte folgenden Hashtag verwenden: #ohneunsstehtallesstill
+### Montag, 9. März 2026 I 16–18 Uhr Postplatz Für Social Media bitte folgenden Hashtag verwenden: #ohneunsstehtallesstill
 
 ### Aufgepasst: Wer Vorschläge oder Redebeiträge zu den Themen Care-Arbeit, faire Löhne und Mental Load kann sich gern an [frauenstreik2026.dresden@posteo.de](mailto:frauenstreik2026.dresden@posteo.de) wenden.
 

@@ -5,14 +5,14 @@ category: Ausschreibung
 author: TanzNetzDresden
 image: ../../../assets/news/2024/tanznetzdresden-solo2-villa-wigman-andre-wirsig.webp
 deadline: 2026-02-15
-teaser: Die villa\\wigman vergibt zwei Residenzbescheinigungen für eine Residenzförderung des Fonds Darstellende Künste. Was dafür nötig ist und wie der Open Call abläuft - all das erfahrt ihr im heutigen Blog-Beitrag.
+teaser: Die villa\\wigman vergibt zwei Residenzbescheinigungen für eine Residenzförderung des Fonds Darstellende Künste. Was dafür nötig ist und wie der Open Call abläuft – all das erfahrt ihr im heutigen Blog-Beitrag.
 ---
 
-### Residenzbescheinigung für Förderung beim Fonds DaKu
+## Residenzbescheinigung für Förderung beim Fonds DaKu
 
 Die villa\\wigman vergibt maximal zwei Residenzbescheinigungen als Grundlage für eine Residenzförderung des Fonds Darstellende Künste im Zeitraum zwischen dem 15.05. und 15.11.2026.
 
-### Bewerbungsunterlagen
+## Bewerbungsunterlagen
 
 Die Bewerbung sollte maximal eine A4-Seite (als PDF) umfassen und folgende Informationen enthalten:
 
@@ -26,13 +26,13 @@ Die Bewerbung sollte maximal eine A4-Seite (als PDF) umfassen und folgende Infor
 - Kontaktdaten
 - Bestätigung der Kenntnisnahme der Förderbedingungen des Fonds Darstellende Künste: [https://www.fonds-daku.de/foerderung/foerderprogramme/residenzfoerderung/residenzfoerderung-2/](https://www.fonds-daku.de/foerderung/foerderprogramme/residenzfoerderung/residenzfoerderung-2/)
 
-### Bewerbungsfrist
+## Bewerbungsfrist
 
 **15.02.2026, 18:00 Uhr**
 
 Bewerbungen und Rückfragen bitte ausschließlich an: [residence@villawigman.de](mailto:%20residence@villawigman.de)
 
-### Auswahlverfahren
+## Auswahlverfahren
 
 Die Jury für die Auswahl der zwei Bewerbungen bildet das Leitungsteam der villa\\wigman, bestehend aus Julia Amme, Katja Erfurth und Josefine Wosahlo. Die finale Antragstellung mit ausführlichem Konzept erfolgt bis 02.03.2026 beim Fonds Darstellende Künste. Die Entscheidung über die Residenz trifft der Fonds Darstellende Künste.
 

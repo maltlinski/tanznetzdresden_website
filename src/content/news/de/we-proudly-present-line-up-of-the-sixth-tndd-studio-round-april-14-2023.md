@@ -9,9 +9,9 @@ teaser: The complete line up of the upcoming sixth TNDD studio round edition, wh
 
 The complete line up of the upcoming sixth TNDD studio round edition, which will take place on April 14, 2023 as usual from 8pm at the [TENZA Schmiede](http://www.tenza.de/), is now online and can be browsed. Once again, you can expect three exciting contributions from very different artists and collectives, which will be presented and discussed with the guests of the evening in our special studio atmosphere. As always, the format is free of charge. The participants of the upcoming sixth edition are:
 
-- **Ka Dietze** (Germany): "# 2.1.2.1 I Wo beginnt Tanz ... endet\_beginnt Klang ... endet Tanz?"
-- **Makhina Dzhuraeva** (Germany): "Red Herring"
-- **YoY collective - Emma Zani & Roberto Doveri** (Italy): „INESORABILMENTEUNAVIA"
+- **Ka Dietze** (Germany): „# 2.1.2.1 I Wo beginnt Tanz … endet\_beginnt Klang … endet Tanz?“
+- **Makhina Dzhuraeva** (Germany): „Red Herring“
+- **YoY collective – Emma Zani & Roberto Doveri** (Italy): „INESORABILMENTEUNAVIA“
 
 Detailed information on the individual contributions of our upcoming studio round will now follow in English or can be viewed directly on the [studio round subpage](/#formate). There you will also find all information in german language. An additional blog article in german language can be found [***here***](/news/wir-praesentieren-stolz-das-line-up-der-sechsten-tndd-studio-round-14-april-2023/).
 
@@ -33,7 +33,7 @@ bilder:
 
 ### „# 2.1.2.1 I Wo beginnt Tanz … endet\_beginnt Klang … endet Tanz?“
 
-»instant Klang\_Tanz begins . ends . begins … the one arises from the other – rarely clearly assignable in the origin WHERE begins – ends WHAT? in the performative space of 2.1.2.1 overtone instruments – a space installation to which all present choose their perspective: INSIDE #lying #standing #walking\_staying – OUTSIDE #sitting/observing A voice invites at the beginning&end to breathe together – WHAT happens to the BodySpaceMaterial? Perspective & sounds COULD entice you to close your eyes – to „dream up“ a performance. Who chooses Which „channels of perception“ – experiences the event as: Concert. SoundFilm. DanceSound. Dance ? WHERE ends – begins WHAT for WHOM in the SoundSpaceTimeHumanMaterial?«
+»instant Klang\_Tanz begins . ends . begins … the one arises from the other – rarely clearly assignable in the origin WHERE begins – ends WHAT? in the performative space of 2.1.2.1 overtone instruments – a space installation to which all present choose their perspective: INSIDE #lying #standing #walking\_staying – OUTSIDE #sitting/observing A voice invites at the beginning&end to breathe together – WHAT happens to the BodySpaceMaterial? Perspective & sounds COULD entice you to close your eyes – to “dream up” a performance. Who chooses Which “channels of perception” – experiences the event as: Concert. SoundFilm. DanceSound. Dance ? WHERE ends – begins WHAT for WHOM in the SoundSpaceTimeHumanMaterial?«
 
 Photo collage: Ka Dietze
 
@@ -45,11 +45,11 @@ bilder:
 
 ## Makhina Dzhuraeva
 
-Makhina Dzhuraeva was born in Tajikistan. In her teenage years she moved with her family to Russia and started her professional career with theatre companies in St. Petersburg („Drystone“ Theatre, dir. Maxim Didenko, and with a lot of others) . A few years later she was accepted to the Russian-German physical theatre company DEREVO, based in Dresden Festspielhaus Hellerau and worked there for 7 years from 2011 to 2018, performed in the company’s main shows and in main roles.
+Makhina Dzhuraeva was born in Tajikistan. In her teenage years she moved with her family to Russia and started her professional career with theatre companies in St. Petersburg (“Drystone” Theatre, dir. Maxim Didenko, and with a lot of others) . A few years later she was accepted to the Russian-German physical theatre company DEREVO, based in Dresden Festspielhaus Hellerau and worked there for 7 years from 2011 to 2018, performed in the company’s main shows and in main roles.
 
 In 2019 she began studying at the Swiss Accademia Teatro Dimitri and in 2021 graduated as a Master of Physical Theatre.
 
-In the same year, together with her Tajik-Swiss colleague Zarina Tadjibaeva, they created the association «ReBelle Art». Their performance „Metamorphose“ about the role of women in Central Asia, about violence against women – won 3rd place in the main Swiss theatre competition PREMIO, Rebellle Art still produces projects and performances which address socio-cultural, socio-political, gender and intercultural issues.
+In the same year, together with her Tajik-Swiss colleague Zarina Tadjibaeva, they created the association «ReBelle Art». Their performance “Metamorphose” about the role of women in Central Asia, about violence against women – won 3rd place in the main Swiss theatre competition PREMIO, Rebellle Art still produces projects and performances which address socio-cultural, socio-political, gender and intercultural issues.
 
 At the end of 2021 Makhina moved permanently to Dresden and works as a freelance dancer, performer, yoga teacher and continues to work with Rebelle Art.
 
@@ -80,7 +80,7 @@ bilder:
     alt: ""
 :::
 
-## YoY collective - Emma Zani & Roberto Doveri
+## YoY collective – Emma Zani & Roberto Doveri
 
 YoY is a young collective born in 2020, consisting of Emma Zani and Roberto Doveri. (dancers and choreographers) and Timoteo Carbone (composer). A project that combines dance, music and contemporary art, in search of contamination and new forms of expression. YoY defines itself as a cultural organism with a common goal: to share ideas.
 
@@ -97,7 +97,7 @@ bilder:
 ### INESORABILMENTEUNAVIA
 
 INESORABILMENTEUNAVIA, inspired by the Bizhan Bassiri’svideo installation “Il Bisonte”, is the representation of the undisciplined inexorable path of nature that regenerates itselfwithout ever ceasing its course. Everything seems to stop in front of the appearance of the artwork: an apparition of a cosmicdimension that conquers the space creating a powerful energy charge.  
-The form turns itself in pure energy , there is no beginning and there is no end. A journey that capture the eye, in search of continuous associations and symbols that alternate, repeat and move within a closed and hypnotic cycle. The choreography proposes a path, placing itself as a decisive negation of the explosive and muscular expression of energy, often labile and passing, which does not represent true strengthbut only imbalance. In the performance, the loop of the movementbecomes almost liturgical, tending towards the achievement of a spirituality that draws its inspiration from the idea of life force typical of the oriental philosophies. INESORABLMENTEUNAVIA is a sort of exhortation to searchfor new balances.
+The form turns itself in pure energy, there is no beginning and there is no end. A journey that capture the eye, in search of continuous associations and symbols that alternate, repeat and move within a closed and hypnotic cycle. The choreography proposes a path, placing itself as a decisive negation of the explosive and muscular expression of energy, often labile and passing, which does not represent true strengthbut only imbalance. In the performance, the loop of the movementbecomes almost liturgical, tending towards the achievement of a spirituality that draws its inspiration from the idea of life force typical of the oriental philosophies. INESORABLMENTEUNAVIA is a sort of exhortation to searchfor new balances.
 
 [**TRAILER**](https://aboutyoy.com/wp-content/uploads/2023/01/INESORABILMENTEUNAVIA.mp4)
 

@@ -9,7 +9,7 @@ teaser: Im Rahmen von TANZPAKT in residence arbeitete Josefina Maro als Resident
 
 *Im Rahmen von TANZPAKT in residence arbeitete Josefina Maro als Residentin in der villa/wigman in Dresden. Nun lädt die Künstlerin im Zuge der Residenz im April zu mehreren Workshops in die villa/wigman in Dresden ein. Alle Informationen zu den anstehenden Terminen gibt es im heutigen Blog-Beitrag.*
 
-## Josefina Maro - Dance and Robotics
+## Josefina Maro – Dance and Robotics
 
 Im Rahmen ihrer Residenz in der villa\\wigman setzt sich die argentinische, in Leipzig lebende Performancekünstlerin, Choreografin und Produzentin Josefina Maro mit der der Beziehung von Tanz, Körper und Technologie auseinander. Seit 2017 konzentriert sich ihre Arbeit auf die Erforschung dieser Beziehung, insbesondere auf das Experimentieren mit Robotern und digitalen Geräten, die den menschlichen Körper wahrnehmen und verschiedene Stimuli für ihn erzeugen können. Die Interaktion mit Robotern und elektronischen Geräten erzeugt eine andere Körpergeografie, die es ihr ermöglicht, zu erforschen und zu hinterfragen, was es bedeutet, zu tanzen und für ihren Körper zu choreografieren.
 
@@ -19,7 +19,7 @@ Im Rahmen der TANZPAKT-Residenz in Dresden wird sie mit neuen Geräten arbeiten,
 
 [Video auf Vimeo ansehen ↗](https://vimeo.com/158791072)
 
-## Josefina Maro - die Workshops
+## Josefina Maro – die Workshops
 
 Jeder Workshop beginnt mit einem dynamischen und einfühlsamen Warm-up, um später in Improvisationsübungen einzutauchen. An jedem Tag wird in individuellen und kollektiven Tanzpartituren gearbeitet, die sich darauf konzentrieren, die Bewegungssprache jeder:s Teilnehmer:in zu erforschen und zu erweitern, indem man den Körper von anderen, verschiedenen Reizen aus dem Klang und der Umgebung beeinflussen lässt. Dazu wird mit Berührungen und Möglichkeiten der gegenseitigen Unterstützung gearbeitet. Außerdem werdenTranspositionstechniken angewendet, um mit verschiedenen Materialien (Klang, Objekten, Worten, Zeichnungen usw.) zu spielen, die zu einer Inspirationsquelle für die Bewegung werden können. Gegen Ende jedes Workshops wird Josefina Maro denjenigen, die daran interessiert sind, die Möglichkeit bieten, mit einigen der Robotergeräte zu spielen, mit denen sie während ihrer Forschung bei ihrer TANZPAKT-Residenz arbeitet.
 
@@ -35,7 +35,7 @@ Weitere Informationen gibt es unter folgendem Link:
 
 ## Über Josefina Maro
 
-Josefina Maro. 1993. Argentinische Choreografin, Performancekünstlerin und Produzentin. Ihr künstlerischer Fokus liegt in der Erforschung einer hybriden Sprache, in der sie ihre Interessen an Tanz, Klang, Theorie und einem DIY-Ansatz für Technologien zusammenbringen kann. Josefina Maro hat eine formale Ausbildung als Tänzerin und Tanzlehrerin (2011: I.S.P.E.A Danza y Teatro, Chaco Argentina und 2014: Escuela Integral de Teatro Roberto Arlt, UPC, Universidad Provincial de Córdoba, Argentinien). Sie ist Gründungsmitglied von Altibajos Constante Movimiento, einer unabhängigen Tanzkompanie aus Córdoba, Argentinien, mit der sie von 2012 bis 2018 als Tänzerin und Produzentin arbeitet. Seit 2018 lebt sie in Leipzig, wo sie ihre Forschung und Arbeit als unabhängige Künstlerin in Solo- und Kollektivprojekten weiterentwickelt. Sie ist Teil des Duo-Projekts [Post-Organic Bauplan](https://www.postorganic-bauplan.com/), in dem sie an der Entwicklung von selbst hergestellten Roboterprothesen für die Tanzforschung arbeitet. Kürzlich wurde sie zur Teilnahme eingeladen an: DanceWEB Programm vom Impulstanz Festival (Wien), Movement Research an der Judson Church (NYC), Residency CYENS Thinker Maker Space (Nicosia), u.a.
+Josefina Maro. 1993. Argentinische Choreografin, Performancekünstlerin und Produzentin. Ihr künstlerischer Fokus liegt in der Erforschung einer hybriden Sprache, in der sie ihre Interessen an Tanz, Klang, Theorie und einem DIY-Ansatz für Technologien zusammenbringen kann. Josefina Maro hat eine formale Ausbildung als Tänzerin und Tanzlehrerin (2011: I.S.P.E.A Danza y Teatro, Chaco Argentina und 2014: Escuela Integral de Teatro Roberto Arlt, UPC, Universidad Provincial de Córdoba, Argentinien). Sie ist Gründungsmitglied von Altibajos Constante Movimiento, einer unabhängigen Tanzkompanie aus Córdoba, Argentinien, mit der sie von 2012 bis 2018 als Tänzerin und Produzentin arbeitet. Seit 2018 lebt sie in Leipzig, wo sie ihre Forschung und Arbeit als unabhängige Künstlerin in Solo- und Kollektivprojekten weiterentwickelt. Sie ist Teil des Duo-Projekts [Post-Organic Bauplan](https://www.postorganic-bauplan.com/), in dem sie an der Entwicklung von selbst hergestellten Roboterprothesen für die Tanzforschung arbeitet. Kürzlich wurde sie zur Teilnahme eingeladen an: DanceWEB Programm vom Impulstanz Festival (Wien), Movement Research an der Judson Church (NYC), Residency CYENS Thinker Maker Space (Nicosia), u. a.
 
 **Mehr zu Josefina Maro gibt es unter folgenden Links:**
 
@@ -56,10 +56,10 @@ Mehr zur villa/wigman gibt es unter folgenden Links:
 
 ## Über TANZPAKT in residence
 
-TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022-24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
+TANZPAKT in residence ist eine Kooperation zwischen villa\\wigman und TanzNetzDresden, in den Jahren 2022–24 ein umfangreiches Residenzprogramm für Sachsen, das die künstlerische Stärkung der Tanzschaffenden im Freistaat umsetzt.
 
 TANZPAKT in residence versteht sich als grundlegendes Instrument, Künstler:innen in die Exzellenz zu befördern, indem es Zeit-Räume für Forschung zur Verfügung stellt und nachhaltige Strukturen schafft, die der Tanzszene der Region ein professionelles und kontinuierliches Arbeiten ermöglichen.  
-Von 2022-2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.
+Von 2022–2024 werden insgesamt 18 Residenzen ermöglicht. Jedes Jahr findet eine neue Ausschreibung und Auswahl der Residenzen für das Folgejahr statt. Die Vergabe erfolgt über eine Jury.
 
 Weitere Informationen zu TANZPAKT in residence gibt es unter  
 [villawigman.de/tanzpakt-in-residence](https://villawigman.de/tanzpakt-in-residence/)

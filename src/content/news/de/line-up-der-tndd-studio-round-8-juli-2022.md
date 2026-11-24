@@ -1,5 +1,5 @@
 ---
-title: Now it's official - das Line up der vierten TNDD studio round (08.07.2022)
+title: Now it’s official – das Line up der vierten TNDD studio round (08.07.2022)
 date: 2022-06-17
 category: Netzwerk
 author: TanzNetzDresden
@@ -16,7 +16,7 @@ Das komplette Line up der kommenden TNDD studio round Ausgabe, die am 8. Juli wi
 
 Detaillierte Informationen zu den einzelnen Beiträgen der vierten TNDD studio round folgen nun oder können direkt auf der [Unterseite der studio round](/#formate) eingesehen werden. Dort befinden sich alle Informationen auch in englischer Sprache.
 
-### Charles A. Washington: "Acid"
+## Charles A. Washington: „Acid“
 
 ::: bilder
 darstellung: neben
@@ -35,7 +35,7 @@ Charles A. Washington untersucht verschiedene Ansätze zur Bewegung durch Umwelt
 
 [Video auf YouTube ansehen ↗](https://www.youtube.com/watch?v=sxUgzz6wCGg)
 
-### Antonia Peris: "Something missing"
+## Antonia Peris: „Something missing“
 
 Antonia Peris ist eine kolumbianische Künstlerin, die im Bereich der darstellenden Künste tätig ist und einen Background in physischem Theater und Objektmanipulation hat. Sie ist darauf fokussiert, die rohen Geschichten des Alltagslebens in theatralischen und poetischen Universen durch Bewegung, die Mobilität des Körpers und seine Körperlichkeit zu zeigen. Sie besitzt Erfahrung als Performerin in kleinen und großen Shows sowie in der Rolle der Produzentin.
 
@@ -45,7 +45,7 @@ Instagram: [antoniaperis.vpm](https://www.instagram.com/antoniaperis.vpm/)
 
 [Video auf YouTube ansehen ↗](https://www.youtube.com/watch?v=oGn2CppFN0E)
 
-### Paula Caldirola: Manifest
+## Paula Caldirola: Manifest
 
 Paula Caldirolas künstlerischer Werdegang hat mehrere Anteile, die sie immer in eine hybride Position gebracht haben. Sie studierte an der U.N.A. in Argentinien und spezialisierte sich anschließend auf urbane Tanzstile. In den letzten Jahren konzentrierte sie ihre Forschung auf Improvisation, wobei sie weiterhin Tanz mit anderen künstlerischen Ausdrucksformen kombiniert, die sie als dringend notwendig zu Erforschen hält.
 
@@ -57,7 +57,7 @@ Instagram: [instagram.com/lapau.li](https://www.instagram.com/lapau.li/)
 
 [Video auf Vimeo ansehen ↗](https://vimeo.com/716946331?embedded=true&source=video_title&owner=98272959)
 
-### Therese Bendjus & Daria Belous: Studies of Softening *(entfällt leider aufgrund von Krankheit und wird bei der TNDD studio round#5 im kommenden Herbst nachgeholt)*
+## Therese Bendjus & Daria Belous: Studies of Softening *(entfällt leider aufgrund von Krankheit und wird bei der TNDD studio round#5 im kommenden Herbst nachgeholt)*
 
 ::: bilder
 darstellung: neben

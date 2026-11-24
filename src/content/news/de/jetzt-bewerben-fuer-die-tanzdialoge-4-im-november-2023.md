@@ -25,14 +25,14 @@ tanznetzdresden.de/round-table
 
 ## TanzDialoge #4
 
-Die TanzDialoge #4 nehmen 2023 die Vernetzung der Bremer Tanzschaffenden mit Künstler:innen anderer Bundesländer in den Fokus. Es werden fünf Duos aus jeweils zwei Tanzschaffenden - eine Person aus Bremen plus eine aus einem anderen Bundesland - zusammengestellt, die noch nicht miteinander gearbeitet haben. Am Ende der Probenwoche gibt es eine gemeinsame Aufführung der entstandenen Dialoge in Bremen und eine in Bremerhaven.
+Die TanzDialoge #4 nehmen 2023 die Vernetzung der Bremer Tanzschaffenden mit Künstler:innen anderer Bundesländer in den Fokus. Es werden fünf Duos aus jeweils zwei Tanzschaffenden – eine Person aus Bremen plus eine aus einem anderen Bundesland – zusammengestellt, die noch nicht miteinander gearbeitet haben. Am Ende der Probenwoche gibt es eine gemeinsame Aufführung der entstandenen Dialoge in Bremen und eine in Bremerhaven.
 
 **Termine**
 
-- 30.10. - 02.11.2023  - Proben in Bremen ([Schaulust](https://www.bremen-schaulust.de/) und [theaterkontor](http://theaterkontor-bremen.de/))
-- 03.11.2023 - Generalprobe in der Schaulust (Bremen)
-- 04.11.2023 - Vorstellung in der Schaulust (Bremen)
-- 05.11.2023 - Generalprobe und Vorstellung im [Theater im Fischereihafen](https://www.tif-bremerhaven.de/) (Bremerhaven)
+- 30.10. – 02.11.2023  - Proben in Bremen ([Schaulust](https://www.bremen-schaulust.de/) und [theaterkontor](http://theaterkontor-bremen.de/))
+- 03.11.2023 – Generalprobe in der Schaulust (Bremen)
+- 04.11.2023 – Vorstellung in der Schaulust (Bremen)
+- 05.11.2023 – Generalprobe und Vorstellung im [Theater im Fischereihafen](https://www.tif-bremerhaven.de/) (Bremerhaven)
 
 **Rahmenbedingungen**
 

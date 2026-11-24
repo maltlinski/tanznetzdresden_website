@@ -40,7 +40,7 @@ Dieser Workshop stellt eine optionale Ergänzung zum ersten Teil von »TRANSFORM
 ### Informationen zum Workshop
 
 **Titel**: Kathak-Workshop mit Live-Tabla-Musik (im Rahmen von 10 Jahre TanzART)  
-**Termin**: 13. April 2024; 10-13 Uhr  
+**Termin**: 13. April 2024; 10–13 Uhr  
 **Dozent:innen**: Anne Dietrich (Kathaktänzerin) & Ravi Srinivasan (Tablaspieler)  
 **Ort**: [TanzART Atelier](https://www.tanzart-kirschau.de/), Friesestr. 31, 02681 Schirgiswalde-Kirschau  
 **Tickets**: 35 Euro; eine Anmeldung muss via Mail unter [info@tanzart-kirschau.de](mailto:info@tanzart-kirschau.de) vorgenommen werden.
@@ -51,14 +51,14 @@ bilder:
     alt: ""
 :::
 
-## »Kurzstrecke - Einblicke in den zeitgenössischen Tanz«
+## »Kurzstrecke – Einblicke in den zeitgenössischen Tanz«
 
-»Kurzstrecke - Einblicke in den zeitgenössischen Tanz« ist ein Abend vielseitiger Kurzstücke im zeitgenössischen Tanz, präsentiert von Freunden, ehemaligen Residenzkünstler:innen, internationalen Tänzer:innen sowie der assoziierten prospect.dancecompany. Vorab wird es ab 17 Uhr ein kulturpolitisches Gespräch zum Thema Produzieren im ländlichem Raum in Kooperation mit Landesverband der Freien Theater und der Studiotour geben.
+»Kurzstrecke – Einblicke in den zeitgenössischen Tanz« ist ein Abend vielseitiger Kurzstücke im zeitgenössischen Tanz, präsentiert von Freunden, ehemaligen Residenzkünstler:innen, internationalen Tänzer:innen sowie der assoziierten prospect.dancecompany. Vorab wird es ab 17 Uhr ein kulturpolitisches Gespräch zum Thema Produzieren im ländlichem Raum in Kooperation mit Landesverband der Freien Theater und der Studiotour geben.
 
 ### Informationen zur Performance
 
-**Titel**: »Kurzstrecke - Einblicke in den zeitgenössischen Tanz« (im Rahmen von 10 Jahre TanzART)  
-**Termin**: 27. April 2024; 19-21 Uhr; ab 17 Uhr kulturpolitisches Gespräch im Vorfeld  
+**Titel**: »Kurzstrecke – Einblicke in den zeitgenössischen Tanz« (im Rahmen von 10 Jahre TanzART)  
+**Termin**: 27. April 2024; 19–21 Uhr; ab 17 Uhr kulturpolitisches Gespräch im Vorfeld  
 **Ort**: [Galerie Flox](https://www.tanzart-kirschau.de/), Friesestr. 31, 02681 Schirgiswalde-Kirschau  
 **Tickets**: 15 Euro (ermäßigt 12 Euro); zu bestellen via Mail unter [tickets@tanzart-kirschau.de](mailto:tickets@tanzart-kirschau.de)
 
