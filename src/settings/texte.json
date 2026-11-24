@@ -681,6 +681,7 @@
     "abschnitte": {
       "kopf": {
         "titel": "Kopf",
+        "auch": [{ "text": "Personen aus der Datei", "ziel": "redaktion:personen" }],
         "texte": {
           "zurueck": { "wo": "Link oben links (auch ganz unten auf der Seite)", "de": "← Alle Tanzschaffenden", "en": "← All dance artists", "max": 40 },
           "kicker": { "wo": "Kleine Zeile oben", "de": "Tanzschaffende · Dresden", "en": "Dance artists · Dresden", "max": 40 },

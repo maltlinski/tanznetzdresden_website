@@ -794,6 +794,8 @@ export interface Formular {
   el: HTMLElement;
   /** alle Felder prüfen; gibt die Anzahl der Fehler zurück und setzt den Fokus auf den ersten */
   pruefen(extra?: Record<string, string>): number;
+  /** das Feld mit diesem Text (oder diesem Foto, Dateiname) zeigen und den Cursor hineinsetzen */
+  zeigen(text: string): boolean;
 }
 
 /** Englische Felder ein-/ausblenden: Wahl gilt für alle Formulare in diesem Browser */
@@ -882,6 +884,22 @@ export function formular(b: Bereich, e: Eintrag, k: FormKontext): Formular {
   };
   return {
     el,
+    zeigen(text) {
+      const n = (x: string) => x.replace(/\s+/g, ' ').trim();
+      const t = n(text);
+      const felder = [...el.querySelectorAll<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>('input:not([type=checkbox]):not([type=file]), textarea, select')];
+      const lang = (x: HTMLElement) => n(x instanceof HTMLInputElement || x instanceof HTMLTextAreaElement ? x.value : x.textContent ?? '');
+      const ziel: HTMLElement | undefined =
+        felder.find((x) => (x instanceof HTMLSelectElement ? x.value.split('/').pop() === t : lang(x) === t)) ??
+        felder.find((x) => !(x instanceof HTMLSelectElement) && lang(x).includes(t)) ??
+        [...el.querySelectorAll<HTMLElement>('[contenteditable="true"]')].find((x) => lang(x).includes(t));
+      if (!ziel) return false;
+      if (ziel.closest('[data-en-teil]')) enZeigen(true);
+      for (let d = ziel.closest('details'); d; d = d.parentElement?.closest('details') ?? null) d.open = true;
+      ziel.scrollIntoView({ block: 'center' });
+      ziel.focus({ preventScroll: true });
+      return true;
+    },
     pruefen(extra = {}) {
       let erster: Baustein | null = null;
       let n = 0;

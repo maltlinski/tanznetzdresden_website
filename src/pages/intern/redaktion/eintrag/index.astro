@@ -152,6 +152,8 @@ import '../../../../styles/mediathek.css';
     // Dateien, die mit dem Eintrag hochgeladen werden
     const uploads = new Map<string, Blob>();
     const vorschauCache = new Map<string, string | null>();
+    /** geladene Fotos (für die Seite daneben in „Website bearbeiten“) */
+    const bildDateien = new Map<string, Blob>();
     const ORDNER: Record<string, string> = { photos: 'src/assets/photos', personen: 'src/assets/personen', foerderer: 'src/assets/foerderer', downloads: 'public/downloads' };
     let geaendert = false;
     const pfadDerDatei = b.art === 'ordner' ? dateiPfad(b, idParam || 'neu') : b.datei;
@@ -174,7 +176,9 @@ import '../../../../styles/mediathek.css';
             const d = await r!.a.datei(pfad);
             const bytes = Uint8Array.from(atob(d.base64), (c) => c.charCodeAt(0));
             const typ = pfad.endsWith('.png') ? 'image/png' : pfad.endsWith('.webp') ? 'image/webp' : 'image/jpeg';
-            vorschauCache.set(pfad, URL.createObjectURL(new Blob([bytes], { type: typ })));
+            const blob = new Blob([bytes], { type: typ });
+            bildDateien.set(pfad, blob);
+            vorschauCache.set(pfad, URL.createObjectURL(blob));
           } catch {
             vorschauCache.set(pfad, null);
           }
@@ -218,7 +222,42 @@ import '../../../../styles/mediathek.css';
     // Vorschau daneben: die Seite der Website mit den Änderungen, noch bevor gespeichert ist
     const ziel = eintragZiel(b, vorlage, ort.ort);
     const panel = $('[data-vorschau]');
-    if (ziel && panel) {
+    // In der Seitenleiste von „Website bearbeiten“: die Seite daneben ist die Vorschau (seite-inhalte.ts)
+    const eingebettet = document.documentElement.hasAttribute('data-eingebettet') && window.parent !== window;
+    const melden = (x: Record<string, unknown>) => window.parent.postMessage({ ...x, quelle: 'sb-fach' }, location.origin);
+    /** Zustand für die Seite daneben, mit den neuen Fotos als Datei (Dateiname vorher → Foto jetzt) */
+    const zustandFuerSeite = async () => {
+      const z = eintragZustand(b, vorlage, e, neu, ziel?.anker ?? null);
+      const BILD = /\.(jpe?g|png|webp|avif)$/i;
+      const name = (p: string) => p.split('/').pop() ?? p;
+      const fotos: [string, Blob][] = [];
+      for (const [alt, jetzt] of z.ersetzen ?? []) {
+        if (!BILD.test(alt) || !BILD.test(jetzt)) continue;
+        const pfad = [...uploads.keys(), ...r!.stand.dateien.map((d) => d.pfad)].find((p) => name(p) === name(jetzt));
+        if (!pfad) continue;
+        if (!uploads.has(pfad)) await k.vorschau(pfad);
+        const blob = uploads.get(pfad) ?? bildDateien.get(pfad);
+        if (blob) fotos.push([name(alt).replace(/\.[^.]+$/, ''), blob]);
+      }
+      return { ...z, ersetzen: (z.ersetzen ?? []).filter(([alt]) => !BILD.test(alt)), fotos };
+    };
+    if (eingebettet) {
+      let t = 0;
+      const alt = k.geaendert;
+      k.geaendert = () => {
+        alt();
+        melden({ sb: 'offen', ja: true });
+        window.clearTimeout(t);
+        t = window.setTimeout(async () => melden({ sb: 'zustand', zustand: await zustandFuerSeite() }), 200);
+      };
+      $<HTMLAnchorElement>('[data-abbrechen]')!.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        melden({ sb: 'schliessen' });
+      });
+      // angeklickte Stelle der Seite: das passende Feld zeigen
+      const feld = params.get('feld');
+      if (feld) requestAnimationFrame(() => form.zeigen(feld));
+    } else if (ziel && panel) {
       panel.hidden = false;
       $('[data-vs-auf]')!.hidden = false;
       const vs = vorschau(panel, { pfad: ziel.pfad });
@@ -284,6 +323,8 @@ import '../../../../styles/mediathek.css';
         const aenderungen = [...aenderungenFuer(g, e, neu), ...dateien];
         await r!.a.speichern(`${b.einzahl} „${titel}“ ${neu ? 'angelegt' : 'geändert'}`, aenderungen);
         geaendert = false;
+        // „Website bearbeiten“: Änderung bleibt auf der Seite daneben sichtbar, bis die Website neu gebaut ist
+        if (eingebettet) melden({ sb: 'gespeichert', titel, zustand: await zustandFuerSeite() });
         if (b.art === 'einstellung') location.href = redaktionUrl('eintrag/', { b: b.id, gespeichert: '1' });
         else location.href = redaktionUrl('eintrag/', { b: b.id, id: e.id, gespeichert: '1' });
       } catch (err) {

@@ -30,6 +30,8 @@ export interface Zustand {
   hinweise?: string[];
   /** Daten für eine Seite, die sich selbst füllt: gehen an `window.vorschauDaten` im Rahmen (Vorlage „Mein Profil“) */
   daten?: unknown;
+  /** Foto tauschen: [Dateiname ohne Endung, neue Adresse] – alle Bilder der Seite mit diesem Namen */
+  bilder?: [string, string][];
 }
 
 export interface Vorschau {
@@ -59,6 +61,78 @@ const block = (n: Node | null): HTMLElement | null => {
   return el;
 };
 
+/** Bild mit diesem Dateinamen (Astro hängt beim Bauen eine Prüfsumme an: name.abc123.webp) */
+export const bildPasst = (src: string, stamm: string) => decodeURIComponent(src).includes(`/${stamm}.`);
+
+/**
+ * Zustand auf eine geladene Seite anwenden. Jede Runde geht vom veröffentlichten Stand aus (vorher Geändertes kommt
+ * zurück). Auch „Website bearbeiten“ nutzt das für Inhalte aus den Formularen (seite-inhalte.ts).
+ */
+export function anwender(d: Document) {
+  /** veränderte Textknoten mit ihrem Original, damit jede Runde vom veröffentlichten Stand ausgeht */
+  let original = new Map<Text, string>();
+  let htmlOriginal = new Map<Element, string>();
+  let bildOriginal = new Map<Element, [string | null, string | null]>();
+
+  /** alle Textknoten, die einen Text enthalten (veröffentlichter Stand; aktuell = so, wie er gerade angezeigt wird) */
+  function finden(text: string, aktuell = false): Text[] {
+    const t = text.trim();
+    if (!t) return [];
+    const out: Text[] = [];
+    const w = d.createTreeWalker(d.body, NodeFilter.SHOW_TEXT);
+    for (let n = w.nextNode() as Text | null; n; n = w.nextNode() as Text | null) if ((aktuell ? n.data : (original.get(n) ?? n.data)).includes(t)) out.push(n);
+    return out;
+  }
+
+  function zuruecksetzen() {
+    for (const [t, text] of original) t.data = text;
+    for (const [el, html] of htmlOriginal) el.innerHTML = html;
+    for (const [el, [src, srcset]] of bildOriginal) {
+      for (const [k, v] of [['src', src], ['srcset', srcset]] as const) if (v === null) el.removeAttribute(k); else el.setAttribute(k, v);
+    }
+    original = new Map();
+    htmlOriginal = new Map();
+    bildOriginal = new Map();
+    d.querySelectorAll('[data-vs-aus]').forEach((el) => el.removeAttribute('data-vs-aus'));
+  }
+
+  function anwenden(z: Zustand) {
+    zuruecksetzen();
+    for (const [alt, neu] of z.ersetzen ?? []) {
+      const a = alt.split('\n');
+      const b = neu.split('\n');
+      a.forEach((zeile, i) => {
+        if (!zeile.trim() || zeile === b[i]) return;
+        for (const n of finden(zeile)) {
+          if (!original.has(n)) original.set(n, n.data);
+          n.data = n.data.split(zeile.trim()).join((b[i] ?? '').trim());
+        }
+      });
+    }
+    for (const [sel, html] of z.html ?? []) {
+      const el = d.querySelector(sel);
+      if (!el) continue;
+      if (!htmlOriginal.has(el)) htmlOriginal.set(el, el.innerHTML);
+      el.innerHTML = html;
+    }
+    for (const [stamm, url] of z.bilder ?? []) {
+      for (const el of d.querySelectorAll<HTMLImageElement | HTMLSourceElement>('img, picture source')) {
+        if (!bildPasst(`${el.getAttribute('src') ?? ''} ${el.getAttribute('srcset') ?? ''}`, stamm)) continue;
+        if (!bildOriginal.has(el)) bildOriginal.set(el, [el.getAttribute('src'), el.getAttribute('srcset')]);
+        el.removeAttribute('srcset');
+        if (el.tagName === 'IMG') el.setAttribute('src', url);
+      }
+    }
+    if (z.daten !== undefined) (d.defaultView as (Window & { vorschauDaten?: (x: unknown) => void }) | null)?.vorschauDaten?.(z.daten);
+    for (const a of z.aus ?? []) {
+      const els = /^[#.[]/.test(a) ? [...d.querySelectorAll<HTMLElement>(a)] : finden(a).map(block).filter((x): x is HTMLElement => !!x);
+      els.forEach((el) => el.setAttribute('data-vs-aus', ''));
+    }
+  }
+
+  return { anwenden, zuruecksetzen, finden };
+}
+
 export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string; lang?: 'de' | 'en' }): Vorschau {
   const frame = root.querySelector<HTMLIFrameElement>('iframe')!;
   const buehne = frame.parentElement as HTMLElement;
@@ -72,9 +146,7 @@ export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string;
   let ziel: string | null = null;
   let geladen = false;
   let timer = 0;
-  /** veränderte Textknoten mit ihrem Original, damit jede Runde vom veröffentlichten Stand ausgeht */
-  let original = new Map<Text, string>();
-  let htmlOriginal = new Map<Element, string>();
+  let seite: ReturnType<typeof anwender> | null = null;
 
   const doc = () => (geladen ? frame.contentDocument : null);
 
@@ -87,51 +159,10 @@ export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string;
     frame.style.transform = `scale(${s})`;
   }
 
-  function zuruecksetzen(d: Document) {
-    for (const [t, text] of original) t.data = text;
-    for (const [el, html] of htmlOriginal) el.innerHTML = html;
-    original = new Map();
-    htmlOriginal = new Map();
-    d.querySelectorAll('[data-vs-aus]').forEach((el) => el.removeAttribute('data-vs-aus'));
-  }
-
-  /** alle Textknoten, die einen Text enthalten (veröffentlichter Stand; aktuell = so, wie er gerade angezeigt wird) */
-  function finden(d: Document, text: string, aktuell = false): Text[] {
-    const t = text.trim();
-    if (!t) return [];
-    const out: Text[] = [];
-    const w = d.createTreeWalker(d.body, NodeFilter.SHOW_TEXT);
-    for (let n = w.nextNode() as Text | null; n; n = w.nextNode() as Text | null) if ((aktuell ? n.data : (original.get(n) ?? n.data)).includes(t)) out.push(n);
-    return out;
-  }
-
   function anwenden() {
-    const d = doc();
-    if (!d) return;
-    zuruecksetzen(d);
+    if (!doc() || !seite) return;
     const z = quelle();
-    for (const [alt, neu] of z.ersetzen ?? []) {
-      const a = alt.split('\n');
-      const b = neu.split('\n');
-      a.forEach((zeile, i) => {
-        if (!zeile.trim() || zeile === b[i]) return;
-        for (const n of finden(d, zeile)) {
-          if (!original.has(n)) original.set(n, n.data);
-          n.data = n.data.split(zeile.trim()).join((b[i] ?? '').trim());
-        }
-      });
-    }
-    for (const [sel, html] of z.html ?? []) {
-      const el = d.querySelector(sel);
-      if (!el) continue;
-      if (!htmlOriginal.has(el)) htmlOriginal.set(el, el.innerHTML);
-      el.innerHTML = html;
-    }
-    if (z.daten !== undefined) (d.defaultView as (Window & { vorschauDaten?: (x: unknown) => void }) | null)?.vorschauDaten?.(z.daten);
-    for (const a of z.aus ?? []) {
-      const els = /^[#.[]/.test(a) ? [...d.querySelectorAll<HTMLElement>(a)] : finden(d, a).map(block).filter((x): x is HTMLElement => !!x);
-      els.forEach((el) => el.setAttribute('data-vs-aus', ''));
-    }
+    seite.anwenden(z);
     if (hinweisBox) {
       hinweisBox.replaceChildren(...(z.hinweise ?? []).map((h) => Object.assign(document.createElement('li'), { textContent: h })));
       hinweisBox.hidden = !(z.hinweise ?? []).length;
@@ -144,7 +175,7 @@ export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string;
     if (!d) return;
     d.querySelectorAll('[data-vs-fokus]').forEach((el) => el.removeAttribute('data-vs-fokus'));
     if (!ziel) return;
-    const el = /^[#.[]/.test(ziel) ? d.querySelector<HTMLElement>(ziel) : block(finden(d, ziel, true)[0] ?? null);
+    const el = /^[#.[]/.test(ziel) ? d.querySelector<HTMLElement>(ziel) : block(seite?.finden(ziel, true)[0] ?? null);
     if (!el) return;
     el.setAttribute('data-vs-fokus', '');
     // nur im Rahmen scrollen (scrollIntoView würde auch das Formular verschieben)
@@ -154,10 +185,9 @@ export function vorschau(root: HTMLElement, opt: { pfad: string; titel?: string;
 
   frame.addEventListener('load', () => {
     geladen = true;
-    original = new Map();
-    htmlOriginal = new Map();
     const d = frame.contentDocument;
     if (!d) return;
+    seite = anwender(d);
     // Vorschau: keine Animationen, die Inhalte verstecken; Links öffnen nicht im Rahmen
     d.documentElement.classList.add('vorschau');
     const s = d.createElement('style');

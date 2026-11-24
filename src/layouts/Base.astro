@@ -14,7 +14,7 @@ import schriftTitel from '@fontsource/work-sans/files/work-sans-latin-800-normal
 import schriftText from '@fontsource/open-sans/files/open-sans-latin-400-normal.woff2?url';
 import { getImage } from 'astro:assets';
 import { getVerein } from '../lib/settings';
-import { getLang, htmlLang, tr, type Lang } from '../lib/i18n';
+import { getLang, htmlLang, pfadIn, tr, type Lang } from '../lib/i18n';
 import { texte } from '../lib/texte';
 import { CONSENT_VERSION } from '../settings/consent';
 import { gestaltung } from '../settings/gestaltung';
@@ -25,6 +25,8 @@ import Analytics from '../components/Analytics.astro';
 import ogSource from '../assets/photos/duo-rot.jpg';
 import { token } from '../lib/tokens';
 import { jsonImHtml } from '../lib/json-im-html';
+import bilder from '../settings/bilder.json';
+import { bildStilCss, seitenPfad, type BildStile } from '../lib/bild-stil';
 
 export interface Alternates { de?: string | null; en?: string | null }
 
@@ -74,6 +76,7 @@ const jsonLd = {
     addressCountry: 'DE',
   },
 };
+const bildCss = bildStilCss((bilder as unknown as BildStile)[seitenPfad(Astro.url.pathname, import.meta.env.BASE_URL, (p) => pfadIn(p, 'de'))]);
 ---
 <!doctype html>
 <html lang={htmlLang[lang as Lang]} data-consent-version={CONSENT_VERSION}>
@@ -137,6 +140,8 @@ const jsonLd = {
     </script>
     <script type="application/ld+json" set:html={jsonImHtml(jsonLd)} />
     <slot name="head" />
+    {/* Fotos frei formatiert (Redaktion → Website bearbeiten), nur für diese Seite; Regeln und Prüfung: src/lib/bild-stil.ts */}
+    {bildCss && <style is:inline data-bildstil set:html={bildCss} />}
   </head>
   <body>
     <a class="skip-link" href="#inhalt">{t.skip}</a>

@@ -52,6 +52,8 @@ export async function starten(): Promise<Redaktion | null> {
 
 export const redaktionUrl = (pfad = '', params: Record<string, string | undefined> = {}) => {
   const q = new URLSearchParams(Object.entries(params).filter((x): x is [string, string] => x[1] !== undefined));
+  // in der Seitenleiste von „Website bearbeiten“ bleiben (Liste → Eintrag → gespeichert)
+  if (typeof document !== 'undefined' && document.documentElement.hasAttribute('data-eingebettet')) q.set('eingebettet', '1');
   return `${internUrl(`redaktion/${pfad}`)}${q.size ? `?${q}` : ''}`;
 };
 

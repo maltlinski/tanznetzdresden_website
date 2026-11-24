@@ -16,14 +16,20 @@
  * öffnen in einem neuen Tab.
  *
  * Gespeichert wird wie unter Texte (src/lib/texte-regeln.ts: prüfen, übernehmen, Datei schreiben) über die Funktion
- * „inhalte“; die Website zeigt die Änderung nach 2–3 Minuten. Listen und Inhalte (Partner, Personen, Formate …)
- * öffnet „Listen und Inhalte“ in der Leiste im Formular.
+ * „inhalte“; die Website zeigt die Änderung nach 2–3 Minuten. Inhalte aus Listen und Fotos (Formate, Personen,
+ * Partner, Vereinsdaten …) öffnen per Klick ihr Formular in einer Seitenleiste (seite-inhalte.ts).
  */
-import { alleTexte, dateiText, platzhalter, textId, textPruefen, uebernehmen, type TextEintrag, type TextSeite } from '../../../lib/texte-regeln';
+import { pfadIn } from '../../../lib/i18n';
+import { alleTexte, dateiText, fuellen, platzhalter, textId, textPruefen, uebernehmen, type TextEintrag, type TextSeite } from '../../../lib/texte-regeln';
 import type { Redaktion } from './seite';
 import { meldung, websiteUrl, zielName, zielUrl } from './seite';
+import { inhalte } from './seite-inhalte';
+import { fotosFormatieren, type Fotos } from './seite-fotos';
+import { bildStilPruefen, type BildStil, type BildStile } from '../../../lib/bild-stil';
 
 const PFAD = 'src/settings/texte.json';
+/** Fotos frei formatiert (src/lib/bild-stil.ts) */
+const BILDER = 'src/settings/bilder.json';
 type Sprache = 'de' | 'en';
 interface Wert {
   de: string;
@@ -36,6 +42,8 @@ interface Treffer {
   els: HTMLElement[];
   /** nur eine Zeile eines mehrzeiligen Texts (Zeilen in getrennten Elementen, z. B. Karten, Fragen und Antworten) */
   zeile?: number;
+  /** Text mit Platzhaltern („{zahl} Formate“): was die Website dafür einsetzt; beim Bearbeiten steht die Vorlage da */
+  werte?: Record<string, string>;
 }
 /**
  * Wo ein Text gesucht wird: zuerst im bevorzugten Teil der Seite, sonst wo erlaubt. So gehört ein gleicher Text an
@@ -63,6 +71,11 @@ function ortFuer(seite: string, abschnitt: string): Ort {
 const UNSICHTBAR = 'script, style, template, noscript, textarea, svg, .sb-leiste';
 
 const norm = (s: string) => s.replace(/\s+/g, '');
+/** Vorlage mit Platzhaltern als Suchmuster: „{zahl} Formate.“ findet „Acht Formate.“ und merkt sich „Acht“ */
+const muster = (vorlage: string) =>
+  new RegExp(`^${vorlage.trim().split(/(\{[a-z]+\})/i).map((s, i) => (i % 2 ? '([\\s\\S]+?)' : s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/\s+/g, '\\s*'))).join('')}$`, 'i');
+/** Zeilen als Knoten (Zeilenumbruch als <br>) */
+const zeilenKnoten = (d: Document, text: string) => text.split('\n').flatMap((z, i) => (i ? [d.createElement('br'), d.createTextNode(z)] : [d.createTextNode(z)]));
 /**
  * Text eines beschreibbaren Elements, wie er gespeichert wird: aus dem Inhalt (nicht innerText, das die
  * Großschreibung aus dem CSS übernähme); Zeilen an <br> und Blöcken (zweizeilige Überschriften).
@@ -97,7 +110,15 @@ const STIL = `
   [data-sb-text]:hover { outline: 1.5px dashed var(--cyan) !important; }
   [data-sb-text]:focus { outline: 2px solid var(--magenta) !important; }
   [data-sb-text].sb-geaendert:not(:focus) { outline: 2px dotted var(--magenta) !important; }
-  [data-sb-aus] { opacity: 0.4; outline: 2px dashed var(--magenta) !important; }
+  [data-sb-aus], [data-vs-aus] { opacity: 0.4; outline: 2px dashed var(--magenta) !important; }
+  [data-sb-feld], [data-sb-foto] { cursor: pointer; }
+  [data-sb-inhalt].sb-ueber, [data-sb-extern].sb-ueber { outline: 2px dashed var(--cyan) !important; outline-offset: 3px; }
+  html[data-sb-alles] [data-sb-feld], html[data-sb-alles] [data-sb-foto] { outline: 1.5px dashed color-mix(in srgb, var(--cyan) 80%, transparent); outline-offset: 2px; }
+  .sb-chip { position: absolute; z-index: 2147483001; padding: 5px 9px; border: 0; border-radius: 0; background: var(--cyan); color: var(--purple); cursor: pointer;
+    font: 600 11px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+  .sb-chip[hidden] { display: none; }
+  .sb-chip:hover, .sb-chip:focus-visible { background: #fff; outline: 2px solid var(--purple); }
+  html[data-sb-alles] [data-sb-text]:not(:focus):not(.sb-geaendert) { outline: 1.5px dashed color-mix(in srgb, var(--magenta) 70%, transparent); }
   .sb-leiste { position: absolute; z-index: 2147483000; display: flex; flex-wrap: wrap; align-items: center; gap: 2px 8px; max-width: calc(100vw - 16px);
     padding: 4px 6px; background: var(--purple); color: #fff; font: 600 11px/1.4 var(--font-mono); letter-spacing: 0.08em; text-transform: uppercase; }
   .sb-leiste[hidden] { display: none; }
@@ -111,7 +132,8 @@ const STIL = `
 export function seiteBearbeiten(r: Redaktion) {
   const $ = <T extends HTMLElement = HTMLElement>(sel: string) => document.querySelector<T>(sel);
   const root = $('[data-sb]')!;
-  const frame = root.querySelector<HTMLIFrameElement>('iframe')!;
+  const frame = root.querySelector<HTMLIFrameElement>('.sb__buehne iframe')!;
+  const inh = inhalte(r, (text, art) => meldung(text, art, $('[data-sb-meldung]')));
   const buehne = frame.parentElement as HTMLElement;
   const params = new URLSearchParams(location.search);
   let seite = params.get('s') ?? 'startseite';
@@ -126,7 +148,16 @@ export function seiteBearbeiten(r: Redaktion) {
   const zurueckL: string[] = [];
   const vorL: string[] = [];
   let tippTimer = 0;
-  let letzter = '[]';
+  /** Fotos frei formatiert: gespeicherter Stand und Arbeitsstand (Seite → Foto → Stil) */
+  let bilderGespeichert: BildStile = {};
+  let bilderSha: string | null = null;
+  let bilderNeu: BildStile = {};
+  let fotos: Fotos | null = null;
+  let fotoModus = false;
+  /** Verlauf: Texte und Fotos zusammen */
+  const schnappschuss = () => JSON.stringify({ t: [...neu], f: bilderNeu });
+  const ohneAenderung = () => JSON.stringify({ t: [], f: bilderGespeichert });
+  let letzter = '{"t":[],"f":{}}';
 
   const seiteVon = (id: string) => datei[id] as TextSeite | undefined;
   const wahl = $<HTMLSelectElement>('[data-sb-seite]')!;
@@ -138,6 +169,14 @@ export function seiteBearbeiten(r: Redaktion) {
   };
   /** alle ungespeicherten Änderungen, auch auf Seiten, die man inzwischen verlassen hat */
   const offen = () => alleTexte(datei).filter((x) => geaendert(textId(x.seite, x.abschnitt, x.key), x.e));
+  /** geänderte Fotos: [Seite, Foto] */
+  const fotoAenderungen = () =>
+    [...new Set([...Object.keys(bilderNeu), ...Object.keys(bilderGespeichert)])].flatMap((p) =>
+      [...new Set([...Object.keys(bilderNeu[p] ?? {}), ...Object.keys(bilderGespeichert[p] ?? {})])]
+        .filter((f) => JSON.stringify(bilderNeu[p]?.[f] ?? null) !== JSON.stringify(bilderGespeichert[p]?.[f] ?? null))
+        .map((f) => [p, f] as const),
+    );
+  const pfadJetzt = () => pfad ?? seiteVon(seite)?.pfad ?? '';
   const basis = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   /** Seite im Seitenplan zu einer Adresse: genau diese, sonst die mit dem längsten passenden Anfang (Profil unter netzwerk/) */
   const seiteFuer = (p: string): string | null => {
@@ -159,17 +198,16 @@ export function seiteBearbeiten(r: Redaktion) {
 
   // ---------- Leiste oben ----------
   function stand() {
-    const n = offen().length;
-    const seiten = new Set(offen().map((x) => x.seite)).size;
-    $('[data-sb-stand]')!.textContent = n
-      ? `${n} ${n === 1 ? 'Änderung' : 'Änderungen'}${seiten > 1 ? ` auf ${seiten} Seiten` : ''}, nicht gespeichert`
-      : 'Alles gespeichert';
+    const n = offen().length + fotoAenderungen().length;
+    const seiten = new Set([...offen().map((x) => seiteVon(x.seite)?.pfad ?? x.seite), ...fotoAenderungen().map(([p]) => p)]).size;
+    const standEl = $('[data-sb-stand]')!;
+    standEl.textContent = n ? `${n} ${n === 1 ? 'Änderung' : 'Änderungen'}${seiten > 1 ? ` auf ${seiten} Seiten` : ''}` : 'Alles gespeichert';
+    standEl.title = n ? 'Noch nicht gespeichert' : '';
     $<HTMLButtonElement>('[data-sb-speichern]')!.disabled = !n;
     $<HTMLButtonElement>('[data-sb-verwerfen]')!.disabled = !n;
     $<HTMLButtonElement>('[data-sb-zurueck]')!.disabled = !zurueckL.length;
     $<HTMLButtonElement>('[data-sb-vor]')!.disabled = !vorL.length;
   }
-  const schnappschuss = () => JSON.stringify([...neu]);
   /** Verlauf: Tippen kurz sammeln, dann ein Schritt */
   function merken(sofort = false) {
     window.clearTimeout(tippTimer);
@@ -185,8 +223,11 @@ export function seiteBearbeiten(r: Redaktion) {
     else tippTimer = window.setTimeout(tun, 600);
   }
   function wiederherstellen(s: string) {
-    neu = new Map(JSON.parse(s) as [string, Wert][]);
+    const x = JSON.parse(s) as { t: [string, Wert][]; f: BildStile };
+    neu = new Map(x.t);
+    bilderNeu = x.f;
     letzter = s;
+    fotos?.zeichnen();
     for (const t of treffer) zeigen(t);
     weitere();
     stand();
@@ -266,14 +307,24 @@ export function seiteBearbeiten(r: Redaktion) {
     const ul = $('[data-sb-inhalte]')!;
     const s = seiteVon(seite);
     const ziele = s ? Object.entries(s.abschnitte).flatMap(([aid, a]) => (a.auch ?? []).map((z) => ({ ...z, von: `${seite}.${aid}` }))) : [];
-    const li = (text: string, href: string) => {
-      const a = Object.assign(document.createElement('a'), { href, target: '_blank', rel: 'noopener', textContent: text });
+    const li = (text: string, href: string, daneben = false) => {
+      const a = Object.assign(document.createElement('a'), { href, textContent: text }, daneben ? {} : { target: '_blank', rel: 'noopener' });
+      // Listen der Redaktion in der Seitenleiste (die Seite zeigt die Änderungen gleich), Kalender und News im neuen Tab
+      if (daneben) {
+        a.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          a.closest('details')?.removeAttribute('open');
+          const u = new URL(href, location.href);
+          u.searchParams.set('eingebettet', '1');
+          inh.liste(u.href);
+        });
+      }
       const l = document.createElement('li');
       l.append(a);
       return l;
     };
     ul.replaceChildren(
-      ...ziele.map((z) => li(`${z.text} · ${zielName(z.ziel)} ↗`, zielUrl(z.ziel, z.von))),
+      ...ziele.map((z) => (z.ziel.startsWith('redaktion:') ? li(`${z.text} · ${zielName(z.ziel)}`, zielUrl(z.ziel, z.von), true) : li(`${z.text} · ${zielName(z.ziel)} ↗`, zielUrl(z.ziel, z.von)))),
       li('Alle Texte dieser Seite (auch Platzhalter, Ausgeblendetes) ↗', `${location.pathname.replace(/seite-bearbeiten\/?$/, 'texte/')}?seite=${seite}`),
     );
   }
@@ -294,7 +345,8 @@ export function seiteBearbeiten(r: Redaktion) {
     const s = seiteVon(seite);
     const p = pfad ?? s?.pfad ?? '';
     treffer = [];
-    frame.src = websiteUrl(`${lang === 'en' ? 'en/' : ''}${p}`);
+    // englische Seiten haben eigene Adressen (formate/ → en/formats/)
+    frame.src = websiteUrl(lang === 'en' ? `en/${pfadIn(p, 'en')}` : p);
     $('[data-sb-titel]')!.textContent = s?.titel ?? 'Seite';
     const nurVorstand = !!s?.nurVorstand && !r.vorstand;
     meldung(nurVorstand ? 'Diese Seite ändert nur der Vorstand.' : '', 'error', $('[data-sb-meldung]'));
@@ -311,15 +363,18 @@ export function seiteBearbeiten(r: Redaktion) {
     const ganz = (lang === 'en' && w.en) || w.de;
     return t.zeile === undefined ? ganz : (ganz.split('\n')[t.zeile] ?? '');
   };
+  /** wie das Element ursprünglich aussah (mit eigener Auszeichnung, z. B. zweite Zeile in Cyan) */
+  const urform = new WeakMap<HTMLElement, { text: string; knoten: Node[] }>();
   function zeigen(t: Treffer) {
     const w = wert(t.id, t.e);
-    const text = textVon(t);
+    const text = t.werte ? fuellen(textVon(t), t.werte) : textVon(t);
     const anders = geaendert(t.id, t.e);
     for (const el of t.els) {
       const d = el.ownerDocument;
       if (d.activeElement !== el && lesen(el, true) !== text) {
-        // Zeilen als <br>, sonst nur Text (eigene Auszeichnung der Zeilen geht dabei verloren, bis gespeichert ist)
-        el.replaceChildren(...text.split('\n').flatMap((z, i) => (i ? [d.createElement('br'), d.createTextNode(z)] : [d.createTextNode(z)])));
+        // gleicher Text wie vorher: ursprüngliche Auszeichnung zurück; sonst Zeilen als <br> (Auszeichnung erst nach dem Speichern wieder)
+        const u = urform.get(el);
+        el.replaceChildren(...(u && u.text === text ? u.knoten.map((k) => k.cloneNode(true)) : zeilenKnoten(d, text)));
       }
       el.classList.toggle('sb-geaendert', anders);
       if (w.aus) el.setAttribute('data-sb-aus', '');
@@ -332,23 +387,49 @@ export function seiteBearbeiten(r: Redaktion) {
     const stil = d.createElement('style');
     stil.textContent = STIL;
     d.head.append(stil);
+    markierenAn();
+    // Fotos frei formatieren (erweitert): Stile dieser Seite aus dem Arbeitsstand
+    const fp = pfadJetzt();
+    fotos = fotosFormatieren(d, {
+      lesen: () => bilderNeu[fp] ?? {},
+      setzen: (stamm: string, st: BildStil | null, fertig: boolean) => {
+        const seiteF = { ...(bilderNeu[fp] ?? {}) };
+        if (st) seiteF[stamm] = st;
+        else delete seiteF[stamm];
+        bilderNeu = { ...bilderNeu, [fp]: seiteF };
+        if (!Object.keys(seiteF).length) delete bilderNeu[fp];
+        if (fertig) merken(true);
+        stand();
+      },
+    });
+    fotos.modus(fotoModus);
     // Navigieren geht wie auf der Website; ein Klick in einen Text bearbeitet ihn (öffnen: „Link öffnen“ in der Leiste).
     // Externe Links, Dateien und der interne Bereich öffnen in einem neuen Tab.
     d.addEventListener('click', (ev) => {
       const t = ev.target as Element;
-      if (t.closest('.sb-leiste')) return;
+      if (t.closest('.sb-leiste, .sb-chip')) return;
       const text = t.closest<HTMLElement>('[data-sb-text]');
       // Text wird gerade bearbeitet (auch ein Linktext nach dem Doppelklick): nicht folgen
       if (text?.isContentEditable) return ev.preventDefault();
+      // Inhalt aus einer Liste oder Foto: Formular in der Seitenleiste
+      const inhalt = text ? null : t.closest<HTMLElement>('[data-sb-feld], [data-sb-foto]');
       const a = t.closest<HTMLAnchorElement>('a[href]');
-      if (!a || (a.getAttribute('href') ?? '').startsWith('#')) return text ? ev.preventDefault() : undefined;
+      if (!a || (a.getAttribute('href') ?? '').startsWith('#')) {
+        if (inhalt) {
+          if (!t.closest('summary')) ev.preventDefault();
+          inh.oeffnen(inhalt);
+          return;
+        }
+        return text ? ev.preventDefault() : undefined;
+      }
       const url = new URL(a.href, d.baseURI);
       const imRahmen = websiteLink(url) && a.target !== '_blank' && !a.hasAttribute('download');
-      // Linktext: kurz warten, ob ein Doppelklick (Bearbeiten) folgt
-      if (text) {
+      // Text oder Inhalt in einem Link: kurz warten, ob ein Doppelklick (Bearbeiten) folgt
+      if (text || inhalt) {
         ev.preventDefault();
         window.clearTimeout(linkTimer);
         if (ev.detail < 2) linkTimer = window.setTimeout(() => folgen(url, imRahmen), 280);
+        else if (inhalt) inh.oeffnen(inhalt);
         return;
       }
       if (imRahmen) return;
@@ -426,17 +507,57 @@ export function seiteBearbeiten(r: Redaktion) {
       });
     };
 
+    /** Text mit Platzhaltern: Elemente, deren ganzer Text zur Vorlage passt, je mit den eingesetzten Werten */
+    const findenMuster = (vorlage: string, b: Ort): { els: HTMLElement[]; werte: Record<string, string> }[] => {
+      const namen = [...vorlage.matchAll(/\{([a-z]+)\}/gi)].map((m) => m[1]);
+      const fest = norm(vorlage.split(/\{[a-z]+\}/i).sort((x, y) => norm(y).length - norm(x).length)[0] ?? '');
+      if (fest.length < 3) return [];
+      const re = muster(vorlage);
+      const els: { el: HTMLElement; m: RegExpExecArray }[] = [];
+      for (const [k, liste] of index) {
+        if (!k.includes(fest)) continue;
+        for (const el of liste) {
+          const m = frei(el) ? re.exec(lesen(el, true)) : null;
+          if (m) els.push({ el, m });
+        }
+      }
+      const innen = els.filter((x) => !els.some((o) => o !== x && x.el.contains(o.el)));
+      const hier = new Set(passend(innen.map((x) => x.el), b));
+      const gruppen = new Map<string, { els: HTMLElement[]; werte: Record<string, string> }>();
+      for (const { el, m } of innen.filter((x) => hier.has(x.el))) {
+        const werte = Object.fromEntries(namen.map((n, i) => [n, m[i + 1].trim()]));
+        const key = JSON.stringify(werte);
+        if (!gruppen.has(key)) gruppen.set(key, { els: [], werte });
+        gruppen.get(key)!.els.push(el);
+      }
+      return [...gruppen.values()];
+    };
+
     treffer = [];
     const gefundenIds = new Set<string>();
     // zuerst die Texte dieser Seite, dann „Auf jeder Seite“ (Menü, Fuß, Hinweise)
     const reihe = [...eintraege().filter((x) => x.seite !== 'allgemein'), ...eintraege().filter((x) => x.seite === 'allgemein')];
     for (const { seite: s, abschnitt, key, e } of reihe) {
-      if (e.aus || platzhalter(e.de).length || /Browser-Tab|Suchmaschinen/.test(e.wo)) continue;
+      if (e.aus || /Browser-Tab|Suchmaschinen/.test(e.wo)) continue;
       const id = textId(s, abschnitt, key);
       const b = ortFuer(s, abschnitt);
+      const mehrzeilig = (e.zeilen ?? 1) > 1 || e.de.includes('\n');
+      if (platzhalter(e.de).length) {
+        // gespeicherter Stand, sonst (fester Testlauf) die ursprüngliche Fassung
+        const vorlagen = lang === 'en' ? [e.en || e.de, e.ursprung?.en || e.ursprung?.de] : [e.de, e.ursprung?.de];
+        let gruppen: ReturnType<typeof findenMuster> = [];
+        for (const v of vorlagen) if (v && !gruppen.length) gruppen = findenMuster(v, b);
+        for (const g of gruppen) {
+          const t: Treffer = { id, e, els: g.els, werte: g.werte };
+          treffer.push(t);
+          for (const el of t.els) beschreibbar(el, t, mehrzeilig, leiste);
+          zeigen(t);
+        }
+        if (gruppen.length) gefundenIds.add(id);
+        continue;
+      }
       // wie die Website den Text gerade zeigt: gespeicherter Stand oder (fester Testlauf) die ursprüngliche Fassung
       const kandidaten = lang === 'en' ? [e.en || e.de, e.ursprung?.en || e.ursprung?.de] : [e.de, e.ursprung?.de];
-      const mehrzeilig = (e.zeilen ?? 1) > 1 || e.de.includes('\n');
       const neueTreffer: Treffer[] = [];
       for (const k of kandidaten) {
         if (!k) continue;
@@ -463,11 +584,17 @@ export function seiteBearbeiten(r: Redaktion) {
       if (neueTreffer.length) gefundenIds.add(id);
     }
     weitere(gefundenIds);
-    $('[data-sb-zahl]')!.textContent = `${gefundenIds.size} Texte direkt auf der Seite`;
+    const zahl = $('[data-sb-zahl]')!;
+    zahl.textContent = `${gefundenIds.size} Texte direkt auf der Seite`;
+    // Inhalte aus Listen und Fotos (Formate, Personen, Partner …): Klick öffnet das Formular
+    void inh.seite(d, [seiteVon(seite), seiteVon('allgemein')], pfad ?? seiteVon(seite)?.pfad ?? '').then((n) => {
+      if (n) zahl.textContent = `${gefundenIds.size} Texte und ${n} ${n === 1 ? 'Inhalt' : 'Inhalte'} direkt auf der Seite`;
+    });
   }
 
   function beschreibbar(el: HTMLElement, t: Treffer, mehrzeilig: boolean, leiste: HTMLElement) {
     if (root.dataset.gesperrt === 'true') return;
+    if (!urform.has(el)) urform.set(el, { text: lesen(el, true), knoten: [...el.childNodes].map((k) => k.cloneNode(true)) });
     const an = () => {
       try {
         el.contentEditable = mehrzeilig ? 'true' : 'plaintext-only';
@@ -548,7 +675,17 @@ export function seiteBearbeiten(r: Redaktion) {
       leiste.style.left = `${Math.max(8, Math.min(rect.left + (d.defaultView?.scrollX ?? 0), (d.defaultView?.innerWidth ?? 800) - leiste.offsetWidth - 8))}px`;
     };
     // Leiste nur beim Bearbeiten (ein Link bekommt den Fokus auch beim Anklicken – dort erst nach dem Doppelklick)
-    el.addEventListener('focus', () => el.isContentEditable && leisteZeigen());
+    el.addEventListener('focus', () => {
+      if (!el.isContentEditable) return;
+      // Text mit Platzhaltern: zum Bearbeiten die Vorlage zeigen („{zahl} Formate“), Cursor ans Ende
+      if (t.werte && lesen(el, true) !== textVon(t)) {
+        el.replaceChildren(...zeilenKnoten(d, textVon(t)));
+        const sel = d.getSelection();
+        sel?.selectAllChildren(el);
+        sel?.collapseToEnd();
+      }
+      leisteZeigen();
+    });
     el.addEventListener('blur', () => {
       leiste.hidden = true;
       if (imLink) el.removeAttribute('contenteditable');
@@ -565,8 +702,8 @@ export function seiteBearbeiten(r: Redaktion) {
         text = zeilen.join('\n');
       }
       neu.set(t.id, lang === 'en' ? { ...w, en: text } : { ...w, de: text });
-      // dieselbe Stelle anderswo auf der Seite mitziehen
-      for (const o of t.els) if (o !== el) o.textContent = eigen;
+      // dieselbe Stelle anderswo auf der Seite mitziehen (das Element mit dem Cursor bleibt, wie es ist)
+      for (const o of treffer) if (o.id === t.id) zeigen(o);
       el.classList.toggle('sb-geaendert', geaendert(t.id, t.e));
       merken();
       stand();
@@ -594,6 +731,8 @@ export function seiteBearbeiten(r: Redaktion) {
     let p = decodeURIComponent(ort.pathname.slice(basis.length));
     lang = p.startsWith('en/') || p === 'en' ? 'en' : 'de';
     p = p.replace(/^en(\/|$)/, '');
+    // Seiten und Texte stehen unter der deutschen Adresse
+    if (lang === 'en') p = pfadIn(p, 'de');
     root.querySelectorAll('[data-sb-sprache]').forEach((x) => x.setAttribute('aria-pressed', String((x as HTMLElement).dataset.sbSprache === lang)));
     const id = seiteFuer(p) ?? seite;
     if (id !== seite) {
@@ -626,7 +765,8 @@ export function seiteBearbeiten(r: Redaktion) {
     d.addEventListener('keydown', tasten);
     // warten, bis der Auftritt der Köpfe die Wörter der Headline wieder zusammengesetzt hat
     const start = Date.now();
-    const warten = () => (d.querySelector('.kopf-wort') && Date.now() - start < 4000 ? window.setTimeout(warten, 150) : einrichten(d));
+    // (geteilte Wörter: .kopf-wort; schon geteilte Headlines behalten data-kopf-wort, dort läuft noch die Deckkraft)
+    const warten = () => (d.querySelector('.kopf-wort, [data-kopf-wort][style*="opacity"]') && Date.now() - start < 4000 ? window.setTimeout(warten, 150) : einrichten(d));
     window.setTimeout(warten, 300);
   });
 
@@ -655,6 +795,22 @@ export function seiteBearbeiten(r: Redaktion) {
   document.addEventListener('keydown', (ev) => {
     if (!(ev.target as Element).closest('input, textarea, select')) tasten(ev);
   });
+  // Bearbeitbares zeigen: alles umranden, was sich anklicken lässt (bleibt beim Navigieren an)
+  const markieren = $<HTMLButtonElement>('[data-sb-markieren]')!;
+  const markierenAn = () => frame.contentDocument?.documentElement.toggleAttribute('data-sb-alles', markieren.getAttribute('aria-pressed') === 'true');
+  markieren.addEventListener('click', () => {
+    markieren.setAttribute('aria-pressed', String(markieren.getAttribute('aria-pressed') !== 'true'));
+    markierenAn();
+  });
+  // Fotos frei formatieren: Ausschnitt, Zoom, ganz zeigen (seite-fotos.ts)
+  const fotoKnopf = $<HTMLButtonElement>('[data-sb-fotos]')!;
+  fotoKnopf.addEventListener('click', () => {
+    fotoModus = !fotoModus;
+    fotoKnopf.setAttribute('aria-pressed', String(fotoModus));
+    fotos?.modus(fotoModus);
+    $('[data-sb-hinweis-fotos]')!.hidden = !fotoModus;
+    $('[data-sb-hinweis-text]')!.hidden = fotoModus;
+  });
   $('[data-sb-zurueck]')!.addEventListener('click', zurueck);
   $('[data-sb-vor]')!.addEventListener('click', vor);
   root.querySelectorAll<HTMLButtonElement>('[data-sb-geraet]').forEach((b) =>
@@ -682,7 +838,7 @@ export function seiteBearbeiten(r: Redaktion) {
     if (!confirm('Alle ungespeicherten Änderungen verwerfen?')) return;
     merken(true);
     zurueckL.push(letzter);
-    wiederherstellen('[]');
+    wiederherstellen(ohneAenderung());
   });
   $<HTMLButtonElement>('[data-sb-speichern]')!.addEventListener('click', async () => {
     const liste = offen();
@@ -698,23 +854,33 @@ export function seiteBearbeiten(r: Redaktion) {
     }
     const kopie = structuredClone(datei);
     const n = uebernehmen(kopie, new Map(liste.map((x) => [textId(x.seite, x.abschnitt, x.key), neu.get(textId(x.seite, x.abschnitt, x.key))!])));
-    if (!n) return stand();
+    const nf = fotoAenderungen().length;
+    if (!n && !nf) return stand();
     const knopf = $<HTMLButtonElement>('[data-sb-speichern]')!;
     knopf.disabled = true;
     try {
       const namen = [...new Set(liste.map((x) => (datei[x.seite] as TextSeite).titel))].join(', ');
-      await r.a.speichern(`Texte: ${namen} (${n} ${n === 1 ? 'Text' : 'Texte'}, auf der Seite)`, [{ pfad: PFAD, text: dateiText(kopie), alt: sha }]);
+      // Fotos: nur geprüfte Werte, leere Seiten fallen weg
+      const bilderText = `${JSON.stringify(Object.fromEntries(Object.entries(bilderNeu).map(([p, fs]) => [p, Object.fromEntries(Object.entries(fs).map(([f, st]) => [f, bildStilPruefen(st)]).filter(([, st]) => st))]).filter(([, fs]) => Object.keys(fs).length)), null, 2)}\n`;
+      const teile = [n ? `Texte: ${namen} (${n} ${n === 1 ? 'Text' : 'Texte'}` : '', nf ? `${n ? '' : 'Fotos ('}${n ? ', ' : ''}${nf} ${nf === 1 ? 'Foto' : 'Fotos'} formatiert` : ''].filter(Boolean).join('');
+      await r.a.speichern(`${teile}, auf der Seite)`, [
+        ...(n ? [{ pfad: PFAD, text: dateiText(kopie), alt: sha }] : []),
+        ...(nf ? [{ pfad: BILDER, text: bilderText, alt: bilderSha }] : []),
+      ]);
       await dateiLaden();
       // neue Fassung ist jetzt der gespeicherte Stand; die Treffer zeigen auf die neuen Einträge
       const nach = new Map(alleTexte(datei).map((x) => [textId(x.seite, x.abschnitt, x.key), x.e]));
       for (const t of treffer) t.e = nach.get(t.id) ?? t.e;
       neu = new Map();
+      bilderNeu = structuredClone(bilderGespeichert);
       zurueckL.length = 0;
       vorL.length = 0;
-      letzter = '[]';
+      letzter = schnappschuss();
       for (const t of treffer) zeigen(t);
+      fotos?.zeichnen();
       weitere();
-      meldung(`Gespeichert: ${n} ${n === 1 ? 'Text' : 'Texte'}. Die Website zeigt das in 2–3 Minuten.`, 'ok', $('[data-sb-meldung]'));
+      const was = [n ? `${n} ${n === 1 ? 'Text' : 'Texte'}` : '', nf ? `${nf} ${nf === 1 ? 'Foto' : 'Fotos'}` : ''].filter(Boolean).join(' und ');
+      meldung(`Gespeichert: ${was}. Die Website zeigt das in 2–3 Minuten.`, 'ok', $('[data-sb-meldung]'));
     } catch (e) {
       meldung((e as Error).message, 'error', $('[data-sb-meldung]'));
     } finally {
@@ -722,20 +888,26 @@ export function seiteBearbeiten(r: Redaktion) {
     }
   });
   addEventListener('beforeunload', (ev) => {
-    if (offen().length) ev.preventDefault();
+    if (offen().length || fotoAenderungen().length || inh.offen()) ev.preventDefault();
   });
 
   async function dateiLaden() {
-    const g = await r.a.lesen([PFAD]);
+    const g = await r.a.lesen([PFAD, BILDER]);
     const d = g.dateien[PFAD];
     if (!d) throw new Error('Die Datei mit den Texten gibt es im Repository noch nicht (src/settings/texte.json).');
     sha = d.sha;
     datei = JSON.parse(d.text) as Record<string, unknown>;
+    // Fotos: Datei fehlt noch = nichts formatiert (wird beim ersten Speichern angelegt)
+    const b = g.dateien[BILDER];
+    bilderSha = b?.sha ?? null;
+    bilderGespeichert = b ? (JSON.parse(b.text) as BildStile) : {};
   }
 
   return (async () => {
     try {
       await dateiLaden();
+      bilderNeu = structuredClone(bilderGespeichert);
+      letzter = schnappschuss();
       root.hidden = false;
       laden();
       stand();

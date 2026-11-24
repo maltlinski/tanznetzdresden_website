@@ -86,6 +86,8 @@ const LEISTE_KEY = 'tndd-intern-leiste';
 ---
 <Base title={`${title} · Intern`} noindex>
   <script is:inline slot="head" define:vars={{ weiche, LEISTE_KEY }}>
+    // In der Seitenleiste von „Website bearbeiten“ (?eingebettet=1): ohne Rahmen, vor dem ersten Zeichnen
+    if (new URLSearchParams(location.search).has('eingebettet')) document.documentElement.setAttribute('data-eingebettet', '');
     // Seitenleiste eingeklappt? Vor dem ersten Zeichnen setzen, damit nichts springt
     try {
       if (localStorage.getItem(LEISTE_KEY) === 'zu') document.documentElement.classList.add('leiste-zu');

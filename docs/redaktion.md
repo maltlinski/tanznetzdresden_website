@@ -24,20 +24,40 @@ Auf schmalen Bildschirmen klappt der Knopf „Menü“ die Leiste auf.
 
 **Auf der Seite bearbeiten** (Seiten → Knopf je Seite, oder „Seite bearbeiten“ auf der Website): die echte Seite im
 Vollbild (`src/pages/intern/redaktion/seite-bearbeiten/`, Logik `src/scripts/intern/redaktion/seite-bearbeiten.ts`).
-Feste Texte der Seite und „Auf jeder Seite“ (Überschriften, Einleitungen, Knöpfe, Menü, Fuß) anklicken und tippen;
-zweizeilige Überschriften mit der Eingabetaste. Über dem Text: wo er steht, Zeichen, Zurücksetzen, Ausblenden (wo
-erlaubt). Oben: Seite wählen, Desktop/Mobil, DE/EN, Rückgängig/Wiederholen (auch Strg+Z), Verwerfen, Speichern
-(schreibt `texte.json` wie unter Texte, online nach 2–3 Minuten). „Listen und Inhalte“ öffnet die Formulare der
-Seite (Partner, Personen, Formate …) in einem neuen Tab. Gefunden wird jedes Element oder Textstück, das genau den Text zeigt
-(auch innerhalb eines längeren Texts, mehrzeilige Texte Zeile für Zeile); ein gleicher Text an mehreren Stellen wird
-nach Teil der Seite zugeordnet (Kopfleiste und Login-Blende, Fuß, Einwilligung, Newsletter, Inhalt). Was nicht
-sichtbar auf der Seite steht – Platzhalter in Feldern, Betreff von E-Mails, Meldungen, Texte mit Platzhaltern wie
-{zahl}, Titel für Suchmaschinen, Ausgeblendetes –, steht oben unter **Weitere Texte** als Feld zum Bearbeiten.
+Hier lässt sich alles ändern, was auf der Seite steht:
+
+- **Feste Texte** (Überschriften, Einleitungen, Knöpfe, Menü, Fuß) anklicken und tippen; zweizeilige Überschriften mit
+  der Eingabetaste. Über dem Text: wo er steht, Zeichen, Zurücksetzen, Ausblenden (wo erlaubt). Texte mit Platzhaltern
+  („Acht Formate.“ aus „{zahlwort} Formate.“) zeigen beim Bearbeiten die Vorlage; der Platzhalter muss bleiben.
+  Gespeichert wird mit **Speichern** oben (schreibt `texte.json` wie unter Texte, online nach 2–3 Minuten).
+- **Inhalte aus Listen** (Formate, Personen, Partner, Orte, Statements, Vereinsdaten, Chronik …) und **Fotos**: Mit der
+  Maus darüber zeigt ein Knopf, was es ist („Format „POP UP“ bearbeiten“). Ein Klick öffnet das Formular daneben in
+  einer Seitenleiste, gleich beim angeklickten Feld bzw. Foto. Was man dort tippt, ausblendet oder an Fotos wählt,
+  zeigt die Seite sofort. Gespeichert wird im Formular; die Seite behält die Änderung, bis die Website neu gebaut ist.
+  Logik `src/scripts/intern/redaktion/seite-inhalte.ts`: Welche Bereiche zu einer Seite gehören, steht in `texte.json`
+  (Abschnitt → `auch`); gefunden wird ein Eintrag über seinen Anker (`bereiche.ts` → `anker`), über die Texte seiner
+  Felder und über den Dateinamen seiner Fotos. Das Formular ist die normale Eintrag-Seite mit `?eingebettet=1` (ohne
+  Seitenleiste und eigene Vorschau, schickt seinen Stand an die Seite daneben). Beiträge und Termine aus dem internen
+  Bereich haben einen Knopf zum News-Editor bzw. Kalender (neuer Tab). „Listen“ oben öffnet die Listen der Seite
+  ebenfalls in der Seitenleiste.
+- **Fotos formatieren** (erweitert, Knopf oben): Foto anklicken, Ausschnitt mit der Maus ziehen (oder Pfeiltasten),
+  Zoom 100–300 %, „Ganz zeigen“ statt die Fläche zu füllen, Zurücksetzen. Gilt für dieses Foto auf dieser Seite (beide
+  Sprachen, alle Bildschirmgrößen), gespeichert mit **Speichern** oben in `src/settings/bilder.json`
+  (`{ "<seite>": { "<dateiname ohne endung>": { x, y, zoom, ganz } } }`). `src/layouts/Base.astro` schreibt daraus CSS
+  in den Kopf der Seite; nur geprüfte Zahlen und sichere Dateinamen kommen hinein (`src/lib/bild-stil.ts`).
+
+Oben außerdem: Seite wählen, Desktop/Mobil, DE/EN (englische Seiten unter ihrer englischen Adresse, z. B.
+`en/formats/`), Rückgängig/Wiederholen für Texte und Fotos (auch Strg+Z), **Markieren** (umrandet alles, was sich
+bearbeiten lässt: Texte magenta, Inhalte cyan), Verwerfen, Speichern. Gefunden wird jedes Element oder Textstück, das
+genau den Text zeigt (auch innerhalb eines längeren Texts, mehrzeilige Texte Zeile für Zeile); ein gleicher Text an
+mehreren Stellen wird nach Teil der Seite zugeordnet (Kopfleiste und Login-Blende, Fuß, Einwilligung, Newsletter,
+Inhalt). Was nicht sichtbar auf der Seite steht – Platzhalter in Feldern, Betreff von E-Mails, Meldungen, Titel für
+Suchmaschinen, Ausgeblendetes –, steht oben unter **Mehr Texte** als Feld zum Bearbeiten.
 **Navigieren** geht wie auf der Website (Menü, Links, Sprache, Auswahl oben): Die Leiste stellt sich auf die neue
 Seite um, ungespeicherte Änderungen bleiben erhalten und werden zusammen gespeichert („3 Änderungen auf 2 Seiten“).
-Texte in Links (Menü, Knöpfe): Klick folgt dem Link, **Doppelklick** bearbeitet den Text. Externe Links, Dateien und
-der interne Bereich öffnen in einem neuen Tab. Auf einem Beitrag führt „Diesen Beitrag bearbeiten“ zum News-Editor.
-Einstieg im internen Bereich: **Website bearbeiten** in der Seitenleiste (unter Übersicht).
+Texte und Inhalte in Links (Menü, Knöpfe, Karten): Klick folgt dem Link, **Doppelklick** bearbeitet. Externe Links,
+Dateien und der interne Bereich öffnen in einem neuen Tab. Auf einem Beitrag führt „Diesen Beitrag bearbeiten“ zum
+News-Editor. Einstieg im internen Bereich: **Website bearbeiten** in der Seitenleiste (unter Übersicht).
 
 **Von der Website aus:** Wer als Presse, Vorstand oder Admin angemeldet ist (einmal im internen Bereich gewesen),
 sieht auf jeder Seite der Website unten links „Seite bearbeiten“ (`src/components/BearbeitenKnopf.astro`, nur im

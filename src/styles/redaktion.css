@@ -342,3 +342,11 @@
 /* Fokuspunkt eines Fotos mit Knopf für den Zuschnitt-Dialog (bereiche.ts: ausschnitt) */
 .rf-ausschnitt__zeile { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
 .rf-ausschnitt__zeile input { flex: 0 1 9em; min-width: 7em; }
+
+/* In der Seitenleiste von „Website bearbeiten“ (?eingebettet=1, src/scripts/intern/redaktion/seite-inhalte.ts): nur das
+   Formular – ohne Seitenleiste, Breadcrumbs und eigene Vorschau (die Seite daneben zeigt die Änderungen) */
+html[data-eingebettet] .rd-side, html[data-eingebettet] .r-krumen, html[data-eingebettet] .r-head__side,
+html[data-eingebettet] .vs, html[data-eingebettet] .vs-griff, html[data-eingebettet] .vs-auf, html[data-eingebettet] .r-wo { display: none !important; }
+html[data-eingebettet] .rd-main > .rd-flaeche { max-width: none !important; padding: 16px 18px 40px !important; }
+html[data-eingebettet] .r-head { margin-bottom: 16px; }
+html[data-eingebettet] .r-split { grid-template-columns: minmax(0, 1fr) !important; }

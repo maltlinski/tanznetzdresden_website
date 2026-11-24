@@ -22,6 +22,7 @@ const gruppen = [...new Set(plan.map((s) => s.gruppe))];
 
   <div class="sb" data-sb hidden>
     <div class="sb__bar">
+      <div class="sb__links">
       <a class="sb__zurueck" href={href('intern/redaktion/seiten/')}>← Seiten</a>
       <label class="sb__wahl">
         <span class="visually-hidden">Seite</span>
@@ -46,23 +47,39 @@ const gruppen = [...new Set(plan.map((s) => s.gruppe))];
         <button type="button" data-sb-zurueck disabled title="Rückgängig (Strg+Z)" aria-label="Rückgängig">↶</button>
         <button type="button" data-sb-vor disabled title="Wiederholen (Strg+Umschalt+Z)" aria-label="Wiederholen">↷</button>
       </div>
+      <button type="button" data-sb-markieren aria-pressed="false" title="Alles umranden, was sich hier bearbeiten lässt">Markieren</button>
+      <button type="button" data-sb-fotos aria-pressed="false" title="Fotos frei formatieren (erweitert): Ausschnitt, Zoom und Darstellung jedes Fotos auf dieser Seite einstellen">Fotos formatieren</button>
       <a class="sb__beitrag" data-sb-beitrag hidden href="#">Diesen Beitrag bearbeiten →</a>
       <details class="sb__inhalte">
-        <summary>Listen und Inhalte</summary>
+        <summary>Listen</summary>
         <ul data-sb-inhalte></ul>
       </details>
       <details class="sb__inhalte sb__weitere">
-        <summary>Weitere Texte (<span data-sb-weitere-zahl>0</span>)</summary>
+        <summary title="Texte, die nicht sichtbar auf der Seite stehen">Mehr Texte (<span data-sb-weitere-zahl>0</span>)</summary>
         <div class="sb__weitere-liste" data-sb-weitere></div>
       </details>
+      </div>
+      <div class="sb__rechts">
       <span class="sb__stand" data-sb-stand aria-live="polite"></span>
       <button type="button" data-sb-verwerfen disabled>Verwerfen</button>
       <button type="button" class="sb__speichern" data-sb-speichern disabled>Speichern</button>
+      </div>
     </div>
     <p class="sb__meldung i-msg" data-sb-meldung hidden></p>
-    <p class="sb__hinweis"><span data-sb-zahl></span> · Text anklicken und tippen, über Menü und Links weiter zur nächsten Seite. Listen, Personen und Fotos: „Listen und Inhalte“.</p>
-    <div class="sb__buehne" data-geraet="computer">
-      <iframe title="Seite der Website zum Bearbeiten"></iframe>
+    <p class="sb__hinweis"><span data-sb-zahl></span><span data-sb-hinweis-text> · Text anklicken und tippen, Links mit Doppelklick. Über Menü und Links weiter zur nächsten Seite.</span>
+      <strong data-sb-hinweis-fotos hidden> · Fotos frei formatieren: Foto anklicken und ziehen, Zoom und Darstellung in der Leiste am Foto.</strong></p>
+    <div class="sb__arbeit">
+      <div class="sb__buehne" data-geraet="computer">
+        <iframe title="Seite der Website zum Bearbeiten"></iframe>
+      </div>
+      <!-- Formular eines Inhalts (Format, Person, Foto …), src/scripts/intern/redaktion/seite-inhalte.ts -->
+      <aside class="sb__fach" data-sb-fach hidden aria-labelledby="sb-fach-titel">
+        <div class="sb__fach-kopf">
+          <strong id="sb-fach-titel" data-sb-fach-titel>Inhalt</strong>
+          <button type="button" data-sb-fach-zu>Schließen</button>
+        </div>
+        <iframe title="Formular zum Inhalt"></iframe>
+      </aside>
     </div>
   </div>
 </Redaktion>
@@ -79,12 +96,15 @@ const gruppen = [...new Set(plan.map((s) => s.gruppe))];
   /* über der Seitenleiste, über die ganze Fläche */
   .sb { position: fixed; inset: 0; z-index: 200; display: flex; flex-direction: column; background: var(--tint); }
   .sb[hidden] { display: none; }
-  .sb__bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; padding: 10px clamp(12px, 2vw, 24px); background: var(--purple); color: #fff; }
+  .sb__bar { display: flex; align-items: center; justify-content: space-between; gap: 8px 16px; padding: 10px clamp(12px, 2vw, 24px); background: var(--purple); color: #fff; }
+  /* links darf umbrechen, Stand und Speichern bleiben zusammen rechts */
+  .sb__links { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 10px; min-width: 0; }
+  .sb__rechts { display: flex; align-items: center; gap: 10px; flex: none; }
   .sb__bar button, .sb__bar select, .sb__inhalte summary {
-    padding: 8px 12px; border: 1.5px solid rgba(255, 255, 255, 0.55); border-radius: 0; background: transparent; color: #fff; cursor: pointer;
-    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 8px 10px; border: 1.5px solid rgba(255, 255, 255, 0.55); border-radius: 0; background: transparent; color: #fff; cursor: pointer; white-space: nowrap;
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase;
   }
-  .sb__bar select { max-width: 190px; background: var(--purple); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
+  .sb__bar select { min-width: 0; max-width: 160px; background: var(--purple); text-transform: none; letter-spacing: 0.04em; font-size: 12px; }
   .sb__bar button:disabled { opacity: 0.45; cursor: default; }
   .sb__bar button[aria-pressed='true'] { background: #fff; color: var(--purple); border-color: #fff; }
   .sb__bar button:not(:disabled):hover, .sb__inhalte summary:hover { border-color: var(--magenta); }
@@ -95,7 +115,7 @@ const gruppen = [...new Set(plan.map((s) => s.gruppe))];
   .sb__beitrag { padding: 8px 12px; background: var(--cyan); color: var(--purple); font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; }
   .sb__beitrag[hidden] { display: none; }
   .sb__beitrag:hover { background: #fff; }
-  .sb__stand { margin-left: auto; font-family: var(--font-mono); font-size: 10.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--cyan); }
+  .sb__stand { font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); white-space: nowrap; }
   .sb__speichern { background: var(--magenta) !important; border-color: var(--magenta) !important; }
   .sb__inhalte { position: relative; }
   .sb__inhalte summary { list-style: none; }
@@ -123,8 +143,19 @@ const gruppen = [...new Set(plan.map((s) => s.gruppe))];
   .sb__weitere-liste :global(.sb-w__hinweis), .sb__weitere-liste :global(.sb-w__zahl) { font-family: var(--font-mono); font-size: 10.5px; color: var(--ink-muted); }
   .sb__weitere-liste :global(:disabled) { opacity: 0.55; cursor: not-allowed; }
   .sb__weitere-liste :global(.sb-w__an) { grid-column: 1 / -1; font-size: 13px; color: var(--purple); }
-  .sb__hinweis { margin: 0; padding: 6px clamp(12px, 2vw, 24px); font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; color: var(--ink-muted); }
-  .sb__buehne { position: relative; flex: 1 1 auto; min-height: 0; overflow: hidden; border-top: 1px solid var(--rule); }
+  .sb__hinweis strong { color: var(--magenta-2); font-weight: 600; }
+  .sb__hinweis { margin: 0; padding: 6px clamp(12px, 2vw, 24px); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--ink-muted); }
+  .sb__arbeit { flex: 1 1 auto; min-height: 0; display: flex; border-top: 1px solid var(--rule); }
+  .sb__buehne { position: relative; flex: 1 1 auto; min-width: 0; overflow: hidden; }
+  .sb__fach { flex: 0 0 min(500px, 42vw); display: flex; flex-direction: column; min-width: 0; background: var(--tint-2); border-left: 3px solid var(--cyan); }
+  .sb__fach[hidden] { display: none; }
+  .sb__fach-kopf { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 12px 8px 16px; background: var(--purple); color: #fff; }
+  .sb__fach-kopf strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--cyan); }
+  .sb__fach-kopf button { padding: 6px 10px; border: 1.5px solid rgba(255, 255, 255, 0.55); border-radius: 0; background: transparent; color: #fff; cursor: pointer; font-family: var(--font-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; }
+  .sb__fach-kopf button:hover { border-color: var(--magenta); }
+  .sb__fach iframe { flex: 1 1 auto; width: 100%; border: 0; background: var(--tint-2); }
+  /* schmale Bildschirme: Formular über der Seite */
+  @media (max-width: 900px) { .sb__fach { position: absolute; inset: auto 0 0 0; top: 0; z-index: 10; flex-basis: auto; border-left: 0; } .sb__arbeit { position: relative; } }
   .sb__buehne iframe { display: block; border: 0; background: var(--paper); transform-origin: 0 0; }
   .sb__buehne[data-geraet='handy'] { padding: 12px; display: flex; justify-content: center; }
   .sb__buehne[data-geraet='handy'] iframe { outline: 8px solid var(--ink); transform-origin: 50% 0; }

@@ -52,6 +52,18 @@ export const routes = {
 export type RouteKey = keyof typeof routes;
 
 /**
+ * Pfad ohne Basis in der anderen Sprache (längster passender Anfang), z. B. für „Website bearbeiten“:
+ *   pfadIn('formate/tanzkalender/', 'en') → 'formats/dance-calendar/';  pfadIn('network/pia/', 'de') → 'netzwerk/pia/'
+ */
+export function pfadIn(p: string, nach: Lang): string {
+  const von: Lang = nach === 'en' ? 'de' : 'en';
+  const r = (Object.values(routes) as Record<Lang, string | null>[])
+    .filter((x) => x.de && x.en && p.startsWith(x[von]!))
+    .sort((a, b) => b[von]!.length - a[von]!.length)[0];
+  return r ? `${r[nach]}${p.slice(r[von]!.length)}` : p;
+}
+
+/**
  * Link zu einer Seite in einer Sprache.
  *   url('en', 'termine')                 → /en/events/
  *   url('de', 'netzwerk', 'alba-t-alvarez/') → /netzwerk/alba-t-alvarez/

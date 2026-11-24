@@ -636,7 +636,7 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   await page.goto('/intern/redaktion/seite-bearbeiten/?s=kooperationen');
   const sb = page.locator('[data-sb]');
   await expect(sb).toBeVisible();
-  const f = page.frameLocator('[data-sb] iframe');
+  const f = page.frameLocator('.sb__buehne iframe');
   const kicker = f.locator('[data-sb-text="kooperationen.kopf.kicker"]');
   await expect(kicker).toHaveAttribute('contenteditable', /plaintext-only|true/);
   await expect(f.locator('[data-sb-text="kooperationen.kopf.titel"]')).toBeAttached();
@@ -647,7 +647,7 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   await page.keyboard.press('End');
   await page.keyboard.type(' & Freunde');
   await expect(f.locator('.sb-leiste__wo')).toHaveText('Kleine Zeile über der Überschrift');
-  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung, nicht gespeichert');
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung');
   await page.keyboard.press('Escape');
 
   // Rückgängig und Wiederholen
@@ -657,12 +657,12 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   await sb.getByRole('button', { name: 'Wiederholen' }).click();
   await expect(kicker).toHaveText('Kooperationspartner & Freunde');
 
-  // Listen und Inhalte dieser Seite öffnen die Formulare
-  await sb.getByText('Listen und Inhalte', { exact: true }).click();
+  // Listen dieser Seite öffnen die Formulare
+  await sb.getByText('Listen', { exact: true }).click();
   await expect(sb.locator('[data-sb-inhalte]')).toContainText('Orte auf der Karte');
 
   // navigieren wie auf der Website: Menü → Über uns; die Leiste stellt sich um, die Änderung bleibt
-  await sb.getByText('Listen und Inhalte', { exact: true }).click();
+  await sb.getByText('Listen', { exact: true }).click();
   const menuepunkt = f.locator('header a[href$="/verein/"]').first();
   // Linktexte: Doppelklick bearbeitet, Klick folgt dem Link
   await expect(menuepunkt.locator('[data-sb-text]').or(menuepunkt.and(f.locator('[data-sb-text]'))).first()).toHaveAttribute('title', /Doppelklick/);
@@ -670,7 +670,7 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   await expect(sb.locator('[data-sb-seite]')).toHaveValue('verein');
   await expect(page).toHaveURL(/seite-bearbeiten\/\?s=verein$/);
   await expect(f.locator('[data-sb-text="verein.kopf.titel"]')).toBeAttached();
-  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung, nicht gespeichert');
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung');
   // Doppelklick auf einen Menüpunkt: Text bearbeiten statt navigieren
   const kontakt = f.locator('header [data-sb-text="allgemein.kopf.about"]').first();
   await kontakt.dblclick();
@@ -695,26 +695,158 @@ test('Auf der Seite bearbeiten: feste Texte direkt auf der Seite ändern, Rückg
   await expect(sb.locator('[data-sb-stand]')).toHaveText('Alles gespeichert');
 });
 
-test('Auf der Seite bearbeiten: Menü und Fuß getrennt, Teiltexte, Weitere Texte', async ({ page, isMobile }) => {
+test('Auf der Seite bearbeiten: Menü und Fuß getrennt, Teiltexte, Mehr Texte', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Vollbild-Bearbeiten ist für große Bildschirme gedacht');
   const gespeichert = await redaktion(page);
   await page.goto('/intern/redaktion/seite-bearbeiten/?s=kooperationen');
   const sb = page.locator('[data-sb]');
-  const f = page.frameLocator('[data-sb] iframe');
+  const f = page.frameLocator('.sb__buehne iframe');
   // gleicher Text in Menü und Fuß: je ein eigener Eintrag
   await expect(f.locator('.site-header [data-sb-text="allgemein.kopf.about"]')).toBeAttached();
   await expect(f.locator('.site-footer [data-sb-text="allgemein.fuss.about"]')).toBeAttached();
   // Text als Teil eines längeren („Gestaltung: Name“)
   await expect(f.locator('.site-footer [data-sb-text="allgemein.fuss.design"]')).toHaveText('Gestaltung:');
-  // Weitere Texte: was nicht sichtbar auf der Seite steht, z. B. der Titel für Suchmaschinen
-  await sb.getByText('Weitere Texte', { exact: false }).first().click();
+  // Mehr Texte: was nicht sichtbar auf der Seite steht, z. B. der Titel für Suchmaschinen
+  await sb.getByText('Mehr Texte', { exact: false }).first().click();
   const titel = sb.locator('[data-sb-weitere]').getByLabel('Titel im Browser-Tab und bei Suchmaschinen');
   await expect(titel).toBeVisible();
   await titel.fill('Partner:innen');
-  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung, nicht gespeichert');
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung');
   await sb.getByRole('button', { name: 'Speichern' }).click();
   await expect(sb.locator('[data-sb-meldung]')).toContainText('Gespeichert: 1 Text');
   expect(gespeichert[0].aenderungen[0].text).toContain('"Partner:innen"');
+});
+
+test('Auf der Seite bearbeiten: Texte mit Platzhaltern, englische Adressen', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vollbild-Bearbeiten ist für große Bildschirme gedacht');
+  const gespeichert = await redaktion(page);
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=formate');
+  const sb = page.locator('[data-sb]');
+  const f = page.frameLocator('.sb__buehne iframe');
+  // „{zahlwort} Formate.“: auf der Seite mit der eingesetzten Zahl, beim Bearbeiten die Vorlage
+  const titel = f.locator('[data-sb-text="formate.kopf.titel"]');
+  await expect(titel).toContainText('Ein Netz.');
+  await expect(titel).not.toContainText('{zahlwort}');
+  await titel.click();
+  await expect(titel).toContainText('{zahlwort} Formate.');
+  await page.keyboard.press('Control+End');
+  await page.keyboard.type('!');
+  await page.keyboard.press('Escape');
+  await expect(titel).not.toContainText('{zahlwort}');
+  await expect(titel).toContainText('Ein Netz.!');
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung');
+  await sb.getByRole('button', { name: 'Speichern' }).click();
+  await expect(sb.locator('[data-sb-meldung]')).toContainText('Gespeichert: 1 Text');
+  expect(JSON.parse(gespeichert[0].aenderungen[0].text!).formate.abschnitte.kopf.texte.titel.de).toBe('{zahlwort} Formate.\nEin Netz.!');
+
+  // Englisch: die englische Adresse der Seite (formate/ → en/formats/), Seite bleibt gewählt
+  await sb.getByRole('button', { name: 'EN', exact: true }).click();
+  await expect(f.locator('h1')).toContainText('One network.');
+  await expect(sb.locator('[data-sb-seite]')).toHaveValue('formate');
+  await expect(f.locator('[data-sb-text="formate.kopf.titel"]')).toBeAttached();
+});
+
+test('Auf der Seite bearbeiten: Inhalte und Fotos öffnen ihr Formular daneben', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vollbild-Bearbeiten ist für große Bildschirme gedacht');
+  const gespeichert = await redaktion(page);
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=formate');
+  const sb = page.locator('[data-sb]');
+  const f = page.frameLocator('.sb__buehne iframe');
+  const fach = page.frameLocator('[data-sb-fach] iframe');
+  await expect(sb.locator('[data-sb-zahl]')).toContainText('Inhalte');
+  // Name eines Formats: Knopf mit dem Eintrag, Klick öffnet das Formular beim passenden Feld
+  const name = f.locator('[data-sb-inhalt="formate|pop-up"][data-sb-feld="POP UP"]').first();
+  await name.scrollIntoViewIfNeeded();
+  await name.hover();
+  await expect(f.locator('.sb-chip')).toHaveText('✎ Format „POP UP“ bearbeiten');
+  await name.click();
+  await expect(sb.locator('[data-sb-fach]')).toBeVisible();
+  await expect(fach.locator('[data-titel]')).toHaveText('POP UP');
+  await expect(fach.locator(':focus')).toHaveValue('POP UP');
+  // tippen: die Seite daneben zeigt es sofort
+  await page.keyboard.press('End');
+  await page.keyboard.type(' Sommer');
+  await expect(name).toHaveText('POP UP Sommer');
+  // speichern im Formular: Meldung oben, die Seite behält die Änderung, bis die Website neu gebaut ist
+  await fach.getByRole('button', { name: 'Speichern', exact: true }).click();
+  await expect(sb.locator('[data-sb-meldung]')).toContainText('Gespeichert: POP UP Sommer');
+  expect(gespeichert[0].aenderungen[0].pfad).toBe('src/content/formate/pop-up.md');
+  expect(gespeichert[0].aenderungen[0].text).toContain('POP UP Sommer');
+  await expect(name).toHaveText('POP UP Sommer');
+
+  // Foto anklicken: Formular beim Foto, ein anderes Foto erscheint sofort auf der Seite
+  const foto = f.locator('img[data-sb-foto]').first();
+  await foto.scrollIntoViewIfNeeded();
+  await foto.click();
+  const wahl = fach.locator('[data-bild-key] select').first();
+  await expect(wahl).toBeFocused();
+  const vorher = await wahl.inputValue();
+  const anderes = (await wahl.locator('option').evaluateAll((os) => os.map((o) => (o as HTMLOptionElement).value))).find((v) => v && v !== vorher)!;
+  await wahl.selectOption(anderes);
+  await expect(foto).toHaveAttribute('src', /^blob:/);
+  // schließen ohne Speichern: Rückfrage, die Seite zeigt wieder das veröffentlichte Foto
+  page.once('dialog', (d) => d.accept());
+  await sb.getByRole('button', { name: 'Schließen' }).click();
+  await expect(sb.locator('[data-sb-fach]')).toBeHidden();
+  await expect(foto).not.toHaveAttribute('src', /^blob:/);
+});
+
+test('Auf der Seite bearbeiten: Fotos frei formatieren (erweitert)', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vollbild-Bearbeiten ist für große Bildschirme gedacht');
+  const gespeichert = await redaktion(page);
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=formate');
+  const sb = page.locator('[data-sb]');
+  const f = page.frameLocator('.sb__buehne iframe');
+  await expect(sb.locator('[data-sb-zahl]')).toContainText('Inhalte');
+  await sb.getByRole('button', { name: 'Fotos formatieren' }).click();
+  const foto = f.locator('img[src*="/ensemble-curtain-call."]').first();
+  await foto.scrollIntoViewIfNeeded();
+  const box = (await foto.boundingBox())!;
+  // Ausschnitt ziehen
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(box.x + box.width / 2 + 100, box.y + box.height / 2 + 30, { steps: 5 });
+  await page.mouse.up();
+  const werkzeug = f.getByRole('group', { name: 'Foto formatieren' });
+  await expect(werkzeug).toContainText('ensemble-curtain-call');
+  // Zoom und „Ganz zeigen“
+  await werkzeug.getByLabel('Zoom').fill('150');
+  await werkzeug.getByLabel('Zoom').dispatchEvent('change');
+  await werkzeug.getByRole('button', { name: 'Ganz zeigen' }).click();
+  await expect.poll(() => foto.evaluate((i) => [getComputedStyle(i).scale, getComputedStyle(i).objectFit].join(' '))).toBe('1.5 contain');
+  await expect(sb.locator('[data-sb-stand]')).toHaveText('1 Änderung');
+  // Rückgängig nimmt den letzten Schritt zurück
+  await sb.getByRole('button', { name: 'Rückgängig' }).click();
+  await expect.poll(() => foto.evaluate((i) => getComputedStyle(i).objectFit)).toBe('cover');
+  await sb.getByRole('button', { name: 'Wiederholen' }).click();
+  // Speichern: geprüfte Werte in src/settings/bilder.json (Seite → Foto)
+  await sb.getByRole('button', { name: 'Speichern' }).click();
+  await expect(sb.locator('[data-sb-meldung]')).toContainText('Gespeichert: 1 Foto');
+  expect(gespeichert[0].aenderungen.map((a) => a.pfad)).toEqual(['src/settings/bilder.json']);
+  const stil = JSON.parse(gespeichert[0].aenderungen[0].text!)['formate/']['ensemble-curtain-call'];
+  expect(stil).toMatchObject({ zoom: 1.5, ganz: true });
+  expect(stil.x).toBeLessThan(50);
+});
+
+test('Fotos frei formatieren: nur geprüfte Werte kommen ins CSS', async ({}, info) => {
+  test.skip(info.project.name !== 'desktop', 'ohne Browser, einmal reicht');
+  const { bildStilCss, seitenPfad, bildStamm } = await import('../src/lib/bild-stil');
+  const css = bildStilCss({
+    'duo-rot': { x: 20, y: 80, zoom: 2 },
+    'boese"]{}x': { x: 1 },
+    sprung: { x: '1;}body{display:none' as unknown as number, ganz: true },
+    leer: {},
+  });
+  expect(css).toContain('img[src*="/duo-rot."]{object-position:20% 80% !important;scale:2 !important;transform-origin:20% 80%}');
+  expect(css).toContain(':has(> img[src*="/duo-rot."])');
+  expect(css).toContain('img[src*="/sprung."]{object-position:50% 50% !important;object-fit:contain !important}');
+  expect(css).not.toContain('boese');
+  expect(css).not.toContain('display:none');
+  expect(css).not.toContain('/leer.');
+  const zuDeutsch = (p: string) => p.replace(/^formats\/dance-calendar\//, 'formate/tanzkalender/');
+  expect(seitenPfad('/en/formats/dance-calendar/', '/', zuDeutsch)).toBe('formate/tanzkalender/');
+  expect(seitenPfad('/basis/netzwerk/pia/', '/basis', zuDeutsch)).toBe('netzwerk/pia/');
+  expect(bildStamm('/_astro/duo-rot.Ab12_x.webp')).toBe('duo-rot');
 });
 
 test('Texte: Regeln (Platzhalter, Zeilen, Format der Datei)', async ({}, info) => {
