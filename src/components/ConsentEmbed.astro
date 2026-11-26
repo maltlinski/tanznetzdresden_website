@@ -13,18 +13,18 @@ interface Props {
   category?: string;
   ratio?: string;
 }
-import { getLang, tr } from '../lib/i18n';
+import { getLang } from '../lib/i18n';
+import { fuellen, texte } from '../lib/texte';
 
 const { src, title, provider, privacyUrl, category = 'medien', ratio = '16 / 9' } = Astro.props;
-const t = tr(getLang(Astro), {
-  de: { kicker: 'Externer Inhalt', text: `Hier steht ein Inhalt von ${provider}. Wenn du ihn lädst, wird deine IP-Adresse an ${provider} übertragen.`, privacy: `Datenschutz bei ${provider}`, once: 'Einmal laden', always: 'Immer erlauben' },
-  en: { kicker: 'External content', text: `This is content from ${provider}. Loading it transmits your IP address to ${provider}.`, privacy: `Privacy at ${provider}`, once: 'Load once', always: 'Always allow' },
-});
+const x = texte(getLang(Astro), 'allgemein', 'extern');
+const dienst = { dienst: provider };
+const t = { ...x, kicker: fuellen(x.kicker, dienst), text: fuellen(x.text, dienst), privacy: fuellen(x.privacy, dienst) };
 ---
 <div class="embed" data-consent-embed data-category={category} data-src={src} data-title={title} style={`aspect-ratio:${ratio}`}>
   <div class="embed__ph">
-    <span class="embed__kicker">{t.kicker} · {provider}</span>
-    <p>{t.text} <a href={privacyUrl} rel="noopener" target="_blank">{t.privacy}</a></p>
+    <span class="embed__kicker">{t.kicker}</span>
+    <p><span>{t.text}</span> <a href={privacyUrl} rel="noopener" target="_blank">{t.privacy}</a></p>
     <div class="embed__actions">
       <button type="button" class="btn btn--secondary btn--sm" data-embed-once>{t.once}</button>
       <button type="button" class="embed__always" data-embed-always>{t.always}</button>

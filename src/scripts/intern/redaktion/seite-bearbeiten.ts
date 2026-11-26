@@ -19,11 +19,13 @@
  * „inhalte“; die Website zeigt die Änderung nach 2–3 Minuten. Inhalte aus Listen und Fotos (Formate, Personen,
  * Partner, Vereinsdaten …) öffnen per Klick ihr Formular in einer Seitenleiste (seite-inhalte.ts).
  */
-import { pfadIn } from '../../../lib/i18n';
+import { pfadIn, routes } from '../../../lib/i18n';
 import { alleTexte, dateiText, fuellen, platzhalter, textId, textPruefen, uebernehmen, type TextEintrag, type TextSeite } from '../../../lib/texte-regeln';
 import type { Redaktion } from './seite';
 import { meldung, websiteUrl, zielName, zielUrl } from './seite';
 import { inhalte } from './seite-inhalte';
+import { bereich } from './bereiche';
+import type { Eintrag } from './daten';
 import { fotosFormatieren, type Fotos } from './seite-fotos';
 import { bildStilPruefen, type BildStil, type BildStile } from '../../../lib/bild-stil';
 
@@ -183,8 +185,18 @@ export function seiteBearbeiten(r: Redaktion) {
     const liste = (Object.entries(datei) as [string, TextSeite][]).filter(([k, s]) => !k.startsWith('_') && k !== 'allgemein' && s?.pfad !== undefined && s.pfad !== '404.html');
     const genau = liste.find(([, s]) => s.pfad === p);
     if (genau) return genau[0];
+    // Seite ohne eigenen Eintrag im Plan (Datenschutz, Transparenz, Spendennachweis): die mit dem gleichnamigen Abschnitt
+    const name = p.replace(/\/$/, '').replace(/[/-]/g, '').toLowerCase();
+    const abschnitt = name && liste.find(([, s]) => Object.keys(s.abschnitte ?? {}).some((a) => a.toLowerCase() === name));
+    if (abschnitt) return abschnitt[0];
     const teil = liste.filter(([, s]) => s.pfad && p.startsWith(s.pfad)).sort((a, b) => b[1].pfad.length - a[1].pfad.length)[0];
-    return teil ? (liste.filter(([, s]) => s.pfad === teil[1].pfad).at(-1)?.[0] ?? null) : liste.find(([, s]) => s.pfad === '')?.[0] ?? null;
+    if (teil) return liste.filter(([, s]) => s.pfad === teil[1].pfad).at(-1)?.[0] ?? null;
+    // Textseite (Leichte Sprache): die Seite, deren Bereich diese Seite hat
+    const id = p.replace(/\/$/, '').split('/').pop() ?? '';
+    const bereichSeite = liste.find(([, s]) =>
+      Object.values(s.abschnitte ?? {}).some((a) => (a.auch ?? []).some((z) => z.ziel.startsWith('redaktion:') && bereich(z.ziel.slice(10))?.seite?.({ id, data: {} } as Eintrag) === p)),
+    );
+    return bereichSeite?.[0] ?? liste.find(([, s]) => s.pfad === '')?.[0] ?? null;
   };
   let linkTimer = 0;
   /** Link folgen: Seite der Website im Rahmen, alles andere in einem neuen Tab */
@@ -345,11 +357,18 @@ export function seiteBearbeiten(r: Redaktion) {
     const s = seiteVon(seite);
     const p = pfad ?? s?.pfad ?? '';
     treffer = [];
+    // Seiten nur auf Deutsch (Leichte Sprache): bleibt deutsch
+    const nurDeutsch = (Object.values(routes) as { de: string | null; en: string | null }[]).some((x) => x.en === null && x.de && p.startsWith(x.de));
+    const nurDe = lang === 'en' && nurDeutsch;
+    if (nurDe) {
+      lang = 'de';
+      root.querySelectorAll('[data-sb-sprache]').forEach((x) => x.setAttribute('aria-pressed', String((x as HTMLElement).dataset.sbSprache === 'de')));
+    }
     // englische Seiten haben eigene Adressen (formate/ → en/formats/)
     frame.src = websiteUrl(lang === 'en' ? `en/${pfadIn(p, 'en')}` : p);
     $('[data-sb-titel]')!.textContent = s?.titel ?? 'Seite';
     const nurVorstand = !!s?.nurVorstand && !r.vorstand;
-    meldung(nurVorstand ? 'Diese Seite ändert nur der Vorstand.' : '', 'error', $('[data-sb-meldung]'));
+    meldung(nurVorstand ? 'Diese Seite ändert nur der Vorstand.' : nurDe ? 'Diese Seite gibt es nur auf Deutsch.' : '', 'error', $('[data-sb-meldung]'));
     root.dataset.gesperrt = String(nurVorstand);
     inhalteListe();
     groesse();
@@ -383,7 +402,8 @@ export function seiteBearbeiten(r: Redaktion) {
   }
 
   function einrichten(d: Document) {
-    if (!d.body) return;
+    // Rahmen ist inzwischen auf einer anderen Seite (Sprache gewechselt, schnell weiternavigiert)
+    if (!d.body || !d.defaultView || frame.contentDocument !== d) return;
     const stil = d.createElement('style');
     stil.textContent = STIL;
     d.head.append(stil);
@@ -411,11 +431,15 @@ export function seiteBearbeiten(r: Redaktion) {
       const text = t.closest<HTMLElement>('[data-sb-text]');
       // Text wird gerade bearbeitet (auch ein Linktext nach dem Doppelklick): nicht folgen
       if (text?.isContentEditable) return ev.preventDefault();
-      // Inhalt aus einer Liste oder Foto: Formular in der Seitenleiste
-      const inhalt = text ? null : t.closest<HTMLElement>('[data-sb-feld], [data-sb-foto]');
+      // Inhalt aus einer Liste oder Foto: Formular in der Seitenleiste; in einer Karte oder einem Block des Eintrags auch
+      // ein Text ohne eigenes Feld (Datum, Nummer, Initialen), nicht aber Knöpfe und Felder der Seite
+      const eigenerText = [...t.childNodes].some((n) => n.nodeType === Node.TEXT_NODE && n.textContent?.trim());
+      const bedienung = t.closest('button, input, select, textarea, label, summary, [role="button"], [role="tab"]');
+      const inhalt = text ? null : (t.closest<HTMLElement>('[data-sb-feld], [data-sb-foto]') ?? (eigenerText && !bedienung ? t.closest<HTMLElement>('[data-sb-inhalt]') : null));
       const a = t.closest<HTMLAnchorElement>('a[href]');
       if (!a || (a.getAttribute('href') ?? '').startsWith('#')) {
-        if (inhalt) {
+        // Sprungmarke in einem Block (Inhaltsverzeichnis): springen; ein Feld darin öffnet das Formular
+        if (inhalt && (!a || inhalt.hasAttribute('data-sb-feld') || inhalt.hasAttribute('data-sb-foto'))) {
           if (!t.closest('summary')) ev.preventDefault();
           inh.oeffnen(inhalt);
           return;
@@ -484,23 +508,31 @@ export function seiteBearbeiten(r: Redaktion) {
       const k = norm(text);
       if (!k) return [];
       const gefunden = (index.get(k) ?? []).filter(frei);
-      const els = passend(gefunden.filter((el) => !gefunden.some((o) => o !== el && el.contains(o))), b);
-      if (els.length) return els;
-      const knoten = textknoten();
-      const genau = passend(knoten.filter((n) => norm(n.data) === k), b);
-      if (genau.length) {
-        return genau.map((n) => {
-          const anfang = n.data.length - n.data.trimStart().length;
-          return umhuellen(n, anfang, anfang + n.data.trim().length);
-        });
+      const els = gefunden.filter((el) => !gefunden.some((o) => o !== el && el.contains(o)));
+      let knoten: Text[] | null = null;
+      const genau = () => (knoten ??= textknoten()).filter((n) => norm(n.data) === k);
+      // erst im bevorzugten Teil (Element, sonst Textknoten), dann wo erlaubt: „E-Mail schreiben“ im Fuß vor einer
+      // gleichlautenden Zwischenüberschrift im Inhalt
+      for (const ok of [b.bevorzugt, b.erlaubt]) {
+        const e = els.filter(ok);
+        if (e.length) return e;
+        const g = genau().filter((n) => ok(n.parentElement!));
+        if (g.length) {
+          return g.map((n) => {
+            const anfang = n.data.length - n.data.trimStart().length;
+            return umhuellen(n, anfang, anfang + n.data.trim().length);
+          });
+        }
       }
       if (text.trim().length < 3) return [];
       const t = text.trim();
-      const teil = passend(knoten.filter((n) => {
+      knoten ??= textknoten();
+      // nur im bevorzugten Teil der Seite (sonst fände „E-Mail“ aus dem Newsletter das „E-Mail schreiben“ im Fuß)
+      const teil = knoten.filter((n) => {
         const i = n.data.indexOf(t);
-        if (i < 0 || n.data.indexOf(t, i + 1) >= 0 || n.data.length > t.length + 60) return false;
+        if (i < 0 || n.data.indexOf(t, i + 1) >= 0 || n.data.length > t.length + 60 || !b.bevorzugt(n.parentElement!)) return false;
         return !BUCHSTABE.test(n.data[i - 1] ?? '') && !BUCHSTABE.test(n.data[i + t.length] ?? '');
-      }), b);
+      });
       return teil.map((n) => {
         const i = n.data.indexOf(t);
         return umhuellen(n, i, i + t.length);
@@ -538,7 +570,8 @@ export function seiteBearbeiten(r: Redaktion) {
     // zuerst die Texte dieser Seite, dann „Auf jeder Seite“ (Menü, Fuß, Hinweise)
     const reihe = [...eintraege().filter((x) => x.seite !== 'allgemein'), ...eintraege().filter((x) => x.seite === 'allgemein')];
     for (const { seite: s, abschnitt, key, e } of reihe) {
-      if (e.aus || /Browser-Tab|Suchmaschinen/.test(e.wo)) continue;
+      // nur für Browser-Tab und Suchmaschinen (steht er auch als Zeile auf der Seite, z. B. Kicker: doch suchen)
+      if (e.aus || (/Browser-Tab|Suchmaschinen/.test(e.wo) && !/Zeile|Überschrift/.test(e.wo))) continue;
       const id = textId(s, abschnitt, key);
       const b = ortFuer(s, abschnitt);
       const mehrzeilig = (e.zeilen ?? 1) > 1 || e.de.includes('\n');

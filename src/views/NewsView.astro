@@ -128,7 +128,7 @@ const feed = href(lang === 'de' ? 'news.xml' : 'en/news.xml');
   </section>
 
   <section
-    id="journal" class="section journal" aria-labelledby="journal-h" data-chronik data-ansicht="liste" data-texte={JSON.stringify(jsTexte)}
+    id="journal" data-sb-quelle="news" class="section journal" aria-labelledby="journal-h" data-chronik data-ansicht="liste" data-texte={JSON.stringify(jsTexte)}
     data-rest={rest.length ? url(lang, 'news', 'weitere/') : undefined}
   >
     <div class="wrap">

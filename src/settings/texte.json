@@ -83,6 +83,16 @@
           "always": { "wo": "Zusatz bei „Notwendig“ in der Auswahl", "de": "(immer aktiv)", "en": "(always on)", "max": 30 }
         }
       },
+      "extern": {
+        "titel": "Externe Inhalte (Karte, Video), bevor sie geladen sind",
+        "texte": {
+          "kicker": { "wo": "Kleine Zeile ({dienst} = Anbieter)", "de": "Externer Inhalt · {dienst}", "en": "External content · {dienst}", "max": 40 },
+          "text": { "wo": "Hinweis ({dienst} = Anbieter, z. B. OpenStreetMap)", "de": "Hier steht ein Inhalt von {dienst}. Wenn du ihn lädst, wird deine IP-Adresse an {dienst} übertragen.", "en": "This is content from {dienst}. Loading it transmits your IP address to {dienst}.", "max": 200 },
+          "privacy": { "wo": "Link zum Datenschutz des Anbieters ({dienst} = Anbieter)", "de": "Datenschutz bei {dienst}", "en": "Privacy at {dienst}", "max": 50 },
+          "once": { "wo": "Knopf: nur dieses Mal laden", "de": "Einmal laden", "en": "Load once", "max": 30 },
+          "always": { "wo": "Knopf: immer erlauben", "de": "Immer erlauben", "en": "Always allow", "max": 30 }
+        }
+      },
       "foerderung": {
         "titel": "Förderer (über dem Fuß)",
         "auch": [{ "text": "Die Förderer mit Logo und Pflichttext", "ziel": "redaktion:verein" }],

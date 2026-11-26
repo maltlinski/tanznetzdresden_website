@@ -54,7 +54,7 @@ const shown = nextKey ? Math.max(0, months.findIndex((m) => nextKey.startsWith(m
 const json = jsonImHtml({ days });
 const hId = `${id}-h`;
 ---
-<section id={id} class:list={['kcal section', breit && 'kcal--breit']} aria-labelledby={hId} data-kcal data-locale={locale} data-none={t.none} data-free={t.free} data-today={t.today} data-text-lang={lang === 'en' ? 'de' : undefined}>
+<section id={id} class:list={['kcal section', breit && 'kcal--breit']} aria-labelledby={hId} data-sb-quelle="kalender" data-kcal data-locale={locale} data-none={t.none} data-free={t.free} data-today={t.today} data-text-lang={lang === 'en' ? 'de' : undefined}>
   <div class="wrap">
     <div class="section-head">
       <div data-reveal>

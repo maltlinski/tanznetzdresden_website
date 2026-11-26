@@ -74,7 +74,7 @@ const workshops = Object.entries(days).flatMap(([date, list]) =>
         <Image src={foto.default} alt={keepUpFoto.alt[lang]} widths={[480, 720, 1040]} sizes="(min-width: 1000px) 520px, 100vw" loading="eager" />
       </div>
     </div>
-    <div class="ku-next" data-next-unit hidden={!ne}>
+    <div class="ku-next" data-sb-quelle="kalender" data-next-unit hidden={!ne}>
       <div class="wrap ku-next__inner">
         <span class="ku-next__k"><span class="ku-next__sq" aria-hidden="true"></span>{t.next}</span>
         <span class="ku-next__date" data-next-date>{nextDate}</span>

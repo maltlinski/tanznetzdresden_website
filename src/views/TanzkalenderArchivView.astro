@@ -63,7 +63,7 @@ const daten = jsonImHtml(
       </div>
       <div class="tka-kopf__plakate" aria-hidden="true">
         {kopfAusgaben.map((a, i) => (
-          <button type="button" class="tka-kopf__plakat" tabindex="-1" style={`margin-top:${versatz[i]}`} data-oeffnen={ausgaben.indexOf(a)}>
+          <button type="button" class="tka-kopf__plakat" data-sb-eintrag={`tanzkalender|${a.id}`} tabindex="-1" style={`margin-top:${versatz[i]}`} data-oeffnen={ausgaben.indexOf(a)}>
             {a.plakat
               ? <Image src={a.plakat} alt="" widths={[240, 480]} sizes="(min-width: 900px) 14vw, 30vw" loading="eager" data-wipe />
               : <img src={vorschauAlt(a)} alt="" data-wipe />}
@@ -100,7 +100,7 @@ const daten = jsonImHtml(
               {liste.map((a) => {
                 const i = ausgaben.indexOf(a);
                 return (
-                  <li class:list={['tka-ausgabe', a.breit && 'tka-ausgabe--breit']}>
+                  <li class:list={['tka-ausgabe', a.breit && 'tka-ausgabe--breit']} data-sb-eintrag={`tanzkalender|${a.id}`}>
                     <button type="button" class="tka-plakat" tabindex="-1" aria-hidden="true" data-oeffnen={i}>
                       {a.plakat
                         ? <Image src={a.plakat} alt="" widths={a.breit ? [400, 800] : [200, 400]} sizes={a.breit ? '(min-width: 760px) 360px, 90vw' : '(min-width: 760px) 180px, 45vw'} />

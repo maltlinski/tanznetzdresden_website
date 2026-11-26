@@ -746,6 +746,38 @@ test('Auf der Seite bearbeiten: Texte mit Platzhaltern, englische Adressen', asy
   await expect(f.locator('[data-sb-text="formate.kopf.titel"]')).toBeAttached();
 });
 
+test('Auf der Seite bearbeiten: auch Karten, Textstücke, Kopien, Textseiten und Kalender', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'Vollbild-Bearbeiten ist für große Bildschirme gedacht');
+  await redaktion(page);
+  const sb = page.locator('[data-sb]');
+  const f = page.frameLocator('.sb__buehne iframe');
+  // Startseite: die Nummer einer Formatkarte gehört zur Karte, die Adresse im Fuß zu den Vereinsdaten, der Link zu
+  // Instagram zur Adresse in den Vereinsdaten
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=startseite');
+  await expect(sb.locator('[data-sb-zahl]')).toContainText('Inhalte');
+  await expect(f.locator('a.karte[href$="#studio-round"]').first()).toHaveAttribute('data-sb-inhalt', 'formate|studio-round');
+  await expect(f.locator('.site-footer address [data-sb-inhalt="verein|verein"]')).toHaveCount(2);
+  await expect(f.locator('.site-footer a[href*="instagram.com"]').first()).toHaveAttribute('data-sb-feld', /instagram/);
+  // Doppelklick auf die Nummer öffnet das Format
+  await f.locator('.karte__meta').first().dblclick();
+  await expect(sb.locator('[data-sb-fach-titel]')).toHaveText('Format „Studio Round“');
+  await sb.getByRole('button', { name: 'Schließen' }).click();
+  // Profitraining: Kopien der Kacheln im Mosaik; der Kalender zeigt, wo er gepflegt wird
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=profitraining');
+  await expect(sb.locator('[data-sb-zahl]')).toContainText('Inhalte');
+  await expect(f.locator('a.kachel:not([id])').first()).toHaveAttribute('data-sb-inhalt', /^dozentinnen\|/);
+  await expect(f.locator('#kalender')).toHaveAttribute('data-sb-name', 'Im Kalender bearbeiten ↗');
+  // Datenschutz hat keine eigene Seite im Plan: gehört zu „Rechtliches“, der Text zur Textseite
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=rechtliches&pfad=datenschutz%2F');
+  await expect(sb.locator('[data-sb-titel]')).toHaveText('Rechtliches (nur Vorstand)');
+  await expect(f.locator('main')).toHaveAttribute('data-sb-inhalt', 'seiten|datenschutz', { timeout: 15000 });
+  // Leichte Sprache gibt es nur auf Deutsch
+  await page.goto('/intern/redaktion/seite-bearbeiten/?s=barrierefreiheit&pfad=leichte-sprache%2F');
+  await expect(sb.locator('[data-sb-zahl]')).toContainText('Inhalt');
+  await sb.locator('[data-sb-sprache="en"]').click();
+  await expect(sb.locator('[data-sb-meldung]')).toHaveText('Diese Seite gibt es nur auf Deutsch.');
+});
+
 test('Auf der Seite bearbeiten: Inhalte und Fotos öffnen ihr Formular daneben', async ({ page, isMobile }) => {
   test.skip(isMobile, 'Vollbild-Bearbeiten ist für große Bildschirme gedacht');
   const gespeichert = await redaktion(page);

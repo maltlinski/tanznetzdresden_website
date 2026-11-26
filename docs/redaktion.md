@@ -35,11 +35,20 @@ Hier lässt sich alles ändern, was auf der Seite steht:
   einer Seitenleiste, gleich beim angeklickten Feld bzw. Foto. Was man dort tippt, ausblendet oder an Fotos wählt,
   zeigt die Seite sofort. Gespeichert wird im Formular; die Seite behält die Änderung, bis die Website neu gebaut ist.
   Logik `src/scripts/intern/redaktion/seite-inhalte.ts`: Welche Bereiche zu einer Seite gehören, steht in `texte.json`
-  (Abschnitt → `auch`); gefunden wird ein Eintrag über seinen Anker (`bereiche.ts` → `anker`), über die Texte seiner
-  Felder und über den Dateinamen seiner Fotos. Das Formular ist die normale Eintrag-Seite mit `?eingebettet=1` (ohne
+  (Abschnitt → `auch`; Personen kommen dazu, sobald der Inhalt auf Profile verlinkt). Gefunden wird ein Eintrag der
+  Reihe nach über `data-sb-eintrag="<bereich>|<id>"` in der Seite (z. B. Ausgaben im Tanzkalender-Archiv), seinen
+  Anker (`bereiche.ts` → `anker`) bzw. die ganze Seite (Termin, Profil, Textseite), Elemente mit genau dem Text eines
+  Felds, Felder als Teil eines Textknotens („© 2026 TanzNetzDresden e.V.“, Straße und Ort mit `<br>`), Links mit der
+  Adresse eines Felds (Instagram, Förderer), den Dateinamen der Fotos, Links zur Seite eines Eintrags und Sprungmarken
+  (`#pop-up`, Inhaltsverzeichnis). Danach gehört die **Karte** um die Felder dazu (Nummer, Datum, Initialen, Rolle:
+  Klick öffnet den Eintrag; Knöpfe und Filter darin bleiben Knöpfe) und ihre **Kopien** (Mosaik). Ein Text, den
+  mehrere Einträge haben, gehört dem, in dessen Anker er steht, sonst dem mit diesem Titel, sonst nach Lage (im Fuß
+  „Auf jeder Seite“, im Inhalt die Seite). Das Formular ist die normale Eintrag-Seite mit `?eingebettet=1` (ohne
   Seitenleiste und eigene Vorschau, schickt seinen Stand an die Seite daneben). Beiträge und Termine aus dem internen
-  Bereich haben einen Knopf zum News-Editor bzw. Kalender (neuer Tab). „Listen“ oben öffnet die Listen der Seite
-  ebenfalls in der Seitenleiste.
+  Bereich haben einen Knopf zum News-Editor bzw. Kalender (neuer Tab); Blöcke, die aus dem Kalender oder den
+  Beiträgen kommen, tragen `data-sb-quelle="kalender"` bzw. `"news"` (Kalender, nächstes Training, Chronik) und zeigen
+  denselben Knopf. „Listen“ oben öffnet die Listen der Seite ebenfalls in der Seitenleiste. Neuer Baustein mit
+  Inhalten, die so nicht zu finden sind → `data-sb-eintrag` oder `data-sb-quelle` setzen.
 - **Fotos formatieren** (erweitert, Knopf oben): Foto anklicken, Ausschnitt mit der Maus ziehen (oder Pfeiltasten),
   Zoom 100–300 %, „Ganz zeigen“ statt die Fläche zu füllen, Zurücksetzen. Gilt für dieses Foto auf dieser Seite (beide
   Sprachen, alle Bildschirmgrößen), gespeichert mit **Speichern** oben in `src/settings/bilder.json`
@@ -47,7 +56,8 @@ Hier lässt sich alles ändern, was auf der Seite steht:
   in den Kopf der Seite; nur geprüfte Zahlen und sichere Dateinamen kommen hinein (`src/lib/bild-stil.ts`).
 
 Oben außerdem: Seite wählen, Desktop/Mobil, DE/EN (englische Seiten unter ihrer englischen Adresse, z. B.
-`en/formats/`), Rückgängig/Wiederholen für Texte und Fotos (auch Strg+Z), **Markieren** (umrandet alles, was sich
+`en/formats/`; Leichte Sprache bleibt deutsch). Seiten ohne eigenen Eintrag im Seitenplan (Datenschutz, Transparenz,
+Spendennachweis) gehören zur Seite mit dem gleichnamigen Abschnitt, Leichte Sprache zu Barrierefreiheit; Rückgängig/Wiederholen für Texte und Fotos (auch Strg+Z), **Markieren** (umrandet alles, was sich
 bearbeiten lässt: Texte magenta, Inhalte cyan), Verwerfen, Speichern. Gefunden wird jedes Element oder Textstück, das
 genau den Text zeigt (auch innerhalb eines längeren Texts, mehrzeilige Texte Zeile für Zeile); ein gleicher Text an
 mehreren Stellen wird nach Teil der Seite zugeordnet (Kopfleiste und Login-Blende, Fuß, Einwilligung, Newsletter,
