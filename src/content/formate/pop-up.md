@@ -8,7 +8,7 @@ summary: "Niedrigschwelliges Aufführungsformat für neue Arbeiten aus dem Netzw
 summary_en: "Low-threshold performance format for new work from the network. Since 2022 also as POP UP exchange."
 text: "Unser niedrigschwelliges Aufführungsformat für neue Arbeiten aus dem Netzwerk. Kurze Stücke, ein Abend, ein offenes Publikum. Seit 2022 auch als POP UP exchange."
 text_en: "Our low-threshold performance format for new work from the network. Short pieces, one evening, an open audience. Since 2022 also as POP UP exchange."
-image: ../../assets/photos/ensemble-curtain-call.jpg
+image: "../../assets/photos/tndd-popup-exchange2025-08.jpg"
 alt: "Ensemble beim Schlussapplaus"
 alt_en: "Ensemble at the curtain call"
 fakten:
