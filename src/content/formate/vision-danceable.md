@@ -8,7 +8,7 @@ summary: "Kurzstückreihe am Societaetstheater, gemeinsam mit der 4 rooms compan
 summary_en: "Short-piece series at Societaetstheater, together with 4 rooms company and about blank collective."
 text: "Kurzstückreihe am Societaetstheater, gemeinsam mit der 4 rooms company und dem about blank collective. Mehrere Positionen der freien Szene an einem Abend."
 text_en: "Short-piece series at Societaetstheater, together with 4 rooms company and about blank collective. Several positions of the independent scene in one evening."
-image: ../../assets/photos/duo-orange-blue.jpg
+image: "../../assets/photos/20260429aw200m.jpg"
 alt: "Zwei Tanzende in orangem und blauem Licht"
 alt_en: "Two dancers in orange and blue light"
 fakten:
