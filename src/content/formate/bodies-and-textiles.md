@@ -8,7 +8,7 @@ summary: "Neues Format mit Wir Gestalten Dresden und dem Slow Fashion Festival."
 summary_en: "New format with Wir Gestalten Dresden and the Slow Fashion Festival."
 text: "Neues Format ab 2027, gemeinsam mit Wir Gestalten Dresden und dem Slow Fashion Festival."
 text_en: "New format from 2027, together with Wir Gestalten Dresden and the Slow Fashion Festival."
-image: ../../assets/photos/duo-rot.jpg
+image: "../../assets/photos/lafdk-care-206.jpg"
 alt: "Duo in rotem Licht"
 alt_en: "Duo in red light"
 fakten:
