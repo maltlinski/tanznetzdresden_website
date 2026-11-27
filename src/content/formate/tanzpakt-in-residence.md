@@ -10,7 +10,7 @@ summary_en: "Residency programme for dance artists in Saxony. 18 residencies at 
 text: "Mit der Villa Wigman für Tanz und sieben Partnerorten in Sachsen haben wir von 2022 bis 2024 das Residenzprogramm TANZPAKT in residence getragen. 18 Residenzen wurden ausgeschrieben, eine Jury entschied über die Vergabe. Jede Residenz verband eigene Recherche mit einem Workshop für Profis und Amateur:innen und einer Werkstattpräsentation."
 text_en: "Together with Villa Wigman für Tanz and seven partner venues in Saxony, we ran the residency programme TANZPAKT in residence from 2022 to 2024. 18 residencies were advertised and a jury selected the artists. Each residency combined the artist’s own research with a workshop for professionals and amateurs and a work-in-progress presentation."
 # eigenes Foto aus dem Programm (KEEP UP zeigt den Kopfstand)
-image: ../../assets/news/2022/tanznetdresden-tanzpakt-in-residence-caroline-beach.webp
+image: "../../assets/photos/tanznetzdresden-tanzpakt-in-residence-2022-2024.jpg"
 alt: "Caroline Beach während ihrer TANZPAKT-Residenz 2022"
 alt_en: "Caroline Beach during her TANZPAKT residency in 2022"
 fakten:
