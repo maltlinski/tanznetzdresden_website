@@ -9,7 +9,7 @@ summary: "Profitraining 3–5× pro Woche in der TENZA, mit wechselnden lokalen 
 summary_en: "Professional training 3–5 times a week at TENZA, with changing local and international teachers. Plus workshops."
 text: "Profitraining für Tanzschaffende, drei- bis fünfmal pro Woche in der TENZA. Lokale und internationale Dozent:innen wechseln sich ab. Dazu kommen regelmäßige Workshops."
 text_en: "Professional training for dance artists, three to five times a week at TENZA. Local and international teachers take turns. There are regular workshops, too."
-image: ../../assets/photos/headstand-solo.jpg
+image: "../../assets/photos/tenza-schmiede-dresden-tanznetzdresden-training-1080x720-1-1-1.jpg"
 alt: "Solo-Tänzerin im Kopfstand"
 alt_en: "Solo dancer in a headstand"
 fakten:
